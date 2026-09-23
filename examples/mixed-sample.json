@@ -11,5 +11,15 @@
   },
   "details": {
     "source": "synthetic mixed-method example"
+  },
+  "request": {
+    "tool": "read_sample",
+    "tool_version": "1",
+    "mode": "deterministic",
+    "input": {},
+    "context": {
+      "episode": "robot_17",
+      "plant_model": "affine_demo"
+    }
   }
 }

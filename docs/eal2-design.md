@@ -2,7 +2,7 @@
 
 EAL/2 has one source language, one versioned reasoning-method selector and one set of support/attack semantics. Backwards compatibility is never a project requirement. The design favours a small set of explicit, composable rules; prior source versions, reasoning aliases and version-dependent objection behaviour are removed. Historical measurements retain their original labels and results.
 
-The intended gain is easier faithful expression and revision of engineering arguments. This is a design hypothesis. EAL/2 comprehension, model correctness and cost improvements have not been measured. The existing live trials concern earlier releases; passing interpreter tests cannot establish those gains.
+The intended gain is easier faithful expression and revision of engineering arguments. This remains a design hypothesis. The [23 September 2026 regression report](eal2-model-results.md) measures selected model/host systems using EAL/2 package 2.1.0 on previously exposed tasks. Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured; passing interpreter tests cannot establish those gains.
 
 ## Expert recommendations and EAL adaptations
 
@@ -34,6 +34,8 @@ reasoning vibration {
 Both declarations use the same grammar and typed contract lookup. The second works when the host installs its contract. Source cannot import code. There is no reasoning `mode` alternative; tool `mode` still denotes collection variability.
 
 The decisive case is two successful numerical procedures with different formal questions or units. A pressure contrast cannot support a flow-rate claim merely because its scalar exceeds a threshold. A bound query about RMS deviation from zero cannot be answered by a calculation about another origin. Uniform schemas, result interpretation and explicit `binding` check those distinctions for built-in and installed methods alike. A method's implementation still needs independent mathematical verification.
+
+Each declared query field must also be a required input field with the identical schema. This ensures that every admissible declared question has the same type when supplied to the method. Schema enumerations distinguish booleans from numbers at every nesting level. A result predicate must select an output declared by its method contract. Unit conversion that overflows or would round a nonzero value to zero leaves the binding unsupported, with the conversion failure retained in the explanation.
 
 Adding a keyword per algorithm was rejected: it changes the parser while duplicating the same application rules. An untyped payload escape hatch was rejected: it hides correspondence checks precisely where a new algorithm needs them. New inference relations remain possible core changes when a task demonstrates that the existing relations cannot preserve its meaning.
 
@@ -84,6 +86,16 @@ No formal Felleisen-style expressiveness theorem is claimed: the observation mod
 
 Static diagnostics carry a stable code and message, a declaration and source span when available, and expected/actual descriptions where applicable. Spans use one-based positions and an exclusive end. Pattern-origin metadata identifies how an application became an argument. A repair should identify the mismatched reference or contract without silently weakening a claim. Canonical formatting preserves the checked representation, while changed source bytes still invalidate old observation identity.
 
+The typed representation is checked before pattern expansion and name resolution, including when a Python caller constructs it directly. Declaration identities, field types, actual reference counts and JSON values must satisfy the same structural contract as parsed source. Strings must contain Unicode scalar values; JSON objects require string keys. Predicate paths and operand types are checked against declared method outputs where their schema determines the type. Paths through open JSON fields retain runtime checks.
+
 Current verification covers interpreter behaviour: parsing, typed references, expansion, method contracts, units/query correspondence, source locations, canonical round trips and support/attack consequences. The larger design aim remains task-bounded; there is no general dimensional algebra, recursive argument definition system or hypothetical assumption-discharge calculus.
 
-Fresh evaluation should compare the same tasks through readable source and typed structured requests, with equal observations, methods and budgets. Include model alone, source in the prompt, host-mediated EAL and an equivalent structured-tool baseline. Measure semantic correctness, unjustified claims, justified unresolved answers, repairs, comprehension, tokens, latency and total cost per correct task. Count failures. Earlier public benchmark instances are development knowledge for EAL/2; new held-out cases and actual model trials are required for a measured gain.
+Fresh evaluation should compare the same tasks through readable source and typed structured requests, with equal observations, methods and budgets. Include model alone, source in the prompt, host-mediated EAL and an equivalent structured-tool baseline. Measure semantic correctness, unjustified claims, justified unresolved answers, repairs, comprehension, tokens, latency and total cost per correct task. Count failures. Earlier public benchmark instances are development knowledge for EAL/2. The [current regression measurements](eal2-model-results.md) cover those exposed cases; new held-out cases and controlled notation comparisons are required to assess generalisation and notation-specific gains.
+
+## Package 2.1.0 contract corrections
+
+The EAL/2 grammar is unchanged. Built-in computations now enforce the same registered input/output schemas and byte bounds as installed methods. Method output remains separate from execution metadata. Causal contrasts preserve small differences between large represented numbers; integer affine models preserve exact integer sums. These repairs enforce the declared meanings and bounds, without adding inference constructs.
+
+Imported observations identify their acquisition through tool, version, mode, input and context. Reusing an observation in another argument is possible when that acquisition still matches; the new collection separately identifies the exact argument source. Old import envelopes lacking that identity are rejected. The strongest alternative was binding imported files permanently to source bytes, which would prevent justified reuse after an internal identifier rename without improving acquisition correspondence.
+
+MCP requests are checked against their advertised schemas before SDK conversion. Host results retain and check source, context, collection and assessment time. This prevents a correct calculation for another request from being reported as the requested conclusion. Implementation verification consists of executable regressions, CLI examples, subprocess MCP/host calls and package inspection. The [live model measurements](eal2-model-results.md) separately assess selected model/host systems on previously exposed tasks.

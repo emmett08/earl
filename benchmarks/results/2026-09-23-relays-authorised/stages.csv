@@ -1,0 +1,15 @@
+stage_key,task_id,model,arm,status,stop_reason,correct,operational_correct,known_model_cost_usd,model_cost_usd,requests,received_requests,tool_events
+28da034e7135971dfbbabe21866f3424f95132639b32901d0cc6a79154dae227,sampled-negative-finding,gpt-4.1-nano-2025-04-14,unaided,completed,finished,True,True,0.0007245,0.0007245,1,1,0
+2b24f24a11569b55c8fa3252ce6fe8346893ca9db5374af5da99cad182d562dd,sampled-negative-finding,gpt-5-2025-08-07,unaided,completed,finished,True,True,0.02777,0.02777,1,1,0
+64b1aa8fa166a0a928fe1176b4c1139b97dcd8a107c7f1ca83b9a1d01f0ac5c8,sampled-negative-finding,gpt-5-nano-2025-08-07,delegated,completed,finished,True,True,0.00067644,0.00067644,2,2,5
+700cdf1203e14015c1d3ee335ad5461b2ea12dd25507ec308b7a89664826a5c5,sampled-negative-finding,gpt-4.1-2025-04-14,unaided,completed,finished,True,True,0.014128,0.014128,1,1,0
+70f7f0fe5b3bf84a0378add6b4fe3039645f01adf13ebaf5589f12e1d37bd9bb,sampled-negative-finding,gpt-5-nano-2025-08-07,unaided,completed,finished,True,True,0.00046155,0.00046155,1,1,0
+97f960f1b0fe7d67f2ea94c8430f6cae3c52e8646474d5531a2c5654e1f07d78,sampled-negative-finding,gpt-5-2025-08-07,unaided,incomplete,token_usage_unavailable,False,False,0,,1,0,0
+a3b698948bd9331c303666a8b2f822541e3a096aa2651c8f40db61a204103987,sampled-negative-finding,gpt-4.1-nano-2025-04-14,unaided,completed,finished,True,True,0.0002552,0.0002552,1,1,0
+aa54f2be8be524df06194ae6eb721e89c48cb46d8b24731c07a8a766657b47cf,sampled-negative-finding,gpt-5-2025-08-07,delegated,incomplete,token_usage_unavailable,False,False,0.01178125,,2,1,5
+b48f589f1853baddf94828080db9477a9f896d042088bcf52dd977e43cfb8860,sampled-negative-finding,gpt-4.1-nano-2025-04-14,delegated,completed,finished,True,True,0.0013001000000000002,0.0013001000000000002,2,2,5
+b96c196647c64d2c94659c2742caad2956685eeb49f5bb94cfa135074de3d4b7,sampled-negative-finding,gpt-5-mini-2025-08-07,unaided,incomplete,token_usage_unavailable,False,False,0,,1,0,0
+c4f6968434e8e01ce5c177362a8f06e191e2853d76a967723d191e59655e8ebb,sampled-negative-finding,gpt-4.1-2025-04-14,unaided,incomplete,token_usage_unavailable,False,False,0,,1,0,0
+cd54fa2758557d64c6dae801832d68e28c10d9939621c890aa2b066986dc5d15,sampled-negative-finding,gpt-4.1-nano-2025-04-14,unaided,completed,finished,True,True,0.0015229,0.0015229,1,1,0
+f61f5d762408a3ec0c81ac2b9c12bb32fe550a6e12b871e3f65c2f9d67764561,sampled-negative-finding,gpt-5-2025-08-07,unaided,completed,finished,True,True,0.02841625,0.02841625,1,1,0
+f76bb3e87a2e1487a029f87c80e7a228805f67c2be4a9cc3ca32ea6bbd4db427,sampled-negative-finding,gpt-4.1-2025-04-14,delegated,completed,finished,True,True,0.02599,0.02599,2,2,5

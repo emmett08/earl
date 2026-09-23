@@ -1,0 +1,499 @@
+{
+  "schema": "EAL/relay-plan/1",
+  "name": "eal2-model-relays-continuation-repair-20260923",
+  "suite": "../engineering-v2/suite.json",
+  "split": "held_out",
+  "protocol": "../protocols/INV-EAL-RELAY-001.json",
+  "repetitions": 1,
+  "order_seed": 20260924,
+  "concurrency": 1,
+  "bootstrap_samples": 2000,
+  "per_mcp_call_usd": 0,
+  "max_campaign_model_cost_usd": 1,
+  "max_handoff_bytes": 1048576,
+  "budget": {
+    "max_iterations": 10,
+    "max_repairs": 4,
+    "max_total_tokens": 120000,
+    "max_output_tokens": 4096,
+    "max_elapsed_seconds": 180,
+    "max_model_cost_usd": 0.2
+  },
+  "conditions": [
+    {
+      "id": "n_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "m_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-mini.toml",
+          "model_class": "mini_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "l_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "rn_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-5-nano-native.toml",
+          "model_class": "small_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "rm_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-5-mini-native.toml",
+          "model_class": "mini_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "r_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-5-native.toml",
+          "model_class": "full_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "n_tool_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "l_tool_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "r_tool_solo",
+      "stages": [
+        {
+          "provider": "../providers/openai-5-native.toml",
+          "model_class": "full_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "n_l_answer",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "answer"
+        }
+      ]
+    },
+    {
+      "id": "l_n_answer",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "answer"
+        }
+      ]
+    },
+    {
+      "id": "n_n_answer",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "answer"
+        }
+      ]
+    },
+    {
+      "id": "l_l_answer",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "answer"
+        }
+      ]
+    },
+    {
+      "id": "n_tool_l_evidence",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "l_tool_n_evidence",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "l_tool_n_answer",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "answer"
+        }
+      ]
+    },
+    {
+      "id": "l_tool_n_transcript",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "transcript"
+        }
+      ]
+    },
+    {
+      "id": "l_tool_n_none",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        }
+      ]
+    },
+    {
+      "id": "r_tool_n_evidence",
+      "stages": [
+        {
+          "provider": "../providers/openai-5-native.toml",
+          "model_class": "full_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "n_tool_r_evidence",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-5-native.toml",
+          "model_class": "full_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "n_l_tool_n",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "answer"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "l_n_tool_l",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "answer"
+        },
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "rm_tool_l_evidence",
+      "stages": [
+        {
+          "provider": "../providers/openai-5-mini-native.toml",
+          "model_class": "mini_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "l_tool_rm_evidence",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-5-mini-native.toml",
+          "model_class": "mini_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "n_m_l",
+      "stages": [
+        {
+          "provider": "../providers/openai-4.1-nano-native.toml",
+          "model_class": "small_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-4.1-mini.toml",
+          "model_class": "mini_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "answer"
+        },
+        {
+          "provider": "../providers/openai-4.1-native.toml",
+          "model_class": "full_non_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "rn_tool_r_evidence",
+      "stages": [
+        {
+          "provider": "../providers/openai-5-nano-native.toml",
+          "model_class": "small_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-5-native.toml",
+          "model_class": "full_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    },
+    {
+      "id": "r_tool_rn_evidence",
+      "stages": [
+        {
+          "provider": "../providers/openai-5-native.toml",
+          "model_class": "full_reasoning_tier",
+          "arm": "delegated",
+          "interaction_mode": "native",
+          "handoff": "none"
+        },
+        {
+          "provider": "../providers/openai-5-nano-native.toml",
+          "model_class": "small_reasoning_tier",
+          "arm": "unaided",
+          "interaction_mode": "text",
+          "handoff": "evidence"
+        }
+      ]
+    }
+  ],
+  "notes": "Authorised continuation under protocol 1.0.8 of the already declared missing-block completion. Original prompts, model snapshots, conditions, stage budgets and scoring are unchanged. Select complete 27-condition blocks by attempted coverage only; include model failures, and retain incomplete earlier blocks separately. Fresh directories preserve every historical freeze and outcome. Shared prefixes apply within task/repetition. Numerical phase threshold $3; repair $1, with a cumulative pre-phase check reserving $4.50 for historical unknown usage and $2.12792 for one response. Unknown historical charges remain unknown; no invoice cap is claimed. Any new unknown usage halts further generation. Product tiers are not parameter-count SLM classes; the six exposed tasks support a descriptive pilot.",
+  "task_ids": [
+    "cold-room-calibration-reference-repair"
+  ]
+}

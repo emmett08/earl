@@ -233,6 +233,24 @@ def _anchors(arguments: dict, initial: dict) -> None:
             raise ValueError(f"{key} differs from the fixed task input")
 
 
+def _check_assessment_identity(result: dict, arguments: dict) -> None:
+    from .semantics import parse_time
+
+    if (result.get("source_digest") != _digest(arguments["source"])
+            or result.get("context_fingerprint") != _digest(_json(arguments["context"]))):
+        raise ValueError("Assessment identity differs from the requested source or context")
+    if "collection_id" not in result or result["collection_id"] != arguments.get("collection_id"):
+        raise ValueError("Assessment collection differs from the requested observations")
+    if arguments.get("now") is not None and parse_time(result.get("assessed_at")) != parse_time(arguments["now"]):
+        raise ValueError("Assessment time differs from the requested time")
+
+
+def _check_collection_identity(result: dict, arguments: dict) -> None:
+    if (result.get("source_digest") != _digest(arguments["source"])
+            or _json(result.get("context")) != _json(arguments["context"])):
+        raise ValueError("Collection identity differs from the requested source or context")
+
+
 def _leaves(error: BaseException) -> list[BaseException]:
     if isinstance(error, BaseExceptionGroup):
         return [leaf for child in error.exceptions for leaf in _leaves(child)]
@@ -581,16 +599,20 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                         collected = await call("eal_collect", {"source": state.source, "context": state.context})
                         if collected["is_error"] or not isinstance(collected["result"].get("collection_id"), str):
                             return {"operation": "assess", "is_error": True, "failed_operation": "collect", "result": collected["result"]}
+                        _check_collection_identity(collected["result"], arguments)
                         state.collection_id = collected["result"]["collection_id"]
-                        assessed = await call("eal_reason", {**arguments, "collection_id": state.collection_id})
+                        reason_arguments = {**arguments, "collection_id": state.collection_id}
+                        assessed = await call("eal_reason", reason_arguments)
                         result = assessed["result"]
                         if assessed["is_error"] or result.get("valid") is not True or not isinstance(result.get("assessment_id"), str) or not isinstance(result.get("claims"), dict):
                             return {"operation": "assess", "is_error": True, "failed_operation": "reason", "result": result}
-                        if result.get("source_digest") != _digest(state.source) or result.get("context_fingerprint") != _digest(_json(state.context)):
-                            raise ValueError("Assessment identity differs from the active source or context")
+                        _check_assessment_identity(result, reason_arguments)
                         explanation = await call("eal_explain", {"assessment_id": result["assessment_id"]})
                         if explanation["is_error"]:
                             return {"operation": "assess", "is_error": True, "failed_operation": "explain", "result": explanation["result"]}
+                        _check_assessment_identity(explanation["result"], reason_arguments)
+                        if explanation["result"].get("assessment_id") != result["assessment_id"]:
+                            raise ValueError("Explanation does not identify the requested assessment")
                         state.assessment = result
                         return {"operation": "assess", "is_error": False, "result": result,
                                 "completed_operations": ["validate", "collect", "reason", "explain"]}
@@ -697,6 +719,7 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                                     "assessment_id": state.assessment["assessment_id"],
                                     "claims": {c: claims[c] for c in selected},
                                     "source_digest": state.assessment.get("source_digest"),
+                                    "collection_id": state.assessment.get("collection_id"),
                                     "assessed_at": state.assessment.get("assessed_at"),
                                     "context": state.context, "source": state.source,
                                     "verification": "server_assessment", "task_correspondence": run.report["task_correspondence"],
@@ -742,14 +765,13 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                                 validated_sources.add(_digest(arguments["source"]))
                                 state.valid = True
                             if operation == "collect" and isinstance(result.get("collection_id"), str):
+                                _check_collection_identity(result, arguments)
                                 state.collection_id = result["collection_id"]
                             if operation == "reason":
                                 if result.get("valid") is not True or not isinstance(result.get("assessment_id"), str) or not isinstance(result.get("claims"), dict):
                                     run.repair("Server did not return a valid assessment", phase="reasoning", result=response)
                                     continue
-                                if result.get("source_digest") != _digest(arguments["source"]) or result.get("context_fingerprint") != _digest(_json(arguments["context"])):
-                                    run.repair("Assessment identity differs from the requested source or context", phase="reasoning")
-                                    continue
+                                _check_assessment_identity(result, arguments)
                                 state.assessment = result
                                 state.context = arguments["context"]
                             run.feedback(_compact_feedback(response) if stateful and detail != "full" else response)

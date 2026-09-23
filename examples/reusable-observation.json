@@ -24,5 +24,15 @@
   "context": {
     "site": "bench",
     "revision": "A"
+  },
+  "request": {
+    "tool": "pressure_trial_tool",
+    "tool_version": "1",
+    "mode": "deterministic",
+    "input": {},
+    "context": {
+      "site": "bench",
+      "revision": "A"
+    }
   }
 }

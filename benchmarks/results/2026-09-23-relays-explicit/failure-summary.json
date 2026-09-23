@@ -1,0 +1,1582 @@
+[
+  {
+    "stage_key": "055385c9fbe3b064088262b33196026c882232abf1c87c81badc65045fde1a7d",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "contested",
+          "category": "incorrect"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00578,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00578
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"contested\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "15bacfdc32c3cef0c91bebdc4c4cb2746baef00a0a3e27ba51ae66f53a5d22b6",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0002553,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0002553
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "1aae5da8228a4ba138863567ecb001715f6957e5552595c7eea81d1dbe5f5455",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "contested",
+          "category": "incorrect"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.004052,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.004052
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"contested\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "1f5d853fe871284c3a59d3d7f7dab562177525457cd16101eed00e7b4ac18798",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-mini-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "contested",
+          "category": "incorrect"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0007924000000000001,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0007924000000000001
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"contested\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "29b9f09d7e65b4c7fdee1c605bd225c63c186f96253f92f40350989d103efc8d",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.005478,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.005478
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "29e22049674397fdce3735e02f14cd1ec55b8d8762c90f96214238b3f4c88752",
+    "task_id": "cold-room-calibration-reference-repair",
+    "model": "gpt-5-mini-2025-08-07",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "calibrated_response": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00082295,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00082295
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"calibrated_response\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "2e8ec885cb82dfe95e6136e93e50a306aa6a0314658c3c2002811120f79c8b93",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00027330000000000003,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00027330000000000003
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "31b85bca15ffe84d3d409e6cfb6d72dbcf0365429efb13c092ed932f55af051e",
+    "task_id": "cold-room-calibration-reference-repair",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "delegated",
+    "status": "incomplete",
+    "stop_reason": "repair_budget_exhausted",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "calibrated_response": {
+          "expected": "supported",
+          "actual": "unresolved",
+          "category": "unresolved"
+        }
+      },
+      "source_correspondence": false,
+      "source_comparison": {
+        "equivalent": false,
+        "reason": "missing_source",
+        "mapping": {}
+      },
+      "evidence_trace": {
+        "verified": false,
+        "reasons": [
+          "No corresponding final source"
+        ]
+      },
+      "workflow": {
+        "complete": false,
+        "missing_operations": [
+          "collect",
+          "explain",
+          "reason",
+          "validate"
+        ]
+      }
+    },
+    "repairs": 5,
+    "cost": {
+      "model_usd": 0.0039341,
+      "mcp_calls": 3,
+      "tool_usd": 0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0039341
+    },
+    "tool_diagnostics": [
+      {
+        "tool": "eal_validate",
+        "is_error": false,
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "unknown_reference",
+            "message": "Unknown assumption 'cold_room_calibration'",
+            "declaration": "response_under_calibration",
+            "span": {
+              "line": 11,
+              "column": 1,
+              "end_line": 11,
+              "end_column": 164
+            },
+            "expected": "assumption",
+            "actual": "cold_room_calibration"
+          }
+        ]
+      },
+      {
+        "tool": "eal_validate",
+        "is_error": false,
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "unknown_reference",
+            "message": "Unknown reasoning 'calibrated_reading'",
+            "declaration": "response_under_calibration",
+            "span": {
+              "line": 10,
+              "column": 1,
+              "end_line": 10,
+              "end_column": 162
+            },
+            "expected": "reasoning",
+            "actual": "calibrated_reading"
+          }
+        ]
+      }
+    ],
+    "last_model_text": "{\"operation\": \"revise\", \"replacements\": [{\"old\": \"calibrated_reading\", \"new\": \"calibration_reading\"}]}",
+    "provider_errors": [
+      "Native model response arguments are invalid JSON"
+    ]
+  },
+  {
+    "stage_key": "45d08b4d1cb9d1f2cf24fe38b5000f99b09de16b1d7e2276f0cadf7da2df4567",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00027330000000000003,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00027330000000000003
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "51148a38db9a234cacd700bf1b48f9a88473efe9a1cfe2c571d7d0221fb3c89c",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.005472,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.005472
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "5a10c6bb193697926193b9b623372304b3315385b6a9874a01681991e1dccd7d",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-mini-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0010956000000000002,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0010956000000000002
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "5a644c6e1f2580e7f34efd3481b38935cd98e006a54acfab86a13d37b651f549",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0002736,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0002736
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "5c0fd4e2e7d8dabf15031fde6f71551a64ec8cd50c60dab079eba6ba97cab2a0",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-5-nano-2025-08-07",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "contested",
+          "category": "correct"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0002766,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0002766
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"contested\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "7368c6b2069058fda49788664aae8694f51fe56cfefb9cc66634a8eeaeff3fd4",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-5-nano-2025-08-07",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "contested",
+          "category": "incorrect"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00030220000000000003,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00030220000000000003
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"contested\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "75867bfbb37ca4cb34e3569d80d7375fa54a9bffd7011b4ee9eaaa30e16aa35b",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.005478,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.005478
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "79e4696591098dcea71ec92a96a67a683c9e92cee6757c7fac14a70302217471",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.005478,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.005478
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "7c4c80c5fa5171f9707b62a6a87955237c146c35bace05d6e5e9a72345439fdc",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-mini-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0007884,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0007884
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "8b256f4ea59d8a8dc2c82c1a34389d6871674185447325656c9157cf1661dd5f",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0002736,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0002736
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "98dd217d6c240003abac1d6ea51a552ddc5d917862e2154ffc624b63e6435250",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.003954,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.003954
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "9afef5f1037062af4d2130934b1a41d13bd318f8b1d5d34854c11a1017ef6cc3",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0007065000000000001,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0007065000000000001
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "9c45c83381c2d42838823913ba2e4dbd753869b631b415f3d2ae4c94675f6506",
+    "task_id": "registered-rms-velocity",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "incomplete",
+    "stop_reason": "token_usage_unavailable",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "vibration_within_limit": {
+          "expected": "supported",
+          "actual": "unresolved",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 1,
+    "cost": {
+      "model_usd": null,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": null
+    },
+    "tool_diagnostics": [],
+    "last_model_text": null,
+    "provider_errors": [
+      "Model endpoint transport failed"
+    ]
+  },
+  {
+    "stage_key": "a82e772b39ad43d505aec6e5b21708d38475e5d74b421c909df5d4beb079b540",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00027390000000000004,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00027390000000000004
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "ab4864f49cb52734e7dc40f19337c8e09b0ad60a699179782d5da2963a2d8721",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.003942,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.003942
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "ac0d170f2e85fe3d2835e1f100c9a4c237de91ae8fdedc9711373db0f78b0ddf",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.005106,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.005106
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "b09fc36dd6c384e23c282413d2fe7bc28492f986c42e2a33c5573fb4f11a26be",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-mini-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "contested",
+          "category": "incorrect"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0007924000000000001,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0007924000000000001
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"contested\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "b518e1d4ba87e582ead61d608d4d51f00ce4f5f8ba4465f2f1a7cde7e68755b0",
+    "task_id": "cold-room-calibration-reference-repair",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "calibrated_response": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0025883,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0025883
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"calibrated_response\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "ba6a3fcbea4d6403d7b8e3762cdf1ba5ff9e61597aeaa1a68a165b6e6c33520f",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0001977,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0001977
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "bccb03f13cedab550d2b357be77c0429654a77f676c5614f2de1fe2a7e71490c",
+    "task_id": "cold-room-calibration-reference-repair",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "delegated",
+    "status": "incomplete",
+    "stop_reason": "repair_budget_exhausted",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "calibrated_response": {
+          "expected": "supported",
+          "actual": "unresolved",
+          "category": "unresolved"
+        }
+      },
+      "source_correspondence": false,
+      "source_comparison": {
+        "equivalent": false,
+        "reason": "missing_source",
+        "mapping": {}
+      },
+      "evidence_trace": {
+        "verified": false,
+        "reasons": [
+          "No corresponding final source"
+        ]
+      },
+      "workflow": {
+        "complete": false,
+        "missing_operations": [
+          "collect",
+          "explain",
+          "reason",
+          "validate"
+        ]
+      }
+    },
+    "repairs": 5,
+    "cost": {
+      "model_usd": 0.0021275000000000005,
+      "mcp_calls": 3,
+      "tool_usd": 0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0021275000000000005
+    },
+    "tool_diagnostics": [
+      {
+        "tool": "eal_validate",
+        "is_error": false,
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "unknown_reference",
+            "message": "Unknown assumption 'cold_room_calibration'",
+            "declaration": "response_under_calibration",
+            "span": {
+              "line": 11,
+              "column": 1,
+              "end_line": 11,
+              "end_column": 164
+            },
+            "expected": "assumption",
+            "actual": "cold_room_calibration"
+          }
+        ]
+      },
+      {
+        "tool": "eal_validate",
+        "is_error": false,
+        "valid": false,
+        "diagnostics": [
+          {
+            "code": "unknown_reference",
+            "message": "Unknown reasoning 'calibrated_reading'",
+            "declaration": "response_under_calibration",
+            "span": {
+              "line": 10,
+              "column": 1,
+              "end_line": 10,
+              "end_column": 162
+            },
+            "expected": "reasoning",
+            "actual": "calibrated_reading"
+          }
+        ]
+      }
+    ],
+    "last_model_text": "{\"operation\": \"revise\", \"replacements\": [{\"old\": \"calibrated_reading\", \"new\": \"response_reading\"}]}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "be7f007eb7f464efdf583cc3765589fb1c12f8930d5eb44e02c1769fe8408ae4",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00027390000000000004,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00027390000000000004
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "c5d762b3421742c4e1bb170d392389b4fc118f7e9f4c6e168175d8cafc252012",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": false,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.005472,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.005472
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"supported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "ca6098ba961dac636da9adeab63bc1dc9793dbb2ee68c9c1b9ec1b5e49241454",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.005772,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.005772
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "caeb5989c9e3f8474287910d79bdee8c825ba2325a06c0ff4cedfff13e80343d",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00027390000000000004,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00027390000000000004
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "d6ee22b603ad5959d21ba6a4b9d0d38de9d2b5a599f5c9b28a145a9164f74000",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0001977,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0001977
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "dab4049e9f6f711c5b06520f24d0fecb74a938c0adbfa092604d4c2bde023dc8",
+    "task_id": "cold-room-calibration-reference-repair",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "calibrated_response": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.029024,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.029024
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"calibrated_response\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "db54d97ba4ee168a2df83bb9d9c379a37da456f0b9a4bca534d531a0df192eaf",
+    "task_id": "defence-cannot-ground-itself",
+    "model": "gpt-4.1-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": true,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "contested",
+          "actual": "supported",
+          "category": "unjustified"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.005772,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.005772
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "e10fcff06f027f5bf2e0a7d7c6445e68c65058bcf5f9da3623ed733cee84b44a",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-mini-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "contested",
+          "category": "incorrect"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00079,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00079
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"contested\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "ed51237198709a5f9717f3e8caae52eaa7109957e6e685420366bbebfc747585",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-mini-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "contested",
+          "category": "incorrect"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.0010972000000000002,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.0010972000000000002
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"contested\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  },
+  {
+    "stage_key": "fe2999abfe465c60cdf2de481a193aa7ff0486b80d98790889ae4b94e966b50d",
+    "task_id": "defence-with-independent-subargument",
+    "model": "gpt-4.1-nano-2025-04-14",
+    "arm": "unaided",
+    "status": "completed",
+    "stop_reason": "finished",
+    "score": {
+      "correct": false,
+      "correctly_resolved": false,
+      "justified_unresolved": false,
+      "unjustified": false,
+      "unresolved": true,
+      "unexpected_claims": [],
+      "claims": {
+        "response_supported": {
+          "expected": "supported",
+          "actual": "supported",
+          "category": "correct"
+        },
+        "instrument_fault": {
+          "expected": "supported",
+          "actual": "unsupported",
+          "category": "unresolved"
+        }
+      }
+    },
+    "repairs": 0,
+    "cost": {
+      "model_usd": 0.00027390000000000004,
+      "mcp_calls": 0,
+      "tool_usd": 0.0,
+      "per_mcp_call_usd": 0,
+      "total_usd": 0.00027390000000000004
+    },
+    "tool_diagnostics": [],
+    "last_model_text": "{\"claims\":{\"response_supported\":\"supported\",\"instrument_fault\":\"unsupported\"}}",
+    "provider_errors": []
+  }
+]

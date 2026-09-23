@@ -67,7 +67,7 @@ argument explanation {
 
 This fragment makes three claims into required subarguments. Each can have further premises, its own reasoning method and more than one supporting argument. A claim is supported when at least one uncontested usable argument supports it and there is no active claim-level objection. A reusable subclaim is evaluated once per assessment and retains its identifier; its repeated use does not create independent evidence. Declared evidence is deduplicated by identifier before a reasoning computation, including reasoning backing and assumption-validation observations.
 
-The graph of conclusion-to-premise dependencies is acyclic, even if a cycle contains an alternative grounded argument. The current language rejects such cycles as a whole. Maximum source size is 1 MiB, maximum declaration count 4096 and maximum premise depth 128. EAL/2 permits cycles involving attacks and objection support. Its finite support/attack solver retains unresolved cycles as undecided; the acyclic constraint still applies to ordinary argument-to-premise composition.
+The graph of conclusion-to-premise dependencies is acyclic, even if a cycle contains an alternative grounded argument. The current language rejects such cycles as a whole. Maximum source size is 1 MiB, maximum expanded declaration/body count 4096 and maximum premise depth 128. The declaration bound counts source declarations, pattern bodies and generated arguments. EAL/2 permits cycles involving attacks and objection support. Its finite support/attack solver retains unresolved cycles as undecided; the acyclic constraint still applies to ordinary argument-to-premise composition.
 
 ## Time and assumptions
 
@@ -139,3 +139,5 @@ The composed graph is bounded to 4096 nodes, 4096 claims and 131072 combined att
 ## Diagnostics and source positions
 
 Static diagnostics include `code`, `message` and optional `declaration`, `span`, `expected` and `actual` fields. A source span has one-based `line`, `column`, `end_line` and `end_column`; the end is exclusive. Parse/lowering locations let errors identify the relevant declaration or application. The internal argument origin names its pattern and application, preserving that relationship in explanations. Canonical formatting retains authored pattern/application syntax and omits the generated argument declarations.
+
+Method output predicates use `reasoning_predicate_path` for paths excluded by a closed output schema and `reasoning_predicate_type` for incompatible operands. The diagnostic gives expected and actual types. Open JSON result fields are checked at runtime. Python callers constructing the typed IR directly receive `invalid_ir`, `declaration_identity` or the corresponding source-level diagnostic for malformed fields, names, references or JSON values. Canonical formatting rejects those objects before printing them.

@@ -1,0 +1,27 @@
+{
+  "schema": "EAL/relay-checkpoint-audit/1",
+  "freeze_digest": "48459289b1a15a5b2c4f177dbf8798f8b890320c54c993d0090595590b2631b1",
+  "scheduled_endpoints": 324,
+  "recorded_endpoints": 0,
+  "attempted_endpoints": 0,
+  "finished_endpoints": 0,
+  "correct_finished_endpoints": 0,
+  "execution_states": {},
+  "unrecorded_endpoints": 324,
+  "completed_task_ids": [],
+  "recorded_stages": 0,
+  "known_model_cost_usd": 0,
+  "total_model_cost_usd": null,
+  "unpriced_stage_records": 0,
+  "inflight_markers": [
+    {
+      "stage_key": "64b1aa8fa166a0a928fe1176b4c1139b97dcd8a107c7f1ca83b9a1d01f0ac5c8",
+      "completion_record_present": false
+    }
+  ],
+  "all_integrity_checks_passed": true,
+  "primary_matched_blocks": [],
+  "interpretation": "Observed incomplete cohort only. Scheduling stops are excluded from outcome denominators. Completed answers from a single task do not estimate whole-suite performance. Markers with matching completed stage records are not additional unknown requests. Raw archives remain unchanged.",
+  "stage_rows": [],
+  "endpoint_rows": []
+}

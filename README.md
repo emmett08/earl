@@ -4,6 +4,8 @@ EAL represents engineering reasoning as claims, subordinate arguments, typed evi
 
 The language is **EAL/2**, with `.eal` source files. EAL/2 is the only supported source language; backwards compatibility is never a project requirement. Python 3.11 or later is required. Configured command adapters currently require a POSIX host.
 
+Package **2.2.2** adds frozen model-sequence experiments, preserves partial known charges and distinguishes unexecuted conditions from model outcomes, and enforces the current method contracts across built-in and installed procedures. It rejects statically incompatible result predicates and checks imported observations against their original acquisition requests. Current examples and references use these contracts. File imports require `request` metadata; obsolete envelopes have no compatibility adapter. The source language remains EAL/2.
+
 ## What is implemented
 
 - ANTLR4 grammar and generated Python lexer, parser and visitor, with a typed intermediate representation, source-located diagnostics and separate semantic checks.
@@ -101,7 +103,8 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 - [Precise vocabulary](docs/vocabulary.md) and [typed propositions](docs/typed-propositions.md): formal queries, unit checks and result correspondence.
 - [Engineering tasks](docs/engineering-tasks.md): known-answer cases, adverse variants and remaining coverage gaps.
 - [Historical live model experiments](docs/live-model-results.md): original API comparisons, retained failures, token usage and cost estimates from earlier EAL versions.
-- [Historical EAL/0.3 repeated experiments](docs/eal03-model-results.md): original model/interface conditions and development ablations. EAL/2 performance gains remain unmeasured.
+- [EAL/2 regression experiments](docs/eal2-model-results.md): live model/host measurements for package 2.1.0 on 23 September 2026, using previously exposed tasks.
+- [Historical EAL/0.3 repeated experiments](docs/eal03-model-results.md): original model/interface conditions and development ablations.
 - [Reasoning methods](docs/reasoning-modes.md): distinct evidence schemas, algorithms and interpretation limits.
 - [Grounded argumentation](docs/grounded-reasoning.md): counterargument, defence and undecided cycles.
 - [Implementation architecture](docs/implementation.md): Parr’s patterns, ANTLR4 and extension points.
@@ -109,4 +112,10 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 - [Primary sources](docs/sources.md).
 - [Reusable skill](skills/engineer-argumentation-languages/SKILL.md): the maintained contributor guidance, including expert language-design references and the project’s EAL/2 rules.
 
-`CONTRACT.md` records the implementation interface shared by the parser, interpreter and runtime. The interpreter evaluates authored finite support graphs and explicit argument graphs. It does not automatically discover causal structure, prove arbitrary prose, infer unlisted hypotheses, model continuous behaviour from isolated samples, or authenticate the physical provenance of observations from digests alone. Typed correspondence narrows what is checked; it does not establish general engineering completeness. The historical experiments report their original measured performance. No EAL/2 model capability, comprehension or cost improvement has been measured.
+`CONTRACT.md` records the implementation interface shared by the parser, interpreter and runtime. The interpreter evaluates authored finite support graphs and explicit argument graphs. It does not automatically discover causal structure, prove arbitrary prose, infer unlisted hypotheses, model continuous behaviour from isolated samples, or authenticate the physical provenance of observations from digests alone. Typed correspondence narrows what is checked; it does not establish general engineering completeness. The [EAL/2 regression report](docs/eal2-model-results.md) measures selected model/host systems on previously exposed tasks. Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured. Historical experiments retain their original versions and results.
+
+### Model sequences and evidence transfer
+
+See [model sequence experiments](docs/model-relay-experiments.md) for reproducible small-to-full, full-to-small, reasoning/tool and three-stage comparisons, with saved evidence hand-offs, common endpoint scoring and resumable checkpoints.
+
+The [sequence results](docs/eal2-relay-results.md) cover all 324 planned comparison endpoints across twelve complete blocks, with 323 finished answers. Evidence transfer is correct in 12/12 cases versus 8/12 for answer-only transfer; the descriptive task-cluster interval includes zero. The four contributing cohorts retain 358 attempted records and 354 finished answers, including 34 incomplete-block attempts kept separately. All failures, unknown charges and original raw records remain available. This is a six-task exposed synthetic pilot.

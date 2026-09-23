@@ -6,10 +6,12 @@ Argument-level ``require`` predicates state what result supports a conclusion.
 from __future__ import annotations
 
 import itertools
+import json
 import math
 import operator
 import re
-from statistics import NormalDist, fmean, variance
+from fractions import Fraction
+from statistics import NormalDist, stdev
 
 MODE_KINDS = {
     "structured": None, "deductive": "logical_case", "inductive": "sample",
@@ -108,6 +110,7 @@ def _check_json(value):
         if isinstance(item, str):
             if len(item) > 4096:
                 raise ValueError("Evidence strings are limited to 4096 characters")
+            item.encode("utf-8")
         elif isinstance(item, (int, float)):
             _number(item, "Evidence number")
         elif isinstance(item, dict):
@@ -116,6 +119,7 @@ def _check_json(value):
             for key, child in item.items():
                 if not isinstance(key, str) or len(key) > 4096:
                     raise ValueError("Evidence object keys must be bounded strings")
+                key.encode("utf-8")
                 pending.append((child, depth + 1))
         elif isinstance(item, list):
             if len(item) > MAX_ITEMS:
@@ -245,10 +249,28 @@ def _causal(value):
     for name in ("treatment", "control"):
         groups.append([_number(item, name) for item in _list(value[name], name, minimum=2)])
     treatment, control = groups
-    mt, mc = fmean(treatment), fmean(control)
-    se = math.sqrt(variance(treatment) / len(treatment) + variance(control) / len(control))
+    # Subtract the represented means before rounding: two large, neighbouring
+    # integer means must not collapse to the same binary64 value and erase an
+    # observed treatment effect. Fraction also retains each supplied float's
+    # exact binary value; it does not infer additional measurement precision.
+    mt = sum(map(Fraction, treatment), Fraction()) / len(treatment)
+    mc = sum(map(Fraction, control), Fraction()) / len(control)
+    def numeric(value):
+        rounded = value.numerator if value.denominator == 1 else float(value)
+        if value and rounded == 0:
+            raise ValueError("Computed mean or contrast underflows the representable number range")
+        return rounded
+
+    # Compute standard deviations before combining their contributions. Forming
+    # floating variances first can underflow even when the final square root is
+    # representable (for example, a standard error of 1e-200).
+    se = math.hypot(stdev(treatment) / math.sqrt(len(treatment)),
+                    stdev(control) / math.sqrt(len(control)))
+    if se == 0 and any(any(item != group[0] for item in group) for group in groups):
+        raise ValueError("Computed standard error underflows the representable number range")
     return _result(True, "Randomised two-group mean contrast computed; assignment and causal assumptions require evidence",
-                   estimate=mt - mc, standard_error=se, treatment_mean=mt, control_mean=mc,
+                   estimate=numeric(mt - mc), standard_error=se,
+                   treatment_mean=numeric(mt), control_mean=numeric(mc),
                    treatment_size=len(treatment), control_size=len(control),
                    sample_size=len(treatment) + len(control), assumptions_verified=False)
 
@@ -291,8 +313,11 @@ def _counterfactual(value):
         result = {}
         for name in order:
             intercept, parents, noise = equations[name]
-            result[name] = (setting if intervene and name == changed else
-                            math.fsum([intercept, noise, *(c * result[parent] for parent, c in parents.items())]))
+            if intervene and name == changed:
+                result[name] = setting
+            else:
+                terms = [intercept, noise, *(c * result[parent] for parent, c in parents.items())]
+                result[name] = sum(terms) if all(type(term) is int for term in terms) else math.fsum(terms)
             _number(result[name], "Computed structural value")
         return result
 
@@ -384,7 +409,7 @@ def assess_mode(method: str, evidence: list[dict], premises: list[dict], registr
     Evidence entries are ``{id, kind, value}``; premise entries contain ``status``.
     The caller separately checks premise support and argument requirements.
     """
-    from .methods import default_registry, execute_extension
+    from .methods import check_implementation_identity, default_registry, execute_extension, schema_errors
     registry = registry or default_registry()
 
     def identified(result):
@@ -403,20 +428,55 @@ def assess_mode(method: str, evidence: list[dict], premises: list[dict], registr
             raise ValueError("Evidence identifiers must be unique")
         if any(not isinstance(item, dict) for item in premises):
             raise ValueError("Premise entries must be objects")
+        # The authored method still consumes evidence entries. It must not make
+        # malformed, nonfinite or cyclic payloads usable merely because it has
+        # no designated numerical calculation.
+        for item in evidence:
+            _check_json(item["value"])
         errors = validate_mode(method, [item["kind"] for item in evidence], registry=registry)
         if errors:
             return identified({"status": "unsupported", "reasons": errors, "details": {}})
         contract = registry.get(method)
+        if contract.builtin_mode is not None:
+            check_implementation_identity(contract)
+        selected = None
         if contract.builtin_mode == "structured":
             available = bool(evidence) or any(item.get("status") in ("supported", "contested") for item in premises)
-            return identified(_result(available, "Authored support is available; prose sufficiency is not mechanically established"
-                           if available else "Structured reasoning requires evidence or a supported premise",
-                           authored=True, mechanically_proved=False))
-        selected = next(item for item in evidence if item["kind"] == contract.evidence_kind)
-        _check_json(selected["value"])
-        result = (_COMPUTATIONS[contract.builtin_mode](selected["value"]) if contract.builtin_mode
-                  else execute_extension(contract, selected["value"]))
-        result["details"]["evidence_id"] = selected["id"]
+            payload = {}
+        else:
+            selected = next(item for item in evidence if item["kind"] == contract.evidence_kind)
+            payload = selected["value"]
+        encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"),
+                             ensure_ascii=False, allow_nan=False).encode("utf-8")
+        if len(encoded) > contract.max_input_bytes:
+            raise ValueError("Method input exceeds byte limit")
+        errors = schema_errors(payload, contract.input_schema)
+        if errors:
+            raise ValueError("Method input contract violation: " + "; ".join(errors))
+        if contract.builtin_mode == "structured":
+            result = _result(available, "Authored support is available; prose sufficiency is not mechanically established"
+                             if available else "Structured reasoning requires evidence or a supported premise",
+                             **contract.implementation(payload))
+        else:
+            result = (contract.implementation(payload) if contract.builtin_mode
+                      else execute_extension(contract, payload))
+        # Domain checks inside a computation can be stricter than the schema;
+        # neither replaces the registered input/output contract. In particular,
+        # bounded inputs can produce a numerical result outside the output's
+        # represented range. A failed computation may intentionally return only
+        # diagnostic fields, so the success schema applies to usable results.
+        if result["status"] == "supported":
+            errors = schema_errors(result["details"], contract.output_schema)
+            if errors:
+                raise ValueError("Method output contract violation: " + "; ".join(errors))
+            encoded = json.dumps(result["details"], sort_keys=True, separators=(",", ":"),
+                                 ensure_ascii=False, allow_nan=False).encode("utf-8")
+            if len(encoded) > contract.max_output_bytes:
+                raise ValueError("Method output exceeds byte limit")
+        # Host provenance is not a method output and cannot overwrite a field
+        # supplied under the registered result contract.
+        if selected is not None:
+            result["evidence_id"] = selected["id"]
         return identified(result)
-    except (ValueError, TypeError, OverflowError, RecursionError, KeyError) as exc:
-        return identified(_result(False, f"Invalid evidence: {exc}"))
+    except (ValueError, TypeError, OverflowError, RecursionError, KeyError, UnicodeError) as exc:
+        return identified(_result(False, f"Method evaluation failed: {exc}"))

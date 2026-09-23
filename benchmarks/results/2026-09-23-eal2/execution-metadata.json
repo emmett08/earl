@@ -1,0 +1,32 @@
+{
+  "schema": "EAL/live-execution/1",
+  "started_at": "2026-09-23T15:20:13.334775+00:00",
+  "code_commit": "dc30aa5aa29c63b50e452118fd455311bf89c88e",
+  "package_version": "2.1.0",
+  "source_language": "EAL/2",
+  "scope": "Previously exposed regression tasks; no fresh held-out claim",
+  "provider_configurations": {
+    "benchmarks/providers/openai-4.1-mini.toml": {
+      "content": "# Rates checked against the official model page on 2026-09-23.\n# Estimates exclude host infrastructure, labour and taxes.\n[provider]\nkind = \"chat_completions\"\nmodel = \"gpt-4.1-mini-2025-04-14\"\napi_key_env = \"OPENAI_API_KEY\"\n\n[provider.sampling]\ntemperature = 0\n\n[provider.pricing]\ninput_usd_per_million = 0.4\ncached_input_usd_per_million = 0.1\noutput_usd_per_million = 1.6\n\n[budget]\nmax_iterations = 10\nmax_repairs = 4\nmax_total_tokens = 120000\nmax_elapsed_seconds = 120\nmax_model_cost_usd = 0.06\n",
+      "sha256": "1cde501fc9ca52f6bc1da226e9260ec9d80ebe5691ca0dbe971f9b0b9d73508a"
+    },
+    "benchmarks/providers/openai-4.1-nano-native.toml": {
+      "content": "# Official model rates checked 2026-09-23; token-rate estimates only.\n[provider]\nkind = \"chat_completions\"\nmodel = \"gpt-4.1-nano-2025-04-14\"\napi_key_env = \"OPENAI_API_KEY\"\n\n[provider.sampling]\ntemperature = 0\n\n[provider.capabilities]\nnative_tools = true\n\n[provider.pricing]\ninput_usd_per_million = 0.1\ncached_input_usd_per_million = 0.025\noutput_usd_per_million = 0.4\n",
+      "sha256": "3c822542c36a9c2c011d51a77020944691ee1dd7b62bd4e55d979d2c9b2e0cca"
+    },
+    "benchmarks/providers/openai-4.1-nano.toml": {
+      "content": "# Rates checked against the official model page on 2026-09-23.\n# Estimates exclude host infrastructure, labour and taxes.\n[provider]\nkind = \"chat_completions\"\nmodel = \"gpt-4.1-nano-2025-04-14\"\napi_key_env = \"OPENAI_API_KEY\"\n\n[provider.sampling]\ntemperature = 0\n\n[provider.pricing]\ninput_usd_per_million = 0.1\ncached_input_usd_per_million = 0.025\noutput_usd_per_million = 0.4\n\n[budget]\nmax_iterations = 10\nmax_repairs = 4\nmax_total_tokens = 120000\nmax_elapsed_seconds = 120\nmax_model_cost_usd = 0.025\n",
+      "sha256": "b878ea44dbd01c2736e7837d605bd77bcd4ca5fef7ecadbdc7f68c86b77a67e7"
+    },
+    "benchmarks/providers/openai-5-mini-native.toml": {
+      "content": "# Official model rates checked 2026-09-23; token-rate estimates only.\n# This snapshot supports Chat Completions with reasoning and function calls.\n# Use a compatible adapter for other models; capabilities are not inferred by name.\n[provider]\nkind = \"chat_completions\"\nmodel = \"gpt-5-mini-2025-08-07\"\napi_key_env = \"OPENAI_API_KEY\"\ntimeout_seconds = 90\n\n[provider.capabilities]\nnative_tools = true\nreasoning_effort = \"low\"\ntool_reasoning_compatible = true\n\n[provider.pricing]\ninput_usd_per_million = 0.25\ncached_input_usd_per_million = 0.025\noutput_usd_per_million = 2.0\n",
+      "sha256": "25ddfd631d5dabeb09c75a862116a1361be946973379775795b16dd8e5fdd8ac"
+    }
+  },
+  "pricing_checked_at": "2026-09-23",
+  "pricing_sources": [
+    "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+    "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+    "https://developers.openai.com/api/docs/models/gpt-5-mini"
+  ]
+}

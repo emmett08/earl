@@ -9,12 +9,14 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
+import math
 import sys
 from pathlib import Path
 from typing import Any
 
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
+from jsonschema import Draft202012Validator
 
 from .runtime import strict_json
 
@@ -65,22 +67,30 @@ def parse_request(text: str) -> tuple[str, dict[str, Any]]:
     return "eal_" + operation, arguments
 
 
-async def dispatch_request(text: str, parameters: StdioServerParameters) -> dict[str, Any]:
+async def dispatch_request(text: str, parameters: StdioServerParameters, *, timeout_seconds: float = 120.0) -> dict[str, Any]:
     """Send a strict request over a real MCP stdio client connection."""
+    if (isinstance(timeout_seconds, bool) or not isinstance(timeout_seconds, (int, float))
+            or not math.isfinite(timeout_seconds) or timeout_seconds <= 0):
+        raise ValueError("Host timeout must be positive and finite")
     tool, arguments = parse_request(text)
-    async with stdio_client(parameters) as (read, write):
-        async with ClientSession(read, write) as session:
-            initialised = await session.initialize()
-            available = await session.list_tools()
-            if tool not in {entry.name for entry in available.tools}:
-                raise ValueError(f"MCP server does not offer {tool}")
-            result = await session.call_tool(tool, arguments=arguments)
-            content = [item.model_dump(mode="json", exclude_none=True) for item in result.content]
-            return {
-                "operation": tool.removeprefix("eal_"), "protocol_version": initialised.protocolVersion,
-                "is_error": bool(result.isError), "result": result.structuredContent,
-                "content": content,
-            }
+    async with asyncio.timeout(timeout_seconds):
+        async with stdio_client(parameters) as (read, write):
+            async with ClientSession(read, write) as session:
+                initialised = await session.initialize()
+                available = await session.list_tools()
+                schema = next((entry.inputSchema for entry in available.tools if entry.name == tool), None)
+                if schema is None:
+                    raise ValueError(f"MCP server does not offer {tool}")
+                errors = list(Draft202012Validator(schema).iter_errors(arguments))
+                if errors:
+                    raise ValueError("Discovered input schema rejected request: " + errors[0].message)
+                result = await session.call_tool(tool, arguments=arguments)
+                content = [item.model_dump(mode="json", exclude_none=True) for item in result.content]
+                return {
+                    "operation": tool.removeprefix("eal_"), "protocol_version": initialised.protocolVersion,
+                    "is_error": bool(result.isError), "result": result.structuredContent,
+                    "content": content,
+                }
 
 
 def main() -> None:
@@ -89,6 +99,7 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
+    parser.add_argument("--timeout", type=float, default=120.0, help="Total MCP session deadline in seconds")
     args = parser.parse_args()
     server_args = ["-m", "eal.server", "--workspace", str(args.workspace.resolve())]
     if args.registry:
@@ -101,7 +112,8 @@ def main() -> None:
         raw = sys.stdin.buffer.read(MAX_REQUEST_BYTES + 1)
         if len(raw) > MAX_REQUEST_BYTES:
             raise ValueError("Host request exceeds 2 MiB")
-        result = asyncio.run(dispatch_request(raw.decode("utf-8"), StdioServerParameters(command=sys.executable, args=server_args)))
+        result = asyncio.run(dispatch_request(raw.decode("utf-8"), StdioServerParameters(command=sys.executable, args=server_args),
+                                             timeout_seconds=args.timeout))
         print(json.dumps(result, ensure_ascii=False, allow_nan=False))
         if result["is_error"]:
             raise SystemExit(1)
@@ -111,6 +123,8 @@ def main() -> None:
         def describe(error):
             if isinstance(error, BaseExceptionGroup):
                 return "; ".join(describe(child) for child in error.exceptions)
+            if isinstance(error, TimeoutError):
+                return "MCP session exceeded its configured deadline"
             return str(error)
 
         print(json.dumps({"is_error": True, "error": describe(exc)}))

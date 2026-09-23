@@ -9,5 +9,15 @@
   },
   "details": {
     "source": "synthetic declaration of modelling assumptions, not independent empirical verification"
+  },
+  "request": {
+    "tool": "read_basis",
+    "tool_version": "1",
+    "mode": "deterministic",
+    "input": {},
+    "context": {
+      "episode": "robot_17",
+      "plant_model": "affine_demo"
+    }
   }
 }

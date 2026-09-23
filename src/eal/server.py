@@ -7,12 +7,31 @@ from pathlib import Path
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
+from jsonschema import Draft202012Validator
 
 from .runtime import ReasoningService, load_method_registry
 
 
+class StrictFastMCP(FastMCP):
+    """Enforce advertised JSON types before the SDK's permissive coercion."""
+
+    async def list_tools(self):
+        tools = await super().list_tools()
+        for tool in tools:
+            tool.inputSchema = {**tool.inputSchema, "additionalProperties": False}
+        return tools
+
+    async def call_tool(self, name: str, arguments: dict[str, Any]):
+        tool = next((tool for tool in await self.list_tools() if tool.name == name), None)
+        if tool is not None:
+            errors = list(Draft202012Validator(tool.inputSchema).iter_errors(arguments))
+            if errors:
+                raise ValueError("Tool input schema rejected request: " + errors[0].message)
+        return await super().call_tool(name, arguments)
+
+
 def create_server(service: ReasoningService) -> FastMCP:
-    server = FastMCP(
+    server = StrictFastMCP(
         "EAL engineering reasoning",
         instructions="Validate explicit engineering arguments, collect configured observations, reason over their declared scope, and explain results. Support is relative to declared inference rationales, not a proof of prose truth.",
         log_level="WARNING",

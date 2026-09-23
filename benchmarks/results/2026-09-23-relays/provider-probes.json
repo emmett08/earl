@@ -1,0 +1,575 @@
+[
+  {
+    "configuration": "openai-4.1-nano-native",
+    "native": false,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-4.1-nano-2025-04-14",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {
+        "temperature": 0
+      },
+      "pricing": {
+        "input_usd_per_million": 0.1,
+        "cached_input_usd_per_million": 0.025,
+        "output_usd_per_million": 0.4
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": false
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply exactly OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "OK",
+      "input_tokens": 11,
+      "output_tokens": 1,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "metadata": {
+        "id": "chatcmpl-ERJWnIXgWTHkB34jWNwIvhFTNLj72",
+        "system_fingerprint": "fp_0b80e335b8",
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "finish_reason": "stop"
+      }
+    },
+    "cost_usd": 1.5e-06,
+    "seconds": 11.423518274001253
+  },
+  {
+    "configuration": "openai-4.1-nano-native",
+    "native": true,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-4.1-nano-2025-04-14",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {
+        "temperature": 0
+      },
+      "pricing": {
+        "input_usd_per_million": 0.1,
+        "cached_input_usd_per_million": 0.025,
+        "output_usd_per_million": 0.4
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": false
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Call ping with value OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "{\"operation\": \"ping\", \"value\": \"OK\"}",
+      "input_tokens": 45,
+      "output_tokens": 14,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "metadata": {
+        "id": "chatcmpl-ERJWwe1zSS4yrqfiMPQWsF08iUho8",
+        "system_fingerprint": "fp_b95af6e96a",
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "finish_reason": "tool_calls",
+        "native_tool_call": {
+          "id": "call_UVCVKdPodgHuLm7VK9VVXBnc",
+          "type": "function",
+          "function": {
+            "name": "ping",
+            "arguments": "{\"value\":\"OK\"}"
+          }
+        }
+      }
+    },
+    "cost_usd": 1.0100000000000002e-05,
+    "seconds": 8.832330614000966
+  },
+  {
+    "configuration": "openai-4.1-mini",
+    "native": false,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-4.1-mini-2025-04-14",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {
+        "temperature": 0
+      },
+      "pricing": {
+        "input_usd_per_million": 0.4,
+        "cached_input_usd_per_million": 0.1,
+        "output_usd_per_million": 1.6
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": false,
+        "structured_output": "none",
+        "tool_reasoning_compatible": false
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply exactly OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "OK.",
+      "input_tokens": 11,
+      "output_tokens": 2,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "metadata": {
+        "id": "chatcmpl-ERJX5GMQxfadkurO0dzlmWLqJdEox",
+        "system_fingerprint": "fp_7228b091fe",
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "finish_reason": "stop"
+      }
+    },
+    "cost_usd": 7.600000000000001e-06,
+    "seconds": 8.648348272996373
+  },
+  {
+    "configuration": "openai-4.1-native",
+    "native": false,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-4.1-2025-04-14",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {
+        "temperature": 0
+      },
+      "pricing": {
+        "input_usd_per_million": 2,
+        "cached_input_usd_per_million": 0.5,
+        "output_usd_per_million": 8
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": false
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply exactly OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "OK.",
+      "input_tokens": 11,
+      "output_tokens": 2,
+      "model": "gpt-4.1-2025-04-14",
+      "metadata": {
+        "id": "chatcmpl-ERJXDYncHK6QhNMYsIcyFqYEJwP3t",
+        "system_fingerprint": "fp_0843d2ec50",
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "finish_reason": "stop"
+      }
+    },
+    "cost_usd": 3.8e-05,
+    "seconds": 8.613578160999168
+  },
+  {
+    "configuration": "openai-4.1-native",
+    "native": true,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-4.1-2025-04-14",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {
+        "temperature": 0
+      },
+      "pricing": {
+        "input_usd_per_million": 2,
+        "cached_input_usd_per_million": 0.5,
+        "output_usd_per_million": 8
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": false
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Call ping with value OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "{\"operation\": \"ping\", \"value\": \"OK\"}",
+      "input_tokens": 45,
+      "output_tokens": 14,
+      "model": "gpt-4.1-2025-04-14",
+      "metadata": {
+        "id": "chatcmpl-ERJXMpXR6aZmt7SkySLAiqp3kPAQG",
+        "system_fingerprint": "fp_7c4e48bbe2",
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "finish_reason": "tool_calls",
+        "native_tool_call": {
+          "id": "call_UWd3IgbA7UPVtuN4rsxUNLxm",
+          "type": "function",
+          "function": {
+            "name": "ping",
+            "arguments": "{\"value\":\"OK\"}"
+          }
+        }
+      }
+    },
+    "cost_usd": 0.000202,
+    "seconds": 8.256778973998735
+  },
+  {
+    "configuration": "openai-5-nano-native",
+    "native": false,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-5-nano-2025-08-07",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {},
+      "pricing": {
+        "input_usd_per_million": 0.05,
+        "cached_input_usd_per_million": 0.005,
+        "output_usd_per_million": 0.4
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": true,
+        "reasoning_effort": "low"
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply exactly OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "OK",
+      "input_tokens": 10,
+      "output_tokens": 74,
+      "model": "gpt-5-nano-2025-08-07",
+      "metadata": {
+        "id": "chatcmpl-ERJXVaipFlN3wWdyhlImzZEeAspJX",
+        "system_fingerprint": null,
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 64,
+        "finish_reason": "stop"
+      }
+    },
+    "cost_usd": 3.01e-05,
+    "seconds": 10.41519600799802
+  },
+  {
+    "configuration": "openai-5-nano-native",
+    "native": true,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-5-nano-2025-08-07",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {},
+      "pricing": {
+        "input_usd_per_million": 0.05,
+        "cached_input_usd_per_million": 0.005,
+        "output_usd_per_million": 0.4
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": true,
+        "reasoning_effort": "low"
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Call ping with value OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "{\"operation\": \"ping\", \"value\": \"OK\"}",
+      "input_tokens": 126,
+      "output_tokens": 87,
+      "model": "gpt-5-nano-2025-08-07",
+      "metadata": {
+        "id": "chatcmpl-ERJXe26v2uelHGG61tbANavkCfem8",
+        "system_fingerprint": null,
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 64,
+        "finish_reason": "tool_calls",
+        "native_tool_call": {
+          "id": "call_8fKRsQj57KD1xVAH30xG1NBN",
+          "type": "function",
+          "function": {
+            "name": "ping",
+            "arguments": "{\"value\":\"OK\"}"
+          }
+        }
+      }
+    },
+    "cost_usd": 4.110000000000001e-05,
+    "seconds": 8.791017367999302
+  },
+  {
+    "configuration": "openai-5-mini-native",
+    "native": false,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-5-mini-2025-08-07",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {},
+      "pricing": {
+        "input_usd_per_million": 0.25,
+        "cached_input_usd_per_million": 0.025,
+        "output_usd_per_million": 2.0
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": true,
+        "reasoning_effort": "low"
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply exactly OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "OK",
+      "input_tokens": 10,
+      "output_tokens": 10,
+      "model": "gpt-5-mini-2025-08-07",
+      "metadata": {
+        "id": "chatcmpl-ERJXnnfF3rsT7ZCGh2ofmHtp3gwE0",
+        "system_fingerprint": null,
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "finish_reason": "stop"
+      }
+    },
+    "cost_usd": 2.25e-05,
+    "seconds": 9.02005920800002
+  },
+  {
+    "configuration": "openai-5-mini-native",
+    "native": true,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-5-mini-2025-08-07",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {},
+      "pricing": {
+        "input_usd_per_million": 0.25,
+        "cached_input_usd_per_million": 0.025,
+        "output_usd_per_million": 2.0
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": true,
+        "reasoning_effort": "low"
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Call ping with value OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "{\"operation\": \"ping\", \"value\": \"OK\"}",
+      "input_tokens": 126,
+      "output_tokens": 23,
+      "model": "gpt-5-mini-2025-08-07",
+      "metadata": {
+        "id": "chatcmpl-ERJXxF9ZP7xe95HmozKRZqJ8orqDi",
+        "system_fingerprint": null,
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "finish_reason": "tool_calls",
+        "native_tool_call": {
+          "id": "call_xYoM6Auf1Ogvux93t3E9Qvs2",
+          "type": "function",
+          "function": {
+            "name": "ping",
+            "arguments": "{\"value\":\"OK\"}"
+          }
+        }
+      }
+    },
+    "cost_usd": 7.75e-05,
+    "seconds": 9.162105155002791
+  },
+  {
+    "configuration": "openai-5-native",
+    "native": false,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-5-2025-08-07",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {},
+      "pricing": {
+        "input_usd_per_million": 1.25,
+        "cached_input_usd_per_million": 0.125,
+        "output_usd_per_million": 10
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": true,
+        "reasoning_effort": "low"
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Reply exactly OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "OK",
+      "input_tokens": 10,
+      "output_tokens": 10,
+      "model": "gpt-5-2025-08-07",
+      "metadata": {
+        "id": "chatcmpl-ERJY6BussFV29nPU0d0HSvzz2ql1o",
+        "system_fingerprint": null,
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 0,
+        "finish_reason": "stop"
+      }
+    },
+    "cost_usd": 0.0001125,
+    "seconds": 9.44721682999807
+  },
+  {
+    "configuration": "openai-5-native",
+    "native": true,
+    "provider": {
+      "provider": "chat_completions",
+      "adapter": "chat_completions",
+      "model": "gpt-5-2025-08-07",
+      "endpoint": "https://api.openai.com/v1/chat/completions",
+      "sampling": {},
+      "pricing": {
+        "input_usd_per_million": 1.25,
+        "cached_input_usd_per_million": 0.125,
+        "output_usd_per_million": 10
+      },
+      "max_tokens_field": "max_completion_tokens",
+      "measurement_kind": "model",
+      "capabilities": {
+        "native_tools": true,
+        "structured_output": "none",
+        "tool_reasoning_compatible": true,
+        "reasoning_effort": "low"
+      }
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Call ping with value OK."
+      }
+    ],
+    "max_output_tokens": 2048,
+    "status": "received",
+    "response": {
+      "text": "{\"operation\": \"ping\", \"value\": \"OK\"}",
+      "input_tokens": 126,
+      "output_tokens": 87,
+      "model": "gpt-5-2025-08-07",
+      "metadata": {
+        "id": "chatcmpl-ERJYFkTUJncsbwwIOVKtaqTOPkKCu",
+        "system_fingerprint": null,
+        "service_tier": "default",
+        "cached_input_tokens": 0,
+        "reasoning_tokens": 64,
+        "finish_reason": "tool_calls",
+        "native_tool_call": {
+          "id": "call_SwTQdaGJXQTookLiivZqvAo6",
+          "type": "function",
+          "function": {
+            "name": "ping",
+            "arguments": "{\"value\":\"OK\"}"
+          }
+        }
+      }
+    },
+    "cost_usd": 0.0010275,
+    "seconds": 10.031089062998944
+  }
+]
