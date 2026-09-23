@@ -1,6 +1,6 @@
 # Engineering task suite
 
-`benchmarks/engineering-v1/suite.json` defines the engineering-v1.0 task domain: 22 small, independently answerable cases covering composition, evidence revision, causal questions, temporal applicability, objections, typed result binding and text-model repair. Each case names a readable EAL source file, recorded inputs, context, assessment time, expected claim statuses and a short mathematical or dependency-based answer derivation. The observations are synthetic known-answer inputs; they are not reports of physical experiments.
+`benchmarks/engineering-v1/suite.json` preserves the initial engineering-v1.0 domain: 22 small, independently answerable cases covering composition, evidence revision, causal questions, temporal applicability, objections, typed result binding and text-model repair. Its previous held-out results have now informed development. `benchmarks/engineering-v2/suite.json` adds six new instances reserved before the EAL/0.3 comparison. Each case names a readable EAL source file, recorded inputs, context, assessment time, expected claim statuses and a short mathematical or dependency-based answer derivation. The observations are synthetic known-answer inputs; they are not reports of physical experiments.
 
 Run every reference case through the real parser, file observation adapter and reasoning service:
 
@@ -34,7 +34,7 @@ For cases with missing observations, the manifest's `collect` selection restrict
 
 These cases demonstrate a bounded engineering profile, not completeness for every engineering problem. The following distinctions remain outside this versioned suite or implementation:
 
-- EAL objections do not yet carry supporting subarguments or defences. The standalone grounded argument-graph solver remains separate; the objection cases explicitly record this missing composition.
+- The frozen EAL/0.1 objection cases do not represent defences or subarguments for objections. EAL/0.3 introduces these relations; the new suite below exercises their grounded evaluation.
 - Propositional derivation and supplied numerical models do not establish physical model adequacy, real randomisation, causal identification or the truth of an authored relevance statement.
 - Typed method queries use structured fields within readable EAL declarations. General symbolic mathematical expressions, differential equations and open-ended solver translation are not represented by these tasks.
 - Calibration cases assess one explicit instant at a time. They do not infer continuous validity over an operating episode.
@@ -42,5 +42,26 @@ These cases demonstrate a bounded engineering profile, not completeness for ever
 - Human readability has not yet been assessed in engineer comprehension trials.
 
 The manifest freezes `development` and `held_out` labels before model evaluation. All cases are public in the repository. Here, held-out means reserved from example/prompt development within this workflow; it does not establish absence from a model's training data. Changing a source, observation, expected result or split constitutes a suite revision. Reports retain actual inputs and a digest covering the manifest, all task inputs and repair drafts.
+
+The original v1 split labels remain unchanged so archived measurements retain their meaning. For subsequent design or prompt work, every v1 case counts as development knowledge. The v2 cases use new systems, values, questions and argument structures. Their relationship to the earlier design is explicit: they test held-out instances within the declared task families, not unseen engineering domains.
+
+## Six new EAL/0.3 instances
+
+```sh
+python -m eal.benchmark --suite benchmarks/engineering-v2/suite.json --check-tasks --summary
+```
+
+| Instance | Independent expected result |
+|---|---|
+| Independent instrument diagnosis defends a response argument | The diagnosis subargument supports the defence; the defence defeats the countermeasurement objection and restores support for the response claim. |
+| Defence depends on the claim it attempts to restore | The attack/support cycle remains undecided under the least fixed point; the response claim is contested. The independent diagnosis elsewhere in the source is not a premise of this defence and does not resolve it. |
+| Registered vibration RMS method | RMS of `0.3` and `0.4 m/s` about zero is `sqrt(0.125) ≈ 0.353553 m/s`, satisfying the `0.36 m/s` limit. |
+| Registered method uses a different origin | The result concerns deviation from `0.1 m/s`, while the formal claim specifies zero. A numerically favourable result for this different query is unsupported for the stated claim. |
+| Cold-room calibration draft repair | At 08:20 the hour-long calibration interval applies and the reading is fresh. Repairing the reference or consistently renaming the declaration preserves support; deleting the calibration dependency changes the argument. |
+| Negative sampled-trace finding | Endpoint and gap coverage hold, but the sample `1.2` violates the specified `<1` predicate. The explicit claim asks whether `holds == false`, so the computed negative finding supports that claim. |
+
+The RMS cases select `eal.extensions:example_registry` in the operator-owned task manifest. The fixture runner supplies that registry to both the reference service and MCP server. The source can name a registered method but cannot import Python or select an executable. Both model arms receive the same exact method contracts in their task language reference. The source query, unit, scope and applicability interval remain checked.
+
+These six cases provide supported, unsupported and contested answers, including supported claims about a negative computational result. They exercise the distinction between a usable negative result and a failed or inapplicable calculation. They remain too small and deliberately constructed to establish universal engineering completeness or performance for every model.
 
 To extend the domain, add a required engineering distinction, a readable reference, independent expected outcomes and at least one adverse case. Prefer a method contract to a new keyword when it preserves the required distinction. Do not add a mode merely to increase the number of named reasoning modes.

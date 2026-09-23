@@ -89,6 +89,21 @@ def _pricing(value: Any) -> dict:
     return dict(value)
 
 
+def _capabilities(value: Any) -> dict:
+    allowed = {"native_tools", "structured_output", "reasoning_effort", "tool_reasoning_compatible"}
+    if not isinstance(value, dict) or set(value) - allowed:
+        raise ValueError("Unknown provider capability; configure native_tools, structured_output, reasoning_effort or tool_reasoning_compatible")
+    result = {"native_tools": False, "structured_output": "none", "tool_reasoning_compatible": False, **value}
+    for key in ("native_tools", "tool_reasoning_compatible"):
+        if type(result[key]) is not bool:
+            raise ValueError(f"{key} must be boolean")
+    if result["structured_output"] not in {"none", "json_object", "json_schema"}:
+        raise ValueError("structured_output must be none, json_object or json_schema")
+    if "reasoning_effort" in result and result["reasoning_effort"] not in {"none", "minimal", "low", "medium", "high", "xhigh", "max"}:
+        raise ValueError("reasoning_effort is not a supported explicit setting")
+    return result
+
+
 def response_cost(response: ModelResponse, identity: dict) -> float | None:
     """Configured token-rate estimate; absence of a rate or usage stays unknown."""
     rates = identity.get("pricing", {})
@@ -233,7 +248,8 @@ class ChatCompletionsProvider:
                  api_key_env: str | None = "OPENAI_API_KEY", sampling: dict | None = None,
                  pricing: dict | None = None, timeout_seconds: float = 60,
                  max_response_bytes: int = 1_048_576, max_tokens_field: str = "max_completion_tokens",
-                 label: str = "chat_completions", transport: httpx.AsyncBaseTransport | None = None):
+                 label: str = "chat_completions", capabilities: dict | None = None,
+                 transport: httpx.AsyncBaseTransport | None = None):
         url = urlsplit(endpoint)
         if url.scheme not in {"https", "http"} or not url.hostname or url.username or url.password or url.query or url.fragment:
             raise ValueError("endpoint must be an HTTP(S) URL without credentials, query or fragment")
@@ -252,13 +268,28 @@ class ChatCompletionsProvider:
         self.timeout_seconds = _positive(timeout_seconds, "timeout_seconds")
         self.max_response_bytes, self.max_tokens_field = max_response_bytes, max_tokens_field
         self.label, self.transport = label, transport
+        self.capabilities = _capabilities(capabilities or {})
 
     def identity(self) -> dict:
         return {"provider": self.label, "adapter": "chat_completions", "model": self.model,
                 "endpoint": self.endpoint, "sampling": self.sampling, "pricing": self.pricing,
-                "max_tokens_field": self.max_tokens_field, "measurement_kind": "model"}
+                "max_tokens_field": self.max_tokens_field, "measurement_kind": "model", "capabilities": self.capabilities}
 
     async def complete(self, messages: list[dict[str, str]], max_output_tokens: int) -> ModelResponse:
+        return await self._complete(messages, max_output_tokens)
+
+    async def complete_request(self, messages: list[dict[str, Any]], max_output_tokens: int, *,
+                               operations: list[dict], native_tools: bool = False) -> ModelResponse:
+        return await self._complete(messages, max_output_tokens, operations=operations, native_tools=native_tools)
+
+    async def _complete(self, messages: list[dict[str, Any]], max_output_tokens: int, *,
+                        operations: list[dict] | None = None, native_tools: bool = False) -> ModelResponse:
+        if native_tools and not self.capabilities["native_tools"]:
+            raise ProviderError("Native tools were not enabled in provider capabilities")
+        if native_tools and self.capabilities.get("reasoning_effort", "none") != "none" and not self.capabilities["tool_reasoning_compatible"]:
+            raise ProviderError("Native tools with reasoning effort require an explicitly compatible model/endpoint configuration")
+        if native_tools and not operations:
+            raise ProviderError("Native tool requests require operation schemas")
         headers = {"Content-Type": "application/json"}
         if self.api_key_env:
             credential = os.environ.get(self.api_key_env)
@@ -267,6 +298,29 @@ class ChatCompletionsProvider:
             headers["Authorization"] = "Bearer " + credential
         payload = {"model": self.model, "messages": messages, "stream": False, "n": 1,
                    self.max_tokens_field: max_output_tokens, **self.sampling}
+        if "reasoning_effort" in self.capabilities:
+            payload["reasoning_effort"] = self.capabilities["reasoning_effort"]
+        structured = self.capabilities["structured_output"]
+        if native_tools:
+            functions = []
+            for entry in operations:
+                parameters = strict_json(json.dumps(entry["input_schema"], allow_nan=False))
+                parameters.get("properties", {}).pop("operation", None)
+                parameters["required"] = [key for key in parameters.get("required", []) if key != "operation"]
+                functions.append({"type": "function", "function": {"name": entry["operation"],
+                    "description": entry.get("description") or entry["operation"], "parameters": parameters,
+                    "strict": False}})
+            payload.update(tools=functions, tool_choice="required", parallel_tool_calls=False)
+        elif structured == "json_object":
+            payload["response_format"] = {"type": "json_object"}
+        elif structured == "json_schema":
+            schema = {"type": "object"}
+            if operations:
+                schema = {"type": "object", "properties": {"request": {"anyOf": [entry["input_schema"] for entry in operations]}},
+                          "required": ["request"], "additionalProperties": False}
+                payload["messages"] = [*messages, {"role": "system", "content":
+                    "For this response wrap the single flat operation request in a JSON object with exactly one field: request. Example: {\"request\":{\"operation\":\"validate\"}}. The host will unwrap it before execution."}]
+            payload["response_format"] = {"type": "json_schema", "json_schema": {"name": "eal_reply", "schema": schema, "strict": False}}
         try:
             async with asyncio.timeout(self.timeout_seconds), httpx.AsyncClient(timeout=self.timeout_seconds, follow_redirects=False, transport=self.transport) as client:
                 async with client.stream("POST", self.endpoint, headers=headers, json=payload) as response:
@@ -296,6 +350,12 @@ class ChatCompletionsProvider:
         cached = usage.get("prompt_tokens_details", {})
         if isinstance(cached, dict) and "cached_tokens" in cached:
             metadata["cached_input_tokens"] = cached["cached_tokens"]
+        completion_details = usage.get("completion_tokens_details", {})
+        if isinstance(completion_details, dict) and "reasoning_tokens" in completion_details:
+            metadata["reasoning_tokens"] = completion_details["reasoning_tokens"]
+        # Preserve the already byte-bounded provider response on every parsing
+        # failure. This contains model messages, never request/auth headers.
+        metadata["response_choices"] = data.get("choices")
         try:
             measured = ModelResponse("", usage.get("prompt_tokens"), usage.get("completion_tokens"), data.get("model"), metadata)
         except (TypeError, ValueError) as exc:
@@ -305,12 +365,47 @@ class ChatCompletionsProvider:
             raise ProviderError("Model endpoint must return exactly one choice", response=measured)
         choice = choices[0]
         message = choice.get("message")
+        metadata["finish_reason"] = choice.get("finish_reason")
+        if native_tools:
+            calls = message.get("tool_calls") if isinstance(message, dict) else None
+            if choice.get("finish_reason") != "tool_calls" or not isinstance(calls, list) or len(calls) != 1:
+                raise ProviderError("Native model response must contain exactly one completed tool call", response=measured)
+            call = calls[0]
+            if not isinstance(call, dict) or call.get("type") != "function" or not isinstance(call.get("id"), str) or not call["id"]:
+                raise ProviderError("Native model response has an invalid function call", response=measured)
+            function = call.get("function")
+            if not isinstance(function, dict) or function.get("name") not in {entry["operation"] for entry in operations} or not isinstance(function.get("arguments"), str):
+                raise ProviderError("Native model response names an unknown operation or malformed arguments", response=measured)
+            try:
+                arguments = strict_json(function["arguments"])
+                if not isinstance(arguments, dict) or "operation" in arguments:
+                    raise ValueError("Native operation arguments must be an object without an operation field")
+                flat = json.dumps({"operation": function["name"], **arguments}, ensure_ascii=False, allow_nan=False)
+            except (ValueError, TypeError) as exc:
+                raise ProviderError("Native model response arguments are invalid JSON", response=measured) from exc
+            metadata["native_tool_call"] = {"id": call["id"], "type": "function", "function": {
+                "name": function["name"], "arguments": function["arguments"]}}
+            if message.get("content") is not None:
+                metadata["native_content"] = message["content"]
+            metadata.pop("response_choices", None)
+            return ModelResponse(flat, measured.input_tokens, measured.output_tokens, measured.model, metadata)
         if not isinstance(message, dict) or not isinstance(message.get("content"), str):
             raise ProviderError("Model endpoint did not return text content", response=measured)
-        metadata["finish_reason"] = choice.get("finish_reason")
         result = ModelResponse(message["content"], measured.input_tokens, measured.output_tokens, measured.model, metadata)
         if choice.get("finish_reason") != "stop" or message.get("tool_calls") or message.get("function_call"):
             raise ProviderError("Model response was incomplete or attempted native tools", response=result)
+        if structured == "json_schema" and operations:
+            try:
+                envelope = strict_json(result.text)
+                if not isinstance(envelope, dict) or set(envelope) != {"request"} or not isinstance(envelope["request"], dict):
+                    raise ValueError("Expected a request envelope")
+                metadata["structured_response_text"] = result.text
+                metadata.pop("response_choices", None)
+                return ModelResponse(json.dumps(envelope["request"], ensure_ascii=False, allow_nan=False),
+                                     measured.input_tokens, measured.output_tokens, measured.model, metadata)
+            except (ValueError, TypeError) as exc:
+                raise ProviderError("Structured model response did not contain one request object", response=result) from exc
+        metadata.pop("response_choices", None)
         return result
 
 

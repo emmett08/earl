@@ -2,7 +2,7 @@
 
 EAL represents engineering claims, the evidence offered for them, the reasoning steps connecting their premises to their conclusions, and objections to those steps. It computes which conclusions currently have usable support under the declared environment and time. The result includes the dependencies responsible for each conclusion, so an engineer or an application can inspect the reasoning and determine what needs to be measured next.
 
-The executable profile combines a finite, acyclic hierarchy of arguments with explicit reasoning modes. A mode performs a bounded computation over a specified kind of evidence; declared predicates then test its outputs. The text of a claim or reasoning rationale explains the engineering interpretation. The computation establishes its defined mathematical result, while the applicability of that result to the physical system depends on the stated model and assumptions.
+The executable profile combines a finite, acyclic claim-premise graph with explicit reasoning methods. EAL/0.3 additionally constructs a support/attack graph in which objections can depend on claim subarguments and target other objections; these relationships can contain cycles. A mode performs a bounded computation over a specified kind of evidence; declared predicates then test its outputs. The text of a claim or reasoning rationale explains the engineering interpretation. The computation establishes its defined mathematical result, while the applicability of that result to the physical system depends on the stated model and assumptions.
 
 ## Choice of argument model
 
@@ -12,16 +12,16 @@ Toulmin provides a useful decomposition of an argument into a claim, grounds, a 
 | --- | --- |
 | Claim | `claim` with a statement and environment |
 | Grounds | Evidence, assumptions and premise claims listed by an `argument` |
-| Warrant | `reasoning` with a mode, rationale and result criteria |
+| Warrant | `reasoning` with a mode or versioned method, rationale and result criteria |
 | Backing | Evidence referenced by the reasoning step |
 | Qualifier | Environment predicates, evidence freshness and assumption intervals |
-| Rebuttal | An `objection` with a declared target and supporting evidence |
+| Rebuttal | An `objection` with a declared target, supporting evidence and EAL/0.3 claim premises |
 
 ASPIC+ distinguishes uncertainty in premises from defeasible inference, and distinguishes attacks on premises, conclusions and rule applicability. Those distinctions motivate EAL's targeted objections. EAL does not automatically construct all arguments from a logical theory, infer contrary propositions or compare preferences. An EAL objection to a claim resembles a rebuttal operationally; it is not automatically an ASPIC+ rebuttal. The formal framework and its required choices are described in [Modgil and Prakken](sources.md#argument-and-reasoning-models).
 
 ## Reasoning modes and evidence
 
-A reasoning mode determines what operation is performed. An evidence kind identifies the input contract for that operation. The distinction allows the same engineering claim to depend on several subarguments using different methods, instead of treating every source as interchangeable support.
+A reasoning mode or installed versioned method determines what operation is performed. An evidence kind identifies the input contract for that operation. The distinction allows the same engineering claim to depend on several subarguments using different methods, instead of treating every source as interchangeable support.
 
 | Mode | Evidence kind | Bounded operation | Interpretation of the result |
 | --- | --- | --- | --- |
@@ -34,7 +34,7 @@ A reasoning mode determines what operation is performed. An evidence kind identi
 | `analogical` | `analogy` | Compare declared source and target features | Correspondence over the specified features, with mismatches exposed |
 | `temporal` | `trace` | Check a predicate at every sample, with endpoint and gap checks | A result about the supplied observation sequence and horizon |
 
-The computational modes require output predicates such as a Boolean entailment result or a specified interval bound. Selecting a mode is therefore a request for a particular calculation, not a descriptive label that grants support by itself. The [method documentation](reasoning-modes.md) defines accepted inputs, outputs and computational limits.
+An untyped computational conclusion requires output predicates such as a Boolean entailment result or an interval bound. A typed proposition supplies its formally checked result condition and query correspondence. Selecting a mode is therefore a request for a particular calculation, not a descriptive label that grants support by itself. The [method documentation](reasoning-modes.md) defines built-in inputs, outputs and computational limits. EAL/0.3 also accepts typed host-registered contracts through `method "namespace/name/1"`; registration does not add grammar keywords or make source executable. Each assessment records the registry fingerprint.
 
 For each argument, the method receives the deduplicated union of its direct evidence, reasoning backing and assumption-validation evidence. A computational mode requires exactly one item of its designated kind. The argument's `reasoning_result` records the computed details and the outcome of the declared result predicates, allowing one reusable method to produce different results for different arguments.
 
@@ -75,21 +75,60 @@ Likewise, a passing test observation can support the claim that a specified test
 | `unsupported` | The supplied programme and observations provide no usable derivation |
 | `out_of_scope` | The claim's environment requirements are not met |
 
-`unsupported` does not establish the claim's negation. `supported` expresses the outcome of this calculus for these inputs, not a probability of truth. An assessment with static diagnostics is invalid and must be corrected before its claim results are used.
+`unsupported` does not establish the claim's negation. `supported` expresses the outcome of this calculus for these inputs, not a probability of truth. An assessment with static diagnostics reports no usable claim assessment until the source or registry selection is corrected.
 
-## Objections and alternative derivations
+## Compositional objections and defences
 
-An objection activates when all of its referenced evidence is usable and satisfies the declared predicates. An objection targeting a claim contests every argument for that claim. An objection targeting `reasoning` contests arguments using that reasoning step. An objection targeting an assumption contests arguments depending on that assumption. The effect of a contested premise propagates to dependent arguments.
+EAL/0.1 and EAL/0.2 retain their evidence-activated objections. EAL/0.3 treats an objection as a node with its own evidence and required claim premises. A supporting claim can have multiple subarguments, each with further dependencies. An objection targeting another objection supplies a defence under the same source and applicability rules.
 
-An independently supported argument can preserve a conclusion when an objection affects only another reasoning step or assumption. Conversely, a claim-level objection cannot be bypassed by adding another argument with the same conclusion. These rules make the target of an objection semantically significant.
+```eal
+objection sampling_problem {
+  target argument lifetime_estimate;
+  premises samples_are_dependent;
+}
+objection independence_defence {
+  target objection sampling_problem;
+  evidence measured_independence;
+  premises independence_measurement_applies;
+}
+```
 
-The authored-support calculation has no preference ordering or automatic counterargument generation. It reports the remaining contest so that the engineer can inspect the conflicting evidence. Explicit counterargument and defence relationships can be evaluated with the separate grounded operation below.
+An objection's nonempty source set determines its environment: all referenced evidence and premise claims must share one environment. Claim, assumption, argument and objection targets must have that same scope. A reasoning target attacks only uses of that declaration within the objection's environment, preserving applications in other declared environments.
 
-## Counterarguments and grounded reasoning
+Construction creates one node for each argument application and each objection. A claim target creates attacks against every argument deriving that claim. An argument target creates one attack. A reasoning or assumption target creates attacks against directly dependent applications in the source environment. An objection target attacks the named objection. The claims used as premises remain explicit support dependencies; an attack on a subordinate claim therefore affects its dependants through their required support.
 
-`eal_grounded` implements grounded semantics for an explicit finite argument-and-attack graph. It returns accepted, rejected and undecided arguments, together with a reproducible defence trace. Cyclic attack graphs are valid input; unresolved mutual attacks can remain undecided. See [grounded reasoning](grounded-reasoning.md) for the formal definition, API, examples and verification.
+Let $U(n)$ denote local source and computation usability for node $n$, $P(n)$ its required claim premises, $A(n)$ its attacking nodes, and $D(c)$ the argument nodes deriving claim $c$. The finite labelling uses these rules:
 
-This operation and the EAL argument hierarchy solve different parts of the reasoning task. EAL derives scoped support from evidence and subarguments. The grounded operation calculates acceptance under a supplied attack relation. The host supplies that relation explicitly; the implementation does not infer it from statement text or automatically translate EAL objections into a full ASPIC+ theory.
+$$
+\begin{aligned}
+\operatorname{Accepted}(n) &\Leftarrow U(n)\land
+ \bigwedge_{c\in P(n)}\operatorname{Accepted}(c)\land
+ \bigwedge_{a\in A(n)}\operatorname{Rejected}(a),\\
+\operatorname{Rejected}(n) &\Leftarrow \neg U(n)\lor
+ \bigvee_{c\in P(n)}\operatorname{Rejected}(c)\lor
+ \bigvee_{a\in A(n)}\operatorname{Accepted}(a),\\
+\operatorname{Accepted}(c) &\Leftarrow
+ \bigvee_{n\in D(c)}\operatorname{Accepted}(n),\\
+\operatorname{Rejected}(c) &\Leftarrow
+ \bigwedge_{n\in D(c)}\operatorname{Rejected}(n).
+\end{aligned}
+$$
+
+All labels begin undecided. The solver adds justified accepted or rejected labels monotonically until the least-information fixed point is reached. An empty derivation set rejects acceptance of a claim; it does not establish the claim's negation. Local computation records what the declared calculation returns before dialectical acceptance. Its success does not pre-accept a premise or an objection. Final premise acceptance is decided only by these equations.
+
+An independent accepted defence rejects its targeted objection and can reinstate the original argument. A defence depending solely on the claim it is meant to restore has no initial accepted support and can remain undecided. Likewise, an objection requiring the claim it attacks can create an unresolved negative dependency cycle. Adding an independent accepted derivation can supply the missing support; adding another circular reference cannot. A rebuttal to the defence is represented by another objection targeting that defence.
+
+The engineering status and acceptance label serve different purposes. A source-usable argument labelled accepted is `supported`. A source-usable argument labelled rejected or undecided is `contested`. A claim with no source-usable derivation is `unsupported`; environment failure gives `out_of_scope`. Rejection describes acceptance under the declared support and attack relations, never falsity. Objections report `active`, `defeated`, `undecided` or `inactive`, with their separate acceptance label and premise labels.
+
+The result includes constructed attacks and a deterministic labelling trace. Bounds limit the graph to 4096 nodes, 4096 claims and 131072 combined attack, premise and derivation relationships. Ordinary argument-to-premise composition remains acyclic; attack and objection-support cycles are permitted within this finite profile.
+
+## Relation to grounded argumentation
+
+The independent `eal_grounded` operation continues to implement Dung grounded semantics for an explicit finite argument-and-attack graph. The EAL/0.3 support/attack solver is a defined conjunction/disjunction extension. Its attack-only restriction agrees with grounded labelling; this does not make it full ASPIC+.
+
+The solver has also been checked against an independent construction using ordinary Dung nodes for the complements of claims: every deriving argument attacks its claim-complement node, and that complement attacks nodes requiring the claim. Unavailable local nodes receive an unattacked blocker. The resulting grounded labels match the support/attack equations. [Grounded reasoning](grounded-reasoning.md) documents the construction, exhaustive finite cases and larger generated checks.
+
+EAL does not infer a contrary relation from natural-language statements, automatically generate all arguments from a logical theory, or apply preferences between competing methods. Authors declare the support and challenge relations; typed method contracts check their computational content. This scope gives engineers a reproducible, reviewable calculation without presenting author-supplied relations as discovered logical truths.
 
 ## Assumptions, environments and time
 
@@ -101,7 +140,7 @@ An interval is a declared condition for using an assumption. Its start is inclus
 
 An expired observation supplies no current support. A validator failure likewise supplies no support; its failure does not establish that the proposition is false. A predicate mismatch can establish that the recorded value fails the stated criterion, while its meaning for the wider assumption still depends on the validation method. Environment mismatch prevents reuse in a different context.
 
-Assessments take an explicit time and context. Supplying the same programme, observations, time and context makes evaluation reproducible. Changing a required observation or context requires reevaluation, which propagates the change through premise dependencies. Persistent observation records allow an earlier assessment to be reconstructed without pretending that earlier evidence remains current.
+Assessments take an explicit time and context. Supplying the same programme, observations, time, context and method registry identifies the same assessment inputs. Registered extensions must satisfy their documented purity and determinism contract for exact computational reproducibility. Changing a required observation or context requires reevaluation, which propagates the change through premise dependencies. Persistent observation records allow an earlier assessment to be reconstructed without pretending that earlier evidence remains current.
 
 The engineer remains responsible for choosing fields that adequately describe the relevant environment. A fingerprint identifies the supplied context; it does not discover omitted operating conditions. Similarly, a digest binds supplied data to a recorded value but does not authenticate an untrusted producer.
 

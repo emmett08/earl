@@ -77,7 +77,8 @@ def prepare_task(task: dict, root: Path, workspace: Path) -> tuple[ReasoningServ
                          f"version={json.dumps(declaration.version)}", f"mode={json.dumps(declaration.mode)}", ""])
     registry_path = workspace / "tools.toml"
     registry_path.write_text("\n".join(registry))
-    return ReasoningService(workspace, registry_path), inputs
+    from .runtime import load_method_registry
+    return ReasoningService(workspace, registry_path, method_registry=load_method_registry(task.get("methods"))), inputs
 
 
 def check_task(task: dict, root: Path, workspace: Path) -> dict:
@@ -88,6 +89,7 @@ def check_task(task: dict, root: Path, workspace: Path) -> dict:
     if validation["valid"] != expected.get("valid", True):
         errors.append(f"valid: expected {expected.get('valid', True)}, observed {validation['valid']}")
     assessment = validation
+    collection = None
     if validation["valid"]:
         collection = service.collect(inputs["source"], inputs["context"], task.get("collect"))
         assessment = service.reason(inputs["source"], inputs["context"], collection["collection_id"], inputs["now"])
@@ -107,7 +109,7 @@ def check_task(task: dict, root: Path, workspace: Path) -> dict:
             if not matches:
                 errors.append(f"{path}: expected {wanted!r}, observed {actual!r}")
     return {"id": task["id"], "family": task["family"], "passed": not errors,
-            "errors": errors, "assessment": assessment}
+            "errors": errors, "assessment": assessment, "collection": collection}
 
 
 def check_suite(path: str | Path) -> dict:
@@ -149,24 +151,211 @@ def score_answer(expected: dict[str, str], report: dict) -> dict:
             "unexpected_claims": extra, "claims": details}
 
 
-def source_correspondence(reference: str, actual: Any) -> bool:
-    """Check a revised draft against the full independent reference representation.
+def compare_sources(reference: str, actual: Any, *, anchored_claims: tuple[str, ...] = (),
+                    max_search_steps: int = 100_000) -> dict:
+    """Bounded, type-sensitive isomorphism of declaration/reference graphs.
 
-    A model cannot obtain benchmark credit by weakening a claim, dropping a
-    premise, changing an interval or attaching its identifier to another claim.
-    Declaration order and formatting are immaterial; all semantic fields count.
+    Declaration names may change consistently. Operator registry tool names and
+    requested claim identifiers remain external anchors. Literals (including
+    query atoms, units and prose) are never rewritten. This is alpha-equivalence,
+    not a theorem prover for arbitrary equivalent arguments.
     """
     if not isinstance(actual, str):
-        return False
+        return {"equivalent": False, "reason": "missing_source", "mapping": {}}
+    reference_fields = {
+        "evidence": {"tool": "tools", "environment": "environments"},
+        "assumptions": {"environment": "environments", "validation": "evidence"},
+        "reasoning": {"backing": "evidence"},
+        "claims": {"environment": "environments"},
+        "arguments": {"conclusion": "claims", "reasoning": "reasoning", "evidence": "evidence",
+                      "assumptions": "assumptions", "premises": "claims", "binding": "evidence"},
+        "objections": {"evidence": "evidence", "premises": "claims"},
+    }
+    def encoded(value):
+        return json.dumps(value, sort_keys=True, allow_nan=False, separators=(",", ":"))
+    def graph(source):
+        program = asdict(parse(source))
+        if program.get("duplicates"):
+            raise ValueError("Duplicate declarations")
+        nodes, edges = {}, {}
+        for section in ("environments", "tools", "evidence", "assumptions", "reasoning", "claims", "arguments", "objections"):
+            for name, declaration in program[section].items():
+                key = (section, name)
+                attributes = {k: v for k, v in declaration.items() if k != "name"}
+                references = dict(reference_fields.get(section, {}))
+                if section == "objections":
+                    references["target"] = {"claim": "claims", "reasoning": "reasoning", "assumption": "assumptions",
+                                            "argument": "arguments", "objection": "objections"}[declaration["target_kind"]]
+                edges[key] = {}
+                for field, target_section in references.items():
+                    value = attributes.pop(field, None)
+                    if isinstance(value, (list, tuple)):
+                        for index, target in enumerate(value):
+                            edges[key][f"{field}.{index}"] = (target_section, target)
+                    elif value is not None:
+                        edges[key][field] = (target_section, value)
+                if section == "tools" or section == "claims" and name in anchored_claims:
+                    attributes["external_identifier"] = name
+                nodes[key] = encoded({"kind": section, "attributes": attributes,
+                                      "edge_roles": sorted(edges[key])})
+        if any(target not in nodes for links in edges.values() for target in links.values()):
+            raise ValueError("Unresolved declaration reference")
+        return program["language"], nodes, edges
     try:
-        wanted, supplied = asdict(parse(reference)), asdict(parse(actual))
-    except (ValueError, TypeError, RecursionError):
-        return False
-    wanted.pop("source_digest", None)
-    supplied.pop("source_digest", None)
-    # Python equality conflates true with 1 and false with 0. EAL predicates
-    # distinguish these types, so source identity must preserve JSON types.
-    return json.dumps(wanted, sort_keys=True, allow_nan=False) == json.dumps(supplied, sort_keys=True, allow_nan=False)
+        language_a, nodes_a, edges_a = graph(reference)
+        language_b, nodes_b, edges_b = graph(actual)
+    except (ValueError, TypeError, KeyError, RecursionError):
+        return {"equivalent": False, "reason": "invalid_source", "mapping": {}}
+    if language_a != language_b or len(nodes_a) != len(nodes_b):
+        return {"equivalent": False, "reason": "different_structure", "mapping": {}}
+    # Joint colour refinement preserves scalar types and reduces search to
+    # genuinely indistinguishable graph positions, independent of names/order.
+    all_nodes = {(0, key): value for key, value in nodes_a.items()} | {(1, key): value for key, value in nodes_b.items()}
+    all_edges = {(0, key): {role: (0, target) for role, target in value.items()} for key, value in edges_a.items()}
+    all_edges.update({(1, key): {role: (1, target) for role, target in value.items()} for key, value in edges_b.items()})
+    incoming = {key: [] for key in all_nodes}
+    for key, links in all_edges.items():
+        for role, target in links.items():
+            incoming[target].append((role, key))
+    labels = {value: i for i, value in enumerate(sorted(set(all_nodes.values())))}
+    colours = {key: labels[value] for key, value in all_nodes.items()}
+    for _ in range(len(all_nodes) + 1):
+        signatures = {key: encoded([colours[key], sorted((role, colours[target]) for role, target in all_edges[key].items()),
+                                    sorted((role, colours[parent]) for role, parent in incoming[key])]) for key in all_nodes}
+        labels = {value: i for i, value in enumerate(sorted(set(signatures.values())))}
+        revised = {key: labels[value] for key, value in signatures.items()}
+        unchanged = len(set(colours.values())) == len(labels)
+        colours = revised
+        if unchanged:
+            break
+    candidates = {key: [other for other in nodes_b if colours[0, key] == colours[1, other]] for key in nodes_a}
+    if any(not options for options in candidates.values()):
+        return {"equivalent": False, "reason": "different_structure", "mapping": {}}
+    mapping, used = {}, set()
+    def compatible(left, right):
+        if nodes_a[left] != nodes_b[right] or set(edges_a[left]) != set(edges_b[right]):
+            return False
+        for role, target in edges_a[left].items():
+            other = edges_b[right][role]
+            if target == left and other != right or target != left and other == right:
+                return False
+            if target in mapping and mapping[target] != other:
+                return False
+        for parent, translated in mapping.items():
+            for role, target in edges_a[parent].items():
+                if (target == left) != (edges_b[translated][role] == right):
+                    return False
+        return True
+    # Explicit stack avoids Python recursion limits on large acyclic arguments.
+    stack = []
+    steps = 0
+    while len(mapping) < len(nodes_a):
+        remaining = [key for key in nodes_a if key not in mapping]
+        left = min(remaining, key=lambda key: sum(other not in used for other in candidates[key]))
+        choices = iter(other for other in candidates[left] if other not in used)
+        stack.append((left, choices))
+        while stack:
+            left, choices = stack[-1]
+            previous = mapping.pop(left, None)
+            if previous is not None:
+                used.remove(previous)
+            found = False
+            for right in choices:
+                steps += 1
+                if steps > max_search_steps:
+                    return {"equivalent": False, "reason": "comparison_limit", "mapping": {}, "search_steps": steps}
+                if right not in used and compatible(left, right):
+                    mapping[left] = right
+                    used.add(right)
+                    found = True
+                    break
+            if found:
+                break
+            stack.pop()
+        if not stack:
+            return {"equivalent": False, "reason": "different_structure", "mapping": {}, "search_steps": steps}
+    return {"equivalent": True, "reason": "alpha_equivalent", "search_steps": steps,
+            "mapping": {f"{kind}.{name}": f"{target[0]}.{target[1]}" for (kind, name), target in mapping.items()}}
+
+
+def source_correspondence(reference: str, actual: Any, *, anchored_claims: tuple[str, ...] = ()) -> bool:
+    return compare_sources(reference, actual, anchored_claims=anchored_claims)["equivalent"]
+
+
+def evidence_trace_score(inputs: dict, reference: dict, comparison: dict, report: dict) -> dict:
+    """Require the final judgement to actually use the task's recorded evidence.
+
+    Matching an unsupported answer after reasoning over no records is not a
+    successful check of a supplied, but inapplicable, computational result.
+    This independent trace check binds validation, collection and assessment.
+    """
+    def same(left, right):
+        return json.dumps(left, sort_keys=True, allow_nan=False) == json.dumps(right, sort_keys=True, allow_nan=False)
+    final = report.get("final") or {}
+    actual_source = final.get("source")
+    if not comparison.get("equivalent") or not isinstance(actual_source, str):
+        return {"verified": False, "reasons": ["No corresponding final source"]}
+    source_digest = hashlib.sha256(actual_source.encode()).hexdigest()
+    events = report.get("tool_calls", [])
+    reason_events = [(index, event) for index, event in enumerate(events)
+                     if event.get("tool") == "eal_reason" and event.get("status") == "ok"
+                     and event.get("result", {}).get("assessment_id") == final.get("assessment_id")
+                     and event.get("result", {}).get("valid") is True]
+    if not reason_events:
+        return {"verified": False, "reasons": ["Final assessment has no successful reasoning call"]}
+    reason_index, reason = reason_events[-1]
+    arguments = reason.get("arguments", {})
+    reasons = []
+    if arguments.get("source") != actual_source or reason["result"].get("source_digest") != source_digest:
+        reasons.append("Final assessment was not computed from the final source")
+    if not same(arguments.get("context"), inputs["context"]) or arguments.get("now") != inputs["now"]:
+        reasons.append("Final assessment changed the task context or assessment time")
+    collection_id = arguments.get("collection_id")
+    collection_events = [(index, event) for index, event in enumerate(events[:reason_index])
+                         if isinstance(collection_id, str) and event.get("tool") == "eal_collect"
+                         and event.get("status") == "ok"
+                         and event.get("result", {}).get("collection_id") == collection_id]
+    if not collection_events:
+        return {"verified": False, "reasons": reasons + ["Final assessment did not use a collection produced earlier in this run"]}
+    collect_index, collect = collection_events[-1]
+    collection = collect.get("result", {})
+    collection_args = collect.get("arguments", {})
+    if collection_args.get("source") != actual_source or collection.get("source_digest") != source_digest:
+        reasons.append("Collection belongs to a different source")
+    if not same(collection_args.get("context"), inputs["context"]) or not same(collection.get("context"), inputs["context"]):
+        reasons.append("Collection belongs to a different context")
+    validated = any(event.get("tool") == "eal_validate" and event.get("status") == "ok"
+                    and event.get("arguments", {}).get("source") == actual_source
+                    and event.get("result", {}).get("valid") is True
+                    and event.get("result", {}).get("source_digest") == source_digest
+                    for event in events[:collect_index])
+    if not validated:
+        reasons.append("Final source was not successfully validated before collection")
+    supplied_records = collection.get("records", {})
+    expected_records = (reference.get("collection") or {}).get("records", {})
+    checked = []
+    for evidence_id in inputs["observations"]:
+        translated = comparison.get("mapping", {}).get(f"evidence.{evidence_id}", "")
+        actual_id = translated.removeprefix("evidence.")
+        actual = supplied_records.get(actual_id)
+        expected = expected_records.get(evidence_id)
+        if not isinstance(actual, dict) or not isinstance(expected, dict):
+            reasons.append(f"Provided observation {evidence_id!r} was not included in the assessment collection")
+            continue
+        fields = ["status", "tool", "tool_version", "mode", "evidence_kind", "input_digest"]
+        if expected.get("status") == "ok":
+            fields += ["value", "data_digest", "collected_at"]
+        else:
+            # An intentionally out-of-scope file import can correctly produce
+            # an error; compare its outcome, not its variable ingestion time.
+            fields.append("error")
+        if any(not same(actual.get(field), expected.get(field)) for field in fields):
+            reasons.append(f"Provided observation {evidence_id!r} differs from the independent reference collection")
+        if actual.get("source_digest") != source_digest or actual.get("evidence_id") != actual_id:
+            reasons.append(f"Provided observation {evidence_id!r} has a different source or evidence identity")
+        checked.append(evidence_id)
+    return {"verified": not reasons, "reasons": reasons, "collection_id": collection_id,
+            "assessment_id": final.get("assessment_id"), "checked_observations": checked}
 
 
 def workflow_score(required: list[str], report: dict) -> dict:
@@ -214,16 +403,95 @@ def summarise(trials: list[dict]) -> dict:
     return summaries
 
 
-async def evaluate_models(path: str | Path, provider, *, split: str = "held_out", budget=None,
-                          per_mcp_call_usd: float | None = None, task_ids: list[str] | None = None) -> dict:
-    """Run paired named-provider trials. No simulated answers or default free costs."""
+async def evaluate_task(task: dict, root: Path, provider, *, arm: str, budget=None,
+                        per_mcp_call_usd: float | None = None, host_mode: str = "stateful",
+                        interaction_mode: str = "text") -> dict:
+    """One isolated trial; its complete attempts and operations remain inspectable."""
     from mcp import StdioServerParameters
     from .agent import AgentBudget, run_agent, run_unaided
     from .discovery import describe_language
 
+    if arm not in {"unaided", "delegated"}:
+        raise ValueError("arm must be unaided or delegated")
     if per_mcp_call_usd is not None and (isinstance(per_mcp_call_usd, bool)
             or not math.isfinite(per_mcp_call_usd) or per_mcp_call_usd < 0):
         raise ValueError("per_mcp_call_usd must be a finite nonnegative declared cost")
+    budget = budget or AgentBudget()
+    with tempfile.TemporaryDirectory(prefix="eal-model-trial-") as temporary:
+        workspace = Path(temporary)
+        reference = check_task(task, root, workspace / "reference")
+        if not reference["passed"]:
+            raise ValueError(f"Reference task {task['id']} failed: {reference['errors']}")
+        service, inputs = prepare_task(task, root, workspace / "model")
+        model_inputs = dict(inputs)
+        model_inputs["language_reference"] = service.describe()
+        if task.get("draft_source"):
+            model_inputs.pop("source")
+            model_inputs["draft_source"] = bounded_path(root, task["draft_source"]).read_text()
+        prompt = task["question"] + "\nAssess these claim identifiers: " + ", ".join(task["expected"]["claims"]) + "."
+        prompt += "\nReturn the supported, contested, unsupported or out_of_scope status for every requested claim."
+        if task.get("collect") is not None:
+            model_inputs["collect_only"] = task["collect"]
+        server_args = ["-m", "eal.server", "--workspace", str(workspace / "model"),
+                       "--registry", str(workspace / "model" / "tools.toml")]
+        if task.get("methods"):
+            server_args.extend(["--methods", task["methods"]])
+        server = StdioServerParameters(command=sys.executable, args=server_args)
+        if arm == "unaided":
+            report = await run_unaided(prompt, provider, budget=budget, initial_data=model_inputs,
+                                      required_claims=tuple(task["expected"]["claims"]))
+        else:
+            report = await run_agent(prompt, provider, server, budget=budget,
+                                     required_claims=tuple(task["expected"]["claims"]), initial_data=model_inputs,
+                                     host_mode=host_mode, interaction_mode=interaction_mode)
+        usage = report.get("usage", {})
+        model_cost = usage.get("model_cost_usd") if usage.get("model_cost_complete", False) else None
+        calls = len(report.get("tool_calls", []))
+        tool_cost = 0.0 if arm == "unaided" else calls * per_mcp_call_usd if per_mcp_call_usd is not None else None
+        score = score_answer(task["expected"]["claims"], report)
+        if arm == "delegated":
+            final = report.get("final") or {}
+            comparison = compare_sources(inputs["source"], final.get("source"), anchored_claims=tuple(task["expected"]["claims"]))
+            score["source_correspondence"] = comparison["equivalent"]
+            score["source_comparison"] = comparison
+            if not comparison["equivalent"]:
+                score.update(correct=False, correctly_resolved=False, justified_unresolved=False)
+                score["unjustified"] |= any(item["actual"] == "supported" for item in score["claims"].values())
+            trace = evidence_trace_score(inputs, reference, comparison, report)
+            score["evidence_trace"] = trace
+            if not trace["verified"]:
+                score.update(correct=False, correctly_resolved=False, justified_unresolved=False)
+                score["unresolved"] = True
+                score["unjustified"] |= any(item["actual"] == "supported" for item in score["claims"].values())
+            if task.get("workflow"):
+                workflow = workflow_score(task["workflow"], report)
+                score["workflow"] = workflow
+                if not workflow["complete"]:
+                    score.update(correct=False, correctly_resolved=False, justified_unresolved=False)
+        return {"task_id": task["id"], "family": task["family"], "split": task["split"], "arm": arm,
+                "host_mode": host_mode if arm == "delegated" else None,
+                "interaction_mode": interaction_mode if arm == "delegated" else "text",
+                "inputs": model_inputs, "question": prompt, "expected": task["expected"]["claims"],
+                "report": report, "score": score,
+                "cost": {"model_usd": model_cost, "mcp_calls": calls, "tool_usd": tool_cost,
+                         "per_mcp_call_usd": per_mcp_call_usd,
+                         "total_usd": model_cost + tool_cost if model_cost is not None and tool_cost is not None else None}}
+
+
+def suite_digest(path: Path, suite: dict | None = None) -> str:
+    suite = suite or load_suite(path)
+    content = {"suite": suite, "inputs": {task["id"]: task_inputs(task, path.parent) for task in suite["tasks"]},
+               "drafts": {task["id"]: bounded_path(path.parent, task["draft_source"]).read_text()
+                          for task in suite["tasks"] if task.get("draft_source")}}
+    return hashlib.sha256(json.dumps(content, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+
+
+async def evaluate_models(path: str | Path, provider, *, split: str = "held_out", budget=None,
+                          per_mcp_call_usd: float | None = None, task_ids: list[str] | None = None,
+                          host_mode: str = "stateful", interaction_mode: str = "text") -> dict:
+    """Compatibility paired runner; repeated controlled studies use eal.experiment."""
+    from .agent import AgentBudget
+
     path = Path(path).resolve()
     suite = load_suite(path)
     selected = [task for task in suite["tasks"] if task["split"] == split and (task_ids is None or task["id"] in task_ids)]
@@ -232,67 +500,18 @@ async def evaluate_models(path: str | Path, provider, *, split: str = "held_out"
     budget = budget or AgentBudget()
     trials = []
     for index, task in enumerate(selected):
-        with tempfile.TemporaryDirectory(prefix="eal-model-trial-") as temporary:
-            workspace = Path(temporary)
-            reference = check_task(task, path.parent, workspace / "reference")
-            if not reference["passed"]:
-                raise ValueError(f"Reference task {task['id']} failed: {reference['errors']}")
-            _, inputs = prepare_task(task, path.parent, workspace / "model")
-            model_inputs = dict(inputs)
-            # Language competence is not the experimental intervention: both
-            # arms receive the same executable-language reference, no answers.
-            model_inputs["language_reference"] = describe_language()
-            if task.get("draft_source"):
-                model_inputs.pop("source")
-                model_inputs["draft_source"] = bounded_path(path.parent, task["draft_source"]).read_text()
-            prompt = task["question"] + "\nAssess these claim identifiers: " + ", ".join(task["expected"]["claims"]) + "."
-            prompt += "\nReturn the supported, contested, unsupported or out_of_scope status for every requested claim."
-            if task.get("collect") is not None:
-                model_inputs["collect_only"] = task["collect"]
-            server = StdioServerParameters(command=sys.executable, args=["-m", "eal.server", "--workspace", str(workspace / "model"),
-                                                                       "--registry", str(workspace / "model" / "tools.toml")])
-            # Alternating order avoids giving one arm every first/warm request.
-            arms = ("unaided", "delegated") if index % 2 == 0 else ("delegated", "unaided")
-            for arm in arms:
-                if arm == "unaided":
-                    report = await run_unaided(prompt, provider, budget=budget, initial_data=model_inputs,
-                                               required_claims=tuple(task["expected"]["claims"]))
-                else:
-                    report = await run_agent(prompt, provider, server, budget=budget,
-                                             required_claims=tuple(task["expected"]["claims"]), initial_data=model_inputs)
-                usage = report.get("usage", {})
-                model_cost = usage.get("model_cost_usd") if usage.get("model_cost_complete", False) else None
-                calls = len(report.get("tool_calls", []))
-                tool_cost = 0.0 if arm == "unaided" else calls * per_mcp_call_usd if per_mcp_call_usd is not None else None
-                score = score_answer(task["expected"]["claims"], report)
-                if arm == "delegated":
-                    final = report.get("final") or {}
-                    corresponds = source_correspondence(inputs["source"], final.get("source"))
-                    score["source_correspondence"] = corresponds
-                    if not corresponds:
-                        score.update(correct=False, correctly_resolved=False, justified_unresolved=False)
-                        score["unjustified"] |= any(item["actual"] == "supported" for item in score["claims"].values())
-                    if task.get("workflow"):
-                        workflow = workflow_score(task["workflow"], report)
-                        score["workflow"] = workflow
-                        if not workflow["complete"]:
-                            score.update(correct=False, correctly_resolved=False, justified_unresolved=False)
-                trials.append({"task_id": task["id"], "family": task["family"], "split": task["split"], "arm": arm,
-                               "inputs": model_inputs, "question": prompt, "expected": task["expected"]["claims"],
-                               "report": report, "score": score,
-                               "cost": {"model_usd": model_cost, "mcp_calls": calls, "tool_usd": tool_cost,
-                                        "per_mcp_call_usd": per_mcp_call_usd,
-                                        "total_usd": model_cost + tool_cost if model_cost is not None and tool_cost is not None else None}})
-    content = {"suite": suite, "inputs": {task["id"]: task_inputs(task, path.parent) for task in suite["tasks"]},
-               "drafts": {task["id"]: bounded_path(path.parent, task["draft_source"]).read_text()
-                          for task in suite["tasks"] if task.get("draft_source")}}
-    digest = hashlib.sha256(json.dumps(content, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+        arms = ("unaided", "delegated") if index % 2 == 0 else ("delegated", "unaided")
+        for arm in arms:
+            trials.append(await evaluate_task(task, path.parent, provider, arm=arm, budget=budget,
+                                              per_mcp_call_usd=per_mcp_call_usd, host_mode=host_mode,
+                                              interaction_mode=interaction_mode))
     identity = provider.identity()
-    return {"schema": "EAL/model-benchmark/1", "suite": suite["version"], "suite_digest": digest,
+    return {"schema": "EAL/model-benchmark/3", "scoring_version": "alpha-equivalence+evidence-trace/1",
+            "suite": suite["version"], "suite_digest": suite_digest(path, suite),
             "measurement_kind": identity.get("measurement_kind", "unclassified"),
             "provider": identity, "budget": asdict(budget), "split": split,
             "trials": trials, "summary": summarise(trials),
-            "interpretation": "Paired results apply only to this provider, settings, task split and declared cost model. Tool cost is the supplied all-in cost per MCP call; absent costs remain unknown."}
+            "interpretation": "Paired results apply only to this provider, settings, task split and declared cost model. Tool cost is the supplied all-in cost per MCP call; absent costs remain unknown. This score version accepts consistent internal declaration renaming while preserving external tool and requested claim identifiers."}
 
 
 def main() -> None:

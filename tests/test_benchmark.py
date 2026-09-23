@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from eal.benchmark import evaluate_models, load_suite, score_answer, source_correspondence, summarise, task_inputs, workflow_score
+from eal.benchmark import check_task, compare_sources, evaluate_models, evidence_trace_score, load_suite, prepare_task, score_answer, source_correspondence, summarise, task_inputs, workflow_score
 
 SUITE = Path(__file__).resolve().parents[1] / "benchmarks/engineering-v1/suite.json"
 
@@ -37,6 +37,35 @@ def test_repaired_source_must_retain_full_reference_meaning():
     assert not source_correspondence(source, source.replace("premises model_result, model_applies;", "premises model_result;"))
     assert not source_correspondence(source, source.replace('require "revision" == "A";', 'require "revision" == "B";'))
     assert not source_correspondence(source, "invalid")
+
+
+def test_alpha_equivalence_accepts_consistent_internal_renaming_only():
+    source = (SUITE.parent / "sources/calibration-interval.eal").read_text()
+    renamed = source.replace("assumption calibrated {", "assumption calibration_valid {").replace("assumptions calibrated;", "assumptions calibration_valid;")
+    comparison = compare_sources(source, renamed, anchored_claims=("reading_usable",))
+    assert comparison["equivalent"]
+    assert comparison["mapping"]["assumptions.calibrated"] == "assumptions.calibration_valid"
+    assert not source_correspondence(source, renamed.replace("assumptions calibration_valid;", ""))
+    assert not source_correspondence(source, renamed.replace('valid_until "2026-09-23T11:00:00Z"', 'valid_until "2026-09-24T11:00:00Z"'))
+    assert not source_correspondence(source, renamed.replace("calibration_check_tool", "another_operator_tool"))
+    assert not source_correspondence(source, renamed.replace("reading_usable", "another_claim"), anchored_claims=("reading_usable",))
+
+
+def test_alpha_equivalence_handles_declaration_order_and_cycles_without_rewriting_literals():
+    source = '''language "EAL/0.1";
+environment lab { require "site" == "bench"; }
+tool instrument { version "1"; mode deterministic; }
+evidence measured { tool instrument; kind test; environment lab; max_age 60; require "passed" == true; }
+reasoning step { mode structured; rationale "measured means an observation, not a replaceable literal"; }
+claim outcome { statement "The trial supports this property."; environment lab; }
+argument route { conclusion outcome; reasoning step; evidence measured; }
+'''
+    renamed = source.replace("environment lab {", "environment place {").replace("environment lab;", "environment place;")
+    renamed = renamed.replace("reasoning step {", "reasoning link {").replace("reasoning step;", "reasoning link;")
+    renamed = renamed.replace("argument route {", "argument derivation {")
+    assert source_correspondence(source, renamed, anchored_claims=("outcome",))
+    assert not source_correspondence(source, renamed.replace('"passed" == true', '"passed" == 1'))
+    assert not source_correspondence(source, renamed.replace('"measured means', '"different means'))
 
 
 def test_model_inputs_do_not_disclose_expected_status_or_oracle():
@@ -128,7 +157,7 @@ def test_paired_harness_through_actual_mcp_with_explicit_regression_provider():
             return ModelResponse(json.dumps(value), input_tokens=100, output_tokens=30, model="not-an-LLM")
 
     result = asyncio.run(evaluate_models(SUITE, RegressionProvider(), split="development",
-                                        task_ids=["nested-model-observation"], per_mcp_call_usd=0))
+                                        task_ids=["nested-model-observation"], per_mcp_call_usd=0, host_mode="legacy"))
     assert len(result["trials"]) == 2
     assert all(trial["score"]["correct"] for trial in result["trials"]), [(t["score"], t["report"]["stop_reason"]) for t in result["trials"]]
     assert result["trials"][0]["inputs"] == result["trials"][1]["inputs"]
@@ -136,3 +165,65 @@ def test_paired_harness_through_actual_mcp_with_explicit_regression_provider():
     assert delegated["score"]["source_correspondence"]
     assert delegated["cost"]["mcp_calls"] >= 3
     assert result["summary"]["delegated"]["cost_complete"]
+
+
+def test_unsupported_answer_requires_the_provided_observation_to_be_assessed(tmp_path):
+    fresh = SUITE.parents[1] / "engineering-v2/suite.json"
+    task = next(task for task in load_suite(fresh)["tasks"] if task["id"] == "registered-rms-wrong-origin")
+    reference = check_task(task, fresh.parent, tmp_path)
+    inputs = task_inputs(task, fresh.parent)
+    source = inputs["source"]
+    comparison = compare_sources(source, source, anchored_claims=tuple(task["expected"]["claims"]))
+    collection = reference["collection"]
+    assessment = reference["assessment"]
+    final = {"assessment_id": assessment["assessment_id"], "source": source, "claims": assessment["claims"]}
+    validation = {"tool": "eal_validate", "status": "ok", "arguments": {"source": source},
+                  "result": {"valid": True, "source_digest": assessment["source_digest"]}}
+    collection_event = {"tool": "eal_collect", "status": "ok", "arguments": {"source": source, "context": inputs["context"]}, "result": collection}
+    reason_event = {"tool": "eal_reason", "status": "ok", "arguments": {"source": source, "context": inputs["context"], "now": inputs["now"], "collection_id": collection["collection_id"]}, "result": assessment}
+    valid = {"final": final, "tool_calls": [validation, collection_event, reason_event]}
+    assert evidence_trace_score(inputs, reference, comparison, valid)["verified"]
+    skipped_collection = {"final": final, "tool_calls": [validation, reason_event]}
+    assert not evidence_trace_score(inputs, reference, comparison, skipped_collection)["verified"]
+    wrong_data = copy.deepcopy(valid)
+    wrong_data["tool_calls"][1]["result"]["records"] = {}
+    assert not evidence_trace_score(inputs, reference, comparison, wrong_data)["verified"]
+    wrong_time = copy.deepcopy(valid)
+    wrong_time["tool_calls"][2]["arguments"]["now"] = "2041-01-31T08:20:00Z"
+    assert not evidence_trace_score(inputs, reference, comparison, wrong_time)["verified"]
+    wrong_collection = copy.deepcopy(valid)
+    wrong_collection["tool_calls"][2]["arguments"]["collection_id"] = "another-collection"
+    assert not evidence_trace_score(inputs, reference, comparison, wrong_collection)["verified"]
+
+
+@pytest.mark.parametrize("task_id", ["nested-outside-environment", "nested-missing-measurement"])
+def test_intentional_missing_or_out_of_scope_observations_are_not_scoring_errors(task_id, tmp_path):
+    task = next(task for task in load_suite(SUITE)["tasks"] if task["id"] == task_id)
+    reference = check_task(task, SUITE.parent, tmp_path)
+    inputs = task_inputs(task, SUITE.parent)
+    source = inputs["source"]
+    comparison = compare_sources(source, source, anchored_claims=tuple(task["expected"]["claims"]))
+    collection, assessment = reference["collection"], reference["assessment"]
+    report = {"final": {"assessment_id": assessment["assessment_id"], "source": source}, "tool_calls": [
+        {"tool": "eal_validate", "status": "ok", "arguments": {"source": source}, "result": {"valid": True, "source_digest": assessment["source_digest"]}},
+        {"tool": "eal_collect", "status": "ok", "arguments": {"source": source, "context": inputs["context"]}, "result": collection},
+        {"tool": "eal_reason", "status": "ok", "arguments": {"source": source, "context": inputs["context"], "now": inputs["now"], "collection_id": collection["collection_id"]}, "result": assessment}]}
+    assert evidence_trace_score(inputs, reference, comparison, report)["verified"]
+
+
+def test_evidence_trace_accepts_a_consistently_renamed_evidence_and_assumption(tmp_path):
+    task = next(task for task in load_suite(SUITE)["tasks"] if task["id"] == "calibration-historical-valid")
+    reference = check_task(task, SUITE.parent, tmp_path / "reference")
+    service, inputs = prepare_task(task, SUITE.parent, tmp_path / "actual")
+    source = inputs["source"].replace("assumption calibrated {", "assumption calibration_valid {").replace("assumptions calibrated;", "assumptions calibration_valid;")
+    source = source.replace("evidence calibration_check {", "evidence calibration_observation {").replace("validate calibration_check;", "validate calibration_observation;")
+    comparison = compare_sources(inputs["source"], source, anchored_claims=tuple(task["expected"]["claims"]))
+    validation = service.validate(source)
+    collection = service.collect(source, inputs["context"])
+    assessment = service.reason(source, inputs["context"], collection["collection_id"], inputs["now"])
+    report = {"final": {"assessment_id": assessment["assessment_id"], "source": source}, "tool_calls": [
+        {"tool": "eal_validate", "status": "ok", "arguments": {"source": source}, "result": validation},
+        {"tool": "eal_collect", "status": "ok", "arguments": {"source": source, "context": inputs["context"]}, "result": collection},
+        {"tool": "eal_reason", "status": "ok", "arguments": {"source": source, "context": inputs["context"], "now": inputs["now"], "collection_id": collection["collection_id"]}, "result": assessment}]}
+    assert comparison["equivalent"]
+    assert evidence_trace_score(inputs, reference, comparison, report)["verified"]

@@ -1,0 +1,47 @@
+{
+  "sampled_record": {
+    "value": {
+      "schema": "EAL/typed-input/1",
+      "method": "temporal/1",
+      "subject": "regulator-7",
+      "quantity": "dimensionless",
+      "unit": "1",
+      "scope": "normalised-vibration-C",
+      "valid_from": "2040-01-31T08:00:00Z",
+      "valid_until": "2040-01-31T09:00:00Z",
+      "payload": {
+        "start": 0,
+        "end": 12,
+        "max_gap": 4,
+        "property": {
+          "operator": "lt",
+          "value": 1
+        },
+        "semantics": "sampled",
+        "events": [
+          {
+            "time": 0,
+            "value": 0.5
+          },
+          {
+            "time": 4,
+            "value": 0.6
+          },
+          {
+            "time": 8,
+            "value": 1.2
+          },
+          {
+            "time": 12,
+            "value": 0.7
+          }
+        ]
+      }
+    },
+    "observed_at": "2040-01-31T08:00:00Z",
+    "context": {
+      "chamber": "cold-room-C",
+      "assembly": "regulator-7"
+    }
+  }
+}

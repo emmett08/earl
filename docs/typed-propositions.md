@@ -81,6 +81,8 @@ An assessment exposes the declaration's proposition, evidence ID, method/version
 
 ## Quantities, units and time
 
+The proposition's `quantity` and `unit` identify the **input measurement basis**. A result's interpretation is separately fixed by the method contract: `basis` retains the measurement unit, `dimensionless` has unit `1`, and `boolean` has no numerical unit. For example, the sample count of pressure observations is dimensionless; it is never interpreted as pressure. Assessments explicitly report `output_unit` beside the comparison value.
+
 The implemented quantities are `pressure`, `time`, `length`, `mass`, `temperature_difference`, `velocity`, `volumetric_flow`, `probability`, `dimensionless` and `proposition`. They are identities, not interchangeable labels. In particular, a dimensionless probability differs from a generic dimensionless number, and temperature differences do not denote absolute temperatures. `eal_describe` reports the exact unit catalogue and method contracts; `eal.propositions.describe_bindings()` exposes the same catalogue to Python callers.
 
 Causal result conversion uses exact rational unit scale factors followed by finite floating-point output where conversion is necessary. It does not increase the precision of the underlying statistical calculation. Temporal and counterfactual inputs require exactly the proposition's unit because their queries include dimensional constants. Temporal `start`, `end`, `max_gap` and event times retain the method's seconds-based time axis; the measured `property.value` uses the proposition's unit. Counterfactual variables all share the one declared measurement unit, coefficients are dimensionless, and intercepts, noise and intervention values use that unit. Mixed-dimension structural models require a future typed expression system.
@@ -93,7 +95,7 @@ Every argument supporting a typed claim requires a `binding` to the one designat
 
 A completed computation with a negative finding can support an explicitly negative predicate, such as `result "entailed" == false` or `result "holds" == false`. Inconsistent logical premises, incomplete temporal coverage and execution errors remain unusable. Method-level `require` predicates remain available; both those predicates and the proposition predicate must hold. In EAL/0.2 a typed proposition supplies the required output predicate itself. Untyped computational claims still require a method-level predicate.
 
-EAL/0.1 retains its existing semantics; using `proposition` or `binding` constructs requires EAL/0.2. Newly introduced words are contextual and can still be identifiers in existing source. The extension has a versioned, inspectable contract catalogue. It does not yet permit arbitrary third-party method registration, custom dimensions, vectors, quantified physical formulae or general dimensional algebra.
+EAL/0.1 retains its existing semantics; using `proposition` or `binding` constructs requires EAL/0.2. Newly introduced words are contextual and can still be identifiers in existing source. EAL/0.3 permits host-registered method extensions through the same typed binding contracts; see [method extensions](method-extensions.md). Custom dimensions, vectors, quantified physical formulae and general dimensional algebra remain outside this scalar fragment.
 
 ## Canonical source
 

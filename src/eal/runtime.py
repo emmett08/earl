@@ -59,6 +59,37 @@ def bounded_path(workspace: Path, name: str) -> Path:
     return path
 
 
+def load_method_registry(factory: str | None = None):
+    """Load a trusted host factory; EAL source cannot select Python code.
+
+    A factory is configured by the process operator as ``package.module:name``
+    and returns an immutable MethodRegistry. Importing it executes trusted
+    application code, just as starting a custom MCP server does.
+    """
+    from importlib import import_module
+    import re
+
+    from .methods import MethodRegistry, default_registry
+
+    if factory is None:
+        return default_registry()
+    if not isinstance(factory, str) or not re.fullmatch(
+        r"[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*:[A-Za-z_]\w*", factory, flags=re.ASCII
+    ):
+        raise ValueError("Method factory must have the form package.module:function")
+    module_name, function_name = factory.split(":")
+    try:
+        build = getattr(import_module(module_name), function_name)
+    except (ImportError, AttributeError) as exc:
+        raise ValueError(f"Cannot load configured method factory {factory!r}") from exc
+    if not callable(build):
+        raise ValueError("The configured method factory is not callable")
+    registry = build()
+    if not isinstance(registry, MethodRegistry):
+        raise ValueError("The configured method factory must return a MethodRegistry")
+    return registry
+
+
 @dataclasses.dataclass(frozen=True)
 class ToolBinding:
     name: str
@@ -210,16 +241,19 @@ def _timestamp(value: Any) -> str:
 
 
 class EvidenceRuntime:
-    def __init__(self, workspace: str | Path, registry: ToolRegistry, store: RunStore):
+    def __init__(self, workspace: str | Path, registry: ToolRegistry, store: RunStore, *, method_registry=None):
+        from .methods import default_registry
+
         self.workspace = Path(workspace).resolve()
         self.registry = registry
         self.store = store
+        self.method_registry = default_registry() if method_registry is None else method_registry
 
     def collect(self, program, context: Mapping[str, Any], evidence_ids: list[str] | None = None) -> dict:
         from .evaluator import canonical_digest, environment_fingerprint
         from .semantics import validate
 
-        diagnostics = validate(program)
+        diagnostics = validate(program, registry=self.method_registry)
         if diagnostics:
             raise ValueError("Cannot collect evidence for an invalid program: " + "; ".join(d.message for d in diagnostics))
         if not isinstance(context, dict):
@@ -304,11 +338,16 @@ class EvidenceRuntime:
 class ReasoningService:
     """One application path used by CLI, MCP and the text-model host."""
 
-    def __init__(self, workspace: str | Path, registry_path: str | Path | None = None, database_path: str | Path | None = None):
+    def __init__(self, workspace: str | Path, registry_path: str | Path | None = None, database_path: str | Path | None = None, *, method_registry=None):
+        from .methods import MethodRegistry, default_registry
+
+        self.method_registry = default_registry() if method_registry is None else method_registry
+        if not isinstance(self.method_registry, MethodRegistry):
+            raise TypeError("method_registry must be a MethodRegistry")
         self.workspace = Path(workspace).resolve()
         registry = ToolRegistry.load(registry_path) if registry_path else ToolRegistry()
         self.store = RunStore(database_path or self.workspace / ".eal" / "runs.sqlite3")
-        self.runtime = EvidenceRuntime(self.workspace, registry, self.store)
+        self.runtime = EvidenceRuntime(self.workspace, registry, self.store, method_registry=self.method_registry)
 
     def validate(self, source: str) -> dict:
         from .parser import parse
@@ -318,20 +357,21 @@ class ReasoningService:
             program = parse(source)
         except ValueError as exc:
             return {"valid": False, "diagnostics": [{"code": "syntax", "message": str(exc)}]}
-        diagnostics = validate(program)
+        diagnostics = validate(program, registry=self.method_registry)
         return {"valid": not diagnostics, "source_digest": program.source_digest,
+                "method_registry_fingerprint": self.method_registry.fingerprint,
                 "diagnostics": [dataclasses.asdict(d) for d in diagnostics]}
 
     def describe(self) -> dict:
         from .discovery import describe_language
 
-        return describe_language()
+        return describe_language(registry=self.method_registry)
 
     def format(self, source: str) -> dict:
         from .formatter import format_source
         from .parser import parse
 
-        formatted = format_source(source)
+        formatted = format_source(source, registry=self.method_registry)
         return {"source": formatted, "source_digest": parse(formatted).source_digest,
                 "observation_recollection_required": formatted != source}
 
@@ -346,7 +386,8 @@ class ReasoningService:
 
         program = parse(source)
         collection = self.store.get(collection_id, kind="collection") if collection_id else {"records": {}}
-        assessment = evaluate(program, collection["records"], now=now or utc_now(), context=context)
+        assessment = evaluate(program, collection["records"], now=now or utc_now(), context=context, registry=self.method_registry)
+        assessment["method_registry_fingerprint"] = self.method_registry.fingerprint
         assessment_id = self.store.put("assessment", assessment)
         return {"assessment_id": assessment_id, **assessment}
 
@@ -359,5 +400,6 @@ class ReasoningService:
         return {
             "assessment_id": assessment_id, "claim": claim, "result": assessment["claims"][claim],
             "assessed_at": assessment["assessed_at"], "source_digest": assessment["source_digest"],
+            "method_registry_fingerprint": assessment.get("method_registry_fingerprint"),
             **{key: assessment[key] for key in ("arguments", "evidence", "assumptions", "reasoning", "objections")},
         }

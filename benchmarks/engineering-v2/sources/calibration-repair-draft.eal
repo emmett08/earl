@@ -1,0 +1,11 @@
+language "EAL/0.3";
+environment operating_point { require "chamber" == "cold-room-C"; require "assembly" == "regulator-7"; }
+tool calibration_record_adapter { version "1"; mode deterministic; }
+evidence calibration_record { tool calibration_record_adapter; kind measurement; environment operating_point; max_age 3600; require "passed" == true; }
+tool response_reading_adapter { version "1"; mode deterministic; }
+evidence response_reading { tool response_reading_adapter; kind measurement; environment operating_point; max_age 3600; require "passed" == true; }
+
+assumption calibration_applies { statement "The cold-room calibration applies during this hour to this assembly."; environment operating_point; validate calibration_record; valid_from "2040-01-31T08:00:00Z"; valid_until "2040-01-31T09:00:00Z"; }
+reasoning calibrated_reading { mode structured; rationale "The observed response supports the property only under the independently validated calibration assumption."; }
+claim calibrated_response { statement "The response reading supplies support within the declared calibration interval."; environment operating_point; }
+argument response_under_calibration { conclusion calibrated_response; reasoning calibrated_reading; evidence response_reading; assumptions cold_room_calibration; }

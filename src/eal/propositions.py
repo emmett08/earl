@@ -56,28 +56,30 @@ _COMPARISONS = {'==': operator.eq, '!=': operator.ne, '<': operator.lt,
                 '<=': operator.le, '>': operator.gt, '>=': operator.ge}
 
 
-def describe_bindings():
+def describe_bindings(registry=None):
     """Machine-readable, versioned discovery of the implemented closed fragment."""
-    return {'schema': SCHEMA, 'quantities': dict(QUANTITIES),
+    from .methods import default_registry
+    registry = registry or default_registry()
+    return {'schema': SCHEMA, 'registry_fingerprint': registry.fingerprint, 'quantities': dict(QUANTITIES),
             'units': {name: {'dimension': dim, 'base_scale': scale} for name, (dim, scale) in UNITS.items()},
-            'methods': {f'{mode}/1': {'outputs': dict(paths), 'query_fields': list(QUERY_FIELDS[mode])}
-                        for mode, paths in OUTPUTS.items()},
+            'methods': registry.describe(),
             'envelope_fields': ['schema', 'method', 'subject', 'quantity', 'unit', 'scope',
                                 'valid_from', 'valid_until', 'payload'],
             'interval': 'half-open [valid_from, valid_until); input must contain claim interval',
             'interpretation': 'metadata correspondence; physical relevance and prose correspondence remain asserted'}
 
 
-def _output_type(mode, path):
-    paths = OUTPUTS.get(mode, {})
-    if path in paths:
-        return paths[path]
-    if mode == 'abductive' and re.fullmatch(r'posterior\.[A-Za-z_][A-Za-z0-9_]{0,63}', path):
-        return 'dimensionless'
-    return None
+def _contract(mode, registry=None):
+    from .methods import default_registry
+    return (registry or default_registry()).get(mode)
 
 
-def proposition_errors(proposition: Proposition, mode: str | None = None):
+def _output_type(mode, path, registry=None):
+    contract = _contract(mode, registry)
+    return contract.output_type(path) if contract else None
+
+
+def proposition_errors(proposition: Proposition, mode: str | None = None, registry=None):
     """Static shape/type errors without reading observations."""
     from .semantics import parse_time, _check_json_resources
     errors = []
@@ -107,39 +109,43 @@ def proposition_errors(proposition: Proposition, mode: str | None = None):
     except (ValueError, TypeError, UnicodeError, RecursionError):
         errors.append('Proposition query must be finite JSON')
     if mode is not None:
-        if not isinstance(proposition.query, dict) or set(proposition.query) != set(QUERY_FIELDS.get(mode, ())):
-            errors.append(f'Method {mode!r} requires exactly these query fields: {", ".join(QUERY_FIELDS.get(mode, ()))}')
-        output = _output_type(mode, proposition.result.path)
+        from .methods import schema_errors
+        contract = _contract(mode, registry)
+        if contract is None:
+            errors.append(f'Unknown registered method {mode!r}')
+            return errors
+        errors.extend(schema_errors(proposition.query, contract.query_schema, 'query'))
+        output = contract.output_type(proposition.result.path)
         if output is None:
             errors.append(f'Method {mode!r} has no typed result {proposition.result.path!r}')
         elif (output == 'boolean') != isinstance(expected, bool):
             errors.append('Proposition result type does not match the method output type')
-        required_quantity = {'deductive': 'proposition', 'inductive': 'probability',
-                             'abductive': 'probability', 'analogical': 'dimensionless'}.get(mode)
-        if required_quantity and proposition.quantity != required_quantity:
-            errors.append(f'Method {mode!r} requires quantity {required_quantity!r}')
-        if mode in ('causal', 'counterfactual', 'temporal') and proposition.quantity == 'proposition':
-            errors.append(f'Method {mode!r} requires a numerical measured quantity')
+        if proposition.quantity not in contract.quantities:
+            errors.append(f'Method {mode!r} does not accept quantity {proposition.quantity!r}')
     return errors
 
 
-def prepare_binding(proposition: Proposition, mode: str, evidence_id: str, value):
+def prepare_binding(proposition: Proposition, mode: str, evidence_id: str, value, registry=None):
     """Check complete input correspondence before passing a payload to a method."""
     from .semantics import parse_time
+    contract = _contract(mode, registry)
+    if contract is None:
+        return None, {"status": "unsupported", "reasons": [f"Unknown registered method {mode!r}"]}
     fields = {'schema', 'method', 'subject', 'quantity', 'unit', 'scope', 'valid_from', 'valid_until', 'payload'}
-    trace = {'evidence_id': evidence_id, 'method': f'{mode}/1', 'proposition': asdict(proposition),
+    trace = {'evidence_id': evidence_id, 'method': contract.identifier, 'proposition': asdict(proposition),
+             'method_contract': contract.describe(),
              'prose_verified': False, 'physical_interpretation_verified': False}
     reasons = []
     if not isinstance(value, dict) or set(value) != fields:
         return None, {**trace, 'status': 'unsupported', 'reasons': ['Typed input requires exactly the declared envelope fields']}
-    for key, expected in (('schema', SCHEMA), ('method', f'{mode}/1'), ('subject', proposition.subject),
+    for key, expected in (('schema', SCHEMA), ('method', contract.identifier), ('subject', proposition.subject),
                           ('quantity', proposition.quantity), ('scope', proposition.scope)):
         if value.get(key) != expected:
             reasons.append(f'Typed input {key} does not match the proposition or method')
     unit = value.get('unit')
     if not isinstance(unit, str) or unit not in UNITS or UNITS[unit][0] != QUANTITIES[proposition.quantity]:
         reasons.append('Typed input unit is incompatible with the proposition quantity')
-    if mode in ('temporal', 'counterfactual') and unit != proposition.unit:
+    if contract.exact_unit and unit != proposition.unit:
         reasons.append('This method embeds dimensional query constants and requires the exact proposition unit')
     try:
         start, end = parse_time(value['valid_from']), parse_time(value['valid_until'])
@@ -154,7 +160,7 @@ def prepare_binding(proposition: Proposition, mode: str, evidence_id: str, value
     if not isinstance(payload, dict):
         reasons.append('Typed input payload must be an object')
     else:
-        for key in QUERY_FIELDS.get(mode, ()):
+        for key in contract.query_fields:
             expected = json.dumps(proposition.query.get(key), sort_keys=True, separators=(',', ':'), allow_nan=False)
             try:
                 actual = json.dumps(payload[key], sort_keys=True, separators=(',', ':'), allow_nan=False)
@@ -172,14 +178,14 @@ def prepare_binding(proposition: Proposition, mode: str, evidence_id: str, value
     return (None if reasons else value['payload']), trace
 
 
-def check_result(proposition: Proposition, mode: str, details: dict, trace: dict):
+def check_result(proposition: Proposition, mode: str, details: dict, trace: dict, registry=None):
     """Evaluate the formal result predicate, converting only physical statistics."""
     actual = details
     for field in proposition.result.path.split('.'):
         if not isinstance(actual, dict) or field not in actual:
             return {**trace, 'status': 'unsupported', 'reasons': ['Bound method output is missing']}
         actual = actual[field]
-    output = _output_type(mode, proposition.result.path)
+    output = _output_type(mode, proposition.result.path, registry)
     is_numeric = type(actual) in (int, float) and (not isinstance(actual, float) or math.isfinite(actual))
     if output == 'boolean' and type(actual) is not bool or output != 'boolean' and not is_numeric:
         return {**trace, 'status': 'unsupported', 'reasons': ['Bound method output has an incompatible type']}

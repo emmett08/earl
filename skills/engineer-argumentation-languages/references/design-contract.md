@@ -46,3 +46,7 @@ Treat lower cost as a measured design objective. Compare at least the selected m
 ## Development order
 
 Start with the task suite and vocabulary, then formal representation and method contracts. Implement parsing, binding, type checks, interpretation and explanation. Add concrete tool adapters and the host loop. Test formal meaning and empirical/model assumptions separately. Run human comprehension and model/cost experiments. Use uncovered tasks and redundant constructs to drive expansion or removal. Preserve this distinction in reporting: design requirement, implemented feature, tested behaviour and measured capability.
+
+## Versioned extension boundary
+
+Require an immutable registry of host-installed method contracts with explicit versioned identifiers, evidence kinds, input and query schemas, typed outputs, supported quantities and units, implementation identity, and resource bounds. Validate query identity before execution and output types before a result can support a proposition. Distinguish the measured input quantity from the computed output quantity or unit. A new method should be demonstrable through the unchanged parser and an actual CLI/MCP invocation. Source may select a registered contract; it must not import executable code. A callback version or source digest alone does not identify all of its software dependencies; preserve the host packaging needed for reproducibility.
