@@ -2,7 +2,7 @@
 
 EAL/2 has one source language, one versioned reasoning-method selector and one set of support/attack semantics. Backwards compatibility is never a project requirement. The design favours a small set of explicit, composable rules; prior source versions, reasoning aliases and version-dependent objection behaviour are removed. Historical measurements retain their original labels and results.
 
-The intended gain is easier faithful expression and revision of engineering arguments. This is a design hypothesis. EAL/2 comprehension, model correctness and cost improvements have not been measured. The existing live trials concern earlier releases; passing interpreter tests cannot establish those gains.
+The intended gain is easier faithful expression and revision of engineering arguments. This remains a design hypothesis. The [23 September 2026 regression report](eal2-model-results.md) measures selected model/host systems using EAL/2 package 2.1.0 on previously exposed tasks. Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured; passing interpreter tests cannot establish those gains.
 
 ## Expert recommendations and EAL adaptations
 
@@ -90,7 +90,7 @@ The typed representation is checked before pattern expansion and name resolution
 
 Current verification covers interpreter behaviour: parsing, typed references, expansion, method contracts, units/query correspondence, source locations, canonical round trips and support/attack consequences. The larger design aim remains task-bounded; there is no general dimensional algebra, recursive argument definition system or hypothetical assumption-discharge calculus.
 
-Fresh evaluation should compare the same tasks through readable source and typed structured requests, with equal observations, methods and budgets. Include model alone, source in the prompt, host-mediated EAL and an equivalent structured-tool baseline. Measure semantic correctness, unjustified claims, justified unresolved answers, repairs, comprehension, tokens, latency and total cost per correct task. Count failures. Earlier public benchmark instances are development knowledge for EAL/2; new held-out cases and actual model trials are required for a measured gain.
+Fresh evaluation should compare the same tasks through readable source and typed structured requests, with equal observations, methods and budgets. Include model alone, source in the prompt, host-mediated EAL and an equivalent structured-tool baseline. Measure semantic correctness, unjustified claims, justified unresolved answers, repairs, comprehension, tokens, latency and total cost per correct task. Count failures. Earlier public benchmark instances are development knowledge for EAL/2. The [current regression measurements](eal2-model-results.md) cover those exposed cases; new held-out cases and controlled notation comparisons are required to assess generalisation and notation-specific gains.
 
 ## Package 2.1.0 contract corrections
 
@@ -98,4 +98,4 @@ The EAL/2 grammar is unchanged. Built-in computations now enforce the same regis
 
 Imported observations identify their acquisition through tool, version, mode, input and context. Reusing an observation in another argument is possible when that acquisition still matches; the new collection separately identifies the exact argument source. Old import envelopes lacking that identity are rejected. The strongest alternative was binding imported files permanently to source bytes, which would prevent justified reuse after an internal identifier rename without improving acquisition correspondence.
 
-MCP requests are checked against their advertised schemas before SDK conversion. Host results retain and check source, context, collection and assessment time. This prevents a correct calculation for another request from being reported as the requested conclusion. Verification consists of executable regressions, CLI examples, subprocess MCP/host calls and package inspection; these checks establish no human or model performance gain.
+MCP requests are checked against their advertised schemas before SDK conversion. Host results retain and check source, context, collection and assessment time. This prevents a correct calculation for another request from being reported as the requested conclusion. Implementation verification consists of executable regressions, CLI examples, subprocess MCP/host calls and package inspection. The [live model measurements](eal2-model-results.md) separately assess selected model/host systems on previously exposed tasks.

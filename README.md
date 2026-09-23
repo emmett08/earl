@@ -103,7 +103,8 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 - [Precise vocabulary](docs/vocabulary.md) and [typed propositions](docs/typed-propositions.md): formal queries, unit checks and result correspondence.
 - [Engineering tasks](docs/engineering-tasks.md): known-answer cases, adverse variants and remaining coverage gaps.
 - [Historical live model experiments](docs/live-model-results.md): original API comparisons, retained failures, token usage and cost estimates from earlier EAL versions.
-- [Historical EAL/0.3 repeated experiments](docs/eal03-model-results.md): original model/interface conditions and development ablations. EAL/2 performance gains remain unmeasured.
+- [EAL/2 regression experiments](docs/eal2-model-results.md): live model/host measurements for package 2.1.0 on 23 September 2026, using previously exposed tasks.
+- [Historical EAL/0.3 repeated experiments](docs/eal03-model-results.md): original model/interface conditions and development ablations.
 - [Reasoning methods](docs/reasoning-modes.md): distinct evidence schemas, algorithms and interpretation limits.
 - [Grounded argumentation](docs/grounded-reasoning.md): counterargument, defence and undecided cycles.
 - [Implementation architecture](docs/implementation.md): Parr’s patterns, ANTLR4 and extension points.
@@ -111,4 +112,4 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 - [Primary sources](docs/sources.md).
 - [Reusable skill](skills/engineer-argumentation-languages/SKILL.md): the maintained contributor guidance, including expert language-design references and the project’s EAL/2 rules.
 
-`CONTRACT.md` records the implementation interface shared by the parser, interpreter and runtime. The interpreter evaluates authored finite support graphs and explicit argument graphs. It does not automatically discover causal structure, prove arbitrary prose, infer unlisted hypotheses, model continuous behaviour from isolated samples, or authenticate the physical provenance of observations from digests alone. Typed correspondence narrows what is checked; it does not establish general engineering completeness. The historical experiments report their original measured performance. No EAL/2 model capability, comprehension or cost improvement has been measured.
+`CONTRACT.md` records the implementation interface shared by the parser, interpreter and runtime. The interpreter evaluates authored finite support graphs and explicit argument graphs. It does not automatically discover causal structure, prove arbitrary prose, infer unlisted hypotheses, model continuous behaviour from isolated samples, or authenticate the physical provenance of observations from digests alone. Typed correspondence narrows what is checked; it does not establish general engineering completeness. The [EAL/2 regression report](docs/eal2-model-results.md) measures selected model/host systems on previously exposed tasks. Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured. Historical experiments retain their original versions and results.

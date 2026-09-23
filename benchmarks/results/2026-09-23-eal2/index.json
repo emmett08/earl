@@ -1,0 +1,2141 @@
+{
+  "schema": "EAL/experiment-index/1",
+  "date": "2026-09-23",
+  "code_commit": "dc30aa5aa29c63b50e452118fd455311bf89c88e",
+  "package_version": "2.1.0",
+  "source_language": "EAL/2",
+  "measurement_scope": "Regression on previously exposed tasks; no fresh held-out evaluation",
+  "reports": [
+    {
+      "file": "matrix.json.gz",
+      "sha256": "8ef5965692d65e8b871d99733aa28d5534046ef81352da06ee9006ba0d310829",
+      "phase": "matrix",
+      "completed_trials": 84,
+      "freeze_digest": "7e6d5ed9bbdbe753f3d7be6c2f579f425d1e2f807f0e421a683a111ef7bb53b1",
+      "reference_or_implementation_drift": false,
+      "scoring_version": "expanded-alpha-equivalence+evidence-trace/2",
+      "aggregate": {
+        "conditions": {
+          "mini_text_stateful": {
+            "tasks": 12,
+            "correct": 12,
+            "correctly_resolved": 8,
+            "unjustified": 0,
+            "unresolved": 0,
+            "justified_unresolved": 4,
+            "repairs": 2,
+            "attempts": 28,
+            "total_tokens": 264994,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.04738,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.003948333333333333,
+            "cost_per_correctly_resolved_task_usd": 0.0059225,
+            "latency_seconds": 240.0053137950017,
+            "scheduled_trials": 12,
+            "completed_trials": 12,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 12,
+                "correct": 12
+              },
+              "contested": {
+                "claims": 2,
+                "correct": 2
+              },
+              "unsupported": {
+                "claims": 2,
+                "correct": 2
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_larger"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-mini-2025-04-14"
+            ],
+            "host_conditions": [
+              "stateful/text"
+            ],
+            "task_repeat_outcomes": {
+              "registered-rms-velocity": [
+                1,
+                1
+              ],
+              "defence-cannot-ground-itself": [
+                1,
+                1
+              ],
+              "sampled-negative-finding": [
+                1,
+                1
+              ],
+              "defence-with-independent-subargument": [
+                1,
+                1
+              ],
+              "cold-room-calibration-reference-repair": [
+                1,
+                1
+              ],
+              "registered-rms-wrong-origin": [
+                1,
+                1
+              ]
+            },
+            "correct_rate": {
+              "estimate": 1.0,
+              "interval_95": [
+                1.0,
+                1.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 20.000442816250143,
+              "interval_95": [
+                15.817651411500265,
+                26.80472011641723
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.003948333333333333,
+              "interval_95": [
+                0.0029986666666666664,
+                0.0049084666666666665
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "mini_unaided": {
+            "tasks": 12,
+            "correct": 8,
+            "correctly_resolved": 6,
+            "unjustified": 2,
+            "unresolved": 0,
+            "justified_unresolved": 2,
+            "repairs": 0,
+            "attempts": 12,
+            "total_tokens": 85352,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.0162272,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.0020284,
+            "cost_per_correctly_resolved_task_usd": 0.0027045333333333334,
+            "latency_seconds": 107.09170804200403,
+            "scheduled_trials": 12,
+            "completed_trials": 12,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 12,
+                "correct": 10
+              },
+              "contested": {
+                "claims": 2,
+                "correct": 2
+              },
+              "unsupported": {
+                "claims": 2,
+                "correct": 0
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_larger"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-mini-2025-04-14"
+            ],
+            "host_conditions": [
+              "None/text"
+            ],
+            "task_repeat_outcomes": {
+              "registered-rms-velocity": [
+                1,
+                1
+              ],
+              "defence-cannot-ground-itself": [
+                1,
+                1
+              ],
+              "sampled-negative-finding": [
+                1,
+                1
+              ],
+              "defence-with-independent-subargument": [
+                0,
+                0
+              ],
+              "cold-room-calibration-reference-repair": [
+                1,
+                1
+              ],
+              "registered-rms-wrong-origin": [
+                0,
+                0
+              ]
+            },
+            "correct_rate": {
+              "estimate": 0.6666666666666666,
+              "interval_95": [
+                0.3333333333333333,
+                1.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 8.924309003500335,
+              "interval_95": [
+                8.11835351549962,
+                9.488096419917687
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.0013522666666666667,
+              "interval_95": [
+                0.0010108,
+                0.0016832566666666665
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "nano_native_stateful": {
+            "tasks": 12,
+            "correct": 10,
+            "correctly_resolved": 6,
+            "unjustified": 0,
+            "unresolved": 2,
+            "justified_unresolved": 4,
+            "repairs": 6,
+            "attempts": 32,
+            "total_tokens": 323696,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.012677,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.0012677,
+            "cost_per_correctly_resolved_task_usd": 0.0021128333333333333,
+            "latency_seconds": 292.5017933700001,
+            "scheduled_trials": 12,
+            "completed_trials": 12,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 12,
+                "correct": 10
+              },
+              "contested": {
+                "claims": 2,
+                "correct": 2
+              },
+              "unsupported": {
+                "claims": 2,
+                "correct": 2
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_small"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-nano-2025-04-14"
+            ],
+            "host_conditions": [
+              "stateful/native"
+            ],
+            "task_repeat_outcomes": {
+              "registered-rms-velocity": [
+                1,
+                1
+              ],
+              "defence-cannot-ground-itself": [
+                1,
+                1
+              ],
+              "sampled-negative-finding": [
+                1,
+                1
+              ],
+              "defence-with-independent-subargument": [
+                1,
+                1
+              ],
+              "registered-rms-wrong-origin": [
+                1,
+                1
+              ],
+              "cold-room-calibration-reference-repair": [
+                0,
+                0
+              ]
+            },
+            "correct_rate": {
+              "estimate": 0.8333333333333334,
+              "interval_95": [
+                0.5,
+                1.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 24.375149447500007,
+              "interval_95": [
+                17.360810912133687,
+                37.1216284900814
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.0010564166666666669,
+              "interval_95": [
+                0.0007384583333333334,
+                0.001574141666666667
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "nano_text_stateful": {
+            "tasks": 12,
+            "correct": 9,
+            "correctly_resolved": 6,
+            "unjustified": 0,
+            "unresolved": 3,
+            "justified_unresolved": 3,
+            "repairs": 14,
+            "attempts": 42,
+            "total_tokens": 446763,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.0174255,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.0019361666666666668,
+            "cost_per_correctly_resolved_task_usd": 0.00290425,
+            "latency_seconds": 374.6186607130003,
+            "scheduled_trials": 12,
+            "completed_trials": 12,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 12,
+                "correct": 9
+              },
+              "contested": {
+                "claims": 2,
+                "correct": 1
+              },
+              "unsupported": {
+                "claims": 2,
+                "correct": 2
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_small"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-nano-2025-04-14"
+            ],
+            "host_conditions": [
+              "stateful/text"
+            ],
+            "task_repeat_outcomes": {
+              "registered-rms-velocity": [
+                1,
+                1
+              ],
+              "sampled-negative-finding": [
+                1,
+                1
+              ],
+              "defence-cannot-ground-itself": [
+                1,
+                0
+              ],
+              "defence-with-independent-subargument": [
+                1,
+                1
+              ],
+              "registered-rms-wrong-origin": [
+                1,
+                1
+              ],
+              "cold-room-calibration-reference-repair": [
+                0,
+                0
+              ]
+            },
+            "correct_rate": {
+              "estimate": 0.75,
+              "interval_95": [
+                0.4166666666666667,
+                1.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 31.218221726083357,
+              "interval_95": [
+                15.711635465083722,
+                48.91669957583205
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.001452125,
+              "interval_95": [
+                0.0007645833333333334,
+                0.0021394916666666666
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "nano_unaided": {
+            "tasks": 12,
+            "correct": 6,
+            "correctly_resolved": 6,
+            "unjustified": 4,
+            "unresolved": 3,
+            "justified_unresolved": 0,
+            "repairs": 0,
+            "attempts": 12,
+            "total_tokens": 85348,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.0040552,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.0006758666666666667,
+            "cost_per_correctly_resolved_task_usd": 0.0006758666666666667,
+            "latency_seconds": 110.82715822398313,
+            "scheduled_trials": 12,
+            "completed_trials": 12,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 12,
+                "correct": 9
+              },
+              "contested": {
+                "claims": 2,
+                "correct": 0
+              },
+              "unsupported": {
+                "claims": 2,
+                "correct": 0
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_small"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-nano-2025-04-14"
+            ],
+            "host_conditions": [
+              "None/text"
+            ],
+            "task_repeat_outcomes": {
+              "registered-rms-velocity": [
+                1,
+                1
+              ],
+              "defence-cannot-ground-itself": [
+                0,
+                0
+              ],
+              "sampled-negative-finding": [
+                1,
+                1
+              ],
+              "defence-with-independent-subargument": [
+                0,
+                0
+              ],
+              "cold-room-calibration-reference-repair": [
+                1,
+                1
+              ],
+              "registered-rms-wrong-origin": [
+                0,
+                0
+              ]
+            },
+            "correct_rate": {
+              "estimate": 0.5,
+              "interval_95": [
+                0.16666666666666666,
+                0.8333333333333334
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 9.235596518665261,
+              "interval_95": [
+                8.585574238492244,
+                9.958547518165991
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.0003379333333333334,
+              "interval_95": [
+                0.00025243333333333336,
+                0.0004206841666666666
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "reasoning_mini_native_stateful": {
+            "tasks": 12,
+            "correct": 12,
+            "correctly_resolved": 8,
+            "unjustified": 0,
+            "unresolved": 0,
+            "justified_unresolved": 4,
+            "repairs": 12,
+            "attempts": 38,
+            "total_tokens": 395199,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.0288333,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.002402775,
+            "cost_per_correctly_resolved_task_usd": 0.0036041625,
+            "latency_seconds": 348.5997525430066,
+            "scheduled_trials": 12,
+            "completed_trials": 12,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 12,
+                "correct": 12
+              },
+              "contested": {
+                "claims": 2,
+                "correct": 2
+              },
+              "unsupported": {
+                "claims": 2,
+                "correct": 2
+              }
+            },
+            "declared_model_classes": [
+              "reasoning_enabled"
+            ],
+            "response_model_identities": [
+              "gpt-5-mini-2025-08-07"
+            ],
+            "host_conditions": [
+              "stateful/native"
+            ],
+            "task_repeat_outcomes": {
+              "registered-rms-velocity": [
+                1,
+                1
+              ],
+              "defence-cannot-ground-itself": [
+                1,
+                1
+              ],
+              "sampled-negative-finding": [
+                1,
+                1
+              ],
+              "defence-with-independent-subargument": [
+                1,
+                1
+              ],
+              "cold-room-calibration-reference-repair": [
+                1,
+                1
+              ],
+              "registered-rms-wrong-origin": [
+                1,
+                1
+              ]
+            },
+            "correct_rate": {
+              "estimate": 1.0,
+              "interval_95": [
+                1.0,
+                1.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 29.049979378583885,
+              "interval_95": [
+                23.46845387216854,
+                34.205403322749284
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.002402775,
+              "interval_95": [
+                0.0020699541666666667,
+                0.0027696083333333334
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "reasoning_mini_unaided": {
+            "tasks": 12,
+            "correct": 8,
+            "correctly_resolved": 6,
+            "unjustified": 0,
+            "unresolved": 3,
+            "justified_unresolved": 2,
+            "repairs": 0,
+            "attempts": 12,
+            "total_tokens": 88009,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.013533,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.001691625,
+            "cost_per_correctly_resolved_task_usd": 0.0022555,
+            "latency_seconds": 142.91197372301394,
+            "scheduled_trials": 12,
+            "completed_trials": 12,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 12,
+                "correct": 10
+              },
+              "contested": {
+                "claims": 2,
+                "correct": 2
+              },
+              "unsupported": {
+                "claims": 2,
+                "correct": 0
+              }
+            },
+            "declared_model_classes": [
+              "reasoning_enabled"
+            ],
+            "response_model_identities": [
+              "gpt-5-mini-2025-08-07"
+            ],
+            "host_conditions": [
+              "None/text"
+            ],
+            "task_repeat_outcomes": {
+              "registered-rms-velocity": [
+                1,
+                1
+              ],
+              "defence-cannot-ground-itself": [
+                1,
+                1
+              ],
+              "sampled-negative-finding": [
+                1,
+                1
+              ],
+              "defence-with-independent-subargument": [
+                1,
+                1
+              ],
+              "cold-room-calibration-reference-repair": [
+                0,
+                0
+              ],
+              "registered-rms-wrong-origin": [
+                0,
+                0
+              ]
+            },
+            "correct_rate": {
+              "estimate": 0.6666666666666666,
+              "interval_95": [
+                0.3333333333333333,
+                1.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 11.909331143584495,
+              "interval_95": [
+                10.694686821500605,
+                13.114168692834937
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.00112775,
+              "interval_95": [
+                0.0008800950000000001,
+                0.0013672833333333333
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          }
+        },
+        "paired_comparisons": [
+          {
+            "left": "mini_text_stateful",
+            "right": "mini_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.3333333333333333,
+              "interval_95": [
+                -0.6666666666666666,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0025960666666666665,
+              "interval_95": [
+                -0.0033349,
+                -0.0019206358333333342
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -11.076133812749807,
+              "interval_95": [
+                -17.72681687715341,
+                -6.745972021582323
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateful",
+            "right": "nano_native_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.16666666666666666,
+              "interval_95": [
+                -0.5,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0028919166666666668,
+              "interval_95": [
+                -0.0035382083333333337,
+                -0.0022281333333333334
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 4.374706631249865,
+              "interval_95": [
+                0.4248530562520803,
+                10.684438351080948
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateful",
+            "right": "nano_text_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.25,
+              "interval_95": [
+                -0.5833333333333334,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0024962083333333334,
+              "interval_95": [
+                -0.0029722666666666666,
+                -0.001969508333333333
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 11.217778909833214,
+              "interval_95": [
+                -1.3924431758320377,
+                24.80902634758301
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateful",
+            "right": "nano_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.5,
+              "interval_95": [
+                -0.8333333333333334,
+                -0.16666666666666666
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0036104,
+              "interval_95": [
+                -0.0044861125,
+                -0.0027275000000000003
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -10.764846297584882,
+              "interval_95": [
+                -17.338277432917796,
+                -6.960088522417209
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateful",
+            "right": "reasoning_mini_native_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.0,
+              "interval_95": [
+                0.0,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0015455583333333334,
+              "interval_95": [
+                -0.002197091666666667,
+                -0.000848986458333334
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 9.049536562333742,
+              "interval_95": [
+                4.080188949252867,
+                13.535909866248403
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateful",
+            "right": "reasoning_mini_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.3333333333333333,
+              "interval_95": [
+                -0.6666666666666666,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0028205833333333334,
+              "interval_95": [
+                -0.0036427858333333333,
+                -0.0019852249999999998
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -8.091111672665647,
+              "interval_95": [
+                -14.989910610581623,
+                -3.441496889332484
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_unaided",
+            "right": "nano_native_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.16666666666666666,
+              "interval_95": [
+                -0.3333333333333333,
+                0.6666666666666666
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.00029584999999999995,
+              "interval_95": [
+                -0.0006586666666666668,
+                6.696666666666677e-05
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 15.450840443999672,
+              "interval_95": [
+                8.218466162250479,
+                28.167054712081153
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_unaided",
+            "right": "nano_text_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.08333333333333333,
+              "interval_95": [
+                -0.5,
+                0.6666666666666666
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 9.985833333333326e-05,
+              "interval_95": [
+                -0.00040296812500000006,
+                0.0006109083333333332
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 22.29391272258302,
+              "interval_95": [
+                6.635900687750715,
+                40.109659381998426
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_unaided",
+            "right": "nano_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.16666666666666666,
+              "interval_95": [
+                -0.5,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0010143333333333334,
+              "interval_95": [
+                -0.0012784579166666666,
+                -0.0007576916666666675
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 0.3112875151649253,
+              "interval_95": [
+                -0.7985054685032082,
+                1.6545257059127831
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_unaided",
+            "right": "reasoning_mini_native_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.3333333333333333,
+              "interval_95": [
+                0.0,
+                0.6666666666666666
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 0.001050508333333333,
+              "interval_95": [
+                0.0006725458333333331,
+                0.0013387291666666665
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 20.125670375083548,
+              "interval_95": [
+                14.12782711433465,
+                25.197670950044117
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_unaided",
+            "right": "reasoning_mini_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.0,
+              "interval_95": [
+                -0.5,
+                0.5
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0002245166666666668,
+              "interval_95": [
+                -0.00042804520833333355,
+                -2.416666666666689e-06
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 2.9850221400841597,
+              "interval_95": [
+                1.7936020754168567,
+                3.9350852195845314
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_native_stateful",
+            "right": "nano_text_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.08333333333333333,
+              "interval_95": [
+                -0.25,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 0.0003957083333333333,
+              "interval_95": [
+                1.0574999999999945e-05,
+                0.0009900666666666667
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 6.8430722785833495,
+              "interval_95": [
+                -2.3347630415834524,
+                19.567028650667755
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_native_stateful",
+            "right": "nano_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.3333333333333333,
+              "interval_95": [
+                -0.8333333333333334,
+                0.3333333333333333
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0007184833333333334,
+              "interval_95": [
+                -0.0011680416666666668,
+                -0.0004735820833333335
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -15.139552928834746,
+              "interval_95": [
+                -27.712692314132497,
+                -8.37463721908413
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_native_stateful",
+            "right": "reasoning_mini_native_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.16666666666666666,
+              "interval_95": [
+                0.0,
+                0.5
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 0.0013463583333333331,
+              "interval_95": [
+                0.0010852749999999997,
+                0.0016266958333333332
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 4.6748299310838775,
+              "interval_95": [
+                -4.757566295253931,
+                11.729630653833738
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_native_stateful",
+            "right": "reasoning_mini_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.16666666666666666,
+              "interval_95": [
+                -0.5,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 7.13333333333332e-05,
+              "interval_95": [
+                -0.0003656943750000003,
+                0.00041980833333333324
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -12.465818303915512,
+              "interval_95": [
+                -25.267634127850577,
+                -5.527667702417602
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_text_stateful",
+            "right": "nano_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.25,
+              "interval_95": [
+                -0.75,
+                0.3333333333333333
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0011141916666666668,
+              "interval_95": [
+                -0.0017304750000000002,
+                -0.0005076887500000003
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -21.982625207418096,
+              "interval_95": [
+                -39.44335472300372,
+                -6.695657505335475
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_text_stateful",
+            "right": "reasoning_mini_native_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.25,
+              "interval_95": [
+                0.0,
+                0.5833333333333334
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 0.0009506499999999998,
+              "interval_95": [
+                0.0005241833333333332,
+                0.0013452390624999993
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -2.168242347499472,
+              "interval_95": [
+                -17.364438998621274,
+                11.17073429399929
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_text_stateful",
+            "right": "reasoning_mini_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.08333333333333333,
+              "interval_95": [
+                -0.5,
+                0.25
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.00032437500000000006,
+              "interval_95": [
+                -0.00086005,
+                0.00018137499999999995
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -19.30889058249886,
+              "interval_95": [
+                -37.53036165616322,
+                -3.4111879546671844
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_unaided",
+            "right": "reasoning_mini_native_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.5,
+              "interval_95": [
+                0.16666666666666666,
+                0.8333333333333334
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 0.0020648416666666667,
+              "interval_95": [
+                0.0017534083333333333,
+                0.0023916874999999997
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 19.814382859918624,
+              "interval_95": [
+                14.608111227835252,
+                24.214241236814313
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_unaided",
+            "right": "reasoning_mini_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": 0.16666666666666666,
+              "interval_95": [
+                -0.3333333333333333,
+                0.6666666666666666
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 0.0007898166666666667,
+              "interval_95": [
+                0.0006151529166666666,
+                0.0009666166666666666
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 2.673734624919234,
+              "interval_95": [
+                1.4312359692515504,
+                4.0238620355495245
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "reasoning_mini_native_stateful",
+            "right": "reasoning_mini_unaided",
+            "direction": "right_minus_left",
+            "paired_blocks": 12,
+            "correct_rate_difference": {
+              "estimate": -0.3333333333333333,
+              "interval_95": [
+                -0.6666666666666666,
+                0.0
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.001275025,
+              "interval_95": [
+                -0.0015598291666666666,
+                -0.0009849208333333331
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -17.14064823499939,
+              "interval_95": [
+                -22.106336432164124,
+                -11.933611332002329
+              ],
+              "task_clusters": 6,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          }
+        ],
+        "uncertainty_interpretation": "Repeated calls within the same task remain one task cluster. Intervals describe variation across this finite task suite; tasks are not a random population sample. A zero-variance interval cannot exclude unseen failures. No inference to every model or all engineering tasks follows."
+      }
+    },
+    {
+      "file": "ablation.json.gz",
+      "sha256": "4248ebdd7c7c610068447947169994533993df9f87ca4a6d774818aa0b97d82f",
+      "phase": "ablation",
+      "completed_trials": 8,
+      "freeze_digest": "541192dd8470ac8e7de35dc7d3877fbbb252045ababd6ae1f142b2f009a663d2",
+      "reference_or_implementation_drift": false,
+      "scoring_version": "expanded-alpha-equivalence+evidence-trace/2",
+      "aggregate": {
+        "conditions": {
+          "mini_text_stateful": {
+            "tasks": 2,
+            "correct": 2,
+            "correctly_resolved": 2,
+            "unjustified": 0,
+            "unresolved": 0,
+            "justified_unresolved": 0,
+            "repairs": 1,
+            "attempts": 6,
+            "total_tokens": 58022,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.0154952,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.0077476,
+            "cost_per_correctly_resolved_task_usd": 0.0077476,
+            "latency_seconds": 49.41087590400275,
+            "scheduled_trials": 2,
+            "completed_trials": 2,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 4,
+                "correct": 4
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_larger"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-mini-2025-04-14"
+            ],
+            "host_conditions": [
+              "stateful/text"
+            ],
+            "task_repeat_outcomes": {
+              "text-model-repair-and-explain": [
+                1
+              ],
+              "nested-model-observation": [
+                1
+              ]
+            },
+            "correct_rate": {
+              "estimate": 1.0,
+              "interval_95": [
+                1.0,
+                1.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 24.705437952001375,
+              "interval_95": [
+                17.758094372002233,
+                31.652781532000517
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.0077476,
+              "interval_95": [
+                0.0051684,
+                0.0103268
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "mini_text_stateless": {
+            "tasks": 2,
+            "correct": 1,
+            "correctly_resolved": 1,
+            "unjustified": 0,
+            "unresolved": 1,
+            "justified_unresolved": 0,
+            "repairs": 5,
+            "attempts": 11,
+            "total_tokens": 118771,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.027449200000000003,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.027449200000000003,
+            "cost_per_correctly_resolved_task_usd": 0.027449200000000003,
+            "latency_seconds": 97.44838808299392,
+            "scheduled_trials": 2,
+            "completed_trials": 2,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 4,
+                "correct": 1
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_larger"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-mini-2025-04-14"
+            ],
+            "host_conditions": [
+              "stateless/text"
+            ],
+            "task_repeat_outcomes": {
+              "text-model-repair-and-explain": [
+                1
+              ],
+              "nested-model-observation": [
+                0
+              ]
+            },
+            "correct_rate": {
+              "estimate": 0.5,
+              "interval_95": [
+                0.0,
+                1.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 48.72419404149696,
+              "interval_95": [
+                46.53681150399643,
+                50.91157657899748
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.013724600000000002,
+              "interval_95": [
+                0.013349600000000001,
+                0.014099600000000002
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "nano_text_stateful": {
+            "tasks": 2,
+            "correct": 2,
+            "correctly_resolved": 2,
+            "unjustified": 0,
+            "unresolved": 0,
+            "justified_unresolved": 0,
+            "repairs": 3,
+            "attempts": 9,
+            "total_tokens": 92492,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.0044318,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": 0.0022159,
+            "cost_per_correctly_resolved_task_usd": 0.0022159,
+            "latency_seconds": 91.05914979099907,
+            "scheduled_trials": 2,
+            "completed_trials": 2,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 4,
+                "correct": 4
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_small"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-nano-2025-04-14"
+            ],
+            "host_conditions": [
+              "stateful/text"
+            ],
+            "task_repeat_outcomes": {
+              "text-model-repair-and-explain": [
+                1
+              ],
+              "nested-model-observation": [
+                1
+              ]
+            },
+            "correct_rate": {
+              "estimate": 1.0,
+              "interval_95": [
+                1.0,
+                1.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 45.529574895499536,
+              "interval_95": [
+                17.83322300999862,
+                73.22592678100045
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.0022159,
+              "interval_95": [
+                0.0012986,
+                0.0031332
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          "nano_text_stateless": {
+            "tasks": 2,
+            "correct": 0,
+            "correctly_resolved": 0,
+            "unjustified": 0,
+            "unresolved": 2,
+            "justified_unresolved": 0,
+            "repairs": 9,
+            "attempts": 11,
+            "total_tokens": 106605,
+            "token_usage_complete": true,
+            "total_cost_usd": 0.004976400000000001,
+            "cost_complete": true,
+            "cost_per_correct_task_usd": null,
+            "cost_per_correctly_resolved_task_usd": null,
+            "latency_seconds": 137.51160578699637,
+            "scheduled_trials": 2,
+            "completed_trials": 2,
+            "coverage_complete": true,
+            "claim_status_breakdown": {
+              "supported": {
+                "claims": 4,
+                "correct": 0
+              }
+            },
+            "declared_model_classes": [
+              "non_reasoning_small"
+            ],
+            "response_model_identities": [
+              "gpt-4.1-nano-2025-04-14"
+            ],
+            "host_conditions": [
+              "stateless/text"
+            ],
+            "task_repeat_outcomes": {
+              "text-model-repair-and-explain": [
+                0
+              ],
+              "nested-model-observation": [
+                0
+              ]
+            },
+            "correct_rate": {
+              "estimate": 0.0,
+              "interval_95": [
+                0.0,
+                0.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "latency_seconds_per_trial": {
+              "estimate": 68.75580289349818,
+              "interval_95": [
+                54.5796841420015,
+                82.93192164499487
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_usd_per_trial": {
+              "estimate": 0.0024882000000000003,
+              "interval_95": [
+                0.002056,
+                0.0029204
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          }
+        },
+        "paired_comparisons": [
+          {
+            "left": "mini_text_stateful",
+            "right": "mini_text_stateless",
+            "direction": "right_minus_left",
+            "paired_blocks": 2,
+            "correct_rate_difference": {
+              "estimate": -0.5,
+              "interval_95": [
+                -1.0,
+                0.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": 0.005977000000000001,
+              "interval_95": [
+                0.0037728000000000015,
+                0.008181200000000001
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 24.018756089495582,
+              "interval_95": [
+                14.884029971995915,
+                33.15348220699525
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateful",
+            "right": "nano_text_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 2,
+            "correct_rate_difference": {
+              "estimate": 0.0,
+              "interval_95": [
+                0.0,
+                0.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0055317000000000005,
+              "interval_95": [
+                -0.0071936000000000005,
+                -0.0038698
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 20.82413694349816,
+              "interval_95": [
+                0.0751286379963858,
+                41.573145248999936
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateful",
+            "right": "nano_text_stateless",
+            "direction": "right_minus_left",
+            "paired_blocks": 2,
+            "correct_rate_difference": {
+              "estimate": -1.0,
+              "interval_95": [
+                -1.0,
+                -1.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0052594,
+              "interval_95": [
+                -0.0074064000000000005,
+                -0.0031124
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 44.05036494149681,
+              "interval_95": [
+                36.821589769999264,
+                51.279140112994355
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateless",
+            "right": "nano_text_stateful",
+            "direction": "right_minus_left",
+            "paired_blocks": 2,
+            "correct_rate_difference": {
+              "estimate": 0.5,
+              "interval_95": [
+                0.0,
+                1.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0115087,
+              "interval_95": [
+                -0.012051000000000001,
+                -0.010966400000000001
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": -3.1946191459974216,
+              "interval_95": [
+                -33.078353568998864,
+                26.68911527700402
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "mini_text_stateless",
+            "right": "nano_text_stateless",
+            "direction": "right_minus_left",
+            "paired_blocks": 2,
+            "correct_rate_difference": {
+              "estimate": -0.5,
+              "interval_95": [
+                -1.0,
+                0.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "cost_difference_usd": {
+              "estimate": -0.0112364,
+              "interval_95": [
+                -0.0112936,
+                -0.011179200000000002
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 20.031608852001227,
+              "interval_95": [
+                3.668107563004014,
+                36.39511014099844
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          },
+          {
+            "left": "nano_text_stateful",
+            "right": "nano_text_stateless",
+            "direction": "right_minus_left",
+            "paired_blocks": 2,
+            "correct_rate_difference": {
+              "estimate": -1.0,
+              "interval_95": [
+                -1.0,
+                -1.0
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": true
+            },
+            "cost_difference_usd": {
+              "estimate": 0.00027230000000000006,
+              "interval_95": [
+                -0.00021279999999999997,
+                0.0007574000000000001
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            },
+            "latency_difference_seconds": {
+              "estimate": 23.22622799799865,
+              "interval_95": [
+                9.70599486399442,
+                36.74646113200288
+              ],
+              "task_clusters": 2,
+              "bootstrap_samples": 2000,
+              "method": "percentile_task_cluster_bootstrap",
+              "zero_observed_variance": false
+            }
+          }
+        ],
+        "uncertainty_interpretation": "Repeated calls within the same task remain one task cluster. Intervals describe variation across this finite task suite; tasks are not a random population sample. A zero-variance interval cannot exclude unseen failures. No inference to every model or all engineering tasks follows."
+      }
+    }
+  ],
+  "totals": {
+    "trials": 92,
+    "correct": 70,
+    "unknown_cost_trials": 0,
+    "known_complete_trial_cost_usd": 0.1924838,
+    "known_model_cost_subtotal_usd": 0.1924838,
+    "experimental_total_cost_usd": 0.1924838,
+    "provider_probe_cost_usd": 0.00011835,
+    "provider_probes": 5,
+    "total_including_probes_usd": 0.19260215,
+    "stop_reasons": {
+      "finished": 85,
+      "token_budget_exhausted": 1,
+      "repair_budget_exhausted": 4,
+      "model_stopped": 2
+    },
+    "cost_scope": "Configured token-rate estimate; zero marginal MCP fixture charges; excludes hardware, labour and taxes"
+  },
+  "artifact_metadata": [
+    {
+      "file": "provider-probes.json",
+      "sha256": "0d542ce5f78e7d5b27274b9bece96492fd4468dc4c0558b26128046029ee1f5a"
+    },
+    {
+      "file": "execution-metadata.json",
+      "sha256": "bc7fe43e4ced63547d6664ca01e60445b07711a83af3cbaa009eaade043dbfbb"
+    }
+  ]
+}
