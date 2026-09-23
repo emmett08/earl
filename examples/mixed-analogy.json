@@ -1,0 +1,24 @@
+{
+  "value": {
+    "relevant_features": [
+      "material",
+      "bearing_type"
+    ],
+    "source": {
+      "material": "steel",
+      "bearing_type": "rolling"
+    },
+    "target": {
+      "material": "steel",
+      "bearing_type": "rolling"
+    }
+  },
+  "observed_at": "2026-09-23T00:00:00Z",
+  "context": {
+    "episode": "robot_17",
+    "plant_model": "affine_demo"
+  },
+  "details": {
+    "source": "synthetic mixed-method example"
+  }
+}

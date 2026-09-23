@@ -1,0 +1,123 @@
+// Synthetic mixed-method diagnosis; numerical inputs are illustrative, not field data.
+language "EAL/0.1";
+environment episode { require "episode" == "robot_17"; require "plant_model" == "affine_demo"; }
+tool read_logic { version "1"; mode deterministic; }
+evidence logic_data {
+  tool read_logic; kind logical_case; environment episode; max_age 86400;
+  require "conclusion" == "model_condition";
+}
+reasoning logic_method {
+  mode deductive;
+  rationale "The supplied propositional premises entail model_condition.";
+  require "entailed" == true;
+}
+claim logic_conclusion { statement "The supplied propositional premises entail model_condition."; environment episode; }
+tool read_sample { version "1"; mode deterministic; }
+evidence sample_data {
+  tool read_sample; kind sample; environment episode; max_age 86400;
+  require "trials" > 0;
+}
+reasoning sample_method {
+  mode inductive;
+  rationale "The Wilson lower bound for the stated deficit frequency exceeds one half under the binomial sampling model.";
+  require "lower" > 0.5;
+}
+claim sample_conclusion { statement "The Wilson lower bound for the stated deficit frequency exceeds one half under the binomial sampling model."; environment episode; }
+tool read_experiment { version "1"; mode deterministic; }
+evidence experiment_data {
+  tool read_experiment; kind experiment; environment episode; max_age 86400;
+  require "assignment" == "randomised";
+}
+reasoning experiment_method {
+  mode causal;
+  rationale "The supplied randomised-group vibration contrast is negative under the declared design assumptions.";
+  require "estimate" < 0;
+}
+claim experiment_conclusion { statement "The supplied randomised-group vibration contrast is negative under the declared design assumptions."; environment episode; }
+tool read_model { version "1"; mode deterministic; }
+evidence model_data {
+  tool read_model; kind causal_model; environment episode; max_age 86400;
+  require "outcome" == "loss";
+}
+reasoning model_method {
+  mode counterfactual;
+  rationale "Within the supplied affine model and exogenous context, eliminating wear reduces predicted loss.";
+  require "difference" < 0;
+}
+claim model_conclusion { statement "Within the supplied affine model and exogenous context, eliminating wear reduces predicted loss."; environment episode; }
+tool read_analogy { version "1"; mode deterministic; }
+evidence analogy_data {
+  tool read_analogy; kind analogy; environment episode; max_age 86400;
+  require "source.material" == "steel";
+}
+reasoning analogy_method {
+  mode analogical;
+  rationale "The source and target correspond on the two declared features; the comparison supplies no calibrated truth probability.";
+  require "match_fraction" == 1;
+}
+claim analogy_conclusion { statement "The source and target correspond on the two declared features; the comparison supplies no calibrated truth probability."; environment episode; }
+tool read_trace { version "1"; mode deterministic; }
+evidence trace_data {
+  tool read_trace; kind trace; environment episode; max_age 86400;
+  require "semantics" == "sampled";
+}
+reasoning trace_method {
+  mode temporal;
+  rationale "All supplied temperature samples satisfy the threshold within the declared sampling contract.";
+  require "holds" == true;
+}
+claim trace_conclusion { statement "All supplied temperature samples satisfy the threshold within the declared sampling contract."; environment episode; }
+tool read_hypotheses { version "1"; mode deterministic; }
+evidence hypotheses_data {
+  tool read_hypotheses; kind hypotheses; environment episode; max_age 86400;
+  require "observed" != "";
+}
+reasoning hypotheses_method {
+  mode abductive;
+  rationale "The joint likelihoods and equal priors rank motor wear first within this supplied two-candidate model.";
+  require "best" == "motor_wear";
+}
+claim hypotheses_conclusion { statement "The joint likelihoods and equal priors rank motor wear first within this supplied two-candidate model."; environment episode; }
+tool read_basis { version "1"; mode deterministic; }
+evidence episode_basis { tool read_basis; kind documentation; environment episode; max_age 86400; require "episode_documented" == true; }
+assumption sampling_model { statement "The 20 observations are treated as independent Bernoulli trials with a common probability for this synthetic episode."; environment episode; validate episode_basis; valid_from "2026-09-23T00:00:00Z"; valid_until "2026-09-24T00:00:00Z"; }
+assumption experiment_model { statement "The synthetic treatment and control observations represent comparable randomised groups with no interference."; environment episode; validate episode_basis; valid_from "2026-09-23T00:00:00Z"; valid_until "2026-09-24T00:00:00Z"; }
+assumption structural_model { statement "The stated affine equations and exogenous values are the counterfactual model for this synthetic episode."; environment episode; validate episode_basis; valid_from "2026-09-23T00:00:00Z"; valid_until "2026-09-24T00:00:00Z"; }
+assumption hypothesis_model { statement "The two synthetic hypotheses are treated as mutually exclusive and exhaustive, and their supplied likelihoods describe the joint evidence."; environment episode; validate episode_basis; valid_from "2026-09-23T00:00:00Z"; valid_until "2026-09-24T00:00:00Z"; }
+argument logic_argument {
+  conclusion logic_conclusion; reasoning logic_method;
+  evidence logic_data;
+}
+argument sample_argument {
+  conclusion sample_conclusion; reasoning sample_method;
+  evidence sample_data;
+  assumptions sampling_model;
+}
+argument experiment_argument {
+  conclusion experiment_conclusion; reasoning experiment_method;
+  evidence experiment_data;
+  assumptions experiment_model;
+}
+argument model_argument {
+  conclusion model_conclusion; reasoning model_method;
+  evidence model_data;
+  assumptions structural_model;
+  premises logic_conclusion;
+}
+argument analogy_argument {
+  conclusion analogy_conclusion; reasoning analogy_method;
+  evidence analogy_data;
+}
+argument trace_argument {
+  conclusion trace_conclusion; reasoning trace_method;
+  evidence trace_data;
+}
+argument hypotheses_argument {
+  conclusion hypotheses_conclusion; reasoning hypotheses_method;
+  evidence hypotheses_data;
+  assumptions hypothesis_model;
+  premises sample_conclusion, experiment_conclusion, model_conclusion, trace_conclusion;
+}
+reasoning final_composition { mode structured; rationale "The model-relative diagnosis depends on the abductive ranking and declared feature correspondence, preserving both interpretations."; }
+claim diagnosis { statement "Within this synthetic episode and supplied two-hypothesis model, the recorded reasoning favours motor wear; the claim remains conditional on the modelling assumptions."; environment episode; }
+argument composed_diagnosis { conclusion diagnosis; reasoning final_composition; premises hypotheses_conclusion, analogy_conclusion; }

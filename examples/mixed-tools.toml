@@ -1,0 +1,47 @@
+[tools.read_logic]
+kind = "json_file"
+path = "examples/mixed-logic.json"
+version = "1"
+mode = "deterministic"
+
+[tools.read_sample]
+kind = "json_file"
+path = "examples/mixed-sample.json"
+version = "1"
+mode = "deterministic"
+
+[tools.read_experiment]
+kind = "json_file"
+path = "examples/mixed-experiment.json"
+version = "1"
+mode = "deterministic"
+
+[tools.read_model]
+kind = "json_file"
+path = "examples/mixed-model.json"
+version = "1"
+mode = "deterministic"
+
+[tools.read_analogy]
+kind = "json_file"
+path = "examples/mixed-analogy.json"
+version = "1"
+mode = "deterministic"
+
+[tools.read_trace]
+kind = "json_file"
+path = "examples/mixed-trace.json"
+version = "1"
+mode = "deterministic"
+
+[tools.read_hypotheses]
+kind = "json_file"
+path = "examples/mixed-hypotheses.json"
+version = "1"
+mode = "deterministic"
+
+[tools.read_basis]
+kind = "json_file"
+path = "examples/mixed-basis.json"
+version = "1"
+mode = "deterministic"

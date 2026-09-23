@@ -1,0 +1,34 @@
+{
+  "value": {
+    "start": 0,
+    "end": 20,
+    "max_gap": 10,
+    "events": [
+      {
+        "time": 0,
+        "value": 31
+      },
+      {
+        "time": 10,
+        "value": 32
+      },
+      {
+        "time": 20,
+        "value": 31
+      }
+    ],
+    "property": {
+      "operator": "lt",
+      "value": 45
+    },
+    "semantics": "sampled"
+  },
+  "observed_at": "2026-09-23T00:00:00Z",
+  "context": {
+    "episode": "robot_17",
+    "plant_model": "affine_demo"
+  },
+  "details": {
+    "source": "synthetic mixed-method example"
+  }
+}

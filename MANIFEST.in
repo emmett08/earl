@@ -1,0 +1,8 @@
+include README.md
+recursive-include grammar *.g4
+recursive-include examples *.eal *.json *.toml *.py
+recursive-include docs *.md
+recursive-include scripts *.py
+
+include Makefile CONTRACT.md
+recursive-include skills *.md *.yaml

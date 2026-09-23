@@ -1,0 +1,22 @@
+{
+  "value": {
+    "premises": [
+      "bounded",
+      {
+        "implies": [
+          "bounded",
+          "model_condition"
+        ]
+      }
+    ],
+    "conclusion": "model_condition"
+  },
+  "observed_at": "2026-09-23T00:00:00Z",
+  "context": {
+    "episode": "robot_17",
+    "plant_model": "affine_demo"
+  },
+  "details": {
+    "source": "synthetic mixed-method example"
+  }
+}

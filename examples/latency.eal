@@ -1,0 +1,50 @@
+// Synthetic observations illustrating scoped, revisable engineering reasoning.
+language "EAL/0.1";
+environment bench {
+  require "platform" == "bench_A";
+  require "load_rps" == 100;
+  require "temperature_c" < 45;
+}
+tool measurements { version "1"; mode nondeterministic; }
+tool calibration_reader { version "1"; mode deterministic; }
+evidence latency_sample {
+  tool measurements; kind sample; environment bench; max_age 172800;
+  input {"run": "sample_17"};
+  require "p95_ms" <= 100;
+  require "sample_count" >= 1000;
+}
+evidence calibration_record {
+  tool calibration_reader; kind calibration; environment bench; max_age 86400;
+  input {"sensor": "timer_A"};
+  require "maximum_error_ms" <= 1;
+}
+assumption timing_accuracy {
+  statement "Timer A has the stated error bound in this environment for this calibration episode.";
+  environment bench; validate calibration_record;
+  valid_from "2026-09-23T00:00:00Z";
+  valid_until "2026-09-24T00:00:00Z";
+}
+reasoning sample_interpretation {
+  mode structured;
+  rationale "The recorded percentile and count support the claim about this sample, conditional on timer accuracy.";
+}
+claim sample_latency {
+  statement "The recorded 1000-request sample at 100 requests per second has a 95th-percentile latency at most 100 ms, subject to a 1 ms measurement error.";
+  environment bench;
+}
+argument measured_latency {
+  conclusion sample_latency; reasoning sample_interpretation;
+  evidence latency_sample; assumptions timing_accuracy;
+}
+reasoning component_use {
+  mode structured;
+  rationale "For this example, the sample-latency result supplies limited support for investigating this component further at the same load.";
+}
+claim candidate_explanation {
+  statement "The sample supports investigating the component as an explanation of the observed response time at the stated load.";
+  environment bench;
+}
+argument derived_explanation {
+  conclusion candidate_explanation; reasoning component_use;
+  premises sample_latency;
+}
