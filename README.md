@@ -82,6 +82,8 @@ The MCP tools are `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and
 
 ## Read the design
 
+[Design aim and remaining work](docs/design-aim.md) defines purpose completeness, precise vocabulary, human readability and low-cost model delegation, distinguishing requirements from current capabilities.
+
 - [Argument model and subarguments](docs/argument-model.md): chosen semantics and relation to Toulmin and structured argumentation.
 - [Language reference](docs/language.md): declarations, scope, time, predicates and diagnostics.
 - [Reasoning methods](docs/reasoning-modes.md): distinct evidence schemas, algorithms and interpretation limits.
