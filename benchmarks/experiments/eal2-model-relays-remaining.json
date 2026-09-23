@@ -1,0 +1,19 @@
+{
+  "schema": "EAL/remaining-block-plan/1",
+  "selected_blocks": [
+    "registered-rms-velocity/repeat-1",
+    "registered-rms-velocity/repeat-0",
+    "registered-rms-wrong-origin/repeat-1",
+    "cold-room-calibration-reference-repair/repeat-0"
+  ],
+  "scheduled_endpoints": 108,
+  "relay_plan": "benchmarks/experiments/eal2-model-relays-funded.json",
+  "relay_plan_sha256": "c03975730ec02c766dee36b3c03d8ff1e17014c064d33a120490de0fce4dcda7",
+  "prior_analysis": "benchmarks/results/2026-09-23-relays-continuation/block-analysis.json",
+  "prior_analysis_sha256": "e1881edb93f97fefa2573fb2d113f1b975da8a31414edd6d69d0e2668356880c",
+  "canonical_archive": "benchmarks/results/2026-09-23-relays-explicit/campaign.tar.gz",
+  "canonical_archive_sha256": "c9db548af8a16b98d6031a21dc2006279b058f1e24b3b18d092d2f26f4073b14",
+  "budget_ledger": "benchmarks/results/2026-09-23-relays-funded/budget-reconciliation.json",
+  "budget_ledger_sha256": "1af61c5001a288198c2108d48acc547754960cdf51ab5c53ea5cda8da04b8f7c",
+  "selection_rule": "All 27 conditions in exactly the four missing canonical task/repetition blocks. Preserve canonical trial IDs, schedule indices, block IDs, repetitions, condition order and sampling labels. No outcome-dependent selection."
+}
