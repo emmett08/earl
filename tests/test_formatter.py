@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from eal.extensions import example_registry
+from eal.reachability import REACHABILITY_CONTRACT
 from eal.formatter import format_source, semantic_ir
 from eal.parser import parse
 from eal.semantics import validate
@@ -11,7 +12,7 @@ from test_typed_propositions import SOURCE
 
 @pytest.mark.parametrize('source', [SOURCE, *(path.read_text() for path in Path('examples').glob('*.eal'))])
 def test_canonical_source_round_trip_preserves_typed_ir_and_is_idempotent(source):
-    registry = example_registry()
+    registry = example_registry().with_method(REACHABILITY_CONTRACT)
     formatted = format_source(source, registry=registry)
     assert semantic_ir(parse(source)) == semantic_ir(parse(formatted))
     assert format_source(formatted, registry=registry) == formatted

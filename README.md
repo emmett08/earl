@@ -4,7 +4,7 @@ EAL represents engineering reasoning as claims, subordinate arguments, typed evi
 
 The language is **EAL/2**, with `.eal` source files. EAL/2 is the only supported source language; backwards compatibility is never a project requirement. Python 3.11 or later is required. Configured command adapters currently require a POSIX host.
 
-Package **2.2.2** adds frozen model-sequence experiments, preserves partial known charges and distinguishes unexecuted conditions from model outcomes, and enforces the current method contracts across built-in and installed procedures. It rejects statically incompatible result predicates and checks imported observations against their original acquisition requests. Current examples and references use these contracts. File imports require `request` metadata; obsolete envelopes have no compatibility adapter. The source language remains EAL/2.
+Package **2.2.3** adds an optional, operator-installed finite-state reachability method and a bounded EAL/2 companion experiment. The method uses the existing typed method registry; it does not change the EAL/2 source language or `EAL/typed-input/1` observation schema. The earlier package 2.2.2 results retain their measured version labels. File imports still require `request` metadata.
 
 ## What is implemented
 
@@ -104,6 +104,7 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 - [Engineering tasks](docs/engineering-tasks.md): known-answer cases, adverse variants and remaining coverage gaps.
 - [Historical live model experiments](docs/live-model-results.md): original API comparisons, retained failures, token usage and cost estimates from earlier EAL versions.
 - [EAL/2 regression experiments](docs/eal2-model-results.md): live model/host measurements for package 2.1.0 on 23 September 2026, using previously exposed tasks.
+- [EAL/2 with a finite-state checker](docs/eal2-companion-investigation.md): a versioned argument, installed method, independent graph oracle and complete synthetic experiment, including an observation-authentication counterexample.
 - [Historical EAL/0.3 repeated experiments](docs/eal03-model-results.md): original model/interface conditions and development ablations.
 - [Reasoning methods](docs/reasoning-modes.md): distinct evidence schemas, algorithms and interpretation limits.
 - [Grounded argumentation](docs/grounded-reasoning.md): counterargument, defence and undecided cycles.

@@ -1,0 +1,92 @@
+// This argument describes a fixed computational experiment. structured/1
+// checks authored dependencies; the companion method calculates graph paths.
+language "EAL/2";
+
+environment study {
+  require "investigation" == "INV-EAL2-COMPANION-001";
+}
+tool result_reader { version "1"; mode deterministic; }
+tool prospective_reader { version "1"; mode deterministic; }
+
+evidence finite_matrix {
+  tool result_reader; kind validation; environment study; max_age 86400;
+  require "complete" == true;
+  require "graphs" == 48;
+  require "results.computed_correct" == 48;
+  require "results.authored_correct" == 24;
+  require "results.authored_wrong_scope_supported" == 48;
+  require "results.wrong_scope_refused" == 48;
+  require "results.stale_refused" == 48;
+  require "results.witnesses_valid" == 48;
+}
+evidence false_graph_control {
+  tool result_reader; kind validation; environment study; max_age 86400;
+  require "counterfeit.held_graph_unsafe" == true;
+  require "counterfeit.supplied_graph_safe" == true;
+  require "counterfeit.claim_status" == "supported";
+}
+evidence physical_validation {
+  tool prospective_reader; kind validation; environment study; max_age 86400;
+  require "status" == "complete";
+  require "independent_device_model_validated" == true;
+}
+evidence population_validation {
+  tool prospective_reader; kind validation; environment study; max_age 86400;
+  require "status" == "complete";
+  require "independent_models_and_tasks_tested" == true;
+}
+
+reasoning finite_description {
+  method "structured/1";
+  rationale "The retained 48 case outcomes and independent path oracle establish exact counts for the fixed generated corpus, subject to the separate audit of the oracle and files.";
+}
+reasoning bounded_contribution {
+  method "structured/1";
+  rationale "A registered bounded checker supplies the calculation absent from the authored support relation. A typed EAL proposition, scoped record and host then connect that result to this claim. The conclusion is limited to the tested corpus.";
+}
+reasoning authentication_boundary {
+  method "structured/1";
+  rationale "A false but coherently labelled graph is a counterexample to interpreting a matching record as proof of the graph's physical truth.";
+}
+reasoning prospective_warrant {
+  method "structured/1";
+  rationale "Independent source validation or broader held-out trials would be needed before the respective empirical conclusion is considered. The predicates currently fail.";
+}
+
+claim finite_result {
+  statement "On 48 generated finite graphs, EAL/2 with the registered checker matched the independent bounded-reachability oracle on 48; an affirmative authored structured argument matched on 24. Wrong-scope records removed computed support in 48 cases while authored support remained in 48; stale records removed computed support in 48.";
+  environment study;
+}
+argument measured_result {
+  conclusion finite_result; reasoning finite_description; evidence finite_matrix;
+}
+claim companion_capability {
+  statement "For the fixed finite-graph corpus and stated model assumptions, EAL/2 plus a registered checker, typed claim binding and scoped observation executes a bounded safety argument and revises its support when the supplied model changes.";
+  environment study;
+}
+argument computational_route {
+  conclusion companion_capability; reasoning bounded_contribution; premises finite_result;
+}
+claim graph_authentication_unestablished {
+  statement "The EAL/2 record checks used here cannot establish that a supplied graph is a true account of a physical device: a coherently relabelled safe graph gained support in one deliberately unsafe case.";
+  environment study;
+}
+argument counterfeit_route {
+  conclusion graph_authentication_unestablished; reasoning authentication_boundary; evidence false_graph_control;
+}
+claim physical_device_safe {
+  statement "A physical device is safe under the declared operating conditions.";
+  environment study;
+}
+argument unmeasured_physical_route {
+  conclusion physical_device_safe; reasoning prospective_warrant;
+  evidence physical_validation; premises companion_capability;
+}
+claim general_engineering_gain {
+  statement "The combined system improves engineering reasoning on independently sampled unseen tasks.";
+  environment study;
+}
+argument unmeasured_population_route {
+  conclusion general_engineering_gain; reasoning prospective_warrant;
+  evidence population_validation; premises companion_capability;
+}

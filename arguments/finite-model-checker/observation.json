@@ -1,0 +1,37 @@
+{
+  "context": {
+    "investigation": "INV-EAL2-COMPANION-001"
+  },
+  "observed_at": "2026-09-23T17:30:00Z",
+  "request": {
+    "context": {
+      "investigation": "INV-EAL2-COMPANION-001"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "result_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "complete": true,
+    "counterfeit": {
+      "claim_status": "supported",
+      "held_graph_unsafe": true,
+      "record_binding": "supported",
+      "supplied_graph_safe": true
+    },
+    "graphs": 48,
+    "method_source_sha256": "a9f540ca08f7e40903c2221d7d41a4fd42aa28c1a5103c36eae6abb7228d2960",
+    "protocol_sha256": "97d607de20b2d7bd12bf009ca1b852aa592bfab2902a61ce514ddd8b5a30446d",
+    "result_sha256": "c9b1ec68b6c0ddb9ab649d0ff146a7703f28bebe894facd4c5d1d49fb0973b01",
+    "results": {
+      "authored_correct": 24,
+      "authored_wrong_scope_supported": 48,
+      "computed_correct": 48,
+      "edge_order_invariant": 48,
+      "stale_refused": 48,
+      "witnesses_valid": 48,
+      "wrong_scope_refused": 48
+    }
+  }
+}

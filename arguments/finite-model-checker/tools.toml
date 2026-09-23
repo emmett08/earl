@@ -1,0 +1,11 @@
+[tools.result_reader]
+kind = "json_file"
+path = "arguments/finite-model-checker/observation.json"
+version = "1"
+mode = "deterministic"
+
+[tools.prospective_reader]
+kind = "json_file"
+path = "arguments/finite-model-checker/pending.json"
+version = "1"
+mode = "deterministic"
