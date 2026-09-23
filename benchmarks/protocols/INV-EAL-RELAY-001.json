@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-RELAY-001",
   "title": "Order and evidence transfer in EAL/2 model sequences",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "status": "approved",
   "question": "On six exposed EAL/2 regression tasks, how do endpoint correctness, unsupported positive answers and total cost differ by model sequence, tool placement and transferred record?",
   "primary_claim_id": "CLM-001",
@@ -423,7 +423,7 @@
     "uncertainty": "Whole tasks resampled with both repetitions and shared prefix relations intact; six clusters supply coarse descriptive intervals",
     "multiplicity": "No confirmatory p values or superiority claims. All searched pairwise contrasts retained and labelled exploratory.",
     "missing_data": "Incomplete final answers fail task resolution. Partial/unknown billing remains null. Do not drop failed trials.",
-    "stopping_rule": "324 scheduled sequences; $12 known campaign model-cost threshold, $0.20/stage and 180 seconds/stage, max10 requests and120000 tokens. Post-response thresholds may overshoot. Unknown billing halts further model calls. Continuation 1.0.8 runs the already declared five missing blocks in fresh serial cohorts. Each phase must satisfy the cumulative planning check in scripts/run_relay_completion.py; any new unknown usage stops both phases. Historical unknown usage is retained with a $4.50 planning allowance, not reported as a known charge. Protocol 1.0.10 continues only the four missing blocks (108 endpoints) in a fresh cohort, through the explicitly frozen external schedule selector; original task/repetition identities and condition order are retained. A $2.50 phase threshold, refreshed prior known charges, $4.50 uncertainty reservation and $2.12792 response headroom preserve the $12 cumulative planning threshold. No completed block is repeated.",
+    "stopping_rule": "324 scheduled sequences; $12 known campaign model-cost threshold, $0.20/stage and 180 seconds/stage, max10 requests and120000 tokens. Post-response thresholds may overshoot. Unknown billing halts further model calls. Continuation 1.0.8 runs the already declared five missing blocks in fresh serial cohorts. Each phase must satisfy the cumulative planning check in scripts/run_relay_completion.py; any new unknown usage stops both phases. Historical unknown usage is retained with a $4.50 planning allowance, not reported as a known charge. Protocol 1.0.10 continues only the four missing blocks (108 endpoints) in a fresh cohort, through the explicitly frozen external schedule selector; original task/repetition identities and condition order are retained. A $2.50 phase threshold, refreshed prior known charges, $4.50 uncertainty reservation and $2.12792 response headroom preserve the $12 cumulative planning threshold. No completed block is repeated. Protocol 1.0.11 separately freezes the three remaining blocks after the funded phase honoured its unknown-usage stop. The new $2.00 phase threshold and $4.75 unknown-usage reservation, with $2.59212583 known prior charges and $2.12792 response headroom, give $11.47004583 planning exposure. No prior records are replaced; a further unknown charge halts this new phase.",
     "robustness_checks": [
       "Separate completed wrong answers from protocol failures",
       "Compare common endpoint and strict operational outcomes",
@@ -616,15 +616,15 @@
     "apparatus_or_data": [
       "Existing EAL host, task fixtures, model provider adapters"
     ],
-    "access": "User explicitly stated: I authorise sending private EAL task sources, observations and model hand-offs to api.openai.com and running paid experiments with a $12 spending stop threshold. On continuation the user repeated this authorisation, supplied a replacement API credential, and requested continuation and remote push. The user then reported adding prepaid credits and instructed continuation. A tiny generation probe returned HTTP 200 with usage and the expected model snapshot.",
+    "access": "User explicitly stated: I authorise sending private EAL task sources, observations and model hand-offs to api.openai.com and running paid experiments with a $12 spending stop threshold. On continuation the user repeated this authorisation, supplied a replacement API credential, and requested continuation and remote push. The user then reported adding prepaid credits and instructed continuation. A tiny generation probe returned HTTP 200 with usage and the expected model snapshot. After the funded transport interruption, the same model was reachable in a read-only lookup (HTTP 200); no new paid diagnostic was used. Existing user authorisation covers this remaining work.",
     "skills": [
       "design-scientific-investigations",
       "analyse-software-engineering-statistics",
       "engineer-argumentation-languages"
     ],
     "resources": [
-      "Known prior charges including the successful recovery probe: $2.32327015. Historical actual total remains unknown.",
-      "Calculated conservative historical reservation $4.21527775; retain $4.50. One funded continuation phase has a $2.50 threshold. With $2.12792 response headroom, cumulative planning exposure is $11.45119015, below the original $12 stop threshold."
+      "Known prior charges including the restored-credit phase and recovery probe: $2.59212583; actual historical total remains unknown.",
+      "Calculated historical reservation $4.44347375, rounded to $4.75. Next phase threshold $2.00; response headroom $2.12792; cumulative planning exposure $11.47004583 < $12."
     ],
     "dependencies": [
       "Pinned model snapshots remain available",
@@ -648,16 +648,17 @@
     "replication_plan": "Fresh engineering task instances and, separately, a parameter-defined open SLM with a configured command provider"
   },
   "execution": {
-    "protocol_version_used": "1.0.10",
+    "protocol_version_used": "1.0.11",
     "started_at": null,
     "completed_at": null,
     "deviations": [
       "One transport error stopped the first explicit cohort; completion uses coverage-selected complete blocks, with all discarded-from-comparison partial records retained separately.",
       "The replacement credential passed a read-only model check after the prior available credential returned HTTP 401. No generation occurred during either check. Numerical phase threshold reduced from $5 to $3; stage budgets, conditions, task inputs, source runtime and scoring are unchanged.",
       "The numerical continuation stopped on HTTP 429 with no usage after 49 attempted endpoints; a separate tiny diagnostic confirmed exhausted prepaid credit. Repair did not start. One newly complete block joins the original seven by the existing attempted-coverage rule; 27 incomplete-block attempts remain outside the common comparison.",
-      "After the user restored credit, select exactly the four blocks missing in the retained eight-block analysis. The external launcher filters the unchanged canonical scheduler and freezes the resulting subset; it preserves original repetitions and ordering. EAL model-facing runtime source, provider settings, tasks, stage budgets and scoring remain byte-identical. Incomplete earlier attempts remain separate."
+      "After the user restored credit, select exactly the four blocks missing in the retained eight-block analysis. The external launcher filters the unchanged canonical scheduler and freezes the resulting subset; it preserves original repetitions and ordering. EAL model-facing runtime source, provider settings, tasks, stage budgets and scoring remain byte-identical. Incomplete earlier attempts remain separate.",
+      "Protocol 1.0.10 stopped on a transport-failed GPT-4.1 request without usage; the execution tool reported network approval cancellation, not a provider quota diagnosis. The original stop rule was honoured. A read-only model lookup then returned HTTP 200. A separately identified continuation covers exactly the three remaining complete blocks, after preserving all 34 attempts and adding the failed-request maximum to the spending reservation. The user authorisation and $12 limit are unchanged; no failed record is overwritten or silently retried."
     ],
-    "data_location": "benchmarks/results/2026-09-23-relays-explicit and benchmarks/results/2026-09-23-relays-completion and benchmarks/results/2026-09-23-relays-continuation and benchmarks/results/2026-09-23-relays-funded",
+    "data_location": "benchmarks/results/2026-09-23-relays-explicit and benchmarks/results/2026-09-23-relays-completion and benchmarks/results/2026-09-23-relays-continuation and benchmarks/results/2026-09-23-relays-funded and benchmarks/results/2026-09-23-relays-recovery",
     "code_location": "src/eal/relay.py",
     "observed_results": [
       "Protocol 1.0.5 cohort: 194 attempted endpoints, 192 finished, one endpoint stopped at its repair limit, one transport-failed endpoint; 123 unexecuted conditions and seven partial sequences.",
@@ -666,27 +667,27 @@
       "Continuation protocol 1.0.8: 49 attempted endpoints, 48 finished answers, 36 correct finished answers; 52 stage records, 66 task model requests, 57 unexecuted conditions and two partial sequences. At least $0.41123124 in new task charges.",
       "Eight complete blocks supply 216 comparable endpoints from five task types. Evidence transfer is correct in 8/8 versus 5/8 for answer-only transfer; two differences concern circular defence and one the wrong-origin numerical task. Four blocks remain missing; the six-task estimand is withheld.",
       "A follow-up 16-token diagnostic request to the same model returned HTTP 429, insufficient_quota / credit_balance_exhausted. It returned no completion or usage. No further generation was attempted.",
-      "Recovered commits and the first continuation checkpoint were pushed successfully to private emmett08/earl, feat/eal2-forward-contracts, PR #3. GitHub CI passed for the continuation code."
+      "Recovered commits and the first continuation checkpoint were pushed successfully to private emmett08/earl, feat/eal2-forward-contracts, PR #3. GitHub CI passed for the continuation code.",
+      "Restored-credit protocol 1.0.10 retained 34 attempted endpoints, 33 finished and correct answers, 38 stages and $0.26885568 known charges before one unpriced transport failure. Nine complete blocks now supply 243 comparison endpoints; primary evidence is correct in 9/9 versus 6/9 for answer-only. Three complete blocks remain missing."
     ],
-    "interpretation_status": "Eight complete blocks remain measured. The restored-credit continuation is specified for the four missing blocks only; no new task result is claimed yet.",
+    "interpretation_status": "Nine complete blocks are measured; the six-task estimand remains withheld. This fresh recovery is specified for the three missing blocks under a refreshed cumulative spending check.",
     "continuation_manifest": {
       "schema": "EAL/remaining-block-plan/1",
       "selected_blocks": [
-        "registered-rms-velocity/repeat-1",
         "registered-rms-velocity/repeat-0",
         "registered-rms-wrong-origin/repeat-1",
         "cold-room-calibration-reference-repair/repeat-0"
       ],
-      "scheduled_endpoints": 108,
-      "relay_plan": "benchmarks/experiments/eal2-model-relays-funded.json",
-      "relay_plan_sha256": "c03975730ec02c766dee36b3c03d8ff1e17014c064d33a120490de0fce4dcda7",
-      "prior_analysis": "benchmarks/results/2026-09-23-relays-continuation/block-analysis.json",
-      "prior_analysis_sha256": "e1881edb93f97fefa2573fb2d113f1b975da8a31414edd6d69d0e2668356880c",
+      "scheduled_endpoints": 81,
+      "relay_plan": "benchmarks/experiments/eal2-model-relays-recovery.json",
+      "relay_plan_sha256": "4dca4ce23ec1b23560147941e6a48c103f1a5be83a4850e19e06309d94a5c16a",
+      "prior_analysis": "benchmarks/results/2026-09-23-relays-funded/block-analysis.json",
+      "prior_analysis_sha256": "836d5be4b49b52cd9ec6c6d0ee075ab0ae0ba3b0c6cdea0d933113d078e74ae4",
       "canonical_archive": "benchmarks/results/2026-09-23-relays-explicit/campaign.tar.gz",
       "canonical_archive_sha256": "c9db548af8a16b98d6031a21dc2006279b058f1e24b3b18d092d2f26f4073b14",
-      "budget_ledger": "benchmarks/results/2026-09-23-relays-funded/budget-reconciliation.json",
-      "budget_ledger_sha256": "1af61c5001a288198c2108d48acc547754960cdf51ab5c53ea5cda8da04b8f7c",
-      "selection_rule": "All 27 conditions in exactly the four missing canonical task/repetition blocks. Preserve canonical trial IDs, schedule indices, block IDs, repetitions, condition order and sampling labels. No outcome-dependent selection."
+      "budget_ledger": "benchmarks/results/2026-09-23-relays-recovery/budget-reconciliation.json",
+      "budget_ledger_sha256": "33b7d98126ecbb14d9e66862cbdca6d4c62c33dc3532d94a6942362af869747d",
+      "selection_rule": "All 27 conditions in exactly the three missing canonical task/repetition blocks. Preserve canonical trial IDs, schedule indices, block IDs, repetitions, condition order and sampling labels. No outcome-dependent selection. The incomplete funded block is retained separately."
     },
     "continuation_launcher_sha256": "4b70236f8c4fba53db70ff8092eead67e0fea6d45b6420631facec48609f5d2a"
   },
@@ -695,7 +696,7 @@
       "Codex for Emmett Miller"
     ],
     "created_at": "2026-09-23T15:55:16.844586+00:00",
-    "updated_at": "2026-09-23T18:41:10.003765+00:00",
+    "updated_at": "2026-09-23T18:53:12.998014+00:00",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1",
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
@@ -717,7 +718,8 @@
       "1.0.7: retain the explicit cohort and blocked completion freeze. Withhold the planned six-task estimand; report the seven complete blocks and incomplete numerical block separately. Record both automatic-review blocks and stop further paid requests and pushes. All prior raw outcomes and freezes remain unchanged.",
       "1.0.8: user renewed explicit private-data and $12 spending authorisation and supplied a working replacement credential. Recover and push all local commits. Preserve every historical freeze and result. Run the two previously declared completion plans in fresh directories, lowering the numerical threshold to $3 and retaining $1 for repair. Reserve $4.50 for prior unknown usage, require one-response headroom before each serial phase, and halt both phases on any new unknown charge. Model-facing runtime, task inputs, conditions, stage budgets and scoring remain fixed.",
       "1.0.9: preserve 49 additional attempts and 48 finished answers after a provider HTTP 429. A separate diagnostic identifies credit_balance_exhausted. Stop generation and retain all records, including the unpriced request; repair remains unstarted. Analyse eight complete blocks under the existing coverage rule, withhold the six-task estimand, record the four missing blocks and provider-credit dependency. The previous publication block is resolved and the new evidence is prepared for the same private PR branch. No model-facing runtime or scoring change.",
-      "1.0.10: user added prepaid credits and instructed continuation under existing authorisation. A successful generation probe verifies restored access and its charge is retained. Freeze exactly the four missing canonical blocks with an external scheduling adapter whose hash and manifest are included in this protocol. Preserve EAL runtime identity and original condition order. Refresh the cumulative spending record and set a $2.50 phase threshold. Keep all historical records and unknown usage unchanged."
+      "1.0.10: user added prepaid credits and instructed continuation under existing authorisation. A successful generation probe verifies restored access and its charge is retained. Freeze exactly the four missing canonical blocks with an external scheduling adapter whose hash and manifest are included in this protocol. Preserve EAL runtime identity and original condition order. Refresh the cumulative spending record and set a $2.50 phase threshold. Keep all historical records and unknown usage unchanged.",
+      "1.0.11: preserve the funded transport interruption and its 34 attempts, retain the newly complete ninth block, and keep the new unknown charge explicitly unpriced. A read-only model lookup succeeded. Freeze a separate three-block (81-endpoint) continuation under the existing authorisation after recalculating unknown-usage reservation and reducing the phase threshold to $2.00. Treatment, scoring, canonical ordering and EAL runtime remain unchanged. All previous raw evidence is immutable."
     ]
   }
 }
