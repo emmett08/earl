@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-RELAY-001",
   "title": "Order and evidence transfer in EAL/2 model sequences",
-  "version": "1.0.11",
-  "status": "approved",
+  "version": "1.0.12",
+  "status": "complete",
   "question": "On six exposed EAL/2 regression tasks, how do endpoint correctness, unsupported positive answers and total cost differ by model sequence, tool placement and transferred record?",
   "primary_claim_id": "CLM-001",
   "scope": {
@@ -624,7 +624,8 @@
     ],
     "resources": [
       "Known prior charges including the restored-credit phase and recovery probe: $2.59212583; actual historical total remains unknown.",
-      "Calculated historical reservation $4.44347375, rounded to $4.75. Next phase threshold $2.00; response headroom $2.12792; cumulative planning exposure $11.47004583 < $12."
+      "Calculated historical reservation $4.44347375, rounded to $4.75. Next phase threshold $2.00; response headroom $2.12792; cumulative planning exposure $11.47004583 < $12.",
+      "Execution complete: known charges across all new cohorts and successful probes total at least $3.35825848. Since credit restoration, at least $1.03499553 is recorded. Historical failed requests remain unpriced; the actual cumulative total is unknown. No further generation is required for the 324-slot pilot."
     ],
     "dependencies": [
       "Pinned model snapshots remain available",
@@ -634,8 +635,8 @@
     "fallback": "Preserve executable plans and explicit incomplete coverage if a provider becomes unavailable"
   },
   "reproducibility": {
-    "preregistration_status": "planned",
-    "registration": "Local timestamped freeze before model task execution; no external registry claim",
+    "preregistration_status": "amended",
+    "registration": "Local pre-execution freezes, with explicit post-interruption amendments; no external registration. Canonical archive benchmarks/results/2026-09-23-relays-explicit/campaign.tar.gz is unchanged. Final protocol 1.0.11 freeze 4fa9ad06cab2fcb71f326d5d569051bfbafd8d48277c457551d2bd0d0cefacc3 is retained in benchmarks/results/2026-09-23-relays-recovery/campaign.tar.gz, archive SHA-256 4ba32acd2b94bbd8ecbe0e55917808f6c67a3613c9a0d4a0a558e9156fb1cc8a. Commit 36a704180a5efdad80e341a7e1762c7d195e9892 fixes the final continuation definition before requests.",
     "immutable_materials": [
       "Plan, protocol, code digests, task data, reference answers, provider config and schedule in freeze.json",
       "Pre-execution precision simulation and scripts/relay_precision.py"
@@ -649,8 +650,8 @@
   },
   "execution": {
     "protocol_version_used": "1.0.11",
-    "started_at": null,
-    "completed_at": null,
+    "started_at": "2026-09-23T18:53:57.317941+00:00",
+    "completed_at": "2026-09-23T19:15:21.879269+00:00",
     "deviations": [
       "One transport error stopped the first explicit cohort; completion uses coverage-selected complete blocks, with all discarded-from-comparison partial records retained separately.",
       "The replacement credential passed a read-only model check after the prior available credential returned HTTP 401. No generation occurred during either check. Numerical phase threshold reduced from $5 to $3; stage budgets, conditions, task inputs, source runtime and scoring are unchanged.",
@@ -668,9 +669,11 @@
       "Eight complete blocks supply 216 comparable endpoints from five task types. Evidence transfer is correct in 8/8 versus 5/8 for answer-only transfer; two differences concern circular defence and one the wrong-origin numerical task. Four blocks remain missing; the six-task estimand is withheld.",
       "A follow-up 16-token diagnostic request to the same model returned HTTP 429, insufficient_quota / credit_balance_exhausted. It returned no completion or usage. No further generation was attempted.",
       "Recovered commits and the first continuation checkpoint were pushed successfully to private emmett08/earl, feat/eal2-forward-contracts, PR #3. GitHub CI passed for the continuation code.",
-      "Restored-credit protocol 1.0.10 retained 34 attempted endpoints, 33 finished and correct answers, 38 stages and $0.26885568 known charges before one unpriced transport failure. Nine complete blocks now supply 243 comparison endpoints; primary evidence is correct in 9/9 versus 6/9 for answer-only. Three complete blocks remain missing."
+      "Restored-credit protocol 1.0.10 retained 34 attempted endpoints, 33 finished and correct answers, 38 stages and $0.26885568 known charges before one unpriced transport failure. Nine complete blocks now supply 243 comparison endpoints; primary evidence is correct in 9/9 versus 6/9 for answer-only. Three complete blocks remain missing.",
+      "Final protocol 1.0.11 recovery: all 81 scheduled endpoints attempted and finished, 66 correct, 93 stages and 138 task requests; $0.76613265 in recorded charges, no unknown stage usage and no source/reference drift.",
+      "The four contributing cohorts retain 358 attempted records and 354 finished answers. Exactly twelve complete blocks supply 324 comparison endpoints, including one original repair-limit failure; 34 incomplete-block attempts remain separate. Evidence transfer is correct in 12/12 versus 8/12 for answer-only. The equal task-weighted difference is 1/3 with a descriptive task-cluster interval [0, 2/3]; six exposed task clusters. The full tool producer is correct in 12/12. All 351 pairwise contrasts are retained, with non-primary comparisons exploratory."
     ],
-    "interpretation_status": "Nine complete blocks are measured; the six-task estimand remains withheld. This fresh recovery is specified for the three missing blocks under a refreshed cumulative spending check.",
+    "interpretation_status": "Complete finite-suite comparison. DM-003 remains inconclusive because the descriptive interval includes zero. Evidence preserves four correct producer answers that answer-only recipients damage, on two task types. The recipient adds no accuracy over the 12/12 producer. No calibrated population, physical-engineering or parameter-defined SLM claim follows.",
     "continuation_manifest": {
       "schema": "EAL/remaining-block-plan/1",
       "selected_blocks": [
@@ -689,14 +692,20 @@
       "budget_ledger_sha256": "33b7d98126ecbb14d9e66862cbdca6d4c62c33dc3532d94a6942362af869747d",
       "selection_rule": "All 27 conditions in exactly the three missing canonical task/repetition blocks. Preserve canonical trial IDs, schedule indices, block IDs, repetitions, condition order and sampling labels. No outcome-dependent selection. The incomplete funded block is retained separately."
     },
-    "continuation_launcher_sha256": "4b70236f8c4fba53db70ff8092eead67e0fea6d45b6420631facec48609f5d2a"
+    "continuation_launcher_sha256": "4b70236f8c4fba53db70ff8092eead67e0fea6d45b6420631facec48609f5d2a",
+    "primary_decision": {
+      "decision_matrix_id": "DM-003",
+      "claim_id": "CLM-001",
+      "disposition": "no-change",
+      "reason": "Observed finite-task difference 1/3; descriptive interval [0, 2/3] includes zero. Independent task replication is required."
+    }
   },
   "provenance": {
     "authors": [
       "Codex for Emmett Miller"
     ],
     "created_at": "2026-09-23T15:55:16.844586+00:00",
-    "updated_at": "2026-09-23T18:53:12.998014+00:00",
+    "updated_at": "2026-09-23T19:17:39.628800+00:00",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1",
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
@@ -719,7 +728,8 @@
       "1.0.8: user renewed explicit private-data and $12 spending authorisation and supplied a working replacement credential. Recover and push all local commits. Preserve every historical freeze and result. Run the two previously declared completion plans in fresh directories, lowering the numerical threshold to $3 and retaining $1 for repair. Reserve $4.50 for prior unknown usage, require one-response headroom before each serial phase, and halt both phases on any new unknown charge. Model-facing runtime, task inputs, conditions, stage budgets and scoring remain fixed.",
       "1.0.9: preserve 49 additional attempts and 48 finished answers after a provider HTTP 429. A separate diagnostic identifies credit_balance_exhausted. Stop generation and retain all records, including the unpriced request; repair remains unstarted. Analyse eight complete blocks under the existing coverage rule, withhold the six-task estimand, record the four missing blocks and provider-credit dependency. The previous publication block is resolved and the new evidence is prepared for the same private PR branch. No model-facing runtime or scoring change.",
       "1.0.10: user added prepaid credits and instructed continuation under existing authorisation. A successful generation probe verifies restored access and its charge is retained. Freeze exactly the four missing canonical blocks with an external scheduling adapter whose hash and manifest are included in this protocol. Preserve EAL runtime identity and original condition order. Refresh the cumulative spending record and set a $2.50 phase threshold. Keep all historical records and unknown usage unchanged.",
-      "1.0.11: preserve the funded transport interruption and its 34 attempts, retain the newly complete ninth block, and keep the new unknown charge explicitly unpriced. A read-only model lookup succeeded. Freeze a separate three-block (81-endpoint) continuation under the existing authorisation after recalculating unknown-usage reservation and reducing the phase threshold to $2.00. Treatment, scoring, canonical ordering and EAL runtime remain unchanged. All previous raw evidence is immutable."
+      "1.0.11: preserve the funded transport interruption and its 34 attempts, retain the newly complete ninth block, and keep the new unknown charge explicitly unpriced. A read-only model lookup succeeded. Freeze a separate three-block (81-endpoint) continuation under the existing authorisation after recalculating unknown-usage reservation and reducing the phase threshold to $2.00. Treatment, scoring, canonical ordering and EAL runtime remain unchanged. All previous raw evidence is immutable.",
+      "1.0.12: close the planned comparison after all 81 final recovery endpoints finish. Preserve the raw 1.0.11 freeze and all earlier records. Analyse exactly twelve complete blocks (324 endpoints, 323 finished answers), retain 34 incomplete-block attempts separately, export all 351 pairwise comparisons and apply DM-003 to the primary estimate 1/3 with interval [0, 2/3]. Record successful destination verification and remote publication; no model-facing implementation or scoring change."
     ]
   }
 }
