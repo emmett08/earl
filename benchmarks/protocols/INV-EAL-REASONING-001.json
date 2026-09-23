@@ -1,0 +1,1191 @@
+{
+  "schema_version": "1.0",
+  "investigation_id": "INV-EAL-REASONING-001",
+  "title": "Separating EAL notation, evidence correction and engineering transfer",
+  "version": "1.0.1",
+  "status": "specified",
+  "question": "Can EAL notation improve correctness under equivalent semantics, and can relevant raw evidence correct an initially wrong proposed answer, beyond preserving already correct answers?",
+  "primary_claim_id": "CLM-N",
+  "scope": {
+    "system_or_population": "Diagnostic: five exposed engineering-v2.1-eal2 tasks with GPT-4.1 nano snapshot 2025-04-14. Confirmation: a future independent engineering task frame; model set to be frozen before new outcomes.",
+    "conditions": "Paired EAL/JSON meaning-equivalent arguments, identical semantic reference, fresh sessions, common response contract; artificial correct/incorrect candidate answers and five information conditions.",
+    "spatial_scope": "Local host and configured API; no physical apparatus or human subjects.",
+    "temporal_scope": "Diagnostic follows this freeze; confirmation requires a later protocol version with protected tasks and a calibrated information target.",
+    "exclusions": [
+      "Universal engineering competence",
+      "A cognitive mechanism inferred from endpoint labels",
+      "Natural producer-error prevalence inferred from injected errors",
+      "Notation effect inferred from unmatched tool access",
+      "Fresh held-out claims for the existing suite"
+    ],
+    "knowledge_cut": "2026-09-23"
+  },
+  "claims": [
+    {
+      "id": "CLM-N",
+      "statement": "EAL surface representation improves correctness over semantically equivalent JSON under fixed model, evidence, reference and budgets.",
+      "claim_type": "causal",
+      "role": "primary",
+      "scope_limit": "A model-specific surface effect on the declared task distribution.",
+      "success_consequence": "Strengthen only this bounded claim after the relevant design and measurement checks.",
+      "failure_consequence": "Retain the measured narrower capability and revise the design or claim."
+    },
+    {
+      "id": "CLM-R",
+      "statement": "Relevant raw observations improve recipient correction of initially wrong proposals, compared with the same proposals alone.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "Injected errors in the diagnostic; natural errors require a separately sampled producer study.",
+      "success_consequence": "Strengthen only this bounded claim after the relevant design and measurement checks.",
+      "failure_consequence": "Retain the measured narrower capability and revise the design or claim."
+    },
+    {
+      "id": "CLM-G",
+      "statement": "The specified model or model-tool system solves and revises independently held-out engineering mechanisms across declared domains and task families.",
+      "claim_type": "prediction",
+      "role": "secondary",
+      "scope_limit": "Transfer within a declared engineering task frame, not all engineering.",
+      "success_consequence": "Strengthen only this bounded claim after the relevant design and measurement checks.",
+      "failure_consequence": "Retain the measured narrower capability and revise the design or claim."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-SEM",
+      "statement": "EAL and JSON carry the same represented claims, dependencies, methods and qualifications.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Canonical parse round trip and semantic representation equality; patterns requiring expansion excluded.",
+      "failure_consequence": "Suspend affected causal or transfer interpretation; retain records and amend before a new cohort."
+    },
+    {
+      "id": "ASM-SCORE",
+      "statement": "Independent reference answers measure the claimed outcome equally in all conditions.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Existing known-answer checks for diagnostic; blind numerical/formal and expert references required for broader tasks.",
+      "failure_consequence": "Suspend affected causal or transfer interpretation; retain records and amend before a new cohort."
+    },
+    {
+      "id": "ASM-SESSION",
+      "statement": "Fresh sessions, stable snapshots and balanced execution order prevent systematic carryover and calendar confounding.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Retain actual model identity and randomised within-block schedule; investigate drift before inference.",
+      "failure_consequence": "Suspend affected causal or transfer interpretation; retain records and amend before a new cohort."
+    },
+    {
+      "id": "ASM-SAMPLE",
+      "statement": "Confirmation templates represent the declared target distribution and remain independent of prompt development.",
+      "role": "sampling",
+      "status": "untested",
+      "test_or_justification": "Independently authored mechanisms and template-level split; sampling frame and novelty audit required.",
+      "failure_consequence": "Suspend affected causal or transfer interpretation; retain records and amend before a new cohort."
+    },
+    {
+      "id": "ASM-RAW",
+      "statement": "Raw-only packets contain observations without interpreter conclusions or private answer keys.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Allow-listed packet construction; tests distinguish observations, artificial proposals and computed status maps.",
+      "failure_consequence": "Suspend affected causal or transfer interpretation; retain records and amend before a new cohort."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-N",
+      "label": "N",
+      "kind": "substantive",
+      "statement": "An EAL surface advantage remains when task meaning and resources are equal.",
+      "claim_ids": [
+        "CLM-N"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-SEM",
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-RAW"
+      ],
+      "scope": "Diagnostic counts on exposed tasks; any confirmatory population inference requires the later frozen task frame."
+    },
+    {
+      "id": "H-R",
+      "label": "R",
+      "kind": "substantive",
+      "statement": "Relevant raw measurements allow error correction and qualification preservation.",
+      "claim_ids": [
+        "CLM-R"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-SEM",
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-RAW"
+      ],
+      "scope": "Diagnostic counts on exposed tasks; any confirmatory population inference requires the later frozen task frame."
+    },
+    {
+      "id": "H-COPY",
+      "label": "COPY",
+      "kind": "rival",
+      "statement": "Gains require interpreter conclusions; raw measurements do not improve correction.",
+      "claim_ids": [
+        "CLM-R"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-SEM",
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-RAW"
+      ],
+      "scope": "Diagnostic counts on exposed tasks; any confirmatory population inference requires the later frozen task frame."
+    },
+    {
+      "id": "H-SURFACE",
+      "label": "SURFACE",
+      "kind": "rival",
+      "statement": "JSON and EAL perform equivalently or JSON performs better after equalising information and resources.",
+      "claim_ids": [
+        "CLM-N"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-SEM",
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-RAW"
+      ],
+      "scope": "Diagnostic counts on exposed tasks; any confirmatory population inference requires the later frozen task frame."
+    },
+    {
+      "id": "H-MEMORY",
+      "label": "MEMORY",
+      "kind": "rival",
+      "statement": "Performance depends on exposed templates or supplied solutions and does not transfer to withheld mechanisms.",
+      "claim_ids": [
+        "CLM-G"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-SEM",
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-RAW",
+        "ASM-SAMPLE"
+      ],
+      "scope": "Diagnostic counts on exposed tasks; any confirmatory population inference requires the later frozen task frame."
+    },
+    {
+      "id": "H-G",
+      "label": "G",
+      "kind": "substantive",
+      "statement": "The system constructs and revises valid solutions on independent new mechanisms.",
+      "claim_ids": [
+        "CLM-G"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-SEM",
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-RAW",
+        "ASM-SAMPLE"
+      ],
+      "scope": "Diagnostic counts on exposed tasks; any confirmatory population inference requires the later frozen task frame."
+    },
+    {
+      "id": "H-0N",
+      "label": "0N",
+      "kind": "statistical-null",
+      "statement": "H_0N: Delta_N <= 0.05; H_1N: Delta_N > 0.05 is the proposed minimum-useful-gain test for confirmation.",
+      "claim_ids": [
+        "CLM-N"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-SEM",
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-RAW"
+      ],
+      "scope": "Diagnostic counts on exposed tasks; any confirmatory population inference requires the later frozen task frame."
+    },
+    {
+      "id": "H-0R",
+      "label": "0R",
+      "kind": "statistical-null",
+      "statement": "H_0R: Delta_R <= 0.05; H_1R: Delta_R > 0.05, with the same resource and proposal controls.",
+      "claim_ids": [
+        "CLM-R"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-SEM",
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-RAW"
+      ],
+      "scope": "Diagnostic counts on exposed tasks; any confirmatory population inference requires the later frozen task frame."
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P-N",
+      "hypothesis_ids": [
+        "H-N"
+      ],
+      "claim_ids": [
+        "CLM-N"
+      ],
+      "estimand_ids": [
+        "EST-N"
+      ],
+      "measurement_ids": [
+        "M-CORRECT",
+        "M-FALSE"
+      ],
+      "expected_pattern": "EAL raw-only endpoint correctness exceeds matched JSON raw-only correctness.",
+      "direction": "increase",
+      "magnitude_or_range": "Diagnostic: any measured difference is descriptive. Confirmation N/R: lower bound above 0.05; G: absolute and domain-specific acceptance levels require independent rubric validation.",
+      "time_window": "One frozen run, no outcome-dependent stopping.",
+      "tolerance": "Exact known-answer status comparison; later numerical tolerances frozen with independent references.",
+      "auxiliary_assumption_ids": [
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-SEM",
+        "ASM-RAW"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-SURFACE"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-R",
+      "hypothesis_ids": [
+        "H-R"
+      ],
+      "claim_ids": [
+        "CLM-R"
+      ],
+      "estimand_ids": [
+        "EST-R"
+      ],
+      "measurement_ids": [
+        "M-CORRECT",
+        "M-FALSE"
+      ],
+      "expected_pattern": "Answer-plus-raw improves correction over answer-only and context-mismatched records; improvement is present without supplied interpreter conclusions.",
+      "direction": "increase",
+      "magnitude_or_range": "Diagnostic: any measured difference is descriptive. Confirmation N/R: lower bound above 0.05; G: absolute and domain-specific acceptance levels require independent rubric validation.",
+      "time_window": "One frozen run, no outcome-dependent stopping.",
+      "tolerance": "Exact known-answer status comparison; later numerical tolerances frozen with independent references.",
+      "auxiliary_assumption_ids": [
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-SEM",
+        "ASM-RAW"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-COPY"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-G",
+      "hypothesis_ids": [
+        "H-G"
+      ],
+      "claim_ids": [
+        "CLM-G"
+      ],
+      "estimand_ids": [
+        "EST-G"
+      ],
+      "measurement_ids": [
+        "M-CORRECT",
+        "M-FALSE"
+      ],
+      "expected_pattern": "Independent new mechanisms support correct construction and evidence-sensitive revision, with false support and unresolved-task rates reported per domain.",
+      "direction": "increase",
+      "magnitude_or_range": "Diagnostic: any measured difference is descriptive. Confirmation N/R: lower bound above 0.05; G: absolute and domain-specific acceptance levels require independent rubric validation.",
+      "time_window": "One frozen run, no outcome-dependent stopping.",
+      "tolerance": "Exact known-answer status comparison; later numerical tolerances frozen with independent references.",
+      "auxiliary_assumption_ids": [
+        "ASM-SCORE",
+        "ASM-SESSION",
+        "ASM-SAMPLE"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-MEMORY"
+      ],
+      "shared_prediction": false
+    }
+  ],
+  "constructs": [
+    {
+      "id": "CON-CORRECT",
+      "name": "Bounded correct resolution",
+      "definition": "All requested conclusions agree with independent references; broader tasks additionally require valid derivation and necessary qualifications.",
+      "role": "outcome",
+      "scope": "Diagnostic status labels; expanded construction rubric for confirmation.",
+      "proxy_for_claim_ids": [
+        "CLM-N",
+        "CLM-R",
+        "CLM-G"
+      ],
+      "validity_evidence": [
+        "Existing task oracles and source/observation checks support bounded label accuracy."
+      ],
+      "validity_threats": [
+        "Correct label can be copied or guessed.",
+        "A status score does not measure broad reasoning quality."
+      ]
+    },
+    {
+      "id": "CON-FALSE",
+      "name": "Unjustified positive assertion",
+      "definition": "A supported answer where the reference requires a qualified non-supported outcome.",
+      "role": "outcome",
+      "scope": "Requested claims under the fixed observation scope.",
+      "proxy_for_claim_ids": [
+        "CLM-N",
+        "CLM-R",
+        "CLM-G"
+      ],
+      "validity_evidence": [
+        "Reference-specific label comparison."
+      ],
+      "validity_threats": [
+        "Reference errors and unrepresented valid alternative conclusions."
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M-CORRECT",
+      "construct_ids": [
+        "CON-CORRECT"
+      ],
+      "observable": "Binary all-claims correct per attempted endpoint.",
+      "instrument_or_procedure": "Existing eal.benchmark.score_answer on retained common-schema response; valid-source and trace scores remain separate.",
+      "scale_or_units": "Binary, per attempted call.",
+      "timing": "After the complete response or recorded attempt failure.",
+      "preprocessing": "Strict JSON response; malformed/absent answers count as unsuccessful attempts.",
+      "calibration": "Run known-answer task checker and adversarial response tests before freezing.",
+      "reliability": "Deterministic scorer; no human-rater reliability is claimed. Broader-task rubric needs independent duplicate ratings.",
+      "validity": "Measures endpoint labels only in diagnostic.",
+      "measurement_invariance": "Same expected claims and response schema for both representations.",
+      "reactivity": "Scorer output never enters the model session.",
+      "error_model": "Misclassification by wrong references; missing usage stays unknown; API failure retained separately.",
+      "blinding": "Recipient blind to assigned candidate correctness; scorer uses representation-independent expected labels."
+    },
+    {
+      "id": "M-FALSE",
+      "construct_ids": [
+        "CON-FALSE"
+      ],
+      "observable": "Binary any unjustified supported claim per endpoint.",
+      "instrument_or_procedure": "Existing eal.benchmark.score_answer on retained common-schema response; valid-source and trace scores remain separate.",
+      "scale_or_units": "Binary, per attempted call.",
+      "timing": "After the complete response or recorded attempt failure.",
+      "preprocessing": "Strict JSON response; malformed/absent answers count as unsuccessful attempts.",
+      "calibration": "Run known-answer task checker and adversarial response tests before freezing.",
+      "reliability": "Deterministic scorer; no human-rater reliability is claimed. Broader-task rubric needs independent duplicate ratings.",
+      "validity": "Measures endpoint labels only in diagnostic.",
+      "measurement_invariance": "Same expected claims and response schema for both representations.",
+      "reactivity": "Scorer output never enters the model session.",
+      "error_model": "Misclassification by wrong references; missing usage stays unknown; API failure retained separately.",
+      "blinding": "Recipient blind to assigned candidate correctness; scorer uses representation-independent expected labels."
+    }
+  ],
+  "design": {
+    "design_type": "controlled-experiment",
+    "rationale": "Separates surface representation, raw evidence, scope-irrelevant records and computed conclusions; includes incorrect proposals so correction is observable.",
+    "setting": "Existing synthetic tasks followed by a separately frozen independent task investigation.",
+    "temporal_structure": "Each task/repetition block runs all 18 conditions in random order with fresh sessions.",
+    "assignment_method": "Seed 20260923; blocked randomised condition order; exact paired content.",
+    "allocation_concealment": "Expected answers and manipulation labels stay in local scoring records, outside recipient prompts.",
+    "masking": "Common response contract; proposed-answer correctness is undisclosed. Source syntax itself cannot be blinded.",
+    "comparator": "Meaning-equivalent JSON; answer-only, irrelevant-record, computed-conclusion and raw-only conditions.",
+    "control_ids": [
+      "CTL-JSON",
+      "CTL-RAW",
+      "CTL-IRRELEVANT",
+      "CTL-ASSESS"
+    ]
+  },
+  "units": {
+    "target_population_or_system": "Diagnostic: five exposed engineering-v2.1-eal2 tasks with GPT-4.1 nano snapshot 2025-04-14. Confirmation: a future independent engineering task frame; model set to be frozen before new outcomes.",
+    "sampling_frame": "Diagnostic explicitly enumerated five tasks; confirmation frame still requires independent construction.",
+    "experimental_unit": "Fresh model session for one task and condition.",
+    "observational_unit": "Retained request/response or failed attempt.",
+    "assignment_unit": "Within-task/repetition condition order.",
+    "analysis_unit": "Independent problem template; repetitions and representation pairs retained together.",
+    "inclusion_criteria": [
+      "Five explicitly selected well-formed current EAL/2 tasks for diagnostic.",
+      "All attempted responses, including failures."
+    ],
+    "exclusion_criteria": [
+      "Source-repair task requires another controlled interface.",
+      "Historical exposed tasks excluded from confirmation."
+    ],
+    "recruitment_or_selection": "Diagnostic selection declared before new model calls; no claim of random population sampling."
+  },
+  "interventions_or_exposures": [
+    {
+      "id": "INT-FACTORS",
+      "kind": "intervention",
+      "description": "Assign EAL/JSON surface, proposal correctness and information view.",
+      "target": "Recipient inputs only.",
+      "implementation": "scripts/notation_transfer_experiment.py; eighteen predeclared conditions.",
+      "dose_or_intensity": "One call, max 2048 output tokens, no tools or repairs, two repetitions.",
+      "timing": "Before each fresh session.",
+      "admissibility": "admissible",
+      "manipulation_checks": [
+        "Semantic content equality",
+        "Incorrect proposals differ on every requested claim",
+        "Only assessed arm contains computed conclusions"
+      ],
+      "off_target_checks": [
+        "Record input lengths; scope-mismatched records are not a neutral length placebo."
+      ],
+      "recovery_checks": [
+        "New sessions prevent answer carryover."
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTL-JSON",
+      "control_type": "active-comparator",
+      "description": "Meaning-equivalent JSON",
+      "failure_mode_addressed": "Extra semantic information in EAL arm",
+      "implementation": "Canonical source-independent IR",
+      "diagnostic_consequence": "Suspend notation attribution if content differs."
+    },
+    {
+      "id": "CTL-RAW",
+      "control_type": "baseline",
+      "description": "Raw observations without proposed answer",
+      "failure_mode_addressed": "Anchoring or answer copying",
+      "implementation": "raw_only arm",
+      "diagnostic_consequence": "Estimate surface difference without an upstream proposal."
+    },
+    {
+      "id": "CTL-IRRELEVANT",
+      "control_type": "negative",
+      "description": "Same-valued observations for another assembly",
+      "failure_mode_addressed": "Any plausible record accepted regardless of relevance",
+      "implementation": "Modify context before rendering both surface forms",
+      "diagnostic_consequence": "Use condition-specific available-information correctness and false-support scores for scope discrimination. Full-reference raw-minus-irrelevant accuracy alone is insufficient; length effect remains unisolated."
+    },
+    {
+      "id": "CTL-ASSESS",
+      "control_type": "positive",
+      "description": "Raw data plus computed statuses",
+      "failure_mode_addressed": "Copying an interpreter answer mistaken for reasoning from measurements",
+      "implementation": "Explicit interpreter_conclusions field",
+      "diagnostic_consequence": "A benefit confined here cannot support raw-evidence correction."
+    }
+  ],
+  "confounds": [
+    {
+      "id": "CF-1",
+      "description": "Exposed templates",
+      "causal_or_measurement_path": "Development choices to score",
+      "control_or_adjustment": "Separate fresh mechanism split",
+      "diagnostic": "Novelty audit",
+      "residual_risk": "Diagnostic cannot establish transfer."
+    },
+    {
+      "id": "CF-2",
+      "description": "Semantic or resource mismatch",
+      "causal_or_measurement_path": "Condition to extra useful information to outcome",
+      "control_or_adjustment": "Shared IR, reference, output cap and response format",
+      "diagnostic": "Equality and leakage checks",
+      "residual_risk": "Natural input length is part of practical surface intervention."
+    },
+    {
+      "id": "CF-3",
+      "description": "Interpreter conclusions",
+      "causal_or_measurement_path": "Computed answer to copying to score",
+      "control_or_adjustment": "Separate raw and assessed views",
+      "diagnostic": "Packet field audit",
+      "residual_risk": "Public justifications are not proof of a cognitive mechanism."
+    },
+    {
+      "id": "CF-4",
+      "description": "Provider drift",
+      "causal_or_measurement_path": "Order to model behaviour to score",
+      "control_or_adjustment": "Randomised block order and pinned identity",
+      "diagnostic": "Record actual snapshot and failures",
+      "residual_risk": "Concurrent provider load may remain."
+    },
+    {
+      "id": "CF-5",
+      "description": "Synthetic error selection",
+      "causal_or_measurement_path": "Oracle-based candidate construction to easier correction",
+      "control_or_adjustment": "Label as injected; separate natural-producer follow-up",
+      "diagnostic": "Report exact alternative label schedule",
+      "residual_risk": "Natural error distribution remains unmeasured."
+    }
+  ],
+  "estimands": [
+    {
+      "id": "EST-N",
+      "claim_ids": [
+        "CLM-N"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Diagnostic: five exposed engineering-v2.1-eal2 tasks with GPT-4.1 nano snapshot 2025-04-14. Confirmation: a future independent engineering task frame; model set to be frozen before new outcomes.",
+      "intervention_or_exposure": "EAL, raw observations, no proposal",
+      "comparator": "JSON of identical argument, same raw data",
+      "outcome_measurement_ids": [
+        "M-CORRECT",
+        "M-FALSE"
+      ],
+      "time": "One frozen cohort",
+      "summary_measure": "Delta_N = mean_template(Y_EAL_raw_only - Y_JSON_raw_only)",
+      "interpretation": "Surface effect in selected contexts, not cognitive mechanism."
+    },
+    {
+      "id": "EST-R",
+      "claim_ids": [
+        "CLM-R"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Diagnostic: five exposed engineering-v2.1-eal2 tasks with GPT-4.1 nano snapshot 2025-04-14. Confirmation: a future independent engineering task frame; model set to be frozen before new outcomes.",
+      "intervention_or_exposure": "Incorrect proposal plus relevant raw observations",
+      "comparator": "Same incorrect proposal alone; scope-mismatch and assessed controls",
+      "outcome_measurement_ids": [
+        "M-CORRECT",
+        "M-FALSE"
+      ],
+      "time": "One frozen cohort",
+      "summary_measure": "Delta_R = mean_template(Y_answer_raw - Y_answer) in incorrect stratum; report damage in correct stratum separately",
+      "interpretation": "Correction of controlled erroneous proposals; no natural-error prevalence. Full-reference correction counts and available-information semantic correctness have separate meanings; report both."
+    },
+    {
+      "id": "EST-G",
+      "claim_ids": [
+        "CLM-G"
+      ],
+      "estimand_type": "predictive",
+      "population_or_system": "Diagnostic: five exposed engineering-v2.1-eal2 tasks with GPT-4.1 nano snapshot 2025-04-14. Confirmation: a future independent engineering task frame; model set to be frozen before new outcomes.",
+      "intervention_or_exposure": "Frozen system on independently authored new mechanisms",
+      "comparator": "Absolute reference standards and matched baselines",
+      "outcome_measurement_ids": [
+        "M-CORRECT",
+        "M-FALSE"
+      ],
+      "time": "One frozen cohort",
+      "summary_measure": "Macro-average accuracy and false support by domain/activity plus worst-domain estimates",
+      "interpretation": "Bounded transfer requires independent tasks and validated expanded scoring; current diagnostic cannot estimate it."
+    }
+  ],
+  "identification": {
+    "target_estimand_ids": [
+      "EST-N",
+      "EST-R",
+      "EST-G"
+    ],
+    "status": "partially-identified",
+    "causal_and_measurement_structure": "Notation -> representation use -> endpoint; information -> observation/answer access -> endpoint. Model, task, proposed answer and common resources fixed. Assignment changes surface without changing semantics. Generalisation additionally depends on template sampling and measurement validity.",
+    "assumption_ids": [
+      "ASM-SEM",
+      "ASM-SCORE",
+      "ASM-SESSION",
+      "ASM-SAMPLE",
+      "ASM-RAW"
+    ],
+    "identified_parameters": [
+      "Finite diagnostic paired contrasts under randomised fresh-session order and stable snapshots."
+    ],
+    "nonidentified_alternatives": [
+      "Natural reasoning-error correction rate",
+      "A unique cognitive mechanism",
+      "Performance on a yet-unconstructed engineering task population"
+    ],
+    "threats": [
+      "Reference defects",
+      "Packet contamination",
+      "Differential prompt development",
+      "Provider drift",
+      "Between-template dependence"
+    ],
+    "diagnostics": [
+      "Parse/format semantic equality",
+      "Control-specific packet tests",
+      "Preserve model identity and all attempts",
+      "Independent reference validation"
+    ],
+    "rescue_actions": [
+      "Fix apparatus under a new freeze",
+      "Restrict conclusion to diagnostic",
+      "Construct and protect independent task frame before transfer claims"
+    ]
+  },
+  "sampling": {
+    "method": "Diagnostic finite census of five selected exposed tasks; confirmation planning uses paired independent-template differences.",
+    "sample_size_or_information_target": "Diagnostic: 5 tasks x 18 conditions x 2 repetitions = 180 calls. Confirmation: examine 120, 240, 480 and 960 independent templates before choosing a feasible target.",
+    "inputs": [
+      "reasoning-precision-sensitivity.json",
+      "Paired discordance probabilities 0.2, 0.4, 0.6; true differences 0, 0.05, 0.10, 0.15; 10000 synthetic replicates per cell."
+    ],
+    "dependence_structure": "Repetitions perfectly dependent in planning sensitivity and count once; possible dependence between templates remains to be calibrated.",
+    "multiplicity": "Future N and R primary tests each use one-sided alpha .025; additional model/domain comparisons need a larger predefined family.",
+    "attrition_or_loss": "Retain attempted failures; unexecuted scheduled calls excluded from outcome counts and shown explicitly.",
+    "result": "Synthetic planning sensitivity records lower-bound coverage, decision frequency and Monte Carlo error; it is not a selected information target or an empirical EAL effect.",
+    "sensitivity_analysis": "Alternative discordance and template counts; excludes provider drift, scoring error and between-template dependence. These need extension before confirmation.",
+    "stopping_implications": "Diagnostic fixed schedule subject to cost/transport stops; no significance-based stopping. A complete confirmatory stopping rule remains to be frozen."
+  },
+  "analysis": {
+    "preprocessing_lock": "Strict common response schema; store raw responses and attempt metadata. No prompt repair within the diagnostic.",
+    "exclusion_lock": "All attempted outcomes retained; no correctness-based exclusions. Pre-call credential failure is unexecuted, not a model failure. Labels correct/incorrect for injected proposals refer to the original full-information oracle, not necessarily the available-information oracle. Two repetition indices use different incorrect labels and therefore mix sampling variability with error type.",
+    "models": [
+      {
+        "id": "MOD-DIAG",
+        "estimand_ids": [
+          "EST-N",
+          "EST-R"
+        ],
+        "model_or_procedure": "Paired counts and template-averaged differences on the finite exposed diagnostic; separate incorrect, correct and absent proposals. Also score against a condition-specific offline interpreter reference for the observations actually supplied; proposals are fallible assertions rather than evidence. Full-information agreement remains a separate retained outcome.",
+        "assumptions": [
+          "Comparable semantic inputs and stable independent sessions."
+        ],
+        "diagnostics": [
+          "Reference checks",
+          "Information arm integrity",
+          "Repeated blocks and failures retained"
+        ],
+        "outputs": [
+          "delta_N_diagnostic",
+          "delta_R_diagnostic",
+          "damage_difference",
+          "raw_vs_irrelevant",
+          "raw_vs_assessed",
+          "available_information_correct",
+          "available_information_unjustified",
+          "proposal_correct_given_available_information"
+        ]
+      },
+      {
+        "id": "MOD-FUTURE",
+        "estimand_ids": [
+          "EST-N",
+          "EST-R",
+          "EST-G"
+        ],
+        "model_or_procedure": "Template-level paired estimation with calibrated uncertainty; independent-reference construction and revision scores for transfer. Estimator calibration and G thresholds required in a new version.",
+        "assumptions": [
+          "Independent representative templates",
+          "Validated scoring",
+          "Prespecified primary model and contrasts"
+        ],
+        "diagnostics": [
+          "Simulation coverage",
+          "Domain heterogeneity",
+          "Contamination audit"
+        ],
+        "outputs": [
+          "L_N",
+          "L_R",
+          "domain_accuracy",
+          "false_support",
+          "uncertainty"
+        ]
+      }
+    ],
+    "contrasts": [
+      "Primary notation: EAL raw-only minus JSON raw-only.",
+      "Primary correction: answer_raw minus answer in incorrect-proposal stratum, reported separately by notation. Confirmation must preselect one primary representation.",
+      "Diagnostic controls: raw versus irrelevant and assessed; damage among correct proposals; raw-only versus proposed-answer conditions.",
+      "Report full-information agreement and available-information correctness separately. Raw-minus-irrelevant full-information agreement alone cannot establish scope discrimination.",
+      "Report raw-only versus each proposed-answer condition, explicit damage relative to the original reference, and task-by-condition correct/false-support counts."
+    ],
+    "uncertainty": "Diagnostic descriptive counts; confirmation requires template-preserving uncertainty and small-sample calibration. Synthetic normal bounds are planning approximations only.",
+    "multiplicity": "Diagnostic exploratory; no p-values. Future two primary one-sided contrasts Bonferroni at .025 each; no post-hoc selection of best model or representation.",
+    "missing_data": "Malformed and failed attempted responses count as unsuccessful; unknown price stays unknown and stops new calls; orphaned attempts never silently retried.",
+    "stopping_rule": "180 scheduled diagnostic calls or first unknown usage/provider failure or next-call allowance breaching USD 2 threshold; preserve partial coverage.",
+    "robustness_checks": [
+      "Report task-specific outcomes",
+      "Separate injected errors from natural errors",
+      "Audit information content of raw packets",
+      "Retain input length and actual response model",
+      "Compare relevant and scope-mismatched observations"
+    ],
+    "software_and_versions": [
+      "EAL/2 package 2.2.2 at source tree 14c6232b01cb8b5bd408d54693cc0b5a2df0e974",
+      "Script and runtime digests recorded in freeze; actual numerical package version in simulation output."
+    ],
+    "inconclusive_handling": "Wide intervals, failed manipulation, invalid references or incomplete coverage do not strengthen the target empirical claim. Honest unsupported conclusions when records are absent or mismatched are not labelled reasoning failures merely because they differ from the full-information target."
+  },
+  "decision_matrix": [
+    {
+      "id": "DM-N",
+      "prediction_ids": [
+        "P-N"
+      ],
+      "observation_region": "EAL raw-only exceeds JSON after equivalence checks",
+      "analysis_outputs": [
+        "delta_N_diagnostic",
+        "delta_R_diagnostic",
+        "damage_difference",
+        "raw_vs_irrelevant",
+        "raw_vs_assessed",
+        "L_N",
+        "L_R",
+        "domain_accuracy",
+        "false_support",
+        "uncertainty"
+      ],
+      "decision_rule": "Finite-task surface result; confirmation requires L_N > .05.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-N"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Finite-task surface result; confirmation requires L_N > .05.",
+          "scope_limit": "Each estimand judged separately; invalid measurement overrides nominal benefit."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain or weaken corresponding substantive hypothesis within scope; do not confirm it merely by rejecting a rival."
+      ],
+      "assumption_failure_response": "Apply DM-INVALID before an outcome-based interpretation.",
+      "next_action": "Report all contrasts; revise protocol or replicate with new independent tasks as appropriate."
+    },
+    {
+      "id": "DM-R",
+      "prediction_ids": [
+        "P-R"
+      ],
+      "observation_region": "Raw observations improve incorrect-proposal recovery over answer and irrelevant controls",
+      "analysis_outputs": [
+        "delta_N_diagnostic",
+        "delta_R_diagnostic",
+        "damage_difference",
+        "raw_vs_irrelevant",
+        "raw_vs_assessed",
+        "L_N",
+        "L_R",
+        "domain_accuracy",
+        "false_support",
+        "uncertainty"
+      ],
+      "decision_rule": "Correction supported in tested contexts; natural prevalence unmeasured. Check condition-specific semantic correctness; do not treat warranted rejection of absent or wrong-scope observations as damaged reasoning.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-R"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Correction supported in tested contexts; natural prevalence unmeasured.",
+          "scope_limit": "Each estimand judged separately; invalid measurement overrides nominal benefit."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain or weaken corresponding substantive hypothesis within scope; do not confirm it merely by rejecting a rival."
+      ],
+      "assumption_failure_response": "Apply DM-INVALID before an outcome-based interpretation.",
+      "next_action": "Report all contrasts; revise protocol or replicate with new independent tasks as appropriate."
+    },
+    {
+      "id": "DM-COPY",
+      "prediction_ids": [
+        "P-R"
+      ],
+      "observation_region": "Only computed interpreter conclusions improve outcomes",
+      "analysis_outputs": [
+        "delta_N_diagnostic",
+        "delta_R_diagnostic",
+        "damage_difference",
+        "raw_vs_irrelevant",
+        "raw_vs_assessed",
+        "L_N",
+        "L_R",
+        "domain_accuracy",
+        "false_support",
+        "uncertainty"
+      ],
+      "decision_rule": "Retain benefit from supplied answers; raw-evidence mechanism unresolved.",
+      "discrimination_result": "fails-to-discriminate",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-R"
+          ],
+          "disposition": "no-change",
+          "rationale": "Retain benefit from supplied answers; raw-evidence mechanism unresolved.",
+          "scope_limit": "Each estimand judged separately; invalid measurement overrides nominal benefit."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain or weaken corresponding substantive hypothesis within scope; do not confirm it merely by rejecting a rival."
+      ],
+      "assumption_failure_response": "Apply DM-INVALID before an outcome-based interpretation.",
+      "next_action": "Report all contrasts; revise protocol or replicate with new independent tasks as appropriate."
+    },
+    {
+      "id": "DM-PRESERVE",
+      "prediction_ids": [
+        "P-R"
+      ],
+      "observation_region": "Damage decreases but correction information is insufficient",
+      "analysis_outputs": [
+        "delta_N_diagnostic",
+        "delta_R_diagnostic",
+        "damage_difference",
+        "raw_vs_irrelevant",
+        "raw_vs_assessed",
+        "L_N",
+        "L_R",
+        "domain_accuracy",
+        "false_support",
+        "uncertainty"
+      ],
+      "decision_rule": "State preservation benefit and leave error correction unresolved. Check condition-specific semantic correctness; do not treat warranted rejection of absent or wrong-scope observations as damaged reasoning.",
+      "discrimination_result": "fails-to-discriminate",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-R"
+          ],
+          "disposition": "revise",
+          "rationale": "State preservation benefit and leave error correction unresolved.",
+          "scope_limit": "Each estimand judged separately; invalid measurement overrides nominal benefit."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain or weaken corresponding substantive hypothesis within scope; do not confirm it merely by rejecting a rival."
+      ],
+      "assumption_failure_response": "Apply DM-INVALID before an outcome-based interpretation.",
+      "next_action": "Report all contrasts; revise protocol or replicate with new independent tasks as appropriate."
+    },
+    {
+      "id": "DM-G",
+      "prediction_ids": [
+        "P-G"
+      ],
+      "observation_region": "Independent mechanism study satisfies frozen absolute/domain standards",
+      "analysis_outputs": [
+        "delta_N_diagnostic",
+        "delta_R_diagnostic",
+        "damage_difference",
+        "raw_vs_irrelevant",
+        "raw_vs_assessed",
+        "L_N",
+        "L_R",
+        "domain_accuracy",
+        "false_support",
+        "uncertainty"
+      ],
+      "decision_rule": "Bounded transfer for specified system; diagnostic cannot enter this row.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-G"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Bounded transfer for specified system; diagnostic cannot enter this row.",
+          "scope_limit": "Each estimand judged separately; invalid measurement overrides nominal benefit."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain or weaken corresponding substantive hypothesis within scope; do not confirm it merely by rejecting a rival."
+      ],
+      "assumption_failure_response": "Apply DM-INVALID before an outcome-based interpretation.",
+      "next_action": "Report all contrasts; revise protocol or replicate with new independent tasks as appropriate."
+    },
+    {
+      "id": "DM-NEGATIVE",
+      "prediction_ids": [
+        "P-N",
+        "P-R",
+        "P-G"
+      ],
+      "observation_region": "Adequately precise observations exclude the claimed useful gain or required task performance",
+      "analysis_outputs": [
+        "delta_N_diagnostic",
+        "delta_R_diagnostic",
+        "damage_difference",
+        "raw_vs_irrelevant",
+        "raw_vs_assessed",
+        "L_N",
+        "L_R",
+        "domain_accuracy",
+        "false_support",
+        "uncertainty"
+      ],
+      "decision_rule": "Restrict empirical claim to demonstrated conditions.",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-N",
+            "CLM-R",
+            "CLM-G"
+          ],
+          "disposition": "weaken",
+          "rationale": "Restrict empirical claim to demonstrated conditions.",
+          "scope_limit": "Each estimand judged separately; invalid measurement overrides nominal benefit."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain or weaken corresponding substantive hypothesis within scope; do not confirm it merely by rejecting a rival."
+      ],
+      "assumption_failure_response": "Apply DM-INVALID before an outcome-based interpretation.",
+      "next_action": "Report all contrasts; revise protocol or replicate with new independent tasks as appropriate."
+    },
+    {
+      "id": "DM-INVALID",
+      "prediction_ids": [
+        "P-N",
+        "P-R",
+        "P-G"
+      ],
+      "observation_region": "Semantic match, reference or assignment checks fail",
+      "analysis_outputs": [
+        "delta_N_diagnostic",
+        "delta_R_diagnostic",
+        "damage_difference",
+        "raw_vs_irrelevant",
+        "raw_vs_assessed",
+        "L_N",
+        "L_R",
+        "domain_accuracy",
+        "false_support",
+        "uncertainty"
+      ],
+      "decision_rule": "No causal or transfer inference from affected comparisons.",
+      "discrimination_result": "invalid-measurement",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-N",
+            "CLM-R",
+            "CLM-G"
+          ],
+          "disposition": "suspend",
+          "rationale": "No causal or transfer inference from affected comparisons.",
+          "scope_limit": "Each estimand judged separately; invalid measurement overrides nominal benefit."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain or weaken corresponding substantive hypothesis within scope; do not confirm it merely by rejecting a rival."
+      ],
+      "assumption_failure_response": "Apply DM-INVALID before an outcome-based interpretation.",
+      "next_action": "Report all contrasts; revise protocol or replicate with new independent tasks as appropriate."
+    },
+    {
+      "id": "DM-OTHER",
+      "prediction_ids": [
+        "P-N",
+        "P-R",
+        "P-G"
+      ],
+      "observation_region": "Partial cohort, wide intervals, mixed or unanticipated results",
+      "analysis_outputs": [
+        "delta_N_diagnostic",
+        "delta_R_diagnostic",
+        "damage_difference",
+        "raw_vs_irrelevant",
+        "raw_vs_assessed",
+        "L_N",
+        "L_R",
+        "domain_accuracy",
+        "false_support",
+        "uncertainty"
+      ],
+      "decision_rule": "Retain records, report estimands separately and design a new independent cohort.",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-N",
+            "CLM-R",
+            "CLM-G"
+          ],
+          "disposition": "no-change",
+          "rationale": "Retain records, report estimands separately and design a new independent cohort.",
+          "scope_limit": "Each estimand judged separately; invalid measurement overrides nominal benefit."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain or weaken corresponding substantive hypothesis within scope; do not confirm it merely by rejecting a rival."
+      ],
+      "assumption_failure_response": "Apply DM-INVALID before an outcome-based interpretation.",
+      "next_action": "Report all contrasts; revise protocol or replicate with new independent tasks as appropriate."
+    }
+  ],
+  "bias_assessment": {
+    "risks": [
+      {
+        "id": "BIAS-1",
+        "risk_type": "leakage",
+        "mechanism": "Development choices to score",
+        "prevention": "Separate fresh mechanism split",
+        "detection": "Novelty audit",
+        "sensitivity_or_correction": "Report scope restriction; new freeze and independent cohort after repair.",
+        "residual_risk": "Diagnostic cannot establish transfer."
+      },
+      {
+        "id": "BIAS-2",
+        "risk_type": "confounding",
+        "mechanism": "Condition to extra useful information to outcome",
+        "prevention": "Shared IR, reference, output cap and response format",
+        "detection": "Equality and leakage checks",
+        "sensitivity_or_correction": "Report scope restriction; new freeze and independent cohort after repair.",
+        "residual_risk": "Natural input length is part of practical surface intervention."
+      },
+      {
+        "id": "BIAS-3",
+        "risk_type": "measurement",
+        "mechanism": "Computed answer to copying to score",
+        "prevention": "Separate raw and assessed views",
+        "detection": "Packet field audit",
+        "sensitivity_or_correction": "Report scope restriction; new freeze and independent cohort after repair.",
+        "residual_risk": "Public justifications are not proof of a cognitive mechanism."
+      },
+      {
+        "id": "BIAS-4",
+        "risk_type": "confounding",
+        "mechanism": "Order to model behaviour to score",
+        "prevention": "Randomised block order and pinned identity",
+        "detection": "Record actual snapshot and failures",
+        "sensitivity_or_correction": "Report scope restriction; new freeze and independent cohort after repair.",
+        "residual_risk": "Concurrent provider load may remain."
+      },
+      {
+        "id": "BIAS-5",
+        "risk_type": "selection",
+        "mechanism": "Oracle-based candidate construction to easier correction",
+        "prevention": "Label as injected; separate natural-producer follow-up",
+        "detection": "Report exact alternative label schedule",
+        "sensitivity_or_correction": "Report scope restriction; new freeze and independent cohort after repair.",
+        "residual_risk": "Natural error distribution remains unmeasured."
+      }
+    ],
+    "researcher_degrees_of_freedom": [
+      "Prompt and comparator selection",
+      "Template selection",
+      "Metric thresholds",
+      "Error injection distribution"
+    ],
+    "negative_controls": [
+      "CTL-IRRELEVANT"
+    ],
+    "positive_controls": [
+      "CTL-ASSESS"
+    ],
+    "falsification_checks": [
+      "Wrong-origin records must not justify support",
+      "Always-supported and always-unresolved strategies fail contrasting reference cases"
+    ],
+    "reporting_controls": [
+      "Freeze exact inputs before requests",
+      "Retain all errors and unknown charges",
+      "Publish complete condition counts and descriptive transition denominators"
+    ],
+    "residual_limitations": [
+      "Exposed suite",
+      "Synthetic errors",
+      "No validated public-justification score",
+      "No current general engineering task sample"
+    ]
+  },
+  "ethics_and_safety": {
+    "applicable": false,
+    "rationale": "Synthetic software-only diagnostic with existing project fixtures; no new human participants or physical control.",
+    "risks": [
+      "API expenditure and accidental credential logging"
+    ],
+    "mitigations": [
+      "No credentials in artefacts; pre-call price allowance; stop on unknown usage"
+    ],
+    "monitoring": [
+      "Every attempt and configured price retained"
+    ],
+    "stopping_rules": [
+      "Missing credentials block before calls",
+      "Provider error or unknown usage stops new requests"
+    ],
+    "stop_authority": "Experiment operator",
+    "review_status": "not-required",
+    "post_stop_actions": [
+      "Keep failed records; reconcile usage before a separately documented continuation."
+    ]
+  },
+  "feasibility": {
+    "current_status": "partially-feasible",
+    "apparatus_or_data": [
+      "Existing five tasks and independent references",
+      "New diagnostic runner and argument",
+      "Existing 324 historical endpoints for descriptive reanalysis"
+    ],
+    "access": "User supplied a provider credential and authorised execution in this session; do not record the credential in any artefact.",
+    "skills": [
+      "Engineering argumentation languages",
+      "Scientific investigation design",
+      "Software engineering statistics"
+    ],
+    "resources": [
+      "Diagnostic maximum 180 calls; configured USD 2 planning threshold",
+      "Confirmation budget to be determined after task construction and precision calibration"
+    ],
+    "dependencies": [
+      "Configured authorised provider",
+      "Validated expanded task rubric",
+      "Protected independent task frame"
+    ],
+    "blockers": [
+      "General engineering task frame unconstructed",
+      "Confirmation information target and scoring thresholds not frozen"
+    ],
+    "fallback": "Run local reference/semantic checks and historical transition analysis; report no new live model evidence."
+  },
+  "reproducibility": {
+    "preregistration_status": "planned",
+    "registration": "No external preregistration; repository freeze is auditable but is not described as registered.",
+    "immutable_materials": [
+      "Plan, protocol, script and runtime hashes",
+      "Task/observation contents and private expected labels",
+      "All generated prompts, schedule and condition identities"
+    ],
+    "data_plan": "Retain attempts, response text, usage, cost completeness and model identity; separate raw observations from computed conclusions.",
+    "code_plan": "New scripts only; unchanged EAL grammar and core interpreter.",
+    "randomisation_or_seed_plan": "Random schedule seed 20260923; no unconfigured provider sampling seed claimed.",
+    "provenance_plan": "Source tree, input digests and saved exact prompts recorded.",
+    "deviation_and_amendment_plan": "Any changed input or method requires a new freeze/output directory; uncertain prior attempts retained without silent retry.",
+    "replication_plan": "After apparatus validation, independently author protected tasks; replicate model-specific contrasts and then test a separately named model."
+  },
+  "execution": {
+    "protocol_version_used": "1.0.1",
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": "benchmarks/results/2026-09-23-argument-audit",
+    "code_location": "scripts/notation_transfer_experiment.py",
+    "observed_results": [],
+    "interpretation_status": "not-started; historical reanalysis and synthetic planning are separate evidence"
+  },
+  "provenance": {
+    "authors": [
+      "Prepared for Emmett Miller with Codex; no external review claimed"
+    ],
+    "created_at": "2026-09-23T22:00:00Z",
+    "updated_at": "2026-09-23T20:17:07.271658+00:00",
+    "sources": [
+      "docs/general-reasoning-and-notation-argument.md",
+      "docs/eal2-relay-results.md",
+      "https://arxiv.org/abs/2310.11324v2",
+      "https://papers.neurips.cc/paper_files/paper/2015/hash/bad5f33780c42f2588878a9d07405083-Abstract.html",
+      "https://miguelhernan.org/whatifbook"
+    ],
+    "knowledge_cut": "2026-09-23",
+    "change_log": [
+      "1.0.0: specified distinct notation, raw-evidence correction and transfer arguments; preserve original historical reports and grammar.",
+      "1.0.1 before any live outcomes: correct missing completion status in the response scorer; preserve full-information target agreement and add a separate existing-interpreter oracle for each information view. Original plan, protocol and runner are retained in docs/history/notation-transfer-v1. Inputs, model, order, 180 calls and USD 2 limit are unchanged. New scoring contract EAL/notation-transfer-scoring/2; EAL source grammar and interpreter unchanged."
+    ]
+  }
+}
