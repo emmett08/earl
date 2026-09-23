@@ -1,13 +1,19 @@
 {
   "schema": "EAL/notation-transfer-plan/1",
-  "name": "eal2-notation-transfer-diagnostic-20260923",
+  "name": "eal2-notation-transfer-diagnostic-20260923-scoring2",
   "suite": "../engineering-v2/suite.json",
-  "task_ids": ["defence-with-independent-subargument", "defence-cannot-ground-itself", "registered-rms-velocity", "registered-rms-wrong-origin", "sampled-negative-finding"],
+  "task_ids": [
+    "defence-with-independent-subargument",
+    "defence-cannot-ground-itself",
+    "registered-rms-velocity",
+    "registered-rms-wrong-origin",
+    "sampled-negative-finding"
+  ],
   "provider": "../providers/openai-4.1-nano-native.toml",
   "protocol": "../protocols/INV-EAL-REASONING-001.json",
   "repetitions": 2,
   "order_seed": 20260923,
   "max_output_tokens": 2048,
   "max_campaign_model_cost_usd": 2.0,
-  "notes": "Exposed-task diagnostic, not fresh held-out evidence. Eighteen conditions distinguish representation, candidate correctness, raw observations, irrelevant records and computed conclusions. No recipient tools or repairs; one common response contract. Artificial candidate errors do not estimate natural error prevalence. No model class generalisation. Byte-based pre-call cost allowance uses the configured rates; no provider-enforced invoice cap. This separate script does not change the EAL language or interpreter."
+  "notes": "Exposed-task diagnostic, not fresh held-out evidence. Eighteen conditions distinguish representation, candidate correctness, raw observations, irrelevant records and computed conclusions. No recipient tools or repairs; one common response contract. Artificial candidate errors do not estimate natural error prevalence. No model class generalisation. Byte-based pre-call cost allowance uses the configured rates; no provider-enforced invoice cap. This separate script does not change the EAL language or interpreter. Pre-execution amendment 1.0.1 fixes completion-status scoring and adds available-information references; full-information agreement is retained separately. No previous live trials exist for this diagnostic."
 }

@@ -30,7 +30,8 @@ evidence whole_sequence_corrections {
   require "sequences.shared_producer_checked" == true;
 }
 
-// These evidence declarations refer to an honest not_run status record.
+// These evidence declarations refer to the pending independent confirmation.
+// Completed exposed-task measurements are represented separately below.
 // A future analyst must supply results and an independent design assessment.
 // No synthetic model outcomes or assumed positive effects are inserted.
 evidence notation_estimate {
@@ -136,3 +137,25 @@ claim requested_contribution_established {
 }
 argument contribution_from_notation { conclusion requested_contribution_established; reasoning alternative_sufficiency; premises notation_advantage; }
 argument contribution_from_transfer { conclusion requested_contribution_established; reasoning alternative_sufficiency; premises bounded_engineering_transfer; }
+
+// Actual frozen diagnostic counts; these do not discharge population claims.
+evidence measured_diagnostic {
+  tool prospective_reader; kind measurement; environment investigation; max_age 86400;
+  require "diagnostic.status" == "complete";
+  require "diagnostic.attempted" == 180;
+  require "diagnostic.tasks" == 5;
+  require "diagnostic.unknown_cost_attempts" == 0;
+  require "diagnostic.full_information.eal_raw_only.correct" == 4;
+  require "diagnostic.full_information.json_raw_only.correct" == 5;
+  require "diagnostic.full_information.eal_incorrect_answer_raw.correct" == 2;
+  require "diagnostic.full_information.json_incorrect_answer_raw.correct" == 5;
+}
+reasoning finite_diagnostic_description {
+  method "structured/1";
+  rationale "Recompute exact endpoint counts from all 180 retained attempts on five exposed tasks. The two repetitions and related templates are dependent. Incorrect proposals are injected; no population bound, cognitive mechanism or general engineering transfer follows from these finite counts.";
+}
+claim diagnostic_result_observed {
+  statement "In the frozen GPT-4.1 nano diagnostic, raw-only EAL and JSON obtained 4/10 and 5/10 complete correct answers. With incorrect proposals and raw observations, they obtained 2/10 and 5/10. These finite status results use the full-information reference, which coincides with the available-information reference in these arms; all attempted failures remain in the denominators.";
+  environment investigation;
+}
+argument diagnostic_description { conclusion diagnostic_result_observed; reasoning finite_diagnostic_description; evidence measured_diagnostic; }

@@ -133,7 +133,8 @@ def test_freeze_change_rejected(frozen, tmp_path, monkeypatch):
 
 def test_partial_pairs_cannot_appear_as_full_comparison(frozen):
     raw = next(x for x in frozen["schedule"] if x["condition"]["id"] == "eal_raw_only")
-    record = {**raw, "score": {"correct": True, "unjustified": False}, "cost_usd": 0.001}
+    record = {**raw, "score": {"correct": True, "unjustified": False},
+              "available_information_score": {"correct": True, "unjustified": False}, "cost_usd": 0.001}
     report = study.summarise([record], 180)
     assert report["paired_comparisons"][0]["coverage_complete"] is False
     assert report["paired_comparisons"][0]["task_weighted_difference"] is None
@@ -154,7 +155,34 @@ def test_complete_synthetic_pipeline_and_resume(frozen, tmp_path, monkeypatch):
     monkeypatch.setattr(study, "provider_from_config", lambda config: provider)
     result = asyncio.run(study.execute(frozen, tmp_path))
     assert result["status"] == "completed" and result["attempted"] == 180
+    assert sum(g["correct"] for g in result["conditions"].values()) == 108
     assert all(x["coverage_complete"] for x in result["paired_comparisons"])
     assert result["paired_comparisons"][0]["task_weighted_difference"] == 0
     asyncio.run(study.execute(frozen, tmp_path))
     assert provider.calls == 180  # Reuse saved synthetic responses, never recharge.
+
+
+def test_missing_or_wrong_scope_evidence_has_its_own_reference(frozen):
+    task = frozen["tasks"]["registered-rms-velocity"]
+    refs = task["available_information_references"]
+    assert refs["answer_raw"] == {"vibration_within_limit": "supported"}
+    assert refs["answer"] == {"vibration_within_limit": "unsupported"}
+    assert refs["answer_irrelevant"] == {"vibration_within_limit": "unsupported"}
+    assert task["expected"] == refs["answer_raw"]
+
+
+def test_valid_perfect_response_scores_correct(frozen, tmp_path, monkeypatch):
+    one = copy.deepcopy(frozen)
+    one["schedule"] = [one["schedule"][0]]
+    row = one["schedule"][0]
+    expected = one["tasks"][row["task_id"]]["expected"]
+
+    class KnownAnswerProvider:
+        async def complete(self, messages, max_output_tokens):
+            return ModelResponse(json.dumps({"claims": expected, "basis": []}), 100, 20,
+                                 one["provider_identity"]["model"])
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test-placeholder-never-sent")
+    monkeypatch.setattr(study, "provider_from_config", lambda config: KnownAnswerProvider())
+    result = asyncio.run(study.execute(one, tmp_path))
+    assert result["conditions"][row["condition"]["id"]]["correct"] == 1

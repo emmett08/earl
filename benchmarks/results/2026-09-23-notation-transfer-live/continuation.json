@@ -1,0 +1,358 @@
+{
+  "schema": "EAL/notation-transfer-continuation/1",
+  "created_at": "2026-09-23T20:34:08.556350+00:00",
+  "original_freeze_sha256": "84ae4352fbb3011ba79c0ef27c702fbcc1220d9cc45ff93ad4a78be8aef30240",
+  "original_freeze_digest": "c1f98f9920faebb3928faa90be455c3f0ee8d5769a0bc74e87fa7eee5ecf0669",
+  "original_runner_sha256": "43f144d0646fad1c9b78ed2b9716631f1af08674e148c16190171b8a4e074e14",
+  "continuation_runner_sha256": "d368ecbf528cdbab9c3e6aa5f61795aa78e51ff1be45335ff4246b486ef85352",
+  "scoring_schema": "EAL/notation-transfer-scoring/2",
+  "policy": {
+    "eligible_failure": "provider_error with retained single assistant choice and finish_reason length",
+    "required_identity": "response model exactly equals frozen model",
+    "required_usage": "known input/output counts and consistent cached/reasoning counts; saved cost equals recomputed cost",
+    "existing_failures": "explicit trial ID and original byte SHA256 approval required",
+    "later_length_failures": "retain failed primary outcome, charge known cost, record SHA256 and advance once",
+    "other_failures": "stop; never retry existing or uncertain attempts",
+    "experiment_changes": "none: original schedule, prompts, output cap, rates and scoring retained"
+  },
+  "approved_existing_failures": {
+    "trial-00029": "6be1665249656b91afe0ba0d45579360e55ac5f36204ff6190a916f059203fdb"
+  },
+  "original_records": [
+    {
+      "trial_id": "trial-00000",
+      "sha256": "bd4c959a9e81c09ecb98d924221325ed2c145324b465cc45f7eeefea56839711",
+      "state": "responded",
+      "cost_usd": 0.0011497
+    },
+    {
+      "trial_id": "trial-00001",
+      "sha256": "fbd1adb60b05d0b4e047a6a9052a786bd42cebb459e8eb7aa73596263cf17c81",
+      "state": "malformed_response",
+      "cost_usd": 0.00045030000000000005
+    },
+    {
+      "trial_id": "trial-00002",
+      "sha256": "2f820b0bc3677a288d9d1bf5c7ffaac2856fbef6f3342ec787c6ae7a31e79270",
+      "state": "malformed_response",
+      "cost_usd": 0.00036710000000000003
+    },
+    {
+      "trial_id": "trial-00003",
+      "sha256": "7e2a62ca7a29e659b10113b01b960039e17887070a1e4474c270978beaa115e8",
+      "state": "responded",
+      "cost_usd": 0.00038280000000000003
+    },
+    {
+      "trial_id": "trial-00004",
+      "sha256": "4e6dcbe8ba60ed3ddeb2415b2993903b8d72276c8023f38a33b36f283a8f2db6",
+      "state": "responded",
+      "cost_usd": 0.0003367
+    },
+    {
+      "trial_id": "trial-00005",
+      "sha256": "9b07ded3107c6187c0dae6663726e1d3c1c10f70f3fd27be14c5d9bc5fbe41ff",
+      "state": "malformed_response",
+      "cost_usd": 0.0003623
+    },
+    {
+      "trial_id": "trial-00006",
+      "sha256": "6c1d2ebae1bccffc7812fbc82020f4c0a7a5e0dd90a94d6f0d4f14e308db00ca",
+      "state": "responded",
+      "cost_usd": 0.00038740000000000004
+    },
+    {
+      "trial_id": "trial-00007",
+      "sha256": "147c4edcdb1f1fce61b8a0e19a3125356a6ce89d6986ab86c32010964c41c63c",
+      "state": "responded",
+      "cost_usd": 0.0003912
+    },
+    {
+      "trial_id": "trial-00008",
+      "sha256": "7cceeab5b9eaea462deb514b3aadff37d5f4c36f45474aaea7a43d5151b5b4aa",
+      "state": "responded",
+      "cost_usd": 0.00037320000000000007
+    },
+    {
+      "trial_id": "trial-00009",
+      "sha256": "37ab2b2621dcb51096607a726133c9affe37cc96cc484352236954112ab3961b",
+      "state": "responded",
+      "cost_usd": 0.0003743
+    },
+    {
+      "trial_id": "trial-00010",
+      "sha256": "1bb75ea9c6b72aaeb135cf22fd6f272bd2645ff4a17ea743ae4eeed85451821f",
+      "state": "malformed_response",
+      "cost_usd": 0.0003755
+    },
+    {
+      "trial_id": "trial-00011",
+      "sha256": "8184452ee9a3bb8d04ee1c5d33400a8c0083e51f5cace0dcb29db11bdc3a6597",
+      "state": "responded",
+      "cost_usd": 0.0004021
+    },
+    {
+      "trial_id": "trial-00012",
+      "sha256": "0733a202c942700e20c36a40cf57b272dd4b9bb0be8b4484a7c260ad4cc4b454",
+      "state": "responded",
+      "cost_usd": 0.0003355
+    },
+    {
+      "trial_id": "trial-00013",
+      "sha256": "bf062084a37dcd70bf6ad23b6241dd4161cc75a41f5a9df6b487bf47863f1094",
+      "state": "responded",
+      "cost_usd": 0.000347
+    },
+    {
+      "trial_id": "trial-00014",
+      "sha256": "f8d1a11108427452c57e30ec145ad7cb24f69df8d585956e4dedb67ed25f9729",
+      "state": "responded",
+      "cost_usd": 0.000372
+    },
+    {
+      "trial_id": "trial-00015",
+      "sha256": "371eff5d301f5e1ba44833f74b6610fcc71d419c9003c1081b63c8d4fd84e9b8",
+      "state": "responded",
+      "cost_usd": 0.00040560000000000005
+    },
+    {
+      "trial_id": "trial-00016",
+      "sha256": "53b1c7f4957c8316894394e03fa7d39c8a13400c3126a7ec0a10cf006bfd3d41",
+      "state": "responded",
+      "cost_usd": 0.00035160000000000004
+    },
+    {
+      "trial_id": "trial-00017",
+      "sha256": "2bf8151b64ef00430e548d98070d2791859fd7b4583184f21d405fef07ecbfb9",
+      "state": "responded",
+      "cost_usd": 0.0003836
+    },
+    {
+      "trial_id": "trial-00018",
+      "sha256": "e519ed3f6355225e8b8d0e78ba1b8ac5578868f5438413943e66daa9c5104658",
+      "state": "responded",
+      "cost_usd": 0.00043610000000000003
+    },
+    {
+      "trial_id": "trial-00019",
+      "sha256": "16a78d2f63c23b4700b3bdd7eb4e6cf608db6c4802de9c0e4f9e432269915a57",
+      "state": "responded",
+      "cost_usd": 0.00042420000000000007
+    },
+    {
+      "trial_id": "trial-00020",
+      "sha256": "587a9b13576c67fb6d486f42d4b99fe0a8aba6f806af1f16e3e63b6ab0023236",
+      "state": "responded",
+      "cost_usd": 0.00039870000000000004
+    },
+    {
+      "trial_id": "trial-00021",
+      "sha256": "2de27d0b75bee800d6ab7dfd9ec5fcf22700f378c97cec463024bf4289d6bdae",
+      "state": "responded",
+      "cost_usd": 0.0003729
+    },
+    {
+      "trial_id": "trial-00022",
+      "sha256": "64f993a7fcc1ae57a16f846ceb0948911f1dbb803ce296feb07ba55ebf96f68b",
+      "state": "responded",
+      "cost_usd": 0.00038490000000000003
+    },
+    {
+      "trial_id": "trial-00023",
+      "sha256": "207faf2a217678e0ecc314f33cd0e8ac4f14f07add022fb2819c4a0529a0ec3d",
+      "state": "responded",
+      "cost_usd": 0.0003834
+    },
+    {
+      "trial_id": "trial-00024",
+      "sha256": "299495b6699db337471db8354282f73ab7a9e801f835f12b741751a6268a748c",
+      "state": "responded",
+      "cost_usd": 0.00039
+    },
+    {
+      "trial_id": "trial-00025",
+      "sha256": "6024396de4775cedbc3ca501f2da7ea128a665a0f48e1df0f6dff3cfb11cfcf0",
+      "state": "responded",
+      "cost_usd": 0.00033380000000000004
+    },
+    {
+      "trial_id": "trial-00026",
+      "sha256": "52f546763528f936c34b2667fac851391b936e49801eb9913c5195bcf7b944fa",
+      "state": "responded",
+      "cost_usd": 0.0003349
+    },
+    {
+      "trial_id": "trial-00027",
+      "sha256": "850950fdf35b0338e6c873c1b3e1954c42a756a1b00327ab9ef73e3cd00e5a10",
+      "state": "responded",
+      "cost_usd": 0.0003326
+    },
+    {
+      "trial_id": "trial-00028",
+      "sha256": "5cea9f3d1dd0bf2a4903d2c76883fddd3ad37942b6a28ff9b10a81643aa6eaca",
+      "state": "responded",
+      "cost_usd": 0.0003701
+    },
+    {
+      "trial_id": "trial-00029",
+      "sha256": "6be1665249656b91afe0ba0d45579360e55ac5f36204ff6190a916f059203fdb",
+      "state": "provider_error",
+      "cost_usd": 0.001113
+    }
+  ],
+  "original_known_cost_usd": 0.012822500000000002,
+  "max_campaign_model_cost_usd": 2.0,
+  "remaining_schedule_ids": [
+    "trial-00030",
+    "trial-00031",
+    "trial-00032",
+    "trial-00033",
+    "trial-00034",
+    "trial-00035",
+    "trial-00036",
+    "trial-00037",
+    "trial-00038",
+    "trial-00039",
+    "trial-00040",
+    "trial-00041",
+    "trial-00042",
+    "trial-00043",
+    "trial-00044",
+    "trial-00045",
+    "trial-00046",
+    "trial-00047",
+    "trial-00048",
+    "trial-00049",
+    "trial-00050",
+    "trial-00051",
+    "trial-00052",
+    "trial-00053",
+    "trial-00054",
+    "trial-00055",
+    "trial-00056",
+    "trial-00057",
+    "trial-00058",
+    "trial-00059",
+    "trial-00060",
+    "trial-00061",
+    "trial-00062",
+    "trial-00063",
+    "trial-00064",
+    "trial-00065",
+    "trial-00066",
+    "trial-00067",
+    "trial-00068",
+    "trial-00069",
+    "trial-00070",
+    "trial-00071",
+    "trial-00072",
+    "trial-00073",
+    "trial-00074",
+    "trial-00075",
+    "trial-00076",
+    "trial-00077",
+    "trial-00078",
+    "trial-00079",
+    "trial-00080",
+    "trial-00081",
+    "trial-00082",
+    "trial-00083",
+    "trial-00084",
+    "trial-00085",
+    "trial-00086",
+    "trial-00087",
+    "trial-00088",
+    "trial-00089",
+    "trial-00090",
+    "trial-00091",
+    "trial-00092",
+    "trial-00093",
+    "trial-00094",
+    "trial-00095",
+    "trial-00096",
+    "trial-00097",
+    "trial-00098",
+    "trial-00099",
+    "trial-00100",
+    "trial-00101",
+    "trial-00102",
+    "trial-00103",
+    "trial-00104",
+    "trial-00105",
+    "trial-00106",
+    "trial-00107",
+    "trial-00108",
+    "trial-00109",
+    "trial-00110",
+    "trial-00111",
+    "trial-00112",
+    "trial-00113",
+    "trial-00114",
+    "trial-00115",
+    "trial-00116",
+    "trial-00117",
+    "trial-00118",
+    "trial-00119",
+    "trial-00120",
+    "trial-00121",
+    "trial-00122",
+    "trial-00123",
+    "trial-00124",
+    "trial-00125",
+    "trial-00126",
+    "trial-00127",
+    "trial-00128",
+    "trial-00129",
+    "trial-00130",
+    "trial-00131",
+    "trial-00132",
+    "trial-00133",
+    "trial-00134",
+    "trial-00135",
+    "trial-00136",
+    "trial-00137",
+    "trial-00138",
+    "trial-00139",
+    "trial-00140",
+    "trial-00141",
+    "trial-00142",
+    "trial-00143",
+    "trial-00144",
+    "trial-00145",
+    "trial-00146",
+    "trial-00147",
+    "trial-00148",
+    "trial-00149",
+    "trial-00150",
+    "trial-00151",
+    "trial-00152",
+    "trial-00153",
+    "trial-00154",
+    "trial-00155",
+    "trial-00156",
+    "trial-00157",
+    "trial-00158",
+    "trial-00159",
+    "trial-00160",
+    "trial-00161",
+    "trial-00162",
+    "trial-00163",
+    "trial-00164",
+    "trial-00165",
+    "trial-00166",
+    "trial-00167",
+    "trial-00168",
+    "trial-00169",
+    "trial-00170",
+    "trial-00171",
+    "trial-00172",
+    "trial-00173",
+    "trial-00174",
+    "trial-00175",
+    "trial-00176",
+    "trial-00177",
+    "trial-00178",
+    "trial-00179"
+  ],
+  "continuation_digest": "de1b15e41ad3465eda0c762f51156a07536e81df82972fe8ec1f1b13b2de2c02"
+}

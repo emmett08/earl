@@ -22,7 +22,7 @@ import time
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from eal.benchmark import check_task, load_suite, task_inputs, score_answer, suite_digest, prepare_task
+from eal.benchmark import check_task, load_suite, task_inputs, score_answer, suite_digest
 from eal.experiment import _code_identity, _provider_config
 from eal.formatter import format_program, semantic_ir
 from eal.parser import parse
@@ -32,7 +32,6 @@ from eal.runtime import load_method_registry, strict_json
 SCHEMA = "EAL/notation-transfer-plan/1"
 STATUSES = ("supported", "contested", "unsupported", "out_of_scope")
 INFORMATION = ("answer", "answer_raw", "answer_irrelevant", "answer_assessed")
-SCORING_SCHEMA = "EAL/notation-transfer-scoring/2"
 
 
 def digest(value):
@@ -109,23 +108,6 @@ def messages_for(task, condition, repetition, common_reference):
             {"role": "user", "content": json.dumps(packet, ensure_ascii=False, sort_keys=True)}]
 
 
-def available_information_reference(task, source, observations, workspace):
-    """Offline oracle for the records actually visible; no proposal is evidence.
-
-    This uses the existing interpreter, not a model judge. Its independence is
-    limited to the known-answer checks of that interpreter and the task suite.
-    """
-    inputs_root = workspace / "input"
-    inputs_root.mkdir(parents=True)
-    (inputs_root / "source.eal").write_text(source)
-    (inputs_root / "observations.json").write_text(json.dumps(observations))
-    case = {**task, "source": "source.eal", "observations": "observations.json"}
-    service, inputs = prepare_task(case, inputs_root, workspace / "runtime")
-    collection = service.collect(inputs["source"], inputs["context"])
-    assessment = service.reason(inputs["source"], inputs["context"], collection["collection_id"], inputs["now"])
-    return {name: assessment["claims"][name]["status"] for name in task["expected"]["claims"]}
-
-
 def freeze(plan_path):
     plan_path = Path(plan_path).resolve()
     plan = strict_json(plan_path.read_text())
@@ -176,20 +158,10 @@ def freeze(plan_path):
                 value["context"] = {**value.get("context", {}), "assembly": "unrelated-assembly"}
                 if "request" in value:
                     value["request"]["context"] = dict(value["context"])
-            references = {}
-            for view_name, observations in (("answer", {}), ("answer_raw", inputs["observations"]),
-                                           ("answer_irrelevant", irrelevant)):
-                references[view_name] = available_information_reference(
-                    task, source, observations, Path(temporary) / task["id"] / view_name)
-            if references["answer_raw"] != task["expected"]["claims"]:
-                raise ValueError("Full-observation oracle disagrees with independent task reference")
-            references["raw_only"] = references["answer_raw"]
-            references["answer_assessed"] = references["answer_raw"]
             tasks[task["id"]] = {"question": task["question"], "family": task["family"],
                                   "expected": task["expected"]["claims"], "inputs": inputs,
                                   "representations": {"eal": source, "json": view},
                                   "semantic_digest": digest(view), "irrelevant_observations": irrelevant,
-                                  "available_information_references": references,
                                   "interpreter_conclusions": {k: v["status"] for k, v in checked["assessment"]["claims"].items()}}
     schedule = []
     rng = random.Random(plan["order_seed"])
@@ -203,7 +175,7 @@ def freeze(plan_path):
             schedule.append({"trial_id": f"trial-{len(schedule):05d}", "task_id": task_id,
                              "repetition": repetition, "condition": condition,
                              "messages_digest": digest(messages)})
-    result = {"schema": "EAL/notation-transfer-freeze/2", "scoring_schema": SCORING_SCHEMA, "plan": plan, "tasks": tasks,
+    result = {"schema": "EAL/notation-transfer-freeze/1", "plan": plan, "tasks": tasks,
               "provider_configuration": provider_config, "provider_identity": provider.identity(),
               "common_reference": common_reference, "schedule": schedule,
               "suite_digest": suite_digest(suite_path), "runtime": _code_identity(),
@@ -218,13 +190,10 @@ def summarise(records, scheduled, uncertain=0):
     groups = {}
     for record in records:
         group = groups.setdefault(record["condition"]["id"], {"attempted": 0, "correct": 0, "unjustified": 0,
-                                                             "available_information_correct": 0, "available_information_unjustified": 0,
                                                              "known_cost_usd": 0.0, "unknown_cost_attempts": 0})
         group["attempted"] += 1
         group["correct"] += bool(record["score"]["correct"])
         group["unjustified"] += bool(record["score"]["unjustified"])
-        group["available_information_correct"] += bool(record["available_information_score"]["correct"])
-        group["available_information_unjustified"] += bool(record["available_information_score"]["unjustified"])
         group["known_cost_usd"] += record["cost_usd"] or 0
         group["unknown_cost_attempts"] += record["cost_usd"] is None
     # All attempted outcomes stay in the denominator, including malformed output.
@@ -249,10 +218,10 @@ def summarise(records, scheduled, uncertain=0):
         comparisons.append({"name": name, "left": left, "right": right, "paired_attempts": len(paired),
                             "coverage_complete": complete, "task_differences": task_differences,
                             "task_weighted_difference": sum(sum(v) / len(v) for v in task_differences.values()) / len(task_differences) if complete and task_differences else None})
-    return {"scoring_schema": SCORING_SCHEMA, "scheduled": scheduled, "attempted": len(records), "uncertain_attempts": uncertain,
+    return {"scheduled": scheduled, "attempted": len(records), "uncertain_attempts": uncertain,
             "unexecuted": scheduled - len(records) - uncertain, "conditions": groups,
             "paired_comparisons": comparisons,
-            "inference": "Descriptive diagnostic only. score/correct and paired_comparisons concern the original full-information reference. available_information_score concerns the observations actually supplied. Neither is a general reasoning score; incomplete pairs have no full-schedule estimate."}
+            "inference": "Descriptive diagnostic only; no population p-values. Incomplete pair coverage has no full-schedule estimate."}
 
 
 async def execute(frozen, output):
@@ -334,14 +303,7 @@ async def execute(frozen, output):
                 final = decoded
             except (ValueError, TypeError):
                 record["state"] = "malformed_response"
-        scored_report = {"final": final, "status": "completed" if final is not None else "incomplete"}
-        record["scoring_schema"] = SCORING_SCHEMA
-        record["score"] = score_answer(task["expected"], scored_report)
-        available_expected = task["available_information_references"][row["condition"]["information"]]
-        record["available_information_score"] = score_answer(available_expected, scored_report)
-        proposed = candidate_answer(task["expected"], row["condition"]["candidate_quality"], row["repetition"])
-        record["proposal_correct_given_available_information"] = (
-            all(proposed[name] == status for name, status in available_expected.items()) if proposed is not None else None)
+        record["score"] = score_answer(task["expected"], {"final": final})
         write(target, record)
         records.append(record)
         charged += cost or 0

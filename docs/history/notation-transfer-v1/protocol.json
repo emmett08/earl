@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-REASONING-001",
   "title": "Separating EAL notation, evidence correction and engineering transfer",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "status": "specified",
   "question": "Can EAL notation improve correctness under equivalent semantics, and can relevant raw evidence correct an initially wrong proposed answer, beyond preserving already correct answers?",
   "primary_claim_id": "CLM-N",
@@ -473,7 +473,7 @@
       "description": "Same-valued observations for another assembly",
       "failure_mode_addressed": "Any plausible record accepted regardless of relevance",
       "implementation": "Modify context before rendering both surface forms",
-      "diagnostic_consequence": "Use condition-specific available-information correctness and false-support scores for scope discrimination. Full-reference raw-minus-irrelevant accuracy alone is insufficient; length effect remains unisolated."
+      "diagnostic_consequence": "Raw advantage over this condition supports scope-sensitive use; length effect remains unisolated."
     },
     {
       "id": "CTL-ASSESS",
@@ -559,7 +559,7 @@
       ],
       "time": "One frozen cohort",
       "summary_measure": "Delta_R = mean_template(Y_answer_raw - Y_answer) in incorrect stratum; report damage in correct stratum separately",
-      "interpretation": "Correction of controlled erroneous proposals; no natural-error prevalence. Full-reference correction counts and available-information semantic correctness have separate meanings; report both."
+      "interpretation": "Correction of controlled erroneous proposals; no natural-error prevalence."
     },
     {
       "id": "EST-G",
@@ -637,7 +637,7 @@
   },
   "analysis": {
     "preprocessing_lock": "Strict common response schema; store raw responses and attempt metadata. No prompt repair within the diagnostic.",
-    "exclusion_lock": "All attempted outcomes retained; no correctness-based exclusions. Pre-call credential failure is unexecuted, not a model failure. Labels correct/incorrect for injected proposals refer to the original full-information oracle, not necessarily the available-information oracle. Two repetition indices use different incorrect labels and therefore mix sampling variability with error type.",
+    "exclusion_lock": "All attempted outcomes retained; no correctness-based exclusions. Pre-call credential failure is unexecuted, not a model failure.",
     "models": [
       {
         "id": "MOD-DIAG",
@@ -645,7 +645,7 @@
           "EST-N",
           "EST-R"
         ],
-        "model_or_procedure": "Paired counts and template-averaged differences on the finite exposed diagnostic; separate incorrect, correct and absent proposals. Also score against a condition-specific offline interpreter reference for the observations actually supplied; proposals are fallible assertions rather than evidence. Full-information agreement remains a separate retained outcome.",
+        "model_or_procedure": "Paired counts and template-averaged differences on the finite exposed diagnostic; separate incorrect, correct and absent proposals.",
         "assumptions": [
           "Comparable semantic inputs and stable independent sessions."
         ],
@@ -659,10 +659,7 @@
           "delta_R_diagnostic",
           "damage_difference",
           "raw_vs_irrelevant",
-          "raw_vs_assessed",
-          "available_information_correct",
-          "available_information_unjustified",
-          "proposal_correct_given_available_information"
+          "raw_vs_assessed"
         ]
       },
       {
@@ -695,9 +692,7 @@
     "contrasts": [
       "Primary notation: EAL raw-only minus JSON raw-only.",
       "Primary correction: answer_raw minus answer in incorrect-proposal stratum, reported separately by notation. Confirmation must preselect one primary representation.",
-      "Diagnostic controls: raw versus irrelevant and assessed; damage among correct proposals; raw-only versus proposed-answer conditions.",
-      "Report full-information agreement and available-information correctness separately. Raw-minus-irrelevant full-information agreement alone cannot establish scope discrimination.",
-      "Report raw-only versus each proposed-answer condition, explicit damage relative to the original reference, and task-by-condition correct/false-support counts."
+      "Diagnostic controls: raw versus irrelevant and assessed; damage among correct proposals; raw-only versus proposed-answer conditions."
     ],
     "uncertainty": "Diagnostic descriptive counts; confirmation requires template-preserving uncertainty and small-sample calibration. Synthetic normal bounds are planning approximations only.",
     "multiplicity": "Diagnostic exploratory; no p-values. Future two primary one-sided contrasts Bonferroni at .025 each; no post-hoc selection of best model or representation.",
@@ -714,7 +709,7 @@
       "EAL/2 package 2.2.2 at source tree 14c6232b01cb8b5bd408d54693cc0b5a2df0e974",
       "Script and runtime digests recorded in freeze; actual numerical package version in simulation output."
     ],
-    "inconclusive_handling": "Wide intervals, failed manipulation, invalid references or incomplete coverage do not strengthen the target empirical claim. Honest unsupported conclusions when records are absent or mismatched are not labelled reasoning failures merely because they differ from the full-information target."
+    "inconclusive_handling": "Wide intervals, failed manipulation, invalid references or incomplete coverage do not strengthen the target empirical claim."
   },
   "decision_matrix": [
     {
@@ -771,7 +766,7 @@
         "false_support",
         "uncertainty"
       ],
-      "decision_rule": "Correction supported in tested contexts; natural prevalence unmeasured. Check condition-specific semantic correctness; do not treat warranted rejection of absent or wrong-scope observations as damaged reasoning.",
+      "decision_rule": "Correction supported in tested contexts; natural prevalence unmeasured.",
       "discrimination_result": "favours-hypothesis",
       "claim_effects": [
         {
@@ -843,7 +838,7 @@
         "false_support",
         "uncertainty"
       ],
-      "decision_rule": "State preservation benefit and leave error correction unresolved. Check condition-specific semantic correctness; do not treat warranted rejection of absent or wrong-scope observations as damaged reasoning.",
+      "decision_rule": "State preservation benefit and leave error correction unresolved.",
       "discrimination_result": "fails-to-discriminate",
       "claim_effects": [
         {
@@ -1123,7 +1118,7 @@
       "New diagnostic runner and argument",
       "Existing 324 historical endpoints for descriptive reanalysis"
     ],
-    "access": "User supplied a provider credential and authorised execution in this session; do not record the credential in any artefact.",
+    "access": "Repository accessible; configured OPENAI_API_KEY absent in current session.",
     "skills": [
       "Engineering argumentation languages",
       "Scientific investigation design",
@@ -1139,6 +1134,7 @@
       "Protected independent task frame"
     ],
     "blockers": [
+      "Live credential absent",
       "General engineering task frame unconstructed",
       "Confirmation information target and scoring thresholds not frozen"
     ],
@@ -1160,7 +1156,7 @@
     "replication_plan": "After apparatus validation, independently author protected tasks; replicate model-specific contrasts and then test a separately named model."
   },
   "execution": {
-    "protocol_version_used": "1.0.1",
+    "protocol_version_used": "1.0.0",
     "started_at": null,
     "completed_at": null,
     "deviations": [],
@@ -1174,7 +1170,7 @@
       "Prepared for Emmett Miller with Codex; no external review claimed"
     ],
     "created_at": "2026-09-23T22:00:00Z",
-    "updated_at": "2026-09-23T20:17:07.271658+00:00",
+    "updated_at": "2026-09-23T22:00:00Z",
     "sources": [
       "docs/general-reasoning-and-notation-argument.md",
       "docs/eal2-relay-results.md",
@@ -1184,8 +1180,7 @@
     ],
     "knowledge_cut": "2026-09-23",
     "change_log": [
-      "1.0.0: specified distinct notation, raw-evidence correction and transfer arguments; preserve original historical reports and grammar.",
-      "1.0.1 before any live outcomes: correct missing completion status in the response scorer; preserve full-information target agreement and add a separate existing-interpreter oracle for each information view. Original plan, protocol and runner are retained in docs/history/notation-transfer-v1. Inputs, model, order, 180 calls and USD 2 limit are unchanged. New scoring contract EAL/notation-transfer-scoring/2; EAL source grammar and interpreter unchanged."
+      "1.0.0: specified distinct notation, raw-evidence correction and transfer arguments; preserve original historical reports and grammar."
     ]
   }
 }

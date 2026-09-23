@@ -1,6 +1,6 @@
 # What would establish an EAL reasoning advantage?
 
-**Argument version 1.0; 23 September 2026.** The proposed contribution is that
+**Argument version 1.1; 23 September 2026.** The proposed contribution is that
 EAL can help a specified model or model–interpreter system solve engineering
 problems correctly, retain necessary qualifications and revise conclusions
 when evidence changes. Two distinct results could support that contribution:
@@ -12,14 +12,16 @@ result without establishing the first.
 The present evidence supports a narrower conclusion: particular EAL-assisted
 systems resolve the exposed synthetic cases, and some complete model sequences
 correct initially wrong answers. The primary evidence-transfer contrast
-demonstrates preservation of already correct answers. The new experiments below
-separate these outcomes and make stronger claims testable.
+demonstrates preservation of already correct answers. The completed diagnostic below
+separates these outcomes; it supplies some recovery from injected wrong
+proposals but does not establish the stronger requested claims.
 
 The [executable argument](../arguments/reasoning-advantage/argument.eal) uses the
 existing EAL/2 grammar and `structured/1` method. Its empirical targets remain
 unsupported until their evidence requirements are met. Executing this argument
 checks recorded dependencies and predicates; it does not prove its authored
-scientific warrants or perform the proposed experiment.
+scientific warrants. Its finite diagnostic claim is checked against all retained
+model trials; the independent notation and transfer criteria remain unmet.
 
 ## A worked distinction: preservation, correction and verification
 
@@ -150,8 +152,9 @@ The experiment has eighteen conditions per task: the following four conditions
 for each of two proposed-answer states and two representations, plus an
 evidence-only condition for each representation. Two repetitions give 180
 scheduled calls. A correct proposal and an intentionally incorrect proposal
-are constructed before assignment. Every condition within a task/repetition
-uses the same selected proposal. The label alternatives rotate with repetition.
+are constructed before assignment. Within each task/repetition and proposal-quality
+stratum, both representations and all four information views use the same
+proposal; raw-only has none. The label alternatives rotate with repetition.
 Recipients are not told whether a proposal is correct. Injected errors measure
 resistance to controlled misinformation; they do not estimate the frequency or
 composition of naturally occurring model mistakes.
@@ -168,12 +171,16 @@ The irrelevant-record condition deliberately retains measurement values while
 changing their declared context. It tests scope discrimination rather than a
 neutral token-length placebo. A separate length-matched neutral-text condition
 would be needed to isolate a generic prompt-length effect. Natural EAL and JSON
-lengths are retained; equal output caps and no truncation keep response resources
-comparable, while input length is measured as part of the practical surface
-intervention.
+lengths are retained; equal output caps keep response limits comparable, and truncation failures
+remain recorded failed attempts. Input length is measured as part of the
+practical surface intervention.
 
 The response contains claim statuses and a short public justification. The
-automatic score measures status correctness and unjustified positive answers;
+automatic score records agreement with the full-information reference and,
+separately, correctness for the observations actually supplied. Both include
+unjustified positive answers in admitted responses relative to their own
+reference. Malformed/provider-error content is excluded from this positive-claim
+score, so a zero count does not establish absence of false assertions there;
 the justification is retained for independent assessment and is not yet a
 validated reasoning-quality score. Malformed answers count as failed attempts.
 Missing credentials create no attempted trials. Unknown provider usage stops
@@ -181,11 +188,23 @@ execution, retaining the attempted record. A pre-call cost allowance and the
 configured two-dollar campaign threshold limit planned spending; these are
 local controls, not a provider-enforced invoice cap.
 
+Before the first model call, protocol 1.0.1 corrected a missing completion-status
+field in scoring and introduced the second reference. The original bytes remain
+in [the version 1 history](history/notation-transfer-v1/). The prompts, model,
+schedule and budget were unchanged. Missing observations and records for another
+assembly leave every requested claim unsupported in this diagnostic. Accordingly,
+a recipient can correctly decline support in those arms while disagreeing with
+the full-data answer. Counts called “correction”, “preservation” or “damage” must
+identify their reference. Full-information disagreement alone does not show
+failed reasoning or lost qualifications.
+
 ## Estimands and decisions
 
-Let \(Y_i(n,v,a)\) indicate complete endpoint correctness for task block \(i\),
+Let \(Y_i(n,v,a)\) indicate agreement with the complete full-information answer for task block \(i\),
 notation \(n\), information view \(v\) and proposed answer \(a\). Let \(U_i\)
-indicate an unjustified positive answer. Primary comparisons preserve task,
+indicate a positive answer unjustified by that reference. Report a parallel
+available-information correctness indicator using the view-specific reference.
+The two references coincide in raw-only, raw and assessed arms. Primary comparisons preserve task,
 model, proposed answer and resource settings; all attempted failures remain in
 their denominators.
 
@@ -209,11 +228,15 @@ proposal \(a^+\). The original primary comparison observes a damage difference
 of four out of twelve and has **zero correction opportunities**. Its correction
 rate is undefined, not zero. Report recovery from incomplete proposals
 separately. For the prospective diagnostic, compare raw evidence with irrelevant
-evidence and interpreter conclusions to distinguish scope-sensitive use of
-observations from acceptance of an authoritative answer.
+evidence and interpreter conclusions, reporting each view's own correctness.
+A higher full-information score with raw than irrelevant data is insufficient
+evidence of scope discrimination: the observations and appropriate answers
+change together. Examine rejection of wrong-scope records directly.
 
 The five-task diagnostic reports counts and paired task-level differences.
-Its repetitions are not additional independent tasks. It supplies no
+Its repetitions are not additional independent tasks; incorrect proposals also
+rotate between different wrong labels, so these are not identical-prompt
+replications. It supplies no
 population significance claim, and selection among its eighteen conditions
 creates no confirmatory result. Before a fresh confirmatory study, freeze a
 five-percentage-point minimum useful gain, the model-specific primary contrast,
@@ -228,7 +251,7 @@ deployment value needs assessment before the confirmatory protocol is frozen.
 
 | Observed pattern, after design checks | Permitted conclusion |
 |---|---|
-| Relevant raw data improve correction over answer-only and irrelevant records | Correction benefit consistent with use of task-relevant observations, in the tested conditions |
+| Relevant raw data improve full-information recovery; view-specific scoring also demonstrates rejection of missing or irrelevant support | Bounded recovery and scope discrimination in the tested conditions; each result retains its own denominator |
 | Raw data reduce damage, with no adequate correction evidence | Preservation benefit; correction unresolved |
 | Only interpreter conclusions improve outcomes | Benefit from computed answer information; raw-evidence reasoning unresolved |
 | EAL exceeds matched JSON in raw-only trials | Surface-representation effect on these tasks; mechanism and broader transfer unresolved |
@@ -280,7 +303,8 @@ not infer reasoning quality from eloquence or agreement with another model.
 
 The [investigation protocol](../benchmarks/protocols/INV-EAL-REASONING-001.json)
 records this as **specified**, with task construction, measurement validation,
-precision planning and live access still outstanding. A generic minimum number
+precision planning still outstanding. The live diagnostic has authorised access;
+its execution and findings are reported separately. A generic minimum number
 of API calls would not resolve those requirements. Independent templates are
 the sampling units; repetitions estimate within-task variability. Use the
 diagnostic to validate the apparatus, then simulate interval coverage and power
@@ -317,15 +341,32 @@ live diagnostic and preserves every attempted response. An identical freeze
 can resume completed records; uncertain attempts are never silently retried.
 Changed source, protocol, prompts or provider configuration require a separate
 output directory and a recorded protocol amendment. Freezing and local checks
-make no generation requests. In this session the configured API credential was
-absent; no new live model results have been obtained.
+make no generation requests.
 
-The immediate scientific result is therefore a clarified argument plus an
-executable test of its crucial alternatives. Existing correction episodes make
-further investigation worthwhile. New measurements must determine whether the
-benefit comes from preserving qualifications, interpreting raw evidence,
-receiving computed conclusions, the EAL surface, or the complete model–tool
-system.
+The [completed live report](notation-transfer-live-results.md) retains all 180
+attempts, including eighteen schema failures and one output-limit failure.
+The original runner stopped at trial 30; a separately documented continuation
+reconciled its known usage and ran the remaining schedule without retrying or
+changing any prompt. Estimated configured-rate cost was USD 0.0660738, with no
+unknown charges. The pre-generation protocol remains frozen; execution status
+and the operational deviation are recorded alongside the results.
+
+Raw-only EAL achieved 4/10 complete correct answers versus 5/10 for equivalent
+JSON. With incorrect injected proposals, raw observations produced 2/10 and
+5/10 correct answers respectively, while observations plus interpreter
+conclusions produced 7/10 and 8/10. The exploratory claim-map-only readout
+changes raw-only JSON to 6/10 and leaves EAL at 4/10. These results add bounded
+correction observations beyond the earlier preservation finding. They do not
+establish a robust raw-evidence benefit, an EAL notation advantage or general
+engineering transfer. In particular, the circular-defence and wrong-origin
+cases failed in both raw-only repetitions for both representations, and
+irrelevant-record controls exposed weak scope discrimination. All condition,
+reference, failure and task counts appear in the report.
+
+The executable argument now supports the finite measured diagnostic claim.
+Its stronger notation, raw-correction and engineering-transfer claims remain
+unsupported under their stated criteria. This is a limit of the evidence,
+not a claim that every possible EAL-assisted system must fail.
 
 ## Methodological sources and their use
 
