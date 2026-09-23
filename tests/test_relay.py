@@ -147,7 +147,22 @@ def test_orphan_request_blocks_further_billing_and_is_not_retried(tmp_path, monk
     report = asyncio.run(run_relay(plan, output, resume=True))
     assert report["unique_model_cost_usd"] is None
     assert report["unique_stages"] == 0
-    assert all(c["correct"] == 0 for c in report["aggregate"]["conditions"].values())
+    assert report["status"] == "incomplete"
+    assert report["recorded_trials"] == report["unexecuted_trials"] == 3
+    assert report["attempted_trials"] == report["completed_trials"] == 0
+    assert all(c["completed_trials"] == 0 and not c["coverage_complete"]
+               for c in report["aggregate"]["conditions"].values())
+
+
+def test_scheduling_stop_after_producer_is_not_an_attempted_recipient():
+    from eal.relay import execution_state
+    trial = stage_result()
+    trial['report']['stop_reason'] = 'campaign_cost_unverifiable'
+    assert execution_state(trial) == 'partially_executed'
+    trial['report']['attempts'] = []
+    assert execution_state(trial) == 'not_executed'
+    trial['report']['stop_reason'] = 'token_usage_unavailable'
+    assert execution_state(trial) == 'attempted'
 
 
 def test_changed_checkpoint_is_detected(tmp_path, monkeypatch):

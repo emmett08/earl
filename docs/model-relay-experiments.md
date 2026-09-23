@@ -66,4 +66,15 @@ Use new, independently authored tasks after this pilot identifies interface and 
 
 Official model documentation, accessed 23 September 2026: [GPT-4.1](https://developers.openai.com/api/docs/models/gpt-4.1), [mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini), [nano](https://developers.openai.com/api/docs/models/gpt-4.1-nano), [GPT-5](https://developers.openai.com/api/docs/models/gpt-5), [mini](https://developers.openai.com/api/docs/models/gpt-5-mini), [nano](https://developers.openai.com/api/docs/models/gpt-5-nano). Availability and capabilities were also probed directly; probes are retained outside the task-accuracy denominator.
 
-Current execution status: see the [execution and validation report](eal2-relay-results.md). The user explicitly confirmed private-task disclosure and spending. After network approval cancellation interrupted the authorised concurrent campaign, protocol 1.0.3 schedules one serial replacement. Earlier raw records and unknown usage remain preserved separately. Package 2.2.1 retains known charges from completed requests even if a later request in the same stage has unknown usage.
+Current execution status: see the [execution and validation report](eal2-relay-results.md). Automatic review rejected the serial replacement despite the user's prior confirmation. Protocol 1.0.4 preserves all cohorts and records the block. Package 2.2.2 retains partial known charges and uses `EAL/relay-report/2`: recorded, attempted, completed, partial, unexecuted and unrecorded endpoint counts are distinct. Scheduling stops are excluded from model-outcome aggregates. The aggregate helper's `completed_trials` counts attempted records, including failed attempts; the report's top-level `completed_trials` counts finished answers. No further paid execution was attempted.
+
+
+## Offline evidence audit
+
+For any completed or interrupted archive, run:
+
+```bash
+PYTHONPATH=src python scripts/audit_relay_checkpoints.py --run /absolute/run-directory --output /absolute/audit-directory
+```
+
+This performs no provider calls and writes a checkpoint audit plus endpoint and stage CSV tables. It verifies frozen inputs, recorded identities, scores, transfers and per-request charges without modifying raw evidence. Missing endpoints remain missing; stale markers with matching completed records are distinguished from unknown orphan requests. `scripts/analyse_relays.py` is the stricter full-cohort exporter and requires every stage and scheduled endpoint.

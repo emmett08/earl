@@ -14,7 +14,7 @@ import statistics
 
 from eal.benchmark import score_answer
 from eal.experiment import _digest, aggregate_experiment, cluster_interval
-from eal.relay import handoff_packet, known_model_cost
+from eal.relay import execution_state, handoff_packet, known_model_cost
 
 
 def read_record(path: Path, freeze_digest: str) -> dict:
@@ -37,6 +37,8 @@ def analyse(directory: Path) -> dict:
     schedule={x['trial_id']:x for x in freeze['schedule']}
     if len(trials)!=len(schedule) or len({t['trial_id'] for t in trials})!=len(schedule):
         raise ValueError('Incomplete or duplicate trial coverage')
+    if any(execution_state(t) != 'attempted' for t in trials):
+        raise ValueError('Unexecuted or partial sequences; use audit_relay_checkpoints.py for an interrupted campaign')
     references=freeze['task_references']
     endpoint_rows=[]
     integrity_errors=[]

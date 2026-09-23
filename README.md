@@ -4,7 +4,7 @@ EAL represents engineering reasoning as claims, subordinate arguments, typed evi
 
 The language is **EAL/2**, with `.eal` source files. EAL/2 is the only supported source language; backwards compatibility is never a project requirement. Python 3.11 or later is required. Configured command adapters currently require a POSIX host.
 
-Package **2.2.1** adds frozen model-sequence experiments, preserves partial known charges after request failures, and enforces the current method contracts across built-in and installed procedures. It rejects statically incompatible result predicates and checks imported observations against their original acquisition requests. Current examples and references use these contracts. File imports require `request` metadata; obsolete envelopes have no compatibility adapter. The source language remains EAL/2.
+Package **2.2.2** adds frozen model-sequence experiments, preserves partial known charges and distinguishes unexecuted conditions from model outcomes, and enforces the current method contracts across built-in and installed procedures. It rejects statically incompatible result predicates and checks imported observations against their original acquisition requests. Current examples and references use these contracts. File imports require `request` metadata; obsolete envelopes have no compatibility adapter. The source language remains EAL/2.
 
 ## What is implemented
 
@@ -118,4 +118,4 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 
 See [model sequence experiments](docs/model-relay-experiments.md) for reproducible small-to-full, full-to-small, reasoning/tool and three-stage comparisons, with saved evidence hand-offs, common endpoint scoring and resumable checkpoints.
 
-The [sequence execution record](docs/eal2-relay-results.md) retains the successful capability probes and the automatic-review interruption. No new task-performance results are claimed.
+The [sequence execution record](docs/eal2-relay-results.md) retains the capability probes, ten finished endpoints from one task, all interruption records and unknown charges. The new suite-wide comparison remains blocked and incomplete.

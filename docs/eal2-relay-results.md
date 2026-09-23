@@ -1,22 +1,49 @@
 # EAL/2 model-sequence execution record — 23 September 2026
 
-The unfinished earlier work was recovered in commit `a48a57f`. Its two archives retain all **92 completed trials**, original prompts, failures, usage and frozen inputs. Every archived trial matched its recorded SHA-256. The [earlier report](eal2-model-results.md) retains its original findings and host-interface limitations.
+The **92 earlier trials were recovered and pushed** with their original prompts, failures, usage and frozen inputs. Every archived trial matched its recorded SHA-256. The [earlier report](eal2-model-results.md) retains its findings and the stateless-host interface confounds.
 
-The additional sequence runner and pre-task design were committed as `cabc998`, package **2.2.0**, source language **EAL/2**. The [design](model-relay-experiments.md) contains **27 conditions**, **six model snapshots**, **six exposed tasks** and **two repetitions**, scheduling **324 endpoint outcomes**. It covers small→full, full→small, same-model controls, reasoning/non-reasoning combinations, different tool placements, small→mini→full and two three-stage return sequences. Answer-only, evidence, transcript and no-handoff conditions specify exactly what the next model receives.
+The new campaign remains **incomplete**. Ten endpoints finished on one task before network approval cancellation interrupted execution. A separately frozen serial attempt was then rejected by automatic approval review despite the user's confirmation. No further API route or paid retry was attempted. These records do not support a comparison across the six-task suite.
 
-## Execution status
+## Design and preserved cohorts
 
-The user subsequently confirmed private-task disclosure and the $12 threshold. The authorised concurrent attempt used protocol 1.0.2 and was interrupted by the environment with `network approval was cancelled before a decision was returned`. Its [separate archive](../benchmarks/results/2026-09-23-relays-authorised/interrupted-campaign.tar.gz) retains 14 stage records, ten finished endpoints, six endpoints stopped by unavailable usage, 308 unexecuted scheduling records and three in-flight markers. Known charges are at least $0.11302619; total charges are unknown. This first-task-only cohort is incomplete. Protocol 1.0.3 specifies a serial replacement with a $10 threshold, unchanged prompts/scoring and package 2.2.1's partial-charge accounting fix. The following paragraph records the earlier, pre-confirmation attempt.
+The [design](model-relay-experiments.md) defines **27 conditions**, **six pinned model snapshots**, **six exposed tasks** and **two repetitions**, scheduling **324 endpoints**. It covers small→full, full→small, same-model controls, reasoning/non-reasoning combinations, different tool placements, small→mini→full and two three-stage return sequences. Answer-only, evidence, transcript and no-handoff conditions specify exactly what the next model receives. Small/mini/full denote product tiers; parameter-defined open SLM performance remains unmeasured.
 
-**No new task outcome was saved.** Automatic approval review stopped the campaign because it would send private repository-derived task sources, observations and model hand-offs to `api.openai.com`. The GitHub connector subsequently confirmed that `emmett08/earl` is private. The current instruction to run experiments with the supplied key was not recognised by that automatic review as explicit authorisation for this disclosure.
+| Cohort | Frozen protocol / package | Saved evidence | Disposition |
+| --- | --- | --- | --- |
+| Initial | 1.0.0 / 2.2.0 | No stage response; three orphan markers | Automatic review rejected private-task disclosure |
+| Confirmed concurrent | 1.0.2 / 2.2.0 | 14 stage records; 10 finished endpoints | Network approval cancelled before a decision returned |
+| Serial replacement | 1.0.3 / 2.2.1 | No stage response; one orphan marker | Automatic review did not recognise the prior confirmation |
 
-Three stages had in-flight checkpoint markers. Their response, token use and billing are **unknown**. They have not been rerun. The [interrupted archive](../benchmarks/results/2026-09-23-relays/interrupted-campaign.tar.gz) preserves the full pre-task freeze and markers; [execution metadata](../benchmarks/results/2026-09-23-relays/execution-metadata.json) records the block. Zero completed records supplies no evidence about model accuracy, sequence advantage or cost per correct answer.
+Raw archives and indexes: [initial](../benchmarks/results/2026-09-23-relays/index.json), [confirmed concurrent](../benchmarks/results/2026-09-23-relays-authorised/index.json), [serial](../benchmarks/results/2026-09-23-relays-serial/index.json). Their frozen bytes are unchanged. Derived [concurrent](../benchmarks/results/2026-09-23-relays-authorised/checkpoint-audit.json) and [serial](../benchmarks/results/2026-09-23-relays-serial/checkpoint-audit.json) audits verify freeze/checkpoint digests, schedule identity, endpoint scores, hand-off identity, original source anchors and known charges against individual request records.
 
-A future authorised campaign must preserve these records and identify itself separately. The runner will refuse to silently replay an interrupted request with unknown usage. The original freeze used protocol version 1.0.0; the current protocol version 1.0.1 records the newly observed access blocker and has status `specified`.
+The concurrent cohort contains 324 scheduling records: **10 finished endpoints, six transport-failed endpoints, eight partial sequences and 300 conditions with no executed stage**. The 308 scheduling stops are excluded from model-outcome denominators. Three residual in-flight markers have matching completed stage records; they are stale markers, not three additional unknown requests. Four failed stage records have unavailable usage. Shared stages account for six failed endpoint records, so these counts are not independent trials.
+
+## What the saved responses show
+
+All finished endpoints concern `sampled-negative-finding`, repetition 0, and return its expected supported claim. The completed tool producers also pass the strict source/evidence checks. Their subsequent model-only recipients satisfy the common answer criterion; they do not thereby acquire independent tool verification.
+
+| Finished condition | Correct on this one task | Standalone sequence cost estimate, USD |
+| --- | --- | ---: |
+| GPT-4.1 nano solo | Yes | 0.00025520 |
+| GPT-5 nano solo | Yes | 0.00046155 |
+| GPT-4.1 solo | Yes | 0.01412800 |
+| GPT-4.1 nano with tools | Yes | 0.00130010 |
+| GPT-4.1 with tools | Yes | 0.02599000 |
+| GPT-4.1 with tools → nano, answer | Yes | 0.02671450 |
+| GPT-4.1 with tools → nano, evidence | Yes | 0.02751290 |
+| GPT-4.1 with tools → nano, no hand-off | Yes | 0.02624520 |
+| GPT-4.1 nano with tools → GPT-5, evidence | Yes | 0.02971635 |
+| GPT-5 nano with tools → GPT-5, evidence | Yes | 0.02844644 |
+
+The primary answer-versus-evidence comparison has only **one matched task/repetition**. Both recipients are correct; evidence adds **$0.0007984** to this sequence. That observation neither establishes equivalence nor answers the suite-level hypothesis. Nano solo is also correct on this task. No superiority, generalisation or population interval is reported.
+
+The [endpoint table](../benchmarks/results/2026-09-23-relays-authorised/endpoints.csv) includes all scheduling states; the [stage table](../benchmarks/results/2026-09-23-relays-authorised/stages.csv) includes all recorded failures. Raw archives retain actual prompts, visible model outputs, tool events and transferred packets. Sequence costs include every constituent stage as if run alone and must not be summed as campaign charges because prefixes are shared.
+
+Known unique model charges in this cohort are **at least $0.11302619**. This includes **$0.01178125** for a completed request in a GPT-5 tool stage whose subsequent request failed. Total charges remain unknown. Orphan markers from the initial and serial cohorts have no saved usage. The spending settings are post-response stop thresholds, not provider-enforced invoice caps.
 
 ## Capability probes
 
-All eleven preliminary API probes succeeded and returned the requested pinned model identities. These probes sent only a short greeting instruction or a trivial `ping` function schema, without repository tasks. They test endpoint capability, not engineering reasoning.
+All eleven preliminary API probes succeeded and returned the requested pinned model identities. They sent only a short greeting or a trivial `ping` function schema, without repository tasks, and test endpoint capability rather than engineering reasoning.
 
 | Snapshot | Text response | Native function response |
 | --- | --- | --- |
@@ -27,7 +54,7 @@ All eleven preliminary API probes succeeded and returned the requested pinned mo
 | GPT-5 mini, 2025-08-07 | Passed | Passed |
 | GPT-5, 2025-08-07 | Passed | Passed |
 
-The complete configured token-rate estimate for these probes is **$0.0015704**, excluding the three unknown in-flight task requests. [Raw probe records](../benchmarks/results/2026-09-23-relays/provider-probes.json) retain messages, output, response models, tokens, latency and cost. No key is retained. The small/mini/full groups denote product tiers; the records do not establish parameter counts or performance of parameter-defined open SLMs.
+The configured token-rate estimate for the probes is **$0.0015704**, additional to task charges. [Raw probe records](../benchmarks/results/2026-09-23-relays/provider-probes.json) retain messages, outputs, returned models, tokens, latency and cost. No credential is retained.
 
 ## Statistical calibration
 
@@ -42,10 +69,10 @@ The pre-execution sensitivity simulation generated 1,000 synthetic datasets per 
 
 These are simulated coverage fractions for nominal 95% percentile intervals under the specified distributions, using 500 bootstrap draws per dataset. Monte Carlo standard errors, interval width, zero-width frequency and zero-exclusion frequency are retained in the [simulation record](../benchmarks/protocols/relay-precision-simulation.json). Coverage with six clusters is inadequate for a calibrated 95% population claim. The protocol consequently treats actual model comparisons as descriptive pilot estimates and requires new independent tasks for confirmatory work. The larger simulated task counts improve coverage in these scenarios; they do not establish universal sample-size requirements.
 
-## Implementation validation
+## Implementation validation and current block
 
-All **530 tests passed**, including an actual MCP subprocess stage receiving prior evidence while preserving its original task anchors. Adversarial tests check that private scoring fields stay out of hand-offs, failed tool records remain visible, identical prefixes execute once, chain costs include failed producers, common endpoint scoring stays separate from strict tool verification, changed checkpoints are rejected, and unknown interrupted usage blocks further calls.
+Package **2.2.2**, source language **EAL/2**, fixes two issues exposed by the interruption. Known charges from earlier requests survive a later usage failure. The **EAL/relay-report/2** schema separates recorded, attempted, completed, partially executed, unexecuted and unrecorded endpoints. Scheduling stops stay in the raw archive but are excluded from model-outcome aggregates; transport-failed attempted endpoints remain included. Earlier raw evidence retains its original versions.
 
-The wheel and source distribution build successfully. Package validation checks the installed `eal-relay` entry point and freezes all 324 scheduled outcomes without generation. The scientific protocol validator accepted the pre-task 1.0.0 design with zero errors or warnings. Version 1.0.1 preserves that design while recording the observed authorisation blocker.
+All **532 tests pass**, including actual MCP subprocess operation, protected task anchors, score exclusion from hand-offs, preserved failed tool events, shared prefixes, partial charge retention, unknown-billing stops and correct classification of unexecuted recipients. Wheel and source distribution builds and the installed `eal-relay` 324-endpoint freeze are checked without further provider generation. Protocol **1.0.4** validates with zero errors or warnings and records the incomplete cohorts and approval block.
 
-Private-task disclosure is now explicitly authorised. The serial replacement is pending; the interrupted cohorts do not establish comparative sequence effects.
+The environment's latest automatic-review reason was that the visible messages did not explicitly authorise disclosure of private repository task data and model hand-offs to OpenAI, or the spending threshold. The user's preceding confirmation is documented; it was not recognised by that review. Further live execution remains blocked, and no workaround was attempted. The $10 serial threshold leaves an allowance within the previously confirmed $12 threshold, but unresolved earlier usage prevents an exact total bill.

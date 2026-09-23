@@ -186,6 +186,14 @@ def known_model_cost(trial: dict) -> float:
     return usage.get("known_model_cost_usd", trial["cost"].get("model_usd") or 0)
 
 
+def execution_state(trial: dict) -> str:
+    """Separate actual endpoints from scheduling stops and partial chains."""
+    report = trial["report"]
+    if report["stop_reason"].startswith(("campaign_", "handoff_")):
+        return "partially_executed" if report.get("attempts") else "not_executed"
+    return "attempted"
+
+
 def combine_sequence(task: dict, condition: dict, stages: list[dict], stage_keys: list[str], terminal: dict | None = None) -> dict:
     reports = [s["report"] for s in stages]
     endpoint = terminal or stages[-1]
@@ -197,6 +205,7 @@ def combine_sequence(task: dict, condition: dict, stages: list[dict], stage_keys
                   repairs=sum(r.get("repairs", 0) for r in reports),
                   latency_seconds=sum(r.get("latency_seconds", 0) for r in reports),
                   usage={"token_usage_complete": known,
+                         "known_model_cost_usd": sum(known_model_cost(s) for s in stages),
                          "total_tokens": sum(r["usage"]["total_tokens"] for r in reports) if known else None})
     # Primary scoring is identical for model-only and tool-using endpoints.
     score = score_answer(task["expected"]["claims"], endpoint["report"])
@@ -323,7 +332,8 @@ async def run_relay(path: str | Path, output: str | Path, *, resume: bool = Fals
             _write(target, {"trial": result, "sha256": _digest(result), "freeze_digest": freeze["freeze_digest"]})
             trials.append(result)
             if progress:
-                progress({"completed": len(trials), "scheduled": len(freeze["schedule"]), "condition": condition["id"],
+                progress({"recorded": len(trials), "scheduled": len(freeze["schedule"]), "condition": condition["id"],
+                          "execution_state": execution_state(result), "stop_reason": result["report"]["stop_reason"],
                           "correct": result["score"]["correct"], "unique_stages": len(cache), "known_model_cost_usd": charged})
 
     status = "completed"
@@ -338,15 +348,23 @@ async def run_relay(path: str | Path, output: str | Path, *, resume: bool = Fals
         raise
     finally:
         drift = _code_identity()["source_digest"] != freeze["runtime"]["source_digest"] or suite_digest(suite_path) != freeze["suite_digest"]
-        report = {"schema": "EAL/relay-report/1", "status": status, "scorer": SCORER,
+        attempted = [t for t in trials if execution_state(t) == "attempted"]
+        if status == "completed" and len(attempted) != len(freeze["schedule"]):
+            status = "incomplete"
+        report = {"schema": "EAL/relay-report/2", "status": status, "scorer": SCORER,
                   "freeze_digest": freeze["freeze_digest"], "reference_or_implementation_drift": drift,
-                  "scheduled_trials": len(freeze["schedule"]), "completed_trials": len(trials),
+                  "scheduled_trials": len(freeze["schedule"]), "recorded_trials": len(trials),
+                  "attempted_trials": len(attempted),
+                  "completed_trials": sum(t["report"]["status"] == "completed" for t in attempted),
+                  "unexecuted_trials": sum(execution_state(t) == "not_executed" for t in trials),
+                  "partially_executed_trials": sum(execution_state(t) == "partially_executed" for t in trials),
+                  "unrecorded_trials": len(freeze["schedule"]) - len(trials),
                   "unique_stages": len(cache), "known_unique_model_cost_usd": charged,
                   "unique_model_cost_usd": None if unknown else charged,
                   "stage_uses": sum(len(t["stage_keys"]) for t in trials),
-                  "aggregate": aggregate_experiment(trials, freeze["schedule"], seed=plan.get("order_seed", 0), samples=plan.get("bootstrap_samples", 2000)),
+                  "aggregate": aggregate_experiment(attempted, freeze["schedule"], seed=plan.get("order_seed", 0), samples=plan.get("bootstrap_samples", 2000)),
                   "trial_files": ["trials/" + t["trial_id"] + ".json" for t in sorted(trials, key=lambda t: t["trial_id"])],
-                  "interpretation": "Identical prefixes share a single recorded output within task/repetition. Sequence cost and latency include all stages as if run alone. Campaign model cost counts unique stages once. Incomplete charged usage remains unknown. Endpoint correctness is distinct from checked source and evidence. Tasks are exposed synthetic regression cases."}
+                  "interpretation": "Scheduling stops and partial chains remain in trial files but are excluded from endpoint aggregates; failed attempted endpoints remain included. Aggregate completed_trials counts records, not successful answers. Identical prefixes share one output within task/repetition. Sequence cost and latency include all stages as if run alone; campaign charges count unique stages once. Incomplete charged usage remains unknown. Endpoint correctness is distinct from checked source and evidence. Tasks are exposed synthetic regression cases."}
         _write(output / "report.json", report)
     return report
 

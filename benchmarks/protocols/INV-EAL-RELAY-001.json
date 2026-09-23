@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-RELAY-001",
   "title": "Order and evidence transfer in EAL/2 model sequences",
-  "version": "1.0.3",
-  "status": "approved",
+  "version": "1.0.4",
+  "status": "specified",
   "question": "On six exposed EAL/2 regression tasks, how do endpoint correctness, unsupported positive answers and total cost differ by model sequence, tool placement and transferred record?",
   "primary_claim_id": "CLM-001",
   "scope": {
@@ -612,7 +612,7 @@
     ]
   },
   "feasibility": {
-    "current_status": "operational",
+    "current_status": "partially-feasible",
     "apparatus_or_data": [
       "Existing EAL host, task fixtures, model provider adapters"
     ],
@@ -629,7 +629,9 @@
       "Pinned model snapshots remain available",
       "Local MCP subprocess support"
     ],
-    "blockers": [],
+    "blockers": [
+      "Automatic approval review rejected the serial API campaign despite the prior confirmation; no further paid task calls are made."
+    ],
     "fallback": "Preserve executable plans and explicit incomplete coverage if a provider becomes unavailable"
   },
   "reproducibility": {
@@ -647,21 +649,28 @@
     "replication_plan": "Fresh engineering task instances and, separately, a parameter-defined open SLM with a configured command provider"
   },
   "execution": {
-    "protocol_version_used": null,
-    "started_at": null,
+    "protocol_version_used": "1.0.3",
+    "started_at": "2026-09-23T16:25:46.557964+00:00",
     "completed_at": null,
-    "deviations": [],
-    "data_location": null,
+    "deviations": [
+      "The authorised concurrent cohort ended after partial first-task results; the separately frozen serial replacement was rejected by automatic review. Both raw cohorts are preserved.",
+      "Post-run accounting/reporting corrections in package 2.2.2 retain known partial charges, separate unexecuted and partially executed conditions from attempted model endpoints, and identify stale in-flight markers."
+    ],
+    "data_location": "benchmarks/results/2026-09-23-relays-authorised and benchmarks/results/2026-09-23-relays-serial",
     "code_location": "src/eal/relay.py",
-    "observed_results": [],
-    "interpretation_status": "authorised serial replacement; not-started"
+    "observed_results": [
+      "Ten completed endpoints, all correct on the same first task; six transport-failed endpoints; eight partial sequences; 300 unexecuted sequences in the concurrent cohort.",
+      "The primary answer-versus-evidence contrast has one matched task/repetition; both endpoints are correct. This is insufficient for the suite-level estimand.",
+      "Serial replacement: no saved response; one orphan marker with unknown usage."
+    ],
+    "interpretation_status": "Incomplete pilot; further paid execution blocked by automatic review. No superiority claim."
   },
   "provenance": {
     "authors": [
       "Codex for Emmett Miller"
     ],
     "created_at": "2026-09-23T15:55:16.844586+00:00",
-    "updated_at": "2026-09-23T16:24:36.243670+00:00",
+    "updated_at": "2026-09-23T16:31:27.474221+00:00",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1",
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
@@ -675,7 +684,8 @@
       "1.0.0: pre-task design with shared-prefix control, common endpoint scoring and complete cost retention",
       "1.0.1: record the post-freeze automatic review block and restrict readiness to specified; original 1.0.0 freeze preserved.",
       "1.0.2: user explicitly confirmed private synthetic task-data disclosure to OpenAI API and the $12 spending threshold. Run a separately identified replacement campaign. The three previous in-flight requests retain unknown usage and are not resumed or erased.",
-      "1.0.3: the explicitly authorised concurrent campaign suffered network approval cancellation after partial results. Preserve its full archive separately. Run one serial replacement with a $10 threshold. Fix partial known-charge accounting in package 2.2.1; no prompt, task, scoring, condition or repetition changes. This scheduling amendment follows observation of partial first-task results and is not claimed to be wholly pre-data. Do not silently resume unknown billed requests."
+      "1.0.3: the explicitly authorised concurrent campaign suffered network approval cancellation after partial results. Preserve its full archive separately. Run one serial replacement with a $10 threshold. Fix partial known-charge accounting in package 2.2.1; no prompt, task, scoring, condition or repetition changes. This scheduling amendment follows observation of partial first-task results and is not claimed to be wholly pre-data. Do not silently resume unknown billed requests.",
+      "1.0.4: record the serial automatic-review rejection and exact partial coverage; no further generation. Package 2.2.2 uses EAL/relay-report/2 to distinguish recorded, attempted, completed, partial, unexecuted and unrecorded endpoints. Historical freeze and outcome bytes are unchanged."
     ]
   }
 }
