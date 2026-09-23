@@ -1,0 +1,17 @@
+[tools.archive_reader]
+kind = "json_file"
+path = "arguments/evidence-mechanisms/archive-observation.json"
+version = "1"
+mode = "deterministic"
+
+[tools.switch_reader]
+kind = "json_file"
+path = "arguments/evidence-mechanisms/switch-observation.json"
+version = "1"
+mode = "deterministic"
+
+[tools.prospective_reader]
+kind = "json_file"
+path = "arguments/evidence-mechanisms/prospective-observation.json"
+version = "1"
+mode = "deterministic"

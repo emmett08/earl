@@ -1,0 +1,1481 @@
+{
+  "schema_version": "1.0",
+  "investigation_id": "INV-EAL-MECHANISMS-001",
+  "title": "Why raw EAL arguments fail to improve a tool-free model, and what checked assessment contributes",
+  "version": "0.1.0",
+  "status": "specified",
+  "question": "On independently held-out bounded engineering cases, which of proposal anchoring, evidence applicability, registered computation, argument composition, prompt length and notation explains status errors, and does a verified EAL assessment improve evidence-dependent decisions beyond a raw argument and an equal-capability standalone checker?",
+  "primary_claim_id": "CLM-SYSTEM",
+  "scope": {
+    "system_or_population": "A pinned tool-free language model, the EAL/2 interpreter with registered methods, and an independently implemented standalone checker on 24 prospective bounded engineering task roots; model version and exact tasks must be frozen before calls.",
+    "conditions": "Synthetic, independently reviewed claims and observation variants with explicit context, time, typed inputs, attack graph and requested statuses; fresh one-shot model sessions and deterministic checker runs.",
+    "spatial_scope": "Local reproducible host plus one configured model API; no physical device inference.",
+    "temporal_scope": "One prospectively frozen campaign, with a separate later replication on independent cases.",
+    "exclusions": [
+      "General engineering competence",
+      "The truth of a real sensor reading from internally consistent metadata",
+      "A hidden model cognitive mechanism inferred from its answer",
+      "A unique benefit of EAL notation if an equivalent standalone checker achieves the same outcome",
+      "Human authoring benefit until translation is separately measured",
+      "End-to-end success from an unformalised engineering brief; the main arms receive pre-authored, reference-checked programmes"
+    ],
+    "knowledge_cut": "2026-09-23"
+  },
+  "claims": [
+    {
+      "id": "CLM-SYSTEM",
+      "statement": "With a correctly authored EAL specification and trusted synthetic input fixture already supplied, host-verified assessment can reduce unjustified support and enforce revision after evidence changes compared with a tool-free model reading that specification and raw observations.",
+      "claim_type": "causal",
+      "role": "primary",
+      "scope_limit": "A conditional execution-allocation result for frozen pre-authored specifications, tasks, model, methods and trusted input boundary; no brief-to-programme, physical-truth or EAL-specific superiority follows.",
+      "success_consequence": "Use EAL as an executable specification and checked status interface for the tested workflows.",
+      "failure_consequence": "Revise the binding, method or host gate before any deployment claim."
+    },
+    {
+      "id": "CLM-LOCALISE",
+      "statement": "Separated eligibility, registered computation and full argument assessment outputs can locate which missing operation contributes to tool-free errors on the tested cases.",
+      "claim_type": "mechanistic",
+      "role": "secondary",
+      "scope_limit": "A process-level dependency diagnosis, not an assertion about unobserved model cognition.",
+      "success_consequence": "Expose only the missing checked operation and its trace to the recipient.",
+      "failure_consequence": "Keep the operations jointly necessary or unidentified and revise probes."
+    },
+    {
+      "id": "CLM-EAL",
+      "statement": "EAL-specific integration has measurable benefit beyond an independently implemented checker with equal admitted facts, methods and host validation.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "Any observed difference is restricted to frozen implementation and maintenance tasks; equal endpoints do not imply equal authoring effort.",
+      "success_consequence": "State the measured additional contribution rather than attributing the checker's computation to syntax.",
+      "failure_consequence": "Describe EAL as one integration option and test authoring and revision separately."
+    },
+    {
+      "id": "CLM-SURFACE",
+      "statement": "EAL source presentation improves tool-free status answers relative to a meaning-equivalent JSON representation.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "A surface intervention for a pinned model and reference; tokenisation, length and familiarity can mediate it.",
+      "success_consequence": "Retain notation as a candidate interface benefit for replication.",
+      "failure_consequence": "Do not use a syntax advantage to justify adoption."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-ORACLE",
+      "statement": "Case references are derived independently from the implementation being evaluated and adjudicated before outputs are seen.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Two independent reviewers specify expected statuses and binding reasons from a task brief; reconcile disagreements before freeze; compare with EAL and standalone outputs.",
+      "failure_consequence": "Suspend correctness and comparative claims for affected cases."
+    },
+    {
+      "id": "ASM-EQUIV",
+      "statement": "EAL and JSON prompt views contain identical substantive relations and observations within each paired cell.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Parse both to a common normalised semantic graph, compare fields and IDs, and audit prompt assembly hashes.",
+      "failure_consequence": "The notation contrast is uninterpretable."
+    },
+    {
+      "id": "ASM-PARITY",
+      "statement": "EAL and standalone system arms receive the same trusted records, registered method definitions, validation rules and answer gate.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Cross-execute frozen fixtures, inspect trace fields and compare method outputs before timed assessments.",
+      "failure_consequence": "Differences identify implementation bundles, not EAL-specific value."
+    },
+    {
+      "id": "ASM-SESSIONS",
+      "statement": "One-shot calls do not share answer history, and provider or cache variation does not systematically track conditions.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Fresh context, blocked random order, recorded actual model/sampling/usage, temporal balance and no provider retry within a trial.",
+      "failure_consequence": "Restrict conclusions to the observed execution and investigate drift."
+    },
+    {
+      "id": "ASM-INPUT",
+      "statement": "The synthetic acquisition log fixes the values supplied to each checker; metadata alone cannot certify correspondence to a real device.",
+      "role": "operational",
+      "status": "untested",
+      "test_or_justification": "Sign and hash a separate source log before constructing observation packets; inject mismatched digest and replay controls.",
+      "failure_consequence": "No source-authenticity inference; retain only conditional computation."
+    },
+    {
+      "id": "ASM-SAMPLE",
+      "statement": "Task roots are independently authored cases spanning four different failure mechanisms, not parameter renamings of the five exposed tasks.",
+      "role": "sampling",
+      "status": "untested",
+      "test_or_justification": "Record genealogy and independent case briefs; exclude source overlap before freeze without looking at outcomes.",
+      "failure_consequence": "Report a dependent fixture demonstration rather than held-out transfer."
+    },
+    {
+      "id": "ASM-TRANSLATION",
+      "statement": "A valid EAL programme corresponds to the intended external engineering claim.",
+      "role": "theoretical",
+      "status": "untested",
+      "test_or_justification": "Independent reviewers compare authored EAL and JSON against a withheld natural-language brief; this is a separate authoring study.",
+      "failure_consequence": "A successful interpreter result cannot establish the intended real-world claim."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-EXEC",
+      "label": "Checked assessment",
+      "kind": "substantive",
+      "statement": "Verified source, evidence and method binding prevents at least some false support and missed retractions that persist with raw text and observations.",
+      "claim_ids": [
+        "CLM-SYSTEM"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE",
+        "ASM-INPUT",
+        "ASM-SESSIONS"
+      ],
+      "scope": "Bounded executable cases, conditional on trustworthy acquisition."
+    },
+    {
+      "id": "H-RAW",
+      "label": "Raw sufficiency",
+      "kind": "rival",
+      "statement": "The tool-free model handles the same bindings and argument operations from raw records, so checked assessment adds no endpoint benefit.",
+      "claim_ids": [
+        "CLM-SYSTEM"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE",
+        "ASM-SESSIONS"
+      ],
+      "scope": "Same cases and budget."
+    },
+    {
+      "id": "H-BIND",
+      "label": "Eligibility bottleneck",
+      "kind": "mechanism",
+      "statement": "An applicability-only memo improves wrong-origin, stale and wrong-scope cases even without a final status label.",
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE"
+      ],
+      "scope": "Eligibility-controlled case families."
+    },
+    {
+      "id": "H-COMPOSE",
+      "label": "Computation and composition bottleneck",
+      "kind": "mechanism",
+      "statement": "Even when inputs are marked eligible, registered method or graph evaluation remains necessary for typed negative findings and cyclic attack cases.",
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE"
+      ],
+      "scope": "Method and attack families with independent correct references."
+    },
+    {
+      "id": "H-COPY",
+      "label": "Verdict copying",
+      "kind": "rival",
+      "statement": "Improvements from a bare computed status arise from copying its label and do not ensure rejection of a stale, forged or wrong-context status.",
+      "claim_ids": [
+        "CLM-SYSTEM",
+        "CLM-LOCALISE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-INPUT"
+      ],
+      "scope": "Contradictory or invalidated verdict controls."
+    },
+    {
+      "id": "H-SHORT",
+      "label": "Reference burden",
+      "kind": "mechanism",
+      "statement": "A concise complete semantic reference improves status accuracy relative to the historical long reference across raw conditions.",
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE"
+      ],
+      "scope": "A complete compact instruction is not assumed to have identical lexical effects."
+    },
+    {
+      "id": "H-SURFACE",
+      "label": "EAL notation",
+      "kind": "substantive",
+      "statement": "EAL source outperforms meaning-equivalent JSON in raw-only cells under matched task and reference.",
+      "claim_ids": [
+        "CLM-SURFACE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-EQUIV",
+        "ASM-SESSIONS"
+      ],
+      "scope": "Pinned model and prompt rendering."
+    },
+    {
+      "id": "H-EQUAL",
+      "label": "Checker equivalence",
+      "kind": "rival",
+      "statement": "An equal-capability standalone checker with the same host gate attains equivalent conditional endpoint and retraction results; EAL has no established unique endpoint advantage.",
+      "claim_ids": [
+        "CLM-EAL"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-PARITY",
+        "ASM-ORACLE"
+      ],
+      "scope": "Executable checker tasks, not authoring effort."
+    },
+    {
+      "id": "H-VERIFY-TEXT",
+      "label": "Textual verdict validation",
+      "kind": "rival",
+      "statement": "The tool-free recipient rejects a stale or wrong-context computed verdict using the raw records alone, so the host gate adds no observable protection on those cases.",
+      "claim_ids": [
+        "CLM-SYSTEM"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE"
+      ],
+      "scope": "Forged bare-verdict control with raw observations."
+    },
+    {
+      "id": "H-LONG",
+      "label": "No compact-reference benefit",
+      "kind": "rival",
+      "statement": "A compact complete reference produces no consistent raw-case improvement over the full reference.",
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE"
+      ],
+      "scope": "Paired reference-rendering cells."
+    },
+    {
+      "id": "H-NOSURFACE",
+      "label": "No EAL surface advantage",
+      "kind": "rival",
+      "statement": "Meaning-equivalent JSON equals or exceeds EAL in tool-free raw-case correctness.",
+      "claim_ids": [
+        "CLM-SURFACE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-EQUIV"
+      ],
+      "scope": "Pinned model and paired rendering cells."
+    },
+    {
+      "id": "H-UNIQUE",
+      "label": "Distinct EAL system benefit",
+      "kind": "rival",
+      "statement": "After equal rule, method and host-gate parity, EAL system outcomes or trace completeness are better than the standalone checker on the frozen cases.",
+      "claim_ids": [
+        "CLM-EAL"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-PARITY",
+        "ASM-ORACLE"
+      ],
+      "scope": "System fixture comparison only."
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P-EXEC",
+      "hypothesis_ids": [
+        "H-EXEC"
+      ],
+      "claim_ids": [
+        "CLM-SYSTEM"
+      ],
+      "estimand_ids": [
+        "EST-EXEC"
+      ],
+      "measurement_ids": [
+        "M-CORRECT",
+        "M-FALSE"
+      ],
+      "expected_pattern": "Verified system answers are more often semantically correct and less often falsely supportive than tool-free raw answers on the same task roots and evidence variants.",
+      "direction": "increase",
+      "magnitude_or_range": "Exploratory engineering target: at least 0.20 task-weighted correctness gain and no increased false support; not a calibrated hypothesis test.",
+      "time_window": "One frozen campaign",
+      "tolerance": "Exact label scoring; task-cluster uncertainty reported.",
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE",
+        "ASM-INPUT",
+        "ASM-SESSIONS"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-RAW"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-BIND",
+      "hypothesis_ids": [
+        "H-BIND"
+      ],
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "estimand_ids": [
+        "EST-STEPS"
+      ],
+      "measurement_ids": [
+        "M-CORRECT",
+        "M-TRACE"
+      ],
+      "expected_pattern": "Eligibility memo rescues binding counterexamples from raw and changes the response when the same numeric values become inadmissible.",
+      "direction": "increase",
+      "magnitude_or_range": "Report paired task differences and family counts; no universal effect threshold.",
+      "time_window": "One frozen campaign",
+      "tolerance": "Exact applicability reasons and statuses.",
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-RAW"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-COMPOSE",
+      "hypothesis_ids": [
+        "H-COMPOSE"
+      ],
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "estimand_ids": [
+        "EST-STEPS"
+      ],
+      "measurement_ids": [
+        "M-CORRECT",
+        "M-TRACE"
+      ],
+      "expected_pattern": "Method-only output rescues calculation/polarity failures, while full assessment adds a further rescue on attack-composition cases.",
+      "direction": "increase",
+      "magnitude_or_range": "Family-stratified ordinal pattern; report all violations.",
+      "time_window": "One frozen campaign",
+      "tolerance": "Exact status and trace; do not infer cognition from basis prose.",
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-BIND"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-COPY",
+      "hypothesis_ids": [
+        "H-COPY"
+      ],
+      "claim_ids": [
+        "CLM-SYSTEM",
+        "CLM-LOCALISE"
+      ],
+      "estimand_ids": [
+        "EST-GATE"
+      ],
+      "measurement_ids": [
+        "M-ACCEPT",
+        "M-FALSE"
+      ],
+      "expected_pattern": "A bare stale or wrong-context computed verdict can be repeated despite contradictory raw records, whereas the host gate rejects its mismatched identity and withholds its status.",
+      "direction": "decrease",
+      "magnitude_or_range": "All planned tampered synthetic records should fail validation; any accepted tamper fails the gate requirement.",
+      "time_window": "Immediate validation before final answer",
+      "tolerance": "Zero accepted invalid digest/context in deterministic gate checks.",
+      "auxiliary_assumption_ids": [
+        "ASM-INPUT"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-VERIFY-TEXT"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-SHORT",
+      "hypothesis_ids": [
+        "H-SHORT"
+      ],
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "estimand_ids": [
+        "EST-LENGTH"
+      ],
+      "measurement_ids": [
+        "M-CORRECT"
+      ],
+      "expected_pattern": "Compact reference improves raw-task accuracy within matched task/representation/content blocks.",
+      "direction": "increase",
+      "magnitude_or_range": "Finite-task paired difference; same semantic coverage audited but different wording remains a rival.",
+      "time_window": "One frozen campaign",
+      "tolerance": "Task-cluster descriptive uncertainty.",
+      "auxiliary_assumption_ids": [
+        "ASM-ORACLE"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-LONG"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-SURFACE",
+      "hypothesis_ids": [
+        "H-SURFACE"
+      ],
+      "claim_ids": [
+        "CLM-SURFACE"
+      ],
+      "estimand_ids": [
+        "EST-SURFACE"
+      ],
+      "measurement_ids": [
+        "M-CORRECT"
+      ],
+      "expected_pattern": "Raw-only EAL outperforms meaning-equivalent JSON after pairing by task, evidence and reference.",
+      "direction": "increase",
+      "magnitude_or_range": "Exploratory paired difference; a zero or negative estimate weakens the proposed advantage.",
+      "time_window": "One frozen campaign",
+      "tolerance": "Task-cluster uncertainty; no equivalence claim from a null result.",
+      "auxiliary_assumption_ids": [
+        "ASM-EQUIV",
+        "ASM-SESSIONS"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-NOSURFACE"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-EQUAL",
+      "hypothesis_ids": [
+        "H-EQUAL"
+      ],
+      "claim_ids": [
+        "CLM-EAL"
+      ],
+      "estimand_ids": [
+        "EST-CHECKER"
+      ],
+      "measurement_ids": [
+        "M-CORRECT",
+        "M-ACCEPT",
+        "M-TRACE"
+      ],
+      "expected_pattern": "With equal checker capacity and host gate, EAL and standalone systems both follow valid-to-invalid changes and reject forged records; remaining differences are implementation-specific.",
+      "direction": "no-direction",
+      "magnitude_or_range": "Exact finite-fixture counts; no population equivalence assertion.",
+      "time_window": "Deterministic paired fixture execution",
+      "tolerance": "Any mismatch investigated before attributed benefit.",
+      "auxiliary_assumption_ids": [
+        "ASM-PARITY",
+        "ASM-ORACLE"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-UNIQUE"
+      ],
+      "shared_prediction": false
+    }
+  ],
+  "constructs": [
+    {
+      "id": "CON-DECISION",
+      "name": "Justified evidence-dependent status",
+      "definition": "A requested claim status matching the independent reference for exactly the source, context, time and admitted observations supplied to that arm.",
+      "role": "outcome",
+      "scope": "Synthetic bounded fixture only.",
+      "proxy_for_claim_ids": [
+        "CLM-SYSTEM",
+        "CLM-LOCALISE",
+        "CLM-SURFACE"
+      ],
+      "validity_evidence": [
+        "Independent pre-outcome adjudication and duplicate checker cross-run planned"
+      ],
+      "validity_threats": [
+        "Interpreter-derived circular oracle",
+        "A correct status without a valid trace may be lucky or copied"
+      ]
+    },
+    {
+      "id": "CON-GATE",
+      "name": "Verified applicability and source binding",
+      "definition": "The host accepts a status only when source, observation, context, assessment time and method identities match the independently frozen acquisition and evaluation record.",
+      "role": "intervention",
+      "scope": "Synthetic signed acquisition fixture; no physical truth claim.",
+      "proxy_for_claim_ids": [
+        "CLM-SYSTEM",
+        "CLM-EAL"
+      ],
+      "validity_evidence": [
+        "Tamper and replay refusal cases planned"
+      ],
+      "validity_threats": [
+        "A signed false measurement remains false",
+        "A checker sharing the same implementation defect could agree"
+      ]
+    },
+    {
+      "id": "CON-LOC",
+      "name": "Operation-specific error location",
+      "definition": "An error first removed by supplied eligibility, registered computation or full assessment on an otherwise paired fixture.",
+      "role": "diagnostic",
+      "scope": "Output dependence, not latent model process.",
+      "proxy_for_claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "validity_evidence": [
+        "Paired stepwise arms with unchanged task data planned"
+      ],
+      "validity_threats": [
+        "An incremental memo changes salience as well as information",
+        "Multiple operations may jointly cause failure"
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M-CORRECT",
+      "construct_ids": [
+        "CON-DECISION"
+      ],
+      "observable": "All requested final statuses and completion flag",
+      "instrument_or_procedure": "Strict schema parser; compare each claim to independent arm-specific reference",
+      "scale_or_units": "Binary all-claims correctness per trial; claim-level categorical confusion",
+      "timing": "At first response; no repair",
+      "preprocessing": "Failed/malformed attempted calls count unsuccessful; preserve raw response",
+      "calibration": "Reference created from brief by two reviewers before unmasking and cross-checked with two implementations",
+      "reliability": "Deterministic rescore plus adjudicator agreement recorded",
+      "validity": "Status correctness for supplied synthetic information only",
+      "measurement_invariance": "Same response contract across representation/reference arms",
+      "reactivity": "Explicit JSON output constraint may affect performance",
+      "error_model": "Scorer and oracle errors; unattempted calls separately reported",
+      "blinding": "Reference reviewers do not see model output or arm; coders see anonymised traces"
+    },
+    {
+      "id": "M-FALSE",
+      "construct_ids": [
+        "CON-DECISION"
+      ],
+      "observable": "At least one admitted supported status without admissible support",
+      "instrument_or_procedure": "Independent oracle and strict parsed response; separate attempted denominator",
+      "scale_or_units": "Binary per trial plus count per claim",
+      "timing": "First response",
+      "preprocessing": "Report malformed as separate failure, never as proved absence of false support",
+      "calibration": "Hand-audit positive/negative examples before freeze",
+      "reliability": "Deterministic replay",
+      "validity": "Conditional false support within the fixture, not actual device safety",
+      "measurement_invariance": "Same oracle across paired views for the same evidence set",
+      "reactivity": "None beyond shared prompt",
+      "error_model": "False support unobserved in malformed output; bound with all failures treated as potential false support",
+      "blinding": "Score code frozen before responses"
+    },
+    {
+      "id": "M-TRACE",
+      "construct_ids": [
+        "CON-LOC",
+        "CON-GATE"
+      ],
+      "observable": "Exact evidence IDs, applicability outcomes, method query/result, argument attack edges and source/observation digests",
+      "instrument_or_procedure": "Machine trace validation plus two masked human coders for explanatory failure category",
+      "scale_or_units": "Categorical error stage; complete/incomplete provenance",
+      "timing": "At assessment",
+      "preprocessing": "Retain original bytes; classify disagreement as unadjudicated until resolved",
+      "calibration": "Independent hand-worked cases for each family",
+      "reliability": "Report coder agreement and disagreements, not just consensus",
+      "validity": "Trace identity and visible output-level failure, not model thought process",
+      "measurement_invariance": "Same trace field specification in EAL and standalone system",
+      "reactivity": "None for deterministic gate; public trace can influence model answers",
+      "error_model": "Missing fields and coding disagreements explicit",
+      "blinding": "Human coders masked to system label where possible"
+    },
+    {
+      "id": "M-ACCEPT",
+      "construct_ids": [
+        "CON-GATE"
+      ],
+      "observable": "Host accepts or rejects intact, stale, changed-context, replayed and hash-tampered verdicts",
+      "instrument_or_procedure": "Deterministic signed-log fixture and deliberately modified records",
+      "scale_or_units": "Binary accept/reject and refusal reason",
+      "timing": "Before any final answer",
+      "preprocessing": "No retries on rejection; record decision path",
+      "calibration": "Known intact and one-field tamper fixtures",
+      "reliability": "Byte-reproducible rerun",
+      "validity": "Integrity of linkage to synthetic acquisition log, not sensor truth",
+      "measurement_invariance": "Identical gate rule for both checker arms",
+      "reactivity": "Not applicable to deterministic fixture",
+      "error_model": "Implementation fault or compromised trusted log is out of scope and must be separately tested",
+      "blinding": "Expected tamper disposition frozen before run"
+    }
+  ],
+  "design": {
+    "design_type": "controlled-experiment",
+    "rationale": "Orthogonal paired presentation/content contrasts diagnose tool-free behaviour; a separate deterministic active-comparator phase tests conditional host correctness and attribution.",
+    "setting": "Prospectively authored synthetic task corpus, local checkers and model API.",
+    "temporal_structure": "Fresh one-shot model calls in randomly ordered paired blocks; deterministic source/observation perturbations and checker replay afterwards.",
+    "assignment_method": "Randomise condition order within task root; preassign two reference renderings and two representations, with all conditions observed per root.",
+    "allocation_concealment": "Freeze references, tasks, source hashes, answers and condition schedule outside prompts before generation.",
+    "masking": "Model never sees true labels or manipulation names; reference adjudicators and trace coders masked to responses or system label as applicable.",
+    "comparator": "Raw-only model, answer-only model, graded checked information, meaning-equivalent JSON, full versus compact reference, and independently implemented same-capability checker.",
+    "control_ids": [
+      "CTRL-ANSWER",
+      "CTRL-INVALID",
+      "CTRL-COMPUTE",
+      "CTRL-JSON",
+      "CTRL-CHECKER",
+      "CTRL-TAMPER"
+    ]
+  },
+  "units": {
+    "target_population_or_system": "The declared bounded engineering tasks and frozen model/host pair",
+    "sampling_frame": "24 prospectively authored task roots, six each of eligibility, typed numerical method, sampled negative finding, and objection/defence composition",
+    "experimental_unit": "A model call for one task root and condition; deterministic checker unit is a task root/variant/system execution",
+    "observational_unit": "A requested-claim response, trace or gate decision",
+    "assignment_unit": "Condition ordering within task root; all planned arms observed",
+    "analysis_unit": "Task root for paired description, with genealogy/family sensitivity because distinct roots need not be statistically independent",
+    "inclusion_criteria": [
+      "Independent brief and independently adjudicated reference",
+      "Semantically equivalent EAL/JSON arguments",
+      "At least one valid and one relevance or binding perturbation"
+    ],
+    "exclusion_criteria": [
+      "Exposed historical task or parameter-only renaming",
+      "Unadjudicated oracle disagreement before freeze",
+      "Task requiring a nonregistered computation without a matched standalone implementation"
+    ],
+    "recruitment_or_selection": "Authors prepare case briefs without inspecting new model outputs; genealogy and references frozen before execution."
+  },
+  "interventions_or_exposures": [
+    {
+      "id": "INT-PACKET",
+      "kind": "intervention",
+      "description": "Ten content arms: no proposal plus valid raw; no proposal plus invalid raw; wrong proposal only; wrong proposal plus valid raw; correct proposal plus valid raw; wrong proposal plus invalid raw; wrong plus valid raw and applicability memo; wrong plus valid raw and method result; wrong plus valid raw and computed final status; wrong plus invalid raw and a forged/stale bare verdict.",
+      "target": "Candidate anchoring, evidence relevance, binding, registered computation and status copying",
+      "implementation": "For every root render each arm with fixed claim IDs and independently adjudicated arm-specific status; wrong/correct proposals defined against that arm's supplied information; no hidden reference labels in prompt.",
+      "dose_or_intensity": "Ten arms per representation/reference rendering",
+      "timing": "One fresh call per cell; no repair",
+      "admissibility": "conditional",
+      "manipulation_checks": [
+        "Prompt hashes and exact per-arm data inclusion",
+        "Memo contains no final status and method result contains no final argument status",
+        "Forged bare verdict mismatches a frozen source, context, time or observation digest while the independent invalid-arm reference is retained"
+      ],
+      "off_target_checks": [
+        "Track token length and answer leakage",
+        "Check invalid perturbation changes only declared binding field where possible"
+      ],
+      "recovery_checks": [
+        "Paired valid/invalid reversal and restored-valid fixture"
+      ]
+    },
+    {
+      "id": "INT-RENDER",
+      "kind": "intervention",
+      "description": "EAL versus equivalent JSON, each under compact and historical-length full semantic reference",
+      "target": "Surface and instructional burden",
+      "implementation": "Normalise semantic graph and independently audit compact/full semantic coverage; randomise order",
+      "dose_or_intensity": "Two by two renderings",
+      "timing": "Across fresh calls on each root",
+      "admissibility": "conditional",
+      "manipulation_checks": [
+        "Semantic graph equality",
+        "Reference content checklist"
+      ],
+      "off_target_checks": [
+        "Character and token counts",
+        "Vocabulary bias in common reference"
+      ],
+      "recovery_checks": [
+        "Repeat any syntax parse failure offline without a paid model retry"
+      ]
+    },
+    {
+      "id": "INT-GATE",
+      "kind": "intervention",
+      "description": "EAL runtime plus verified host gate versus standalone checker with the same registered methods, typed binding rules and gate",
+      "target": "Conditional correctness and distinct EAL integration benefit",
+      "implementation": "Evaluate intact, wrong-scope, stale/replayed and tampered synthetic inputs in both systems; verify source/observation/context/method digests before any status is released",
+      "dose_or_intensity": "Four variants per root per system, 192 deterministic executions",
+      "timing": "After fixture freeze; no model calls required",
+      "admissibility": "conditional",
+      "manipulation_checks": [
+        "Cross-implementation parity under intact records"
+      ],
+      "off_target_checks": [
+        "Audit shared helper code and oracle coupling"
+      ],
+      "recovery_checks": [
+        "Restore intact record and confirm accepted status returns"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTRL-ANSWER",
+      "control_type": "baseline",
+      "description": "Same deliberately wrong proposal without observations",
+      "failure_mode_addressed": "A model may repeat an asserted answer rather than assess evidence",
+      "implementation": "One answer-only arm per root/rendering",
+      "diagnostic_consequence": "High copying limits any claim of independent raw reasoning; available-information correctness must use unsupported reference."
+    },
+    {
+      "id": "CTRL-INVALID",
+      "control_type": "negative",
+      "description": "Numeric values preserved but one binding field made wrong-scope, wrong-origin or stale",
+      "failure_mode_addressed": "Salient values may be treated as support despite inapplicability",
+      "implementation": "Paired invalid raw arm and checker variant with frozen changed field",
+      "diagnostic_consequence": "Failure to retract weakens applicability and gate claims."
+    },
+    {
+      "id": "CTRL-COMPUTE",
+      "control_type": "manipulation",
+      "description": "Eligibility memo, then registered result, then full status",
+      "failure_mode_addressed": "A computed conclusion may merely be copied and cannot locate an earlier missing step",
+      "implementation": "Stepwise packets omit later-stage output",
+      "diagnostic_consequence": "If intermediate packet leaks status, localising contrasts invalid."
+    },
+    {
+      "id": "CTRL-JSON",
+      "control_type": "active-comparator",
+      "description": "Meaning-equivalent JSON semantic graph",
+      "failure_mode_addressed": "Tool/system benefits wrongly attributed to EAL syntax",
+      "implementation": "Normalised graph equality and paired trial cells",
+      "diagnostic_consequence": "Equivalent outcomes do not support a notation advantage."
+    },
+    {
+      "id": "CTRL-CHECKER",
+      "control_type": "active-comparator",
+      "description": "Independent standalone checker with equal methods and host verification",
+      "failure_mode_addressed": "Backend computation wrongly attributed uniquely to EAL",
+      "implementation": "Same signed synthetic records and four variants per root",
+      "diagnostic_consequence": "Parity restricts claim to EAL integration, pending translation/maintenance tests."
+    },
+    {
+      "id": "CTRL-TAMPER",
+      "control_type": "falsification",
+      "description": "Forged, replayed or mismatched verdict metadata against independent acquisition log",
+      "failure_mode_addressed": "A textual or self-consistent status is accepted as authenticated fact",
+      "implementation": "One-field digest/context/time perturbations in the model bare-verdict arm and host gate, then restoration",
+      "diagnostic_consequence": "Any accepted tamper invalidates the gate claim for that variant."
+    }
+  ],
+  "confounds": [
+    {
+      "id": "CF-LENGTH",
+      "description": "EAL, JSON and full/compact references differ in token count and learned familiarity",
+      "causal_or_measurement_path": "Surface contrast combines syntax with tokenisation; compact contrast combines length with wording",
+      "control_or_adjustment": "Report lengths and paired contrasts; add a length-matched filler/placement calibration before claiming attention as cause",
+      "diagnostic": "Inspect token counts and filler-control outcomes",
+      "residual_risk": "A surface effect cannot identify a unique cognitive mechanism."
+    },
+    {
+      "id": "CF-ORACLE",
+      "description": "An interpreter-derived reference can agree with an implementation bug",
+      "causal_or_measurement_path": "Circular scoring overstates correctness",
+      "control_or_adjustment": "Independent brief, human adjudication and standalone implementation",
+      "diagnostic": "Disagreement table before freeze",
+      "residual_risk": "Synthetic semantics may differ from actual engineering intent."
+    },
+    {
+      "id": "CF-CASE",
+      "description": "Shared templates and repeated calls yield correlated outcomes",
+      "causal_or_measurement_path": "Naive per-call confidence overstates information",
+      "control_or_adjustment": "Treat root as analysis cluster, report family counts",
+      "diagnostic": "Genealogy and leave-family-out display",
+      "residual_risk": "24 selected roots do not imply a population distribution."
+    }
+  ],
+  "estimands": [
+    {
+      "id": "EST-EXEC",
+      "claim_ids": [
+        "CLM-SYSTEM"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "24 frozen task roots under the model and signed synthetic acquisition fixture",
+      "intervention_or_exposure": "EAL host-verified status on valid and perturbed inputs",
+      "comparator": "Tool-free model with raw EAL plus identical visible evidence; exact decision comparison conditions documented separately",
+      "outcome_measurement_ids": [
+        "M-CORRECT",
+        "M-FALSE"
+      ],
+      "time": "First response after each fixture",
+      "summary_measure": "Task-root average difference in full correct status and false support; paired valid-to-invalid retraction counts",
+      "interpretation": "Whole-system conditional benefit, not unique EAL syntax or physical truth."
+    },
+    {
+      "id": "EST-STEPS",
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "24 frozen roots, by failure family",
+      "intervention_or_exposure": "Wrong proposal with raw plus eligibility memo, registered result, or final status",
+      "comparator": "Same wrong proposal and raw without added checked stage",
+      "outcome_measurement_ids": [
+        "M-CORRECT",
+        "M-TRACE"
+      ],
+      "time": "One shot",
+      "summary_measure": "Paired root-level increments in correctness and stage-specific trace error",
+      "interpretation": "Which additional public operation changes output; not internal cognition."
+    },
+    {
+      "id": "EST-GATE",
+      "claim_ids": [
+        "CLM-SYSTEM"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Frozen intact and modified synthetic records",
+      "intervention_or_exposure": "Host validation of source/observation/context/method identity",
+      "comparator": "Bare computed status in tool-free prompt and intentionally modified record",
+      "outcome_measurement_ids": [
+        "M-ACCEPT",
+        "M-FALSE"
+      ],
+      "time": "Before final status emission",
+      "summary_measure": "Accepted tamper count and retraction/restoration transition count",
+      "interpretation": "Binding integrity conditional on trusted acquisition, not factual sensor truth."
+    },
+    {
+      "id": "EST-LENGTH",
+      "claim_ids": [
+        "CLM-LOCALISE"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "24 frozen roots",
+      "intervention_or_exposure": "Complete compact reference",
+      "comparator": "Historical-length full reference",
+      "outcome_measurement_ids": [
+        "M-CORRECT"
+      ],
+      "time": "One shot",
+      "summary_measure": "Root-averaged paired correctness difference within identical data/content/notation arms",
+      "interpretation": "Complete prompt-rendering effect; attention mechanism remains unisolated."
+    },
+    {
+      "id": "EST-SURFACE",
+      "claim_ids": [
+        "CLM-SURFACE"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "24 frozen roots",
+      "intervention_or_exposure": "EAL source",
+      "comparator": "Semantically equivalent JSON",
+      "outcome_measurement_ids": [
+        "M-CORRECT"
+      ],
+      "time": "One shot",
+      "summary_measure": "Paired task-root mean correctness difference in raw/no-proposal cells, stratified by reference",
+      "interpretation": "Surface-interface effect only."
+    },
+    {
+      "id": "EST-CHECKER",
+      "claim_ids": [
+        "CLM-EAL"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "24 roots times four source/observation variants",
+      "intervention_or_exposure": "EAL system with host gate",
+      "comparator": "Independent equal-capability standalone checker with identical gate",
+      "outcome_measurement_ids": [
+        "M-CORRECT",
+        "M-ACCEPT",
+        "M-TRACE"
+      ],
+      "time": "Same frozen fixture execution",
+      "summary_measure": "Paired discordant status/gate/trace counts and latency with implementation cost reported separately",
+      "interpretation": "Only a tested system difference; parity cannot establish an EAL authoring benefit."
+    }
+  ],
+  "identification": {
+    "target_estimand_ids": [
+      "EST-EXEC",
+      "EST-STEPS",
+      "EST-GATE",
+      "EST-LENGTH",
+      "EST-SURFACE",
+      "EST-CHECKER"
+    ],
+    "status": "partially-identified",
+    "causal_and_measurement_structure": "Task semantics and trusted acquisition determine the arm-specific oracle; representation, reference length, proposal and information stage are assigned within each root; each affects response through visible tokens. Host gate and checker determine an emitted status. A copied valid status and genuinely derived status have identical final labels; output alone cannot separate these mechanisms.",
+    "assumption_ids": [
+      "ASM-ORACLE",
+      "ASM-EQUIV",
+      "ASM-PARITY",
+      "ASM-SESSIONS",
+      "ASM-INPUT",
+      "ASM-SAMPLE"
+    ],
+    "identified_parameters": [
+      "Finite-root assigned-arm differences conditional on verified fixtures",
+      "Deterministic gate refusals on specified modifications"
+    ],
+    "nonidentified_alternatives": [
+      "Internal model reasoning versus copying a supplied status",
+      "Attention dilution versus compact wording",
+      "Synthetic log integrity versus real sensor truth",
+      "EAL authoring advantage versus equal checker without an authoring study",
+      "Whether a model can translate a fresh ordinary engineering brief into a correct EAL programme without independent review"
+    ],
+    "threats": [
+      "Oracle circularity",
+      "Unmatched standalone rules",
+      "Leaked solution in an intermediate memo",
+      "Provider drift",
+      "Nonindependent roots"
+    ],
+    "diagnostics": [
+      "Independent reference review",
+      "EAL/JSON graph equality",
+      "Parity fixture check",
+      "Hash and prompt audit",
+      "Family-level reports"
+    ],
+    "rescue_actions": [
+      "Split an invalid contrast from unaffected comparisons",
+      "Add matched padding and placement controls for attention attribution",
+      "Conduct a separate blinded translation/maintenance study",
+      "Use independently authenticated real measurements for any physical claim"
+    ]
+  },
+  "sampling": {
+    "method": "Prospective purposive mechanism coverage, six genuinely distinct task roots per four families; all planned conditions within root.",
+    "sample_size_or_information_target": "Exploratory 24 roots x 10 content arms x 2 representations x 2 reference versions = 960 tool-free calls; 24 x 4 variants x 2 systems = 192 deterministic checker executions. No population-level power claim. Pilot precision depends on actual discordance; 24 roots are too few to establish a 5 percentage-point benefit.",
+    "inputs": [
+      "Historical five-task/180-call outcome proportions inform failure families and cost feasibility only",
+      "Historical configured-rate 0.0660738 USD for 180 calls, not an invoice or guarantee",
+      "Independent fixture/reference construction remains outstanding"
+    ],
+    "dependence_structure": "Repeated calls and variants cluster within task root; roots may share author, method or family. Publish genealogy, show family summaries and lineage-sensitive uncertainty; 960 calls and even 24 distinct roots are not independent population samples.",
+    "multiplicity": "One exploratory primary whole-system contrast and prespecified diagnostic families; no significance claims or cherry-picked best arm.",
+    "attrition_or_loss": "Malformed and provider failures remain attempted failures; unattempted slots and unknown charges separately retained.",
+    "result": "Design feasibility and descriptive decision thresholds only; prospective uncertainty calibration and full task frame required before preregistration.",
+    "sensitivity_analysis": "Before live work simulate paired differences under discordance 0.2-0.6, root/family correlation and reference error; report attainable interval widths and whether a 0.20 engineering gain can be distinguished from zero.",
+    "stopping_implications": "No result-dependent stop. Freeze schedule and cost after fixture validation; provisional 2 USD configured-cost planning threshold with pre-call headroom and stop at first unknown usage, subject to tariff recheck."
+  },
+  "analysis": {
+    "preprocessing_lock": "Archive raw prompts, model responses, usage and gate traces; strict schema with no post-hoc repair; calculate source/observation/reference hashes and independent arm-specific oracle before calls.",
+    "exclusion_lock": "Only prospectively invalid fixtures excluded before execution. All attempted outputs, including malformed, remain in denominators; no correctness-based exclusion.",
+    "models": [
+      {
+        "id": "MOD-PAIRED",
+        "estimand_ids": [
+          "EST-EXEC",
+          "EST-STEPS",
+          "EST-GATE",
+          "EST-LENGTH",
+          "EST-SURFACE"
+        ],
+        "model_or_procedure": "Compute paired root-level accuracy, false support, valid-to-invalid status transitions, stage increments and exact-copy rate; show family tables and descriptive task-cluster intervals",
+        "assumptions": [
+          "Valid independent reference and pairing",
+          "Stable provider during randomised campaign"
+        ],
+        "diagnostics": [
+          "Pair coverage",
+          "Response schema and output-limit failures",
+          "Reference/packet equality",
+          "Task genealogy and token lengths"
+        ],
+        "outputs": [
+          "delta_system",
+          "delta_steps",
+          "delta_length",
+          "delta_surface",
+          "false_support",
+          "retraction",
+          "copy_rate",
+          "coverage"
+        ]
+      },
+      {
+        "id": "MOD-CHECKER",
+        "estimand_ids": [
+          "EST-CHECKER",
+          "EST-GATE"
+        ],
+        "model_or_procedure": "Exact two-system fixture comparison and gate-invariant audit, with signed-log tamper and restoration records",
+        "assumptions": [
+          "Equal rule coverage",
+          "Independent implementations and oracle"
+        ],
+        "diagnostics": [
+          "Intact parity",
+          "One-field tamper validation",
+          "Method version and context checks"
+        ],
+        "outputs": [
+          "checker_discordance",
+          "accepted_tamper",
+          "trace_completeness",
+          "checker_latency"
+        ]
+      }
+    ],
+    "contrasts": [
+      "Primary conditional execution-allocation effect: host-verified EAL status from pre-authored correct specifications versus tool-free raw EAL on matched fixture variants; input and computation access differ by design.",
+      "Diagnostic raw-only EAL versus JSON within reference version",
+      "Wrong proposal plus raw versus wrong proposal plus eligibility, method result and final assessment",
+      "No-proposal valid versus no-proposal invalid raw packet; correct-proposal plus valid raw for preservation",
+      "Compact versus long reference in identical content/notation cells",
+      "EAL system versus independent equal-capability checker under identical host gate"
+    ],
+    "uncertainty": "Finite-root counts first; descriptive root-cluster intervals with coverage sensitivity, no calibrated population p-value. Any accepted tamper is a deterministic gate failure.",
+    "multiplicity": "Diagnostics exploratory; report every planned contrast and family. No opportunistic significance threshold.",
+    "missing_data": "Attempted malformed/provider errors unsuccessful; no imputation. Report unknown usage and missing scheduled calls explicitly.",
+    "stopping_rule": "No calls in protocol preparation. Future frozen run executes all 960 calls unless provider failure, unknown usage or pre-call cost reservation crosses 2 USD; no silent retry or replacement. Deterministic checks do not incur model cost.",
+    "robustness_checks": [
+      "Score claim-level confusion including supported/contested/unsupported",
+      "Treat malformed outputs as possible false support in an upper bound",
+      "Repeat finite contrasts with one family omitted",
+      "Audit candidate-copy frequencies and basis contradictions without treating prose as hidden reasoning",
+      "Compare compact/full prompt token counts"
+    ],
+    "software_and_versions": [
+      "Freeze exact EAL commit, method registry, standalone implementation, model snapshot, provider adapter and scorer hashes before calls"
+    ],
+    "inconclusive_handling": "Incomplete paired coverage, oracle mismatch, unmatched checker or wide descriptive intervals leave the corresponding claim unchanged and are reported, not repaired by selective resampling."
+  },
+  "decision_matrix": [
+    {
+      "id": "DM-GATE",
+      "prediction_ids": [
+        "P-EXEC",
+        "P-COPY"
+      ],
+      "observation_region": "Intact parity and oracle checks pass; EAL gate rejects every tamper; EAL system improves finite-task correctness/retraction and false support over raw model",
+      "analysis_outputs": [
+        "delta_system",
+        "false_support",
+        "retraction",
+        "accepted_tamper",
+        "coverage"
+      ],
+      "decision_rule": "Strengthen bounded whole-system claim only; require the prespecified 0.20 engineering target for a practically meaningful pilot signal, and report uncertainty.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-SYSTEM"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Observed checked conditional benefit and valid gate within fixtures.",
+          "scope_limit": "Only conditional execution from reviewed pre-authored specifications and the tested trusted synthetic fixture; no end-to-end translation, device truth or unique EAL value."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-EXEC favoured over H-RAW for the finite fixtures; H-COPY remains possible for bare verdict cells."
+      ],
+      "assumption_failure_response": "DM-INVALID overrides this row.",
+      "next_action": "Independent replication and trusted-source integration."
+    },
+    {
+      "id": "DM-RAW",
+      "prediction_ids": [
+        "P-EXEC",
+        "P-BIND",
+        "P-COMPOSE"
+      ],
+      "observation_region": "Raw tool-free model matches checker on validated fixtures, including invalid evidence and graph/method counterexamples",
+      "analysis_outputs": [
+        "delta_system",
+        "delta_steps",
+        "false_support",
+        "retraction",
+        "coverage"
+      ],
+      "decision_rule": "Weaken incremental endpoint benefit of the checked system in these tasks; report exact scope and uncertainty.",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-SYSTEM",
+            "CLM-LOCALISE"
+          ],
+          "disposition": "weaken",
+          "rationale": "The proposed missing operations did not produce a measurable finite-task advantage.",
+          "scope_limit": "A small or selected suite cannot establish universal equivalence."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-RAW remains viable in tested scope."
+      ],
+      "assumption_failure_response": "DM-INVALID overrides this row.",
+      "next_action": "Test new independent families before adoption claims."
+    },
+    {
+      "id": "DM-LOCAL",
+      "prediction_ids": [
+        "P-BIND",
+        "P-COMPOSE",
+        "P-SHORT"
+      ],
+      "observation_region": "One intermediate stage or compact rendering improves one family, but no consistent whole-system benefit is observed",
+      "analysis_outputs": [
+        "delta_steps",
+        "delta_length",
+        "delta_system",
+        "coverage"
+      ],
+      "decision_rule": "Localise the finite output dependence; do not promote a general mechanism or total-system result.",
+      "discrimination_result": "fails-to-discriminate",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-LOCALISE"
+          ],
+          "disposition": "revise",
+          "rationale": "A narrower operation- and family-specific effect remains.",
+          "scope_limit": "Information and salience change together."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain only the hypotheses consistent with family-specific contrasts."
+      ],
+      "assumption_failure_response": "DM-INVALID overrides this row.",
+      "next_action": "Run a targeted matched-padding or stage-isolation study."
+    },
+    {
+      "id": "DM-SURFACE",
+      "prediction_ids": [
+        "P-SURFACE",
+        "P-SHORT"
+      ],
+      "observation_region": "Positive or negative paired rendering effects with validated semantic equivalence",
+      "analysis_outputs": [
+        "delta_surface",
+        "delta_length",
+        "coverage"
+      ],
+      "decision_rule": "Report sign and root distribution; positive EAL surface estimate is a candidate for independent replication, zero/negative weakens claimed advantage, without a null-equivalence inference.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-SURFACE"
+          ],
+          "disposition": "revise",
+          "rationale": "Surface benefit is conditional on reference version and selected roots.",
+          "scope_limit": "No isolated tokenisation or cognitive account."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-SURFACE evaluated only as a bounded presentation effect."
+      ],
+      "assumption_failure_response": "Semantic mismatch sends affected pairs to DM-INVALID.",
+      "next_action": "Replicate surface contrast after independent task construction."
+    },
+    {
+      "id": "DM-EQUAL",
+      "prediction_ids": [
+        "P-EQUAL"
+      ],
+      "observation_region": "EAL and standalone checker agree on intact, perturbed and tamper fixture decisions with trace parity",
+      "analysis_outputs": [
+        "checker_discordance",
+        "accepted_tamper",
+        "trace_completeness"
+      ],
+      "decision_rule": "Do not attribute shared endpoint gain uniquely to EAL; assess authoring and maintenance in a separate study.",
+      "discrimination_result": "fails-to-discriminate",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-EAL"
+          ],
+          "disposition": "no-change",
+          "rationale": "No unique endpoint contribution identified by equal-capability comparison.",
+          "scope_limit": "Finite fixture parity is not population equivalence."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-EQUAL remains viable in finite scope."
+      ],
+      "assumption_failure_response": "Parity implementation failure sends comparison to DM-INVALID.",
+      "next_action": "Freeze independent brief-to-specification translation and revision protocol."
+    },
+    {
+      "id": "DM-DISCORD",
+      "prediction_ids": [
+        "P-EQUAL"
+      ],
+      "observation_region": "Checkers differ after input/rule parity passes",
+      "analysis_outputs": [
+        "checker_discordance",
+        "trace_completeness",
+        "checker_latency"
+      ],
+      "decision_rule": "Investigate each discordance against independent reference before crediting either system.",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-EAL"
+          ],
+          "disposition": "no-change",
+          "rationale": "Discordance alone has no direction of correctness.",
+          "scope_limit": "Only adjudicated causes can support a later comparative claim."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-EQUAL challenged but no winner declared."
+      ],
+      "assumption_failure_response": "If parity fails, use DM-INVALID.",
+      "next_action": "Root-cause and replicate corrected fixture without overwriting the original."
+    },
+    {
+      "id": "DM-INVALID",
+      "prediction_ids": [
+        "P-EXEC",
+        "P-BIND",
+        "P-COMPOSE",
+        "P-COPY",
+        "P-SHORT",
+        "P-SURFACE",
+        "P-EQUAL"
+      ],
+      "observation_region": "Oracle, manipulation, authenticity, source/JSON equality, checker parity or acquisition check fails",
+      "analysis_outputs": [
+        "coverage",
+        "checker_discordance",
+        "accepted_tamper",
+        "trace_completeness"
+      ],
+      "decision_rule": "Suspend affected inference; any accepted forged record invalidates the host-gate claim for that perturbation.",
+      "discrimination_result": "invalid-measurement",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-SYSTEM",
+            "CLM-LOCALISE",
+            "CLM-EAL",
+            "CLM-SURFACE"
+          ],
+          "disposition": "suspend",
+          "rationale": "The information or comparison is not the specified intervention.",
+          "scope_limit": "Unaffected comparisons may be reported separately."
+        }
+      ],
+      "hypothesis_effects": [
+        "No substantive hypothesis strengthened."
+      ],
+      "assumption_failure_response": "Preserve raw records and document a prospective amendment before a new cohort.",
+      "next_action": "Repair fixture and measurement, then run a newly frozen cohort."
+    },
+    {
+      "id": "DM-INCONCLUSIVE",
+      "prediction_ids": [
+        "P-EXEC",
+        "P-BIND",
+        "P-COMPOSE",
+        "P-COPY",
+        "P-SHORT",
+        "P-SURFACE",
+        "P-EQUAL"
+      ],
+      "observation_region": "Unanticipated mixed pattern, incomplete pairs or wide root-level uncertainty without a failed manipulation",
+      "analysis_outputs": [
+        "delta_system",
+        "delta_steps",
+        "delta_length",
+        "delta_surface",
+        "false_support",
+        "retraction",
+        "coverage"
+      ],
+      "decision_rule": "Report bounded observed counts and leave empirical claim unchanged.",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-SYSTEM",
+            "CLM-LOCALISE",
+            "CLM-EAL",
+            "CLM-SURFACE"
+          ],
+          "disposition": "no-change",
+          "rationale": "The observed pattern does not discriminate the rival packages.",
+          "scope_limit": "No selective pooling of related task variants."
+        }
+      ],
+      "hypothesis_effects": [
+        "Retain competing hypotheses."
+      ],
+      "assumption_failure_response": "Use DM-INVALID if a stated assumption is violated.",
+      "next_action": "Design the smallest additional intervention that separates the surviving rivals."
+    }
+  ],
+  "bias_assessment": {
+    "risks": [
+      {
+        "id": "B-EXPOSURE",
+        "risk_type": "selection",
+        "mechanism": "Reusing exposed task templates inflates apparent transfer",
+        "prevention": "Independent case briefs and genealogy screen before freeze",
+        "detection": "Publish source genealogy and near-duplicate audit",
+        "sensitivity_or_correction": "Report task families and exclude predeclared duplicates only",
+        "residual_risk": "Model training contamination cannot be ruled out"
+      },
+      {
+        "id": "B-ORACLE",
+        "risk_type": "measurement",
+        "mechanism": "Reference built by the same interpreter favours that system",
+        "prevention": "Independent reviewer and standalone implementation",
+        "detection": "Pre-outcome disagreement table",
+        "sensitivity_or_correction": "Suspend disputed roots",
+        "residual_risk": "Human requirements may remain ambiguous"
+      },
+      {
+        "id": "B-PROMPT",
+        "risk_type": "confounding",
+        "mechanism": "A 49,063-character historical reference may obscure short task material, while a compact version changes wording",
+        "prevention": "Paired full/compact arms and audit semantic coverage",
+        "detection": "Track lengths and failures by rendering",
+        "sensitivity_or_correction": "Matched padding/placement study for cognitive attribution",
+        "residual_risk": "Length effect is a whole-prompt effect"
+      },
+      {
+        "id": "B-SELECT",
+        "risk_type": "reporting",
+        "mechanism": "Many arms allow selective favourable comparison",
+        "prevention": "Freeze arm list, estimands and all-root tables",
+        "detection": "Archive 960 trial identities and all attempts",
+        "sensitivity_or_correction": "Label other contrasts exploratory",
+        "residual_risk": "Selected cases limit external validity"
+      }
+    ],
+    "researcher_degrees_of_freedom": [
+      "Task and variant design before freeze",
+      "Reference shortening and metadata formatting",
+      "Error-category coding",
+      "Model selection and cost threshold"
+    ],
+    "negative_controls": [
+      "Wrong-scope, stale and tampered variants"
+    ],
+    "positive_controls": [
+      "Valid method and independent-defence cases"
+    ],
+    "falsification_checks": [
+      "A changed context or digest must retract a former supported status",
+      "An invalid provenance packet must not release a status"
+    ],
+    "reporting_controls": [
+      "Frozen hashes, raw output archive, exact unsuccessful trial count and 960 trial identities, disclosed amendments"
+    ],
+    "residual_limitations": [
+      "Synthetic cases and selected roots",
+      "Explanations do not reveal latent model process",
+      "Signed false source remains false",
+      "No authoring or physical-device validation"
+    ]
+  },
+  "ethics_and_safety": {
+    "applicable": false,
+    "rationale": "Synthetic engineering records, no human participants or physical actuation in this protocol.",
+    "risks": [
+      "API spending and possible inadvertent secret in archived prompts"
+    ],
+    "mitigations": [
+      "Synthetic records only",
+      "Credential from environment, never prompts or archives",
+      "Pre-call cost check and review before publishing raw files"
+    ],
+    "monitoring": [
+      "Per-call usage, model identity and archive integrity"
+    ],
+    "stopping_rules": [
+      "Stop at first unknown billed usage or planned-cost threshold",
+      "Stop if secret scan finds a credential"
+    ],
+    "stop_authority": "Investigator operating the future campaign",
+    "review_status": "not-required",
+    "post_stop_actions": [
+      "Preserve every attempted trial and marker",
+      "Investigate before a separately frozen continuation"
+    ]
+  },
+  "feasibility": {
+    "current_status": "partially-feasible",
+    "apparatus_or_data": [
+      "Existing EAL interpreter, archive and model runner",
+      "Independent case briefs, standalone checker and provenance gate still to be built"
+    ],
+    "access": "Repository available; future model API access, pinned snapshot and budget must be confirmed before calls.",
+    "skills": [
+      "EAL semantics, independent oracle review, registered methods and statistical calibration"
+    ],
+    "resources": [
+      "960 prospective model calls and 192 deterministic checker executions",
+      "Provisional 2 USD configured-rate spending plan, not authorisation or guaranteed invoice amount"
+    ],
+    "dependencies": [
+      "24 independent adjudicated roots",
+      "Compact complete reference and frozen long reference",
+      "Independent equal-capability checker",
+      "Signed synthetic acquisition and host gate",
+      "Pre-run precision simulation and immutable task freeze"
+    ],
+    "blockers": [
+      "Independent tasks/oracles and checker parity are not yet implemented",
+      "No information calibration for a population claim",
+      "Physical source authenticity and brief-to-EAL translation require separate investigations",
+      "A separate end-to-end stage must test model-drafted EAL from fresh briefs, with blinded independent semantic translation review and equal-capability JSON/checker comparator before claiming engineering gain from ordinary briefs"
+    ],
+    "fallback": "Run the paired fixture and gate tests locally without API calls; label any later reduced model cohort exploratory."
+  },
+  "reproducibility": {
+    "preregistration_status": "planned",
+    "registration": "Not registered; specify and validate, then commit immutable tasks, code, protocol and schedule before any model calls.",
+    "immutable_materials": [
+      "Case briefs and independent references",
+      "EAL and JSON semantic views",
+      "Full and compact reference bytes",
+      "Two checker binaries/source hashes",
+      "Schedule, scorer and provider configuration"
+    ],
+    "data_plan": "Retain raw request/response, usage, cost, signed synthetic log, tamper variants, source and observation digests, failures and analyses; scan before publication.",
+    "code_plan": "Versioned runner, independent checker and deterministic scorer; write outputs to a new result directory.",
+    "randomisation_or_seed_plan": "Record seed and complete within-root schedule; never replace a failed paid request silently.",
+    "provenance_plan": "Store model snapshot, package, method registry, code hashes, task genealogy, signatures, UTC timestamps and deviations.",
+    "deviation_and_amendment_plan": "Archive old protocol and outcomes unchanged; new version plus explicit reason before a new cohort.",
+    "replication_plan": "Stage C is a separate prospectively frozen authoring/revision investigation: new ordinary engineering briefs, the same model drafting EAL and an equal-capability standalone specification under equal budget, independent masked review of claim/scope/method/evidence/attack translation before execution, then evidence perturbations and measured correction, time and cost. Do not pool it with the present pre-authored source experiment. Replicate the current execution contrasts on further independent roots and another model."
+  },
+  "execution": {
+    "protocol_version_used": null,
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": null,
+    "code_location": null,
+    "observed_results": [],
+    "interpretation_status": "not-started; historical archive reanalysis is separate evidence"
+  },
+  "provenance": {
+    "authors": [
+      "Prepared for Emmett Miller with Codex; no external review claimed"
+    ],
+    "created_at": "2026-09-23T23:00:00Z",
+    "updated_at": "2026-09-23T23:00:00Z",
+    "sources": [
+      "docs/notation-transfer-live-results.md",
+      "benchmarks/results/2026-09-23-notation-transfer-live/analysis.json",
+      "benchmarks/results/2026-09-23-notation-transfer-live/trials.tar.gz",
+      "docs/general-reasoning-and-notation-argument.md",
+      "docs/eal2-relay-results.md",
+      "docs/eal2-companion-investigation.md"
+    ],
+    "knowledge_cut": "2026-09-23",
+    "change_log": [
+      "0.1.0: prospective mechanism and equal-checker design, including bare forged-verdict model control; no new live trials or transfer claims"
+    ]
+  }
+}

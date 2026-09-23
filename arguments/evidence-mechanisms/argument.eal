@@ -1,0 +1,109 @@
+// Scientific claims about a fixed archive and a developmental switch study.
+// structured/1 checks these authored dependencies, not the scientific warrant.
+language "EAL/2";
+environment study { require "study" == "EAL2-evidence-mechanisms"; }
+tool archive_reader { version "1"; mode deterministic; }
+tool switch_reader { version "1"; mode deterministic; }
+tool prospective_reader { version "1"; mode deterministic; }
+
+evidence archived_trials {
+  tool archive_reader; kind validation; environment study; max_age 86400;
+  require "attempted" == 180;
+  require "tasks" == 5;
+  require "eal.raw_only.correct" == 4;
+  require "json.raw_only.correct" == 5;
+  require "eal.incorrect_answer.correct" == 0;
+  require "eal.incorrect_answer.raw_correct" == 2;
+  require "eal.incorrect_answer.assessed_correct" == 7;
+  require "eal.incorrect_answer.answer_copied" == 10;
+  require "eal.incorrect_answer.raw_copied" == 2;
+  require "eal.correct_answer.answer_correct" == 10;
+  require "eal.correct_answer.raw_correct" == 2;
+  require "irrelevant.available_correct" == 3;
+  require "irrelevant.false_support" == 26;
+}
+evidence controlled_switches {
+  tool switch_reader; kind validation; environment study; max_age 86400;
+  require "total" == 10;
+  require "passed" == 10;
+  require "pairs" == 5;
+}
+evidence new_model_outcomes {
+  tool prospective_reader; kind validation; environment study; max_age 86400;
+  require "state" == "complete";
+  require "new_task_model_outcome_improved" == true;
+}
+evidence equal_checker_comparison {
+  tool prospective_reader; kind validation; environment study; max_age 86400;
+  require "state" == "complete";
+  require "equal_capability_checker_compared" == true;
+  require "eal_specific_value_established" == true;
+}
+evidence source_translation_validation {
+  tool prospective_reader; kind validation; environment study; max_age 86400;
+  require "state" == "complete";
+  require "independent_source_and_translation_validated" == true;
+}
+
+reasoning finite_description {
+  method "structured/1";
+  rationale "Exact descriptive counts from the retained 180 attempts and five exposed tasks; no psychological mechanism, new-task effect or population inference follows.";
+}
+reasoning intervention_description {
+  method "structured/1";
+  rationale "Ten pre-specified expected statuses on five selected developmental pairs check the interpreter's scope, time, binding, dependency and negative-proposition operations on those exact synthetic fixtures.";
+}
+reasoning bounded_system_warrant {
+  method "structured/1";
+  rationale "Together the finite response archive and controlled interpreter switches locate a practical division of work to investigate: representation, execution and faithful export. The observations alone do not establish the causal mechanism or broad outcome benefit.";
+}
+reasoning prospective_warrant {
+  method "structured/1";
+  rationale "New independently checked tasks, a live recipient and an equal-capability checker/wrapper are needed to estimate the outcome and EAL-specific contrasts. Source authentication and translation require separate validation.";
+}
+
+claim raw_transfer_observed {
+  statement "For the five exposed task types, raw-only EAL and equivalent JSON yielded 4/10 and 5/10 complete correct model outputs; with an injected incorrect proposal, EAL answer-only, raw and assessed arms yielded 0/10, 2/10 and 7/10. Adding raw records to a correct EAL proposal changed complete correctness from 10/10 to 2/10.";
+  environment study;
+}
+argument archive_route { conclusion raw_transfer_observed; reasoning finite_description; evidence archived_trials; }
+
+claim executed_switches_observed {
+  statement "The installed EAL/2 interpreter matched ten independently specified statuses on five exposed synthetic pairs changing defence independence, typed origin, negative finding, assembly scope and observation freshness.";
+  environment study;
+}
+argument switch_route { conclusion executed_switches_observed; reasoning intervention_description; evidence controlled_switches; }
+
+claim bounded_companion_candidate {
+  statement "On these exposed fixtures, the model recipient often failed operations that the EAL/2 interpreter executes when given the declared source and observations; this makes EAL/2 plus registered methods and a checked host a concrete bounded system to test.";
+  environment study;
+}
+argument candidate_route {
+  conclusion bounded_companion_candidate; reasoning bounded_system_warrant;
+  premises raw_transfer_observed, executed_switches_observed;
+}
+
+claim new_task_gain {
+  statement "For a specified new-task population, the combined EAL/2 method-and-host system improves a text-only recipient's qualified engineering answers relative to raw evidence at an acceptable resource cost.";
+  environment study;
+}
+argument new_task_route {
+  conclusion new_task_gain; reasoning prospective_warrant;
+  evidence new_model_outcomes; premises bounded_companion_candidate;
+}
+claim eal_specific_gain {
+  statement "EAL/2 representation and argument composition add practical value over a standalone checker with the same computations, validation, observations and output gate on new engineering decisions.";
+  environment study;
+}
+argument comparison_route {
+  conclusion eal_specific_gain; reasoning prospective_warrant;
+  evidence equal_checker_comparison; premises bounded_companion_candidate;
+}
+claim physical_truth {
+  statement "A supported formal assessment establishes the truth of the stated engineering claim about the physical system.";
+  environment study;
+}
+argument physical_route {
+  conclusion physical_truth; reasoning prospective_warrant;
+  evidence source_translation_validation; premises bounded_companion_candidate;
+}
