@@ -1,6 +1,6 @@
 # EAL language reference
 
-A source starts with `language "EAL/0.1";`, `language "EAL/0.2";` or `language "EAL/0.3";` and ends at EOF. Declarations are top-level, case-sensitive and terminated by braces. Clauses end with semicolons and appear in the order specified by [the grammar](../grammar/EAL.g4). Identifiers use letters, digits and underscores, starting with a letter or underscore. All declarations share one symbol namespace. Forward references are allowed. Duplicate symbols are rejected. `//` and `/* ... */` comments are supported. EAL/0.2 and EAL/0.3 additions are contextual, preserving identifiers accepted by earlier versions.
+A source starts with `language "EAL/2";` and ends at EOF. Other language headers are rejected. Declarations are top-level and case-sensitive. Clauses end with semicolons and appear in the order specified by [the grammar](../grammar/EAL.g4). Identifiers use letters, digits and underscores, starting with a letter or underscore. Global declarations share one namespace; pattern parameters have a closed local namespace. Forward global references are allowed. Duplicate symbols are rejected. `//` and `/* ... */` comments are supported.
 
 ## Declarations
 
@@ -10,16 +10,36 @@ A source starts with `language "EAL/0.1";`, `language "EAL/0.2";` or `language "
 | `tool NAME` | `version` string; `mode deterministic` or `mode nondeterministic` | — |
 | `evidence NAME` | `tool` name; `kind` identifier; `environment` name; `max_age` seconds; then one or more `require` predicates over observed value | `input` JSON value may appear between `max_age` and the predicates |
 | `assumption NAME` | `statement` string; `environment` name; `validate` evidence name | `valid_from` timestamp; `valid_until` timestamp |
-| `reasoning NAME` | `mode` name or EAL/0.3 `method` versioned string; `rationale` string | `backing` evidence names; `require` predicates over computed method outputs |
-| `claim NAME` | `statement` string; `environment` name | EAL/0.2+: `proposition` block |
-| `argument NAME` | `conclusion` claim name; `reasoning` name | `evidence` names; `assumptions` names; `premises` claim names; EAL/0.2+: `binding` evidence name |
-| `objection NAME` | `target` category and name | `evidence` names; EAL/0.3 `premises` claim names; at least one source required |
+| `reasoning NAME` | `method` versioned string; `rationale` string | `backing` evidence names; `require` predicates over computed method outputs |
+| `claim NAME` | `statement` string; `environment` name | `proposition` block |
+| `argument NAME` | `conclusion` claim name; `reasoning` name | `evidence` names; `assumptions` names; `premises` claim names; `binding` evidence name |
+| `objection NAME` | `target` category and name | `evidence` names; `premises` claim names; at least one source required |
+| `pattern NAME(...)` | Typed parameters and an argument body | Body uses only its parameters |
+| `apply NAME = PATTERN(...)` | Named bindings from every pattern parameter to a global declaration | Ends with a semicolon |
 
-The [typed proposition reference](typed-propositions.md) defines the EAL/0.2 block, its formal `query`, permitted result predicates, unit conversions and exact input correspondence. Every argument for a typed claim needs an explicit binding. A successful scalar calculation cannot silently support a different quantity or formal query. See [the vocabulary](vocabulary.md) for keyword distinctions and [the task suite](engineering-tasks.md) for positive and adverse examples.
+The [typed proposition reference](typed-propositions.md) defines the proposition block, its formal `query`, permitted result predicates, unit conversions and exact input correspondence. Every argument for a typed claim needs an explicit binding. A successful scalar calculation cannot silently support a different quantity or formal query. See [the vocabulary](vocabulary.md) for keyword distinctions and [the task suite](engineering-tasks.md) for positive and adverse examples.
 
-Name lists use commas. An argument requires at least one evidence, assumption or premise. An untyped computational conclusion requires at least one reasoning output predicate; a typed conclusion supplies its formal result condition. `structured` reasoning can omit result predicates. Available modes and typed evidence schemas are defined in [reasoning methods](reasoning-modes.md).
+Name lists use commas. An argument requires at least one evidence, assumption or premise. An untyped computational conclusion requires at least one reasoning output predicate; a typed conclusion supplies its formal result condition. `structured/1` reasoning can omit result predicates. Available methods and typed evidence schemas are defined in [reasoning methods](reasoning-modes.md).
 
 The current profile requires an argument’s conclusion, evidence, assumptions, premise claims and reasoning backing to use the same named environment. An explicit comparison model can represent observations from several conditions within that environment; implicit transfer between differently scoped claims is rejected. The engineer defines which context fields adequately represent the question.
+
+## Reusable argument patterns
+
+```eal
+pattern check(c: claim, r: reasoning, e: evidence) {
+  conclusion c;
+  reasoning r;
+  evidence e;
+  binding e;
+}
+apply pressure_check = check(c=pressure, r=contrast, e=trial);
+```
+
+This fragment assumes the three global declarations already exist. Parameter kinds are `claim`, `reasoning`, `evidence` and `assumption`. The body uses ordinary argument clauses, with `conclusion` and `reasoning` required. Every body reference must name a declared parameter of the required kind; a global name cannot be captured implicitly. Each application supplies exactly the declared named bindings. A body requires at least one evidence, assumption or premise source. Invalid definitions are diagnosed even when unused.
+
+An application expands to one argument named by its `apply` declaration. That name can be an objection target. Expansion substitutes declaration identities; it does not copy observations, discharge assumptions or broaden an environment or time interval. The expanded argument undergoes the same checks as a directly written argument, including typed proposition binding. Multiple applications using the same evidence still use one identified observation.
+
+Patterns cannot contain declarations or other applications. Applications are flat and nonrecursive, with at most 1,000 applications and 100,000 total expanded references per source. Forward references are allowed. [The reusable measurement example](../examples/reusable-measurements.eal) shows shared evidence in complete source. [The design record](eal2-design.md) explains why this bounded derived form was selected.
 
 ## Predicates and numbers
 
@@ -45,9 +65,9 @@ argument explanation {
 }
 ```
 
-This fragment makes three claims into required subarguments. Each can have further premises, its own reasoning mode and more than one supporting argument. A claim is supported when at least one uncontested usable argument supports it and there is no active claim-level objection. A reusable subclaim is evaluated once per assessment and retains its identifier; its repeated use does not create independent evidence. Declared evidence is deduplicated by identifier before a reasoning computation, including reasoning backing and assumption-validation observations.
+This fragment makes three claims into required subarguments. Each can have further premises, its own reasoning method and more than one supporting argument. A claim is supported when at least one uncontested usable argument supports it and there is no active claim-level objection. A reusable subclaim is evaluated once per assessment and retains its identifier; its repeated use does not create independent evidence. Declared evidence is deduplicated by identifier before a reasoning computation, including reasoning backing and assumption-validation observations.
 
-The graph of conclusion-to-premise dependencies is acyclic, even if a cycle contains an alternative grounded argument. The current language rejects such cycles as a whole. Maximum source size is 1 MiB, maximum declaration count 4096 and maximum premise depth 128. EAL/0.3 permits cycles involving attacks and objection support. Its finite support/attack solver retains unresolved cycles as undecided; the acyclic constraint still applies to ordinary argument-to-premise composition.
+The graph of conclusion-to-premise dependencies is acyclic, even if a cycle contains an alternative grounded argument. The current language rejects such cycles as a whole. Maximum source size is 1 MiB, maximum declaration count 4096 and maximum premise depth 128. EAL/2 permits cycles involving attacks and objection support. Its finite support/attack solver retains unresolved cycles as undecided; the acyclic constraint still applies to ordinary argument-to-premise composition.
 
 ## Time and assumptions
 
@@ -66,9 +86,9 @@ objection sampling_problem {
 }
 ```
 
-EAL/0.1 and EAL/0.2 activate an objection when all its evidence is available and its predicates hold. A claim target contests all deriving arguments; reasoning and assumption targets contest dependent applications. These versioned behaviours remain available.
+Objections can target a claim, reasoning declaration, assumption, argument application or another objection. Their own evidence and required premise claims determine applicability and acceptance.
 
-EAL/0.3 adds `target argument NAME` for one specific application, `target objection NAME` for a defence, and claim premises as objection grounds:
+`target argument NAME` challenges one application; `target objection NAME` supplies a defence. Claim premises can support either form:
 
 ```eal
 objection sampling_problem {
@@ -88,11 +108,11 @@ The objection's evidence and premise claims must share one named environment. Th
 
 The interpreter constructs argument-application nodes and objection nodes, then computes a finite least-information fixed point. A node is accepted when its local sources and computation are usable, every required premise claim is accepted, and every attacker is rejected. It is rejected when a local requirement fails, a required claim is rejected, or an attacker is accepted. A claim is accepted when any deriving argument is accepted, and rejected when every deriving argument is rejected. Unresolved nodes retain the label `undecided`; rejection concerns acceptance within this calculation and never establishes claim falsity. [The argument model](argument-model.md) and [grounded construction](grounded-reasoning.md) give the equations and verification.
 
-Claim/argument results remain `supported`, `contested`, `unsupported` or `out_of_scope`. In EAL/0.3 a source-usable derivation which is rejected or undecided is `contested`; a claim without any source-usable derivation is `unsupported`. Each entry exposes its separate `grounded_label`. Objection results are `active` (accepted), `defeated`, `undecided` or `inactive` (no source-usable derivation). Unavailable evidence and an unknown supporting claim therefore cannot activate an objection. An independently accepted defence can restore support to a challenged claim; a defence depending solely on the claim it is meant to restore remains unresolved.
+Claim/argument results remain `supported`, `contested`, `unsupported` or `out_of_scope`. A source-usable derivation which is rejected or undecided is `contested`; a claim without any source-usable derivation is `unsupported`. Each entry exposes its separate `grounded_label`. Objection results are `active` (accepted), `defeated`, `undecided` or `inactive` (no source-usable derivation). Unavailable evidence and an unknown supporting claim therefore cannot activate an objection. An independently accepted defence can restore support to a challenged claim; a defence depending solely on the claim it is meant to restore remains unresolved.
 
 Evidence has `available`/`unavailable`. Detailed reasons distinguish missing, expired, mismatched, failed and predicate-rejected observations even when their broad status is the same.
 
-The result’s `valid` field reports static language validity. Each argument includes dependencies and a `reasoning_result` containing method output and predicate results. Claim text and reasoning rationale remain explanatory prose. Formal deductive inputs are supplied in `logical_case` evidence; premise claim strings are not automatically translated into those formulae, and the formula conclusion is not automatically equated with a prose claim. The author must maintain prose correspondence explicitly. EAL/0.2+ typed propositions additionally check the declared formal query, identity, dimensions, interval and result against the bound method calculation.
+The result’s `valid` field reports static language validity. Each argument includes dependencies and a `reasoning_result` containing method output and predicate results. Claim text and reasoning rationale remain explanatory prose. Formal deductive inputs are supplied in `logical_case` evidence; premise claim strings are not automatically translated into those formulae, and the formula conclusion is not automatically equated with a prose claim. The author must maintain prose correspondence explicitly. Typed propositions additionally check the declared formal query, identity, dimensions, interval and result against the bound method calculation.
 
 ## Worked sources
 
@@ -110,8 +130,12 @@ reasoning interval_estimate {
 }
 ```
 
-The EAL/0.3 `method` clause selects an installed, versioned host contract. Its string must be the exact contract identifier; `method "inductive"` is rejected, while legacy `mode inductive` remains supported. Unknown methods are diagnosed even in unused reasoning declarations. The registered `structured/1` contract accepts authored support without a numerical output predicate.
+The `method` clause selects an installed, versioned host contract. Its string must be the exact contract identifier; `method "inductive"` and reasoning `mode` clauses are rejected. Unknown methods are diagnosed even in unused reasoning declarations. The registered `structured/1` contract accepts authored support without a numerical output predicate.
 
 A host may register another method with its evidence kind, typed input/query/output schemas, supported quantities, units and resource limits. Source cannot install executable code or change registry entries. The API accepts `registry=` in validation, evaluation and formatting; assessments record `method_registry_fingerprint`. See [method extensions](method-extensions.md) for the registration interface and execution boundaries.
 
 The composed graph is bounded to 4096 nodes, 4096 claims and 131072 combined attack, premise and derivation relationships. Construction checks this bound before solving. The `dialectic` result records the constructed attacks and deterministic labelling trace.
+
+## Diagnostics and source positions
+
+Static diagnostics include `code`, `message` and optional `declaration`, `span`, `expected` and `actual` fields. A source span has one-based `line`, `column`, `end_line` and `end_column`; the end is exclusive. Parse/lowering locations let errors identify the relevant declaration or application. The internal argument origin names its pattern and application, preserving that relationship in explanations. Canonical formatting retains authored pattern/application syntax and omits the generated argument declarations.

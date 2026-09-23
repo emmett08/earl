@@ -1,5 +1,7 @@
 # Live model experiments: 23 September 2026
 
+> Historical experiment record. The original version labels, inputs and measurements below are preserved. These trials predate EAL/2 and do not measure EAL/2 capability, usability or cost. No EAL/2 model trial is reported here.
+
 These are the preserved EAL/0.2 experiments. The subsequent [EAL/0.3 repeated experiments](eal03-model-results.md) evaluate the revised host, compositional objections and registered methods; their results are reported separately.
 
 This is a small, single-run comparison using the actual OpenAI API and the actual local EAL MCP server. The task observations are synthetic fixtures. Both arms received the same EAL reference, source or repair draft, observations, context and assessment time. The delegated arm additionally received operation schemas, server results and bounded diagnostic feedback. No native function calling, structured-output API feature or reasoning parameter was used.

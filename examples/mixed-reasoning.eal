@@ -1,5 +1,5 @@
 // Synthetic mixed-method diagnosis; numerical inputs are illustrative, not field data.
-language "EAL/0.1";
+language "EAL/2";
 environment episode { require "episode" == "robot_17"; require "plant_model" == "affine_demo"; }
 tool read_logic { version "1"; mode deterministic; }
 evidence logic_data {
@@ -7,7 +7,7 @@ evidence logic_data {
   require "conclusion" == "model_condition";
 }
 reasoning logic_method {
-  mode deductive;
+  method "deductive/1";
   rationale "The supplied propositional premises entail model_condition.";
   require "entailed" == true;
 }
@@ -18,7 +18,7 @@ evidence sample_data {
   require "trials" > 0;
 }
 reasoning sample_method {
-  mode inductive;
+  method "inductive/1";
   rationale "The Wilson lower bound for the stated deficit frequency exceeds one half under the binomial sampling model.";
   require "lower" > 0.5;
 }
@@ -29,7 +29,7 @@ evidence experiment_data {
   require "assignment" == "randomised";
 }
 reasoning experiment_method {
-  mode causal;
+  method "causal/1";
   rationale "The supplied randomised-group vibration contrast is negative under the declared design assumptions.";
   require "estimate" < 0;
 }
@@ -40,7 +40,7 @@ evidence model_data {
   require "outcome" == "loss";
 }
 reasoning model_method {
-  mode counterfactual;
+  method "counterfactual/1";
   rationale "Within the supplied affine model and exogenous context, eliminating wear reduces predicted loss.";
   require "difference" < 0;
 }
@@ -51,7 +51,7 @@ evidence analogy_data {
   require "source.material" == "steel";
 }
 reasoning analogy_method {
-  mode analogical;
+  method "analogical/1";
   rationale "The source and target correspond on the two declared features; the comparison supplies no calibrated truth probability.";
   require "match_fraction" == 1;
 }
@@ -62,7 +62,7 @@ evidence trace_data {
   require "semantics" == "sampled";
 }
 reasoning trace_method {
-  mode temporal;
+  method "temporal/1";
   rationale "All supplied temperature samples satisfy the threshold within the declared sampling contract.";
   require "holds" == true;
 }
@@ -73,7 +73,7 @@ evidence hypotheses_data {
   require "observed" != "";
 }
 reasoning hypotheses_method {
-  mode abductive;
+  method "abductive/1";
   rationale "The joint likelihoods and equal priors rank motor wear first within this supplied two-candidate model.";
   require "best" == "motor_wear";
 }
@@ -118,6 +118,6 @@ argument hypotheses_argument {
   assumptions hypothesis_model;
   premises sample_conclusion, experiment_conclusion, model_conclusion, trace_conclusion;
 }
-reasoning final_composition { mode structured; rationale "The model-relative diagnosis depends on the abductive ranking and declared feature correspondence, preserving both interpretations."; }
+reasoning final_composition { method "structured/1"; rationale "The model-relative diagnosis depends on the abductive ranking and declared feature correspondence, preserving both interpretations."; }
 claim diagnosis { statement "Within this synthetic episode and supplied two-hypothesis model, the recorded reasoning favours motor wear; the claim remains conditional on the modelling assumptions."; environment episode; }
 argument composed_diagnosis { conclusion diagnosis; reasoning final_composition; premises hypotheses_conclusion, analogy_conclusion; }

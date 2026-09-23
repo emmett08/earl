@@ -1,4 +1,4 @@
-"""Compiler-to-solver contracts for EAL/0.3 objections and defences."""
+"""Compiler-to-solver contracts for EAL/2 objections and defences."""
 from eal.evaluator import canonical_digest, environment_fingerprint, evaluate
 from eal.formatter import format_source, semantic_ir
 from eal.parser import parse
@@ -6,7 +6,7 @@ from eal.semantics import validate
 
 NOW = '2026-09-23T12:00:00Z'
 CONTEXT = {'site': 'bench'}
-BASE = '''language "EAL/0.3";
+BASE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool collector { version "1"; mode deterministic; }
 evidence positive { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
@@ -102,9 +102,9 @@ objection challenge { target argument outcome_route; premises critique; }
     assert first['dialectic'] == second['dialectic']
 
 
-def test_version_and_scope_validation_for_composed_objections():
+def test_scope_validation_and_nonempty_composed_objections():
     source = BASE + 'objection challenge { target objection challenge; premises critique; }'
-    assert 'versioned_construct' in {d.code for d in validate(parse(source.replace('EAL/0.3', 'EAL/0.2')))}
+    assert not validate(parse(source))
     assert 'empty_objection' in {d.code for d in validate(parse(BASE + 'objection empty { target claim outcome; }'))}
     source = BASE + '''
 environment peer { require "site" == "bench"; }

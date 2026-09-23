@@ -63,7 +63,7 @@ Stateful feedback preserves every claim's status, proposition and reasons, every
 {"operation":"explain","detail":"full"}
 ```
 
-Ordinary `explain` returns the same concise outcome view. Legacy mode continues to return full feedback, allowing source-reference and feedback-volume changes to be evaluated together as an explicit host condition.
+Ordinary `explain` returns the same concise outcome view. Stateless mode returns full feedback, allowing source-reference and feedback-volume changes to be evaluated together as an explicit host condition.
 
 An unanchored draft can be repaired without reproducing the entire document:
 
@@ -73,16 +73,16 @@ An unanchored draft can be repaired without reproducing the entire document:
 
 Each `old` fragment must occur exactly once in the active source at that step. The replacement list applies atomically; ambiguous or absent fragments leave the source unchanged. The operation records explicit edits and digests, invalidates prior observation/assessment defaults and requires validation before execution. It does not infer a replacement, silently change a proposition or establish that the revised engineering question is faithful. Fixed `initial_data.source` cannot be revised.
 
-`--host-mode legacy` retains the earlier full-source/full-identifier request contract for controlled comparisons. Existing archived reports retain their original protocol and results. The standalone `eal-host` remains a single-request stateless dispatcher; active state belongs to `eal-agent`.
+`--host-mode stateless` requires the full source and result identifiers on each request and returns full feedback. It provides an explicit host condition for controlled comparisons. Historical reports retain their original protocol names and results. The standalone `eal-host` is a single-request stateless dispatcher; active state belongs to `eal-agent`.
 
-Explicit requests, including those used in legacy mode, are:
+Explicit requests, including those used in stateless mode, are:
 
 ```json
-{"operation":"validate","source":"language \"EAL/0.2\"; ..."}
+{"operation":"validate","source":"language \"EAL/2\"; ..."}
 ```
 
 ```json
-{"operation":"reason","source":"language \"EAL/0.2\"; ...","context":{"site":"bench"},"collection_id":"returned collection ID","now":"2026-09-23T12:00:00Z"}
+{"operation":"reason","source":"language \"EAL/2\"; ...","context":{"site":"bench"},"collection_id":"returned collection ID","now":"2026-09-23T12:00:00Z"}
 ```
 
 The model ends with identifiers, not a self-certified conclusion:
@@ -97,7 +97,7 @@ The host derives every final status and qualification from the latest successful
 
 ## Preserve the engineering question
 
-The caller supplies optional `initial_data` JSON. Its `source`, `context` and `now` fields are immutable task anchors. Every resolved request must preserve them; stateful omission retains their exact values, while legacy requests supply them explicitly. Anchored source completion is reported as `task_correspondence: "source_anchored"`. The host also checks the returned assessment's source digest and context fingerprint.
+The caller supplies optional `initial_data` JSON. Its `source`, `context` and `now` fields are immutable task anchors. Every resolved request must preserve them; stateful omission retains their exact values, while stateless requests supply them explicitly. Anchored source completion is reported as `task_correspondence: "source_anchored"`. The host also checks the returned assessment's source digest and context fingerprint.
 
 For source construction or repair, supply `draft_source` instead of `source`. Source revision is then allowed, and `task_correspondence` is `unverified`. Required claim identifiers alone cannot establish that a model preserved the intended proposition. The final report includes the actual assessed source and context so an independent task checker can compare their meaning. The benchmark does that comparison separately; a renamed or weakened proposition must not receive success credit merely because its identifier remains unchanged.
 

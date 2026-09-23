@@ -1,5 +1,5 @@
 // Synthetic observations illustrating scoped, revisable engineering reasoning.
-language "EAL/0.1";
+language "EAL/2";
 environment bench {
   require "platform" == "bench_A";
   require "load_rps" == 100;
@@ -25,7 +25,7 @@ assumption timing_accuracy {
   valid_until "2026-09-24T00:00:00Z";
 }
 reasoning sample_interpretation {
-  mode structured;
+  method "structured/1";
   rationale "The recorded percentile and count support the claim about this sample, conditional on timer accuracy.";
 }
 claim sample_latency {
@@ -37,7 +37,7 @@ argument measured_latency {
   evidence latency_sample; assumptions timing_accuracy;
 }
 reasoning component_use {
-  mode structured;
+  method "structured/1";
   rationale "For this example, the sample-latency result supplies limited support for investigating this component further at the same load.";
 }
 claim candidate_explanation {

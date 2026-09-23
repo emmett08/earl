@@ -7,7 +7,7 @@ from eal.modes import MODE_KINDS, assess_mode, validate_mode
 
 
 def run(mode, value):
-    return assess_mode(mode, [{"id": "case", "kind": MODE_KINDS[mode], "value": value}], [])
+    return assess_mode(f"{mode}/1", [{"id": "case", "kind": MODE_KINDS[mode], "value": value}], [])
 
 
 def details(mode, value):
@@ -20,22 +20,22 @@ def test_modes_require_a_unique_designated_input():
     for mode, kind in MODE_KINDS.items():
         if kind is None:
             continue
-        assert validate_mode(mode, [])
-        assert not validate_mode(mode, [kind, "observation"])
-        assert validate_mode(mode, [kind, kind])
+        assert validate_mode(f"{mode}/1", [])
+        assert not validate_mode(f"{mode}/1", [kind, "observation"])
+        assert validate_mode(f"{mode}/1", [kind, kind])
     assert validate_mode("inference", ["observation"])
-    assert validate_mode("deductive", "logical_case")
-    assert validate_mode("structured", [0])
+    assert validate_mode("deductive/1", "logical_case")
+    assert validate_mode("structured/1", [0])
 
 
 def test_structured_keeps_authored_support_distinct_from_computation():
-    assert assess_mode("structured", [], [])["status"] == "unsupported"
-    result = assess_mode("structured", [], [{"status": "supported"}])
+    assert assess_mode("structured/1", [], [])["status"] == "unsupported"
+    result = assess_mode("structured/1", [], [{"status": "supported"}])
     assert result["status"] == "supported"
     assert result["details"]["mechanically_proved"] is False
     # Contest propagation belongs to argument composition in the caller.
-    assert assess_mode("structured", [], [{"status": "contested"}])["status"] == "supported"
-    assert assess_mode("structured", [], [{"status": "unsupported"}])["status"] == "unsupported"
+    assert assess_mode("structured/1", [], [{"status": "contested"}])["status"] == "supported"
+    assert assess_mode("structured/1", [], [{"status": "unsupported"}])["status"] == "unsupported"
 
 
 def test_deduction_modus_ponens_and_countermodel():
@@ -273,10 +273,10 @@ def test_trace_rejects_duplicate_unsorted_or_outside_timestamps():
 
 
 def test_entry_contract_and_json_limits():
-    assert assess_mode("inductive", {}, [])["status"] == "unsupported"
-    assert assess_mode("inductive", [{"kind": "sample", "value": {}}], [])["status"] == "unsupported"
+    assert assess_mode("inductive/1", {}, [])["status"] == "unsupported"
+    assert assess_mode("inductive/1", [{"kind": "sample", "value": {}}], [])["status"] == "unsupported"
     entry = {"id": "a", "kind": "sample", "value": {}}
-    assert assess_mode("inductive", [entry, entry], [])["status"] == "unsupported"
+    assert assess_mode("inductive/1", [entry, entry], [])["status"] == "unsupported"
     nested = []
     nested.append(nested)
     assert run("inductive", nested)["status"] == "unsupported"
@@ -299,12 +299,12 @@ def test_negative_computed_results_can_support_explicit_negative_claims(mode, ki
 
     context = {"site": "bench"}
     now = "2026-09-23T12:00:00Z"
-    source = f'''language "EAL/0.1";
+    source = f'''language "EAL/2";
     environment lab {{ require "site" == "bench"; }}
     tool calculation {{ version "1"; mode deterministic; }}
     evidence observed {{ tool calculation; kind {kind}; environment lab; max_age 60;
       require {input_predicate}; }}
-    reasoning check_result {{ mode {mode}; rationale "The computed negative result establishes the stated failure.";
+    reasoning check_result {{ method "{mode}/1"; rationale "The computed negative result establishes the stated failure.";
       require "{output_field}" == false; }}
     claim failure {{ statement "The supplied case fails the stated property."; environment lab; }}
     argument failure_argument {{ conclusion failure; reasoning check_result; evidence observed; }}

@@ -7,11 +7,11 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 
-SOURCE = '''language "EAL/0.1";
+SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool runner { version "1"; mode deterministic; }
 evidence measured { tool runner; kind test; environment lab; max_age 60; require "passed" == true; }
-reasoning measurement { mode structured; rationale "The bounded observation supplies support."; }
+reasoning measurement { method "structured/1"; rationale "The bounded observation supplies support."; }
 claim works { statement "The requested check passes."; environment lab; }
 argument result { conclusion works; reasoning measurement; evidence measured; }
 '''
@@ -37,7 +37,7 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
                 assert {"eal_describe", "eal_format", "eal_validate", "eal_collect", "eal_reason", "eal_explain", "eal_grounded"} <= names
                 described = await session.call_tool("eal_describe", {})
                 assert not described.isError
-                assert "EAL/0.2" in described.structuredContent["languages"]
+                assert "EAL/2" in described.structuredContent["languages"]
                 formatted = await session.call_tool("eal_format", {"source": SOURCE})
                 assert not formatted.isError
                 assert "source_digest" in formatted.structuredContent

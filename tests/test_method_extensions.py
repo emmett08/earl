@@ -23,8 +23,8 @@ def run_method(payload, contract=RMS_CONTRACT):
 
 
 def custom_source():
-    return (SOURCE.replace('EAL/0.2', 'EAL/0.3').replace('kind experiment', 'kind measurement_series')
-            .replace('mode causal;', 'method "engineering/rms/1";')
+    return (SOURCE.replace('kind experiment', 'kind measurement_series')
+            .replace('method "causal/1";', 'method "engineering/rms/1";')
             .replace('query {"assignment":"randomised"}', 'query {"origin":0}')
             .replace('result "estimate" >= 5', 'result "rms" == 5'))
 
@@ -47,9 +47,9 @@ def test_actual_rms_method_runs_through_unchanged_core_grammar_and_typed_claim()
     assert validate(program)  # Source never installs the missing implementation.
 
 
-def test_new_method_requires_explicit_language_version():
-    source = custom_source().replace('EAL/0.3', 'EAL/0.2')
-    assert validate(parse(source), registry=example_registry())
+def test_custom_method_does_not_enable_an_obsolete_language_version():
+    source = custom_source().replace('EAL/2', 'EAL/0.3')
+    assert 'unsupported_language' in {item.code for item in validate(parse(source), registry=example_registry())}
 
 
 def test_registered_negative_result_remains_successful_computation():
@@ -125,7 +125,7 @@ def test_registration_and_discovery_do_not_expose_mutable_runtime_contracts():
     assert run_method({'origin': 0, 'samples': [1]})['status'] == 'supported'
 
 
-def test_identifier_alias_contract_shapes_and_nonfunction_callbacks_are_rejected():
+def test_duplicate_ids_builtin_profiles_bad_contracts_and_nonfunction_callbacks_are_rejected():
     with pytest.raises(ValueError):
         example_registry().with_method(RMS_CONTRACT)
     with pytest.raises(ValueError):
@@ -148,7 +148,9 @@ def test_identifier_alias_contract_shapes_and_nonfunction_callbacks_are_rejected
 def test_boolean_is_not_integer_and_unknown_versions_are_not_inferred():
     assert schema_errors(True, {'type': 'integer'})
     assert validate_mode('engineering/rms/2', ['measurement_series'], registry=example_registry())
-    assert default_registry().get('causal').identifier == 'causal/1'
+    assert default_registry().get('causal/1').identifier == 'causal/1'
+    assert default_registry().get('causal') is None
+    assert default_registry().get('causal/2') is None
 
 
 def test_schema_alternatives_share_the_resource_budget():

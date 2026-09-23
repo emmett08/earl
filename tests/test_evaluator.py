@@ -6,7 +6,7 @@ import pytest
 from eal.evaluator import canonical_digest, environment_fingerprint, evaluate
 from eal.parser import parse
 
-SOURCE = '''language "EAL/0.1";
+SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool runner { version "1"; mode nondeterministic; }
 evidence observed { tool runner; kind test; environment lab; max_age 60;
@@ -16,8 +16,8 @@ evidence counterexample { tool runner; kind test; environment lab; max_age 60; r
 assumption stable { statement "Configuration persists for the stated interval.";
  environment lab; validate observed; valid_from "2026-09-23T11:00:00Z"; valid_until "2026-09-23T13:00:00Z";
 }
-reasoning method { mode structured; rationale "Passing the smoke test supports this bounded test claim."; }
-reasoning alternative_method { mode structured; rationale "An independent relation supports the bounded test claim."; }
+reasoning method { method "structured/1"; rationale "Passing the smoke test supports this bounded test claim."; }
+reasoning alternative_method { method "structured/1"; rationale "An independent relation supports the bounded test claim."; }
 claim working { statement "The smoke test passes."; environment lab; }
 claim downstream { statement "The follow-up conclusion follows under the declared relation."; environment lab; }
 argument base { conclusion working; reasoning method; evidence observed; assumptions stable; }
@@ -157,13 +157,13 @@ def test_explicit_time_and_finite_json_are_required():
 
 
 def test_inductive_computation_and_declared_threshold_control_derivation():
-    source = '''language "EAL/0.1";
+    source = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool counter { version "1"; mode deterministic; }
 evidence sample_data { tool counter; kind sample; environment lab; max_age 60;
  require "trials" >= 1;
 }
-reasoning estimate_rate { mode inductive;
+reasoning estimate_rate { method "inductive/1";
  rationale "The Wilson lower confidence limit exceeds the declared target under the sampling assumptions.";
  require "lower" > 0.8;
 }
@@ -184,13 +184,13 @@ argument estimation { conclusion reliable; reasoning estimate_rate; evidence sam
 
 
 def test_deductive_entailment_countermodel_and_inconsistency_do_not_collapse():
-    source = '''language "EAL/0.1";
+    source = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool encoder { version "1"; mode deterministic; }
 evidence formal_case { tool encoder; kind logical_case; environment lab; max_age 60;
  require "conclusion" == "q";
 }
-reasoning entails { mode deductive; rationale "Finite propositional entailment within the encoded premises.";
+reasoning entails { method "deductive/1"; rationale "Finite propositional entailment within the encoded premises.";
  require "entailed" == true;
 }
 claim conclusion { statement "The encoded conclusion follows from the encoded premises."; environment lab; }

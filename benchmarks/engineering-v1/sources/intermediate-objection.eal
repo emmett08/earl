@@ -1,4 +1,4 @@
-language "EAL/0.1";
+language "EAL/2";
 environment bench { require "site" == "bench"; require "revision" == "A"; }
 tool primary_check_tool { version "1"; mode deterministic; }
 evidence primary_check { tool primary_check_tool; kind measurement; environment bench; max_age 7200; require "passed" == true; }
@@ -7,9 +7,9 @@ evidence independent_check { tool independent_check_tool; kind measurement; envi
 tool counterevidence_tool { version "1"; mode deterministic; }
 evidence counterevidence { tool counterevidence_tool; kind measurement; environment bench; max_age 7200; require "passed" == true; }
 
-reasoning primary_step { mode structured; rationale "Primary evidence supplies this intermediate claim, subject to objections."; }
-reasoning independent_step { mode structured; rationale "A separate observed route supplies the root without using the challenged intermediate claim."; }
-reasoning compose_step { mode structured; rationale "The root uses the supported intermediate proposition as its premise."; }
+reasoning primary_step { method "structured/1"; rationale "Primary evidence supplies this intermediate claim, subject to objections."; }
+reasoning independent_step { method "structured/1"; rationale "A separate observed route supplies the root without using the challenged intermediate claim."; }
+reasoning compose_step { method "structured/1"; rationale "The root uses the supported intermediate proposition as its premise."; }
 claim intermediate { statement "The primary route supplies the property."; environment bench; }
 claim root_result { statement "At least one uncontested declared route supplies the property."; environment bench; }
 argument primary_argument { conclusion intermediate; reasoning primary_step; evidence primary_check; }

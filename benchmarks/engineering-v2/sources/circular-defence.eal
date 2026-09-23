@@ -1,4 +1,4 @@
-language "EAL/0.3";
+language "EAL/2";
 environment operating_point { require "chamber" == "cold-room-C"; require "assembly" == "regulator-7"; }
 tool response_test_adapter { version "1"; mode deterministic; }
 evidence response_test { tool response_test_adapter; kind measurement; environment operating_point; max_age 3600; require "passed" == true; }
@@ -7,8 +7,8 @@ evidence countermeasurement { tool countermeasurement_adapter; kind measurement;
 tool instrument_diagnosis_adapter { version "1"; mode deterministic; }
 evidence instrument_diagnosis { tool instrument_diagnosis_adapter; kind measurement; environment operating_point; max_age 3600; require "passed" == true; }
 
-reasoning response_step { mode structured; rationale "The response test supplies the stated property under the operating point."; }
-reasoning diagnosis_step { mode structured; rationale "The supplied instrument check supports the defect claim for this countermeasurement instrument."; }
+reasoning response_step { method "structured/1"; rationale "The response test supplies the stated property under the operating point."; }
+reasoning diagnosis_step { method "structured/1"; rationale "The supplied instrument check supports the defect claim for this countermeasurement instrument."; }
 claim response_supported { statement "The response test supplies uncontested support for the stated regulator property."; environment operating_point; }
 claim instrument_fault { statement "The instrument used for the countermeasurement has the diagnosed defect."; environment operating_point; }
 argument response_route { conclusion response_supported; reasoning response_step; evidence response_test; }

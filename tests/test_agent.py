@@ -11,11 +11,11 @@ from eal.agent import AgentBudget, run_agent, run_unaided
 from eal.providers import ModelResponse, ProviderError
 
 
-SOURCE = '''language "EAL/0.1";
+SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool runner { version "1"; mode deterministic; }
 evidence measured { tool runner; kind test; environment lab; max_age 60; require "passed" == true; }
-reasoning measurement { mode structured; rationale "The bounded observation supplies support."; }
+reasoning measurement { method "structured/1"; rationale "The bounded observation supplies support."; }
 claim works { statement "The requested check passes."; environment lab; }
 argument result { conclusion works; reasoning measurement; evidence measured; }
 '''
@@ -80,7 +80,7 @@ def test_real_persistent_mcp_loop_repairs_collects_reasons_explains_and_finishes
         lambda messages: {"operation": "explain", "assessment_id": feedback_result(messages, "reason")["assessment_id"], "claim": "works"},
         finish,
     ])
-    report = asyncio.run(run_agent("Check works from actual observation", provider, server(tmp_path), required_claims=("works",), host_mode="legacy"))
+    report = asyncio.run(run_agent("Check works from actual observation", provider, server(tmp_path), required_claims=("works",), host_mode="stateless"))
     assert report["status"] == "completed", report
     assert report["final"]["claims"]["works"]["status"] == "supported"
     assert report["final"]["verification"] == "server_assessment"
@@ -134,7 +134,7 @@ def test_fixed_task_source_context_and_time_cannot_be_replaced(tmp_path):
         finish,
     ])
     report = asyncio.run(run_agent("Check works", provider, server(tmp_path, observation=False), required_claims=("works",),
-                                   initial_data={"source": SOURCE, "context": {"site": "bench"}, "now": now}, host_mode="legacy"))
+                                   initial_data={"source": SOURCE, "context": {"site": "bench"}, "now": now}, host_mode="stateless"))
     assert report["status"] == "completed", report
     assert report["repairs"] == 3
     assert report["task_correspondence"] == "source_anchored"
@@ -157,7 +157,7 @@ def test_final_status_cannot_be_asserted_and_old_assessment_cannot_be_reused(tmp
         lambda _: saved,
         {"operation": "stop", "reason": "Need a new assessment"},
     ])
-    report = asyncio.run(run_agent("Check works", provider, server(tmp_path), host_mode="legacy"))
+    report = asyncio.run(run_agent("Check works", provider, server(tmp_path), host_mode="stateless"))
     assert report["status"] == "incomplete"
     assert report["stop_reason"] == "model_stopped", report
     assert report["final"] is None

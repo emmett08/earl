@@ -18,12 +18,12 @@ def test_canonical_source_round_trip_preserves_typed_ir_and_is_idempotent(source
     assert not validate(parse(formatted), registry=registry)
 
 
-def test_contextual_new_words_remain_identifiers_in_legacy_sources():
-    source = '''language "EAL/0.1";
+def test_contextual_words_remain_identifiers_in_eal2_sources():
+    source = '''language "EAL/2";
     environment scope { require "site" == "bench"; }
     tool quantity { version "1"; mode deterministic; }
     evidence unit { tool quantity; kind subject; environment scope; max_age 1; require "ok" == true; }
-    reasoning proposition { mode structured; rationale "A bounded authored relation."; }
+    reasoning proposition { method "structured/1"; rationale "A bounded authored relation."; }
     claim binding { statement "The stated test passes."; environment scope; }
     argument result { conclusion binding; reasoning proposition; evidence unit; }
     claim query { statement "The same test passes."; environment scope; }

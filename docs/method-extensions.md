@@ -1,6 +1,6 @@
 # Host-registered reasoning methods
 
-EAL/0.3 can call a new reasoning calculation without extending its grammar. The host registers a pure implementation and its exact versioned contract. Source selects that contract by name; it cannot import a module, supply Python code or choose an executable path.
+EAL/2 can call a new reasoning calculation without extending its grammar. The host registers a pure implementation and its exact versioned contract. Source selects that contract by name; it cannot import a module, supply Python code or choose an executable path.
 
 ```eal
 reasoning rms_method {
@@ -9,7 +9,7 @@ reasoning rms_method {
 }
 ```
 
-The legacy `mode causal;` declaration retains its meaning. Built-in methods also have explicit identifiers such as `causal/1`. An extension cannot replace a built-in identity or alias. `method` declarations require EAL/0.3; EAL/0.1 and EAL/0.2 continue to use their existing syntax.
+Built-in and installed methods use the same exact versioned selector, for example `method "causal/1";`. There are no unversioned reasoning aliases. An extension cannot replace an installed identity. Both kinds of method use the same typed input, query, output and proposition-binding checks; implementation-specific mathematical checks remain additional obligations.
 
 ## Runnable engineering example
 

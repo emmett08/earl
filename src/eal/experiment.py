@@ -27,7 +27,7 @@ from .benchmark import check_task, evaluate_task, load_suite, prepare_task, scor
 from .runtime import strict_json
 
 SCHEMA = "EAL/experiment-plan/1"
-SCORING_VERSION = "alpha-equivalence+evidence-trace/1"
+SCORING_VERSION = "expanded-alpha-equivalence+evidence-trace/2"
 
 
 def _digest(value) -> str:
@@ -82,8 +82,8 @@ def load_plan(path: str | Path) -> dict:
             raise ValueError("Each condition requires a provider configuration path and declared model_class")
         if condition.get("arm") not in {"unaided", "delegated"}:
             raise ValueError("Every condition explicitly selects unaided or delegated")
-        if condition.get("host_mode", "stateful") not in {"stateful", "legacy"}:
-            raise ValueError("host_mode must be stateful or legacy")
+        if condition.get("host_mode", "stateful") not in {"stateful", "stateless"}:
+            raise ValueError("host_mode must be stateful or stateless")
         if condition.get("interaction_mode", "text") not in {"text", "native"}:
             raise ValueError("interaction_mode must be text or native")
         if type(condition.get("seed_supported", False)) is not bool:

@@ -1,24 +1,20 @@
-# EAL 0.1 / 0.2 / 0.3 integration contract
+# EAL/2 integration contract
 
-EAL is an evidence-based engineering reasoning language: Toulmin-inspired explicit reasoning rationales, backing, premises and objections. It is neither governance nor an approval language. The initial semantics are a bounded, acyclic defeasible argument profile, not full ASPIC+.
+EAL/2 is an engineering reasoning language with explicit claims, evidence, reasoning methods, assumptions, subarguments and objections. It is the only supported source language. Backwards compatibility is never a project requirement. Its finite authored support/attack semantics are defined in [argument-model.md](docs/argument-model.md) and [grounded-reasoning.md](docs/grounded-reasoning.md); they do not implement the complete ASPIC+ framework.
 
-EAL/0.2 adds optional formal `proposition` declarations inside claims and explicit `binding` clauses on their arguments. The original EAL/0.1 profile remains supported; using these additions in an EAL/0.1 programme produces a version diagnostic. See [typed-propositions.md](docs/typed-propositions.md) for the normative query, quantity, unit and interval correspondence rules. Untyped claims retain their authored support meaning in either version.
+## Source and Python API
 
-EAL/0.3 adds explicit versioned `method` references, objection `premises`, and `argument`/`objection` targets. Its composed acceptance semantics are specified in [argument-model.md](docs/argument-model.md) and [grounded-reasoning.md](docs/grounded-reasoning.md). Earlier source versions retain their original objection semantics. The details below describing active evidence-only objections apply to those legacy profiles; EAL/0.3 separates source usability from grounded acceptance.
+- `eal.parser.parse(source: str) -> Program` raises `EALSyntaxError` on lexical or syntactic errors. Source starts with `language "EAL/2";`.
+- `eal.semantics.validate(program, *, registry=None) -> list[Diagnostic]` performs static checks. Any diagnostic prevents assessment. `Diagnostic` has `code`, `message`, optional `declaration`, optional `span`, and optional `expected`/`actual` descriptions. `SourceSpan` positions are one-based, with an exclusive end: `line`, `column`, `end_line`, `end_column`.
+- `eal.evaluator.evaluate(program, records, *, now, context, registry=None) -> dict` takes explicit observations, context and a timezone-aware ISO-8601 time or `datetime`. Assessment performs no implicit collection and supplies no implicit clock. The default registry provides built-in methods.
+- `canonical_digest(value)` is SHA-256 of UTF-8 canonical JSON: sorted keys, compact separators, no NaN. `environment_fingerprint(name, context)` hashes `{"environment": name, "context": context}`. `Program.source_digest` hashes the exact UTF-8 source bytes.
 
-## Python API
+`Program` retains declaration maps for environments, tools, evidence, assumptions, reasoning, claims, arguments, objections, patterns and applications. `locations` retains source spans and `lowering_diagnostics` retains pattern-expansion errors. A `Reasoning` has one required `.method: str`. Tool `.mode` remains `deterministic` or `nondeterministic` and describes collection variability.
 
-- `from eal.parser import parse, EALSyntaxError`; `parse(source: str) -> Program`.
-- `from eal.semantics import validate`; `validate(program: Program, *, registry=None) -> list[Diagnostic]`. A diagnostic has `code`, `message`, and `declaration` (optional). Any diagnostic prevents assessment. The default method registry supplies the built-in methods.
-- `from eal.evaluator import evaluate, canonical_digest, environment_fingerprint`; `evaluate(program, records: Mapping[str, Mapping], *, now: datetime | str, context: Mapping[str, JSON], registry=None) -> dict`. `now` must be timezone-aware UTC-compatible ISO-8601. There is no implicit evaluation clock or collection during assessment. Custom methods execute trusted host functions in bounded workers. `canonical_digest(value)` is SHA-256 of UTF-8 canonical JSON (sorted keys, compact separators, no NaN). `environment_fingerprint(name, context)` hashes `{"environment": name, "context": context}`.
-- `Program.source_digest` is SHA-256 of the exact UTF-8 source. Maps: `environments`, `tools`, `evidence`, `assumptions`, `reasoning`, `claims`, `arguments`, `objections`. Declarations have `.name`. `Tool.version`, `.mode`; `Evidence.tool`, `.kind`, `.environment`, `.max_age` (seconds), `.input` (JSON), `.predicates` (tuple); `Environment.predicates`; `Assumption.environment`, `.validation` (evidence ID), `.valid_from`, `.valid_until`; `Reasoning.mode`, `.predicates`, `.rationale`, `.backing` (tuple of evidence IDs); `Claim.statement`, `.environment`; `Argument.conclusion`, `.reasoning`, `.evidence`, `.assumptions`, `.premises` (ID tuples); `Objection.target_kind` (`claim`, `reasoning`, `assumption`), `.target`, `.evidence` (tuple). `Predicate.path` is a dotted field name, `.operator`, `.expected` (JSON scalar).
-
-## Grammar example
-
-This example uses the compatible EAL/0.1 subset. EAL/0.2 task sources are included in [the task corpus](benchmarks/engineering-v1).
+## Complete source example
 
 ```eal
-language "EAL/0.1";
+language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool test_runner { version "1.0"; mode deterministic; }
 evidence test_result {
@@ -33,74 +29,75 @@ assumption configured {
   valid_until "2027-01-01T00:00:00Z";
 }
 reasoning measured_support {
-  mode structured;
+  method "structured/1";
   rationale "A passing result supplies bounded support for this claim.";
-  backing test_result;
 }
-claim works { statement "The component passes the smoke suite at this configuration."; environment lab; }
-argument measurement {
-  conclusion works; reasoning measured_support;
-  evidence test_result; assumptions configured;
+claim works {
+  statement "The component passes the smoke suite at this configuration.";
+  environment lab;
 }
+pattern measured(c: claim, r: reasoning, e: evidence, a: assumption) {
+  conclusion c; reasoning r;
+  evidence e; assumptions a;
+}
+apply measurement = measured(c=works, r=measured_support, e=test_result, a=configured);
 ```
 
-All declarations are top-level. Lists are comma separated IDs. Optional argument clauses: evidence, assumptions, premises (at least one source across the three). Optional reasoning backing. Optional assumption dates. Environment requires at least one predicate. Evidence requires at least one predicate. `input` is optional and defaults to `{}`. Allowed scalar comparison operators: `== != < <= > >=`; ordered comparisons require finite numeric operands or string operands of equal type; equality never equates booleans and numbers. Object keys in JSON are strings. Max source 1 MiB; max declarations 4096; premise depth 128. Duplicate symbols and ordinary argument-premise dependency cycles are rejected. EAL/0.3 permits cycles involving objections; their grounded labels can remain undecided.
+Pattern bodies contain one argument's clauses and reference only their typed parameters. Parameter kinds are `claim`, `reasoning`, `evidence` and `assumption`. Named application bindings must cover exactly those parameters and resolve to declarations of the required kinds. An application produces one ordinary argument under its own name, with `.origin` identifying the pattern and application. It retains the supplied evidence, assumption and claim identities. No recursion, nested applications, implicit global capture or assumption discharge is defined. Applications undergo the same checks and evaluation as directly written arguments.
 
-## Evidence record
+All top-level declarations share a namespace; pattern parameters have closed lexical scope. Lists use comma-separated identifiers. An argument needs at least one evidence, assumption or premise source. An objection needs at least one evidence or premise source. Environments and evidence need at least one predicate; evidence `input` defaults to `{}`. Source is limited to 1 MiB, declarations to 4096, applications to 1000, total expanded references to 100000 and ordinary premise depth to 128. Ordinary claim-premise cycles are rejected. Finite attack and objection-support cycles can remain undecided.
 
-The runtime produces this mapping for each evidence ID; records are immutable observations, not conclusions:
+## Typed methods and propositions
+
+A reasoning declaration has the form `reasoning NAME { method "IDENTIFIER/VERSION"; rationale STRING; ... }`, optionally followed by `backing` evidence and `require` output predicates. Every method, including `structured/1`, is selected by its exact installed versioned identifier. Reasoning `mode` and unversioned aliases are rejected.
+
+Built-in contracts are `structured/1`, `deductive/1`, `inductive/1`, `abductive/1`, `causal/1`, `counterfactual/1`, `analogical/1` and `temporal/1`. The corresponding computational evidence kinds are `logical_case`, `sample`, `hypotheses`, `experiment`, `causal_model`, `analogy` and `trace`; structured support has no designated kind. Each computation receives the union of direct evidence, backing and assumption-validation observations, deduplicated by evidence identity. Exactly one designated computational input is required. Premise claims remain explicit graph dependencies, not implicit mathematical inputs.
+
+Built-in and installed methods follow the same typed contract and binding rules. `MethodContract` specifies input, formal-query and output schemas, output interpretation, admitted quantities, units, implementation identity and resource bounds. `MethodRegistry.with_method(contract)` returns a new registry and cannot replace an installed identifier. Source can select host-installed code but cannot import or configure it. Pass `registry=` to validation, evaluation, formatting and discovery; pass `method_registry=` to `ReasoningService`. CLI, host and MCP accept `--methods package.module:function`. See [method-extensions.md](docs/method-extensions.md).
+
+A claim may contain a scalar `proposition`. Every argument for that claim needs an explicit `binding` to its designated computational evidence. The interpreter checks subject, quantity, units, scope, whole interval containment, exact formal query and output predicate. A typed proposition supplies its result criterion; untyped computational conclusions require reasoning output predicates. `structured/1` can omit them. Claim statements and rationales remain authored prose. See [typed-propositions.md](docs/typed-propositions.md).
+
+Predicates compare scalar fields with `== != < <= > >=`. Ordered comparisons require finite numeric operands or strings of equal type; booleans never equal numbers. Missing fields and incompatible types fail. JSON keys are unique strings. No general-purpose source evaluation is used.
+
+## Evidence record and time
 
 ```json
 {
   "evidence_id": "test_result",
-  "source_digest": "<program.source_digest>",
+  "source_digest": "<exact source digest>",
   "tool": "test_runner",
   "evidence_kind": "test",
   "tool_version": "1.0",
   "mode": "deterministic",
   "environment": "lab",
-  "environment_fingerprint": "<environment_fingerprint('lab', context)>",
+  "environment_fingerprint": "<environment and context digest>",
   "collected_at": "2026-09-23T12:00:00Z",
   "run_id": "<nonempty invocation identifier>",
-  "input_digest": "<canonical_digest(evidence.input)>",
+  "input_digest": "<canonical input digest>",
   "status": "ok",
   "value": {"passed": true},
-  "data_digest": "<canonical_digest(value)>"
+  "data_digest": "<canonical value digest>"
 }
 ```
 
-Mode is `deterministic` or `nondeterministic`, and describes the tool, never the logical soundness of its result. Errors use `status: "error"` and cannot support arguments. Missing, stale, future-dated, malformed, wrong-program, wrong-tool, wrong-input, wrong-environment or digest-mismatched records supply no support. Record integrity fields bind an observation to a request but are not cryptographic provenance authentication; an untrusted caller can forge an entire record. Collection and access controls belong to the host.
+Records are observations, not conclusions. Errors use `status: "error"`. Missing, stale, future-dated, malformed, wrong-source, wrong-tool, wrong-input, wrong-environment or digest-mismatched records provide no support. Digests bind supplied records to requests but do not authenticate an untrusted producer. Imported observations retain their original `collected_at`; `ingested_at` records storage time.
 
-## Assessment shape
+Evidence is age-eligible at exactly `max_age`, but not when older. Assumption intervals are half-open `[valid_from, valid_until)` and are checked at assessment time. Every argument dependency uses its conclusion's named environment. Freshness, fingerprints and asserted intervals do not establish continuous physical validity.
 
-A JSON-serialisable dict containing `language`, `source_digest`, `assessed_at`, `context_fingerprint`, `valid` (static language validity), `diagnostics` (list), `environments`, `evidence`, `assumptions`, `reasoning`, `objections`, `arguments`, `claims`. Each named entry has `status` and `reasons` (list of explanatory strings); arguments also report dependency IDs; claims report `supporting_arguments` and `contested_arguments`.
+## Assessment and acceptance
 
-Claim statuses: `supported` (one uncontested argument; no active claim objection), `contested` (supported or contested derivation challenged by a relevant objection; no uncontested alternative), `unsupported` (no usable derivation), `out_of_scope` (environment requirements fail). Argument status: `supported`, `contested`, `unsupported`, `out_of_scope`. Active claim objections contest all its arguments; reasoning/assumption objections affect dependent arguments, preserving independent alternatives. Contested premises propagate to dependent arguments. Objections activate only when all listed evidence is available and its declared predicates hold. Each reasoning method used by an argument supplies a human-readable rationale; the evaluator checks declared relations and evidence predicates, not the truth or logical sufficiency of arbitrary prose. Unsupported does not mean false. No probability or automatic preference is invented.
+Assessment returns `language`, `source_digest`, `assessed_at`, `context_fingerprint`, `valid`, `diagnostics`, named environment/evidence/assumption/reasoning/objection/argument/claim results, the constructed `dialectic` graph and `method_registry_fingerprint`. Named results retain statuses, explanatory reasons and dependencies. Arguments expose `reasoning_result`; typed arguments also expose correspondence checks.
 
-## Reasoning modes
+Claims and arguments report `supported`, `contested`, `unsupported` or `out_of_scope`, with a separate `grounded_label`. A locally usable accepted derivation is supported; a locally usable rejected or undecided derivation is contested. A claim without a usable derivation is unsupported. An independent accepted alternative can preserve support. Objections report `active`, `defeated`, `undecided` or `inactive`.
 
-`reasoning NAME { mode MODE; rationale STRING; (backing idList;)? require* }` replaces the earlier draft's generic inference construct. Modes: `structured`, `deductive`, `inductive`, `abductive`, `causal`, `counterfactual`, `analogical`, `temporal`. Evidence has required `kind ID;` after `tool ID;`, an open identifier classified by the author. Computational modes require explicit `require` predicates over their computed `details`; structured mode permits zero predicates. Every argument exposes `reasoning_result` (status, reasons, computed details and evaluated output predicates).
+`solve_composed(nodes, claims, attacks)` applies the finite support/attack equations: an applicable node needs every premise claim accepted and every attacker rejected; a claim needs one accepted derivation. Local failure, a rejected required premise or an accepted attacker rejects a node. All labels begin undecided and grow monotonically to the least-information fixed point. Rejection never establishes falsity. Bounds are 4096 nodes, 4096 claims and 131072 combined attack, premise and derivation relationships. The result includes a replayable trace.
 
-Pure helper API in `eal.modes`: `validate_mode(mode, kinds) -> list[str]`; `assess_mode(mode, evidence, premises) -> dict` with `status`, `reasons`, `details`. Evidence inputs are `{id, kind, value}` for deduplicated direct evidence, method backing and assumption-validation evidence. Premises are claim assessment entries augmented with `id`. Required designated kinds: deductive `logical_case`; inductive `sample`; abductive `hypotheses`; causal `experiment`; counterfactual `causal_model`; analogical `analogy`; temporal `trace`. Structured accepts any kind. Mode computation addresses precisely its encoded mathematical relation; arbitrary prose interpretation remains authored.
+## Formatting, discovery and host integration
 
-Assumption intervals are half-open `[valid_from, valid_until)`. All dependencies of an argument use its conclusion's declared environment; cross-environment derivation needs an explicit new observation and argument. Environment context is supplied by the host, not independently established by fingerprinting. Evidence age is valid at exactly max_age, unavailable when older.
+`format_source(source)` parses, validates and emits canonical source; `format_program(program)` emits checked IR. `semantic_ir(program)` excludes source digests and locations for round-trip comparisons. Formatting preserves declarations and applications. Exact source identity remains distinct from meaning: changed source bytes require recollecting observations.
 
-## Canonical source, discovery and models
+`ReasoningService.describe()` returns language syntax, executable examples and method/binding contracts. `format(source)` returns canonical `source`, `source_digest` and `observation_recollection_required`. MCP exposes `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and `eal_grounded` through the shared service.
 
-`eal.formatter.format_source(source)` parses, validates and emits canonical source. `format_program(program)` emits from a checked IR. `semantic_ir(program)` provides a source-digest-independent representation for round-trip checks. Exact source identity is deliberately separate from semantic equivalence: existing observation records cannot be reused under changed source bytes.
+Stateful `run_agent` retains active source, context, time and current collection/assessment. Validation adopts a revised draft only when valid; revision invalidates earlier observations and results. `assess` performs four separately recorded and budgeted calls: validation, fresh collection, reasoning and explanation. `host_mode="stateless"` uses explicit full-source/full-identifier requests for controlled comparisons. `interaction_mode="text"` and `"native"` share operation semantics; native transport requires a configured capable provider. One-shot `eal-host` remains stateless.
 
-`ReasoningService.describe()` returns packaged syntax, an executable example, mode contracts and the versioned typed binding catalogue. `ReasoningService.format(source)` returns canonical `source`, `source_digest` and `observation_recollection_required`. They are exposed as `eal_describe` and `eal_format` through MCP, `describe` and `format` through the CLI/host.
-
-`eal-agent` adds provider-connected interaction and bounded feedback to the single-request `eal-host` interface. A finish response retrieves statuses from an assessment produced during the session; it cannot invent a checked status. Task correspondence remains separate from successful interaction, particularly for source construction or revision. See [model-loop.md](docs/model-loop.md) for APIs, budgets and retained attempts, and [model-evaluation.md](docs/model-evaluation.md) for the paired evaluation procedure. Unknown usage or expense must remain unknown rather than being reported as zero.
-
-## EAL/0.3 extension interfaces
-
-`Reasoning` adds `.method: str | None` and `.selector`, which returns the selected explicit method or legacy mode. Explicit `method` clauses require an installed versioned identifier. `Objection` adds `.premises: tuple[str, ...]`; its target kinds include `argument` and `objection`. An objection's evidence and premise claims are conjunctive grounds. Every objection resolves to exactly one declared environment, including through chains of attacks on objections.
-
-`MethodRegistry.with_method(contract)` returns a new registry; existing identifiers cannot be replaced. A `MethodContract` specifies input, formal-query and output schemas, output interpretations, admitted quantities, unit policy, implementation identity and resource bounds. Source cannot configure or import a callback. See [method-extensions.md](docs/method-extensions.md) for the contract schema subset and execution conditions.
-
-Pass `registry=` to `validate`, `evaluate`, `format_source`, `format_program` and `describe_language`; pass `method_registry=` to `ReasoningService`. CLI, host and MCP server accept the trusted operator option `--methods package.module:function`. Discovery and persisted assessments include `method_registry_fingerprint`. The fingerprint includes the declared implementation version and entry-point source digest; dependency versions and external environment still require reproducible host packaging.
-
-`solve_composed(nodes, claims, attacks)` receives locally usable application nodes, conjunctive premise-claim references, alternative claim derivations and directed attacks. It returns accepted/rejected/undecided labels plus a replayable derivation trace. Rejection is lack of acceptance in that representation, never logical negation of the claim. EAL/0.3 assessments expose these labels alongside supported/contested/unsupported/out_of_scope results and the constructed graph.
-
-Stateful `run_agent` retains exact active source, context, time and current collection/assessment. Operational request schemas omit host-owned source and result identifiers; unanchored source candidates are proposed through validation and adopted only when valid. Fixed context and time remain anchored. The `assess` host operation performs four separately recorded and budgeted MCP calls: validation, fresh collection, reasoning and explanation. Source revision invalidates earlier collection/assessment state. `host_mode="legacy"` retains the full-field protocol for controlled comparisons. `interaction_mode="text"` and `"native"` share host operation semantics; native transport requires an explicitly configured capable provider. This convenience belongs to the agent host: direct MCP and one-shot `eal-host` operations retain their explicit arguments.
+A finished host interaction is separate from a correct engineering answer. See [model-loop.md](docs/model-loop.md) and [model-evaluation.md](docs/model-evaluation.md). Historical reports retain their original versions and measurements; no EAL/2 model gains have yet been measured.

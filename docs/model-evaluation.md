@@ -2,7 +2,7 @@
 
 The paired harness runs the same configured text-generation model on each selected task twice: once using the supplied source and observations alone, and once through the bounded MCP host. It records actual responses, attempts, repairs, token usage, operation calls, latency and the configured cost model. It does not require native model tool calls.
 
-The [23 September 2026 live experiments](live-model-results.md) record actual nano and mini development comparisons and the frozen mini held-out run, including unsuccessful protocol attempts.
+The [historical live experiments](live-model-results.md) and [EAL/0.3 repeated experiments](eal03-model-results.md) preserve their original inputs, version labels and outcomes. They do not measure EAL/2. EAL/2 capability, usability and cost improvements require fresh controlled trials.
 
 The automated tests use an explicitly identified scripted regression provider to check host and harness wiring through an actual MCP subprocess. Those tests are not evidence that a language model reasons correctly or costs less. Live provider comparisons must be reported separately with their actual model identity, task selection, usage and outcomes.
 
@@ -12,7 +12,7 @@ First check the independent task references:
 python -m eal.benchmark --check-tasks --summary
 ```
 
-Configure a supported provider as described in the model host documentation. Its configuration names the provider, model, sampling settings and optional current token rates. Use an actual model/version identity rather than a class description such as “small model”. To compare the reserved split:
+Configure a supported provider as described in the model host documentation. Its configuration names the provider, model, sampling settings and optional current token rates. Use an actual model/version identity rather than a class description such as “small model”. To exercise the stored split selector (these public cases are development knowledge for EAL/2):
 
 ```sh
 python -m eal.benchmark \
@@ -61,16 +61,16 @@ Use the development split to construct prompts or interfaces, then freeze those 
 
 ## Repeated model and host comparisons
 
-`eal.experiment` runs an explicit matrix of model and host conditions. The supplied `benchmarks/experiments/eal03-matrix.json` contains three named model baselines and four delegated conditions: a smaller non-reasoning model with text and native requests, a larger non-reasoning model with text requests, and a reasoning-enabled model with native requests. These are declared experimental groups, not a promise about every model in a class. The native and text conditions use the same interpreter and task representations.
+`eal.experiment` runs an explicit matrix of model and host conditions. The original `benchmarks/experiments/eal03-matrix.json` is a historical plan for the experiments reported under EAL/0.3. Its model/interface comparisons illustrate the harness; rerunning an updated source suite produces a new experiment with new digests, not a reproduction of the old language release. `benchmarks/experiments/eal2-regression-matrix.json` and `eal2-development-ablation.json` are current runnable plans, including the explicit stateless host condition. Their previously exposed tasks are development/regression cases. They define proposed EAL/2 experiments, not completed measurements or fresh held-out evaluation. Freeze the chosen plan before making a model call.
 
-The matrix uses six new engineering-v2 instances, two repetitions per instance, seven conditions and 84 total calls to the host/baseline runners. Each runner may itself make several model requests. The earlier v1 instances and former held-out results now count as development knowledge. A separate development plan compares legacy full-source requests with the stateful host on two v1 tasks; its results must not be reported as held-out measurements.
+The historical matrix used six then-new engineering-v2 instances, two repetitions per instance, seven conditions and 84 total calls to the host/baseline runners. Each runner may itself make several model requests. The v1 and v2 instances and their earlier held-out results now count as EAL/2 development knowledge. A separate development plan compares stateless full-source requests with the stateful host on two v1 tasks; its results must not be reported as held-out measurements.
 
-Inspect the frozen definition without issuing model-generation requests:
+For an explicitly chosen plan, inspect its definition without issuing model-generation requests:
 
 ```sh
 python -m eal.experiment \
-  --plan benchmarks/experiments/eal03-matrix.json \
-  --output .eal/eal03-definition \
+  --plan benchmarks/experiments/eal2-regression-matrix.json \
+  --output .eal/eal2-definition \
   --freeze-only
 ```
 
@@ -78,15 +78,15 @@ Run into a new directory:
 
 ```sh
 python -m eal.experiment \
-  --plan benchmarks/experiments/eal03-matrix.json \
-  --output .eal/eal03-matrix-run
+  --plan benchmarks/experiments/eal2-regression-matrix.json \
+  --output .eal/eal2-regression-run
 ```
 
 An existing output directory is never overwritten. `freeze.json` records the exact plan, schedule, provider identities, dependency versions, installed EAL Python file hashes, expected answers and every selected task's source, observations, method-registry fingerprint and language reference. Each completed run is saved separately under `trials/` before its result is appended to `trials.jsonl`. `report.json` contains artifact hashes, coverage, aggregate measurements and paired comparisons. Raw responses, failed attempts and tool traces remain in the referenced trial artifacts. The final report flags changes to task references or EAL implementation files during execution.
 
 The shipped custom method is inside the hashed EAL package. A separately installed method factory needs its own retained source/package revision; the current runner does not hash every external dependency's implementation. Keep provider configuration files unchanged during a run: the recorded identity covers model, sampling, prices and advertised capabilities, but it is not a complete snapshot of every adapter setting such as an HTTP timeout. These limits do not change the recorded requests, responses or outcomes, but they narrow what can be reconstructed from the freeze alone.
 
-The plan declares `conditions`, `repetitions`, `order_seed`, optional per-repetition `sampling_seeds`, `concurrency`, budgets and cost assumptions. A condition names its provider configuration, model-class label, `unaided` or `delegated` arm, `stateful` or `legacy` host, and `text` or `native` interaction. A baseline can be shared across host conditions for the same model, avoiding duplicate baseline charges. Each trial constructs a fresh provider object and isolated runtime store. Concurrency is bounded at four, and requested launch order is recorded separately from completion order.
+The plan declares `conditions`, `repetitions`, `order_seed`, optional per-repetition `sampling_seeds`, `concurrency`, budgets and cost assumptions. A condition names its provider configuration, model-class label, `unaided` or `delegated` arm, `stateful` or `stateless` host, and `text` or `native` interaction. A baseline can be shared across host conditions for the same model, avoiding duplicate baseline charges. Each trial constructs a fresh provider object and isolated runtime store. Concurrency is bounded at four, and requested launch order is recorded separately from completion order.
 
 The schedule permutes task/repetition blocks with a recorded seed, rotates condition positions and reverses alternate complete sweeps. Comparisons pair conditions on the same task and repetition. This controls requested ordering without promising equal wall-clock conditions under concurrent requests or provider caching. Provider sampling seeds are injected only when a condition explicitly declares support. The supplied plans leave that setting false; their seeds control scheduling, not the provider's random generation. Each artifact records the scheduled seed and the actually applied provider seed separately. Neither a fixed seed nor temperature zero guarantees exact replay by an external provider.
 

@@ -1,0 +1,90 @@
+{
+  "schema": "EAL/experiment-plan/1",
+  "name": "eal2-regression-matrix",
+  "suite": "../engineering-v2/suite.json",
+  "split": "held_out",
+  "repetitions": 2,
+  "order_seed": 20260923,
+  "sampling_seeds": [
+    241,
+    397
+  ],
+  "concurrency": 4,
+  "bootstrap_samples": 2000,
+  "per_mcp_call_usd": 0,
+  "budget": {
+    "max_iterations": 10,
+    "max_total_tokens": 120000,
+    "max_output_tokens": 4096,
+    "max_elapsed_seconds": 120,
+    "max_model_cost_usd": 0.035
+  },
+  "conditions": [
+    {
+      "id": "nano_unaided",
+      "provider": "../providers/openai-4.1-nano.toml",
+      "model_class": "non_reasoning_small",
+      "arm": "unaided",
+      "seed_supported": false
+    },
+    {
+      "id": "nano_text_stateful",
+      "provider": "../providers/openai-4.1-nano.toml",
+      "model_class": "non_reasoning_small",
+      "arm": "delegated",
+      "seed_supported": false,
+      "host_mode": "stateful",
+      "interaction_mode": "text"
+    },
+    {
+      "id": "nano_native_stateful",
+      "provider": "../providers/openai-4.1-nano-native.toml",
+      "model_class": "non_reasoning_small",
+      "arm": "delegated",
+      "seed_supported": false,
+      "host_mode": "stateful",
+      "interaction_mode": "native"
+    },
+    {
+      "id": "mini_unaided",
+      "provider": "../providers/openai-4.1-mini.toml",
+      "model_class": "non_reasoning_larger",
+      "arm": "unaided",
+      "seed_supported": false
+    },
+    {
+      "id": "mini_text_stateful",
+      "provider": "../providers/openai-4.1-mini.toml",
+      "model_class": "non_reasoning_larger",
+      "arm": "delegated",
+      "seed_supported": false,
+      "host_mode": "stateful",
+      "interaction_mode": "text"
+    },
+    {
+      "id": "reasoning_mini_unaided",
+      "provider": "../providers/openai-5-mini-native.toml",
+      "model_class": "reasoning_enabled",
+      "arm": "unaided",
+      "seed_supported": false,
+      "budget": {
+        "max_model_cost_usd": 0.06,
+        "max_elapsed_seconds": 180
+      }
+    },
+    {
+      "id": "reasoning_mini_native_stateful",
+      "provider": "../providers/openai-5-mini-native.toml",
+      "model_class": "reasoning_enabled",
+      "arm": "delegated",
+      "seed_supported": false,
+      "host_mode": "stateful",
+      "interaction_mode": "native",
+      "budget": {
+        "max_model_cost_usd": 0.06,
+        "max_elapsed_seconds": 180
+      }
+    }
+  ],
+  "notes": "EAL/2 development/regression experiment on previously exposed task families; not fresh held-out evidence. The retained suite split selects task records only. Freeze inputs before execution and retain all outcomes. This plan has not been run against live models. Seven explicit conditions share three unaided model baselines. Model classes are declared experimental group labels, not capability guarantees. Provider sampling seeds are not injected until model-specific support is verified; scheduled seeds and actual applied seeds are recorded separately. Zero MCP-call cost means zero marginal fixture-operation API charges, excluding host hardware and labour. No condition-specific prompt tuning on these previously exposed cases."
+}

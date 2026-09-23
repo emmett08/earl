@@ -4,6 +4,6 @@ recursive-include examples *.eal *.json *.toml *.py
 recursive-include docs *.md
 recursive-include scripts *.py
 
-include Makefile CONTRACT.md
-recursive-include skills *.md *.yaml
+include Makefile CONTRACT.md AGENTS.md
+recursive-include skills *.md *.yaml *.svg
 recursive-include benchmarks *.json *.json.gz *.eal *.toml *.py

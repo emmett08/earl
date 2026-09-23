@@ -1,8 +1,8 @@
-# Executable reasoning modes
+# Executable reasoning methods
 
 A reasoning declaration selects an operation appropriate to the evidence and states result requirements. A claim may depend on several subarguments using different operations. The interpreter evaluates their dependencies before using their results. These operations support engineering reasoning; they do not reduce reasoning to one universal inference operation.
 
-The implemented modes form a bounded computational vocabulary, rather than an exhaustive taxonomy of human reasoning. `structured` preserves an explicitly authored relationship. The other modes calculate properties of a particular logical case, statistical sample, hypothesis model, experiment, causal model, feature mapping or finite trace. Question formation, explanation construction, model selection and the interpretation of natural-language claims remain authored activities. Subarguments can supply reasons for their modelling choices and evidence relevance.
+The implemented methods form a bounded computational vocabulary, rather than an exhaustive taxonomy of human reasoning. `structured/1` preserves an explicitly authored relationship. The other methods calculate properties of a particular logical case, statistical sample, hypothesis model, experiment, causal model, feature mapping or finite trace. Question formation, explanation construction, model selection and the interpretation of natural-language claims remain authored activities. Subarguments can supply reasons for their modelling choices and evidence relevance.
 
 ## Composition and result requirements
 
@@ -10,11 +10,11 @@ The argument graph composes claims through `premises`. Each premise must have it
 
 For example, a reliability claim can depend on an inductive subargument about a sampled failure proportion, a temporal subargument about an observed operating interval, and a deductive subargument about a finite propositional consequence. Their results keep their distinct meanings. The interpreter neither averages those results into one confidence number nor treats repeated use of a record as independent corroboration.
 
-Every computational reasoning declaration requires at least one `require` predicate on the computed result. For example:
+An untyped computational conclusion requires a `require` predicate on the reasoning result. A typed proposition supplies its own checked output condition; it can also retain reasoning predicates. For example:
 
-```text
+```eal
 reasoning estimate_reliability {
-  mode inductive;
+  method "inductive/1";
   rationale "The declared Bernoulli sample estimates success probability under the stated operating conditions.";
   backing test_sample;
   require "lower" >= 0.95;
@@ -23,30 +23,30 @@ reasoning estimate_reliability {
 
 The predicate refers to a scalar field in `details`, without a `details.` prefix. Consult the [language reference](language.md) for full declaration syntax and the working examples for complete programmes.
 
-A successful mode calculation establishes its documented computational result. The argument's result predicates specify the threshold needed for the conclusion. The relevance of that threshold to an authored natural-language claim remains an explicit part of the reasoning rationale. In particular, propositional atoms are supplied symbols: this version does not automatically translate claim prose into logical formulas or prove that a supplied formula expresses that prose.
+A successful method calculation establishes its documented computational result. The argument's result predicates specify the threshold needed for the conclusion. The relevance of that threshold to an authored natural-language claim remains an explicit part of the reasoning rationale. In particular, propositional atoms are supplied symbols: this version does not automatically translate claim prose into logical formulas or prove that a supplied formula expresses that prose.
 
-The calculation uses the union of direct argument evidence, reasoning backing and assumption-validation evidence, deduplicated by evidence identifier. Each computational mode requires **exactly one** record with its designated kind. Records of other kinds may support the same argument. Multiple designated records are rejected as ambiguous; any aggregation must be an explicit prior operation with a stated sampling or dependence model. Supporting premise claims remain graph dependencies, rather than being silently converted to observations or logical atoms.
+The calculation uses the union of direct argument evidence, reasoning backing and assumption-validation evidence, deduplicated by evidence identifier. Each computational method requires **exactly one** record with its designated kind. Records of other kinds may support the same argument. Multiple designated records are rejected as ambiguous; any aggregation must be an explicit prior operation with a stated sampling or dependence model. Supporting premise claims remain graph dependencies, rather than being silently converted to observations or logical atoms.
 
-| Mode | Designated kind | Result the implementation calculates |
+| Method | Designated kind | Result the implementation calculates |
 |---|---|---|
-| `structured` | No designated kind | Availability of authored support; no automatic proof of its sufficiency |
-| `deductive` | `logical_case` | Finite propositional entailment and premise satisfiability |
-| `inductive` | `sample` | Binomial proportion estimate and Wilson interval |
-| `abductive` | `hypotheses` | Bayesian posterior over supplied candidate explanations |
-| `causal` | `experiment` | Difference of means and independent-group standard error |
-| `counterfactual` | `causal_model` | Intervention outcome in a supplied acyclic affine structural model |
-| `analogical` | `analogy` | Exact correspondence of declared relevant scalar features |
-| `temporal` | `trace` | A universal sample predicate and declared sampling-contract coverage |
+| `structured/1` | No designated kind | Availability of authored support; no automatic proof of its sufficiency |
+| `deductive/1` | `logical_case` | Finite propositional entailment and premise satisfiability |
+| `inductive/1` | `sample` | Binomial proportion estimate and Wilson interval |
+| `abductive/1` | `hypotheses` | Bayesian posterior over supplied candidate explanations |
+| `causal/1` | `experiment` | Difference of means and independent-group standard error |
+| `counterfactual/1` | `causal_model` | Intervention outcome in a supplied acyclic affine structural model |
+| `analogical/1` | `analogy` | Exact correspondence of declared relevant scalar features |
+| `temporal/1` | `trace` | A universal sample predicate and declared sampling-contract coverage |
 
-The mode helper returns `{status, reasons, details}`. Here `supported` means that the bounded calculation or authored-support check succeeds; the argument evaluator separately checks result requirements, scope, observation freshness, assumptions, premise status and objections. `unsupported` means insufficient input, malformed input, an exceeded computational bound, or a mode-specific inability to use the computation. An inconsistent logical case and an incomplete temporal sampling contract are unusable in this profile. A consistent countermodel or an observed temporal violation is a usable result: a requirement such as `require "entailed" == false;` or `require "holds" == false;` can support a claim about that failure. A probability estimate, contrast or feature-match fraction can be validly calculated even when it fails an argument's required threshold.
+The computation helper returns `{status, reasons, details}`. Here `supported` means that the bounded calculation or authored-support check succeeds; the argument evaluator separately checks result requirements, scope, observation freshness, assumptions, premise status and objections. `unsupported` means insufficient input, malformed input, an exceeded computational bound, or a method-specific inability to use the computation. An inconsistent logical case and an incomplete temporal sampling contract are unusable in this profile. A consistent countermodel or an observed temporal violation is a usable result: a requirement such as `require "entailed" == false;` or `require "holds" == false;` can support a claim about that failure. A probability estimate, contrast or feature-match fraction can be validly calculated even when it fails an argument's required threshold.
 
 ## Evidence value schemas
 
-The following objects are the `value` of an evidence record. Execution provenance, collection time, tool identity and environment belong to the surrounding evidence record. Fields shown are mandatory and additional fields in these schema objects are rejected. All numbers must be finite. Booleans are not numbers. Units must be normalised consistently before calculation; this version does not implement dimensional analysis.
+The following objects are the `value` of an evidence record. Execution provenance, collection time, tool identity and environment belong to the surrounding evidence record. Fields shown are mandatory and additional fields in these schema objects are rejected. All numbers must be finite. Booleans are not numbers. Units must be normalised consistently before calculation; the scalar proposition system checks its closed quantity/unit catalogue; general dimensional algebra is not implemented.
 
 ### Structured reasoning
 
-`structured` requires at least one supplied evidence record or a usable premise claim. The evaluator checks actual availability first. A contested premise remains usable for calculating the structure, while the surrounding argument retains its contested status. Result fields are `authored: true` and `mechanically_proved: false`. No numeric confidence is manufactured from authored prose.
+`structured/1` requires at least one supplied evidence record or a usable premise claim. The evaluator checks actual availability first. A contested premise remains usable for calculating the structure, while the surrounding argument retains its contested status. Result fields are `authored: true` and `mechanically_proved: false`. No numeric confidence is manufactured from authored prose.
 
 ### Deductive reasoning
 
@@ -59,7 +59,7 @@ The following objects are the `value` of an evidence record. Execution provenanc
 
 A formula is an atom string or an object with exactly one of these keys: `not` takes one formula; `and` and `or` take a list of at least two formulas; `implies` takes exactly two. Atoms are case-sensitive identifiers. All valuations of the distinct atoms are enumerated. The result includes `entailed`, `consistent_premises`, `counterexample`, `atoms`, `valuations` and `satisfying_premise_valuations`.
 
-`entailed` has its classical meaning: every valuation satisfying the premises satisfies the conclusion. When the premises are inconsistent, classical entailment is vacuously true, `consistent_premises` is false, and the mode returns `unsupported`. A consistent case with a countermodel returns `supported` with `entailed: false`; an argument can use that result to establish non-entailment. Its declared result predicate decides whether that finding supports its conclusion. An empty premise list is allowed when testing a tautology.
+`entailed` has its classical meaning: every valuation satisfying the premises satisfies the conclusion. When the premises are inconsistent, classical entailment is vacuously true, `consistent_premises` is false, and the method returns `unsupported`. A consistent case with a countermodel returns `supported` with `entailed: false`; an argument can use that result to establish non-entailment. Its declared result predicate decides whether that finding supports its conclusion. An empty premise list is allowed when testing a tautology.
 
 The finite domain is at most 12 atoms, 128 premise formulas, 512 formula nodes in total and formula depth 32. This implements propositional entailment only. First-order quantification, arithmetic proof and natural-language validity require another explicitly integrated reasoning operation.
 
@@ -127,7 +127,7 @@ where each \(s^2\) is the unbiased sample variance using divisor \(n-1\). Result
 
 The standard error is an independent-group estimator. It is not a paired, repeated-measures, clustered or covariate-adjusted estimator. Under a finite-population completely randomised design, the same Neyman variance form generally estimates an upper bound on randomisation variance when treatment effects vary. Interpretation must therefore state the population, estimand and design.
 
-`assignment: "randomised"` is required metadata, rather than proof that randomisation occurred. A causal interpretation additionally depends on the actual allocation procedure, consistency, absence of interference, handling of missing outcomes and the relation between the sample and the target population. This mode supplies neither a p-value nor a causal-discovery procedure. Argument assumptions and subarguments must address the premises needed for the intended interpretation.
+`assignment: "randomised"` is required metadata, rather than proof that randomisation occurred. A causal interpretation additionally depends on the actual allocation procedure, consistency, absence of interference, handling of missing outcomes and the relation between the sample and the target population. This method supplies neither a p-value nor a causal-discovery procedure. Argument assumptions and subarguments must address the premises needed for the intended interpretation.
 
 ### Counterfactual reasoning
 
@@ -150,7 +150,7 @@ X_i=b_i+\sum_{j\in\operatorname{pa}(i)}a_{ij}X_j+u_i.
 
 `intercept` supplies \(b_i\), `coefficients` supplies the parent coefficients and `noise` supplies the realised exogenous value \(u_i\). Every parent must be a declared variable. The graph must be acyclic, including explicitly listed zero-coefficient dependencies. The interpreter evaluates the factual model in topological order, replaces the intervention variable's equation by its supplied value, and evaluates the modified model with the **same** exogenous values.
 
-Results include `factual`, `counterfactual`, `difference`, `factual_values`, `counterfactual_values`, `outcome` and `evaluation_order`. The example gives factual `y = 11`, counterfactual `y = 15` and difference 4. Setting `x` replaces its whole equation, including its noise term.
+Results include `factual`, `counterfactual/1`, `difference`, `factual_values`, `counterfactual_values`, `outcome` and `evaluation_order`. The example gives factual `y = 11`, counterfactual `y = 15` and difference 4. Setting `x` replaces its whole equation, including its noise term.
 
 The result is conditional on the supplied equations and realised exogenous values. Those values must already be known or justified elsewhere. This version does not infer hidden noise from observations, identify a causal graph, estimate coefficients, or compute a distribution over possible exogenous states. It implements the intervention and prediction steps for a bounded model, rather than a complete counterfactual discovery or abduction system. There are at most 32 variables and one intervention per calculation.
 
@@ -187,7 +187,7 @@ This is a bounded feature-correspondence operation. It is not a full relational 
 
 Times use one declared numeric time coordinate. Events must be strictly ordered and lie inside the inclusive `[start, end]` interval. Coverage requires an observation exactly at each endpoint and every consecutive observation gap to be at most `max_gap`. A zero-duration interval is allowed with one sample; `max_gap` remains strictly positive.
 
-The comparison operator is one of `lt`, `le`, `eq`, `ne`, `ge` or `gt`. `holds` means that **every supplied sample** satisfies the comparison. `coverage` means that the declared sampling contract is complete. The mode is usable whenever coverage is complete; the argument must require the truth value of `holds` appropriate to its claim. A complete trace containing a violation can therefore support a claim that the sampled property was violated. Results also include `sample_size`, `largest_gap`, `violation_count`, `violation_times`, `semantics: "sampled"` and `continuous_truth_established: false`.
+The comparison operator is one of `lt`, `le`, `eq`, `ne`, `ge` or `gt`. `holds` means that **every supplied sample** satisfies the comparison. `coverage` means that the declared sampling contract is complete. The method is usable whenever coverage is complete; the argument must require the truth value of `holds` appropriate to its claim. A complete trace containing a violation can therefore support a claim that the sampled property was violated. Results also include `sample_size`, `largest_gap`, `violation_count`, `violation_times`, `semantics: "sampled"` and `continuous_truth_established: false`.
 
 A trace with a gap can have `holds: true` and `coverage: false`. A complete trace containing a violating sample has `holds: false` and `coverage: true`. This distinction prevents sample agreement from concealing missing observations. Even complete coverage establishes no continuous-time property between samples and makes no claim about times outside the interval. This version implements neither eventuality nor full temporal logic. The caller must use another explicit model to justify interpolation or continuous-time bounds. A trace contains 1–10,000 events.
 
@@ -195,8 +195,8 @@ A trace with a gap can have `holds: true` and `coverage: false`. A complete trac
 
 Calculations preserve integer counts, timestamp coordinates and scalar comparisons. Statistical estimates and structural-equation evaluation use ordinary double-precision arithmetic. Numeric input magnitude is at most `1e100`; structural intermediate values have the same bound. Real-number equality is a computational comparison, not measurement equivalence. Underflow of extremely small posterior terms or variance terms can still occur after stable calculation, so inputs requiring arbitrary precision need a different backend.
 
-A supplied calculation value is checked before evaluation: at most 100,000 JSON nodes, nesting depth 64, 10,000 items per array or object and 4,096 characters per string. Formula, candidate, feature and structural-model limits apply in addition. Unknown fields, unsupported schema forms, nonfinite numbers, invalid references, cycles and exceeded limits return an explicit unsupported result. There is no evaluation of embedded Python, shell commands or unbounded symbolic search in these modes.
+A supplied calculation value is checked before evaluation: at most 100,000 JSON nodes, nesting depth 64, 10,000 items per array or object and 4,096 characters per string. Formula, candidate, feature and structural-model limits apply in addition. Unknown fields, unsupported schema forms, nonfinite numbers, invalid references, cycles and exceeded limits return an explicit unsupported result. There is no evaluation of embedded Python, shell commands or unbounded symbolic search in these methods.
 
-Adding a mode requires a distinct evidence contract, mathematical interpretation, declared computational bound, reference cases with independently known results, malformed-input cases and a documented statement of the assumptions that the calculation cannot verify. An LLM can propose a declaration or model through a host; the server reports the bounded computation and dependencies without pretending that the model itself has been established.
+Adding a method requires a distinct evidence contract, mathematical interpretation, declared computational bound, reference cases with independently known results, malformed-input cases and a documented statement of the assumptions that the calculation cannot verify. An LLM can propose a declaration or model through a host; the server reports the bounded computation and dependencies without pretending that the model itself has been established.
 
 The foundations and the limits of each correspondence are documented in [sources.md](sources.md). The relationships among claims, objections and supporting subarguments are specified in [argument-model.md](argument-model.md).

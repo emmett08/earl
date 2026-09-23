@@ -19,7 +19,14 @@ def semantic_ir(program: Program):
     Source byte identity deliberately remains separate: formatted source requires
     newly bound observation records even when this representation is unchanged.
     """
-    return {key: value for key, value in asdict(program).items() if key != 'source_digest'}
+    result = asdict(program)
+    for key in ('source_digest', 'locations'):
+        result.pop(key, None)
+    for argument in result['arguments'].values():
+        argument.pop('origin', None)
+    for diagnostic in result['lowering_diagnostics']:
+        diagnostic.pop('span', None)
+    return result
 
 
 def format_program(program: Program, *, registry=None) -> str:
@@ -33,6 +40,15 @@ def format_program(program: Program, *, registry=None) -> str:
 
     def predicates(values):
         return [f'require {_json(p.path)} {p.operator} {_json(p.expected)};' for p in values]
+
+    def argument_lines(value):
+        lines = [f'conclusion {value.conclusion};', f'reasoning {value.reasoning};']
+        for key in ('evidence', 'assumptions', 'premises'):
+            if getattr(value, key):
+                lines.append(f'{key} {", ".join(getattr(value, key))};')
+        if value.binding is not None:
+            lines.append(f'binding {value.binding};')
+        return lines
 
     for name, value in program.environments.items():
         emit('environment', name, predicates(value.predicates))
@@ -50,8 +66,7 @@ def format_program(program: Program, *, registry=None) -> str:
                 lines.append(f'{key} {_json(getattr(value, key))};')
         emit('assumption', name, lines)
     for name, value in program.reasoning.items():
-        selector = f'method {_json(value.method)};' if value.method is not None else f'mode {value.mode};'
-        lines = [selector, f'rationale {_json(value.rationale)};']
+        lines = [f'method {_json(value.method)};', f'rationale {_json(value.rationale)};']
         if value.backing:
             lines.append(f'backing {", ".join(value.backing)};')
         emit('reasoning', name, [*lines, *predicates(value.predicates)])
@@ -68,13 +83,14 @@ def format_program(program: Program, *, registry=None) -> str:
             lines.append('}')
         emit('claim', name, lines)
     for name, value in program.arguments.items():
-        lines = [f'conclusion {value.conclusion};', f'reasoning {value.reasoning};']
-        for key in ('evidence', 'assumptions', 'premises'):
-            if getattr(value, key):
-                lines.append(f'{key} {", ".join(getattr(value, key))};')
-        if value.binding is not None:
-            lines.append(f'binding {value.binding};')
-        emit('argument', name, lines)
+        if value.origin is None:
+            emit('argument', name, argument_lines(value))
+    for name, value in program.patterns.items():
+        parameters = ', '.join(f'{parameter.name}: {parameter.kind}' for parameter in value.parameters)
+        emit('pattern', f'{name}({parameters})', argument_lines(value))
+    for name, value in program.applications.items():
+        bindings = ', '.join(f'{binding.name}={binding.reference}' for binding in value.arguments)
+        blocks.append(f'apply {name} = {value.pattern}({bindings});')
     for name, value in program.objections.items():
         lines = [f'target {value.target_kind} {value.target};']
         for key in ('evidence', 'premises'):

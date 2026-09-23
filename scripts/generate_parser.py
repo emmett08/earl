@@ -35,8 +35,8 @@ def main() -> None:
     with tempfile.TemporaryDirectory() as temporary:
         output = Path(temporary)
         subprocess.run(["java", "-jar", str(jar.resolve()), "-Dlanguage=Python3", "-visitor", "-no-listener", "-Xexact-output-dir", "-o", str(output), "grammar/EAL.g4"], cwd=ROOT, check=True)
-        files = sorted(output.glob("*.py"))
-        if not files:
+        files = sorted(file for file in output.iterdir() if file.suffix in {".py", ".tokens", ".interp"})
+        if not any(file.suffix == ".py" for file in files):
             raise SystemExit("ANTLR generated no Python sources")
         if args.check:
             differing = [f.name for f in files if not (target / f.name).exists() or f.read_bytes() != (target / f.name).read_bytes()]

@@ -1,6 +1,6 @@
 {
   "schema": "EAL/engineering-tasks/1",
-  "version": "engineering-v1.0",
+  "version": "engineering-v1.1-eal2",
   "description": "Synthetic known-answer engineering reasoning fixtures; observation values are committed inputs, not claims of physical experiments. Held-out means reserved from prompt/example development within this suite, not hidden or unexposed training data.",
   "tasks": [
     {
@@ -310,7 +310,7 @@
       },
       "oracle": "The active objection contests primary_step and the dependent argument. The independent route does not depend on that method and remains supported.",
       "uncovered": [
-        "EAL objection defence by a supporting subargument is not represented in this fixture; the standalone grounded solver is separate."
+        "This fixture does not exercise defence via a supporting subargument; engineering-v2 supplies such cases."
       ]
     },
     {

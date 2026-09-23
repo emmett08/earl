@@ -2,12 +2,14 @@
 from __future__ import annotations
 
 from collections import deque
+from dataclasses import replace
 from datetime import datetime, timezone
 import json
 import math
 import re
 
 from .model import Diagnostic, Program
+from .abstractions import lower_patterns
 from .modes import evidence_kind, validate_mode
 from .propositions import proposition_errors
 
@@ -46,25 +48,46 @@ def _check_json_resources(value):
 
 def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     """Resolve names, verify types/scopes, reject cycles and resource excess."""
-    from .methods import default_registry
+    from .methods import default_registry, is_method_identifier
     registry = registry or default_registry()
-    problems: list[Diagnostic] = []
+    problems: list[Diagnostic] = [
+        diagnostic if diagnostic.span is not None else replace(
+            diagnostic, span=program.locations.get(diagnostic.declaration))
+        for diagnostic in program.lowering_diagnostics
+    ]
 
-    def error(code, message, declaration=None):
-        problems.append(Diagnostic(code, message, declaration))
+    def error(code, message, declaration=None, *, expected=None, actual=None):
+        problems.append(Diagnostic(code, message, declaration,
+                                   program.locations.get(declaration), expected, actual))
 
     def reference(name, table, kind, owner):
         if name not in table:
-            error("unknown_reference", f"Unknown {kind} {name!r}", owner)
+            error("unknown_reference", f"Unknown {kind} {name!r}", owner,
+                  expected=kind, actual=name)
             return False
         return True
 
     def scope(actual, expected, owner, dependency):
         if actual != expected:
-            error("environment_mismatch", f"{dependency!r} uses environment {actual!r}; expected {expected!r}", owner)
+            error("environment_mismatch", f"{dependency!r} uses environment {actual!r}; expected {expected!r}", owner,
+                  expected=expected, actual=actual)
 
-    if program.language not in ("EAL/0.1", "EAL/0.2", "EAL/0.3"):
-        error("unsupported_language", f"Expected EAL/0.1, EAL/0.2 or EAL/0.3, found {program.language!r}")
+    # The retained authoring form and executable arguments must denote the same
+    # program, including when callers construct or replace the typed IR directly.
+    lowered = lower_patterns(program)
+    stored_diagnostics = tuple(replace(d, span=None) for d in program.lowering_diagnostics)
+    fresh_diagnostics = tuple(replace(d, span=None) for d in lowered.lowering_diagnostics)
+    if (lowered.arguments != program.arguments or fresh_diagnostics != stored_diagnostics
+            or lowered.declaration_count != program.declaration_count):
+        changed = next((name for name in dict.fromkeys((*program.arguments, *lowered.arguments))
+                        if program.arguments.get(name) != lowered.arguments.get(name)), None)
+        error("stale_pattern_expansion",
+              "Stored arguments or diagnostics differ from the declared patterns and applications; lower the edited program again",
+              changed)
+
+    if program.language != "EAL/2":
+        error("unsupported_language", f"Expected EAL/2, found {program.language!r}",
+              expected="EAL/2", actual=program.language)
     if program.declaration_count > MAX_DECLARATIONS:
         error("resource_limit", f"At most {MAX_DECLARATIONS} declarations are supported")
         return problems
@@ -109,15 +132,13 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
         if len(dates) == 2 and dates[0] >= dates[1]:
             error("invalid_interval", "valid_from must precede valid_until", value.name)
     for value in program.reasoning.values():
-        contract = registry.get(value.selector)
-        if contract is None:
-            error("unknown_method", f"Unknown registered reasoning method {value.selector!r}", value.name)
-        elif value.method is not None and value.method != contract.identifier:
-            error("invalid_method_reference", "The method clause requires the contract's explicit versioned identifier", value.name)
-        if value.method is not None and program.language != "EAL/0.3":
-            error("versioned_construct", "Versioned method references require EAL/0.3", value.name)
-        if contract is not None and contract.builtin_mode != "structured" and not value.predicates and program.language == "EAL/0.1":
-            error("missing_reasoning_predicate", "Computational reasoning requires an explicit output predicate", value.name)
+        contract = registry.get(value.method)
+        if not is_method_identifier(value.method):
+            error("invalid_method_reference", "A method requires an explicit versioned identifier such as 'structured/1'", value.name,
+                  expected="versioned method identifier", actual=value.method)
+        elif contract is None:
+            error("unknown_method", f"Unknown registered reasoning method {value.method!r}; use an installed versioned identifier", value.name,
+                  expected="registered versioned method identifier", actual=value.method)
         if not value.rationale.strip():
             error("empty_rationale", "A reasoning declaration requires its rationale", value.name)
         for item in value.backing:
@@ -127,8 +148,6 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
             error("empty_statement", "A claim requires a statement", value.name)
         reference(value.environment, program.environments, "environment", value.name)
         if value.proposition is not None:
-            if program.language not in ("EAL/0.2", "EAL/0.3"):
-                error("versioned_construct", "Typed propositions require EAL/0.2 or later", value.name)
             for message in proposition_errors(value.proposition, registry=registry):
                 error("invalid_proposition", message, value.name)
     for value in program.arguments.values():
@@ -145,13 +164,11 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                     scope(table[item].environment, expected, value.name, item)
         if reasoning_exists:
             method = program.reasoning[value.reasoning]
-            contract = registry.get(method.selector)
+            contract = registry.get(method.method)
             source_ids = set(value.evidence) | set(method.backing)
             source_ids.update(program.assumptions[a].validation for a in value.assumptions
                               if a in program.assumptions)
             proposition = program.claims[value.conclusion].proposition if conclusion_exists else None
-            if value.binding is not None and program.language not in ("EAL/0.2", "EAL/0.3"):
-                error("versioned_construct", "Typed bindings require EAL/0.2 or later", value.name)
             if proposition is not None:
                 if value.binding is None:
                     error("missing_binding", "A typed conclusion requires an explicit evidence binding", value.name)
@@ -159,16 +176,16 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                     if reference(value.binding, program.evidence, "bound evidence", value.name):
                         if value.binding not in source_ids:
                             error("binding_source", "Bound evidence must be a source of this argument", value.name)
-                        if program.evidence[value.binding].kind != evidence_kind(method.selector, registry=registry):
+                        if program.evidence[value.binding].kind != evidence_kind(method.method, registry=registry):
                             error("binding_source", "Binding must select the method's computational evidence", value.name)
-                for message in proposition_errors(proposition, method.selector, registry=registry):
+                for message in proposition_errors(proposition, method.method, registry=registry):
                     error("proposition_method", message, value.name)
             elif value.binding is not None:
                 error("untyped_binding", "An evidence binding requires a typed conclusion", value.name)
-            if program.language in ("EAL/0.2", "EAL/0.3") and proposition is None and contract is not None and contract.builtin_mode != "structured" and not method.predicates:
+            if proposition is None and contract is not None and contract.builtin_mode != "structured" and not method.predicates:
                 error("missing_reasoning_predicate", "An untyped computational conclusion requires an explicit output predicate", value.name)
             kinds = [program.evidence[e].kind for e in sorted(source_ids) if e in program.evidence]
-            for message in validate_mode(method.selector, kinds, registry=registry):
+            for message in validate_mode(method.method, kinds, registry=registry):
                 error("reasoning_evidence_contract", message, value.name)
             if expected is not None:
                 for item in method.backing:
@@ -181,12 +198,8 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     for value in program.objections.values():
         table = target_tables[value.target_kind]
         target_exists = reference(value.target, table, value.target_kind, value.name)
-        if program.language != "EAL/0.3" and (value.premises or value.target_kind in ("argument", "objection")):
-            error("versioned_construct", "Composed objections and defences require EAL/0.3", value.name)
         if not value.evidence and not value.premises:
             error("empty_objection", "An objection requires evidence or premise claims", value.name)
-        if program.language != "EAL/0.3" and not value.evidence:
-            error("empty_objection", "Legacy objections require evidence", value.name)
         if len(scopes[value.name]) > 1:
             error("environment_mismatch", "An objection's evidence and premise claims must share one environment", value.name)
         expected = set()
@@ -199,9 +212,6 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                     expected.add(program.claims[conclusion].environment)
             elif value.target_kind == "objection":
                 expected.update(scopes[value.target])
-            elif program.language != "EAL/0.3":
-                expected.update(program.claims[a.conclusion].environment for a in program.arguments.values()
-                                if a.reasoning == value.target and a.conclusion in program.claims)
         for items, sources, kind in ((value.evidence, program.evidence, "objection evidence"),
                                      (value.premises, program.claims, "objection premise claim")):
             for item in items:
@@ -231,9 +241,11 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
             if remaining[dependent] == 0:
                 ready.append(dependent)
     if visited != len(graph):
-        error("dependency_cycle", "Premise claims must form an acyclic dependency graph")
+        blocked = next(name for name in graph if remaining[name])
+        error("dependency_cycle", "Premise claims must form an acyclic dependency graph", blocked)
     if depth and max(depth.values()) > MAX_PREMISE_DEPTH:
-        error("resource_limit", f"Premise chains may contain at most {MAX_PREMISE_DEPTH} edges")
+        error("resource_limit", f"Premise chains may contain at most {MAX_PREMISE_DEPTH} edges",
+              max(depth, key=depth.get))
     return problems
 
 

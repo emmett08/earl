@@ -1,4 +1,4 @@
-language "EAL/0.3";
+language "EAL/2";
 environment operating_point { require "chamber" == "cold-room-C"; require "assembly" == "regulator-7"; }
 tool sampled_record_adapter { version "1"; mode deterministic; }
 evidence sampled_record { tool sampled_record_adapter; kind trace; environment operating_point; max_age 3600; require "schema" == "EAL/typed-input/1"; }

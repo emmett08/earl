@@ -10,3 +10,14 @@ Consulted 23 September 2026. Verify current software interfaces before changing 
 - Model Context Protocol, published 2025-11-25 tools specification: https://modelcontextprotocol.io/specification/2025-11-25/server/tools ; lifecycle https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle ; official Python SDK https://github.com/modelcontextprotocol/python-sdk . Protocol operations and host integration, not a reasoning calculus.
 
 The proposed combination of conditional assumption validation, freshness, recorded tool outputs and argument evaluation is an engineering language design choice. Do not attribute that entire design to any individual source above.
+
+## Language-design sources
+
+See [expert-language-design.md](expert-language-design.md) for the inspected passages, source-specific recommendations and explicitly separated EAL adaptations.
+
+- C. A. R. Hoare, *Hints on Programming Language Design* (1973), reprinted in *Essays in Computing Science*, chapter 13. Primary text: https://flint.cs.yale.edu/cs428/doc/HintsPL.pdf . Simplicity, readable programmes, error detection and the limits of orthogonality.
+- Niklaus Wirth, *Good Ideas, Through the Looking Glass*, author manuscript dated 2 February / 15 June 2005: https://people.inf.ethz.ch/wirth/Articles/GoodIdeas_origFig.pdf . Sections 4.8 and 5.1–5.2 on type loopholes, syntax and extensible languages.
+- Guy L. Steele Jr., *Growing a Language*, OOPSLA 1998 talk; published in *Higher-Order and Symbolic Computation* 12 (1999), pp. 221–236. Inspected preliminary manuscript: https://homepages.inf.ed.ac.uk/wadler/gj/Documents/steele-oopsla98.pdf . Bibliographic context: https://homepages.inf.ed.ac.uk/wadler/gj/Documents/ . Design for growth and uniform use of library and built-in vocabulary.
+- Matthias Felleisen, *On the Expressive Power of Programming Languages*, *Science of Computer Programming* 17 (1991), pp. 35–75. Primary manuscript: https://www2.ccs.neu.edu/racket/pubs/scp91-felleisen.pdf . Restricted translations and eliminability; the EAL removal heuristic is not itself an application of a proved expressiveness theorem.
+
+These works motivate design choices. EAL-specific extension rules and human/model experimental procedures are a synthesis requiring their own validation. Do not claim expert consensus, author endorsement or established model-performance gains.

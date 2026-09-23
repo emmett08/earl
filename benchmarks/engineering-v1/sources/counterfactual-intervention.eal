@@ -1,8 +1,8 @@
-language "EAL/0.1";
+language "EAL/2";
 environment bench { require "site" == "bench"; require "revision" == "A"; }
 tool structural_model_tool { version "1"; mode deterministic; }
 evidence structural_model { tool structural_model_tool; kind causal_model; environment bench; max_age 7200; require "outcome" == "Y"; }
 
-reasoning intervention { mode counterfactual; rationale "Replace X by four in the supplied affine acyclic model, holding supplied exogenous noise fixed."; require "counterfactual" == 15; }
+reasoning intervention { method "counterfactual/1"; rationale "Replace X by four in the supplied affine acyclic model, holding supplied exogenous noise fixed."; require "counterfactual" == 15; }
 claim intervention_result { statement "Under this structural model and noise, intervening to set X to four gives Y fifteen."; environment bench; }
 argument intervention_argument { conclusion intervention_result; reasoning intervention; evidence structural_model; }

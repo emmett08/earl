@@ -1,4 +1,4 @@
-"""Independent semantic and interaction regressions for EAL/0.3."""
+"""Independent semantic and interaction regressions for EAL/2."""
 from dataclasses import replace
 import asyncio
 import json
@@ -12,13 +12,13 @@ from eal.parser import parse
 
 NOW = "2026-09-23T12:00:00Z"
 CONTEXT = {"site": "bench"}
-BASE = '''language "EAL/0.3";
+BASE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool collector { version "1"; mode deterministic; }
 evidence positive { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
 evidence negative { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
 evidence independent { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
-reasoning authored { mode structured; rationale "Apply the stated conditional support relation."; }
+reasoning authored { method "structured/1"; rationale "Apply the stated conditional support relation."; }
 claim foundation { statement "The bounded foundation claim."; environment lab; }
 claim downstream { statement "The dependent engineering claim."; environment lab; }
 claim critique { statement "The objection's stated premise."; environment lab; }
@@ -41,7 +41,7 @@ def assess(source, *, missing=(), values=None, registry=None):
                          "evidence_kind": evidence.kind, "environment": evidence.environment,
                          "environment_fingerprint": environment_fingerprint(evidence.environment, CONTEXT),
                          "input_digest": canonical_digest(evidence.input), "collected_at": NOW,
-                         "run_id": "independent-eal03-review", "status": "ok", "value": value,
+                         "run_id": "independent-semantic-review", "status": "ok", "value": value,
                          "data_digest": canonical_digest(value)}
     result = evaluate(program, records, now=NOW, context=CONTEXT, registry=registry)
     assert result["valid"], result["diagnostics"]
@@ -139,14 +139,14 @@ def _method_contract():
         implementation=_custom_result, implementation_version="review-1")
 
 
-def test_custom_registration_cannot_replace_a_legacy_builtin_alias():
+def test_custom_registration_cannot_replace_a_builtin_execution_profile():
     from eal.methods import default_registry
 
     registry = default_registry()
-    original = registry.get("deductive").identifier
+    original = registry.get("deductive/1").identifier
     with pytest.raises(ValueError):
         registry.with_method(replace(_method_contract(), builtin_mode="deductive"))
-    assert registry.get("deductive").identifier == original
+    assert registry.get("deductive/1").identifier == original
 
 
 def test_registry_contracts_and_fingerprint_survive_caller_mutation():
@@ -176,7 +176,7 @@ def test_custom_numeric_contract_rejects_boolean_observations():
 def test_custom_method_checks_question_identity_even_when_scalar_answer_is_unchanged():
     from eal.methods import default_registry
 
-    source = '''language "EAL/0.3";
+    source = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool collector { version "1"; mode deterministic; }
 evidence series { tool collector; kind sum_input; environment lab; max_age 60;

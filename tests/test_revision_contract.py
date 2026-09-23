@@ -16,13 +16,13 @@ KINDS = {"deductive": "logical_case", "causal": "experiment",
 
 
 def source(mode, query, *, quantity="proposition", unit="1", result='"entailed" == true'):
-    return f'''language "EAL/0.2";
+    return f'''language "EAL/2";
 environment lab {{ require "site" == "bench"; }}
 tool collector {{ version "1"; mode deterministic; }}
 evidence measured {{ tool collector; kind {KINDS[mode]}; environment lab;
   max_age 60; require "schema" == "EAL/typed-input/1";
 }}
-reasoning method {{ mode {mode}; rationale "Apply the declared finite computation."; }}
+reasoning method {{ method "{mode}/1"; rationale "Apply the declared finite computation."; }}
 claim checked_claim {{ statement "This prose is an interpretation, not a checked formula.";
   environment lab;
   proposition {{ subject "controller"; quantity "{quantity}"; unit "{unit}";
@@ -157,7 +157,7 @@ def test_terminal_model_answer_cannot_bypass_a_measured_budget_overrun(budget_va
 def test_benchmark_identity_distinguishes_boolean_predicates_from_numbers():
     from eal.benchmark import source_correspondence
 
-    original = '''language "EAL/0.1";
+    original = '''language "EAL/2";
 environment lab { require "enabled" == true; }
 claim checked_claim { statement "The environment is enabled."; environment lab; }
 '''
