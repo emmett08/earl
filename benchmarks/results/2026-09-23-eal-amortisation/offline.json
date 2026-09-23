@@ -1,0 +1,595 @@
+{
+  "aggregate": {
+    "cases": 20,
+    "eal_host_utf8_bytes": 6380,
+    "equal_checker_host_utf8_bytes": 6380,
+    "full_replay_utf8_bytes": 100819,
+    "replay_minus_host_utf8_bytes": 94439,
+    "source_utf8_bytes_in_full": 48583
+  },
+  "case_rows": [
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 5224,
+      "packet_sha256": {
+        "full": "c2e26c787e7a217004f05ca2777a104332186c3fc0cfd5a475e16ecab391aa0d",
+        "host": "9ac4cd3532bdb1b36d7e1514ef6ee170c222fc3592bd22e393c20503149ed073"
+      },
+      "raw_records_utf8_bytes_in_full": 1390,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "supported",
+      "step": "initial_tests",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 4528,
+      "packet_sha256": {
+        "full": "3684e014118201303691444894a30225447b6ee05e33768705e61abb7190e9d1",
+        "host": "653fdcf7a44d2afee91fe080b5c77b93fd7f9cece7a740f278666c0761f102fa"
+      },
+      "raw_records_utf8_bytes_in_full": 694,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "supported",
+      "step": "single_matching_test",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 6306,
+      "packet_sha256": {
+        "full": "a6e4d44996707bd8bb522dea83b89f3e77ba4287f9548b1f5231ccbe9fc8b835",
+        "host": "01d02955ca34338c246b884b0916236ae8d4e9c6069fa9b9d2893690cc9e897c"
+      },
+      "raw_records_utf8_bytes_in_full": 2472,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "contested",
+      "step": "partial_witness",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 321,
+      "equal_checker_host_utf8_bytes": 321,
+      "full_replay_utf8_bytes": 6306,
+      "packet_sha256": {
+        "full": "cd5340f53ecd0d4d71426e6c2ad5621808e3429d3465ce6e91f178f09ffda5bb",
+        "host": "4e60f41e2a60cb85e077e3dd93ad97997358bca3c06cd61ec616fa2369516936"
+      },
+      "raw_records_utf8_bytes_in_full": 2472,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "unsupported",
+      "step": "tests_wrong_property",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 6300,
+      "packet_sha256": {
+        "full": "71dd22cf138b8d266e11fed80474c818c6f7a2c1fcc63458371c8917a7c5d7cb",
+        "host": "f4a53cd2fdc078bc286fd2fa70be7fe336022480ccf67d48ac91e4490552d12c"
+      },
+      "raw_records_utf8_bytes_in_full": 2466,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "supported",
+      "step": "wrong_scope_same_value",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 6306,
+      "packet_sha256": {
+        "full": "9cf7c3473965c49e64b11add7ac19dce5419dde67785721eaba04b965798eeba",
+        "host": "79a812736c8c6cd26403eed890873793a63a1966dd051aa3fa619e470fdf806d"
+      },
+      "raw_records_utf8_bytes_in_full": 2472,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "supported",
+      "step": "partial_no_violation",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 6306,
+      "packet_sha256": {
+        "full": "a6e4d44996707bd8bb522dea83b89f3e77ba4287f9548b1f5231ccbe9fc8b835",
+        "host": "01d02955ca34338c246b884b0916236ae8d4e9c6069fa9b9d2893690cc9e897c"
+      },
+      "raw_records_utf8_bytes_in_full": 2472,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "contested",
+      "step": "restore_witness",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 7004,
+      "packet_sha256": {
+        "full": "f0e83bec6142fd1ec9abcd21beba0313d40e6946fc6f1c0749274df2da0229b1",
+        "host": "5252800183ea0b965949e14c3e44c81c9cb13c7133d1654f245beaac42bcfd98"
+      },
+      "raw_records_utf8_bytes_in_full": 3170,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "supported",
+      "step": "independent_defence",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 7004,
+      "packet_sha256": {
+        "full": "a6d9baceabd42843c80742e505c5187a4361d61bc51198d46f66589e365d872c",
+        "host": "8660a26a78ef20e451102767b68232e37f1d06467d47c0dc1e9404a7c3329a14"
+      },
+      "raw_records_utf8_bytes_in_full": 3170,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "contested",
+      "step": "defence_wrong_sample",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 6306,
+      "packet_sha256": {
+        "full": "a6e4d44996707bd8bb522dea83b89f3e77ba4287f9548b1f5231ccbe9fc8b835",
+        "host": "01d02955ca34338c246b884b0916236ae8d4e9c6069fa9b9d2893690cc9e897c"
+      },
+      "raw_records_utf8_bytes_in_full": 2472,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "contested",
+      "step": "withdraw_defence",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 5224,
+      "packet_sha256": {
+        "full": "c2e26c787e7a217004f05ca2777a104332186c3fc0cfd5a475e16ecab391aa0d",
+        "host": "9ac4cd3532bdb1b36d7e1514ef6ee170c222fc3592bd22e393c20503149ed073"
+      },
+      "raw_records_utf8_bytes_in_full": 1390,
+      "source_utf8_bytes_in_full": 2999,
+      "status": "supported",
+      "step": "retract_witness",
+      "track": "counterexample"
+    },
+    {
+      "claim": "property_supported",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 6117,
+      "packet_sha256": {
+        "full": "8abb69abbe6bf209f20d128c85cf586d6617a9dab3e754be4e0425c703f90f2d",
+        "host": "817af77c98421ad8c68677d5489e6d9de94124481d4f2f07982b488feb39d991"
+      },
+      "raw_records_utf8_bytes_in_full": 2472,
+      "source_utf8_bytes_in_full": 2810,
+      "status": "supported",
+      "step": "one_route_unlinked",
+      "track": "counterexample"
+    },
+    {
+      "claim": "qualified_absence",
+      "eal_host_utf8_bytes": 317,
+      "equal_checker_host_utf8_bytes": 317,
+      "full_replay_utf8_bytes": 3654,
+      "packet_sha256": {
+        "full": "9efccb32ba1f5f703176f6b3ec71c0dbfa6cdf9e004c68107d3e180dc766ce8f",
+        "host": "776d996e2126488733cbac349f107e034717fdd7a1df2b6373bdd41e64f816e4"
+      },
+      "raw_records_utf8_bytes_in_full": 1222,
+      "source_utf8_bytes_in_full": 1598,
+      "status": "supported",
+      "step": "complete_clear",
+      "track": "closure"
+    },
+    {
+      "claim": "qualified_absence",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 3630,
+      "packet_sha256": {
+        "full": "62825f4a3bccd70e703b767cb15edfc4602ec420d1ac99f70d852566eec62d5c",
+        "host": "1109e4539ece4543f4aa2b8a009cced17f21d7413900a7c008279d2a85349d76"
+      },
+      "raw_records_utf8_bytes_in_full": 1198,
+      "source_utf8_bytes_in_full": 1598,
+      "status": "unsupported",
+      "step": "partial_clear",
+      "track": "closure"
+    },
+    {
+      "claim": "qualified_absence",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 3648,
+      "packet_sha256": {
+        "full": "f4530677991fa315e09da999f4831a48e4f08024e48d22bf63fd886d663ca2a7",
+        "host": "a6ad36531f7c136181e568d40631c5e363dc843e1521433b24d8cfcae66564c5"
+      },
+      "raw_records_utf8_bytes_in_full": 1216,
+      "source_utf8_bytes_in_full": 1598,
+      "status": "unsupported",
+      "step": "wrong_scope_clear",
+      "track": "closure"
+    },
+    {
+      "claim": "qualified_absence",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 3653,
+      "packet_sha256": {
+        "full": "e109538ab57c323ba4da6278b58c60b2e6a61932650e4310f2b33f6ee2d22335",
+        "host": "fb376274b8ca043c43d9b45306e1d28d7b102d4b259992fcb6f66ed5081b2190"
+      },
+      "raw_records_utf8_bytes_in_full": 1221,
+      "source_utf8_bytes_in_full": 1598,
+      "status": "unsupported",
+      "step": "insensitive_detector",
+      "track": "closure"
+    },
+    {
+      "claim": "qualified_absence",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 3653,
+      "packet_sha256": {
+        "full": "86231e48abf1958faa5f44fa216c808d4be8db35d2c3700ebb502e04b32ffdee",
+        "host": "898f2063495c13097027f4ebb851f43ffc2db894be5517f9ab7591a956fe9733"
+      },
+      "raw_records_utf8_bytes_in_full": 1221,
+      "source_utf8_bytes_in_full": 1598,
+      "status": "unsupported",
+      "step": "high_detection_limit",
+      "track": "closure"
+    },
+    {
+      "claim": "qualified_absence",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 3654,
+      "packet_sha256": {
+        "full": "1ba222c8f11c8b3e0c622950949e490a3f473e89feaec70a078fd92a3ce55079",
+        "host": "9836050003e8151e663727956d3fb08f01ad00350b9bbfaf9958272ceb0683ec"
+      },
+      "raw_records_utf8_bytes_in_full": 1222,
+      "source_utf8_bytes_in_full": 1598,
+      "status": "unsupported",
+      "step": "complete_with_violation",
+      "track": "closure"
+    },
+    {
+      "claim": "qualified_absence",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 3562,
+      "packet_sha256": {
+        "full": "d5f37f3a62ce60c7788e3184a5d3265afc34e4285a6a9fb31e273e52ee28615e",
+        "host": "04edb45cca66cc474bfca5d4af5745d7b4dea8ebd38c2687b6b5656720e2d77b"
+      },
+      "raw_records_utf8_bytes_in_full": 1130,
+      "source_utf8_bytes_in_full": 1598,
+      "status": "unsupported",
+      "step": "empty_search",
+      "track": "closure"
+    },
+    {
+      "claim": "qualified_absence",
+      "eal_host_utf8_bytes": 319,
+      "equal_checker_host_utf8_bytes": 319,
+      "full_replay_utf8_bytes": 2434,
+      "packet_sha256": {
+        "full": "85087b4b9470425eddfa2be761564b6ab8687b398956b4ff7a3425ad50909cd3",
+        "host": "bc705f36c57c0b4010a411834f6d9f949db4d8aaee3f7495d29aa9b7613600ba"
+      },
+      "raw_records_utf8_bytes_in_full": 2,
+      "source_utf8_bytes_in_full": 1598,
+      "status": "unsupported",
+      "step": "missing_search",
+      "track": "closure"
+    }
+  ],
+  "limits": [
+    "Exposed synthetic cases, repeated evenly in the illustrative scenario; no independent users or model responses.",
+    "The equal-checker control has the same concise result packet and matches these fixed-case statuses, but is not a general checker or measured authoring comparison.",
+    "The full replay packet is one plausible prompt, not an optimised lower bound; cache and retrieval effects are sensitivity parameters.",
+    "Token densities, one-time work, host costs and revisions are assumed scenarios, not measured provider usage or prices.",
+    "Answer quality, semantic authoring fidelity, latency, and real provider cost are unmeasured."
+  ],
+  "packet_unit": "exact UTF-8 bytes, not provider tokens",
+  "schema": "EAL/amortisation-offline/1",
+  "sensitivity": [
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 944.39,
+      "first_total_query_count_to_cover_assumed_setup": 13
+    },
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 919.39,
+      "first_total_query_count_to_cover_assumed_setup": 14
+    },
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 844.39,
+      "first_total_query_count_to_cover_assumed_setup": 15
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 701.475,
+      "first_total_query_count_to_cover_assumed_setup": 18
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 676.475,
+      "first_total_query_count_to_cover_assumed_setup": 18
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 601.475,
+      "first_total_query_count_to_cover_assumed_setup": 20
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 507.143,
+      "first_total_query_count_to_cover_assumed_setup": 24
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 482.143,
+      "first_total_query_count_to_cover_assumed_setup": 25
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.2,
+      "derived_input_token_equivalent_gain_per_query": 407.143,
+      "first_total_query_count_to_cover_assumed_setup": 30
+    },
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 1180.487,
+      "first_total_query_count_to_cover_assumed_setup": 11
+    },
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 1155.487,
+      "first_total_query_count_to_cover_assumed_setup": 11
+    },
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 1080.487,
+      "first_total_query_count_to_cover_assumed_setup": 12
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 876.844,
+      "first_total_query_count_to_cover_assumed_setup": 14
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 851.844,
+      "first_total_query_count_to_cover_assumed_setup": 15
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 776.844,
+      "first_total_query_count_to_cover_assumed_setup": 16
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 633.929,
+      "first_total_query_count_to_cover_assumed_setup": 19
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 608.929,
+      "first_total_query_count_to_cover_assumed_setup": 20
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.25,
+      "derived_input_token_equivalent_gain_per_query": 533.929,
+      "first_total_query_count_to_cover_assumed_setup": 23
+    },
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 1558.244,
+      "first_total_query_count_to_cover_assumed_setup": 8
+    },
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 1533.244,
+      "first_total_query_count_to_cover_assumed_setup": 8
+    },
+    {
+      "assumed_cached_source_discount": 0.0,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 1458.244,
+      "first_total_query_count_to_cover_assumed_setup": 9
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 1157.434,
+      "first_total_query_count_to_cover_assumed_setup": 11
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 1132.434,
+      "first_total_query_count_to_cover_assumed_setup": 11
+    },
+    {
+      "assumed_cached_source_discount": 0.5,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 1057.434,
+      "first_total_query_count_to_cover_assumed_setup": 12
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 0,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 836.786,
+      "first_total_query_count_to_cover_assumed_setup": 15
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 25,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 811.786,
+      "first_total_query_count_to_cover_assumed_setup": 15
+    },
+    {
+      "assumed_cached_source_discount": 0.9,
+      "assumed_host_input_token_equivalent_per_query": 100,
+      "assumed_host_update_count": 2,
+      "assumed_incremental_host_setup_input_token_equivalent": 10000,
+      "assumed_incremental_host_update_input_token_equivalent_each": 1000,
+      "assumed_tokens_per_utf8_byte": 0.33,
+      "derived_input_token_equivalent_gain_per_query": 736.786,
+      "first_total_query_count_to_cover_assumed_setup": 17
+    }
+  ],
+  "source_experiment": "scripts/experiment_negative_revisions.py",
+  "status": "deterministic-sensitivity-only"
+}

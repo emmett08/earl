@@ -10,6 +10,7 @@ from mcp.server.fastmcp import FastMCP
 from jsonschema import Draft202012Validator
 
 from .runtime import ReasoningService, load_method_registry
+from .artifacts import ArtifactRegistry
 
 
 class StrictFastMCP(FastMCP):
@@ -30,7 +31,7 @@ class StrictFastMCP(FastMCP):
         return await super().call_tool(name, arguments)
 
 
-def create_server(service: ReasoningService) -> FastMCP:
+def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None = None) -> FastMCP:
     server = StrictFastMCP(
         "EAL engineering reasoning",
         instructions="Validate explicit engineering arguments, collect configured observations, reason over their declared scope, and explain results. Support is relative to declared inference rationales, not a proof of prose truth.",
@@ -74,6 +75,12 @@ def create_server(service: ReasoningService) -> FastMCP:
 
         return solve_grounded(arguments, attacks)
 
+    if artifacts is not None:
+        @server.tool(structured_output=True)
+        def eal_assess_artifact(artifact_id: str) -> dict[str, Any]:
+            """Collect and assess a pinned host artifact; return its configured claim statuses and trace ID."""
+            return artifacts.assess(artifact_id)
+
     return server
 
 
@@ -83,9 +90,11 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
+    parser.add_argument("--artifacts", type=Path, help="Host-pinned EAL artifact catalogue TOML")
     args = parser.parse_args()
     service = ReasoningService(args.workspace, args.registry, args.database, method_registry=load_method_registry(args.methods))
-    create_server(service).run(transport="stdio")
+    artifacts = ArtifactRegistry.load(service, args.artifacts) if args.artifacts else None
+    create_server(service, artifacts).run(transport="stdio")
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ EAL represents engineering reasoning as claims, subordinate arguments, typed evi
 
 The language is **EAL/2**, with `.eal` source files. EAL/2 is the only supported source language; backwards compatibility is never a project requirement. Python 3.11 or later is required. Configured command adapters currently require a POSIX host.
 
-Package **2.2.3** adds an optional, operator-installed finite-state reachability method and a bounded EAL/2 companion experiment. The method uses the existing typed method registry; it does not change the EAL/2 source language or `EAL/typed-input/1` observation schema. The earlier package 2.2.2 results retain their measured version labels. File imports still require `request` metadata.
+Package **2.2.4** adds an optional, operator-pinned artifact catalogue and compact assessment operation for reusing reviewed EAL files. Package 2.2.3 added the finite-state reachability method. The source language remains **EAL/2** and the observation schema remains **`EAL/typed-input/1`**. Earlier experiments retain their measured package labels. File imports still require `request` metadata.
 
 ## What is implemented
 
@@ -17,6 +17,7 @@ Package **2.2.3** adds an optional, operator-installed finite-state reachability
 - Reusable argument patterns with typed parameters, closed lexical scope and identity-preserving applications.
 - Typed scalar propositions with declared formal queries, subject/quantity/unit/scope/time correspondence, and explicit method-result bindings. Canonical formatting preserves the parsed meaning.
 - An official-SDK MCP stdio server, a shared CLI, and a bounded interaction loop with plain-text and native-function interfaces, host-managed state, explicit draft revision, diagnostic feedback and usage accounting.
+- An optional host-pinned artifact catalogue: a recipient requests a reviewed EAL file by ID while the host selects its source, method registry, context, time and claims, then returns a compact checked status packet.
 - Versioned engineering task corpora and a repeated, paired experiment runner with frozen references, balanced scheduling, structural source equivalence, evidence-trace scoring and retained failures. Provider trials measure outcomes and cost; scripted protocol tests do not establish model capability or savings.
 
 The interpreter computes the declared reasoning operations. Natural-language statements, relevance, modelling assumptions and empirical truth still require justified interpretation. The precise computational limits are documented for each method; this implementation does not claim the complete ASPIC+ framework.
@@ -90,9 +91,11 @@ eal grounded examples/grounded.json
 eal-mcp --workspace . --registry examples/tools.toml
 ```
 
-The MCP tools are `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and `eal_grounded`. `eal describe` exposes syntax and contracts to a model without prior EAL knowledge. `eal format FILE` returns canonical source as JSON. Formatting changes exact source identity when its bytes change, so observations must then be recollected.
+The MCP tools are `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and `eal_grounded`. With an operator-configured `--artifacts` catalogue, the server also offers `eal_assess_artifact(artifact_id)`. `eal describe` exposes syntax and contracts to a model without prior EAL knowledge. `eal format FILE` returns canonical source as JSON. Formatting changes exact source identity when its bytes change, so observations must then be recollected.
 
 A text-only model can emit a JSON operation request for `eal-host`; the host performs one MCP call. `eal-agent` adds the configured model/request/result/repair loop over a persistent MCP session. Its stateful interface retains exact source, context and current result identifiers; a model can request `{"operation":"assess"}` to validate, collect, reason and explain, then `{"operation":"finish"}` to return the checked result without copying them. Plain-text and native-function interfaces use the same operation semantics. See [the model loop](docs/model-loop.md) and [model evaluation](docs/model-evaluation.md) for configuration, budgets and the distinction between a completed interaction and a correct engineering answer.
+
+For a reviewed source reused by another developer or a text-only model on the same registered question and context, configure an [artifact catalogue](docs/mcp-and-tools.md#reuse-a-reviewed-eal-artifact). The operator can call `python -m eal.artifacts --workspace . --registry TOOLS.toml --artifacts ARTIFACTS.toml --id NAME` before invoking a model. The result contains checked statuses and an explanation ID without transmitting the EAL source or language reference to the model. An application may call `ArtifactRegistry.assist_text_only` with a model adapter; it gives the model a compact packet and returns the host-owned status separately from unverified model prose. The present interface tests establish this status boundary; recipient token, latency and accuracy advantages require a prospective comparison.
 
 ## Read the design
 
@@ -107,6 +110,10 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 - [EAL/2 with a finite-state checker](docs/eal2-companion-investigation.md): a versioned argument, installed method, independent graph oracle and complete synthetic experiment, including an observation-authentication counterexample.
 - [Why supplied arguments and evidence fail](docs/eal2-evidence-failure-analysis.md): a verified reanalysis of 180 retained model calls, five EAL/2 perturbation pairs, an executable bounded argument and a new discriminating investigation protocol.
 - [Negative findings and revision](docs/eal2-negative-revision-results.md): a registered sampled-finding method, explicit EAL/2 objections, 20 deterministic status transitions, research synthesis and a staged prospective pilot.
+- [Deployment research](docs/eal2-deployment-research.md): candidate EAL workflows, competing explanations and the evidence needed to choose a model, skill or tool route.
+- [Amortisation model](docs/eal2-amortisation.md): a bounded decision model for repeated use, source-review costs and compact recipient assessments.
+- [Skill arm](docs/eal2-skill-arm.md): a scoped instruction experiment and its relationship to the checked artifact route.
+- [Prospective deployment protocol](benchmarks/protocols/INV-EAL-DEPLOYMENT-001.json): the comparison needed to measure EAL-specific effects and cost on new tasks.
 - [Historical EAL/0.3 repeated experiments](docs/eal03-model-results.md): original model/interface conditions and development ablations.
 - [Reasoning methods](docs/reasoning-modes.md): distinct evidence schemas, algorithms and interpretation limits.
 - [Grounded argumentation](docs/grounded-reasoning.md): counterargument, defence and undecided cycles.
