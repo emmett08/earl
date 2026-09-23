@@ -1,0 +1,12 @@
+{
+  "observed_at": "2040-01-01T09:00:00Z",
+  "context": {"site": "simulation"},
+  "request": {"tool": "graph_reader", "tool_version": "1", "mode": "deterministic", "input": {}, "context": {"site": "simulation"}},
+  "value": {
+    "schema": "EAL/typed-input/1", "method": "engineering/reachability/1",
+    "subject": "controller-X", "quantity": "proposition", "unit": "1",
+    "scope": "controller-model-X",
+    "valid_from": "2040-01-01T08:00:00Z", "valid_until": "2040-01-01T10:00:00Z",
+    "payload": {"node_count": 4, "edges": [[0, 1], [1, 2]], "start": 0, "forbidden": [3], "horizon": 3}
+  }
+}
