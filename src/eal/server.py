@@ -19,6 +19,16 @@ def create_server(service: ReasoningService) -> FastMCP:
     )
 
     @server.tool(structured_output=True)
+    def eal_describe() -> dict[str, Any]:
+        """Discover supported language versions, syntax, method contracts and interpretation limits."""
+        return service.describe()
+
+    @server.tool(structured_output=True)
+    def eal_format(source: str) -> dict[str, Any]:
+        """Return canonical checked EAL source; changed source bytes require new collection bindings."""
+        return service.format(source)
+
+    @server.tool(structured_output=True)
     def eal_validate(source: str) -> dict[str, Any]:
         """Parse EAL and check names, types and dependency structure without running tools."""
         return service.validate(source)

@@ -15,10 +15,11 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     subcommands = parser.add_subparsers(dest="operation", required=True)
-    for operation in ("validate", "collect", "reason"):
+    subcommands.add_parser("describe")
+    for operation in ("validate", "format", "collect", "reason"):
         command = subcommands.add_parser(operation)
         command.add_argument("source", help="Source file, relative to the workspace")
-        if operation != "validate":
+        if operation in ("collect", "reason"):
             command.add_argument("--context", required=True, help="JSON object, or @file relative to the workspace")
         if operation == "collect":
             command.add_argument("--evidence", action="append", dest="evidence_ids")
@@ -42,11 +43,15 @@ def main() -> None:
             result = solve_grounded(**graph)
         else:
             service = ReasoningService(workspace, args.registry, args.database)
-            if args.operation == "explain":
+            if args.operation == "describe":
+                result = service.describe()
+            elif args.operation == "explain":
                 result = service.explain(args.assessment_id, args.claim)
             else:
                 source = bounded_path(workspace, args.source).read_text(encoding="utf-8")
-                if args.operation == "validate":
+                if args.operation == "format":
+                    result = service.format(source)
+                elif args.operation == "validate":
                     result = service.validate(source)
                 else:
                     context_text = bounded_path(workspace, args.context[1:]).read_text(encoding="utf-8") if args.context.startswith("@") else args.context

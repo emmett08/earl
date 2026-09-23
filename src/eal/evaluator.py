@@ -17,6 +17,7 @@ from typing import Any
 from .model import Predicate, Program
 from .modes import assess_mode
 from .semantics import parse_time, validate
+from .propositions import prepare_binding, check_result
 
 MAX_JSON_DEPTH = 64
 MAX_JSON_NODES = 100_000
@@ -246,14 +247,32 @@ def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime 
                     sources = [{"id": e, "kind": program.evidence[e].kind, "value": records[e]["value"]}
                                for e in sorted(source_ids) if result["evidence"][e]["status"] == "available"]
                     premises = [{"id": p, **result["claims"][p]} for p in argument.premises]
-                    computation = assess_mode(method.mode, sources, premises)
+                    binding = None
+                    if claim.proposition is not None:
+                        selected = next(item for item in sources if item["id"] == argument.binding)
+                        payload, binding = prepare_binding(claim.proposition, method.mode,
+                                                           argument.binding, selected["value"])
+                        sources = [{**item, "value": payload} if item["id"] == argument.binding else item
+                                   for item in sources]
+                    if binding is not None and binding["status"] == "unsupported":
+                        computation = {"status": "unsupported", "reasons": binding["reasons"], "details": {}, "binding": binding}
+                    else:
+                        computation = assess_mode(method.mode, sources, premises)
+                        if binding is not None:
+                            if computation["status"] == "supported":
+                                binding = check_result(claim.proposition, method.mode, computation["details"], binding)
+                            else:
+                                binding = {**binding, "status": "unsupported", "reasons": ["The bound computation did not produce a usable result"]}
+                            computation["binding"] = binding
                     reasons.extend(computation["reasons"])
                     if computation["status"] == "supported":
                         outcomes = [_predicate(p, computation["details"]) for p in method.predicates]
                         reasons.extend(reason for _, reason in outcomes)
                         computation = {**computation, "predicates": [
                             {"holds": ok, "reason": reason} for ok, reason in outcomes]}
-                        if not all(ok for ok, _ in outcomes):
+                        if binding is not None:
+                            reasons.extend(binding["reasons"])
+                        if not all(ok for ok, _ in outcomes) or binding is not None and binding["status"] != "supported":
                             status = "unsupported"
                         else:
                             status = "contested" if "contested" in states else "supported"
@@ -281,7 +300,9 @@ def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime 
                 reasons.append(f"Active objections without a usable supporting derivation: {', '.join(active['claim'][name])}")
         entry = _entry(status, reasons, statement=claim.statement, environment=claim.environment,
                        supporting_arguments=supporting, contested_arguments=contested,
-                       objections=active["claim"].get(name, []))
+                       objections=active["claim"].get(name, []),
+                       proposition=asdict(claim.proposition) if claim.proposition else None,
+                       prose_verified=False)
         result["claims"][name] = entry
         return entry
 

@@ -8,11 +8,15 @@ The implementation follows Terence Parr’s separation of parsing, intermediate 
 | Lowering | `parser.py`, external visitor | Typed declarations independent of generated contexts |
 | Symbol and semantic analysis | `semantics.py` | Unique symbols, typed references, bounds, applicability dates, acyclic premise graph, method/evidence contract checks |
 | Method computation | `modes.py` | Method-specific calculation and explicit output fields |
+| Formal correspondence | `propositions.py` | Versioned input envelopes, formal query identity, quantity/unit/scope/interval checks and result predicates |
+| Canonical translation | `formatter.py` | Validated IR back to source with parse–format–parse preservation |
 | Argument interpretation | `evaluator.py` | Scoped support, objections, dependencies and method traces at a supplied time |
 | Dialectical calculation | `dialectic.py` | Grounded extension of an explicit finite attack graph |
 | Tool execution | `runtime.py` | Bounded command or file observations |
 | Persistence | `store.py` | SQLite collections, observations and reasoning results |
 | Interfaces | `cli.py`, `server.py`, `host.py` | Shared operations through CLI or official MCP SDK |
+| Model interaction | `agent.py`, `providers.py`, `discovery.py` | Discovered schemas, text generation, bounded feedback/repair, retained attempts and usage |
+| Task evaluation | `benchmark.py`, `benchmarks/engineering-v1` | Known-answer tasks and paired unaided/delegated provider runs |
 
 There are no embedded application actions in the grammar. The pure evaluator performs no IO and takes an explicit time; fixed source, records, context and time yield the same result. A nondeterministic collector can supply different observations on repeated runs while interpretation of each fixed observation set remains deterministic.
 

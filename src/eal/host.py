@@ -20,6 +20,8 @@ from .runtime import strict_json
 
 
 OPERATIONS = {
+    "describe": (set(), set()),
+    "format": ({"source"}, set()),
     "validate": ({"source"}, set()),
     "collect": ({"source", "context"}, {"evidence_ids"}),
     "reason": ({"source", "context"}, {"collection_id", "now"}),
@@ -37,7 +39,7 @@ def parse_request(text: str) -> tuple[str, dict[str, Any]]:
         raise ValueError("Request must be one JSON object")
     operation = request.get("operation")
     if not isinstance(operation, str) or operation not in OPERATIONS:
-        raise ValueError("operation must be validate, collect, reason, explain or grounded")
+        raise ValueError("operation must be " + ", ".join(OPERATIONS))
     required, optional = OPERATIONS[operation]
     arguments = {key: value for key, value in request.items() if key != "operation"}
     if missing := required - set(arguments):

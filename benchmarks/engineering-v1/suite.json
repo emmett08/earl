@@ -1,0 +1,494 @@
+{
+  "schema": "EAL/engineering-tasks/1",
+  "version": "engineering-v1.0",
+  "description": "Synthetic known-answer engineering reasoning fixtures; observation values are committed inputs, not claims of physical experiments. Held-out means reserved from prompt/example development within this suite, not hidden or unexposed training data.",
+  "tasks": [
+    {
+      "id": "nested-model-observation",
+      "family": "nested_model",
+      "split": "development",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/nested-model.eal",
+      "observations": "observations/nested-good.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "model_result": "supported",
+          "model_applies": "supported",
+          "trial_supported": "supported"
+        }
+      },
+      "oracle": "Modus ponens is entailed. The applicability and measured checks are true. The root requires all three grounds; the authored relevance relation is not mechanically established."
+    },
+    {
+      "id": "nested-missing-measurement",
+      "family": "nested_model",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/nested-model.eal",
+      "observations": "observations/nested-good.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "model_result": "supported",
+          "model_applies": "supported",
+          "trial_supported": "unsupported"
+        }
+      },
+      "oracle": "Omitting the measured observation removes one conjunct. Supported subclaims alone cannot supply the missing measurement.",
+      "collect": [
+        "logic",
+        "applicability"
+      ]
+    },
+    {
+      "id": "nested-outside-environment",
+      "family": "nested_model",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/nested-model.eal",
+      "observations": "observations/nested-good.json",
+      "context": {
+        "site": "bench",
+        "revision": "B"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "trial_supported": "out_of_scope"
+        }
+      },
+      "oracle": "Revision B does not meet the declared revision A environment."
+    },
+    {
+      "id": "nested-failed-applicability",
+      "family": "nested_model",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/nested-model.eal",
+      "observations": "observations/nested-inapplicable.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "model_result": "supported",
+          "model_applies": "unsupported",
+          "trial_supported": "unsupported"
+        }
+      },
+      "oracle": "The formal model result remains entailed, but the failed applicability subargument blocks the engineering root."
+    },
+    {
+      "id": "fault-before-new-measurement",
+      "family": "fault_revision",
+      "split": "development",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/fault-revision.eal",
+      "observations": "observations/fault-before.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "sensor_ranked": "supported",
+          "connector_ranked": "unsupported"
+        },
+        "values": {
+          "arguments.sensor_argument.reasoning_result.details.best_posterior": 0.8
+        }
+      },
+      "oracle": "Posterior weights 0.4 and 0.1 normalise to 0.8 and 0.2. Duplicate use as argument evidence and backing must not square likelihoods."
+    },
+    {
+      "id": "fault-after-new-measurement",
+      "family": "fault_revision",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/fault-revision.eal",
+      "observations": "observations/fault-after.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "sensor_ranked": "unsupported",
+          "connector_ranked": "supported"
+        },
+        "values": {
+          "arguments.connector_argument.reasoning_result.details.best_posterior": 0.6923076923076923
+        }
+      },
+      "oracle": "Revised likelihoods describe the joint old-plus-new record, not independent multiplication performed by the interpreter. Weights .04 and .09 give connector posterior 9/13."
+    },
+    {
+      "id": "fault-impossible-observation",
+      "family": "fault_revision",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/fault-revision.eal",
+      "observations": "observations/fault-impossible.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "sensor_ranked": "unsupported",
+          "connector_ranked": "unsupported"
+        }
+      },
+      "oracle": "All candidates assign zero likelihood; the supplied candidate model cannot explain the record. No arbitrary winner is licensed."
+    },
+    {
+      "id": "causal-randomised-comparison",
+      "family": "causal_counterfactual",
+      "split": "development",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/causal-effect.eal",
+      "observations": "observations/causal-randomised.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "positive_effect": "supported"
+        },
+        "values": {
+          "arguments.effect_argument.reasoning_result.details.estimate": 5
+        }
+      },
+      "oracle": "Treatment mean 10 minus control mean 5 gives 5. This estimate does not by itself establish individual counterfactual outcomes."
+    },
+    {
+      "id": "causal-observational-assignment",
+      "family": "causal_counterfactual",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/causal-effect.eal",
+      "observations": "observations/causal-observational.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "positive_effect": "unsupported"
+        }
+      },
+      "oracle": "The recorded assignment fails the specified randomised experiment contract; correlation alone does not satisfy it."
+    },
+    {
+      "id": "counterfactual-fixed-noise",
+      "family": "causal_counterfactual",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/counterfactual-intervention.eal",
+      "observations": "observations/counterfactual.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "intervention_result": "supported"
+        },
+        "values": {
+          "arguments.intervention_argument.reasoning_result.details.factual": 6,
+          "arguments.intervention_argument.reasoning_result.details.counterfactual": 15,
+          "arguments.intervention_argument.reasoning_result.details.difference": 9
+        }
+      },
+      "oracle": "Factual Y=2+3(1)+1=6; intervention Y=2+3(4)+1=15. The nine-unit change is model-conditional and differs from the separate experiment."
+    },
+    {
+      "id": "calibration-historical-valid",
+      "family": "calibration_interval",
+      "split": "development",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/calibration-interval.eal",
+      "observations": "observations/calibration.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "reading_usable": "supported"
+        },
+        "assumptions": {
+          "calibrated": "supported"
+        }
+      },
+      "oracle": "At 10:30, the original 10:00 observations are fresh and the half-open [10:00,11:00) calibration interval contains the assessment."
+    },
+    {
+      "id": "calibration-exact-expiry",
+      "family": "calibration_interval",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/calibration-interval.eal",
+      "observations": "observations/calibration.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T11:00:00Z",
+      "expected": {
+        "claims": {
+          "reading_usable": "unsupported"
+        },
+        "assumptions": {
+          "calibrated": "unsupported"
+        }
+      },
+      "oracle": "At exactly 11:00 the half-open calibration interval has ended, although the observation is still fresh."
+    },
+    {
+      "id": "calibration-stale-reading",
+      "family": "calibration_interval",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/calibration-interval.eal",
+      "observations": "observations/calibration.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T13:00:00Z",
+      "expected": {
+        "claims": {
+          "reading_usable": "unsupported"
+        }
+      },
+      "oracle": "At 13:00 both the interval and two-hour freshness bound have elapsed. Reimporting a file does not refresh its original observation time."
+    },
+    {
+      "id": "intermediate-objection-independent-route",
+      "family": "objection_composition",
+      "split": "development",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/intermediate-objection.eal",
+      "observations": "observations/objection.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "intermediate": "contested",
+          "root_result": "supported"
+        },
+        "arguments": {
+          "dependent_argument": "contested",
+          "independent_argument": "supported"
+        },
+        "objections": {
+          "challenge_primary": "active"
+        }
+      },
+      "oracle": "The active objection contests primary_step and the dependent argument. The independent route does not depend on that method and remains supported.",
+      "uncovered": [
+        "EAL objection defence by a supporting subargument is not represented in this fixture; the standalone grounded solver is separate."
+      ]
+    },
+    {
+      "id": "intermediate-objection-no-alternative",
+      "family": "objection_composition",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/intermediate-objection.eal",
+      "observations": "observations/objection.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "intermediate": "contested",
+          "root_result": "contested"
+        },
+        "arguments": {
+          "independent_argument": "unsupported"
+        }
+      },
+      "oracle": "Without the independent observation, the root has only the contested dependent route.",
+      "collect": [
+        "primary_check",
+        "counterevidence"
+      ]
+    },
+    {
+      "id": "text-model-repair-and-explain",
+      "family": "text_model_workflow",
+      "split": "development",
+      "question": "Repair the supplied draft without deleting required evidence, applicability or model premises. Validate it, collect the configured observations, reason at the supplied time, and retrieve an explanation for trial_supported. Then report its status.",
+      "source": "sources/nested-model.eal",
+      "observations": "observations/nested-good.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "trial_supported": "supported"
+        }
+      },
+      "oracle": "The draft misspells its applicability premise. Replacing missing_applicability with the already declared model_applies restores the reference dependency. The resulting known answer is supported.",
+      "draft_source": "sources/repair-draft.eal",
+      "workflow": [
+        "validate",
+        "collect",
+        "reason",
+        "explain"
+      ]
+    },
+    {
+      "id": "typed-pressure-unit-conversion",
+      "family": "typed_result_binding",
+      "split": "development",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/typed-pressure.eal",
+      "observations": "observations/typed-pressure.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "pressure_increase": "supported"
+        }
+      },
+      "oracle": "Mean treatment 11000 Pa minus control 3500 Pa equals 7500 Pa, converted to 7.5 kPa; this exceeds five kPa for the same subject, scope and interval."
+    },
+    {
+      "id": "typed-incompatible-unit",
+      "family": "typed_result_binding",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/typed-pressure.eal",
+      "observations": "observations/typed-wrong-unit.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "pressure_increase": "unsupported"
+        }
+      },
+      "oracle": "Seconds are incompatible with pressure. Numerically favourable output cannot support this pressure claim."
+    },
+    {
+      "id": "typed-wrong-quantity",
+      "family": "typed_result_binding",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/typed-pressure.eal",
+      "observations": "observations/typed-wrong-quantity.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "pressure_increase": "unsupported"
+        }
+      },
+      "oracle": "A flow result is not a pressure result, regardless of its numerical value."
+    },
+    {
+      "id": "typed-wrong-scope",
+      "family": "typed_result_binding",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/typed-pressure.eal",
+      "observations": "observations/typed-wrong-scope.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "pressure_increase": "unsupported"
+        }
+      },
+      "oracle": "The result identifies a different trial and cannot be bound to pressure-trial-A."
+    },
+    {
+      "id": "typed-overgeneralised-time",
+      "family": "typed_result_binding",
+      "split": "held_out",
+      "question": "Evaluate the declared engineering claims using only the provided observations, environment and assessment time.",
+      "source": "sources/typed-pressure.eal",
+      "observations": "observations/typed-short-interval.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "pressure_increase": "unsupported"
+        }
+      },
+      "oracle": "The evidence result covers only 45 minutes; it cannot justify a claim covering the whole hour, even when assessed inside the first 30 minutes."
+    },
+    {
+      "id": "text-model-calibration-repair",
+      "family": "text_model_workflow",
+      "split": "held_out",
+      "question": "Repair the draft by resolving the calibration assumption reference while preserving its declared interval, required reading and validation. Validate, collect, reason at the supplied time, and retrieve an explanation for reading_usable.",
+      "source": "sources/calibration-interval.eal",
+      "observations": "observations/calibration.json",
+      "context": {
+        "site": "bench",
+        "revision": "A"
+      },
+      "now": "2026-09-23T10:30:00Z",
+      "expected": {
+        "claims": {
+          "reading_usable": "supported"
+        },
+        "assumptions": {
+          "calibrated": "supported"
+        }
+      },
+      "oracle": "The draft references calibration_valid, but the declared assumption is calibrated. Restoring that reference without changing the interval yields support at 10:30.",
+      "draft_source": "sources/calibration-repair-draft.eal",
+      "workflow": [
+        "validate",
+        "collect",
+        "reason",
+        "explain"
+      ]
+    }
+  ]
+}

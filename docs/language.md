@@ -1,6 +1,6 @@
-# EAL/0.1 language reference
+# EAL/0.1 and EAL/0.2 language reference
 
-A source starts with `language "EAL/0.1";` and ends at EOF. Declarations are top-level, case-sensitive and terminated by braces. Clauses end with semicolons and appear in the order specified by [the grammar](../grammar/EAL.g4). Identifiers use letters, digits and underscores, starting with a letter or underscore. All declarations share one symbol namespace. Forward references are allowed. Duplicate symbols are rejected. `//` and `/* ... */` comments are supported.
+A source starts with `language "EAL/0.1";` or `language "EAL/0.2";` and ends at EOF. Declarations are top-level, case-sensitive and terminated by braces. Clauses end with semicolons and appear in the order specified by [the grammar](../grammar/EAL.g4). Identifiers use letters, digits and underscores, starting with a letter or underscore. All declarations share one symbol namespace. Forward references are allowed. Duplicate symbols are rejected. `//` and `/* ... */` comments are supported. The new EAL/0.2 words are contextual, preserving identifiers accepted by EAL/0.1.
 
 ## Declarations
 
@@ -11,9 +11,11 @@ A source starts with `language "EAL/0.1";` and ends at EOF. Declarations are top
 | `evidence NAME` | `tool` name; `kind` identifier; `environment` name; `max_age` seconds; then one or more `require` predicates over observed value | `input` JSON value may appear between `max_age` and the predicates |
 | `assumption NAME` | `statement` string; `environment` name; `validate` evidence name | `valid_from` timestamp; `valid_until` timestamp |
 | `reasoning NAME` | `mode` name; `rationale` string | `backing` evidence names; `require` predicates over computed method outputs |
-| `claim NAME` | `statement` string; `environment` name | — |
-| `argument NAME` | `conclusion` claim name; `reasoning` name | `evidence` names; `assumptions` names; `premises` claim names |
+| `claim NAME` | `statement` string; `environment` name | EAL/0.2: `proposition` block |
+| `argument NAME` | `conclusion` claim name; `reasoning` name | `evidence` names; `assumptions` names; `premises` claim names; EAL/0.2: `binding` evidence name |
 | `objection NAME` | `target claim`, `target reasoning` or `target assumption` followed by the target name; `evidence` names | — |
+
+The [typed proposition reference](typed-propositions.md) defines the EAL/0.2 block, its formal `query`, permitted result predicates, unit conversions and exact input correspondence. Every argument for a typed claim needs an explicit binding. A successful scalar calculation cannot silently support a different quantity or formal query. See [the vocabulary](vocabulary.md) for keyword distinctions and [the task suite](engineering-tasks.md) for positive and adverse examples.
 
 Name lists use commas. An argument requires at least one evidence, assumption or premise. A computational reasoning mode requires at least one result predicate. `structured` reasoning can omit result predicates. Available modes and typed evidence schemas are defined in [reasoning methods](reasoning-modes.md).
 

@@ -1,0 +1,11 @@
+language "EAL/0.1";
+environment bench { require "site" == "bench"; require "revision" == "A"; }
+tool calibration_check_tool { version "1"; mode deterministic; }
+evidence calibration_check { tool calibration_check_tool; kind measurement; environment bench; max_age 7200; require "passed" == true; }
+tool reading_tool { version "1"; mode deterministic; }
+evidence reading { tool reading_tool; kind measurement; environment bench; max_age 7200; require "passed" == true; }
+
+assumption calibrated { statement "Calibration applies within the declared episode interval."; environment bench; validate calibration_check; valid_from "2026-09-23T10:00:00Z"; valid_until "2026-09-23T11:00:00Z"; }
+reasoning measurement_step { mode structured; rationale "Use the measured check only while the calibrated assumption is supported."; }
+claim reading_usable { statement "This observation supplies support within the calibrated interval."; environment bench; }
+argument calibrated_argument { conclusion reading_usable; reasoning measurement_step; evidence reading; assumptions calibration_valid; }

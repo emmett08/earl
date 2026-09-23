@@ -8,7 +8,8 @@ import math
 import re
 
 from .model import Diagnostic, Program
-from .modes import validate_mode
+from .modes import MODE_KINDS, validate_mode
+from .propositions import proposition_errors
 
 MAX_DECLARATIONS = 4096
 MAX_PREMISE_DEPTH = 128
@@ -60,8 +61,8 @@ def validate(program: Program) -> list[Diagnostic]:
         if actual != expected:
             error("environment_mismatch", f"{dependency!r} uses environment {actual!r}; expected {expected!r}", owner)
 
-    if program.language != "EAL/0.1":
-        error("unsupported_language", f"Expected EAL/0.1, found {program.language!r}")
+    if program.language not in ("EAL/0.1", "EAL/0.2"):
+        error("unsupported_language", f"Expected EAL/0.1 or EAL/0.2, found {program.language!r}")
     if program.declaration_count > MAX_DECLARATIONS:
         error("resource_limit", f"At most {MAX_DECLARATIONS} declarations are supported")
         return problems
@@ -106,7 +107,7 @@ def validate(program: Program) -> list[Diagnostic]:
         if len(dates) == 2 and dates[0] >= dates[1]:
             error("invalid_interval", "valid_from must precede valid_until", value.name)
     for value in program.reasoning.values():
-        if value.mode != "structured" and not value.predicates:
+        if value.mode != "structured" and not value.predicates and program.language == "EAL/0.1":
             error("missing_reasoning_predicate", "Computational reasoning requires an explicit output predicate", value.name)
         if not value.rationale.strip():
             error("empty_rationale", "A reasoning declaration requires its rationale", value.name)
@@ -116,6 +117,11 @@ def validate(program: Program) -> list[Diagnostic]:
         if not value.statement.strip():
             error("empty_statement", "A claim requires a statement", value.name)
         reference(value.environment, program.environments, "environment", value.name)
+        if value.proposition is not None:
+            if program.language != "EAL/0.2":
+                error("versioned_construct", "Typed propositions require EAL/0.2", value.name)
+            for message in proposition_errors(value.proposition):
+                error("invalid_proposition", message, value.name)
     for value in program.arguments.values():
         conclusion_exists = reference(value.conclusion, program.claims, "conclusion claim", value.name)
         reasoning_exists = reference(value.reasoning, program.reasoning, "reasoning", value.name)
@@ -133,6 +139,24 @@ def validate(program: Program) -> list[Diagnostic]:
             source_ids = set(value.evidence) | set(method.backing)
             source_ids.update(program.assumptions[a].validation for a in value.assumptions
                               if a in program.assumptions)
+            proposition = program.claims[value.conclusion].proposition if conclusion_exists else None
+            if value.binding is not None and program.language != "EAL/0.2":
+                error("versioned_construct", "Typed bindings require EAL/0.2", value.name)
+            if proposition is not None:
+                if value.binding is None:
+                    error("missing_binding", "A typed conclusion requires an explicit evidence binding", value.name)
+                else:
+                    if reference(value.binding, program.evidence, "bound evidence", value.name):
+                        if value.binding not in source_ids:
+                            error("binding_source", "Bound evidence must be a source of this argument", value.name)
+                        if program.evidence[value.binding].kind != MODE_KINDS.get(method.mode):
+                            error("binding_source", "Binding must select the method's computational evidence", value.name)
+                for message in proposition_errors(proposition, method.mode):
+                    error("proposition_method", message, value.name)
+            elif value.binding is not None:
+                error("untyped_binding", "An evidence binding requires a typed conclusion", value.name)
+            if program.language == "EAL/0.2" and proposition is None and method.mode != "structured" and not method.predicates:
+                error("missing_reasoning_predicate", "An untyped computational conclusion requires an explicit output predicate", value.name)
             kinds = [program.evidence[e].kind for e in sorted(source_ids) if e in program.evidence]
             for message in validate_mode(method.mode, kinds):
                 error("reasoning_evidence_contract", message, value.name)

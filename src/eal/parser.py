@@ -11,14 +11,14 @@ from .generated.EALLexer import EALLexer
 from .generated.EALParser import EALParser
 from .generated.EALVisitor import EALVisitor
 from .model import (Argument, Assumption, Claim, Environment, Evidence,
-                    Reasoning, Objection, Predicate, Program, Tool)
+                    Reasoning, Objection, Predicate, Program, Proposition, Tool)
 
 MAX_SOURCE_BYTES = 1024 * 1024
 MAX_TOKENS = 100_000
 
 
 class EALSyntaxError(ValueError):
-    """A source cannot be recognised as an EAL 0.1 program."""
+    """A source cannot be recognised as an EAL program."""
 
 
 class _Errors(ErrorListener):
@@ -34,18 +34,18 @@ def _string(node):
 
 
 def _ids(ctx):
-    return tuple(node.getText() for node in ctx.ID()) if ctx else ()
+    return tuple(node.getText() for node in ctx.identifier()) if ctx else ()
 
 
 class _ASTBuilder(EALVisitor):
     def visitEnvironmentDecl(self, ctx):
-        return Environment(ctx.ID().getText(), tuple(self.visit(p) for p in ctx.predicate()))
+        return Environment(ctx.identifier().getText(), tuple(self.visit(p) for p in ctx.predicate()))
 
     def visitToolDecl(self, ctx):
-        return Tool(ctx.ID().getText(), _string(ctx.STRING()), ctx.executionMode().getText())
+        return Tool(ctx.identifier().getText(), _string(ctx.STRING()), ctx.executionMode().getText())
 
     def visitEvidenceDecl(self, ctx):
-        return Evidence(ctx.ID(0).getText(), ctx.ID(1).getText(), ctx.ID(2).getText(), ctx.ID(3).getText(),
+        return Evidence(ctx.identifier(0).getText(), ctx.identifier(1).getText(), ctx.identifier(2).getText(), ctx.identifier(3).getText(),
                         float(ctx.NUMBER().getText()),
                         self.visit(ctx.jsonValue()) if ctx.jsonValue() else {},
                         tuple(self.visit(p) for p in ctx.predicate()))
@@ -57,24 +57,31 @@ class _ASTBuilder(EALVisitor):
         for i, child in enumerate(ctx.children[:-1]):
             if child.getText() in ("valid_from", "valid_until"):
                 dates[child.getText()] = _string(ctx.children[i + 1])
-        return Assumption(ctx.ID(0).getText(), _string(strings[0]),
-                          ctx.ID(1).getText(), ctx.ID(2).getText(),
+        return Assumption(ctx.identifier(0).getText(), _string(strings[0]),
+                          ctx.identifier(1).getText(), ctx.identifier(2).getText(),
                           dates.get("valid_from"), dates.get("valid_until"))
 
     def visitReasoningDecl(self, ctx):
-        return Reasoning(ctx.ID().getText(), ctx.reasoningMode().getText(), _string(ctx.STRING()),
+        return Reasoning(ctx.identifier().getText(), ctx.reasoningMode().getText(), _string(ctx.STRING()),
                          _ids(ctx.idList()), tuple(self.visit(p) for p in ctx.predicate()))
 
     def visitClaimDecl(self, ctx):
-        return Claim(ctx.ID(0).getText(), _string(ctx.STRING()), ctx.ID(1).getText())
+        return Claim(ctx.identifier(0).getText(), _string(ctx.STRING()), ctx.identifier(1).getText(),
+                     self.visit(ctx.propositionDecl()) if ctx.propositionDecl() else None)
+
+    def visitPropositionDecl(self, ctx):
+        values = [_string(node) for node in ctx.STRING()]
+        return Proposition(*values[:6], Predicate(values[6], ctx.comparator().getText(),
+                                                 self.visit(ctx.jsonScalar())), self.visit(ctx.jsonValue()))
 
     def visitArgumentDecl(self, ctx):
-        return Argument(ctx.ID(0).getText(), ctx.ID(1).getText(), ctx.ID(2).getText(),
-                        _ids(ctx.evidenceRefs), _ids(ctx.assumptionRefs), _ids(ctx.premiseRefs))
+        return Argument(ctx.identifier(0).getText(), ctx.identifier(1).getText(), ctx.identifier(2).getText(),
+                        _ids(ctx.evidenceRefs), _ids(ctx.assumptionRefs), _ids(ctx.premiseRefs),
+                        ctx.identifier(3).getText() if len(ctx.identifier()) > 3 else None)
 
     def visitObjectionDecl(self, ctx):
-        return Objection(ctx.ID(0).getText(), ctx.targetKind().getText(),
-                         ctx.ID(1).getText(), _ids(ctx.idList()))
+        return Objection(ctx.identifier(0).getText(), ctx.targetKind().getText(),
+                         ctx.identifier(1).getText(), _ids(ctx.idList()))
 
     def visitPredicate(self, ctx):
         return Predicate(_string(ctx.STRING()), ctx.comparator().getText(), self.visit(ctx.jsonScalar()))

@@ -1,0 +1,24 @@
+{
+  "joint_measurement": {
+    "value": {
+      "observed": "joint-record",
+      "candidates": [
+        {
+          "name": "sensor",
+          "prior": 0.5,
+          "likelihood": 0.08
+        },
+        {
+          "name": "connector",
+          "prior": 0.5,
+          "likelihood": 0.18
+        }
+      ]
+    },
+    "observed_at": "2026-09-23T10:00:00Z",
+    "context": {
+      "site": "bench",
+      "revision": "A"
+    }
+  }
+}

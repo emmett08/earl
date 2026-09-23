@@ -1,0 +1,19 @@
+# Replace argv and model with an installed text-generation adapter.
+[provider]
+kind = "command"
+model = "SET_EXPLICIT_MODEL_VERSION"
+argv = ["python3", "YOUR_PROVIDER_ADAPTER.py"]
+measurement_kind = "model"
+timeout_seconds = 60
+max_response_bytes = 1048576
+
+[provider.sampling]
+temperature = 0.2
+
+[budget]
+max_iterations = 16
+max_repairs = 4
+max_tool_calls = 32
+max_total_tokens = 64000
+max_output_tokens = 4096
+max_elapsed_seconds = 120

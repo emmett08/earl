@@ -1,6 +1,8 @@
-# EAL 0.1 integration contract
+# EAL 0.1 / 0.2 integration contract
 
 EAL is an evidence-based engineering reasoning language: Toulmin-inspired explicit reasoning rationales, backing, premises and objections. It is neither governance nor an approval language. The initial semantics are a bounded, acyclic defeasible argument profile, not full ASPIC+.
+
+EAL/0.2 adds optional formal `proposition` declarations inside claims and explicit `binding` clauses on their arguments. The original EAL/0.1 profile remains supported; using these additions in an EAL/0.1 programme produces a version diagnostic. See [typed-propositions.md](docs/typed-propositions.md) for the normative query, quantity, unit and interval correspondence rules. Untyped claims retain their authored support meaning in either version.
 
 ## Python API
 
@@ -10,6 +12,8 @@ EAL is an evidence-based engineering reasoning language: Toulmin-inspired explic
 - `Program.source_digest` is SHA-256 of the exact UTF-8 source. Maps: `environments`, `tools`, `evidence`, `assumptions`, `reasoning`, `claims`, `arguments`, `objections`. Declarations have `.name`. `Tool.version`, `.mode`; `Evidence.tool`, `.kind`, `.environment`, `.max_age` (seconds), `.input` (JSON), `.predicates` (tuple); `Environment.predicates`; `Assumption.environment`, `.validation` (evidence ID), `.valid_from`, `.valid_until`; `Reasoning.mode`, `.predicates`, `.rationale`, `.backing` (tuple of evidence IDs); `Claim.statement`, `.environment`; `Argument.conclusion`, `.reasoning`, `.evidence`, `.assumptions`, `.premises` (ID tuples); `Objection.target_kind` (`claim`, `reasoning`, `assumption`), `.target`, `.evidence` (tuple). `Predicate.path` is a dotted field name, `.operator`, `.expected` (JSON scalar).
 
 ## Grammar example
+
+This example uses the compatible EAL/0.1 subset. EAL/0.2 task sources are included in [the task corpus](benchmarks/engineering-v1).
 
 ```eal
 language "EAL/0.1";
@@ -78,3 +82,11 @@ Claim statuses: `supported` (one uncontested argument; no active claim objection
 Pure helper API in `eal.modes`: `validate_mode(mode, kinds) -> list[str]`; `assess_mode(mode, evidence, premises) -> dict` with `status`, `reasons`, `details`. Evidence inputs are `{id, kind, value}` for deduplicated direct evidence, method backing and assumption-validation evidence. Premises are claim assessment entries augmented with `id`. Required designated kinds: deductive `logical_case`; inductive `sample`; abductive `hypotheses`; causal `experiment`; counterfactual `causal_model`; analogical `analogy`; temporal `trace`. Structured accepts any kind. Mode computation addresses precisely its encoded mathematical relation; arbitrary prose interpretation remains authored.
 
 Assumption intervals are half-open `[valid_from, valid_until)`. All dependencies of an argument use its conclusion's declared environment; cross-environment derivation needs an explicit new observation and argument. Environment context is supplied by the host, not independently established by fingerprinting. Evidence age is valid at exactly max_age, unavailable when older.
+
+## Canonical source, discovery and models
+
+`eal.formatter.format_source(source)` parses, validates and emits canonical source. `format_program(program)` emits from a checked IR. `semantic_ir(program)` provides a source-digest-independent representation for round-trip checks. Exact source identity is deliberately separate from semantic equivalence: existing observation records cannot be reused under changed source bytes.
+
+`ReasoningService.describe()` returns packaged syntax, an executable example, mode contracts and the versioned typed binding catalogue. `ReasoningService.format(source)` returns canonical `source`, `source_digest` and `observation_recollection_required`. They are exposed as `eal_describe` and `eal_format` through MCP, `describe` and `format` through the CLI/host.
+
+`eal-agent` adds provider-connected interaction and bounded feedback to the single-request `eal-host` interface. A finish response retrieves statuses from an assessment produced during the session; it cannot invent a checked status. Task correspondence remains separate from successful interaction, particularly for source construction or revision. See [model-loop.md](docs/model-loop.md) for APIs, budgets and retained attempts, and [model-evaluation.md](docs/model-evaluation.md) for the paired evaluation procedure. Unknown usage or expense must remain unknown rather than being reported as zero.

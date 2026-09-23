@@ -1,0 +1,10 @@
+{
+  "task_id": "text-model-calibration-repair",
+  "primary_score_unchanged": true,
+  "finding": "The declaration and use of calibrated were consistently renamed calibration_valid. All other parsed fields and scalar types are identical.",
+  "normalised_ast_equal": true,
+  "status_and_workflow_correct": true,
+  "secondary_delegated_correct_count": 11,
+  "total_tasks": 15,
+  "interpretation": "A sensitivity result for the conservative identity scorer; not a changed primary benchmark result."
+}

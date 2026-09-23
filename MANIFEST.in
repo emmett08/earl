@@ -6,3 +6,4 @@ recursive-include scripts *.py
 
 include Makefile CONTRACT.md
 recursive-include skills *.md *.yaml
+recursive-include benchmarks *.json *.json.gz *.eal *.toml *.py

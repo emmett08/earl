@@ -2,20 +2,20 @@
 
 The aim is a human-readable language that can express and execute the reasoning required for engineering arguments, using a small semantic core and explicit method contracts. Engineers and AI agents should use the same represented claims, subarguments, evidence, assumptions and conclusions. A small or large language model can delegate supported reasoning operations through an application host and a custom MCP server. Low cost is an objective to measure across that whole system.
 
-This document specifies the design direction and identifies what EAL/0.1 already does. Its requirements are not a claim that the entire design has been implemented.
+This document specifies the design direction and distinguishes the implemented EAL/0.2 profile from the wider aim. EAL/0.1 remains supported. See the [engineering task suite](engineering-tasks.md) for executable coverage and [model evaluation](model-evaluation.md) for the empirical procedure.
 
 ## Applying Parr’s patterns
 
 The skill requires working implementations of selected patterns from Terence Parr’s Language Implementation Patterns. The publisher’s [contents](https://media.pragprog.com/titles/tpdsl/toc.pdf) and [typing excerpt shown in the supplied screenshot](https://media.pragprog.com/titles/tpdsl/static.pdf) support the pattern references below. The book presents alternative implementation choices; the language should select those needed for its semantics.
 
-| Pattern family | Application | EAL/0.1 status |
+| Pattern family | Application | EAL/0.2 status |
 |---|---|---|
 | P.8 and P.10–11 | Recognition followed by typed intermediate representation | ANTLR4 parse tree lowered to typed declarations |
 | P.13 | External visitor | `_ASTBuilder` converts generated contexts into semantic objects |
 | P.16 | Name resolution in one scope | Typed declaration maps, global uniqueness and reference checks |
-| P.20 and P.22 | Expression types and compatible operations | Restricted predicate/reference checks; general expression typing and physical dimensions remain outside the current language |
+| P.20 and P.22 | Expression types and compatible operations | Restricted predicates plus typed scalar quantities, a closed unit catalogue, formal query correspondence and compatible method outputs |
 | P.25 | Interpretation of checked intermediate objects | Dependency evaluation and bounded method computations |
-| P.29–31 and templates, when required | Output/solver translation | Structured result serialisation exists; a canonical source printer and general solver translations remain to be implemented |
+| P.29–31 and templates, when required | Output/solver translation | Structured serialisation and canonical source translation with round-trip checks; general solver translations remain outside the implementation |
 
 ANTLR4 supplies recognition; its visitor is adapted to the book’s separation of concerns. Current code does not implement every alternative parser, virtual machine or type system in the book. Nested scopes, richer expression checking or specialised translators should be introduced when a required engineering task needs them.
 
@@ -55,7 +55,7 @@ A keyword should denote one documented concept, with specified operand types, bi
 
 These are design distinctions, not a proposal to turn every row into a new reserved word. Retain a construct only when removing it loses a required distinction or makes a necessary task materially harder to express and check. Keep numerical procedures, tool-provider settings and transport mechanics behind appropriate interfaces. Method additions should usually extend typed contracts rather than force new core keywords.
 
-Several current names need explicit care during a future versioned language review. `evidence` currently declares collection and eligibility criteria, while actual observations live in runtime records. `mode` is used for both tool variability and reasoning method. `valid` reports static well-formedness. `collected_at` denotes the original observation time, with `ingested_at` storing ingestion time. The existing documentation defines these meanings; a future change should select clearer canonical names and migrate them deliberately rather than accumulating aliases.
+The [executable vocabulary](vocabulary.md) defines retained names and new constructs. `evidence` declares collection and eligibility criteria, while actual observations live in runtime records. `mode` is used in disjoint contexts for tool variability and reasoning method. `valid` reports static well-formedness. `collected_at` denotes the original observation time, with `ingested_at` storing ingestion time. EAL/0.2 retains these spellings for compatibility without adding aliases.
 
 ## Human readability and executable meaning
 
@@ -77,12 +77,12 @@ Empirical capability and savings require actual model experiments. Compare selec
 
 | Area | Implemented | Still required by the wider design aim |
 |---|---|---|
-| Argument composition | Reusable subclaims, alternative arguments, scoped evidence and assumptions | Richer typed proposition identity and formal result-to-claim binding |
-| Reasoning methods | Seven bounded computations plus authored structured support | Task-driven method coverage and versioned extensible method contracts |
+| Argument composition | Reusable subclaims, alternative arguments, scoped evidence and assumptions; typed scalar query/result bindings | Wider proposition forms, explicit binding from symbolic premise atoms to independently supported claim propositions |
+| Reasoning methods | Seven bounded computations plus authored structured support; versioned typed input/output contracts | Task-driven expansion; source-defined or dynamically registered methods are not implemented |
 | Counterarguments | Evidence-supported objections; separate grounded graph solver | Subarguments/defence for objections and a specified construction linking the language to its defeat graph |
-| Representation | Human-readable declaration syntax, typed IR and JSON data | Canonical formatting/round trips and readable typed mathematical expressions for uncovered tasks |
-| Verification | Parsing, reference/type checks, declared computations and dependencies | Wider numerical/unit checks and explicit binding between checked formal content and intended claim |
-| Model access | Actual MCP server and single-request text-model dispatcher | Provider-connected request/result/revision loop and empirical model/cost trials |
-| Completeness | Examples and regression tests for the bounded profile | A versioned engineering task suite with demonstrated representational and operational coverage |
+| Representation | Declaration syntax, typed IR, canonical formatting and semantic round trips | Richer mathematical expressions beyond the bounded scalar/query fragment; engineer comprehension trials |
+| Verification | Parsing, reference/type checks, computations, declared query identity, unit/quantity/scope/time bindings and dependencies | General dimensional algebra, quantified propositions and independently established physical/prose correspondence |
+| Model access | Actual MCP server, single-request dispatcher, provider adapters and bounded request/result/revision loop; paired evaluation harness and recorded live trials | Repeated comparisons, wider model/task coverage and infrastructure-inclusive costs; no general capability or savings claim follows from a small trial |
+| Completeness | Versioned known-answer engineering tasks and adverse variants, plus runtime and protocol regressions | Wider domains, defence subarguments integrated with EAL, and human/model task fidelity measurements |
 
-The next design work should define that task suite, resolve the vocabulary, and specify formal claim/method bindings. Those choices then determine the necessary grammar and interpreter changes. Completing the host loop and model experiments establishes whether the language achieves its low-cost delegation objective for the selected models and task families.
+The task suite, vocabulary, typed bindings and model interaction loop implement the recommended first sequence. The suite records its uncovered distinctions instead of claiming complete engineering coverage. The [live experiments](live-model-results.md) distinguish interpreter correctness, model protocol performance and observed costs. Wider empirical trials remain necessary to determine how well those results transfer; protocol tests alone cannot answer that question.

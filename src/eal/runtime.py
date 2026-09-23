@@ -322,6 +322,19 @@ class ReasoningService:
         return {"valid": not diagnostics, "source_digest": program.source_digest,
                 "diagnostics": [dataclasses.asdict(d) for d in diagnostics]}
 
+    def describe(self) -> dict:
+        from .discovery import describe_language
+
+        return describe_language()
+
+    def format(self, source: str) -> dict:
+        from .formatter import format_source
+        from .parser import parse
+
+        formatted = format_source(source)
+        return {"source": formatted, "source_digest": parse(formatted).source_digest,
+                "observation_recollection_required": formatted != source}
+
     def collect(self, source: str, context: dict, evidence_ids: list[str] | None = None) -> dict:
         from .parser import parse
 

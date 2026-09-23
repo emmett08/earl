@@ -34,7 +34,13 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
                 hello = await session.initialize()
                 assert hello.protocolVersion == "2025-11-25"
                 names = {entry.name for entry in (await session.list_tools()).tools}
-                assert {"eal_validate", "eal_collect", "eal_reason", "eal_explain", "eal_grounded"} <= names
+                assert {"eal_describe", "eal_format", "eal_validate", "eal_collect", "eal_reason", "eal_explain", "eal_grounded"} <= names
+                described = await session.call_tool("eal_describe", {})
+                assert not described.isError
+                assert "EAL/0.2" in described.structuredContent["languages"]
+                formatted = await session.call_tool("eal_format", {"source": SOURCE})
+                assert not formatted.isError
+                assert "source_digest" in formatted.structuredContent
                 valid = await session.call_tool("eal_validate", {"source": SOURCE})
                 assert not valid.isError
                 assert valid.structuredContent["valid"]

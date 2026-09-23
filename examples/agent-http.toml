@@ -1,0 +1,30 @@
+# Replace the model identity before running. No API call is made by reading this file.
+[provider]
+kind = "chat_completions"
+model = "SET_EXPLICIT_MODEL_VERSION"
+endpoint = "https://api.openai.com/v1/chat/completions"
+api_key_env = "OPENAI_API_KEY"
+max_tokens_field = "max_completion_tokens"
+timeout_seconds = 60
+max_response_bytes = 1048576
+
+[provider.sampling]
+temperature = 0.2
+
+# Supply rates applicable to the selected model and service tier, including the
+# cached-input rate when that endpoint reports cached prompt tokens. Omitting
+# rates deliberately makes monetary totals unknown, not zero.
+# [provider.pricing]
+# input_usd_per_million = ...
+# output_usd_per_million = ...
+# cached_input_usd_per_million = ...
+
+[budget]
+max_iterations = 16
+max_repairs = 4
+max_tool_calls = 32
+max_total_tokens = 64000
+max_output_tokens = 4096
+max_elapsed_seconds = 120
+max_response_bytes = 1048576
+max_prompt_bytes = 2097152

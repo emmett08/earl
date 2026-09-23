@@ -1,9 +1,11 @@
 # MCP, tools and model hosts
 
-The MCP server uses the official Python SDK pinned to 1.30.0. A real subprocess client/server test exercises the published 2025-11-25 protocol lifecycle, tool discovery and structured calls. The server is a local stdio service. HTTP deployment, authentication and external LLM-provider integration are not included.
+The MCP server uses the official Python SDK pinned to 1.30.0. A real subprocess client/server test exercises the published 2025-11-25 protocol lifecycle, tool discovery and structured calls. The server is a local stdio service; HTTP MCP deployment is not included. The separate model host supports configured command and HTTP text-model providers; see [model-loop.md](model-loop.md).
 
 | Tool | Input | Operation |
 |---|---|---|
+| `eal_describe` | None | Discover language versions, syntax, method schemas and typed binding contracts |
+| `eal_format` | `source` | Return canonical checked source and its digest; changed bytes require new observation bindings |
 | `eal_validate` | `source` | Parse and check language structure, references and method contracts |
 | `eal_collect` | `source`, `context`, optional `evidence_ids` | Run configured collectors and persist observations; return `collection_id` |
 | `eal_reason` | `source`, `context`, optional `collection_id`, `now` | Compute method results and argument conclusions; persist and return `assessment_id` |
@@ -50,6 +52,6 @@ printf '%s\n' '{"operation":"grounded","arguments":["a","b","c"],"attacks":[["a"
 
 `eal-host` validates the operation and fields, starts the MCP server using the SDK client, calls the corresponding tool and returns structured JSON. Requests for `validate`, `collect` and `reason` contain source text rather than source filenames; the CLI accepts filenames. `collect` returns an identifier that the model application can include in a later `reason` request. Each host invocation opens a protocol session; the database preserves results between invocations.
 
-The application must provide the loop that sends the host’s output back to its model. This mechanism works with a model that can generate the required JSON even if its API lacks native tool calling. It does not assume that arbitrary model prose is a valid instruction or that the model can contact MCP unaided.
+`eal-agent` supplies the application loop that sends MCP results and diagnostics back to a configured model, permits bounded repairs and retrieves assessed conclusions. It discovers the language and operation schemas at the start of a persistent session. This mechanism works with a model that can generate the required JSON even if its API lacks native tool calling. A provider must be configured separately; the model does not contact MCP unaided.
 
 Source text and result strings are data. The host accepts one schema-conforming request; it does not execute explanatory prose, accept invented operation names or reinterpret multiple concatenated requests.

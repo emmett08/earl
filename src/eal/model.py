@@ -56,10 +56,23 @@ class Reasoning:
 
 
 @dataclass(frozen=True)
+class Proposition:
+    subject: str
+    quantity: str
+    unit: str
+    scope: str
+    valid_from: str
+    valid_until: str
+    result: Predicate
+    query: Any
+
+
+@dataclass(frozen=True)
 class Claim:
     name: str
     statement: str
     environment: str
+    proposition: Proposition | None = None
 
 
 @dataclass(frozen=True)
@@ -70,6 +83,7 @@ class Argument:
     evidence: tuple[str, ...]
     assumptions: tuple[str, ...]
     premises: tuple[str, ...]
+    binding: str | None = None
 
 
 @dataclass(frozen=True)

@@ -59,6 +59,11 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EALParser#propositionDecl.
+    def visitPropositionDecl(self, ctx:EALParser.PropositionDeclContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EALParser#argumentDecl.
     def visitArgumentDecl(self, ctx:EALParser.ArgumentDeclContext):
         return self.visitChildren(ctx)
@@ -106,6 +111,11 @@ class EALVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EALParser#jsonScalar.
     def visitJsonScalar(self, ctx:EALParser.JsonScalarContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#identifier.
+    def visitIdentifier(self, ctx:EALParser.IdentifierContext):
         return self.visitChildren(ctx)
 
 
