@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-RELAY-001",
   "title": "Order and evidence transfer in EAL/2 model sequences",
-  "version": "1.0.8",
-  "status": "approved",
+  "version": "1.0.9",
+  "status": "specified",
   "question": "On six exposed EAL/2 regression tasks, how do endpoint correctness, unsupported positive answers and total cost differ by model sequence, tool placement and transferred record?",
   "primary_claim_id": "CLM-001",
   "scope": {
@@ -612,7 +612,7 @@
     ]
   },
   "feasibility": {
-    "current_status": "operational",
+    "current_status": "partially-feasible",
     "apparatus_or_data": [
       "Existing EAL host, task fixtures, model provider adapters"
     ],
@@ -624,13 +624,17 @@
     ],
     "resources": [
       "Known prior charges, including probes: $1.91203171. Historical total charges remain unknown.",
-      "Reserve $4.50 for unreported historical usage using the retained budget reconciliation. Numerical phase threshold $3; repair phase threshold $1. Each phase also reserves $2.12792 for a final response before it starts. The cumulative planning total must stay at or below $12."
+      "Reserve $4.50 for unreported historical usage using the retained budget reconciliation. Numerical phase threshold $3; repair phase threshold $1. Each phase also reserves $2.12792 for a final response before it starts. The cumulative planning total must stay at or below $12.",
+      "Continuation recorded $0.41123124 in additional task charges, bringing all new cohorts and original probes to at least $2.32326295. The new failed request and quota diagnostic returned no usage. Earlier planning allowances are not actual billing."
     ],
     "dependencies": [
       "Pinned model snapshots remain available",
       "Local MCP subprocess support"
     ],
-    "blockers": [],
+    "blockers": [
+      "The provider diagnostic returned HTTP 429, type insufficient_quota, code credit_balance_exhausted. Prepaid API credit must be restored before further generation.",
+      "Four complete blocks remain missing. The interrupted five-block plans and cumulative spending record must be amended before another run."
+    ],
     "fallback": "Preserve executable plans and explicit incomplete coverage if a provider becomes unavailable"
   },
   "reproducibility": {
@@ -649,34 +653,40 @@
   },
   "execution": {
     "protocol_version_used": "1.0.8",
-    "started_at": null,
-    "completed_at": null,
+    "started_at": "2026-09-23T18:10:43.926681+00:00",
+    "completed_at": "2026-09-23T18:22:24.705935+00:00",
     "deviations": [
       "One transport error stopped the first explicit cohort; completion uses coverage-selected complete blocks, with all discarded-from-comparison partial records retained separately.",
-      "The replacement credential passed a read-only model check after the prior available credential returned HTTP 401. No generation occurred during either check. Numerical phase threshold reduced from $5 to $3; stage budgets, conditions, task inputs, source runtime and scoring are unchanged."
+      "The replacement credential passed a read-only model check after the prior available credential returned HTTP 401. No generation occurred during either check. Numerical phase threshold reduced from $5 to $3; stage budgets, conditions, task inputs, source runtime and scoring are unchanged.",
+      "The numerical continuation stopped on HTTP 429 with no usage after 49 attempted endpoints; a separate tiny diagnostic confirmed exhausted prepaid credit. Repair did not start. One newly complete block joins the original seven by the existing attempted-coverage rule; 27 incomplete-block attempts remain outside the common comparison."
     ],
     "data_location": "benchmarks/results/2026-09-23-relays-explicit and benchmarks/results/2026-09-23-relays-completion and benchmarks/results/2026-09-23-relays-continuation",
     "code_location": "src/eal/relay.py",
     "observed_results": [
       "Protocol 1.0.5 cohort: 194 attempted endpoints, 192 finished, one endpoint stopped at its repair limit, one transport-failed endpoint; 123 unexecuted conditions and seven partial sequences.",
       "Seven fully attempted blocks supply 189 endpoints across four task types. Evidence transfer is correct in 7/7 matched blocks versus 5/7 for answer-only transfer; both differences occur on the same circular-defence task. The six-task estimand remains unestimated.",
-      "The 1.0.6 completion attempt saved no response. One orphan marker has unknown usage; repair completion phase was not started."
+      "The 1.0.6 completion attempt saved no response. One orphan marker has unknown usage; repair completion phase was not started.",
+      "Continuation protocol 1.0.8: 49 attempted endpoints, 48 finished answers, 36 correct finished answers; 52 stage records, 66 task model requests, 57 unexecuted conditions and two partial sequences. At least $0.41123124 in new task charges.",
+      "Eight complete blocks supply 216 comparable endpoints from five task types. Evidence transfer is correct in 8/8 versus 5/8 for answer-only transfer; two differences concern circular defence and one the wrong-origin numerical task. Four blocks remain missing; the six-task estimand is withheld.",
+      "A follow-up 16-token diagnostic request to the same model returned HTTP 429, insufficient_quota / credit_balance_exhausted. It returned no completion or usage. No further generation was attempted.",
+      "Recovered commits and the first continuation checkpoint were pushed successfully to private emmett08/earl, feat/eal2-forward-contracts, PR #3. GitHub CI passed for the continuation code."
     ],
-    "interpretation_status": "Seven complete blocks remain available. All existing commits through e461b78 were pushed to private emmett08/earl branch feat/eal2-forward-contracts and verified on PR #3. The newly authorised five-block continuation has not yet generated results."
+    "interpretation_status": "Incomplete descriptive pilot: eight fully attempted blocks, with model failures included and incomplete blocks retained separately. The current blocker is exhausted provider prepaid credit; the earlier GitHub publication block is resolved."
   },
   "provenance": {
     "authors": [
       "Codex for Emmett Miller"
     ],
     "created_at": "2026-09-23T15:55:16.844586+00:00",
-    "updated_at": "2026-09-23T18:10:14.593539+00:00",
+    "updated_at": "2026-09-23T18:29:30.690726+00:00",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1",
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
       "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
       "https://developers.openai.com/api/docs/models/gpt-5",
       "https://developers.openai.com/api/docs/models/gpt-5-mini",
-      "https://developers.openai.com/api/docs/models/gpt-5-nano"
+      "https://developers.openai.com/api/docs/models/gpt-5-nano",
+      "https://developers.openai.com/api/docs/guides/error-codes"
     ],
     "knowledge_cut": "2026-09-23",
     "change_log": [
@@ -688,7 +698,8 @@
       "1.0.5: user supplied explicit authorisation naming private EAL sources, observations, model hand-offs, api.openai.com and a $12 spending stop threshold. Freeze a new serial cohort under package 2.2.2. Retain the conservative $10 cohort threshold and all previous unknown charges separately. No task, prompt, scoring, condition or repetition changes. All earlier outcomes and freezes remain immutable.",
       "1.0.6: after one transport failure without usage in the explicitly authorised cohort, retain seven complete 27-condition task/repetition blocks and the incomplete numerical block separately. Predeclare completion cohorts for two numerical tasks with two repetitions (108 endpoints, $5 threshold) and repair task repetition 0 (27 endpoints, $1 threshold). Analyse exactly one fully attempted block for each task/repetition; eligibility depends on coverage, never correctness. Retain budget-failed outcomes within complete blocks. Repeat the incomplete numerical block in full, including its failed-request condition; this is an explicit new cohort, not silent checkpoint replay. All original records and unknown charges remain. Stage budgets, prompts, scoring, providers and implementation are unchanged; phase/condition ordering and realised cache state may differ.",
       "1.0.7: retain the explicit cohort and blocked completion freeze. Withhold the planned six-task estimand; report the seven complete blocks and incomplete numerical block separately. Record both automatic-review blocks and stop further paid requests and pushes. All prior raw outcomes and freezes remain unchanged.",
-      "1.0.8: user renewed explicit private-data and $12 spending authorisation and supplied a working replacement credential. Recover and push all local commits. Preserve every historical freeze and result. Run the two previously declared completion plans in fresh directories, lowering the numerical threshold to $3 and retaining $1 for repair. Reserve $4.50 for prior unknown usage, require one-response headroom before each serial phase, and halt both phases on any new unknown charge. Model-facing runtime, task inputs, conditions, stage budgets and scoring remain fixed."
+      "1.0.8: user renewed explicit private-data and $12 spending authorisation and supplied a working replacement credential. Recover and push all local commits. Preserve every historical freeze and result. Run the two previously declared completion plans in fresh directories, lowering the numerical threshold to $3 and retaining $1 for repair. Reserve $4.50 for prior unknown usage, require one-response headroom before each serial phase, and halt both phases on any new unknown charge. Model-facing runtime, task inputs, conditions, stage budgets and scoring remain fixed.",
+      "1.0.9: preserve 49 additional attempts and 48 finished answers after a provider HTTP 429. A separate diagnostic identifies credit_balance_exhausted. Stop generation and retain all records, including the unpriced request; repair remains unstarted. Analyse eight complete blocks under the existing coverage rule, withhold the six-task estimand, record the four missing blocks and provider-credit dependency. The previous publication block is resolved and the new evidence is prepared for the same private PR branch. No model-facing runtime or scoring change."
     ]
   }
 }

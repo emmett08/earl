@@ -2,9 +2,9 @@
 
 The **92 earlier trials are recovered and pushed**, with their original prompts, failures, usage and frozen inputs. Their [report](eal2-model-results.md) retains the stateless-host interface confounds and original findings.
 
-The explicitly authorised new campaign produced **194 attempted endpoints: 192 finished answers, one endpoint stopped at its repair limit and one transport-failed endpoint**. The transport failure returned no usage and halted further calls. The remaining 130 scheduling records comprise 123 unexecuted conditions and seven partial sequences. They are not model-outcome observations.
+The first explicitly authorised cohort retained **194 attempted endpoint records, including 192 finished answers**. The continuation added **49 attempted endpoint records, including 48 finished answers**, before a GPT-4.1 mini request returned HTTP 429. A separate diagnostic then returned `insufficient_quota` / `credit_balance_exhausted`. The provider account needs prepaid credits before generation can continue. The repair phase was not started. Both cohorts retain their original records; their combined **243 attempts and 240 finished answers** include repeated cases in incomplete blocks and must not be treated as 243 independent cases.
 
-Seven complete task/repetition blocks provide **189 comparable endpoints**, including the repair-limit failure. On these blocks, **full GPT-4.1 tool evidence → GPT-4.1 nano is correct in 7/7**, versus **5/7 for the same producer's answer alone**. Both differences occur on the circular-defence task, once in each repetition. **The planned six-task comparison remains unestimated**: five of its twelve blocks are missing. These results support a bounded observation about the recorded cases, not general superiority of a model class or pipeline.
+Eight complete task/repetition blocks provide **216 comparable endpoints**, including one repair-limit failure. **Full GPT-4.1 tool evidence → GPT-4.1 nano is correct in 8/8**, versus **5/8 for the same producer's answer alone**. Two differences occur on circular defence and one on an observation with the wrong origin. **Four of the planned twelve blocks remain incomplete**, so the six-task estimand is still withheld. All recovered code, freezes, observations, model outputs and reports are committed to the existing branch for [PR #3](https://github.com/emmett08/earl/pull/3).
 
 ## Coverage and primary comparison
 
@@ -16,84 +16,89 @@ The [frozen design](model-relay-experiments.md) defines 27 conditions across six
 | Defence cannot ground itself | 0, 1 | 2/2 | 0/2 |
 | Defence with independent subargument | 0, 1 | 2/2 | 2/2 |
 | Cold-room calibration reference repair | 1 | 1/1 | 1/1 |
+| Registered RMS with wrong observation origin | 0 | 1/1 | 0/1 |
 
-The two primary conditions share the **exact saved producer output** within each block, with the same recipient model, original task and stage budget. On circular defence, the answer-only recipient changed the producer's correct `contested` status to `supported`. The evidence recipient retained the correct status in both repetitions. The transferred material contains actual tool results and failures; private reference labels and scores are excluded.
+The two primary conditions share the **exact saved producer output** within each block, with the same recipient model, original task and stage budget. On circular defence, the answer-only recipient changes the producer's correct `contested` status to `supported`. On the wrong-origin case, it changes the correct `unsupported` status to `supported`. The evidence recipient preserves the correct status in all three comparisons. Transferred records contain actual tool results and failures; private reference labels and scores are excluded.
 
-Evidence adds **$0.0085855** across the seven sequences, or **$0.0012265 per sequence**. At realised token rates, its recorded cost per correct endpoint is **$0.021424**, versus **$0.028277** for answer-only transfer. These are descriptive ratios from seven blocks, with only four distinct task types. They do not estimate population cost-effectiveness. The full tool producer alone is already correct in 7/7 at **$0.019862 per correct endpoint**; the added recipient supplies no accuracy improvement over that producer on this subset.
+Evidence adds **$0.0093476** across the eight sequences, or **$0.00116845 per sequence**. Its recorded cost per correct endpoint is **$0.022252**, versus **$0.033733** for answer-only transfer. These descriptive ratios concern eight blocks drawn from five distinct task types. They do not estimate population cost-effectiveness. The full tool producer alone is already correct in 8/8 at **$0.020695 per correct endpoint**; the added recipient supplies no accuracy improvement over that producer on this subset.
 
-Selection uses **attempted coverage, never correctness**: all 27 conditions must have an attempted endpoint for a block to enter the common comparison. The coverage rule was declared after the interruption and is a post-data analysis amendment. Budget-failed outcomes remain included. The incomplete numerical block retains four finished answers and its transport failure separately, without being compared against conditions that never ran. The [block analysis](../benchmarks/results/2026-09-23-relays-explicit/block-analysis.json) lists selected and missing blocks and all five additional attempted endpoints. It withholds the planned estimand. No confidence interval is reported for this incomplete, purposively selected subset.
+Block selection depends on **attempted coverage, never correctness**: every one of the 27 conditions must have an attempted endpoint. The rule was declared after the original interruption, before this continuation, and is a post-data analysis amendment. Budget-failed outcomes remain included. The two incomplete numerical blocks retain **27 further attempted records** separately: five from the original cohort and 22 from the continuation. Both concern `registered-rms-velocity/repeat-1`. The [combined analysis](../benchmarks/results/2026-09-23-relays-continuation/block-analysis.json) lists every selected and missing block. It withholds the planned estimand and reports no confidence interval for this incomplete subset. The earlier [seven-block analysis](../benchmarks/results/2026-09-23-relays-explicit/block-analysis.json) remains unchanged.
 
-## All conditions on the same seven blocks
+## All conditions on the same eight blocks
 
-Symbols: `n` = GPT-4.1 nano; `m` = GPT-4.1 mini; `l` = GPT-4.1; `rn` = GPT-5 nano; `rm` = GPT-5 mini; `r` = GPT-5. GPT-5 configurations use low reasoning effort. `tool` gives that stage native EAL tools; final suffixes identify the hand-off content. Full model names and every stage configuration appear in the [design](model-relay-experiments.md).
+Symbols: `n` = GPT-4.1 nano; `m` = GPT-4.1 mini; `l` = GPT-4.1; `rn` = GPT-5 nano; `rm` = GPT-5 mini; `r` = GPT-5. GPT-5 configurations use low reasoning effort. `tool` gives that stage native EAL tools; final suffixes identify the transferred content. Full snapshot names and stage configurations appear in the [design](model-relay-experiments.md).
 
-Costs below sum each sequence's recorded stage charges, allocating its shared producer in full to that condition. They use realised cache discounts. The final column counts endpoints whose **final stage itself** passed the strict source, evidence and workflow checks. A zero for a model-only recipient does not invalidate its answer; it indicates that the recipient performed no independent tool verification.
+Costs sum each sequence's recorded stage charges, allocating its shared producer in full to that condition at realised cache rates. The final column counts endpoints whose **final stage itself** passed the strict source, evidence and workflow checks. A model-only recipient can return a correct answer without independently verifying the source or evidence.
 
 | Condition | Correct endpoints | Sum of sequence charges, USD | Per correct endpoint, USD | Verified tool endpoints |
 | --- | ---: | ---: | ---: | ---: |
-| `n_solo` | 3/7 | 0.002562 | 0.000854 | 0 |
-| `m_solo` | 5/7 | 0.010024 | 0.002005 | 0 |
-| `l_solo` | 5/7 | 0.041064 | 0.008213 | 0 |
-| `rn_solo` | 5/7 | 0.001732 | 0.000346 | 0 |
-| `rm_solo` | 6/7 | 0.006166 | 0.001028 | 0 |
-| `r_solo` | 7/7 | 0.066336 | 0.009477 | 0 |
-| `n_tool_solo` | 6/7 | 0.010084 | 0.001681 | 6 |
-| `l_tool_solo` | 7/7 | 0.139032 | 0.019862 | 7 |
-| `r_tool_solo` | 7/7 | 0.089366 | 0.012767 | 7 |
-| `n_l_answer` | 3/7 | 0.048140 | 0.016047 | 0 |
-| `l_n_answer` | 5/7 | 0.042966 | 0.008593 | 0 |
-| `n_n_answer` | 3/7 | 0.004467 | 0.001489 | 0 |
-| `l_l_answer` | 5/7 | 0.077574 | 0.015515 | 0 |
-| `n_tool_l_evidence` | 6/7 | 0.247318 | 0.041220 | 0 |
-| `l_tool_n_evidence` | 7/7 | 0.149970 | 0.021424 | 0 |
-| `l_tool_n_answer` | 5/7 | 0.141385 | 0.028277 | 0 |
-| `l_tool_n_transcript` | 6/7 | 0.158744 | 0.026457 | 0 |
-| `l_tool_n_none` | 3/7 | 0.141594 | 0.047198 | 0 |
-| `r_tool_n_evidence` | 7/7 | 0.100750 | 0.014393 | 0 |
-| `n_tool_r_evidence` | 7/7 | 0.161385 | 0.023055 | 0 |
-| `n_l_tool_n` | 7/7 | 0.155492 | 0.022213 | 0 |
-| `l_n_tool_l` | 7/7 | 0.259540 | 0.037077 | 0 |
-| `rm_tool_l_evidence` | 7/7 | 0.257314 | 0.036759 | 0 |
-| `l_tool_rm_evidence` | 7/7 | 0.168501 | 0.024072 | 0 |
-| `n_m_l` | 3/7 | 0.047953 | 0.015984 | 0 |
-| `rn_tool_r_evidence` | 7/7 | 0.164486 | 0.023498 | 0 |
-| `r_tool_rn_evidence` | 7/7 | 0.096659 | 0.013808 | 0 |
+| `n_solo` | 3/8 | 0.002848 | 0.000949 | 0 |
+| `m_solo` | 5/8 | 0.012974 | 0.002595 | 0 |
+| `l_solo` | 5/8 | 0.055812 | 0.011162 | 0 |
+| `rn_solo` | 5/8 | 0.001872 | 0.000374 | 0 |
+| `rm_solo` | 7/8 | 0.007123 | 0.001018 | 0 |
+| `r_solo` | 7/8 | 0.076242 | 0.010892 | 0 |
+| `n_tool_solo` | 7/8 | 0.011411 | 0.001630 | 7 |
+| `l_tool_solo` | 8/8 | 0.165558 | 0.020695 | 8 |
+| `r_tool_solo` | 8/8 | 0.105295 | 0.013162 | 8 |
+| `n_l_answer` | 3/8 | 0.054510 | 0.018170 | 0 |
+| `l_n_answer` | 5/8 | 0.058019 | 0.011604 | 0 |
+| `n_n_answer` | 3/8 | 0.005057 | 0.001686 | 0 |
+| `l_l_answer` | 5/8 | 0.098406 | 0.019681 | 0 |
+| `n_tool_l_evidence` | 7/8 | 0.279014 | 0.039859 | 0 |
+| `l_tool_n_evidence` | 8/8 | 0.178014 | 0.022252 | 0 |
+| `l_tool_n_answer` | 5/8 | 0.168666 | 0.033733 | 0 |
+| `l_tool_n_transcript` | 7/8 | 0.187914 | 0.026845 | 0 |
+| `l_tool_n_none` | 3/8 | 0.168406 | 0.056135 | 0 |
+| `r_tool_n_evidence` | 8/8 | 0.118645 | 0.014831 | 0 |
+| `n_tool_r_evidence` | 8/8 | 0.182900 | 0.022863 | 0 |
+| `n_l_tool_n` | 8/8 | 0.172277 | 0.021535 | 0 |
+| `l_n_tool_l` | 8/8 | 0.306270 | 0.038284 | 0 |
+| `rm_tool_l_evidence` | 8/8 | 0.301468 | 0.037683 | 0 |
+| `l_tool_rm_evidence` | 8/8 | 0.200106 | 0.025013 | 0 |
+| `n_m_l` | 3/8 | 0.055816 | 0.018605 | 0 |
+| `rn_tool_r_evidence` | 8/8 | 0.192487 | 0.024061 | 0 |
+| `r_tool_rn_evidence` | 8/8 | 0.113628 | 0.014204 | 0 |
 
-The complete [endpoint table](../benchmarks/results/2026-09-23-relays-explicit/complete-block-endpoints.csv) also records correction/damage transitions, latency, input/output/reasoning tokens, cached input and an uncached-rate projection. The [stage table](../benchmarks/results/2026-09-23-relays-explicit/complete-block-stages.csv) identifies actual response models and tool events.
+The complete [endpoint table](../benchmarks/results/2026-09-23-relays-continuation/complete-block-endpoints.csv) records correction/damage transitions, latency, tokens, cached input and an uncached-rate projection. The [stage table](../benchmarks/results/2026-09-23-relays-continuation/complete-block-stages.csv) identifies actual response models and tool events.
 
-Several results constrain an interpretation based on chain length. The nano→mini→full answer chain is correct in 3/7, matching nano solo, whereas both three-stage return sequences are correct in 7/7. The full-tool→nano transcript condition is correct in 6/7; its repair-case recipient incorrectly returns `unsupported` after a correct producer. Thus, the recorded benefit depends on the case and transferred record. More stages or more transcript text alone does not account for the outcomes.
+The nano→mini→full answer chain is correct in 3/8, matching nano solo, whereas both three-stage return sequences are correct in 8/8. Full-tool→nano transcript transfer is correct in 7/8; its repair-case recipient returns `unsupported` after a correct producer. The observed benefit therefore depends on the case and transferred material. Chain length alone does not explain these outcomes.
 
 ## Failure evidence and cost accounting
 
-Two unique nano tool stages exhaust the repair allowance on the calibration case. Both retain validator diagnostics for an unknown reasoning reference, unsuccessful revision attempts and five counted repairs. One is the tool-solo endpoint; the other is a middle stage whose later recipient returns the correct status. These are bounded revision/interface failures, distinct from completed incorrect answers. A correct later model-only answer does not establish that it repaired or independently verified the source. The [failure summary](../benchmarks/results/2026-09-23-relays-explicit/failure-summary.json) retains diagnostics, last outputs and provider errors; full conversations remain in the raw archive.
+Two original nano tool stages exhaust the repair allowance on the calibration case. Their records retain validator diagnostics for an unknown reasoning reference, unsuccessful revision attempts and five counted repairs. One is a tool-solo endpoint; the other is a middle stage whose later recipient returns a correct answer. A correct later model-only answer does not establish source repair or independent verification. The original [failure summary](../benchmarks/results/2026-09-23-relays-explicit/failure-summary.json) and raw archives retain the diagnostics and conversations.
 
-The numerical interruption occurs in a full GPT-4.1 recipient after a nano answer on `registered-rms-velocity`. Its request has a recorded prompt digest but no returned usage or answer. The runner records `token_usage_unavailable`, retains the failure and stops new generation. Its cost is unknown, not zero.
+The original numerical interruption occurred in a full GPT-4.1 recipient after a nano answer on `registered-rms-velocity`. The continuation stopped in a GPT-4.1 mini middle stage of `n_m_l` on the same task/repetition. Its retained attempt records HTTP 429 and unavailable token usage. A separate 16-token diagnostic request returned `insufficient_quota` / `credit_balance_exhausted`; it returned no completion or usage. The [diagnostic record](../benchmarks/results/2026-09-23-relays-continuation/provider-diagnostic.json) contains the safe error fields. OpenAI's [error reference](https://developers.openai.com/api/docs/guides/error-codes) identifies this code as an exhausted prepaid balance. No further generation was attempted after that diagnosis.
 
-The seven complete blocks use **217 unique stages and 296 model requests**, with 3,581,832 input tokens and 26,220 output tokens. Of the input tokens, **1,850,496 were reported cached**. Their unique recorded model charges total **$1.76054182**. Repricing the same tokens entirely at configured uncached rates gives **$2.92460710**; this is a projection, not another deployment measurement. Cache availability, workload order and reused prefixes limit any claim about independently deployed sequence costs.
+The continuation saved **52 stages and 49 attempted endpoints** from 66 task requests. It completed 48 answers, of which 36 were correct. Its remaining scheduling records contain **57 unexecuted conditions and two partial sequences**. They remain in the archive and are excluded from endpoint-accuracy denominators. The [checkpoint audit](../benchmarks/results/2026-09-23-relays-continuation/numerical-interrupted-audit/checkpoint-audit.json) distinguishes every category.
 
-The full explicit cohort, including the incomplete numerical block, has **at least $1.79743512** in recorded model charges. Across the new cohorts and eleven capability probes, known charges are **at least $1.91203171**. Earlier interrupted requests and the blocked completion marker have unknown usage. These configured token-rate estimates exclude host hardware, labour and tax. No exact invoice total or hard billing cap is claimed.
+The eight selected blocks use **248 unique stages and 337 model requests**, with **4,082,245 input tokens**, **29,349 output tokens** and **2,055,808 cached input tokens**. Their unique recorded model charges total **$2.03785940**. Repricing those tokens entirely at configured uncached rates gives **$3.33088340**; this is a projection, not another deployment measurement. Cache availability, workload order and reused prefixes limit claims about independently deployed sequence costs.
 
-## Preserved runs and current blocks
+The continuation added **at least $0.41123124** in recorded model charges. Across all new cohorts and the eleven original capability probes, known charges are now **at least $2.32326295**. Earlier interrupted requests, the blocked completion marker, the new failed stage and the diagnostic request have unavailable usage. Their actual total remains unknown. Configured token-rate estimates exclude host hardware, labour and tax.
+
+The [continuation budget](../benchmarks/results/2026-09-23-relays-continuation/budget-reconciliation.json) reserved $4.50 for earlier unreported usage, lowered the numerical phase threshold to $3, and retained $1 for repair. A cumulative check included one-response headroom before either phase. The first phase stopped at the first new unknown charge. This planning allowance is not recovered billing or a provider-enforced invoice cap. The account credit limit ended execution before the user-defined $12 threshold was approached by recorded charges.
+
+## Preserved runs and publication
 
 | Cohort | Frozen protocol / package | Retained record |
 | --- | --- | --- |
 | Initial | 1.0.0 / 2.2.0 | No stage response; three orphan markers; disclosure review block |
 | Confirmed concurrent | 1.0.2 / 2.2.0 | 14 stage records, ten finished endpoints on one task; network approval cancellation |
 | Serial replacement | 1.0.3 / 2.2.1 | No response; one orphan marker; review did not recognise confirmation |
-| Explicit authorisation | 1.0.5 / 2.2.2 | 222 stage records, 194 attempted endpoints; one unpriced transport failure |
-| Numerical completion | 1.0.6 / 2.2.2 | No response; one orphan marker; additional-spending review block |
+| Explicit authorisation | 1.0.5 / 2.2.2 | 222 stages, 194 attempts, 192 finished answers; one unpriced transport failure |
+| Blocked numerical completion | 1.0.6 / 2.2.2 | No response; one orphan marker; additional-spending review block |
+| Renewed authorisation | 1.0.8 / 2.2.2 | 52 stages, 49 attempts, 48 finished answers; HTTP 429 followed by confirmed exhausted credit balance |
 
-Indexes and raw archives: [initial](../benchmarks/results/2026-09-23-relays/index.json), [confirmed](../benchmarks/results/2026-09-23-relays-authorised/index.json), [serial](../benchmarks/results/2026-09-23-relays-serial/index.json), [explicit](../benchmarks/results/2026-09-23-relays-explicit/index.json), [completion](../benchmarks/results/2026-09-23-relays-completion/index.json). All frozen bytes remain unchanged. The confirmed cohort's three residual markers have matching completed stage records and are not additional unknown requests. Its four failed stage records do have unavailable usage. The explicit cohort retains one stale marker with a matching completed, priced stage; its separate transport-failed stage has unknown usage.
+Archive indexes: [initial](../benchmarks/results/2026-09-23-relays/index.json), [confirmed](../benchmarks/results/2026-09-23-relays-authorised/index.json), [serial](../benchmarks/results/2026-09-23-relays-serial/index.json), [explicit](../benchmarks/results/2026-09-23-relays-explicit/index.json), [blocked completion](../benchmarks/results/2026-09-23-relays-completion/index.json), and [continuation](../benchmarks/results/2026-09-23-relays-continuation/numerical-interrupted-index.json). The continuation also retains a [first-block checkpoint](../benchmarks/results/2026-09-23-relays-continuation/numerical-first-block-index.json), containing 28 endpoints. Checkpoints are overlapping snapshots and must not be added together as separate observations. All frozen bytes remain unchanged. Residual markers with matching priced stage records are not additional unknown requests.
 
-The user explicitly authorised private EAL sources, observations and model hand-offs to `api.openai.com`, with a $12 spending stop threshold. Following the transport interruption, a separately declared $5 numerical phase and $1 repair phase would complete the missing blocks. Automatic review rejected that execution because earlier charges are unknown and it did not consider the added $6 clearly authorised. No completion response was saved, and the repair phase was not started. No further paid route or request was attempted.
-
-Automatic review also rejected the halfway checkpoint push to GitHub. A read-only check confirmed the destination was the same **private `emmett08/earl` repository**, the existing `feat/eal2-forward-contracts` branch and PR #3, with push permission. A retry restricted to the two checkpoint files was rejected again because the review did not recognise the generic push instruction as authority for that private archive. Further pushes stopped. The first 54-endpoint checkpoint is on GitHub at `3b4e8b8`; later evidence and reports are committed locally pending explicit publication authorisation.
+The previous session's automatic-review blocks on private-data disclosure and GitHub upload are preserved in its metadata. The user renewed explicit authorisation for private EAL sources, observations and model hand-offs to `api.openai.com`, retained the $12 stop threshold, and requested remote push. The recovered commits and the first continuation checkpoint were successfully pushed to the same private `emmett08/earl` repository, branch `feat/eal2-forward-contracts`, PR #3. Publication is no longer blocked. The current execution blocker is the provider account's exhausted credit balance.
 
 ## Capability probes
 
-All eleven preliminary text/native probes succeeded and returned the requested pinned snapshot identities. They sent only a short greeting or trivial `ping` schema and supply capability evidence, not engineering-task outcomes. The [probe archive](../benchmarks/results/2026-09-23-relays/provider-probes.json) retains messages, outputs, tokens, latency and the **$0.0015704** configured-rate estimate.
+All eleven original text/native probes succeeded and returned the requested pinned snapshots. Their [archive](../benchmarks/results/2026-09-23-relays/provider-probes.json) retains outputs and the **$0.0015704** configured-rate estimate. They supply capability evidence, not engineering-task outcomes. During continuation, the old available credential returned HTTP 401 on a read-only model check; the user-provided replacement returned HTTP 200. These checks performed no generation. The later failed diagnostic is separate from the eleven successful probes and from endpoint scoring.
 
 ## Statistical calibration
+
 
 The pre-execution sensitivity simulation generated 1,000 synthetic datasets per scenario, with two perfectly correlated repetitions within each task. Each task's paired correctness difference was sampled from a declared distribution on −1, 0 and +1. This examines the finite-task interval procedure, not language-model performance.
 
@@ -108,8 +113,8 @@ These are simulated coverage fractions for nominal 95% percentile intervals unde
 
 ## Validation and next execution
 
-All **535 tests pass**, including three tests proving that complete-block selection retains failed outcomes, marks incomplete coverage missing and rejects duplicate complete blocks rather than choosing favourable results. The offline audit checks frozen/checkpoint hashes, schedule identity, endpoint scores, original source anchors, hand-off identity and per-request known charges. The primary shared-producer and no-handoff invariants pass. The model-facing implementation remained unchanged throughout the explicit cohort; its recorded drift flag is false.
+Previous implementation validation passed **535 tests**, including complete-block selection tests. The continuation passed **25 targeted checks**, including seven new tests for cumulative spending controls. GitHub CI passed the repository checks and package build for the continuation commit. Protocol 1.0.9 validates the recorded interruption and remaining scope. Package **2.2.2** and source language **EAL/2** remain unchanged.
 
-Package **2.2.2** and source language **EAL/2** remain unchanged. The earlier wheel/sdist and installed 324-endpoint freeze checks still apply to this runtime. The added analysis scripts operate offline. Protocol **1.0.7** validates with zero errors or warnings and records the incomplete target coverage and both automatic-review blocks.
+Archive hashes, frozen/checkpoint hashes, schedule identities, endpoint scores, original source anchors, transferred-record identities and per-request charges pass the offline audits. The earlier seven-block analysis reproduced exactly. The new eight-block analysis retains the shared-producer and no-handoff invariants. No model-facing runtime, task input, provider configuration, stage budget or scoring change occurred during either cohort; both drift flags are false.
 
-Once additional spending is explicitly authorised despite the unreported earlier charges, the prepared completion plans cover 108 numerical endpoints and 27 repair endpoints. Complete blocks can then be combined by the declared coverage rule, with every interrupted record retained separately. GitHub publication also requires authorisation recognised by the automatic reviewer for the private code, archives and results at the named repository and branch. A new independent task study and a parameter-defined SLM remain necessary for broader capability claims.
+The four missing complete blocks are `registered-rms-velocity/repeat-0`, `registered-rms-velocity/repeat-1`, `registered-rms-wrong-origin/repeat-1`, and `cold-room-calibration-reference-repair/repeat-0`. They represent **108 planned comparison slots**, some of which have partial-cohort observations. Restoring prepaid API credit is required before further requests. A subsequent frozen continuation must retain the failed attempts, refresh cumulative spending from all saved cohorts, and select only missing complete blocks without replaying old records silently. The present completion plans describe the interrupted five-block attempt, so they must be amended before another run. Fresh independent tasks and a parameter-defined SLM remain necessary for broader capability claims.
