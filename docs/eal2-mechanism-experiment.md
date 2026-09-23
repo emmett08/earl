@@ -1,5 +1,7 @@
 # Why supplying an EAL/2 argument did not reliably improve a tool-free model
 
+The [negative-finding revision experiment](eal2-negative-revision-results.md) now tests a specific executable repair on synthetic observations and specifies a separate 96-call pilot for coverage and authoring. It does not add model calls to the 180-call archive or execute the 960-call plan below.
+
 **Design status: specified, unexecuted.** The companion [investigation protocol](../benchmarks/protocols/INV-EAL-MECHANISMS-001.json) defines prospective interventions, references, analysis and decision rules. The five-task archive below motivates them; it cannot identify a hidden model process or support a claim about a new task population.
 
 ## What the existing responses establish

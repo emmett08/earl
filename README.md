@@ -106,6 +106,7 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 - [EAL/2 regression experiments](docs/eal2-model-results.md): live model/host measurements for package 2.1.0 on 23 September 2026, using previously exposed tasks.
 - [EAL/2 with a finite-state checker](docs/eal2-companion-investigation.md): a versioned argument, installed method, independent graph oracle and complete synthetic experiment, including an observation-authentication counterexample.
 - [Why supplied arguments and evidence fail](docs/eal2-evidence-failure-analysis.md): a verified reanalysis of 180 retained model calls, five EAL/2 perturbation pairs, an executable bounded argument and a new discriminating investigation protocol.
+- [Negative findings and revision](docs/eal2-negative-revision-results.md): a registered sampled-finding method, explicit EAL/2 objections, 20 deterministic status transitions, research synthesis and a staged prospective pilot.
 - [Historical EAL/0.3 repeated experiments](docs/eal03-model-results.md): original model/interface conditions and development ablations.
 - [Reasoning methods](docs/reasoning-modes.md): distinct evidence schemas, algorithms and interpretation limits.
 - [Grounded argumentation](docs/grounded-reasoning.md): counterargument, defence and undecided cycles.
