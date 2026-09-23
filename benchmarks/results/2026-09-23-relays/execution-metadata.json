@@ -1,0 +1,39 @@
+{
+  "schema": "EAL/relay-execution/1",
+  "code_commit": "cabc998",
+  "package_version": "2.2.0",
+  "source_language": "EAL/2",
+  "protocol_version_used": "1.0.0",
+  "recorded_at": "2026-09-23T16:03:12.496059+00:00",
+  "status": "blocked_auto_review",
+  "automatic_review_reason": "The campaign would send private repository task sources, observations and hand-offs to api.openai.com without disclosure authorisation recognised by automatic approval review.",
+  "repository_visibility_verified": "private",
+  "completed_model_trials": 0,
+  "planned_sequence_outcomes": 324,
+  "unfinished_requests": [
+    {
+      "freeze_digest": "8ca94094ab40ff5f3bfc936f47a7f284d3336a7a5bc31526dcdb6ef184db7abe",
+      "stage_key": "64b1aa8fa166a0a928fe1176b4c1139b97dcd8a107c7f1ca83b9a1d01f0ac5c8",
+      "task_id": "sampled-negative-finding",
+      "started_at": "2026-09-23T15:59:49.925042+00:00"
+    },
+    {
+      "freeze_digest": "8ca94094ab40ff5f3bfc936f47a7f284d3336a7a5bc31526dcdb6ef184db7abe",
+      "stage_key": "b48f589f1853baddf94828080db9477a9f896d042088bcf52dd977e43cfb8860",
+      "task_id": "sampled-negative-finding",
+      "started_at": "2026-09-23T15:59:49.956301+00:00"
+    },
+    {
+      "freeze_digest": "8ca94094ab40ff5f3bfc936f47a7f284d3336a7a5bc31526dcdb6ef184db7abe",
+      "stage_key": "f76bb3e87a2e1487a029f87c80e7a228805f67c2be4a9cc3ca32ea6bbd4db427",
+      "task_id": "sampled-negative-finding",
+      "started_at": "2026-09-23T15:59:49.980188+00:00"
+    }
+  ],
+  "unfinished_request_usage": "unknown; no completed response saved",
+  "replay_action": "Retained, not retried. A later authorised replacement campaign needs a new output directory and must retain these unknowns separately.",
+  "capability_probe_count": 11,
+  "capability_probe_cost_usd": 0.0015704,
+  "budget_threshold_usd": 12,
+  "source_fixture_provenance": "All engineering-v2 fixtures match published private PR head dc30aa5aa29c63b50e452118fd455311bf89c88e byte-for-byte."
+}

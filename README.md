@@ -117,3 +117,5 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 ### Model sequences and evidence transfer
 
 See [model sequence experiments](docs/model-relay-experiments.md) for reproducible small-to-full, full-to-small, reasoning/tool and three-stage comparisons, with saved evidence hand-offs, common endpoint scoring and resumable checkpoints.
+
+The [sequence execution record](docs/eal2-relay-results.md) retains the successful capability probes and the automatic-review interruption. No new task-performance results are claimed.
