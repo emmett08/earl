@@ -164,6 +164,26 @@ def test_changed_checkpoint_is_detected(tmp_path, monkeypatch):
         asyncio.run(run_relay(path,output,resume=True))
 
 
+def test_partial_known_charges_survive_later_usage_failure(tmp_path, monkeypatch):
+    from eal import relay
+    async def measured(task, *args, **kwargs):
+        result = stage_result(task)
+        result['report']['usage'].update(known_model_cost_usd=.013, model_cost_complete=False)
+        result['cost'].update(model_usd=None, total_usd=None)
+        return result
+    monkeypatch.setattr(relay, 'evaluate_task', measured)
+    path = plan_file(tmp_path)
+    plan = json.loads(path.read_text())
+    plan['concurrency'] = 1
+    path.write_text(json.dumps(plan))
+    output = tmp_path / 'run'
+    report = asyncio.run(run_relay(path, output))
+    assert report['unique_model_cost_usd'] is None
+    assert report['known_unique_model_cost_usd'] == .013
+    resumed = asyncio.run(run_relay(path, output, resume=True))
+    assert resumed['known_unique_model_cost_usd'] == .013
+
+
 @pytest.mark.parametrize("change", ["first_handoff", "native_unaided", "negative_cost", "extra_field"])
 def test_invalid_design_fails_before_requests(tmp_path, change):
     path=plan_file(tmp_path);p=json.loads(path.read_text())

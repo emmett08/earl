@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-RELAY-001",
   "title": "Order and evidence transfer in EAL/2 model sequences",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "status": "approved",
   "question": "On six exposed EAL/2 regression tasks, how do endpoint correctness, unsupported positive answers and total cost differ by model sequence, tool placement and transferred record?",
   "primary_claim_id": "CLM-001",
@@ -623,7 +623,7 @@
       "engineer-argumentation-languages"
     ],
     "resources": [
-      "At most four concurrent sequences; $12 campaign threshold"
+      "One serial sequence; $10 replacement campaign threshold, leaving $2 of the confirmed threshold for the interrupted attempts; actual unknown prior charges remain explicitly unknown."
     ],
     "dependencies": [
       "Pinned model snapshots remain available",
@@ -654,14 +654,14 @@
     "data_location": null,
     "code_location": "src/eal/relay.py",
     "observed_results": [],
-    "interpretation_status": "authorised; not-started"
+    "interpretation_status": "authorised serial replacement; not-started"
   },
   "provenance": {
     "authors": [
       "Codex for Emmett Miller"
     ],
     "created_at": "2026-09-23T15:55:16.844586+00:00",
-    "updated_at": "2026-09-23T16:13:54.352368+00:00",
+    "updated_at": "2026-09-23T16:24:36.243670+00:00",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1",
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
@@ -674,7 +674,8 @@
     "change_log": [
       "1.0.0: pre-task design with shared-prefix control, common endpoint scoring and complete cost retention",
       "1.0.1: record the post-freeze automatic review block and restrict readiness to specified; original 1.0.0 freeze preserved.",
-      "1.0.2: user explicitly confirmed private synthetic task-data disclosure to OpenAI API and the $12 spending threshold. Run a separately identified replacement campaign. The three previous in-flight requests retain unknown usage and are not resumed or erased."
+      "1.0.2: user explicitly confirmed private synthetic task-data disclosure to OpenAI API and the $12 spending threshold. Run a separately identified replacement campaign. The three previous in-flight requests retain unknown usage and are not resumed or erased.",
+      "1.0.3: the explicitly authorised concurrent campaign suffered network approval cancellation after partial results. Preserve its full archive separately. Run one serial replacement with a $10 threshold. Fix partial known-charge accounting in package 2.2.1; no prompt, task, scoring, condition or repetition changes. This scheduling amendment follows observation of partial first-task results and is not claimed to be wholly pre-data. Do not silently resume unknown billed requests."
     ]
   }
 }

@@ -180,6 +180,12 @@ def _failed(task: dict, provider: dict, reason: str, *, unknown_usage: bool = Fa
             "cost": {"model_usd": None if unknown_usage else 0, "tool_usd": 0, "total_usd": None if unknown_usage else 0}}
 
 
+def known_model_cost(trial: dict) -> float:
+    """Retain measured charges before a later request loses usage accounting."""
+    usage = trial["report"].get("usage", {})
+    return usage.get("known_model_cost_usd", trial["cost"].get("model_usd") or 0)
+
+
 def combine_sequence(task: dict, condition: dict, stages: list[dict], stage_keys: list[str], terminal: dict | None = None) -> dict:
     reports = [s["report"] for s in stages]
     endpoint = terminal or stages[-1]
@@ -233,7 +239,7 @@ async def run_relay(path: str | Path, output: str | Path, *, resume: bool = Fals
             raise ValueError("Stage checkpoint integrity mismatch")
         cache[record_path.stem] = record["trial"]
         cost = record["trial"]["cost"]["model_usd"]
-        charged += cost or 0
+        charged += known_model_cost(record["trial"])
         unknown |= cost is None
     # An interrupted request may already have been billed. Detect all such
     # requests before scheduling anything new, including a different prefix.
@@ -285,7 +291,7 @@ async def run_relay(path: str | Path, output: str | Path, *, resume: bool = Fals
                                                         "trial": trial, "sha256": _digest(trial)})
             marker.unlink(missing_ok=True)
             cost = trial["cost"]["model_usd"]
-            charged += cost or 0
+            charged += known_model_cost(trial)
             unknown |= cost is None
             cache[key] = trial
             return key, trial

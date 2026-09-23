@@ -1,0 +1,47 @@
+{
+  "schema": "EAL/relay-execution/1",
+  "status": "interrupted_network_approval_cancelled",
+  "freeze_digest": "ffa04bd83c1201167304574128680dff159dfc9f5d71b6d2a48ff61d1e31c954",
+  "protocol_version_used": "1.0.2",
+  "code_commit": "df87d9e",
+  "package_version": "2.2.0",
+  "authorisation": "User explicitly confirmed sending the private synthetic task sources, observations and hand-offs to OpenAI API and the $12 campaign threshold.",
+  "error": "Unified exec process failed: network approval was cancelled before a decision was returned",
+  "scheduled_endpoints": 324,
+  "saved_endpoint_records": 324,
+  "endpoint_stop_reasons": {
+    "campaign_cost_unverifiable": 308,
+    "finished": 10,
+    "token_usage_unavailable": 6
+  },
+  "recorded_stages": 14,
+  "stage_stop_reasons": {
+    "finished": 10,
+    "token_usage_unavailable": 4
+  },
+  "known_model_cost_usd": 0.11302619,
+  "total_model_cost_usd": null,
+  "unpriced_stages": 4,
+  "unfinished_requests": [
+    {
+      "freeze_digest": "ffa04bd83c1201167304574128680dff159dfc9f5d71b6d2a48ff61d1e31c954",
+      "stage_key": "a3b698948bd9331c303666a8b2f822541e3a096aa2651c8f40db61a204103987",
+      "task_id": "sampled-negative-finding",
+      "started_at": "2026-09-23T16:14:36.351625+00:00"
+    },
+    {
+      "freeze_digest": "ffa04bd83c1201167304574128680dff159dfc9f5d71b6d2a48ff61d1e31c954",
+      "stage_key": "2b24f24a11569b55c8fa3252ce6fe8346893ca9db5374af5da99cad182d562dd",
+      "task_id": "sampled-negative-finding",
+      "started_at": "2026-09-23T16:14:27.961130+00:00"
+    },
+    {
+      "freeze_digest": "ffa04bd83c1201167304574128680dff159dfc9f5d71b6d2a48ff61d1e31c954",
+      "stage_key": "f61f5d762408a3ec0c81ac2b9c12bb32fe550a6e12b871e3f65c2f9d67764561",
+      "task_id": "sampled-negative-finding",
+      "started_at": "2026-09-23T16:14:27.651431+00:00"
+    }
+  ],
+  "interpretation": "Unexecuted campaign_cost_unverifiable endpoints are scheduling records, not model outcomes. The cohort stopped on its first task and is not a complete comparison. No unknown request has been silently replayed. A separately frozen serial replacement is authorised; this cohort is retained separately.",
+  "accounting_fix": "2.2.1 retains charges of completed requests inside a stage whose later request usage is unavailable. This audited lower bound uses the original per-request usage records."
+}
