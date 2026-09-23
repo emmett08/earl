@@ -1,0 +1,678 @@
+{
+  "schema_version": "1.0",
+  "investigation_id": "INV-EAL-RELAY-001",
+  "title": "Order and evidence transfer in EAL/2 model sequences",
+  "version": "1.0.0",
+  "status": "preregisterable",
+  "question": "On six exposed EAL/2 regression tasks, how do endpoint correctness, unsupported positive answers and total cost differ by model sequence, tool placement and transferred record?",
+  "primary_claim_id": "CLM-001",
+  "scope": {
+    "system_or_population": "Six engineering-v2.1-eal2 synthetic tasks and six pinned OpenAI model snapshots",
+    "conditions": "27 frozen one-, two- and three-stage conditions; fixed source/observations/time and fresh host sessions; low reasoning effort for GPT-5 family",
+    "spatial_scope": "Local EAL host with authorised remote OpenAI generation; no physical apparatus",
+    "temporal_scope": "One campaign after protocol and implementation freeze, two repetitions per task-condition",
+    "exclusions": [
+      "General model-class superiority",
+      "Parameter-defined SLM claims",
+      "Physical engineering validity",
+      "Independent evidence from repeated model agreement",
+      "Fresh held-out task claims"
+    ],
+    "knowledge_cut": "2026-09-23"
+  },
+  "claims": [
+    {
+      "id": "CLM-001",
+      "statement": "Transferring tool evidence from full GPT-4.1 to GPT-4.1 nano improves endpoint correctness relative to transferring its answer alone on this task suite.",
+      "claim_type": "difference",
+      "role": "primary",
+      "scope_limit": "Finite exposed synthetic suite and specified snapshots; pilot estimation only",
+      "success_consequence": "Retain this transfer scheme for a new independent task study",
+      "failure_consequence": "Revise the transfer representation or retain simpler answering"
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-001",
+      "statement": "Task reference labels correspond to the documented EAL semantics and remain fixed across arms.",
+      "role": "measurement",
+      "status": "tested",
+      "test_or_justification": "Known-answer checks, original analytic oracles and adversarial scorer tests; all references must pass before requests",
+      "failure_consequence": "Suspend affected accuracy comparisons and retain raw outcomes"
+    },
+    {
+      "id": "ASM-002",
+      "statement": "Provider snapshot behaviour is sufficiently stable during the campaign for a contemporaneous finite-task contrast.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Randomised rotating order, response model IDs and fingerprints retained; no claim of sampling determinism",
+      "failure_consequence": "Report stratified descriptive records and repeat after stability is restored"
+    },
+    {
+      "id": "ASM-003",
+      "statement": "No scoring information enters stage prompts or hand-offs.",
+      "role": "operational",
+      "status": "tested",
+      "test_or_justification": "Allow-listed packets, canary leak tests, isolated fresh hosts and no outcome-based routing",
+      "failure_consequence": "Invalidate affected model results and repair under a new freeze"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-001",
+      "label": "Evidence transfer benefit",
+      "kind": "substantive",
+      "statement": "Grounded tool records let the smaller recipient correct misleading or insufficient producer answers, increasing endpoint correctness.",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "scope": "Only the frozen finite suite, snapshots and prompt budgets"
+    },
+    {
+      "id": "H-002",
+      "label": "Additional evidence ineffective",
+      "kind": "rival",
+      "statement": "The recipient copies the producer conclusion or misreads additional evidence; answer-only transfer performs at least as well.",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "scope": "Only the frozen finite suite, snapshots and prompt budgets"
+    },
+    {
+      "id": "H-003",
+      "label": "Budget and repetition rival",
+      "kind": "rival",
+      "statement": "Apparent sequence gains arise from extra model calls or a stronger final model rather than transferred evidence.",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "scope": "Only the frozen finite suite, snapshots and prompt budgets"
+    },
+    {
+      "id": "H-0",
+      "label": "Primary null",
+      "kind": "statistical-null",
+      "statement": "H_0: Delta_EA <= 0, where Delta_EA = mean_task mean_repeat(Y_evidence - Y_answer).",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "scope": "Only the frozen finite suite, snapshots and prompt budgets"
+    },
+    {
+      "id": "H-A",
+      "label": "Primary alternative",
+      "kind": "statistical-alternative",
+      "statement": "H_1: Delta_EA > 0. A practically relevant pilot difference is at least 0.10; no confirmatory significance claim is planned.",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "scope": "Only the frozen finite suite, snapshots and prompt budgets"
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P-001",
+      "hypothesis_ids": [
+        "H-001"
+      ],
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "estimand_ids": [
+        "EST-001"
+      ],
+      "measurement_ids": [
+        "M-001"
+      ],
+      "expected_pattern": "For identical producer outputs, evidence yields more correct recipient endpoints than answer-only transfer.",
+      "direction": "increase",
+      "magnitude_or_range": "Delta_EA > 0; practical threshold 0.10",
+      "time_window": "At bounded final-stage completion",
+      "tolerance": "Exact status equality; descriptive task-cluster interval",
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-002",
+        "H-003"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-002",
+      "hypothesis_ids": [
+        "H-002",
+        "H-003"
+      ],
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "estimand_ids": [
+        "EST-001"
+      ],
+      "measurement_ids": [
+        "M-001"
+      ],
+      "expected_pattern": "Evidence performs no better than answer-only transfer despite equal producer records and equal recipient stage thresholds.",
+      "direction": "nonincrease",
+      "magnitude_or_range": "Delta_EA <= 0",
+      "time_window": "At bounded final-stage completion",
+      "tolerance": "Exact status equality",
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-001"
+      ],
+      "shared_prediction": false
+    }
+  ],
+  "constructs": [
+    {
+      "id": "CON-001",
+      "name": "Task endpoint correctness",
+      "definition": "Every requested claim has its known scoped status, no extra claim is returned, and the final interaction completed.",
+      "role": "outcome",
+      "scope": "Only the frozen finite suite, snapshots and prompt budgets",
+      "proxy_for_claim_ids": [
+        "CLM-001"
+      ],
+      "validity_evidence": [
+        "Independent task oracles reviewed and interpreter reference checks executed",
+        "Identical endpoint scoring across tool and no-tool conditions"
+      ],
+      "validity_threats": [
+        "Exposed tasks and scorer breadth",
+        "Correct copied labels need not demonstrate independent reasoning"
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M-001",
+      "construct_ids": [
+        "CON-001"
+      ],
+      "observable": "Final claim-status map and run completion",
+      "instrument_or_procedure": "common-endpoint-status/1 via score_answer; strict operational score retained separately",
+      "scale_or_units": "Binary task success, proportion over task-repetition blocks",
+      "timing": "After final stage; upstream stages also scored retrospectively",
+      "preprocessing": "No score enters prompts. Missing or incomplete endpoints count as failed resolution.",
+      "calibration": "All frozen reference checks must pass; synthetic positive/negative scoring controls",
+      "reliability": "Two calls per task-condition; identical prefixes intentionally shared, no deterministic provider claim",
+      "validity": "Measures statuses of the supplied EAL tasks only",
+      "measurement_invariance": "Same endpoint criterion for all arms; source/trace verification is secondary",
+      "reactivity": "No score feedback to models",
+      "error_model": "Task-cluster dependence; interface failure distinguished from incorrect completed answer",
+      "blinding": "Models receive task data and selected public prior output; no answer key, oracle or scoring fields"
+    }
+  ],
+  "design": {
+    "design_type": "controlled-experiment",
+    "rationale": "Matched producer output makes the evidence-versus-answer contrast interpretable; crossovers and same-model chains expose order and repetition effects.",
+    "setting": "Live API generation with local deterministic EAL/MCP computations on labelled synthetic observations",
+    "temporal_structure": "Two repetitions in rotated task-condition blocks; independent sessions per stage",
+    "assignment_method": "Seeded rotating condition order; shared prefixes within each task/repetition, provider sampling unseeded",
+    "allocation_concealment": "Complete schedule committed before calls",
+    "masking": "Scorer is deterministic; models blind to outcome labels",
+    "comparator": "Primary l_tool_n_evidence minus l_tool_n_answer; secondary reversed and homogeneous sequences and solo endpoints",
+    "control_ids": [
+      "CTRL-001",
+      "CTRL-002",
+      "CTRL-003"
+    ]
+  },
+  "units": {
+    "target_population_or_system": "Only the frozen finite suite, snapshots and prompt budgets",
+    "sampling_frame": "Six current engineering-v2.1-eal2 cases",
+    "experimental_unit": "Task-repetition recipient stage, with a shared producer per block",
+    "observational_unit": "A model response, host tool event or completed stage",
+    "assignment_unit": "A condition within task-repetition block",
+    "analysis_unit": "Task cluster preserving repetitions and shared prefixes",
+    "inclusion_criteria": [
+      "All six selected tasks",
+      "All scheduled conditions and failed attempts"
+    ],
+    "exclusion_criteria": [
+      "Connectivity probes from accuracy denominators"
+    ],
+    "recruitment_or_selection": "Fixed purposive regression suite; no random population sample"
+  },
+  "interventions_or_exposures": [
+    {
+      "id": "INT-001",
+      "kind": "intervention",
+      "description": "Model order, stage tool access and hand-off content",
+      "target": "Use of prior public outputs in a subsequent model prompt",
+      "implementation": "eal.relay, frozen eal2-model-relays.json",
+      "dose_or_intensity": "One to three stages, answer/evidence/transcript/none packets, native tools or model-only stage",
+      "timing": "Packet delivered before recipient generation; no native IDs reused across hosts",
+      "admissibility": "admissible",
+      "manipulation_checks": [
+        "Packet digest and public contents saved in recipient input",
+        "Actual response model and MCP events retained"
+      ],
+      "off_target_checks": [
+        "Prompt length and latency retained; evidence effect includes added tokens",
+        "Same producer used in all hand-off ablations"
+      ],
+      "recovery_checks": [
+        "Stage success/failure transitions; complete failed outcomes retained"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTRL-001",
+      "control_type": "baseline",
+      "description": "Solo model endpoints and same-model two-stage chains",
+      "failure_mode_addressed": "Extra attempts or final model identity mistaken for heterogeneity benefit",
+      "implementation": "n/l/r/rm/rn/m solo and n_n_answer/l_l_answer",
+      "diagnostic_consequence": "Restrict gain attribution to the observed whole sequence"
+    },
+    {
+      "id": "CTRL-002",
+      "control_type": "negative",
+      "description": "No-handoff recipient uses the exact solo input",
+      "failure_mode_addressed": "Information leaking through host state or private scoring",
+      "implementation": "l_tool_n_none reuses the same nano solo stage by input identity",
+      "diagnostic_consequence": "An unequal result indicates a harness accounting defect; this control is a deterministic invariant, not a new statistical observation"
+    },
+    {
+      "id": "CTRL-003",
+      "control_type": "manipulation",
+      "description": "Answer, evidence and transcript recipients share the exact full-model tool producer",
+      "failure_mode_addressed": "Producer stochasticity confounded with transferred content",
+      "implementation": "Content-addressed prefix checkpoints and hand-off digests",
+      "diagnostic_consequence": "Producer mismatch suspends transfer-effect interpretation"
+    }
+  ],
+  "confounds": [
+    {
+      "id": "CF-001",
+      "description": "Model tier, family, tools, prompts and compute vary across sequences",
+      "causal_or_measurement_path": "Any whole-sequence gain may reflect several changed components",
+      "control_or_adjustment": "Primary content ablation fixes producer and recipient; homogeneous/solo controls for secondary comparisons",
+      "diagnostic": "Per-stage outcomes, costs, token counts and model IDs",
+      "residual_risk": "Secondary order contrasts are complete-system comparisons; no isolated parameter-count effect"
+    }
+  ],
+  "estimands": [
+    {
+      "id": "EST-001",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "estimand_type": "descriptive",
+      "population_or_system": "Only the frozen finite suite, snapshots and prompt budgets",
+      "intervention_or_exposure": "l_tool_n_evidence",
+      "comparator": "l_tool_n_answer using the identical producer record",
+      "outcome_measurement_ids": [
+        "M-001"
+      ],
+      "time": "Final-stage completion or budget stop",
+      "summary_measure": "Equal task-weighted paired mean difference Delta_EA, averaging two repetitions within task",
+      "interpretation": "Observed content-transfer advantage on the fixed suite; no inference to all engineering tasks"
+    }
+  ],
+  "identification": {
+    "target_estimand_ids": [
+      "EST-001"
+    ],
+    "status": "identified",
+    "causal_and_measurement_structure": "Task and repeat -> shared producer; hand-off condition -> recipient prompt -> endpoint. Producer output is fixed across the primary contrast; final model and stage limits are equal.",
+    "assumption_ids": [
+      "ASM-001",
+      "ASM-002",
+      "ASM-003"
+    ],
+    "identified_parameters": [
+      "Finite-sample paired difference in common endpoint correctness"
+    ],
+    "nonidentified_alternatives": [
+      "General parameter-count effect",
+      "Intrinsic reasoning mechanism",
+      "Unobserved task-population average"
+    ],
+    "threats": [
+      "Provider drift and cache load",
+      "Evidence prompt length is part of treatment"
+    ],
+    "diagnostics": [
+      "Model IDs, failure classes and prompt token counts",
+      "Code/reference freeze drift"
+    ],
+    "rescue_actions": [
+      "Report incomplete or unstable contrasts as descriptive only",
+      "New independent tasks and separate token-matched study"
+    ]
+  },
+  "sampling": {
+    "method": "Fixed purposive feasibility suite; no outcome-dependent sample expansion",
+    "sample_size_or_information_target": "6 task clusters x 2 repetitions x 27 conditions = 324 sequence outcomes; prefixes intentionally shared",
+    "inputs": [
+      "Binary endpoint and paired differences in [-1,1]",
+      "Two repetitions do not make 12 independent task samples"
+    ],
+    "dependence_structure": "Task clusters and shared producer stages retained in paired resampling",
+    "multiplicity": "One declared primary contrast; all other comparisons exploratory",
+    "attrition_or_loss": "Failure counted in endpoint denominator; unknown charged usage remains missing, never zero",
+    "result": "A worst-case normal paired-difference half-width is approximately 1.96/sqrt(6)=0.80; this is too imprecise for a general 10 percentage-point claim. The study is a feasibility/regression pilot.",
+    "sensitivity_analysis": "At 12/24/48 independent tasks, the same conservative approximation gives half-widths 0.57/0.40/0.28. Degenerate bootstrap intervals at all-success are explicitly uninformative about unseen failures. A pre-execution simulation (relay-precision-simulation.json, seed20260924, 1000 datasets per scenario) found nominal95% percentile coverage of0.738\u20130.889 with six task clusters under three specified paired-difference distributions and perfectly correlated repetitions. Monte Carlo standard errors are retained. These intervals are descriptive and must not be advertised as calibrated95% population coverage.",
+    "stopping_implications": "Fixed 324 endpoints unless declared cost or access stop; preserve every scheduled missing endpoint and explain coverage"
+  },
+  "analysis": {
+    "preprocessing_lock": "Exact status equality. No exclusions based on model performance. Report unknown provider usage as unknown.",
+    "exclusion_lock": "Only preflight connectivity probes excluded from task accuracy, with separate cost ledger",
+    "models": [
+      {
+        "id": "MOD-001",
+        "estimand_ids": [
+          "EST-001"
+        ],
+        "model_or_procedure": "Paired finite-task means and 2000 percentile task-cluster bootstrap draws",
+        "assumptions": [
+          "Task clusters are the resampling units; no random task-population claim"
+        ],
+        "diagnostics": [
+          "Complete block coverage",
+          "Zero observed variance flag",
+          "Exact producer sharing"
+        ],
+        "outputs": [
+          "Delta_EA",
+          "95% descriptive task-cluster interval",
+          "Per-condition accuracy, unjustified positives, cost, tokens and latency"
+        ]
+      }
+    ],
+    "contrasts": [
+      "Primary: l_tool_n_evidence minus l_tool_n_answer",
+      "Secondary: reversed small/full, homogeneous chains, three-stage chains, reasoning tiers and tool placement",
+      "Transcript/evidence and evidence/none comparisons exploratory; none is a shared-input invariant"
+    ],
+    "uncertainty": "Whole tasks resampled with both repetitions and shared prefix relations intact; six clusters supply coarse descriptive intervals",
+    "multiplicity": "No confirmatory p values or superiority claims. All searched pairwise contrasts retained and labelled exploratory.",
+    "missing_data": "Incomplete final answers fail task resolution. Partial/unknown billing remains null. Do not drop failed trials.",
+    "stopping_rule": "324 scheduled sequences; $12 known campaign model-cost threshold, $0.20/stage and 180 seconds/stage, max10 requests and120000 tokens. Post-response thresholds may overshoot. Unknown billing halts further model calls.",
+    "robustness_checks": [
+      "Separate completed wrong answers from protocol failures",
+      "Compare common endpoint and strict operational outcomes",
+      "Report per-task and per-stage correction/damage transitions",
+      "Report all-success degeneracy explicitly"
+    ],
+    "software_and_versions": [
+      "EAL/2 current source digest",
+      "Python and dependency versions in freeze",
+      "common-endpoint-status/1"
+    ],
+    "inconclusive_handling": "Interval crossing zero, missing pairs, invalid controls or drift leave the primary claim unresolved"
+  },
+  "decision_matrix": [
+    {
+      "id": "DM-001",
+      "prediction_ids": [
+        "P-001",
+        "P-002"
+      ],
+      "observation_region": "Interval entirely above zero and point estimate at least0.10",
+      "analysis_outputs": [
+        "Delta_EA",
+        "95% descriptive task-cluster interval"
+      ],
+      "decision_rule": "Interval entirely above zero and point estimate at least0.10; invalid measurement takes precedence, then negative, then positive, otherwise inconclusive.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "strengthen",
+          "rationale": "H-001 retained for independent replication",
+          "scope_limit": "Only the frozen finite suite, snapshots and prompt budgets"
+        }
+      ],
+      "hypothesis_effects": [
+        "H-001 retained for independent replication"
+      ],
+      "assumption_failure_response": "Suspend comparison when ASM-001 or ASM-003 fails; restrict time scope on ASM-002 failure",
+      "next_action": "Retain all records and design fresh independent task validation"
+    },
+    {
+      "id": "DM-002",
+      "prediction_ids": [
+        "P-001",
+        "P-002"
+      ],
+      "observation_region": "Interval entirely below zero",
+      "analysis_outputs": [
+        "Delta_EA",
+        "95% descriptive task-cluster interval"
+      ],
+      "decision_rule": "Interval entirely below zero; invalid measurement takes precedence, then negative, then positive, otherwise inconclusive.",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "weaken",
+          "rationale": "H-002 retained; investigate evidence interpretation burden",
+          "scope_limit": "Only the frozen finite suite, snapshots and prompt budgets"
+        }
+      ],
+      "hypothesis_effects": [
+        "H-002 retained; investigate evidence interpretation burden"
+      ],
+      "assumption_failure_response": "Suspend comparison when ASM-001 or ASM-003 fails; restrict time scope on ASM-002 failure",
+      "next_action": "Retain all records and design fresh independent task validation"
+    },
+    {
+      "id": "DM-003",
+      "prediction_ids": [
+        "P-001",
+        "P-002"
+      ],
+      "observation_region": "Interval overlaps zero, effect below0.10, or unanticipated result",
+      "analysis_outputs": [
+        "Delta_EA",
+        "95% descriptive task-cluster interval"
+      ],
+      "decision_rule": "Interval overlaps zero, effect below0.10, or unanticipated result; invalid measurement takes precedence, then negative, then positive, otherwise inconclusive.",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "no-change",
+          "rationale": "No discrimination; increase independent task coverage",
+          "scope_limit": "Only the frozen finite suite, snapshots and prompt budgets"
+        }
+      ],
+      "hypothesis_effects": [
+        "No discrimination; increase independent task coverage"
+      ],
+      "assumption_failure_response": "Suspend comparison when ASM-001 or ASM-003 fails; restrict time scope on ASM-002 failure",
+      "next_action": "Retain all records and design fresh independent task validation"
+    },
+    {
+      "id": "DM-004",
+      "prediction_ids": [
+        "P-001",
+        "P-002"
+      ],
+      "observation_region": "Leakage, reference drift, failed manipulation or invalid scoring",
+      "analysis_outputs": [
+        "Delta_EA",
+        "95% descriptive task-cluster interval"
+      ],
+      "decision_rule": "Leakage, reference drift, failed manipulation or invalid scoring; invalid measurement takes precedence, then negative, then positive, otherwise inconclusive.",
+      "discrimination_result": "invalid-measurement",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "suspend",
+          "rationale": "Invalidate the affected comparison; repair and freeze anew",
+          "scope_limit": "Only the frozen finite suite, snapshots and prompt budgets"
+        }
+      ],
+      "hypothesis_effects": [
+        "Invalidate the affected comparison; repair and freeze anew"
+      ],
+      "assumption_failure_response": "Suspend comparison when ASM-001 or ASM-003 fails; restrict time scope on ASM-002 failure",
+      "next_action": "Retain all records and design fresh independent task validation"
+    }
+  ],
+  "bias_assessment": {
+    "risks": [
+      {
+        "id": "BIAS-001",
+        "risk_type": "leakage",
+        "mechanism": "Private expected labels or scores accidentally copied into a later prompt",
+        "prevention": "Explicit packet allow-list and no score-based routing",
+        "detection": "Canary tests and archived prompts",
+        "sensitivity_or_correction": "Invalidate affected comparisons, repair and create new freeze",
+        "residual_risk": "Tasks remain exposed regression fixtures"
+      }
+    ],
+    "researcher_degrees_of_freedom": [
+      "Freeze complete condition matrix before task calls; no post-result model or prompt selection"
+    ],
+    "negative_controls": [
+      "CTRL-002"
+    ],
+    "positive_controls": [
+      "Known-answer reference and scripted interface checks"
+    ],
+    "falsification_checks": [
+      "Wrong-origin and circular-defence cases must not receive unsupported positive answers"
+    ],
+    "reporting_controls": [
+      "All failures, costs, contrasts and output records retained",
+      "No record replacement on resume"
+    ],
+    "residual_limitations": [
+      "Six tasks, exposed examples, product-tier classes without parameter counts",
+      "No independent provider family outside OpenAI",
+      "Tool evidence is synthetic fixture data; no physical validation"
+    ]
+  },
+  "ethics_and_safety": {
+    "applicable": false,
+    "rationale": "Synthetic engineering tasks and authorised API access; no people or physical equipment",
+    "risks": [
+      "API spending and credential disclosure"
+    ],
+    "mitigations": [
+      "Hidden runtime credential input, no keys in files",
+      "Frozen budget thresholds and no implicit retries"
+    ],
+    "monitoring": [
+      "Per-stage billing and usage completeness"
+    ],
+    "stopping_rules": [
+      "Stop new calls when cost threshold reached or usage unknown"
+    ],
+    "stop_authority": "User or local operator",
+    "review_status": "not-required",
+    "post_stop_actions": [
+      "Preserve completed and in-flight checkpoints; do not replay unknown charged requests"
+    ]
+  },
+  "feasibility": {
+    "current_status": "operational",
+    "apparatus_or_data": [
+      "Existing EAL host, task fixtures, model provider adapters"
+    ],
+    "access": "User-authorised key; six-model text/native capability probes passed before task execution",
+    "skills": [
+      "design-scientific-investigations",
+      "analyse-software-engineering-statistics",
+      "engineer-argumentation-languages"
+    ],
+    "resources": [
+      "At most four concurrent sequences; $12 campaign threshold"
+    ],
+    "dependencies": [
+      "Pinned model snapshots remain available",
+      "Local MCP subprocess support"
+    ],
+    "blockers": [],
+    "fallback": "Preserve executable plans and explicit incomplete coverage if a provider becomes unavailable"
+  },
+  "reproducibility": {
+    "preregistration_status": "planned",
+    "registration": "Local timestamped freeze before model task execution; no external registry claim",
+    "immutable_materials": [
+      "Plan, protocol, code digests, task data, reference answers, provider config and schedule in freeze.json",
+      "Pre-execution precision simulation and scripts/relay_precision.py"
+    ],
+    "data_plan": "Stage checkpoints and trial records with hashes; raw conversations, tool outputs, failures and estimated cost retained",
+    "code_plan": "Commit implementation and protocol before task execution; resume rejects changed inputs or source",
+    "randomisation_or_seed_plan": "Order seed20260924; provider seed absent; GPT-4.1 temperature0, GPT-5 low reasoning effort without temperature",
+    "provenance_plan": "Response snapshot, provider metadata, prompt digest, input/output tokens and hand-off content digests",
+    "deviation_and_amendment_plan": "Append deviations; do not edit the frozen record or replace outcomes; changes require new campaign identity",
+    "replication_plan": "Fresh engineering task instances and, separately, a parameter-defined open SLM with a configured command provider"
+  },
+  "execution": {
+    "protocol_version_used": null,
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": null,
+    "code_location": "src/eal/relay.py",
+    "observed_results": [],
+    "interpretation_status": "not-started"
+  },
+  "provenance": {
+    "authors": [
+      "Codex for Emmett Miller"
+    ],
+    "created_at": "2026-09-23T15:55:16.844586+00:00",
+    "updated_at": "2026-09-23T15:55:16.844586+00:00",
+    "sources": [
+      "https://developers.openai.com/api/docs/models/gpt-4.1",
+      "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+      "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+      "https://developers.openai.com/api/docs/models/gpt-5",
+      "https://developers.openai.com/api/docs/models/gpt-5-mini",
+      "https://developers.openai.com/api/docs/models/gpt-5-nano"
+    ],
+    "knowledge_cut": "2026-09-23",
+    "change_log": [
+      "1.0.0: pre-task design with shared-prefix control, common endpoint scoring and complete cost retention"
+    ]
+  }
+}

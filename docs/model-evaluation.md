@@ -97,3 +97,7 @@ Condition summaries show all repeated outcomes by task, supported versus correct
 Intervals use a seeded percentile bootstrap over **task clusters**, retaining repetitions of a task together. Paired differences preserve task/repetition matching and report `right_minus_left` for accuracy, cost and latency. Repeating six tasks twice therefore does not turn the experiment into twelve independent engineering problems. With fewer than two task clusters, intervals are omitted. Missing costs remain unknown; no cost interval is manufactured from partial billing data.
 
 These intervals describe observed variation within a small, selected suite. A zero-variance interval does not rule out unseen failures, and tasks were not sampled randomly from all engineering work. Two repetitions can expose run-to-run instability but provide little precision. Distinguish failure to complete a protocol, unjustified support, a correct unsupported/contested conclusion, and successful support for a negative computational finding. The results cannot establish reliability for all models, all model classes or unrestricted engineering reasoning.
+
+## Heterogeneous model sequences
+
+The [model-sequence runner](model-relay-experiments.md) adds shared-prefix experiments with answer, evidence and transcript transfer. It scores all final endpoints with the same claim-status criterion and retains the stricter tool execution score separately. Existing frozen single-stage measurements retain their original scoring and version labels.
