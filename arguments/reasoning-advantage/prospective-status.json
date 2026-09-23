@@ -1,0 +1,24 @@
+{
+  "value": {
+    "status": "not_run"
+  },
+  "observed_at": "2026-09-23T19:57:03.875348+00:00",
+  "context": {
+    "study": "INV-EAL-REASONING-001",
+    "scope": "historical-audit-and-prospective-claims"
+  },
+  "details": {
+    "kind": "study status record, not measured experimental outcomes",
+    "reason": "Diagnostic live credential absent; independent transfer study remains specified."
+  },
+  "request": {
+    "tool": "prospective_reader",
+    "tool_version": "1",
+    "mode": "deterministic",
+    "input": {},
+    "context": {
+      "study": "INV-EAL-REASONING-001",
+      "scope": "historical-audit-and-prospective-claims"
+    }
+  }
+}

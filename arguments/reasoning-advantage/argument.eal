@@ -1,0 +1,138 @@
+// Authored scientific argument using the existing EAL/2 semantics.
+// structured/1 checks dependencies and predicates; it does not prove the warrants.
+language "EAL/2";
+
+environment investigation {
+  require "study" == "INV-EAL-REASONING-001";
+  require "scope" == "historical-audit-and-prospective-claims";
+}
+tool historical_reader { version "1"; mode deterministic; }
+tool prospective_reader { version "1"; mode deterministic; }
+
+evidence preserved_answers {
+  tool historical_reader; kind measurement; environment investigation; max_age 86400;
+  require "primary.initially_correct" == 12;
+  require "primary.evidence_preserved" == 12;
+  require "primary.answer_preserved" == 8;
+  require "primary.shared_producer_checked" == true;
+}
+evidence correction_denominator {
+  tool historical_reader; kind measurement; environment investigation; max_age 86400;
+  require "primary.initially_incorrect" == 0;
+  require "primary.initially_incomplete" == 0;
+}
+evidence whole_sequence_corrections {
+  tool historical_reader; kind measurement; environment investigation; max_age 86400;
+  require "sequences.small_start_corrected" == 6;
+  require "sequences.full_start_corrected" == 4;
+  require "sequences.small_return_baseline_corrected" == 0;
+  require "sequences.full_return_baseline_corrected" == 0;
+  require "sequences.shared_producer_checked" == true;
+}
+
+// These evidence declarations refer to an honest not_run status record.
+// A future analyst must supply results and an independent design assessment.
+// No synthetic model outcomes or assumed positive effects are inserted.
+evidence notation_estimate {
+  tool prospective_reader; kind measurement; environment investigation; max_age 86400;
+  require "status" == "complete";
+  require "notation.lower_bound" > 0.05;
+  require "notation.primary_contrast_frozen" == true;
+}
+evidence notation_design_audit {
+  tool prospective_reader; kind validation; environment investigation; max_age 86400;
+  require "notation.semantic_equivalence_checked" == true;
+  require "notation.equal_tools_and_budgets_checked" == true;
+  require "notation.independent_scoring_checked" == true;
+  require "notation.assignment_and_uncertainty_checked" == true;
+}
+evidence raw_correction_estimate {
+  tool prospective_reader; kind measurement; environment investigation; max_age 86400;
+  require "status" == "complete";
+  require "correction.lower_bound" > 0.05;
+  require "correction.incorrect_proposal_opportunities" > 0;
+  require "correction.raw_vs_irrelevant_passed" == true;
+  require "correction.raw_excludes_computed_answers" == true;
+  require "correction.design_and_uncertainty_checked" == true;
+}
+evidence transfer_assessment {
+  tool prospective_reader; kind measurement; environment investigation; max_age 86400;
+  require "status" == "complete";
+  require "transfer.independent_mechanism_split_checked" == true;
+  require "transfer.construction_and_revision_scored" == true;
+  require "transfer.domain_coverage_checked" == true;
+  require "transfer.frozen_absolute_standards_met" == true;
+  require "transfer.reference_and_uncertainty_checked" == true;
+}
+
+assumption representation_intervention_valid {
+  statement "The independently assessed experiment changes surface representation while preserving represented meaning, tools, budgets and scoring; its assignment and uncertainty assumptions hold.";
+  environment investigation;
+  validate notation_design_audit;
+}
+
+reasoning finite_description {
+  method "structured/1";
+  rationale "Read recomputed counts for the identified six exposed tasks; repeated runs and shared stages remain dependent. This is a finite historical description.";
+}
+reasoning denominator_limit {
+  method "structured/1";
+  rationale "A correction probability conditional on an incorrect producer answer has no empirical denominator when all producer answers are correct. Preservation evidence leaves correction unresolved.";
+}
+reasoning causal_surface_warrant {
+  method "structured/1";
+  rationale "A predeclared paired surface intervention with an independently validated design and a calibrated lower bound above the minimum useful difference supports a model-specific notation advantage in its declared task population. The scientific correspondence is authored, not proved by this evaluator.";
+}
+reasoning raw_evidence_warrant {
+  method "structured/1";
+  rationale "A valid fixed-proposal comparison with incorrect proposals, relevant raw observations, an irrelevant-record control and no computed answers supports correction attributable to the raw-information intervention in the tested contexts. It does not establish a unique cognitive mechanism.";
+}
+reasoning transfer_warrant {
+  method "structured/1";
+  rationale "Independently held-out mechanisms, construction and revision tasks, validated references, coverage and frozen absolute performance standards support bounded engineering transfer for the named model or model-tool system. Finite coverage does not imply universal engineering competence.";
+}
+reasoning alternative_sufficiency {
+  method "structured/1";
+  rationale "Either a bounded notation advantage or bounded transfer establishes the corresponding requested contribution. Each alternative retains its own qualification and evidence requirements.";
+}
+
+claim preservation_observed {
+  statement "On the twelve archived full-tool-producer to small-recipient blocks, evidence preserved twelve correct answers and answer-only transfer preserved eight.";
+  environment investigation;
+}
+argument preservation_description { conclusion preservation_observed; reasoning finite_description; evidence preserved_answers; }
+claim original_correction_unmeasured {
+  statement "The original primary evidence-versus-answer contrast contains zero correction opportunities, so its conditional error-correction rate is unestimated.";
+  environment investigation;
+}
+argument denominator_argument { conclusion original_correction_unmeasured; reasoning denominator_limit; evidence correction_denominator; }
+claim whole_system_correction_observed {
+  statement "Two archived tool-assisted return sequences corrected six and four completed wrong initial answers respectively; their answer-only return baselines corrected none. These are overlapping finite system observations, with tool access and sequence design changing together.";
+  environment investigation;
+}
+argument system_description { conclusion whole_system_correction_observed; reasoning finite_description; evidence whole_sequence_corrections; }
+
+claim notation_advantage {
+  statement "For the model and independently sampled task population named in a future validated study, EAL surface notation improves correctness by more than five percentage points over equivalent structured representation under the same resources.";
+  environment investigation;
+}
+argument notation_route {
+  conclusion notation_advantage; reasoning causal_surface_warrant;
+  evidence notation_estimate; assumptions representation_intervention_valid;
+}
+claim raw_evidence_correction {
+  statement "For the fixed recipient and proposed-answer distribution named in a future validated study, relevant raw observations improve correction by more than five percentage points, with scope-sensitive use and no supplied computed answer.";
+  environment investigation;
+}
+argument correction_route { conclusion raw_evidence_correction; reasoning raw_evidence_warrant; evidence raw_correction_estimate; }
+claim bounded_engineering_transfer {
+  statement "The model or model-interpreter system named in a future independent study meets its frozen standards for constructing, resolving and revising engineering arguments across the declared new mechanisms, domains and task families.";
+  environment investigation;
+}
+argument transfer_route { conclusion bounded_engineering_transfer; reasoning transfer_warrant; evidence transfer_assessment; }
+claim requested_contribution_established {
+  statement "At least one requested contribution has empirical support with its stated scope: an advantage of EAL notation or bounded transfer across engineering problems.";
+  environment investigation;
+}
+argument contribution_from_notation { conclusion requested_contribution_established; reasoning alternative_sufficiency; premises notation_advantage; }
+argument contribution_from_transfer { conclusion requested_contribution_established; reasoning alternative_sufficiency; premises bounded_engineering_transfer; }
