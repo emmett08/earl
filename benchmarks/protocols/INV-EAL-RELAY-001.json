@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-RELAY-001",
   "title": "Order and evidence transfer in EAL/2 model sequences",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "status": "approved",
   "question": "On six exposed EAL/2 regression tasks, how do endpoint correctness, unsupported positive answers and total cost differ by model sequence, tool placement and transferred record?",
   "primary_claim_id": "CLM-001",
@@ -623,7 +623,8 @@
       "engineer-argumentation-languages"
     ],
     "resources": [
-      "One serial sequence; $10 replacement campaign threshold, leaving $2 of the confirmed threshold for the interrupted attempts; actual unknown prior charges remain explicitly unknown."
+      "Existing explicitly authorised cohort: known charges $1.79743512 plus one unknown request; seven complete blocks retained.",
+      "Completion phase thresholds: numerical $5, repair $1. Earlier interrupted charges remain unknown. These thresholds leave an allowance within the user's $12 stop threshold; no hard invoice cap is claimed."
     ],
     "dependencies": [
       "Pinned model snapshots remain available",
@@ -650,18 +651,20 @@
     "protocol_version_used": null,
     "started_at": null,
     "completed_at": null,
-    "deviations": [],
-    "data_location": null,
+    "deviations": [
+      "One transport error stopped the first explicit cohort; completion uses coverage-selected complete blocks, with all discarded-from-comparison partial records retained separately."
+    ],
+    "data_location": "benchmarks/results/2026-09-23-relays-explicit",
     "code_location": "src/eal/relay.py",
     "observed_results": [],
-    "interpretation_status": "Explicit destination, data and spending authorisation received; new serial cohort not started."
+    "interpretation_status": "Completion phases approved under the user's explicit API/data/spending authorisation; not started."
   },
   "provenance": {
     "authors": [
       "Codex for Emmett Miller"
     ],
     "created_at": "2026-09-23T15:55:16.844586+00:00",
-    "updated_at": "2026-09-23T16:43:16.205565+00:00",
+    "updated_at": "2026-09-23T17:36:15.042896+00:00",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1",
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
@@ -677,7 +680,8 @@
       "1.0.2: user explicitly confirmed private synthetic task-data disclosure to OpenAI API and the $12 spending threshold. Run a separately identified replacement campaign. The three previous in-flight requests retain unknown usage and are not resumed or erased.",
       "1.0.3: the explicitly authorised concurrent campaign suffered network approval cancellation after partial results. Preserve its full archive separately. Run one serial replacement with a $10 threshold. Fix partial known-charge accounting in package 2.2.1; no prompt, task, scoring, condition or repetition changes. This scheduling amendment follows observation of partial first-task results and is not claimed to be wholly pre-data. Do not silently resume unknown billed requests.",
       "1.0.4: record the serial automatic-review rejection and exact partial coverage; no further generation. Package 2.2.2 uses EAL/relay-report/2 to distinguish recorded, attempted, completed, partial, unexecuted and unrecorded endpoints. Historical freeze and outcome bytes are unchanged.",
-      "1.0.5: user supplied explicit authorisation naming private EAL sources, observations, model hand-offs, api.openai.com and a $12 spending stop threshold. Freeze a new serial cohort under package 2.2.2. Retain the conservative $10 cohort threshold and all previous unknown charges separately. No task, prompt, scoring, condition or repetition changes. All earlier outcomes and freezes remain immutable."
+      "1.0.5: user supplied explicit authorisation naming private EAL sources, observations, model hand-offs, api.openai.com and a $12 spending stop threshold. Freeze a new serial cohort under package 2.2.2. Retain the conservative $10 cohort threshold and all previous unknown charges separately. No task, prompt, scoring, condition or repetition changes. All earlier outcomes and freezes remain immutable.",
+      "1.0.6: after one transport failure without usage in the explicitly authorised cohort, retain seven complete 27-condition task/repetition blocks and the incomplete numerical block separately. Predeclare completion cohorts for two numerical tasks with two repetitions (108 endpoints, $5 threshold) and repair task repetition 0 (27 endpoints, $1 threshold). Analyse exactly one fully attempted block for each task/repetition; eligibility depends on coverage, never correctness. Retain budget-failed outcomes within complete blocks. Repeat the incomplete numerical block in full, including its failed-request condition; this is an explicit new cohort, not silent checkpoint replay. All original records and unknown charges remain. Stage budgets, prompts, scoring, providers and implementation are unchanged; phase/condition ordering and realised cache state may differ."
     ]
   }
 }
