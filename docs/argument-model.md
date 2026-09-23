@@ -2,7 +2,7 @@
 
 EAL represents engineering claims, the evidence offered for them, the reasoning steps connecting their premises to their conclusions, and objections to those steps. It computes which conclusions currently have usable support under the declared environment and time. The result includes the dependencies responsible for each conclusion, so an engineer or an application can inspect the reasoning and determine what needs to be measured next.
 
-The executable profile combines a finite, acyclic claim-premise graph with explicit reasoning methods. EAL/0.3 additionally constructs a support/attack graph in which objections can depend on claim subarguments and target other objections; these relationships can contain cycles. A mode performs a bounded computation over a specified kind of evidence; declared predicates then test its outputs. The text of a claim or reasoning rationale explains the engineering interpretation. The computation establishes its defined mathematical result, while the applicability of that result to the physical system depends on the stated model and assumptions.
+The executable profile combines a finite, acyclic claim-premise graph with explicit reasoning methods. EAL/2 constructs a support/attack graph in which objections can depend on claim subarguments and target other objections; these relationships can contain cycles. A method performs a bounded computation over a specified kind of evidence; declared predicates then test its outputs. The text of a claim or reasoning rationale explains the engineering interpretation. The computation establishes its defined mathematical result, while the applicability of that result to the physical system depends on the stated model and assumptions.
 
 ## Choice of argument model
 
@@ -12,31 +12,31 @@ Toulmin provides a useful decomposition of an argument into a claim, grounds, a 
 | --- | --- |
 | Claim | `claim` with a statement and environment |
 | Grounds | Evidence, assumptions and premise claims listed by an `argument` |
-| Warrant | `reasoning` with a mode or versioned method, rationale and result criteria |
+| Warrant | `reasoning` with a versioned method, rationale and result criteria |
 | Backing | Evidence referenced by the reasoning step |
 | Qualifier | Environment predicates, evidence freshness and assumption intervals |
-| Rebuttal | An `objection` with a declared target, supporting evidence and EAL/0.3 claim premises |
+| Rebuttal | An `objection` with a declared target, supporting evidence and claim premises |
 
 ASPIC+ distinguishes uncertainty in premises from defeasible inference, and distinguishes attacks on premises, conclusions and rule applicability. Those distinctions motivate EAL's targeted objections. EAL does not automatically construct all arguments from a logical theory, infer contrary propositions or compare preferences. An EAL objection to a claim resembles a rebuttal operationally; it is not automatically an ASPIC+ rebuttal. The formal framework and its required choices are described in [Modgil and Prakken](sources.md#argument-and-reasoning-models).
 
-## Reasoning modes and evidence
+## Reasoning methods and evidence
 
-A reasoning mode or installed versioned method determines what operation is performed. An evidence kind identifies the input contract for that operation. The distinction allows the same engineering claim to depend on several subarguments using different methods, instead of treating every source as interchangeable support.
+An installed versioned method determines what operation is performed. An evidence kind identifies the input contract for that operation. The distinction allows the same engineering claim to depend on several subarguments using different methods, instead of treating every source as interchangeable support.
 
-| Mode | Evidence kind | Bounded operation | Interpretation of the result |
+| Method | Evidence kind | Bounded operation | Interpretation of the result |
 | --- | --- | --- | --- |
-| `structured` | Author-selected evidence | Apply explicit premise, assumption and backing dependencies | Support under the author-supplied conditional rule |
-| `deductive` | `logical_case` | Check finite propositional entailment | A conclusion follows within the supplied propositional case |
-| `inductive` | `sample` | Compute a Bernoulli estimate and Wilson interval | A sampling-based estimate under the declared sampling assumptions |
-| `abductive` | `hypotheses` | Condition finite hypothesis priors on supplied likelihoods | Relative posterior support within the supplied hypothesis set |
-| `causal` | `experiment` | Compute a randomised two-group mean contrast | An effect estimate conditional on the experiment design assumptions |
-| `counterfactual` | `causal_model` | Evaluate an acyclic affine structural model under an intervention | A model-conditional outcome for the supplied exogenous values |
-| `analogical` | `analogy` | Compare declared source and target features | Correspondence over the specified features, with mismatches exposed |
-| `temporal` | `trace` | Check a predicate at every sample, with endpoint and gap checks | A result about the supplied observation sequence and horizon |
+| `structured/1` | Author-selected evidence | Apply explicit premise, assumption and backing dependencies | Support under the author-supplied conditional rule |
+| `deductive/1` | `logical_case` | Check finite propositional entailment | A conclusion follows within the supplied propositional case |
+| `inductive/1` | `sample` | Compute a Bernoulli estimate and Wilson interval | A sampling-based estimate under the declared sampling assumptions |
+| `abductive/1` | `hypotheses` | Condition finite hypothesis priors on supplied likelihoods | Relative posterior support within the supplied hypothesis set |
+| `causal/1` | `experiment` | Compute a randomised two-group mean contrast | An effect estimate conditional on the experiment design assumptions |
+| `counterfactual/1` | `causal_model` | Evaluate an acyclic affine structural model under an intervention | A model-conditional outcome for the supplied exogenous values |
+| `analogical/1` | `analogy` | Compare declared source and target features | Correspondence over the specified features, with mismatches exposed |
+| `temporal/1` | `trace` | Check a predicate at every sample, with endpoint and gap checks | A result about the supplied observation sequence and horizon |
 
-An untyped computational conclusion requires output predicates such as a Boolean entailment result or an interval bound. A typed proposition supplies its formally checked result condition and query correspondence. Selecting a mode is therefore a request for a particular calculation, not a descriptive label that grants support by itself. The [method documentation](reasoning-modes.md) defines built-in inputs, outputs and computational limits. EAL/0.3 also accepts typed host-registered contracts through `method "namespace/name/1"`; registration does not add grammar keywords or make source executable. Each assessment records the registry fingerprint.
+An untyped computational conclusion requires output predicates such as a Boolean entailment result or an interval bound. A typed proposition supplies its formally checked result condition and query correspondence. Selecting a method is therefore a request for a particular calculation, not a descriptive label that grants support by itself. The [method documentation](reasoning-modes.md) defines built-in inputs, outputs and computational limits. EAL/2 also accepts typed host-registered contracts through `method "namespace/name/1"`; registration does not add grammar keywords or make source executable. Each assessment records the registry fingerprint.
 
-For each argument, the method receives the deduplicated union of its direct evidence, reasoning backing and assumption-validation evidence. A computational mode requires exactly one item of its designated kind. The argument's `reasoning_result` records the computed details and the outcome of the declared result predicates, allowing one reusable method to produce different results for different arguments.
+For each argument, the method receives the deduplicated union of its direct evidence, reasoning backing and assumption-validation evidence. A computational method requires exactly one item of its designated kind. The argument's `reasoning_result` records the computed details and the outcome of the declared result predicates, allowing one reusable method to produce different results for different arguments.
 
 These methods answer different questions. An abductive result ranks explanations of observations; a causal result estimates an effect of intervention. An analogical match identifies correspondence; a deductive result checks implication within a formal case. Combining them requires an argument that states how their separate conclusions bear on the parent claim.
 
@@ -56,7 +56,7 @@ $$
 \land \operatorname{Uncontested}(r,A,P,c).
 $$
 
-Here usability of a computational reasoning step includes successful evaluation and satisfaction of its output predicates. The equation derives `supported` from explicit dependencies. The author supplies the engineering interpretation of the rule; the implementation checks the selected computation and dependencies. Deductive validity is checked for the formal content supplied to the deductive mode, while prose statements retain their explanatory role.
+Here usability of a computational reasoning step includes successful evaluation and satisfaction of its output predicates. The equation derives `supported` from explicit dependencies. The author supplies the engineering interpretation of the rule; the implementation checks the selected computation and dependencies. Deductive validity is checked for the formal content supplied to the deductive method, while prose statements retain their explanatory role.
 
 The claim-premise graph must be acyclic. Rejecting cycles prevents a claim from acquiring support solely through circular declarations. Every argument must identify at least one source. Input size and dependency-depth limits make the supported evaluation domain explicit.
 
@@ -79,7 +79,7 @@ Likewise, a passing test observation can support the claim that a specified test
 
 ## Compositional objections and defences
 
-EAL/0.1 and EAL/0.2 retain their evidence-activated objections. EAL/0.3 treats an objection as a node with its own evidence and required claim premises. A supporting claim can have multiple subarguments, each with further dependencies. An objection targeting another objection supplies a defence under the same source and applicability rules.
+EAL/2 treats an objection as a node with its own evidence and required claim premises. A supporting claim can have multiple subarguments, each with further dependencies. An objection targeting another objection supplies a defence under the same source and applicability rules.
 
 ```eal
 objection sampling_problem {
@@ -124,7 +124,7 @@ The result includes constructed attacks and a deterministic labelling trace. Bou
 
 ## Relation to grounded argumentation
 
-The independent `eal_grounded` operation continues to implement Dung grounded semantics for an explicit finite argument-and-attack graph. The EAL/0.3 support/attack solver is a defined conjunction/disjunction extension. Its attack-only restriction agrees with grounded labelling; this does not make it full ASPIC+.
+The independent `eal_grounded` operation continues to implement Dung grounded semantics for an explicit finite argument-and-attack graph. The EAL/2 support/attack solver is a defined conjunction/disjunction extension. Its attack-only restriction agrees with grounded labelling; this does not make it full ASPIC+.
 
 The solver has also been checked against an independent construction using ordinary Dung nodes for the complements of claims: every deriving argument attacks its claim-complement node, and that complement attacks nodes requiring the claim. Unavailable local nodes receive an unattacked blocker. The resulting grounded labels match the support/attack equations. [Grounded reasoning](grounded-reasoning.md) documents the construction, exhaustive finite cases and larger generated checks.
 
@@ -154,7 +154,7 @@ An LLM may propose a claim, reasoning step or next measurement. A host applicati
 
 ## Extensions and alternatives
 
-**Richer deduction.** The bounded propositional checker can be extended with a separately specified first-order logic, arithmetic solver or proof assistant integration. Each extension needs a formal input representation, a result contract and computational limits. An arbitrary natural-language rationale does not become a mechanically checked derivation merely by selecting a deductive mode.
+**Richer deduction.** The bounded propositional checker can be extended with a separately specified first-order logic, arithmetic solver or proof assistant integration. Each extension needs a formal input representation, a result contract and computational limits. An arbitrary natural-language rationale does not become a mechanically checked derivation merely by selecting a deductive method.
 
 **Full structured defeasible reasoning.** An ASPIC+ instantiation can specify strict and defeasible rules, contrariness, argument construction and preferences, then derive the corresponding defeat graph. Acceptance would become a formally selected semantics over the constructed arguments. Such a change requires explicit treatment of inconsistent premises and inherited attacks, rather than adding a `strict` keyword to the present rationale field.
 

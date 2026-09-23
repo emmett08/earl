@@ -1,6 +1,6 @@
 # Grounded reasoning over explicit argument graphs
 
-`eal_grounded` determines which arguments can be accepted in a finite, explicitly supplied attack graph. Its argument identifiers and attack relations are inputs. EAL/0.3 also integrates a support-and-attack computation into evaluation through `solve_composed`: argument and objection nodes retain their required premises, and alternative arguments can support the same claim. Neither operation discovers arguments or attacks from prose.
+`eal_grounded` determines which arguments can be accepted in a finite, explicitly supplied attack graph. Its argument identifiers and attack relations are inputs. EAL/2 also integrates a support-and-attack computation into evaluation through `solve_composed`: argument and objection nodes retain their required premises, and alternative arguments can support the same claim. Neither operation discovers arguments or attacks from prose.
 
 ## Meaning
 
@@ -64,11 +64,11 @@ The limits are 4,096 arguments and 65,536 attacks. The implementation builds adj
 
 ## Relationship to EAL's support calculus
 
-EAL evaluates declared evidence, conditions, assumptions, reasoning methods, premises and objections. The standalone `eal_grounded` operation evaluates explicit abstract attack relations, including cyclic ones. EAL/0.3 additionally constructs nodes and local attack relations from authored argument and objection declarations, then calls the composed solver described below. Neither solver interprets a prose rationale as a deductively valid rule. They provide no rule priorities, probabilistic acceptance or full ASPIC+ argument construction.
+EAL evaluates declared evidence, conditions, assumptions, reasoning methods, premises and objections. The standalone `eal_grounded` operation evaluates explicit abstract attack relations, including cyclic ones. EAL/2 additionally constructs nodes and local attack relations from authored argument and objection declarations, then calls the composed solver described below. Neither solver interprets a prose rationale as a deductively valid rule. They provide no rule priorities, probabilistic acceptance or full ASPIC+ argument construction.
 
 A host serving an LLM can submit the graph to this operation and give the model its labels and defence trace. A model without tool calling requires the host to make the MCP call through the host's structured request interface.
 
-## EAL/0.3: required premises and alternative derivations
+## EAL/2: required premises and alternative derivations
 
 The composed profile gives argument and objection nodes three possible labels: `accepted`, `rejected` and `undecided`. Each node has a separately determined local-usability flag and a conjunction of required premise claims. A claim can have several alternative deriving nodes.
 

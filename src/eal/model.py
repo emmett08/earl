@@ -49,15 +49,10 @@ class Assumption:
 @dataclass(frozen=True)
 class Reasoning:
     name: str
-    mode: str | None
+    method: str
     rationale: str
     backing: tuple[str, ...]
     predicates: tuple[Predicate, ...]
-    method: str | None = None
-
-    @property
-    def selector(self) -> str:
-        return self.method or self.mode
 
 
 @dataclass(frozen=True)
@@ -81,6 +76,14 @@ class Claim:
 
 
 @dataclass(frozen=True)
+class ArgumentOrigin:
+    """Authored pattern and application that produced a lowered argument."""
+
+    pattern: str
+    application: str
+
+
+@dataclass(frozen=True)
 class Argument:
     name: str
     conclusion: str
@@ -89,6 +92,40 @@ class Argument:
     assumptions: tuple[str, ...]
     premises: tuple[str, ...]
     binding: str | None = None
+    origin: ArgumentOrigin | None = None
+
+
+@dataclass(frozen=True)
+class PatternParameter:
+    name: str
+    kind: str
+
+
+@dataclass(frozen=True)
+class Pattern:
+    """One closed argument template; references name typed parameters only."""
+
+    name: str
+    parameters: tuple[PatternParameter, ...]
+    conclusion: str
+    reasoning: str
+    evidence: tuple[str, ...]
+    assumptions: tuple[str, ...]
+    premises: tuple[str, ...]
+    binding: str | None = None
+
+
+@dataclass(frozen=True)
+class PatternBinding:
+    name: str
+    reference: str
+
+
+@dataclass(frozen=True)
+class Application:
+    name: str
+    pattern: str
+    arguments: tuple[PatternBinding, ...]
 
 
 @dataclass(frozen=True)
@@ -101,10 +138,23 @@ class Objection:
 
 
 @dataclass(frozen=True)
+class SourceSpan:
+    """One-based source positions; the end position is exclusive."""
+
+    line: int
+    column: int
+    end_line: int
+    end_column: int
+
+
+@dataclass(frozen=True)
 class Diagnostic:
     code: str
     message: str
     declaration: str | None = None
+    span: SourceSpan | None = None
+    expected: str | None = None
+    actual: str | None = None
 
 
 @dataclass(frozen=True)
@@ -119,5 +169,9 @@ class Program:
     claims: dict[str, Claim] = field(default_factory=dict)
     arguments: dict[str, Argument] = field(default_factory=dict)
     objections: dict[str, Objection] = field(default_factory=dict)
+    patterns: dict[str, Pattern] = field(default_factory=dict)
+    applications: dict[str, Application] = field(default_factory=dict)
     duplicates: tuple[str, ...] = ()
     declaration_count: int = 0
+    locations: dict[str, SourceSpan] = field(default_factory=dict)
+    lowering_diagnostics: tuple[Diagnostic, ...] = ()

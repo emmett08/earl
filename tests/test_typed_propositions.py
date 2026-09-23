@@ -8,13 +8,13 @@ from eal.parser import parse
 from eal.semantics import validate
 from test_evaluator import record, CONTEXT, NOW
 
-SOURCE = '''language "EAL/0.2";
+SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool readings { version "1"; mode deterministic; }
 evidence trial { tool readings; kind experiment; environment lab; max_age 60;
  require "schema" == "EAL/typed-input/1";
 }
-reasoning difference { mode causal; rationale "Difference of means in the declared randomised experiment."; }
+reasoning difference { method "causal/1"; rationale "Difference of means in the declared randomised experiment."; }
 claim raised { statement "The treatment mean pressure exceeds control by at least 5 kPa.";
  environment lab;
  proposition {
@@ -91,7 +91,7 @@ def test_changed_query_is_rejected_even_if_numerical_result_would_pass():
 
 
 @pytest.mark.parametrize('old,new,code', [
-    ('EAL/0.2', 'EAL/0.1', 'versioned_construct'),
+    ('EAL/2', 'EAL/0.2', 'unsupported_language'),
     ('quantity "pressure"', 'quantity "flow"', 'invalid_proposition'),
     ('unit "kPa"', 'unit "L/s"', 'invalid_proposition'),
     ('binding trial;', '', 'missing_binding'),
@@ -106,7 +106,7 @@ def test_static_typed_contract_diagnostics(old, new, code):
 
 def test_negative_entailment_is_usable_and_whole_logical_query_is_bound():
     query = {'premises': ['p'], 'conclusion': 'q'}
-    source = SOURCE.replace('kind experiment', 'kind logical_case').replace('mode causal', 'mode deductive')
+    source = SOURCE.replace('kind experiment', 'kind logical_case').replace('method "causal/1"', 'method "deductive/1"')
     source = source.replace('quantity "pressure"; unit "kPa"', 'quantity "proposition"; unit "1"')
     source = source.replace('query {"assignment":"randomised"}', 'query {"premises":["p"],"conclusion":"q"}')
     source = source.replace('result "estimate" >= 5', 'result "entailed" == false')

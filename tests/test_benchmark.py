@@ -52,11 +52,11 @@ def test_alpha_equivalence_accepts_consistent_internal_renaming_only():
 
 
 def test_alpha_equivalence_handles_declaration_order_and_cycles_without_rewriting_literals():
-    source = '''language "EAL/0.1";
+    source = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool instrument { version "1"; mode deterministic; }
 evidence measured { tool instrument; kind test; environment lab; max_age 60; require "passed" == true; }
-reasoning step { mode structured; rationale "measured means an observation, not a replaceable literal"; }
+reasoning step { method "structured/1"; rationale "measured means an observation, not a replaceable literal"; }
 claim outcome { statement "The trial supports this property."; environment lab; }
 argument route { conclusion outcome; reasoning step; evidence measured; }
 '''
@@ -157,7 +157,7 @@ def test_paired_harness_through_actual_mcp_with_explicit_regression_provider():
             return ModelResponse(json.dumps(value), input_tokens=100, output_tokens=30, model="not-an-LLM")
 
     result = asyncio.run(evaluate_models(SUITE, RegressionProvider(), split="development",
-                                        task_ids=["nested-model-observation"], per_mcp_call_usd=0, host_mode="legacy"))
+                                        task_ids=["nested-model-observation"], per_mcp_call_usd=0, host_mode="stateless"))
     assert len(result["trials"]) == 2
     assert all(trial["score"]["correct"] for trial in result["trials"]), [(t["score"], t["report"]["stop_reason"]) for t in result["trials"]]
     assert result["trials"][0]["inputs"] == result["trials"][1]["inputs"]

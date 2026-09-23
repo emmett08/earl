@@ -1,9 +1,9 @@
-# Typed propositions in EAL/0.2
+# Typed propositions in EAL/2
 
-EAL/0.2 adds a bounded scalar proposition fragment. A proposition names the subject, measured quantity, unit, model or episode scope, interval, mathematical question and predicate on a specified method result. A supporting argument explicitly binds that proposition to its computational evidence. The interpreter checks the correspondence before evaluating the predicate. Explanatory `statement` text is retained separately and is never proved by parsing or by a successful numerical calculation.
+EAL/2 has a bounded scalar proposition fragment. A proposition names the subject, measured quantity, unit, model or episode scope, interval, mathematical question and predicate on a specified method result. A supporting argument explicitly binds that proposition to its computational evidence. The interpreter checks the correspondence before evaluating the predicate. Explanatory `statement` text is retained separately and is never proved by parsing or by a successful numerical calculation.
 
 ```eal
-language "EAL/0.2";
+language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool readings { version "1"; mode deterministic; }
 evidence trial {
@@ -14,7 +14,7 @@ evidence trial {
   require "schema" == "EAL/typed-input/1";
 }
 reasoning contrast {
-  mode causal;
+  method "causal/1";
   rationale "Compare group means under the stated randomised experiment.";
 }
 claim raised {
@@ -89,13 +89,13 @@ Causal result conversion uses exact rational unit scale factors followed by fini
 
 The proposition interval and envelope interval are half-open `[valid_from, valid_until)`. The envelope must contain the entire proposition interval. This is an asserted domain of the represented observation or model, distinct from its original observation time, maximum age and assessment time. Historical propositions can therefore be considered after the episode, subject to evidence freshness and applicable assumptions. The interval does not prove uninterrupted physical behaviour. Temporal trace coverage is separately checked in the trace's own time axis; mapping an episode's real clock to that axis remains part of the collector's asserted interpretation.
 
-## Composition and compatibility
+## Composition and correspondence
 
 Every argument supporting a typed claim requires a `binding` to the one designated computational evidence source for its method. Binding an unrelated backing observation, omitting the binding on an alternative route, or using a method with an incompatible result type is a static error. A typed claim may be reused as a premise. Reuse preserves its identity; it does not turn repeated use into independent observations or automatically inject it into another method's mathematical inputs. Those inputs remain explicit in that method's query.
 
-A completed computation with a negative finding can support an explicitly negative predicate, such as `result "entailed" == false` or `result "holds" == false`. Inconsistent logical premises, incomplete temporal coverage and execution errors remain unusable. Method-level `require` predicates remain available; both those predicates and the proposition predicate must hold. In EAL/0.2 a typed proposition supplies the required output predicate itself. Untyped computational claims still require a method-level predicate.
+A completed computation with a negative finding can support an explicitly negative predicate, such as `result "entailed" == false` or `result "holds" == false`. Inconsistent logical premises, incomplete temporal coverage and execution errors remain unusable. Method-level `require` predicates remain available; both those predicates and the proposition predicate must hold. A typed proposition supplies the required output predicate itself. Untyped computational claims still require a method-level predicate.
 
-EAL/0.1 retains its existing semantics; using `proposition` or `binding` constructs requires EAL/0.2. Newly introduced words are contextual and can still be identifiers in existing source. EAL/0.3 permits host-registered method extensions through the same typed binding contracts; see [method extensions](method-extensions.md). Custom dimensions, vectors, quantified physical formulae and general dimensional algebra remain outside this scalar fragment.
+Built-in and host-registered methods use the same typed binding contracts; see [method extensions](method-extensions.md). Custom dimensions, vectors, quantified physical formulae and general dimensional algebra remain outside this scalar fragment.
 
 ## Canonical source
 

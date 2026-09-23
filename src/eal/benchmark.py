@@ -158,7 +158,9 @@ def compare_sources(reference: str, actual: Any, *, anchored_claims: tuple[str, 
     Declaration names may change consistently. Operator registry tool names and
     requested claim identifiers remain external anchors. Literals (including
     query atoms, units and prose) are never rewritten. This is alpha-equivalence,
-    not a theorem prover for arbitrary equivalent arguments.
+    not a theorem prover for arbitrary equivalent arguments. Pattern applications
+    are compared through their expanded arguments; expansion origins and source
+    locations do not change the represented reasoning.
     """
     if not isinstance(actual, str):
         return {"equivalent": False, "reason": "missing_source", "mapping": {}}
@@ -175,13 +177,15 @@ def compare_sources(reference: str, actual: Any, *, anchored_claims: tuple[str, 
         return json.dumps(value, sort_keys=True, allow_nan=False, separators=(",", ":"))
     def graph(source):
         program = asdict(parse(source))
+        if program.get("lowering_diagnostics"):
+            raise ValueError("Invalid argument pattern application")
         if program.get("duplicates"):
             raise ValueError("Duplicate declarations")
         nodes, edges = {}, {}
         for section in ("environments", "tools", "evidence", "assumptions", "reasoning", "claims", "arguments", "objections"):
             for name, declaration in program[section].items():
                 key = (section, name)
-                attributes = {k: v for k, v in declaration.items() if k != "name"}
+                attributes = {k: v for k, v in declaration.items() if k not in {"name", "origin"}}
                 references = dict(reference_fields.get(section, {}))
                 if section == "objections":
                     references["target"] = {"claim": "claims", "reasoning": "reasoning", "assumption": "assumptions",
@@ -506,7 +510,7 @@ async def evaluate_models(path: str | Path, provider, *, split: str = "held_out"
                                               per_mcp_call_usd=per_mcp_call_usd, host_mode=host_mode,
                                               interaction_mode=interaction_mode))
     identity = provider.identity()
-    return {"schema": "EAL/model-benchmark/3", "scoring_version": "alpha-equivalence+evidence-trace/1",
+    return {"schema": "EAL/model-benchmark/3", "scoring_version": "expanded-alpha-equivalence+evidence-trace/2",
             "suite": suite["version"], "suite_digest": suite_digest(path, suite),
             "measurement_kind": identity.get("measurement_kind", "unclassified"),
             "provider": identity, "budget": asdict(budget), "split": split,

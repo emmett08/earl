@@ -1,4 +1,4 @@
-language "EAL/0.3";
+language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool readings { version "1"; mode deterministic; }
 evidence series {

@@ -25,6 +25,11 @@ _SCHEMA_KEYS = {'type', 'properties', 'required', 'additionalProperties', 'items
                 'minimum', 'maximum', 'minLength', 'maxLength', 'enum', 'anyOf'}
 
 
+def is_method_identifier(value):
+    """Whether a reference names an exact positive-integer contract version."""
+    return isinstance(value, str) and _ID.fullmatch(value) is not None
+
+
 def _canonical(value):
     return json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False).encode('utf-8')
 
@@ -196,13 +201,12 @@ class MethodRegistry:
     """Copy-on-extension host registry; identifiers cannot replace existing code."""
     def __init__(self, contracts=()):
         self._contracts = {}
-        self._aliases = {}
         for contract in contracts:
             self._add(contract)
 
     def _add(self, contract):
         from .propositions import QUANTITIES
-        if not isinstance(contract, MethodContract) or not _ID.fullmatch(contract.identifier):
+        if not isinstance(contract, MethodContract) or not is_method_identifier(contract.identifier):
             raise ValueError('Method identifier requires a name and positive integer version')
         if contract.identifier in self._contracts:
             raise ValueError(f'Method {contract.identifier!r} is already registered')
@@ -213,8 +217,8 @@ class MethodRegistry:
         if contract.builtin_mode is not None:
             from .modes import _COMPUTATIONS
             expected = _structured_marker if contract.builtin_mode == 'structured' else _COMPUTATIONS.get(contract.builtin_mode)
-            if contract.identifier != f'{contract.builtin_mode}/1' or contract.implementation is not expected or contract.builtin_mode in self._aliases:
-                raise ValueError('Built-in method identities and aliases are reserved')
+            if contract.identifier != f'{contract.builtin_mode}/1' or contract.implementation is not expected:
+                raise ValueError('Built-in method identities are reserved')
         elif contract.evidence_kind is None:
             raise ValueError('Custom methods require a computational evidence kind')
         if contract.evidence_kind is not None and not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_]*', contract.evidence_kind):
@@ -252,18 +256,17 @@ class MethodRegistry:
         if copied._code_identity is None:
             object.__setattr__(copied, '_code_identity', hashlib.sha256(marshal.dumps(copied.implementation.__code__)).hexdigest())
         self._contracts[contract.identifier] = copied
-        if contract.builtin_mode:
-            self._aliases[contract.builtin_mode] = contract.identifier
 
     def with_method(self, contract):
         if not isinstance(contract, MethodContract):
             raise ValueError('Extensions require a MethodContract')
         if contract.builtin_mode is not None:
-            raise ValueError('Extensions cannot define built-in execution profiles or aliases')
+            raise ValueError('Extensions cannot define built-in execution profiles')
         return MethodRegistry([*self._contracts.values(), contract])
 
-    def get(self, selector):
-        value = self._contracts.get(self._aliases.get(selector, selector))
+    def get(self, identifier):
+        """Resolve an exact versioned identifier; no aliases or version inference."""
+        value = self._contracts.get(identifier) if isinstance(identifier, str) else None
         return deepcopy(value) if value is not None else None
 
     def describe(self):
@@ -361,7 +364,7 @@ def _structured_marker(payload):
 
 @lru_cache(maxsize=1)
 def default_registry():
-    """Built-in methods share the extension interface and preserve legacy names."""
+    """Built-in methods use the same exact versioned references as extensions."""
     from .modes import _COMPUTATIONS, MODE_KINDS
     from .propositions import OUTPUTS, QUERY_FIELDS, QUANTITIES
     number = {'type': 'number', 'minimum': -1e100, 'maximum': 1e100}

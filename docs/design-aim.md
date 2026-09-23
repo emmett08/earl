@@ -2,17 +2,17 @@
 
 The aim is a human-readable language that can express and execute the reasoning required for engineering arguments, using a small semantic core and explicit method contracts. Engineers and AI agents should use the same represented claims, subarguments, evidence, assumptions and conclusions. A small or large language model can delegate supported reasoning operations through an application host and a custom MCP server. Low cost is an objective to measure across that whole system.
 
-This document specifies the design direction and distinguishes the implemented EAL/0.3 profile from the wider aim. EAL/0.1 and EAL/0.2 remain supported. See the [engineering task suite](engineering-tasks.md) for executable coverage and [model evaluation](model-evaluation.md) for the empirical procedure.
+This document specifies the wider aim and distinguishes it from implemented EAL/2 behaviour. EAL/2 is the only supported source language. See [EAL/2 design decisions](eal2-design.md), the [engineering task suite](engineering-tasks.md) and [model evaluation](model-evaluation.md).
 
 ## Applying Parr’s patterns
 
 The skill requires working implementations of selected patterns from Terence Parr’s Language Implementation Patterns. The publisher’s [contents](https://media.pragprog.com/titles/tpdsl/toc.pdf) and [typing excerpt shown in the supplied screenshot](https://media.pragprog.com/titles/tpdsl/static.pdf) support the pattern references below. The book presents alternative implementation choices; the language should select those needed for its semantics.
 
-| Pattern family | Application | EAL/0.3 status |
+| Pattern family | Application | EAL/2 status |
 |---|---|---|
 | P.8 and P.10–11 | Recognition followed by typed intermediate representation | ANTLR4 parse tree lowered to typed declarations |
 | P.13 | External visitor | `_ASTBuilder` converts generated contexts into semantic objects |
-| P.16 | Name resolution in one scope | Typed declaration maps, global uniqueness and reference checks |
+| P.16, bounded scope adaptation | Name resolution | Global declaration maps, closed pattern parameter scopes, typed references and uniqueness checks |
 | P.20 and P.22, bounded adaptation | Expression types and compatible operations | Scalar predicate, quantity and contract checks; a closed unit catalogue, formal query correspondence and compatible method outputs. General expression type inference is not implemented |
 | P.25 | Interpretation of checked intermediate objects | Dependency evaluation and bounded method computations |
 | Chapter 11 translation architecture | Output translation from checked intermediate objects | Explicit IR-to-source emission with round-trip checks. Rule-based rewriting, target-specific generator classes, templates and general solver translation are possible later choices, not implemented patterns |
@@ -55,7 +55,7 @@ A keyword should denote one documented concept, with specified operand types, bi
 
 These are design distinctions, not a proposal to turn every row into a new reserved word. Retain a construct only when removing it loses a required distinction or makes a necessary task materially harder to express and check. Keep numerical procedures, tool-provider settings and transport mechanics behind appropriate interfaces. Method additions should usually extend typed contracts rather than force new core keywords.
 
-The [executable vocabulary](vocabulary.md) defines retained names and new constructs. `evidence` declares collection and eligibility criteria, while actual observations live in runtime records. `mode` is used in disjoint contexts for tool variability and reasoning method. `valid` reports static well-formedness. `collected_at` denotes the original observation time, with `ingested_at` storing ingestion time. EAL retains the legacy `mode` spelling for compatibility; EAL/0.3 uses an explicit versioned `method` reference for extensible reasoning operations. `mode` still describes tool variability in tool declarations.
+The [executable vocabulary](vocabulary.md) defines the current constructs. `evidence` declares collection and eligibility criteria; observations live in runtime records. `method` selects an exact versioned reasoning contract, while `mode` describes tool variability. `valid` reports static well-formedness. `collected_at` denotes original observation time and `ingested_at` denotes storage time. Backwards compatibility is never a project requirement.
 
 ## Human readability and executable meaning
 
@@ -77,12 +77,12 @@ Empirical capability and savings require actual model experiments. Compare selec
 
 | Area | Implemented | Still required by the wider design aim |
 |---|---|---|
-| Argument composition | Reusable subclaims, alternative arguments, scoped evidence and assumptions; typed scalar query/result bindings | Wider proposition forms, explicit binding from symbolic premise atoms to independently supported claim propositions |
+| Argument composition | Typed closed-scope argument patterns, reusable subclaims, alternative arguments, scoped evidence and assumptions; typed scalar query/result bindings | Wider proposition forms, explicit binding from symbolic premise atoms to independently supported claim propositions |
 | Reasoning methods | Seven bounded computations plus authored structured support; immutable host registries with versioned input/query/output contracts and bounded custom methods | Task-driven methods for further domains; broader units and proposition types |
-| Counterarguments | Objection premises, attacks on particular arguments and objections, defence chains and an explicit least-information support/attack construction; legacy grounded graph solver | Preferences, contrariness and strict/defeasible rule systems would need further semantics if required by new tasks |
-| Representation | Declaration syntax, typed IR, canonical formatting and semantic round trips | Richer mathematical expressions beyond the bounded scalar/query fragment; engineer comprehension trials |
+| Counterarguments | Objection premises, attacks on particular arguments and objections, defence chains and an explicit least-information support/attack construction; standalone grounded graph solver | Preferences, contrariness and strict/defeasible rule systems would need further semantics if required by new tasks |
+| Representation | Declaration syntax, source-located typed IR, canonical formatting and semantic round trips | Richer mathematical expressions beyond the bounded scalar/query fragment; engineer comprehension trials |
 | Verification | Parsing, reference/type checks, computations, declared query identity, unit/quantity/scope/time bindings and dependencies | General dimensional algebra, quantified propositions and independently established physical/prose correspondence |
-| Model access | Actual MCP server, source-preserving host state, targeted draft revision, plain-text and native-function interfaces, bounded feedback, repeated paired experiments and recorded live trials | Wider model/task coverage and infrastructure-inclusive costs; mechanisms usable across model classes do not guarantee equal effectiveness |
+| Model access | Actual MCP server, source-preserving host state, targeted draft revision, plain-text and native-function interfaces, bounded feedback and a repeated paired experiment harness | Wider model/task coverage and infrastructure-inclusive costs; mechanisms usable across model classes do not guarantee equal effectiveness |
 | Completeness | Versioned known-answer engineering tasks and adverse variants, composed-defence cases, runtime and protocol regressions | Wider domains, human comprehension trials, hypothetical assumption/discharge calculus and richer formal premise bindings |
 
-The task suite, vocabulary, typed bindings, canonical representation, extensible methods, composed objections and model interaction loop implement the recommended bounded sequence. The suite records its uncovered distinctions instead of claiming complete engineering coverage. The [EAL/0.3 live experiments](eal03-model-results.md) distinguish interpreter correctness, model protocol performance and observed costs. Wider empirical trials remain necessary to determine how well those results transfer; protocol tests alone cannot answer that question.
+The task suite, vocabulary, typed bindings, canonical representation, extensible methods, composed objections and model interaction loop provide a bounded implementation. Typed argument patterns now make recurring dependency structures reusable without copying evidence identity. The suite records its uncovered distinctions instead of claiming complete engineering coverage. [Historical EAL/0.3 experiments](eal03-model-results.md) retain their original measured outcomes. EAL/2 comprehension, model performance and cost gains remain unmeasured; regression results alone cannot establish them.

@@ -10,8 +10,10 @@ from antlr4.error.ErrorListener import ErrorListener
 from .generated.EALLexer import EALLexer
 from .generated.EALParser import EALParser
 from .generated.EALVisitor import EALVisitor
-from .model import (Argument, Assumption, Claim, Environment, Evidence,
-                    Reasoning, Objection, Predicate, Program, Proposition, Tool)
+from .abstractions import lower_patterns
+from .model import (Application, Argument, Assumption, Claim, Environment, Evidence,
+                    Pattern, PatternBinding, PatternParameter, Reasoning, Objection,
+                    Predicate, Program, Proposition, SourceSpan, Tool)
 
 MAX_SOURCE_BYTES = 1024 * 1024
 MAX_TOKENS = 100_000
@@ -35,6 +37,21 @@ def _string(node):
 
 def _ids(ctx):
     return tuple(node.getText() for node in ctx.identifier()) if ctx else ()
+
+
+def _span(ctx):
+    stop = ctx.stop
+    text = stop.text or ""
+    lines = text.split("\n")
+    return SourceSpan(ctx.start.line, ctx.start.column + 1,
+                      stop.line + len(lines) - 1,
+                      stop.column + len(text) + 1 if len(lines) == 1 else len(lines[-1]) + 1)
+
+
+def _argument_fields(ctx):
+    return (ctx.conclusionRef.getText(), ctx.reasoningRef.getText(),
+            _ids(ctx.evidenceRefs), _ids(ctx.assumptionRefs), _ids(ctx.premiseRefs),
+            ctx.bindingRef.getText() if ctx.bindingRef else None)
 
 
 class _ASTBuilder(EALVisitor):
@@ -63,10 +80,9 @@ class _ASTBuilder(EALVisitor):
 
     def visitReasoningDecl(self, ctx):
         return Reasoning(ctx.identifier().getText(),
-                         ctx.reasoningMode().getText() if ctx.reasoningMode() else None,
+                         json.loads(ctx.methodName.text),
                          json.loads(ctx.rationaleText.text), _ids(ctx.idList()),
-                         tuple(self.visit(p) for p in ctx.predicate()),
-                         json.loads(ctx.methodName.text) if ctx.methodName else None)
+                         tuple(self.visit(p) for p in ctx.predicate()))
 
     def visitClaimDecl(self, ctx):
         return Claim(ctx.identifier(0).getText(), _string(ctx.STRING()), ctx.identifier(1).getText(),
@@ -78,9 +94,22 @@ class _ASTBuilder(EALVisitor):
                                                  self.visit(ctx.jsonScalar())), self.visit(ctx.jsonValue()))
 
     def visitArgumentDecl(self, ctx):
-        return Argument(ctx.identifier(0).getText(), ctx.identifier(1).getText(), ctx.identifier(2).getText(),
-                        _ids(ctx.evidenceRefs), _ids(ctx.assumptionRefs), _ids(ctx.premiseRefs),
-                        ctx.identifier(3).getText() if len(ctx.identifier()) > 3 else None)
+        return Argument(ctx.identifier().getText(), *_argument_fields(ctx.argumentBody()))
+
+    def visitPatternDecl(self, ctx):
+        return Pattern(ctx.identifier().getText(),
+                       tuple(self.visit(parameter) for parameter in ctx.patternParameter()),
+                       *_argument_fields(ctx.argumentBody()))
+
+    def visitPatternParameter(self, ctx):
+        return PatternParameter(ctx.identifier().getText(), ctx.parameterKind().getText())
+
+    def visitApplicationDecl(self, ctx):
+        return Application(ctx.identifier(0).getText(), ctx.identifier(1).getText(),
+                           tuple(self.visit(binding) for binding in ctx.patternBinding()))
+
+    def visitPatternBinding(self, ctx):
+        return PatternBinding(ctx.identifier(0).getText(), ctx.identifier(1).getText())
 
     def visitObjectionDecl(self, ctx):
         return Objection(ctx.identifier(0).getText(), ctx.targetKind().getText(),
@@ -134,20 +163,26 @@ def parse(source: str) -> Program:
         raise EALSyntaxError("\n".join(listener.errors[:20]))
     builder = _ASTBuilder()
     groups = {name: {} for name in ("environments", "tools", "evidence", "assumptions",
-                                    "reasoning", "claims", "arguments", "objections")}
+                                    "reasoning", "claims", "arguments", "objections",
+                                    "patterns", "applications")}
     destinations = {Environment: "environments", Tool: "tools", Evidence: "evidence",
                     Assumption: "assumptions", Reasoning: "reasoning", Claim: "claims",
-                    Argument: "arguments", Objection: "objections"}
+                    Argument: "arguments", Objection: "objections",
+                    Pattern: "patterns", Application: "applications"}
     symbols = set()
     duplicates = []
+    locations = {}
     try:
         for declaration in tree.declaration():
             value = builder.visit(declaration.getChild(0))
             if value.name in symbols:
                 duplicates.append(value.name)
             symbols.add(value.name)
+            locations[value.name] = _span(declaration)
             groups[destinations[type(value)]][value.name] = value
     except (RecursionError, ValueError, OverflowError) as exc:
         raise EALSyntaxError(f"Invalid JSON data: {exc}") from exc
-    return Program(language=_string(tree.STRING()), source_digest=hashlib.sha256(encoded).hexdigest(),
-                   **groups, duplicates=tuple(duplicates), declaration_count=len(tree.declaration()))
+    program = Program(language=_string(tree.STRING()), source_digest=hashlib.sha256(encoded).hexdigest(),
+                      **groups, duplicates=tuple(duplicates), locations=locations,
+                      declaration_count=len(tree.declaration()) + len(groups["patterns"]))
+    return lower_patterns(program)

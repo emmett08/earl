@@ -14,7 +14,7 @@ import math
 import operator
 from typing import Any
 
-from .model import Predicate, Program
+from .model import Diagnostic, Predicate, Program
 from .modes import assess_mode
 from .semantics import parse_time, validate, objection_scopes
 from .propositions import prepare_binding, check_result
@@ -166,158 +166,10 @@ def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime 
         result["evidence"][name] = _entry("available" if available else "unavailable", reasons,
                                            tool=tool.name, mode=tool.mode, run_id=record.get("run_id"))
 
-    if program.language == "EAL/0.3":
-        return _evaluate_composed(program, records, instant, result, registry)
-
-    active = {kind: {} for kind in ("claim", "reasoning", "assumption")}
-    for name, objection in program.objections.items():
-        available = all(result["evidence"][e]["status"] == "available" for e in objection.evidence)
-        result["objections"][name] = _entry(
-            "active" if available else "inactive",
-            [f"Objection evidence {e!r} is {result['evidence'][e]['status']}" for e in objection.evidence],
-            target_kind=objection.target_kind, target=objection.target, evidence=list(objection.evidence))
-        if available:
-            active[objection.target_kind].setdefault(objection.target, []).append(name)
-    for name, assumption in program.assumptions.items():
-        reasons = []
-        if result["environments"][assumption.environment]["status"] != "matched":
-            status = "out_of_scope"
-            reasons.append(f"Environment {assumption.environment!r} does not match supplied context")
-        else:
-            if assumption.valid_from and instant < parse_time(assumption.valid_from):
-                reasons.append("The assumption's validity interval has not begun")
-            if assumption.valid_until and instant >= parse_time(assumption.valid_until):
-                reasons.append("The assumption's validity interval has ended")
-            if result["evidence"][assumption.validation]["status"] != "available":
-                reasons.append(f"Validation evidence {assumption.validation!r} is unavailable")
-            status = "unsupported" if reasons else "supported"
-            if status == "supported" and name in active["assumption"]:
-                status = "contested"
-                reasons.append(f"Active objections: {', '.join(active['assumption'][name])}")
-            if not reasons:
-                reasons.append(f"Validation evidence {assumption.validation!r} holds within the declared interval")
-        result["assumptions"][name] = _entry(status, reasons, validation=assumption.validation)
-    for name, reasoning in program.reasoning.items():
-        reasons = [f"Backing evidence {e!r} is unavailable" for e in reasoning.backing
-                   if result["evidence"][e]["status"] != "available"]
-        status = "unsupported" if reasons else "supported"
-        if status == "supported" and name in active["reasoning"]:
-            status = "contested"
-            reasons.append(f"Active objections: {', '.join(active['reasoning'][name])}")
-        if not reasons:
-            reasons.append("The authored reasoning is available; its prose rationale is not mechanically proved")
-        result["reasoning"][name] = _entry(status, reasons, rationale=reasoning.rationale,
-                                             backing=list(reasoning.backing), mode=reasoning.mode, method=reasoning.method)
-
-    by_conclusion = {name: [] for name in program.claims}
-    for argument in program.arguments.values():
-        by_conclusion[argument.conclusion].append(argument)
-
-    def assess_claim(name):
-        if name in result["claims"]:
-            return result["claims"][name]
-        claim = program.claims[name]
-        in_scope = result["environments"][claim.environment]["status"] == "matched"
-        supporting, contested = [], []
-        for argument in by_conclusion[name]:
-            reasons = []
-            computation = {"status": "not_run", "reasons": ["Required sources are unavailable or out of scope"], "details": {}}
-            dependencies = {"evidence": list(argument.evidence), "assumptions": list(argument.assumptions),
-                            "premises": list(argument.premises), "reasoning": argument.reasoning}
-            if not in_scope:
-                status = "out_of_scope"
-                reasons.append(f"Conclusion environment {claim.environment!r} does not match supplied context")
-            else:
-                states = []
-                for e in argument.evidence:
-                    state = result["evidence"][e]["status"]
-                    states.append("supported" if state == "available" else "unsupported")
-                    reasons.append(f"Evidence {e!r} is {state}")
-                for a in argument.assumptions:
-                    state = result["assumptions"][a]["status"]
-                    states.append(state)
-                    reasons.append(f"Assumption {a!r} is {state}")
-                for p in argument.premises:
-                    state = assess_claim(p)["status"]
-                    states.append(state)
-                    reasons.append(f"Premise claim {p!r} is {state}")
-                reasoning_state = result["reasoning"][argument.reasoning]["status"]
-                states.append(reasoning_state)
-                reasons.append(f"Reasoning {argument.reasoning!r} is {reasoning_state}")
-                if any(state in ("unsupported", "out_of_scope") for state in states):
-                    status = "unsupported"
-                else:
-                    method = program.reasoning[argument.reasoning]
-                    source_ids = set(argument.evidence) | set(method.backing)
-                    source_ids.update(program.assumptions[a].validation for a in argument.assumptions)
-                    sources = [{"id": e, "kind": program.evidence[e].kind, "value": records[e]["value"]}
-                               for e in sorted(source_ids) if result["evidence"][e]["status"] == "available"]
-                    premises = [{"id": p, **result["claims"][p]} for p in argument.premises]
-                    binding = None
-                    if claim.proposition is not None:
-                        selected = next(item for item in sources if item["id"] == argument.binding)
-                        payload, binding = prepare_binding(claim.proposition, method.selector,
-                                                           argument.binding, selected["value"], registry=registry)
-                        sources = [{**item, "value": payload} if item["id"] == argument.binding else item
-                                   for item in sources]
-                    if binding is not None and binding["status"] == "unsupported":
-                        computation = {"status": "unsupported", "reasons": binding["reasons"], "details": {}, "binding": binding}
-                    else:
-                        computation = assess_mode(method.selector, sources, premises, registry=registry)
-                        if binding is not None:
-                            if computation["status"] == "supported":
-                                binding = check_result(claim.proposition, method.selector, computation["details"], binding, registry=registry)
-                            else:
-                                binding = {**binding, "status": "unsupported", "reasons": ["The bound computation did not produce a usable result"]}
-                            computation["binding"] = binding
-                    reasons.extend(computation["reasons"])
-                    if computation["status"] == "supported":
-                        outcomes = [_predicate(p, computation["details"]) for p in method.predicates]
-                        reasons.extend(reason for _, reason in outcomes)
-                        computation = {**computation, "predicates": [
-                            {"holds": ok, "reason": reason} for ok, reason in outcomes]}
-                        if binding is not None:
-                            reasons.extend(binding["reasons"])
-                        if not all(ok for ok, _ in outcomes) or binding is not None and binding["status"] != "supported":
-                            status = "unsupported"
-                        else:
-                            status = "contested" if "contested" in states else "supported"
-                    else:
-                        status = "unsupported"
-                if name in active["claim"]:
-                    reasons.append(f"Active claim objections: {', '.join(active['claim'][name])}")
-                    if status == "supported":
-                        status = "contested"
-            result["arguments"][argument.name] = _entry(status, reasons, conclusion=name,
-                                                          dependencies=dependencies, reasoning_result=computation)
-            if status == "supported":
-                supporting.append(argument.name)
-            elif status == "contested":
-                contested.append(argument.name)
-        if not in_scope:
-            status, reasons = "out_of_scope", [f"Environment {claim.environment!r} does not match supplied context"]
-        elif supporting:
-            status, reasons = "supported", [f"Uncontested derivations: {', '.join(supporting)}"]
-        elif contested:
-            status, reasons = "contested", [f"Contested derivations: {', '.join(contested)}"]
-        else:
-            status, reasons = "unsupported", ["No usable derivation supplies support; this does not establish falsity"]
-            if name in active["claim"]:
-                reasons.append(f"Active objections without a usable supporting derivation: {', '.join(active['claim'][name])}")
-        entry = _entry(status, reasons, statement=claim.statement, environment=claim.environment,
-                       supporting_arguments=supporting, contested_arguments=contested,
-                       objections=active["claim"].get(name, []),
-                       proposition=asdict(claim.proposition) if claim.proposition else None,
-                       prose_verified=False)
-        result["claims"][name] = entry
-        return entry
-
-    for name in program.claims:
-        assess_claim(name)
-    return result
+    return _evaluate_arguments(program, records, instant, result, registry)
 
 
-def _compute_composed_argument(program, argument, claim, records, result, premises, registry):
+def _compute_argument(program, argument, claim, records, premises, registry):
     """Calculate a locally usable method result before dialectical acceptance.
 
     Premise entries here describe source-available derivations, not accepted
@@ -331,16 +183,17 @@ def _compute_composed_argument(program, argument, claim, records, result, premis
     binding = None
     if claim.proposition is not None:
         selected = next(item for item in sources if item["id"] == argument.binding)
-        payload, binding = prepare_binding(claim.proposition, method.selector,
+        payload, binding = prepare_binding(claim.proposition, method.method,
                                            argument.binding, selected["value"], registry=registry)
         sources = [{**item, "value": payload} if item["id"] == argument.binding else item
                    for item in sources]
     if binding is not None and binding["status"] == "unsupported":
-        return {"status": "unsupported", "reasons": binding["reasons"], "details": {}, "binding": binding}, False
-    computation = assess_mode(method.selector, sources, premises, registry=registry)
+        return {"status": "unsupported", "method": method.method,
+                "reasons": binding["reasons"], "details": {}, "binding": binding}, False
+    computation = assess_mode(method.method, sources, premises, registry=registry)
     if binding is not None:
         if computation["status"] == "supported":
-            binding = check_result(claim.proposition, method.selector, computation["details"], binding,
+            binding = check_result(claim.proposition, method.method, computation["details"], binding,
                                    registry=registry)
         else:
             binding = {**binding, "status": "unsupported",
@@ -355,8 +208,8 @@ def _compute_composed_argument(program, argument, claim, records, result, premis
     return computation, usable
 
 
-def _evaluate_composed(program, records, instant, result, registry):
-    """EAL/0.3 finite least-information AND/OR support and attack semantics."""
+def _evaluate_arguments(program, records, instant, result, registry):
+    """EAL/2 finite least-information AND/OR support and attack semantics."""
     from .dialectic import ArgumentationError, MAX_COMPOSED_EDGES, solve_composed
 
     # Source availability is independent of whether a derivation is accepted.
@@ -378,13 +231,13 @@ def _evaluate_composed(program, records, instant, result, registry):
                 reasons.append(f"Validation evidence {assumption.validation!r} holds within the declared interval")
         result["assumptions"][name] = _entry(status, reasons, validation=assumption.validation)
     for name, reasoning in program.reasoning.items():
-        reasons = [f"Backing evidence {e!r} is unavailable" for e in reasoning.backing
+        reasons = [f"Method {reasoning.method}: backing evidence {e!r} is unavailable" for e in reasoning.backing
                    if result["evidence"][e]["status"] != "available"]
         result["reasoning"][name] = _entry(
             "unsupported" if reasons else "supported",
-            reasons or ["Method and backing are locally available; acceptance is assessed per application"],
+            reasons or [f"Method {reasoning.method} and backing are locally available; acceptance is assessed per application"],
             rationale=reasoning.rationale, backing=list(reasoning.backing),
-            mode=reasoning.mode, method=reasoning.method)
+            method=reasoning.method)
     by_conclusion = {name: [] for name in program.claims}
     for argument in program.arguments.values():
         by_conclusion[argument.conclusion].append(argument.name)
@@ -401,7 +254,8 @@ def _evaluate_composed(program, records, instant, result, registry):
         for argument_name in by_conclusion[name]:
             argument = program.arguments[argument_name]
             reasons = []
-            computation = {"status": "not_run", "reasons": ["Required sources are unavailable or out of scope"], "details": {}}
+            computation = {"status": "not_run", "method": program.reasoning[argument.reasoning].method,
+                           "reasons": ["Required sources are unavailable or out of scope"], "details": {}}
             dependencies = {"evidence": list(argument.evidence), "assumptions": list(argument.assumptions),
                             "premises": list(argument.premises), "reasoning": argument.reasoning}
             premise_entries = [{"id": p, **source_claim(p)} for p in argument.premises]
@@ -424,8 +278,8 @@ def _evaluate_composed(program, records, instant, result, registry):
                 # For local computation, a named premise is a declared input
                 # obligation. Its acceptability is checked only by the solver.
                 method_premises = [{**p, "status": "supported"} for p in premise_entries]
-                computation, usable = _compute_composed_argument(program, argument, claim, records,
-                                                                 result, method_premises, registry)
+                computation, usable = _compute_argument(program, argument, claim, records,
+                                                        method_premises, registry)
                 computation["premise_acceptance"] = "deferred_to_composed_solver"
                 reasons.extend(computation["reasons"])
                 reasons.extend(p["reason"] for p in computation.get("predicates", []))
@@ -439,7 +293,8 @@ def _evaluate_composed(program, records, instant, result, registry):
                 status = "unsupported"
             result["arguments"][argument_name] = _entry(
                 status, reasons, conclusion=name, dependencies=dependencies,
-                reasoning_result=computation, source_usable=possible, locally_usable=usable)
+                reasoning_result=computation, source_usable=possible, locally_usable=usable,
+                origin=asdict(argument.origin) if argument.origin is not None else None)
             if possible:
                 viable.append(argument_name)
         entry = {"status": "supported" if viable else "unsupported", "source_usable": bool(viable),
@@ -496,7 +351,7 @@ def _evaluate_composed(program, records, instant, result, registry):
         grounded = solve_composed(nodes, claims, [list(edge) for edge in sorted(attacks)])
     except ArgumentationError as exc:
         result["valid"] = False
-        result["diagnostics"].append({"code": "resource_limit", "message": str(exc), "declaration": None})
+        result["diagnostics"].append(asdict(Diagnostic("resource_limit", str(exc))))
         for group in ("arguments", "claims", "objections"):
             result[group] = {}
         return result
@@ -504,7 +359,7 @@ def _evaluate_composed(program, records, instant, result, registry):
     for source, target in sorted(attacks):
         attackers[target].append(source)
     result["dialectic"] = {**grounded, "attacks": [list(edge) for edge in sorted(attacks)],
-                            "construction": "EAL/0.3 scoped applications with conjunctive claim support"}
+                            "construction": "EAL/2 scoped applications with conjunctive claim support"}
     for name, argument in program.arguments.items():
         entry = result["arguments"][name]
         label = grounded["nodes"][f"argument:{name}"]

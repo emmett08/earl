@@ -10,14 +10,14 @@ from eal.evaluator import canonical_digest
 from eal.runtime import ReasoningService, ToolRegistry, bounded_path
 
 
-SOURCE = '''language "EAL/0.1";
+SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 tool runner { version "1.0"; mode deterministic; }
 evidence measured {
   tool runner; kind test; environment lab; max_age 60;
   input {"value": 7}; require "passed" == true;
 }
-reasoning observation { mode structured; rationale "The exact requested measurement supports the bounded claim."; }
+reasoning observation { method "structured/1"; rationale "The exact requested measurement supports the bounded claim."; }
 claim works { statement "The configured measurement passes."; environment lab; }
 argument result { conclusion works; reasoning observation; evidence measured; }
 '''

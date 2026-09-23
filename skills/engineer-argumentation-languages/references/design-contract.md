@@ -25,7 +25,7 @@ Keep propositions, observations, evidence roles and arguments distinct. A propos
 
 Apply a removal test: identify a required task and a semantic distinction that would be lost if the construct were removed. If existing constructs preserve that meaning with comparable readability and checkability, prefer them. Apply the same test to implicit defaults, syntax sugar and fixed method enumerations. Keep algorithms and data formats behind typed method interfaces; add syntax for an engineering distinction, not merely for a new solver or numerical formula.
 
-Provide a compact normative vocabulary alongside the grammar. Make diagnostics use the same terms. Document proposed terminology separately from executable syntax; version and migrate actual grammar changes deliberately.
+Provide a compact normative vocabulary alongside the grammar. Make diagnostics use the same terms. Document proposed terminology separately from executable syntax; declare actual grammar changes explicitly. This project does not require backwards compatibility or migration machinery.
 
 ## Human-readable source and formal meaning
 
@@ -42,6 +42,10 @@ Use the model for articulation, selection and revision of requests. Use the host
 Implement a closed interaction loop when autonomous agency is required: discover operations and schemas; obtain a structured request or source; validate it; return precise diagnostics; permit a bounded revision; execute the checked operation; return a compact result with retrievable derivations; decide whether to request more evidence, revise an argument, report an unresolved question or stop. Supply explicit time, token, iteration and execution budgets. A one-request dispatcher is a useful component but does not implement the whole loop.
 
 Treat lower cost as a measured design objective. Compare at least the selected model alone and the same model with delegation on held-out tasks. Record model/version, sampling settings, task inputs, correct and unjustified conclusions, unresolved cases, repair attempts, tokens, solver/tool expense, latency and total cost per correctly resolved task. Count failed attempts. Keep reported low-cost capability limited to models and tasks actually evaluated.
+
+## Elegance and expressive power
+
+Apply [expert-language-design.md](expert-language-design.md) when choosing core constructs, reusable abstractions, notation or extension rules. Compare conceptual rules and exceptions, local composition, semantic preservation, comprehension and task coverage. Show a library or derived-form alternative before adding a primitive. Require fixed-input extension compatibility and controlled model comparisons; distinguish syntax-only prompting from host-mediated execution.
 
 ## Development order
 

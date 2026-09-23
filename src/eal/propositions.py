@@ -1,4 +1,4 @@
-"""EAL/0.2 scalar propositions and versioned method/input correspondence.
+"""EAL/2 scalar propositions and versioned method/input correspondence.
 
 Metadata asserts an engineering interpretation. Checks establish correspondence
 within that interpretation; they cannot authenticate a sensor or interpret prose.
@@ -69,17 +69,17 @@ def describe_bindings(registry=None):
             'interpretation': 'metadata correspondence; physical relevance and prose correspondence remain asserted'}
 
 
-def _contract(mode, registry=None):
+def _contract(method, registry=None):
     from .methods import default_registry
-    return (registry or default_registry()).get(mode)
+    return (registry or default_registry()).get(method)
 
 
-def _output_type(mode, path, registry=None):
-    contract = _contract(mode, registry)
+def _output_type(method, path, registry=None):
+    contract = _contract(method, registry)
     return contract.output_type(path) if contract else None
 
 
-def proposition_errors(proposition: Proposition, mode: str | None = None, registry=None):
+def proposition_errors(proposition: Proposition, method: str | None = None, registry=None):
     """Static shape/type errors without reading observations."""
     from .semantics import parse_time, _check_json_resources
     errors = []
@@ -108,29 +108,29 @@ def proposition_errors(proposition: Proposition, mode: str | None = None, regist
         json.dumps(proposition.query, allow_nan=False).encode('utf-8')
     except (ValueError, TypeError, UnicodeError, RecursionError):
         errors.append('Proposition query must be finite JSON')
-    if mode is not None:
+    if method is not None:
         from .methods import schema_errors
-        contract = _contract(mode, registry)
+        contract = _contract(method, registry)
         if contract is None:
-            errors.append(f'Unknown registered method {mode!r}')
+            errors.append(f'Unknown registered method {method!r}')
             return errors
         errors.extend(schema_errors(proposition.query, contract.query_schema, 'query'))
         output = contract.output_type(proposition.result.path)
         if output is None:
-            errors.append(f'Method {mode!r} has no typed result {proposition.result.path!r}')
+            errors.append(f'Method {method!r} has no typed result {proposition.result.path!r}')
         elif (output == 'boolean') != isinstance(expected, bool):
             errors.append('Proposition result type does not match the method output type')
         if proposition.quantity not in contract.quantities:
-            errors.append(f'Method {mode!r} does not accept quantity {proposition.quantity!r}')
+            errors.append(f'Method {method!r} does not accept quantity {proposition.quantity!r}')
     return errors
 
 
-def prepare_binding(proposition: Proposition, mode: str, evidence_id: str, value, registry=None):
+def prepare_binding(proposition: Proposition, method: str, evidence_id: str, value, registry=None):
     """Check complete input correspondence before passing a payload to a method."""
     from .semantics import parse_time
-    contract = _contract(mode, registry)
+    contract = _contract(method, registry)
     if contract is None:
-        return None, {"status": "unsupported", "reasons": [f"Unknown registered method {mode!r}"]}
+        return None, {"status": "unsupported", "reasons": [f"Unknown registered method {method!r}"]}
     fields = {'schema', 'method', 'subject', 'quantity', 'unit', 'scope', 'valid_from', 'valid_until', 'payload'}
     trace = {'evidence_id': evidence_id, 'method': contract.identifier, 'proposition': asdict(proposition),
              'method_contract': contract.describe(),
@@ -178,14 +178,14 @@ def prepare_binding(proposition: Proposition, mode: str, evidence_id: str, value
     return (None if reasons else value['payload']), trace
 
 
-def check_result(proposition: Proposition, mode: str, details: dict, trace: dict, registry=None):
+def check_result(proposition: Proposition, method: str, details: dict, trace: dict, registry=None):
     """Evaluate the formal result predicate, converting only physical statistics."""
     actual = details
     for field in proposition.result.path.split('.'):
         if not isinstance(actual, dict) or field not in actual:
             return {**trace, 'status': 'unsupported', 'reasons': ['Bound method output is missing']}
         actual = actual[field]
-    output = _output_type(mode, proposition.result.path, registry)
+    output = _output_type(method, proposition.result.path, registry)
     is_numeric = type(actual) in (int, float) and (not isinstance(actual, float) or math.isfinite(actual))
     if output == 'boolean' and type(actual) is not bool or output != 'boolean' and not is_numeric:
         return {**trace, 'status': 'unsupported', 'reasons': ['Bound method output has an incompatible type']}

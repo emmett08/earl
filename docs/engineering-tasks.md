@@ -1,6 +1,6 @@
 # Engineering task suite
 
-`benchmarks/engineering-v1/suite.json` preserves the initial engineering-v1.0 domain: 22 small, independently answerable cases covering composition, evidence revision, causal questions, temporal applicability, objections, typed result binding and text-model repair. Its previous held-out results have now informed development. `benchmarks/engineering-v2/suite.json` adds six new instances reserved before the EAL/0.3 comparison. Each case names a readable EAL source file, recorded inputs, context, assessment time, expected claim statuses and a short mathematical or dependency-based answer derivation. The observations are synthetic known-answer inputs; they are not reports of physical experiments.
+`benchmarks/engineering-v1/suite.json` covers 22 small, independently answerable cases; `benchmarks/engineering-v2/suite.json` covers six further instances. Current reference sources use EAL/2, with suite identities `engineering-v1.1-eal2` and `engineering-v2.1-eal2`. Their paths and `EAL/engineering-tasks/1` manifest schema remain unchanged. The original v1 and v2 trials informed development of EAL/2 and are historical measurements, including the earlier EAL/0.3 comparison. Each case names source, recorded inputs, context, assessment time, expected claim statuses and a short mathematical or dependency-based answer derivation. Observations are synthetic known-answer inputs, not physical experiments. Rechecking updated references does not create new model-performance measurements.
 
 Run every reference case through the real parser, file observation adapter and reasoning service:
 
@@ -26,7 +26,7 @@ The checks compare committed answers with actual interpreter results. Expected a
 | Text-model workflow | A draft needs repair, collection, assessment and retrieval of its explanation | Development and held-out cases contain undeclared premise/assumption references. Repair must recover the entire reference representation; deleting the dependency is not an acceptable repair. The delegated report must show successful validation, collection, reasoning and explanation of its final assessment. |
 | Typed binding | Numerical success belongs to an identified quantity, subject, query, scope and interval | `11000 − 3500 = 7500 Pa = 7.5 kPa` supports the five-kilopascal claim. Seconds, flow rate, another trial or a result covering only 45 minutes cannot support that hour-long pressure claim. |
 
-The nested applicability and objection cases intentionally retain EAL/0.1 structured arguments. They test declared dependency semantics; their natural-language relevance relations are authored, not mechanically proved. The EAL/0.2 pressure cases additionally check the formal question and result-to-proposition binding. Testing both profiles makes the difference in verification strength explicit.
+The nested applicability and objection cases use authored structured support; the pressure cases also check the formal question and result-to-proposition binding. All current sources use EAL/2. Their different verification strengths follow from those representations and method contracts.
 
 For cases with missing observations, the manifest's `collect` selection restricts both the observations shown to a model and the configured fixture tools. An omitted reading cannot be recovered by requesting another collection. Shared evidence is identified and deduplicated by the interpreter within a reasoning step; the suite does not assume statistical independence between different observations.
 
@@ -34,7 +34,7 @@ For cases with missing observations, the manifest's `collect` selection restrict
 
 These cases demonstrate a bounded engineering profile, not completeness for every engineering problem. The following distinctions remain outside this versioned suite or implementation:
 
-- The frozen EAL/0.1 objection cases do not represent defences or subarguments for objections. EAL/0.3 introduces these relations; the new suite below exercises their grounded evaluation.
+- The original v1 objection cases do not exercise defence chains; the v2 cases below exercise claim-supported objections and grounded defence.
 - Propositional derivation and supplied numerical models do not establish physical model adequacy, real randomisation, causal identification or the truth of an authored relevance statement.
 - Typed method queries use structured fields within readable EAL declarations. General symbolic mathematical expressions, differential equations and open-ended solver translation are not represented by these tasks.
 - Calibration cases assess one explicit instant at a time. They do not infer continuous validity over an operating episode.
@@ -43,9 +43,9 @@ These cases demonstrate a bounded engineering profile, not completeness for ever
 
 The manifest freezes `development` and `held_out` labels before model evaluation. All cases are public in the repository. Here, held-out means reserved from example/prompt development within this workflow; it does not establish absence from a model's training data. Changing a source, observation, expected result or split constitutes a suite revision. Reports retain actual inputs and a digest covering the manifest, all task inputs and repair drafts.
 
-The original v1 split labels remain unchanged so archived measurements retain their meaning. For subsequent design or prompt work, every v1 case counts as development knowledge. The v2 cases use new systems, values, questions and argument structures. Their relationship to the earlier design is explicit: they test held-out instances within the declared task families, not unseen engineering domains.
+The original v1 split labels remain unchanged so archived measurements retain their meaning. For subsequent design or prompt work, every v1 case counts as development knowledge. The v2 cases introduced different systems, values, questions and argument structures for those earlier trials. They now also count as EAL/2 development knowledge. Their relationship to the earlier design is explicit: they test held-out instances within the declared task families, not unseen engineering domains.
 
-## Six new EAL/0.3 instances
+## Six engineering-v2 instances
 
 ```sh
 python -m eal.benchmark --suite benchmarks/engineering-v2/suite.json --check-tasks --summary
@@ -64,4 +64,4 @@ The RMS cases select `eal.extensions:example_registry` in the operator-owned tas
 
 These six cases provide supported, unsupported and contested answers, including supported claims about a negative computational result. They exercise the distinction between a usable negative result and a failed or inapplicable calculation. They remain too small and deliberately constructed to establish universal engineering completeness or performance for every model.
 
-To extend the domain, add a required engineering distinction, a readable reference, independent expected outcomes and at least one adverse case. Prefer a method contract to a new keyword when it preserves the required distinction. Do not add a mode merely to increase the number of named reasoning modes.
+To extend the domain, add a required engineering distinction, a readable reference, independent expected outcomes and at least one adverse case. Prefer a method contract to a new keyword when it preserves the required distinction. Do not add a method merely to increase the catalogue size.

@@ -42,6 +42,10 @@ Gentner treats analogy in terms of correspondences between represented domains, 
 
 The paper explains why partial observations require care when evaluating temporal properties. EAL implements bounded trace checks with an explicit scope; it does not implement the paper's general LTL/TLTL monitor construction. A result over recorded samples establishes only the declared sampled-trace property.
 
+## Core language design
+
+The primary language-design sources and the precise EAL adaptations are recorded in [EAL/2 design decisions](eal2-design.md#expert-recommendations-and-eal-adaptations): Hoare on simplicity, readability and error detection; Wirth on notation and checked extension boundaries; Steele on composable language growth; Felleisen on constrained translations and eliminability; and Parr on independent implementation passes. The source recommendations do not establish expert endorsement, a formal expressiveness theorem or measured model gains for EAL/2.
+
 ## Language implementation
 
 **Terence Parr, _Language Implementation Patterns: Create Your Own Domain-Specific and General Programming Languages_, Pragmatic Bookshelf, 2009.** ISBN 9781934356456. [Publisher](https://pragprog.com/titles/tpdsl/language-implementation-patterns/), [publisher-provided AST-pattern extract](https://media.pragprog.com/titles/tpdsl/patterns.pdf).

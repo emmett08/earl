@@ -1,5 +1,7 @@
 # EAL/0.3 repeated model experiments — 23 September 2026
 
+> Historical experiment record. The original version labels, inputs and measurements below are preserved. These trials predate EAL/2 and do not measure EAL/2 capability, usability or cost. No EAL/2 model trial is reported here.
+
 The fresh study ran 84 trials: six synthetic engineering tasks, two repetitions and seven model/interface conditions. Each delegated answer had to match the intended source and use the supplied observations through actual validation, collection and assessment. Unaided answers were scored for agreement with the expected claim-status labels. These are comparisons of complete systems, not measurements of a model’s internal reasoning ability.
 
 ## Fresh results

@@ -49,11 +49,6 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by EALParser#reasoningMode.
-    def visitReasoningMode(self, ctx:EALParser.ReasoningModeContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by EALParser#claimDecl.
     def visitClaimDecl(self, ctx:EALParser.ClaimDeclContext):
         return self.visitChildren(ctx)
@@ -66,6 +61,36 @@ class EALVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EALParser#argumentDecl.
     def visitArgumentDecl(self, ctx:EALParser.ArgumentDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#argumentBody.
+    def visitArgumentBody(self, ctx:EALParser.ArgumentBodyContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#patternDecl.
+    def visitPatternDecl(self, ctx:EALParser.PatternDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#patternParameter.
+    def visitPatternParameter(self, ctx:EALParser.PatternParameterContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#parameterKind.
+    def visitParameterKind(self, ctx:EALParser.ParameterKindContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#applicationDecl.
+    def visitApplicationDecl(self, ctx:EALParser.ApplicationDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#patternBinding.
+    def visitPatternBinding(self, ctx:EALParser.PatternBindingContext):
         return self.visitChildren(ctx)
 
 

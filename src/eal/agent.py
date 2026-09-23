@@ -504,8 +504,8 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
     if any(not isinstance(c, str) or not c for c in required_claims):
         raise ValueError("required_claims must contain non-empty identifiers")
     run = _Run(task, provider, budget, initial_data, "delegated")
-    if host_mode not in {"stateful", "legacy"} or interaction_mode not in {"text", "native"}:
-        raise ValueError("host_mode must be stateful or legacy; interaction_mode must be text or native")
+    if host_mode not in {"stateful", "stateless"} or interaction_mode not in {"text", "native"}:
+        raise ValueError("host_mode must be stateful or stateless; interaction_mode must be text or native")
     stateful = host_mode == "stateful"
     state = _ActiveState(run.initial_data if stateful else {}, required_claims)
     if stateful:
@@ -822,7 +822,7 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted Python module:factory providing method extensions")
-    parser.add_argument("--host-mode", choices=("stateful", "legacy"), default="stateful")
+    parser.add_argument("--host-mode", choices=("stateful", "stateless"), default="stateful")
     parser.add_argument("--interaction-mode", choices=("text", "native"), default="text")
     parser.add_argument("--unaided", action="store_true", help="Same text model without MCP; answer remains unverified")
     parser.add_argument("--output", type=Path, help="Save the complete report JSON; defaults to stdout")

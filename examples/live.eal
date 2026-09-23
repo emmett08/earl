@@ -1,4 +1,4 @@
-language "EAL/0.1";
+language "EAL/2";
 environment local { require "workload" == "sha256"; }
 tool inspect_input { version "1"; mode deterministic; }
 tool benchmark { version "1"; mode nondeterministic; }
@@ -13,7 +13,7 @@ evidence elapsed_time {
   require "elapsed_ms" < 5000;
 }
 reasoning measured_duration {
-  mode structured;
+  method "structured/1";
   rationale "A recorded duration supports only the duration claim about this execution on this host.";
 }
 claim execution_duration {

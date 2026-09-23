@@ -5,13 +5,13 @@ The implementation follows Terence Parr’s separation of parsing, intermediate 
 | Stage | Implementation | Result |
 |---|---|---|
 | Lexing/parsing | `grammar/EAL.g4`, generated lexer/parser | Complete parse tree or syntax diagnostics |
-| Lowering | `parser.py`, external visitor | Typed declarations independent of generated contexts |
-| Symbol and semantic analysis | `semantics.py` | Unique symbols, typed references, bounds, applicability dates, acyclic premise graph, method/evidence contract checks |
+| Lowering | `parser.py`, external visitor | Typed declarations and source spans independent of generated contexts |
+| Symbol and semantic analysis | `semantics.py` | Unique symbols, closed pattern parameter scopes, identity-preserving expansion, typed references, bounds, applicability dates, acyclic premise graph, method/evidence contract checks |
 | Method computation | `methods.py`, `modes.py` | Versioned, typed contracts, bounded method execution and explicit output fields |
 | Formal correspondence | `propositions.py` | Versioned input envelopes, formal query identity, quantity/unit/scope/interval checks and result predicates |
 | Canonical translation | `formatter.py` | Validated IR back to source with parse–format–parse preservation |
 | Argument interpretation | `evaluator.py` | Scoped support, objections, dependencies and method traces at a supplied time |
-| Dialectical calculation | `dialectic.py` | Grounded labels for explicit attacks and EAL/0.3 conjunctive support with alternative derivations |
+| Dialectical calculation | `dialectic.py` | Grounded labels for explicit attacks and EAL/2 conjunctive support with alternative derivations |
 | Tool execution | `runtime.py` | Bounded command or file observations |
 | Persistence | `store.py` | SQLite collections, observations and reasoning results |
 | Interfaces | `cli.py`, `server.py`, `host.py` | Shared operations through CLI or official MCP SDK |
@@ -24,11 +24,11 @@ The parser rejects lexer errors, parser recovery diagnostics and excessive sourc
 
 ## Extending a reasoning method
 
-Specify the question answered, evidence schema, query identity, output schema and quantity/unit meaning, necessary modelling assumptions, bounds and failure conditions. Register a `MethodContract` under a versioned identifier in an immutable `MethodRegistry`. EAL/0.3 refers to it with `method "namespace/name/1";`; adding another registered procedure does not require a grammar change. See [method extensions](method-extensions.md) for the executable example and host factory configuration. Add a known-answer calculation and an adverse case that would expose an overstrong interpretation. Keep empirical model assumptions represented as argument dependencies.
+Specify the question answered, evidence schema, query identity, output schema and quantity/unit meaning, necessary modelling assumptions, bounds and failure conditions. Register a `MethodContract` under a versioned identifier in an immutable `MethodRegistry`. EAL/2 refers to it with `method "namespace/name/1";`; adding another registered procedure does not require a grammar change. See [method extensions](method-extensions.md) for the executable example and host factory configuration. Add a known-answer calculation and an adverse case that would expose an overstrong interpretation. Keep empirical model assumptions represented as argument dependencies.
 
 The process operator chooses the registry through Python or `--methods package.module:function`. Source text only selects an already registered method identifier. Unknown versions fail validation. Contract schemas are available through discovery, and assessments retain the registry fingerprint. Changing an implementation requires a new declared implementation version; fingerprints cover the contract, limits, declared implementation version and entry-point source/code identity. They do not hash every imported dependency or external environment; reproducible host packaging remains necessary.
 
-`structured` applies an author-supplied conditional support relation. The other modes compute bounded formal, numerical or relational results; their output predicates specify the condition relevant to an argument. A proof concerning a formula, or an interval concerning a supplied sample, does not automatically establish that a prose claim accurately expresses that result.
+`structured/1` applies an author-supplied conditional support relation. The other methods compute bounded formal, numerical or relational results; their output predicates specify the condition relevant to an argument. A proof concerning a formula, or an interval concerning a supplied sample, does not automatically establish that a prose claim accurately expresses that result.
 
 ## Extending tool collection
 
@@ -38,4 +38,4 @@ Adding an adapter does not change the language’s reasoning semantics. Evidence
 
 ## Regeneration and validation
 
-`make check-generated` regenerates Python sources using the pinned, digest-checked ANTLR distribution and detects drift. `make test` exercises syntax, semantic errors, mathematical mode calculations, subargument propagation, temporal assumptions, tool execution, SQLite persistence and real stdio MCP calls. `make build` produces a source distribution and wheel. Standard use installs the generated parser and does not require Java.
+`make check-generated` regenerates Python sources using the pinned, digest-checked ANTLR distribution and detects drift. `make test` exercises syntax, semantic errors, mathematical method calculations, subargument propagation, temporal assumptions, tool execution, SQLite persistence and real stdio MCP calls. `make build` produces a source distribution and wheel. Standard use installs the generated parser and does not require Java.

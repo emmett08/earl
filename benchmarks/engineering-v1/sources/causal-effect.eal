@@ -1,8 +1,8 @@
-language "EAL/0.1";
+language "EAL/2";
 environment bench { require "site" == "bench"; require "revision" == "A"; }
 tool randomised_trial_tool { version "1"; mode deterministic; }
 evidence randomised_trial { tool randomised_trial_tool; kind experiment; environment bench; max_age 7200; require "assignment" == "randomised"; }
 
-reasoning difference_of_means { mode causal; rationale "Estimate the difference of sample means in the declared randomised comparison; assignment is supplied metadata."; require "estimate" == 5; }
+reasoning difference_of_means { method "causal/1"; rationale "Estimate the difference of sample means in the declared randomised comparison; assignment is supplied metadata."; require "estimate" == 5; }
 claim positive_effect { statement "The estimated treatment-minus-control effect is five response units in this trial."; environment bench; }
 argument effect_argument { conclusion positive_effect; reasoning difference_of_means; evidence randomised_trial; }
