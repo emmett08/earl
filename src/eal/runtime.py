@@ -13,6 +13,7 @@ import math
 import os
 import selectors
 import signal
+import stat
 import subprocess
 import time
 import tomllib
@@ -21,6 +22,9 @@ from typing import Any, Mapping
 from uuid import uuid4
 
 from .store import RunStore, utc_now
+
+
+MAX_JSON_DEPTH = 128
 
 
 def strict_json(text: str) -> Any:
@@ -41,13 +45,23 @@ def strict_json(text: str) -> Any:
             raise ValueError(f"Non-finite JSON value {value}")
         return parsed
 
-    value = json.loads(text, object_pairs_hook=pairs, parse_constant=invalid_constant, parse_float=finite_float)
     try:
+        value = json.loads(text, object_pairs_hook=pairs, parse_constant=invalid_constant, parse_float=finite_float)
+        pending = [(value, 0)]
+        while pending:
+            item, depth = pending.pop()
+            if isinstance(item, (dict, list)):
+                if depth >= MAX_JSON_DEPTH:
+                    raise ValueError(f"JSON nesting exceeds {MAX_JSON_DEPTH} container levels")
+                children = item.values() if isinstance(item, dict) else item
+                pending.extend((child, depth + 1) for child in children)
         # JSON escapes can encode lone UTF-16 surrogates which cannot be stored
         # or hashed as UTF-8. Reject these before adding values to run records.
         json.dumps(value, ensure_ascii=False, allow_nan=False).encode("utf-8")
     except UnicodeError as exc:
         raise ValueError("JSON strings must contain valid Unicode scalar values") from exc
+    except RecursionError as exc:
+        raise ValueError("JSON nesting exceeds decoder resources") from exc
     return value
 
 
@@ -240,6 +254,19 @@ def _timestamp(value: Any) -> str:
     return value
 
 
+def acquisition_request(program, evidence_id: str, context: Mapping[str, Any]) -> dict:
+    """Identify acquisition independently of local argument/declaration names.
+
+    The collection separately binds the observation to exact source bytes and
+    its evidence declaration. This identity checks correspondence, not whether
+    a producer genuinely measured the supplied value.
+    """
+    evidence = program.evidence[evidence_id]
+    tool = program.tools[evidence.tool]
+    return {"tool": tool.name, "tool_version": tool.version, "mode": tool.mode,
+            "input": evidence.input, "context": dict(context)}
+
+
 class EvidenceRuntime:
     def __init__(self, workspace: str | Path, registry: ToolRegistry, store: RunStore, *, method_registry=None):
         from .methods import default_registry
@@ -260,7 +287,8 @@ class EvidenceRuntime:
             raise ValueError("context must be a JSON object")
         canonical_digest(context)
         names = list(program.evidence) if evidence_ids is None else evidence_ids
-        if len(set(names)) != len(names) or any(name not in program.evidence for name in names):
+        if (not isinstance(names, list) or any(not isinstance(name, str) for name in names)
+                or len(set(names)) != len(names) or any(name not in program.evidence for name in names)):
             raise ValueError("evidence_ids must be unique declared evidence identifiers")
         records = {}
         for name in names:
@@ -285,8 +313,11 @@ class EvidenceRuntime:
                     raise ValueError(f"Tool {declaration.tool!r} is not in the operator registry")
                 if binding.version != declared_tool.version or binding.mode != declared_tool.mode:
                     raise ValueError("Declared tool version/mode differs from the operator registry")
-                request = {"evidence_id": name, "input": declaration.input, "environment": declaration.environment, "context": dict(context)}
+                acquisition = acquisition_request(program, name, context)
+                request = {"evidence_id": name, "environment": declaration.environment, **acquisition}
                 record["request_digest"] = canonical_digest(request)
+                record["acquisition_request"] = acquisition
+                record["acquisition_request_digest"] = canonical_digest(acquisition)
                 if binding.kind == "command":
                     stdout, stderr, returncode, metadata = _execute(binding, request, self.workspace)
                     record.update(metadata)
@@ -297,17 +328,25 @@ class EvidenceRuntime:
                 else:
                     path = bounded_path(self.workspace, binding.path)
                     record["file"] = str(path.relative_to(self.workspace))
-                    with path.open("rb") as stream:
+                    # A FIFO or device can block indefinitely before a bounded
+                    # read begins. File imports only accept regular files.
+                    descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK)
+                    with os.fdopen(descriptor, "rb") as stream:
+                        if not stat.S_ISREG(os.fstat(stream.fileno()).st_mode):
+                            raise ValueError("File observations require a regular file")
                         stdout = stream.read(binding.max_output_bytes + 1)
                     if len(stdout) > binding.max_output_bytes:
                         stdout = stdout[:binding.max_output_bytes]
                         record["output_truncated"] = True
                         raise ValueError("output_limit")
                 envelope = strict_json(stdout.decode("utf-8"))
-                if not isinstance(envelope, dict) or "value" not in envelope or set(envelope) - {"value", "observed_at", "context", "details"}:
-                    raise ValueError("Tool output must be an object with value and optional observed_at, context, details")
-                if binding.kind == "json_file" and not {"observed_at", "context"} <= set(envelope):
-                    raise ValueError("File observations require observed_at and context; import must preserve their age and scope")
+                if not isinstance(envelope, dict) or "value" not in envelope or set(envelope) - {"value", "observed_at", "context", "request", "details"}:
+                    raise ValueError("Tool output must be an object with value and optional observed_at, context, request, details")
+                if binding.kind == "json_file" and not {"observed_at", "context", "request"} <= set(envelope):
+                    raise ValueError("File observations require observed_at and context and request; import must preserve age, scope and acquisition identity")
+                if "request" in envelope:
+                    if not isinstance(envelope["request"], dict) or canonical_digest(envelope["request"]) != canonical_digest(acquisition):
+                        raise ValueError("Observation request differs from the declared acquisition request")
                 if "context" in envelope:
                     if not isinstance(envelope["context"], dict) or canonical_digest(envelope["context"]) != canonical_digest(context):
                         raise ValueError("Observation context differs from the requested context")
@@ -385,8 +424,11 @@ class ReasoningService:
         from .parser import parse
 
         program = parse(source)
-        collection = self.store.get(collection_id, kind="collection") if collection_id else {"records": {}}
-        assessment = evaluate(program, collection["records"], now=now or utc_now(), context=context, registry=self.method_registry)
+        if collection_id is not None and (not isinstance(collection_id, str) or not collection_id.strip()):
+            raise ValueError("collection_id must be a nonempty string or null")
+        collection = self.store.get(collection_id, kind="collection") if collection_id is not None else {"records": {}}
+        assessment = evaluate(program, collection["records"], now=utc_now() if now is None else now, context=context, registry=self.method_registry)
+        assessment["collection_id"] = collection_id
         assessment["method_registry_fingerprint"] = self.method_registry.fingerprint
         assessment_id = self.store.put("assessment", assessment)
         return {"assessment_id": assessment_id, **assessment}

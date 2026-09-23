@@ -69,6 +69,12 @@ def describe_language(*, registry=None) -> dict:
         },
         "workflow": ["describe", "validate", "collect", "reason", "explain"],
         "source_identity": "Collections bind exact UTF-8 source bytes. Revision or formatting requires recollection. Keep source, context and explicit assessment time tied to the intended task.",
+        "observation_import": {
+            "required_envelope_fields": ["value", "observed_at", "context", "request"],
+            "acquisition_request_fields": ["tool", "tool_version", "mode", "input", "context"],
+            "correspondence": "File observations must match the requested acquisition. Source and local evidence identifiers are assigned separately by collection; an observation can be reused only when its acquisition still matches.",
+            "interpretation": "Matching metadata checks correspondence; it does not authenticate a measurement. Importing again preserves original observation time.",
+        },
         "time": "Timezone-aware ISO-8601; applicability intervals are [valid_from, valid_until). Evidence age is usable through max_age inclusively. New ingestion does not refresh original observation time.",
         "interpretation": "Statements and rationales are prose. Typed bindings check represented correspondence and numerical predicates, not empirical truth. Model premises, scope, sampling and causal assumptions require their own grounds. Reusing an observation does not create independent evidence.",
         "example": EXAMPLE,

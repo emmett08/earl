@@ -13,11 +13,11 @@ import hashlib
 import inspect
 import json
 import math
-import marshal
 import multiprocessing
 import os
 import re
 import signal
+from types import CodeType
 from typing import Callable
 
 _ID = re.compile(r'[A-Za-z][A-Za-z0-9_.-]*(?:/[A-Za-z][A-Za-z0-9_.-]*)*/[1-9][0-9]*\Z')
@@ -39,10 +39,26 @@ def schema_errors(value, schema, path='$', *, max_nodes=100_000, max_depth=64):
     errors = []
     budget = [max_nodes]
 
-    def check(item, spec, location, depth):
+    def consume(depth):
         budget[0] -= 1
         if budget[0] < 0 or depth > max_depth:
             raise ValueError('Typed schema resource limit exceeded')
+
+    def equal(left, right, depth):
+        """Compare JSON recursively without Python's True == 1 coercion."""
+        consume(depth)
+        if type(left) is not type(right):
+            return False
+        if type(left) is dict:
+            return left.keys() == right.keys() and all(
+                equal(value, right[key], depth + 1) for key, value in left.items())
+        if type(left) is list:
+            return len(left) == len(right) and all(
+                equal(a, b, depth + 1) for a, b in zip(left, right))
+        return left == right
+
+    def check(item, spec, location, depth):
+        consume(depth)
         if 'anyOf' in spec:
             for choice in spec['anyOf']:
                 previous = len(errors)
@@ -64,7 +80,7 @@ def schema_errors(value, schema, path='$', *, max_nodes=100_000, max_depth=64):
         if isinstance(item, float) and not math.isfinite(item):
             errors.append(f'{location}: numbers must be finite')
             return
-        if 'enum' in spec and not any(type(item) is type(v) and item == v for v in spec['enum']):
+        if 'enum' in spec and not any(equal(item, value, depth) for value in spec['enum']):
             errors.append(f'{location}: value is outside the declared enumeration')
         if type(item) in (int, float):
             if 'minimum' in spec and item < spec['minimum'] or 'maximum' in spec and item > spec['maximum']:
@@ -150,6 +166,48 @@ def _source_digest(function):
     return hashlib.sha256(source).hexdigest()
 
 
+def _code_digest(function):
+    """Hash executable code without marshal's mutable object-reference flags.
+
+    CPython may intern constants while executing nested functions. Marshalling a
+    code object can then produce different bytes even though its code is
+    unchanged. Explicitly serialise the stable executable attributes instead.
+    """
+    def constant(value):
+        kind = type(value)
+        if kind is CodeType:
+            return ['code', code(value)]
+        if kind in (tuple, frozenset):
+            values = [constant(item) for item in value]
+            if kind is frozenset:
+                values.sort(key=lambda item: json.dumps(item, sort_keys=True))
+            return [kind.__name__, values]
+        if kind is bytes:
+            return ['bytes', value.hex()]
+        if kind is float:
+            return ['float', value.hex()]
+        if kind is complex:
+            return ['complex', value.real.hex(), value.imag.hex()]
+        if value is Ellipsis:
+            return ['ellipsis']
+        if value is None or kind in (str, bool, int):
+            return [kind.__name__, value]
+        raise ValueError(f'Unsupported method code constant {kind.__name__}')
+
+    def code(value):
+        attributes = ('co_argcount', 'co_posonlyargcount', 'co_kwonlyargcount',
+                      'co_nlocals', 'co_stacksize', 'co_flags', 'co_names',
+                      'co_varnames', 'co_freevars', 'co_cellvars')
+        return {**{key: getattr(value, key) for key in attributes},
+                'co_code': value.co_code.hex(),
+                'co_exceptiontable': value.co_exceptiontable.hex(),
+                'co_consts': [constant(item) for item in value.co_consts]}
+
+    encoded = json.dumps(code(function.__code__), sort_keys=True,
+                         separators=(',', ':'), ensure_ascii=True).encode('ascii')
+    return hashlib.sha256(encoded).hexdigest()
+
+
 @dataclass(frozen=True)
 class MethodContract:
     identifier: str
@@ -182,7 +240,7 @@ class MethodContract:
                 'quantity_interpretation': 'input measurement basis; each output separately declares its unit interpretation',
                 'implementation_version': self.implementation_version,
                 'implementation_source_digest': self._source_identity or _source_digest(self.implementation),
-                'implementation_code_digest': self._code_identity or hashlib.sha256(marshal.dumps(self.implementation.__code__)).hexdigest(),
+                'implementation_code_digest': self._code_identity or _code_digest(self.implementation),
                 'limits': {'timeout_seconds': self.timeout_seconds, 'max_input_bytes': self.max_input_bytes,
                            'max_output_bytes': self.max_output_bytes, 'max_memory_bytes': self.max_memory_bytes,
                            'startup_timeout_seconds': 5.0},
@@ -232,6 +290,11 @@ class MethodRegistry:
             raise ValueError('Every query property must be required and additional query properties forbidden')
         if not set(query.get('properties', {})) <= set(contract.input_schema.get('properties', {})):
             raise ValueError('Each query field must be a declared input field')
+        for key, schema in query.get('properties', {}).items():
+            if key not in contract.input_schema.get('required', ()):
+                raise ValueError(f'Each query field must be required by the input contract: {key!r}')
+            if _canonical(schema) != _canonical(contract.input_schema['properties'][key]):
+                raise ValueError(f'Each query field must use the identical input schema: {key!r}')
         if type(contract.exact_unit) is not bool or not set(contract.quantities) <= set(QUANTITIES):
             raise ValueError('Method requires known quantities and an explicit exact_unit flag')
         if type(contract.timeout_seconds) not in (int, float) or not 0 < contract.timeout_seconds <= 60:
@@ -254,7 +317,7 @@ class MethodRegistry:
         if copied._source_identity is None:
             object.__setattr__(copied, '_source_identity', _source_digest(copied.implementation))
         if copied._code_identity is None:
-            object.__setattr__(copied, '_code_identity', hashlib.sha256(marshal.dumps(copied.implementation.__code__)).hexdigest())
+            object.__setattr__(copied, '_code_identity', _code_digest(copied.implementation))
         self._contracts[contract.identifier] = copied
 
     def with_method(self, contract):
@@ -277,7 +340,14 @@ class MethodRegistry:
         return hashlib.sha256(_canonical(self.describe())).hexdigest()
 
 
-def _worker(function, payload, connection, contract):
+def check_implementation_identity(contract):
+    """Reject entry-point code changed after the registry captured its identity."""
+    if (contract._code_identity is not None and
+            _code_digest(contract.implementation) != contract._code_identity):
+        raise ValueError('Loaded method implementation differs from its registered code identity')
+
+
+def _worker(payload, connection, contract):
     try:
         os.setsid()
         import resource
@@ -288,10 +358,9 @@ def _worker(function, payload, connection, contract):
         with open(os.devnull, 'wb') as sink:
             os.dup2(sink.fileno(), 1)
             os.dup2(sink.fileno(), 2)
-        if contract._code_identity is not None and hashlib.sha256(marshal.dumps(function.__code__)).hexdigest() != contract._code_identity:
-            raise ValueError('Loaded method implementation differs from its registered code identity')
+        check_implementation_identity(contract)
         connection.send_bytes(b'{"ready":true}')
-        output = function(payload)
+        output = contract.implementation(payload)
         encoded = _canonical({'ok': True, 'output': output})
         if len(encoded) > contract.max_output_bytes:
             raise ValueError('Method output exceeds byte limit')
@@ -318,7 +387,7 @@ def execute_extension(contract, payload):
             raise ValueError('Bounded custom methods require POSIX resource limits')
         context = multiprocessing.get_context('spawn')
         reader, writer = context.Pipe(duplex=False)
-        worker = context.Process(target=_worker, args=(contract.implementation, json.loads(encoded), writer, contract), daemon=True)
+        worker = context.Process(target=_worker, args=(json.loads(encoded), writer, contract), daemon=True)
         worker.start()
         writer.close()
         try:
@@ -398,8 +467,8 @@ def default_registry():
         contracts.append(MethodContract(mode + '/1', MODE_KINDS[mode], inputs[mode],
                          _object({key: inputs[mode]['properties'][key] for key in QUERY_FIELDS[mode]}),
                          _object(properties, additional=anything), OUTPUTS[mode], quantity,
-                         mode in ('counterfactual', 'temporal'), function, 'eal-builtin-1', builtin_mode=mode))
+                         mode in ('counterfactual', 'temporal'), function, 'eal-builtin-2.1.0', builtin_mode=mode))
     contracts.append(MethodContract('structured/1', None, _object({}), _object({}),
                      _object({'authored': boolean, 'mechanically_proved': boolean}), {}, (), False,
-                     _structured_marker, 'eal-builtin-1', builtin_mode='structured'))
+                     _structured_marker, 'eal-builtin-2.1.0', builtin_mode='structured'))
     return MethodRegistry(contracts)

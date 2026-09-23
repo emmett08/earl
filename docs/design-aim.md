@@ -6,7 +6,7 @@ This document specifies the wider aim and distinguishes it from implemented EAL/
 
 ## Applying Parr’s patterns
 
-The skill requires working implementations of selected patterns from Terence Parr’s Language Implementation Patterns. The publisher’s [contents](https://media.pragprog.com/titles/tpdsl/toc.pdf) and [typing excerpt shown in the supplied screenshot](https://media.pragprog.com/titles/tpdsl/static.pdf) support the pattern references below. The book presents alternative implementation choices; the language should select those needed for its semantics.
+The skill requires working implementations of selected patterns from Terence Parr’s Language Implementation Patterns. The publisher’s [contents](https://media.pragprog.com/titles/tpdsl/toc.pdf) and [typing excerpt](https://media.pragprog.com/titles/tpdsl/static.pdf) support the pattern references below. The book presents alternative implementation choices; the language should select those needed for its semantics.
 
 | Pattern family | Application | EAL/2 status |
 |---|---|---|
@@ -81,7 +81,7 @@ Empirical capability and savings require actual model experiments. Compare selec
 | Reasoning methods | Seven bounded computations plus authored structured support; immutable host registries with versioned input/query/output contracts and bounded custom methods | Task-driven methods for further domains; broader units and proposition types |
 | Counterarguments | Objection premises, attacks on particular arguments and objections, defence chains and an explicit least-information support/attack construction; standalone grounded graph solver | Preferences, contrariness and strict/defeasible rule systems would need further semantics if required by new tasks |
 | Representation | Declaration syntax, source-located typed IR, canonical formatting and semantic round trips | Richer mathematical expressions beyond the bounded scalar/query fragment; engineer comprehension trials |
-| Verification | Parsing, reference/type checks, computations, declared query identity, unit/quantity/scope/time bindings and dependencies | General dimensional algebra, quantified propositions and independently established physical/prose correspondence |
+| Verification | Source and direct-IR structure, reference/type checks, registered output predicates, declared query/input schema agreement, unit/quantity/scope/time bindings and dependencies | General dimensional algebra, quantified propositions and independently established physical/prose correspondence |
 | Model access | Actual MCP server, source-preserving host state, targeted draft revision, plain-text and native-function interfaces, bounded feedback and a repeated paired experiment harness | Wider model/task coverage and infrastructure-inclusive costs; mechanisms usable across model classes do not guarantee equal effectiveness |
 | Completeness | Versioned known-answer engineering tasks and adverse variants, composed-defence cases, runtime and protocol regressions | Wider domains, human comprehension trials, hypothetical assumption/discharge calculus and richer formal premise bindings |
 

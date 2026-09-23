@@ -17,7 +17,7 @@ import tempfile
 from typing import Any
 
 from .parser import parse
-from .runtime import ReasoningService, bounded_path, strict_json
+from .runtime import ReasoningService, acquisition_request, bounded_path, strict_json
 
 SCHEMA = "EAL/engineering-tasks/1"
 STATUSES = {"supported", "contested", "unsupported", "out_of_scope", "unresolved"}
@@ -63,6 +63,10 @@ def prepare_task(task: dict, root: Path, workspace: Path) -> tuple[ReasoningServ
     for evidence_id, envelope in inputs["observations"].items():
         if evidence_id not in program.evidence:
             raise ValueError(f"Task observation {evidence_id} is undeclared")
+        # Synthetic fixture authoring supplies the declared acquisition
+        # identity explicitly. Preserve a supplied request so adversarial
+        # fixtures can exercise mismatches rather than silently repairing them.
+        envelope = {"request": acquisition_request(program, evidence_id, inputs["context"]), **envelope}
         tool = program.evidence[evidence_id].tool
         if tool in bindings and bindings[tool] != envelope:
             raise ValueError(f"Fixture tool {tool} has inconsistent observations")

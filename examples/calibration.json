@@ -10,5 +10,18 @@
   },
   "details": {
     "source": "synthetic worked example"
+  },
+  "request": {
+    "tool": "calibration_reader",
+    "tool_version": "1",
+    "mode": "deterministic",
+    "input": {
+      "sensor": "timer_A"
+    },
+    "context": {
+      "platform": "bench_A",
+      "load_rps": 100,
+      "temperature_c": 22
+    }
   }
 }

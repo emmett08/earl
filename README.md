@@ -4,6 +4,8 @@ EAL represents engineering reasoning as claims, subordinate arguments, typed evi
 
 The language is **EAL/2**, with `.eal` source files. EAL/2 is the only supported source language; backwards compatibility is never a project requirement. Python 3.11 or later is required. Configured command adapters currently require a POSIX host.
 
+Package **2.1.0** enforces the current method contracts across built-in and installed procedures, rejects statically incompatible result predicates, and checks imported observations against their original acquisition requests. Current examples and references use these contracts. File imports require `request` metadata; obsolete envelopes have no compatibility adapter. The source language remains EAL/2.
+
 ## What is implemented
 
 - ANTLR4 grammar and generated Python lexer, parser and visitor, with a typed intermediate representation, source-located diagnostics and separate semantic checks.

@@ -32,7 +32,17 @@ class _Errors(ErrorListener):
 
 
 def _string(node):
-    return json.loads(node.getText())
+    value = json.loads(node.getText())
+    # JSON escape syntax permits unpaired UTF-16 surrogates. EAL interchange,
+    # canonical source and observation identities require actual UTF-8 text.
+    try:
+        value.encode("utf-8")
+    except UnicodeError as exc:
+        symbol = getattr(node, "symbol", node)
+        raise EALSyntaxError(
+            f"{symbol.line}:{symbol.column + 1}: String contains an unpaired Unicode surrogate"
+        ) from exc
+    return value
 
 
 def _ids(ctx):
@@ -80,8 +90,8 @@ class _ASTBuilder(EALVisitor):
 
     def visitReasoningDecl(self, ctx):
         return Reasoning(ctx.identifier().getText(),
-                         json.loads(ctx.methodName.text),
-                         json.loads(ctx.rationaleText.text), _ids(ctx.idList()),
+                         _string(ctx.STRING(0)),
+                         _string(ctx.STRING(1)), _ids(ctx.idList()),
                          tuple(self.visit(p) for p in ctx.predicate()))
 
     def visitClaimDecl(self, ctx):
@@ -119,7 +129,7 @@ class _ASTBuilder(EALVisitor):
         return Predicate(_string(ctx.STRING()), ctx.comparator().getText(), self.visit(ctx.jsonScalar()))
 
     def visitJsonScalar(self, ctx):
-        return json.loads(ctx.getText())
+        return _string(ctx.STRING()) if ctx.STRING() else json.loads(ctx.getText())
 
     def visitJsonValue(self, ctx):
         return self.visit(ctx.getChild(0))
@@ -127,7 +137,7 @@ class _ASTBuilder(EALVisitor):
     def visitJsonObject(self, ctx):
         keys = [_string(k) for k in ctx.STRING()]
         if len(set(keys)) != len(keys):
-            raise EALSyntaxError("Duplicate JSON object key")
+            raise EALSyntaxError(f"{ctx.start.line}:{ctx.start.column + 1}: Duplicate JSON object key")
         return dict(zip(keys, (self.visit(v) for v in ctx.jsonValue())))
 
     def visitJsonArray(self, ctx):

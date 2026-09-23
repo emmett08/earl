@@ -89,7 +89,8 @@ def test_bad_output_exception_and_nontermination_never_become_support(callback):
     started = time.monotonic()
     result = run_method({'origin': 0, 'samples': [1]}, contract)
     assert result['status'] == 'unsupported'
-    assert result['details'] == {'evidence_id': 'trial'}
+    assert result['details'] == {}
+    assert result['evidence_id'] == 'trial'
     assert time.monotonic() - started < 3
 
 

@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 import pytest
 
 from eal.evaluator import canonical_digest
-from eal.runtime import ReasoningService, ToolRegistry, bounded_path
+from eal.runtime import ReasoningService, ToolRegistry, acquisition_request, bounded_path
 
 
 SOURCE = '''language "EAL/2";
@@ -93,8 +93,11 @@ def test_tool_modes_bound_to_operator_registry(tmp_path):
 
 
 def test_import_preserves_observation_age_and_scope(tmp_path):
+    from eal.parser import parse
+
     past = (datetime.now(timezone.utc) - timedelta(hours=2)).isoformat()
-    observation = {"observed_at": past, "context": CONTEXT, "value": {"passed": True}}
+    observation = {"observed_at": past, "context": CONTEXT, "value": {"passed": True},
+                   "request": acquisition_request(parse(SOURCE), "measured", CONTEXT)}
     data = tmp_path / "observation.json"
     data.write_text(json.dumps(observation))
     registry = tmp_path / "tools.toml"

@@ -11,5 +11,18 @@
   },
   "details": {
     "source": "synthetic worked example"
+  },
+  "request": {
+    "tool": "measurements",
+    "tool_version": "1",
+    "mode": "nondeterministic",
+    "input": {
+      "run": "sample_17"
+    },
+    "context": {
+      "platform": "bench_A",
+      "load_rps": 100,
+      "temperature_c": 22
+    }
   }
 }

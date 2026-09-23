@@ -2,6 +2,8 @@
 
 EAL/2 is the only supported language. Backwards compatibility is never a requirement for this project. Choose the clearest coherent design for the current language; remove obsolete syntax, version-dependent semantics, aliases and compatibility adapters rather than preserving them. Do not add migration machinery solely to support an earlier EAL version.
 
+Apply each change across current documentation, discovery schemas, examples, benchmark fixtures and runnable plans. Keep historical plans under `docs/history/` with their original bytes and version labels; retain measured results and frozen inputs as historical evidence. Runnable plans belong in `benchmarks/experiments/` and must use the current source and host contracts. A source-language version, package version and observation schema version identify different contracts; declare changes to each affected contract explicitly.
+
 Use the repository's `skills/engineer-argumentation-languages/SKILL.md` and its expert language design reference for changes to syntax, abstractions, method contracts or reasoning semantics. Separate primary-source recommendations, EAL design decisions, implemented behaviour and measured results.
 
 Keep one versioned reasoning-method selector: `method "name/version"`. Tool `mode` describes collection variability and has a separate meaning. Built-in and installed reasoning methods follow the same typed contracts and binding checks.

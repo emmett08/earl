@@ -186,6 +186,8 @@ def check_result(proposition: Proposition, method: str, details: dict, trace: di
             return {**trace, 'status': 'unsupported', 'reasons': ['Bound method output is missing']}
         actual = actual[field]
     output = _output_type(method, proposition.result.path, registry)
+    if output is None:
+        return {**trace, 'status': 'unsupported', 'reasons': ['Bound method output is not declared by the method contract']}
     is_numeric = type(actual) in (int, float) and (not isinstance(actual, float) or math.isfinite(actual))
     if output == 'boolean' and type(actual) is not bool or output != 'boolean' and not is_numeric:
         return {**trace, 'status': 'unsupported', 'reasons': ['Bound method output has an incompatible type']}
@@ -193,7 +195,13 @@ def check_result(proposition: Proposition, method: str, details: dict, trace: di
     if output == 'basis':
         ratio = Fraction(UNITS[trace['input_unit']][1]) / Fraction(UNITS[proposition.unit][1])
         if ratio != 1:
-            actual = float(Fraction(str(actual)) * ratio)
+            exact = Fraction(str(actual)) * ratio
+            try:
+                actual = float(exact)
+            except OverflowError:
+                return {**trace, 'status': 'unsupported', 'reasons': ['Unit conversion exceeds the finite numeric range']}
+            if exact != 0 and actual == 0:
+                return {**trace, 'status': 'unsupported', 'reasons': ['Unit conversion underflow would erase a nonzero result']}
         output_unit = proposition.unit
         if type(actual) is float and not math.isfinite(actual):
             return {**trace, 'status': 'unsupported', 'reasons': ['Converted result is not finite']}

@@ -220,8 +220,10 @@ class _ScriptedText:
 
 def _fixture_server(tmp_path):
     from mcp import StdioServerParameters
+    from eal.runtime import acquisition_request
 
-    (tmp_path / "value.json").write_text(json.dumps({"value": {"passed": True}, "context": CONTEXT, "observed_at": NOW}))
+    (tmp_path / "value.json").write_text(json.dumps({"value": {"passed": True}, "context": CONTEXT, "observed_at": NOW,
+        "request": acquisition_request(parse(BASE), "positive", CONTEXT)}))
     registry = tmp_path / "tools.toml"
     registry.write_text('[tools.collector]\nkind="json_file"\npath="value.json"\nmode="deterministic"\nversion="1"\n')
     return StdioServerParameters(command=sys.executable,

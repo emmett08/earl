@@ -27,6 +27,8 @@ Apply a removal test: identify a required task and a semantic distinction that w
 
 Provide a compact normative vocabulary alongside the grammar. Make diagnostics use the same terms. Document proposed terminology separately from executable syntax; declare actual grammar changes explicitly. This project does not require backwards compatibility or migration machinery.
 
+Treat current executable examples and discovery responses as part of the contract. Revise them with changed semantics and check that each public CLI, MCP and model-host entry point rejects obsolete request shapes. Preserve historical experiment inputs and results under explicit archival labels; replace active plans that would otherwise run old labels against a changed implementation.
+
 ## Human-readable source and formal meaning
 
 Maintain one semantic representation across source text, API requests, stored arguments and explanations. A readable surface can include explicit named clauses and concise domain expressions. Structured interchange serves automation and must preserve the same meaning. Require a canonical printer and round-trip tests when both forms are supported. Do not count an opaque JSON payload as a readable reasoning expression merely because its container parses.

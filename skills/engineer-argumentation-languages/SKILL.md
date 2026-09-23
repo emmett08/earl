@@ -15,6 +15,8 @@ Read [expert-language-design.md](references/expert-language-design.md) before de
 
 Inspect the target repository, its local instructions, existing grammar and examples. For this repository, EAL/2 is the only supported language and backwards compatibility is never a requirement. Remove obsolete syntax, aliases, version-dependent semantics and compatibility adapters when a coherent current design supersedes them. Do not create migration machinery solely for earlier source versions. Historical experiment records retain their original labels and measurements. The repository name does not imply EARL 6.1 syntax.
 
+Update current documentation, discovery schemas, examples, task fixtures and runnable experiment plans with the implementation. Check every public entry point against the same contract. Keep superseded experiment plans in the documented history area with their original content, separate from runnable current plans. Distinguish source-language, package and observation-schema versions; advance the affected contract explicitly without retaining an older execution path. Existing model measurements continue to describe the frozen implementation that produced them.
+
 Identify a concrete engineering question, competing conclusions, available observations, intended inference, conditional assumptions and what would change the conclusion. Start with one worked reasoning problem and a counterexample. Separate the proposition to be considered, its executable representation, the observations relevant to it and the inferential relation. Resolve routine design choices directly; ask only when the answer changes the language’s purpose or semantics.
 
 ## Define purpose, completeness and a minimal core
