@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-RELAY-001",
   "title": "Order and evidence transfer in EAL/2 model sequences",
-  "version": "1.0.1",
-  "status": "specified",
+  "version": "1.0.2",
+  "status": "approved",
   "question": "On six exposed EAL/2 regression tasks, how do endpoint correctness, unsupported positive answers and total cost differ by model sequence, tool placement and transferred record?",
   "primary_claim_id": "CLM-001",
   "scope": {
@@ -612,11 +612,11 @@
     ]
   },
   "feasibility": {
-    "current_status": "partially-feasible",
+    "current_status": "operational",
     "apparatus_or_data": [
       "Existing EAL host, task fixtures, model provider adapters"
     ],
-    "access": "Six-model capability probes passed, but automatic approval review blocked disclosure of private repository-derived task material to api.openai.com. Explicit user confirmation is required by that review.",
+    "access": "User explicitly confirmed sending the synthetic EAL task sources, observations and subsequent model hand-offs from the private repository to OpenAI API, and the $12 campaign spending threshold. Six-model capability probes previously passed.",
     "skills": [
       "design-scientific-investigations",
       "analyse-software-engineering-statistics",
@@ -629,9 +629,7 @@
       "Pinned model snapshots remain available",
       "Local MCP subprocess support"
     ],
-    "blockers": [
-      "Automatic approval review requires explicit authorisation for private task-data disclosure to OpenAI API."
-    ],
+    "blockers": [],
     "fallback": "Preserve executable plans and explicit incomplete coverage if a provider becomes unavailable"
   },
   "reproducibility": {
@@ -649,25 +647,21 @@
     "replication_plan": "Fresh engineering task instances and, separately, a parameter-defined open SLM with a configured command provider"
   },
   "execution": {
-    "protocol_version_used": "1.0.0",
-    "started_at": "2026-09-23T15:59:49.908362+00:00",
+    "protocol_version_used": null,
+    "started_at": null,
     "completed_at": null,
-    "deviations": [
-      "Automatic review stopped the campaign before any completed task record. Three in-flight requests have unknown usage and were not replayed."
-    ],
-    "data_location": "benchmarks/results/2026-09-23-relays",
+    "deviations": [],
+    "data_location": null,
     "code_location": "src/eal/relay.py",
-    "observed_results": [
-      "Eleven preliminary capability probes passed; no new engineering task outcome saved."
-    ],
-    "interpretation_status": "blocked-auto-review; no task-performance inference"
+    "observed_results": [],
+    "interpretation_status": "authorised; not-started"
   },
   "provenance": {
     "authors": [
       "Codex for Emmett Miller"
     ],
     "created_at": "2026-09-23T15:55:16.844586+00:00",
-    "updated_at": "2026-09-23T16:04:28.693615+00:00",
+    "updated_at": "2026-09-23T16:13:54.352368+00:00",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1",
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
@@ -679,7 +673,8 @@
     "knowledge_cut": "2026-09-23",
     "change_log": [
       "1.0.0: pre-task design with shared-prefix control, common endpoint scoring and complete cost retention",
-      "1.0.1: record the post-freeze automatic review block and restrict readiness to specified; original 1.0.0 freeze preserved."
+      "1.0.1: record the post-freeze automatic review block and restrict readiness to specified; original 1.0.0 freeze preserved.",
+      "1.0.2: user explicitly confirmed private synthetic task-data disclosure to OpenAI API and the $12 spending threshold. Run a separately identified replacement campaign. The three previous in-flight requests retain unknown usage and are not resumed or erased."
     ]
   }
 }

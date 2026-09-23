@@ -1,6 +1,6 @@
 {
   "schema": "EAL/relay-plan/1",
-  "name": "eal2-model-relays-v1",
+  "name": "eal2-model-relays-authorised-20260923",
   "suite": "../engineering-v2/suite.json",
   "split": "held_out",
   "protocol": "../protocols/INV-EAL-RELAY-001.json",
@@ -492,5 +492,5 @@
       ]
     }
   ],
-  "notes": "Feasibility/regression study on six previously exposed synthetic tasks, two repetitions. The held_out field is an existing suite selector, not a fresh held-out claim. Identical prefixes share one recorded output per task/repetition; standalone sequence costs include every stage, actual campaign costs count unique stages. First-stage and same-input no-handoff baselines reuse identical calls. Small/mini/full are product tiers; parameter counts are unpublished, so these are not verified parameter-defined SLM classes. No sampling seed is passed to providers. Stage cost thresholds can overshoot by a response."
+  "notes": "Feasibility/regression study on six previously exposed synthetic tasks, two repetitions. The held_out field is an existing suite selector, not a fresh held-out claim. Identical prefixes share one recorded output per task/repetition; standalone sequence costs include every stage, actual campaign costs count unique stages. First-stage and same-input no-handoff baselines reuse identical calls. Small/mini/full are product tiers; parameter counts are unpublished, so these are not verified parameter-defined SLM classes. No sampling seed is passed to providers. Stage cost thresholds can overshoot by a response. Authorised replacement after user confirmation. Previous interrupted campaign records remain separate; its three unknown request charges are not included in the new campaign total."
 }
