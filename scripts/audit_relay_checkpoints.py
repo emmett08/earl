@@ -116,7 +116,7 @@ def audit(directory: Path) -> dict:
             'unpriced_stage_records': sum(r['model_cost_usd'] is None for r in stage_rows),
             'inflight_markers': markers, 'all_integrity_checks_passed': True,
             'primary_matched_blocks': primary_blocks,
-            'interpretation': 'Observed incomplete cohort only. Scheduling stops are excluded from outcome denominators. Completed answers from a single task do not estimate whole-suite performance. Markers with matching completed stage records are not additional unknown requests. Raw archives remain unchanged.',
+            'interpretation': 'Observed cohort coverage only. Scheduling stops are excluded from outcome denominators. An incomplete set of tasks or repetitions does not estimate whole-suite performance. Markers with matching completed stage records are not additional unknown requests. Raw archives remain unchanged.',
             'stage_rows': stage_rows, 'endpoint_rows': endpoint_rows}
 
 

@@ -24,6 +24,23 @@ def read_record(path: Path, freeze_digest: str) -> dict:
     return record['trial']
 
 
+def token_details(report: dict) -> dict:
+    """Retain cache/reasoning counts and a labelled uncached-rate projection."""
+    attempts = report.get('attempts', [])
+    usage = report.get('usage', {})
+    pricing = report.get('provider', {}).get('pricing', {})
+    inputs, outputs = usage.get('input_tokens'), usage.get('output_tokens')
+    details = {'input_tokens': inputs, 'output_tokens': outputs}
+    for key in ('cached_input_tokens', 'reasoning_tokens'):
+        values = [a.get('metadata', {}).get(key) for a in attempts]
+        details[key] = sum(values) if all(isinstance(v, int) for v in values) else None
+    rates = [pricing.get('input_usd_per_million'), pricing.get('output_usd_per_million')]
+    details['uncached_token_rate_projection_usd'] = (
+        (inputs * rates[0] + outputs * rates[1]) / 1_000_000
+        if all(isinstance(v, (int, float)) for v in [inputs, outputs, *rates]) else None)
+    return details
+
+
 def analyse(directory: Path) -> dict:
     freeze=json.loads((directory/'freeze.json').read_text())
     frozen={k:v for k,v in freeze.items() if k not in {'freeze_digest','frozen_at'}}
@@ -63,6 +80,9 @@ def analyse(directory: Path) -> dict:
                 if original!=(ref['draft_source'] or ref['inputs']['source']):integrity_errors.append(sid+':anchor changed')
         correctness=[score_answer(expected,s['report'])['correct'] for s in chain]
         final=chain[-1];tool_endpoint=final.get('arm')=='delegated'
+        details = [token_details(s['report']) for s in chain]
+        sequence_token_details = {key: sum(d[key] for d in details) if all(d[key] is not None for d in details) else None
+                                  for key in details[0]}
         endpoint_rows.append({'trial_id':sid,'task_id':trial['task_id'],'repetition':trial['repetition'],'condition':trial['condition_id'],
             'correct':int(common['correct']),'unjustified':int(common['unjustified']),
             'completed_answer':int(final['report']['status']=='completed'),
@@ -74,6 +94,7 @@ def analyse(directory: Path) -> dict:
             'sequence_tokens':trial['report']['usage'].get('total_tokens'),
             'sequence_requests':len(trial['report']['attempts']),
             'sequence_repairs':trial['report']['repairs'],
+            **sequence_token_details,
             'stage_keys':';'.join(keys),'stage_correctness':','.join(str(int(x)) for x in correctness),
             'stop_reason':final['report']['stop_reason']})
     if integrity_errors:raise ValueError('Integrity failures: '+str(integrity_errors))
@@ -96,6 +117,7 @@ def analyse(directory: Path) -> dict:
              'requests':len(r.get('attempts',[])),'repairs':r.get('repairs',0),
              'model_cost_usd':stage['cost']['model_usd'],'total_tokens':r.get('usage',{}).get('total_tokens'),
              'known_model_cost_usd':known_model_cost(stage),
+             **token_details(r),
              'seconds':r.get('latency_seconds'),
              'tool_calls':len(r.get('tool_calls',[])),
              'provider_errors':sum(a.get('status')!='received' for a in r.get('attempts',[])),
@@ -124,6 +146,9 @@ def analyse(directory: Path) -> dict:
             'unique_stages':len(stages),'stage_uses':sum(reused.values()),'unique_model_cost_usd':known if all(s['model_cost_usd'] is not None for s in usage) else None,
             'known_unique_model_cost_usd':known,'unique_requests':sum(x['requests'] for x in usage),
             'unique_total_tokens':sum(x['total_tokens'] for x in usage) if all(x['total_tokens'] is not None for x in usage) else None,
+            'unique_cached_input_tokens':sum(x['cached_input_tokens'] for x in usage) if all(x['cached_input_tokens'] is not None for x in usage) else None,
+            'unique_uncached_token_rate_projection_usd':sum(x['uncached_token_rate_projection_usd'] for x in usage) if all(x['uncached_token_rate_projection_usd'] is not None for x in usage) else None,
+            'cost_interpretation':'Observed charges use recorded cache discounts. Sequence totals sum constituent stages at their realised rates; an independently deployed chain may have different cache availability. The uncached projection reprices the same recorded tokens; it is not a measured separate deployment.',
             'all_integrity_checks_passed':True,'no_handoff_invariant_passed':invariant,
             'primary_contrast':{'direction':'l_tool_n_evidence minus l_tool_n_answer','blocks':primary_blocks,
                                 'difference':cluster_interval(differences,lambda r:r['value'],seed=freeze['plan']['order_seed'],samples=freeze['plan']['bootstrap_samples'])},

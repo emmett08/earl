@@ -38,7 +38,7 @@ Identical stage inputs within a task/repetition are executed once. This shares f
 
 Every endpoint uses `common-endpoint-status/1`: the completed answer must contain exactly the requested claims with their reference statuses. Tool and no-tool endpoints have the same primary criterion. Separately, a tool stage retains the existing source-correspondence, evidence-trace and requested-workflow checks. A correct model-only recipient answer is not reclassified as independently verified because its producer used tools.
 
-All upstream and final-stage failures remain in the archive. Reports retain correction and damage transitions, incorrect positive answers, tokens, repairs, requests, returned model identities, cost and latency. A chain's standalone cost sums every stage, including failed producers and repaired calls. Actual campaign cost counts a reused stage once. Standalone chain latency sums stage durations; elapsed scheduling time includes cache reuse and concurrency and is a different measure. Provider pricing estimates exclude host hardware, labour and tax. Zero marginal MCP fixture charge is an explicit assumption.
+All upstream and final-stage failures remain in the archive. Reports retain correction and damage transitions, incorrect positive answers, tokens, repairs, requests, returned model identities, cost and latency. Transition counts describe changes in stage correctness; causal interpretation requires the controlled contrast. A sequence's cost sums every recorded stage charge, including failed producers and repaired calls, at realised cache rates. Independent deployment may have different cache availability. Actual campaign cost counts a reused stage once. Sequence latency sums stage durations; elapsed scheduling time includes cache reuse and concurrency and is a different measure. Provider pricing estimates exclude host hardware, labour and tax. Zero marginal MCP fixture charge is an explicit assumption.
 
 Two repetitions of six tasks provide six task clusters. Paired descriptive intervals resample whole tasks and retain both repetitions. The fixed suite is deliberately selected and was already exposed during development. Intervals and accuracy apply to these cases; they do not establish population-wide model performance. All-success bootstrap intervals cannot rule out unseen failures. A pre-execution [sensitivity simulation](../benchmarks/protocols/relay-precision-simulation.json) found only 73.8–88.9% coverage for nominal 95% percentile intervals with six task clusters under its three specified distributions. These descriptive intervals therefore carry no calibrated 95% population-coverage claim. The single declared primary comparison remains a pilot estimate; the other pairwise comparisons are exploratory.
 
@@ -66,7 +66,7 @@ Use new, independently authored tasks after this pilot identifies interface and 
 
 Official model documentation, accessed 23 September 2026: [GPT-4.1](https://developers.openai.com/api/docs/models/gpt-4.1), [mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini), [nano](https://developers.openai.com/api/docs/models/gpt-4.1-nano), [GPT-5](https://developers.openai.com/api/docs/models/gpt-5), [mini](https://developers.openai.com/api/docs/models/gpt-5-mini), [nano](https://developers.openai.com/api/docs/models/gpt-5-nano). Availability and capabilities were also probed directly; probes are retained outside the task-accuracy denominator.
 
-Current execution status: see the [execution and validation report](eal2-relay-results.md). Automatic review rejected the serial replacement despite the user's prior confirmation. Protocol 1.0.4 preserves all cohorts and records the block. Package 2.2.2 retains partial known charges and uses `EAL/relay-report/2`: recorded, attempted, completed, partial, unexecuted and unrecorded endpoint counts are distinct. Scheduling stops are excluded from model-outcome aggregates. The aggregate helper's `completed_trials` counts attempted records, including failed attempts; the report's top-level `completed_trials` counts finished answers. No further paid execution was attempted.
+Current execution status: see the [results and validation report](eal2-relay-results.md). After explicit data/destination/spending authorisation, 194 endpoints were attempted before an unpriced transport failure stopped the cohort. Seven complete blocks support a bounded comparison; five planned blocks remain missing. Protocol 1.0.7 records the data and subsequent automatic-review blocks on completion spending and private GitHub publication. Package 2.2.2 retains partial known charges and uses `EAL/relay-report/2`: recorded, attempted, completed, partial, unexecuted and unrecorded endpoint counts are distinct. Scheduling stops are excluded from model-outcome aggregates. The aggregate helper's `completed_trials` counts attempted records, including failed attempts; the report's top-level `completed_trials` counts finished answers.
 
 
 ## Offline evidence audit
@@ -78,3 +78,14 @@ PYTHONPATH=src python scripts/audit_relay_checkpoints.py --run /absolute/run-dir
 ```
 
 This performs no provider calls and writes a checkpoint audit plus endpoint and stage CSV tables. It verifies frozen inputs, recorded identities, scores, transfers and per-request charges without modifying raw evidence. Missing endpoints remain missing; stale markers with matching completed records are distinguished from unknown orphan requests. `scripts/analyse_relays.py` is the stricter full-cohort exporter and requires every stage and scheduled endpoint.
+
+For the incomplete explicit cohort, compare only blocks in which all conditions were attempted:
+
+```bash
+PYTHONPATH=src python scripts/analyse_relay_blocks.py \
+  --run /absolute/relay-explicit \
+  --canonical-freeze /absolute/relay-explicit/freeze.json \
+  --output /absolute/block-analysis
+```
+
+The selector retains failed attempted outcomes, lists missing blocks and withholds the declared six-task estimand while coverage is incomplete. Repeated `--run` arguments can add separately frozen completion cohorts only if their implementation, suite, providers, stage budgets and conditions match. Duplicate complete blocks cause an error; the script never chooses the better result. The prepared [numerical](../benchmarks/experiments/eal2-model-relays-completion-numerical.json) and [repair](../benchmarks/experiments/eal2-model-relays-completion-repair.json) plans cover the five missing blocks. Their execution remains blocked by automatic review because prior charges are unknown.

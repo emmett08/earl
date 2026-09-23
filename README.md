@@ -118,4 +118,4 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 
 See [model sequence experiments](docs/model-relay-experiments.md) for reproducible small-to-full, full-to-small, reasoning/tool and three-stage comparisons, with saved evidence hand-offs, common endpoint scoring and resumable checkpoints.
 
-The [sequence execution record](docs/eal2-relay-results.md) retains the capability probes, ten finished endpoints from one task, all interruption records and unknown charges. The new suite-wide comparison remains blocked and incomplete.
+The [sequence results](docs/eal2-relay-results.md) retain 194 attempted endpoints from the explicitly authorised cohort, including 192 finished answers. Seven complete blocks give 7/7 correct evidence-transfer endpoints versus 5/7 answer-only endpoints; both differences occur on circular defence. The six-task comparison remains incomplete. All failures, unknown charges and automatic-review blocks are documented.

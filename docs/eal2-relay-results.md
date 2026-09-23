@@ -1,60 +1,97 @@
-# EAL/2 model-sequence execution record — 23 September 2026
+# EAL/2 model-sequence results — 23 September 2026
 
-The **92 earlier trials were recovered and pushed** with their original prompts, failures, usage and frozen inputs. Every archived trial matched its recorded SHA-256. The [earlier report](eal2-model-results.md) retains its findings and the stateless-host interface confounds.
+The **92 earlier trials are recovered and pushed**, with their original prompts, failures, usage and frozen inputs. Their [report](eal2-model-results.md) retains the stateless-host interface confounds and original findings.
 
-The new campaign remains **incomplete**. Ten endpoints finished on one task before network approval cancellation interrupted execution. A separately frozen serial attempt was then rejected by automatic approval review despite the user's confirmation. No further API route or paid retry was attempted. These records do not support a comparison across the six-task suite.
+The explicitly authorised new campaign produced **194 attempted endpoints: 192 finished answers, one endpoint stopped at its repair limit and one transport-failed endpoint**. The transport failure returned no usage and halted further calls. The remaining 130 scheduling records comprise 123 unexecuted conditions and seven partial sequences. They are not model-outcome observations.
 
-## Design and preserved cohorts
+Seven complete task/repetition blocks provide **189 comparable endpoints**, including the repair-limit failure. On these blocks, **full GPT-4.1 tool evidence → GPT-4.1 nano is correct in 7/7**, versus **5/7 for the same producer's answer alone**. Both differences occur on the circular-defence task, once in each repetition. **The planned six-task comparison remains unestimated**: five of its twelve blocks are missing. These results support a bounded observation about the recorded cases, not general superiority of a model class or pipeline.
 
-The [design](model-relay-experiments.md) defines **27 conditions**, **six pinned model snapshots**, **six exposed tasks** and **two repetitions**, scheduling **324 endpoints**. It covers small→full, full→small, same-model controls, reasoning/non-reasoning combinations, different tool placements, small→mini→full and two three-stage return sequences. Answer-only, evidence, transcript and no-handoff conditions specify exactly what the next model receives. Small/mini/full denote product tiers; parameter-defined open SLM performance remains unmeasured.
+## Coverage and primary comparison
 
-| Cohort | Frozen protocol / package | Saved evidence | Disposition |
-| --- | --- | --- | --- |
-| Initial | 1.0.0 / 2.2.0 | No stage response; three orphan markers | Automatic review rejected private-task disclosure |
-| Confirmed concurrent | 1.0.2 / 2.2.0 | 14 stage records; 10 finished endpoints | Network approval cancelled before a decision returned |
-| Serial replacement | 1.0.3 / 2.2.1 | No stage response; one orphan marker | Automatic review did not recognise the prior confirmation |
+The [frozen design](model-relay-experiments.md) defines 27 conditions across six pinned model snapshots, six exposed synthetic tasks and two repetitions. It covers small→full, full→small, same-model chains, reasoning/non-reasoning combinations, alternative tool placements and three-stage return sequences. Product tiers identify the small, mini and full models; parameter-defined open SLM performance remains unmeasured.
 
-Raw archives and indexes: [initial](../benchmarks/results/2026-09-23-relays/index.json), [confirmed concurrent](../benchmarks/results/2026-09-23-relays-authorised/index.json), [serial](../benchmarks/results/2026-09-23-relays-serial/index.json). Their frozen bytes are unchanged. Derived [concurrent](../benchmarks/results/2026-09-23-relays-authorised/checkpoint-audit.json) and [serial](../benchmarks/results/2026-09-23-relays-serial/checkpoint-audit.json) audits verify freeze/checkpoint digests, schedule identity, endpoint scores, hand-off identity, original source anchors and known charges against individual request records.
+| Task in the complete-block comparison | Repetitions | Evidence recipient correct | Answer recipient correct |
+| --- | ---: | ---: | ---: |
+| Sampled negative finding | 0, 1 | 2/2 | 2/2 |
+| Defence cannot ground itself | 0, 1 | 2/2 | 0/2 |
+| Defence with independent subargument | 0, 1 | 2/2 | 2/2 |
+| Cold-room calibration reference repair | 1 | 1/1 | 1/1 |
 
-The concurrent cohort contains 324 scheduling records: **10 finished endpoints, six transport-failed endpoints, eight partial sequences and 300 conditions with no executed stage**. The 308 scheduling stops are excluded from model-outcome denominators. Three residual in-flight markers have matching completed stage records; they are stale markers, not three additional unknown requests. Four failed stage records have unavailable usage. Shared stages account for six failed endpoint records, so these counts are not independent trials.
+The two primary conditions share the **exact saved producer output** within each block, with the same recipient model, original task and stage budget. On circular defence, the answer-only recipient changed the producer's correct `contested` status to `supported`. The evidence recipient retained the correct status in both repetitions. The transferred material contains actual tool results and failures; private reference labels and scores are excluded.
 
-## What the saved responses show
+Evidence adds **$0.0085855** across the seven sequences, or **$0.0012265 per sequence**. At realised token rates, its recorded cost per correct endpoint is **$0.021424**, versus **$0.028277** for answer-only transfer. These are descriptive ratios from seven blocks, with only four distinct task types. They do not estimate population cost-effectiveness. The full tool producer alone is already correct in 7/7 at **$0.019862 per correct endpoint**; the added recipient supplies no accuracy improvement over that producer on this subset.
 
-All finished endpoints concern `sampled-negative-finding`, repetition 0, and return its expected supported claim. The completed tool producers also pass the strict source/evidence checks. Their subsequent model-only recipients satisfy the common answer criterion; they do not thereby acquire independent tool verification.
+Selection uses **attempted coverage, never correctness**: all 27 conditions must have an attempted endpoint for a block to enter the common comparison. The coverage rule was declared after the interruption and is a post-data analysis amendment. Budget-failed outcomes remain included. The incomplete numerical block retains four finished answers and its transport failure separately, without being compared against conditions that never ran. The [block analysis](../benchmarks/results/2026-09-23-relays-explicit/block-analysis.json) lists selected and missing blocks and all five additional attempted endpoints. It withholds the planned estimand. No confidence interval is reported for this incomplete, purposively selected subset.
 
-| Finished condition | Correct on this one task | Standalone sequence cost estimate, USD |
-| --- | --- | ---: |
-| GPT-4.1 nano solo | Yes | 0.00025520 |
-| GPT-5 nano solo | Yes | 0.00046155 |
-| GPT-4.1 solo | Yes | 0.01412800 |
-| GPT-4.1 nano with tools | Yes | 0.00130010 |
-| GPT-4.1 with tools | Yes | 0.02599000 |
-| GPT-4.1 with tools → nano, answer | Yes | 0.02671450 |
-| GPT-4.1 with tools → nano, evidence | Yes | 0.02751290 |
-| GPT-4.1 with tools → nano, no hand-off | Yes | 0.02624520 |
-| GPT-4.1 nano with tools → GPT-5, evidence | Yes | 0.02971635 |
-| GPT-5 nano with tools → GPT-5, evidence | Yes | 0.02844644 |
+## All conditions on the same seven blocks
 
-The primary answer-versus-evidence comparison has only **one matched task/repetition**. Both recipients are correct; evidence adds **$0.0007984** to this sequence. That observation neither establishes equivalence nor answers the suite-level hypothesis. Nano solo is also correct on this task. No superiority, generalisation or population interval is reported.
+Symbols: `n` = GPT-4.1 nano; `m` = GPT-4.1 mini; `l` = GPT-4.1; `rn` = GPT-5 nano; `rm` = GPT-5 mini; `r` = GPT-5. GPT-5 configurations use low reasoning effort. `tool` gives that stage native EAL tools; final suffixes identify the hand-off content. Full model names and every stage configuration appear in the [design](model-relay-experiments.md).
 
-The [endpoint table](../benchmarks/results/2026-09-23-relays-authorised/endpoints.csv) includes all scheduling states; the [stage table](../benchmarks/results/2026-09-23-relays-authorised/stages.csv) includes all recorded failures. Raw archives retain actual prompts, visible model outputs, tool events and transferred packets. Sequence costs include every constituent stage as if run alone and must not be summed as campaign charges because prefixes are shared.
+Costs below sum each sequence's recorded stage charges, allocating its shared producer in full to that condition. They use realised cache discounts. The final column counts endpoints whose **final stage itself** passed the strict source, evidence and workflow checks. A zero for a model-only recipient does not invalidate its answer; it indicates that the recipient performed no independent tool verification.
 
-Known unique model charges in this cohort are **at least $0.11302619**. This includes **$0.01178125** for a completed request in a GPT-5 tool stage whose subsequent request failed. Total charges remain unknown. Orphan markers from the initial and serial cohorts have no saved usage. The spending settings are post-response stop thresholds, not provider-enforced invoice caps.
+| Condition | Correct endpoints | Sum of sequence charges, USD | Per correct endpoint, USD | Verified tool endpoints |
+| --- | ---: | ---: | ---: | ---: |
+| `n_solo` | 3/7 | 0.002562 | 0.000854 | 0 |
+| `m_solo` | 5/7 | 0.010024 | 0.002005 | 0 |
+| `l_solo` | 5/7 | 0.041064 | 0.008213 | 0 |
+| `rn_solo` | 5/7 | 0.001732 | 0.000346 | 0 |
+| `rm_solo` | 6/7 | 0.006166 | 0.001028 | 0 |
+| `r_solo` | 7/7 | 0.066336 | 0.009477 | 0 |
+| `n_tool_solo` | 6/7 | 0.010084 | 0.001681 | 6 |
+| `l_tool_solo` | 7/7 | 0.139032 | 0.019862 | 7 |
+| `r_tool_solo` | 7/7 | 0.089366 | 0.012767 | 7 |
+| `n_l_answer` | 3/7 | 0.048140 | 0.016047 | 0 |
+| `l_n_answer` | 5/7 | 0.042966 | 0.008593 | 0 |
+| `n_n_answer` | 3/7 | 0.004467 | 0.001489 | 0 |
+| `l_l_answer` | 5/7 | 0.077574 | 0.015515 | 0 |
+| `n_tool_l_evidence` | 6/7 | 0.247318 | 0.041220 | 0 |
+| `l_tool_n_evidence` | 7/7 | 0.149970 | 0.021424 | 0 |
+| `l_tool_n_answer` | 5/7 | 0.141385 | 0.028277 | 0 |
+| `l_tool_n_transcript` | 6/7 | 0.158744 | 0.026457 | 0 |
+| `l_tool_n_none` | 3/7 | 0.141594 | 0.047198 | 0 |
+| `r_tool_n_evidence` | 7/7 | 0.100750 | 0.014393 | 0 |
+| `n_tool_r_evidence` | 7/7 | 0.161385 | 0.023055 | 0 |
+| `n_l_tool_n` | 7/7 | 0.155492 | 0.022213 | 0 |
+| `l_n_tool_l` | 7/7 | 0.259540 | 0.037077 | 0 |
+| `rm_tool_l_evidence` | 7/7 | 0.257314 | 0.036759 | 0 |
+| `l_tool_rm_evidence` | 7/7 | 0.168501 | 0.024072 | 0 |
+| `n_m_l` | 3/7 | 0.047953 | 0.015984 | 0 |
+| `rn_tool_r_evidence` | 7/7 | 0.164486 | 0.023498 | 0 |
+| `r_tool_rn_evidence` | 7/7 | 0.096659 | 0.013808 | 0 |
+
+The complete [endpoint table](../benchmarks/results/2026-09-23-relays-explicit/complete-block-endpoints.csv) also records correction/damage transitions, latency, input/output/reasoning tokens, cached input and an uncached-rate projection. The [stage table](../benchmarks/results/2026-09-23-relays-explicit/complete-block-stages.csv) identifies actual response models and tool events.
+
+Several results constrain an interpretation based on chain length. The nano→mini→full answer chain is correct in 3/7, matching nano solo, whereas both three-stage return sequences are correct in 7/7. The full-tool→nano transcript condition is correct in 6/7; its repair-case recipient incorrectly returns `unsupported` after a correct producer. Thus, the recorded benefit depends on the case and transferred record. More stages or more transcript text alone does not account for the outcomes.
+
+## Failure evidence and cost accounting
+
+Two unique nano tool stages exhaust the repair allowance on the calibration case. Both retain validator diagnostics for an unknown reasoning reference, unsuccessful revision attempts and five counted repairs. One is the tool-solo endpoint; the other is a middle stage whose later recipient returns the correct status. These are bounded revision/interface failures, distinct from completed incorrect answers. A correct later model-only answer does not establish that it repaired or independently verified the source. The [failure summary](../benchmarks/results/2026-09-23-relays-explicit/failure-summary.json) retains diagnostics, last outputs and provider errors; full conversations remain in the raw archive.
+
+The numerical interruption occurs in a full GPT-4.1 recipient after a nano answer on `registered-rms-velocity`. Its request has a recorded prompt digest but no returned usage or answer. The runner records `token_usage_unavailable`, retains the failure and stops new generation. Its cost is unknown, not zero.
+
+The seven complete blocks use **217 unique stages and 296 model requests**, with 3,581,832 input tokens and 26,220 output tokens. Of the input tokens, **1,850,496 were reported cached**. Their unique recorded model charges total **$1.76054182**. Repricing the same tokens entirely at configured uncached rates gives **$2.92460710**; this is a projection, not another deployment measurement. Cache availability, workload order and reused prefixes limit any claim about independently deployed sequence costs.
+
+The full explicit cohort, including the incomplete numerical block, has **at least $1.79743512** in recorded model charges. Across the new cohorts and eleven capability probes, known charges are **at least $1.91203171**. Earlier interrupted requests and the blocked completion marker have unknown usage. These configured token-rate estimates exclude host hardware, labour and tax. No exact invoice total or hard billing cap is claimed.
+
+## Preserved runs and current blocks
+
+| Cohort | Frozen protocol / package | Retained record |
+| --- | --- | --- |
+| Initial | 1.0.0 / 2.2.0 | No stage response; three orphan markers; disclosure review block |
+| Confirmed concurrent | 1.0.2 / 2.2.0 | 14 stage records, ten finished endpoints on one task; network approval cancellation |
+| Serial replacement | 1.0.3 / 2.2.1 | No response; one orphan marker; review did not recognise confirmation |
+| Explicit authorisation | 1.0.5 / 2.2.2 | 222 stage records, 194 attempted endpoints; one unpriced transport failure |
+| Numerical completion | 1.0.6 / 2.2.2 | No response; one orphan marker; additional-spending review block |
+
+Indexes and raw archives: [initial](../benchmarks/results/2026-09-23-relays/index.json), [confirmed](../benchmarks/results/2026-09-23-relays-authorised/index.json), [serial](../benchmarks/results/2026-09-23-relays-serial/index.json), [explicit](../benchmarks/results/2026-09-23-relays-explicit/index.json), [completion](../benchmarks/results/2026-09-23-relays-completion/index.json). All frozen bytes remain unchanged. The confirmed cohort's three residual markers have matching completed stage records and are not additional unknown requests. Its four failed stage records do have unavailable usage. The explicit cohort retains one stale marker with a matching completed, priced stage; its separate transport-failed stage has unknown usage.
+
+The user explicitly authorised private EAL sources, observations and model hand-offs to `api.openai.com`, with a $12 spending stop threshold. Following the transport interruption, a separately declared $5 numerical phase and $1 repair phase would complete the missing blocks. Automatic review rejected that execution because earlier charges are unknown and it did not consider the added $6 clearly authorised. No completion response was saved, and the repair phase was not started. No further paid route or request was attempted.
+
+Automatic review also rejected the halfway checkpoint push to GitHub. A read-only check confirmed the destination was the same **private `emmett08/earl` repository**, the existing `feat/eal2-forward-contracts` branch and PR #3, with push permission. A retry restricted to the two checkpoint files was rejected again because the review did not recognise the generic push instruction as authority for that private archive. Further pushes stopped. The first 54-endpoint checkpoint is on GitHub at `3b4e8b8`; later evidence and reports are committed locally pending explicit publication authorisation.
 
 ## Capability probes
 
-All eleven preliminary API probes succeeded and returned the requested pinned model identities. They sent only a short greeting or a trivial `ping` function schema, without repository tasks, and test endpoint capability rather than engineering reasoning.
-
-| Snapshot | Text response | Native function response |
-| --- | --- | --- |
-| GPT-4.1 nano, 2025-04-14 | Passed | Passed |
-| GPT-4.1 mini, 2025-04-14 | Passed | Not requested |
-| GPT-4.1, 2025-04-14 | Passed | Passed |
-| GPT-5 nano, 2025-08-07 | Passed | Passed |
-| GPT-5 mini, 2025-08-07 | Passed | Passed |
-| GPT-5, 2025-08-07 | Passed | Passed |
-
-The configured token-rate estimate for the probes is **$0.0015704**, additional to task charges. [Raw probe records](../benchmarks/results/2026-09-23-relays/provider-probes.json) retain messages, outputs, returned models, tokens, latency and cost. No credential is retained.
+All eleven preliminary text/native probes succeeded and returned the requested pinned snapshot identities. They sent only a short greeting or trivial `ping` schema and supply capability evidence, not engineering-task outcomes. The [probe archive](../benchmarks/results/2026-09-23-relays/provider-probes.json) retains messages, outputs, tokens, latency and the **$0.0015704** configured-rate estimate.
 
 ## Statistical calibration
 
@@ -69,10 +106,10 @@ The pre-execution sensitivity simulation generated 1,000 synthetic datasets per 
 
 These are simulated coverage fractions for nominal 95% percentile intervals under the specified distributions, using 500 bootstrap draws per dataset. Monte Carlo standard errors, interval width, zero-width frequency and zero-exclusion frequency are retained in the [simulation record](../benchmarks/protocols/relay-precision-simulation.json). Coverage with six clusters is inadequate for a calibrated 95% population claim. The protocol consequently treats actual model comparisons as descriptive pilot estimates and requires new independent tasks for confirmatory work. The larger simulated task counts improve coverage in these scenarios; they do not establish universal sample-size requirements.
 
-## Implementation validation and current block
+## Validation and next execution
 
-Package **2.2.2**, source language **EAL/2**, fixes two issues exposed by the interruption. Known charges from earlier requests survive a later usage failure. The **EAL/relay-report/2** schema separates recorded, attempted, completed, partially executed, unexecuted and unrecorded endpoints. Scheduling stops stay in the raw archive but are excluded from model-outcome aggregates; transport-failed attempted endpoints remain included. Earlier raw evidence retains its original versions.
+All **535 tests pass**, including three tests proving that complete-block selection retains failed outcomes, marks incomplete coverage missing and rejects duplicate complete blocks rather than choosing favourable results. The offline audit checks frozen/checkpoint hashes, schedule identity, endpoint scores, original source anchors, hand-off identity and per-request known charges. The primary shared-producer and no-handoff invariants pass. The model-facing implementation remained unchanged throughout the explicit cohort; its recorded drift flag is false.
 
-All **532 tests pass**, including actual MCP subprocess operation, protected task anchors, score exclusion from hand-offs, preserved failed tool events, shared prefixes, partial charge retention, unknown-billing stops and correct classification of unexecuted recipients. Wheel and source distribution builds and the installed `eal-relay` 324-endpoint freeze are checked without further provider generation. Protocol **1.0.4** validates with zero errors or warnings and records the incomplete cohorts and approval block.
+Package **2.2.2** and source language **EAL/2** remain unchanged. The earlier wheel/sdist and installed 324-endpoint freeze checks still apply to this runtime. The added analysis scripts operate offline. Protocol **1.0.7** validates with zero errors or warnings and records the incomplete target coverage and both automatic-review blocks.
 
-The environment's latest automatic-review reason was that the visible messages did not explicitly authorise disclosure of private repository task data and model hand-offs to OpenAI, or the spending threshold. The user's preceding confirmation is documented; it was not recognised by that review. Further live execution remains blocked, and no workaround was attempted. The $10 serial threshold leaves an allowance within the previously confirmed $12 threshold, but unresolved earlier usage prevents an exact total bill.
+Once additional spending is explicitly authorised despite the unreported earlier charges, the prepared completion plans cover 108 numerical endpoints and 27 repair endpoints. Complete blocks can then be combined by the declared coverage rule, with every interrupted record retained separately. GitHub publication also requires authorisation recognised by the automatic reviewer for the private code, archives and results at the named repository and branch. A new independent task study and a parameter-defined SLM remain necessary for broader capability claims.
