@@ -1,6 +1,6 @@
 {
   "schema": "EAL/relay-plan/1",
-  "name": "eal2-model-relays-completion-numerical-20260923",
+  "name": "eal2-model-relays-continuation-numerical-20260923",
   "suite": "../engineering-v2/suite.json",
   "split": "held_out",
   "protocol": "../protocols/INV-EAL-RELAY-001.json",
@@ -9,7 +9,7 @@
   "concurrency": 1,
   "bootstrap_samples": 2000,
   "per_mcp_call_usd": 0,
-  "max_campaign_model_cost_usd": 5,
+  "max_campaign_model_cost_usd": 3,
   "max_handoff_bytes": 1048576,
   "budget": {
     "max_iterations": 10,
@@ -492,7 +492,7 @@
       ]
     }
   ],
-  "notes": "Feasibility/regression study on six previously exposed synthetic tasks, two repetitions. The held_out field is an existing suite selector, not a fresh held-out claim. Identical prefixes share one output per task/repetition; standalone sequence costs include every stage, campaign costs count unique stages. First-stage and no-handoff baselines reuse identical calls. Small/mini/full are product tiers; parameter counts are unpublished. No provider sampling seed. Stage and campaign cost thresholds can overshoot by a response. This separately frozen serial cohort follows explicit user authorisation naming private EAL data, api.openai.com and a $12 spending stop threshold. A $10 cohort threshold leaves an allowance for earlier interrupted requests whose total charges remain unknown. Previous raw cohorts are retained separately. Prompts, scoring, conditions and repetitions remain fixed. Completion phase declared after a transport interruption. Pool only fully attempted 27-condition task/repetition blocks, retaining every failed attempt and all incomplete blocks separately. This phase changes execution order and cache exposure; model inputs and stage budgets remain unchanged. No provider retry is implicit.",
+  "notes": "Authorised continuation under protocol 1.0.8 of the already declared missing-block completion. Original prompts, model snapshots, conditions, stage budgets and scoring are unchanged. Select complete 27-condition blocks by attempted coverage only; include model failures, and retain incomplete earlier blocks separately. Fresh directories preserve every historical freeze and outcome. Shared prefixes apply within task/repetition. Numerical phase threshold $3; repair $1, with a cumulative pre-phase check reserving $4.50 for historical unknown usage and $2.12792 for one response. Unknown historical charges remain unknown; no invoice cap is claimed. Any new unknown usage halts further generation. Product tiers are not parameter-count SLM classes; the six exposed tasks support a descriptive pilot.",
   "task_ids": [
     "registered-rms-velocity",
     "registered-rms-wrong-origin"
