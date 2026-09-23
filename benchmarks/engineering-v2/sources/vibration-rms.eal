@@ -1,0 +1,10 @@
+language "EAL/0.3";
+environment operating_point { require "chamber" == "cold-room-C"; require "assembly" == "regulator-7"; }
+tool vibration_record_adapter { version "1"; mode deterministic; }
+evidence vibration_record { tool vibration_record_adapter; kind measurement_series; environment operating_point; max_age 3600; require "schema" == "EAL/typed-input/1"; }
+
+reasoning sample_rms { method "engineering/rms/1"; rationale "Calculate RMS deviation from the fixed zero-velocity origin for the identified vibration record."; }
+claim vibration_within_limit { statement "The recorded RMS vibration velocity is at most 0.36 metres per second about the zero origin."; environment operating_point;
+ proposition { subject "regulator-7"; quantity "velocity"; unit "m/s"; scope "vibration-record-C"; valid_from "2040-01-31T08:00:00Z"; valid_until "2040-01-31T09:00:00Z"; query {"origin":0}; result "rms" <= 0.36; }
+}
+argument rms_route { conclusion vibration_within_limit; reasoning sample_rms; evidence vibration_record; binding vibration_record; }

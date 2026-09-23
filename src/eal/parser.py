@@ -62,8 +62,11 @@ class _ASTBuilder(EALVisitor):
                           dates.get("valid_from"), dates.get("valid_until"))
 
     def visitReasoningDecl(self, ctx):
-        return Reasoning(ctx.identifier().getText(), ctx.reasoningMode().getText(), _string(ctx.STRING()),
-                         _ids(ctx.idList()), tuple(self.visit(p) for p in ctx.predicate()))
+        return Reasoning(ctx.identifier().getText(),
+                         ctx.reasoningMode().getText() if ctx.reasoningMode() else None,
+                         json.loads(ctx.rationaleText.text), _ids(ctx.idList()),
+                         tuple(self.visit(p) for p in ctx.predicate()),
+                         json.loads(ctx.methodName.text) if ctx.methodName else None)
 
     def visitClaimDecl(self, ctx):
         return Claim(ctx.identifier(0).getText(), _string(ctx.STRING()), ctx.identifier(1).getText(),
@@ -81,7 +84,7 @@ class _ASTBuilder(EALVisitor):
 
     def visitObjectionDecl(self, ctx):
         return Objection(ctx.identifier(0).getText(), ctx.targetKind().getText(),
-                         ctx.identifier(1).getText(), _ids(ctx.idList()))
+                         ctx.identifier(1).getText(), _ids(ctx.evidenceRefs), _ids(ctx.premiseRefs))
 
     def visitPredicate(self, ctx):
         return Predicate(_string(ctx.STRING()), ctx.comparator().getText(), self.visit(ctx.jsonScalar()))

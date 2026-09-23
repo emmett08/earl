@@ -2,19 +2,19 @@
 
 EAL represents engineering reasoning as claims, subordinate arguments, typed evidence, reasoning methods, conditional assumptions and objections. A claim can have several alternative arguments. Each argument can depend on claims established by further subarguments, using different reasoning methods at different levels.
 
-The current language is **EAL/0.2**, with `.eal` source files; **EAL/0.1** sources remain supported. This is a new language in the `emmett08/earl` repository; EARL 6.1 syntax is a different grammar. Python 3.11 or later is required. Configured command adapters currently require a POSIX host.
+The current language is **EAL/0.3**, with `.eal` source files; **EAL/0.1** and **EAL/0.2** sources remain supported. This is a new language in the `emmett08/earl` repository; EARL 6.1 syntax is a different grammar. Python 3.11 or later is required. Configured command adapters currently require a POSIX host.
 
 ## What is implemented
 
 - ANTLR4 grammar and generated Python lexer, parser and visitor, with a typed intermediate representation and separate semantic checks.
-- Claim/subargument dependency graphs, alternative derivations, conjunctive premises, reusable subarguments and evidence-supported objections to claims, assumptions or reasoning methods.
-- Distinct computational methods for finite propositional deduction, binomial induction, Bayesian hypothesis comparison, a randomised-group contrast, affine-model counterfactuals, feature-based analogy and finite sampled temporal reasoning. Each has a typed evidence contract and predicates over its computed result. Author-supplied structured support is also available.
+- Claim/subargument dependency graphs, alternative derivations, conjunctive premises, reusable subarguments and objections supported by evidence or subarguments. Objections may challenge claims, assumptions, reasoning methods, particular arguments or other objections.
+- Distinct computational methods for finite propositional deduction, binomial induction, Bayesian hypothesis comparison, a randomised-group contrast, affine-model counterfactuals, feature-based analogy and finite sampled temporal reasoning. Each has a typed evidence contract and predicates over its computed result. Host-registered, versioned methods extend this catalogue without changing the grammar. Author-supplied structured support is also available.
 - Environment conditions, explicit evaluation time, observation freshness and assumption applicability intervals. Expiry withdraws current support without asserting falsity.
 - Actual configured commands and imported JSON observations, with preserved measurement time, bounded execution, deterministic/nondeterministic tool metadata and SQLite persistence.
-- A separate finite Dung grounded argumentation solver for explicit attacks, defence and unresolved cycles.
+- Composed support/attack evaluation with defence chains and undecided cycles, plus the finite Dung grounded solver for explicit attack graphs.
 - Typed scalar propositions with declared formal queries, subject/quantity/unit/scope/time correspondence, and explicit method-result bindings. Canonical formatting preserves the parsed meaning.
-- An official-SDK MCP stdio server, a shared CLI, and a bounded interaction loop for text-only models, with command and HTTP provider adapters, diagnostic feedback, explicit stopping and usage accounting.
-- A versioned engineering task corpus and paired unaided/delegated evaluation harness. Provider trials measure outcomes and cost; scripted protocol tests do not establish model capability or savings.
+- An official-SDK MCP stdio server, a shared CLI, and a bounded interaction loop with plain-text and native-function interfaces, host-managed state, explicit draft revision, diagnostic feedback and usage accounting.
+- Versioned engineering task corpora and a repeated, paired experiment runner with frozen references, balanced scheduling, structural source equivalence, evidence-trace scoring and retained failures. Provider trials measure outcomes and cost; scripted protocol tests do not establish model capability or savings.
 
 The interpreter computes the declared reasoning operations. Natural-language statements, relevance, modelling assumptions and empirical truth still require justified interpretation. The precise computational limits are documented for each method; this implementation does not claim the complete ASPIC+ framework.
 
@@ -63,7 +63,7 @@ argument engineering_explanation {
 
 This is a fragment. [examples/latency.eal](examples/latency.eal) is a complete executable source. The two premise claims may use different methods; the final step preserves their qualifications. An unresolved objection to a required premise propagates to the dependent argument. An independent supporting argument can remain usable.
 
-Computational reasoning declarations name a mode and a predicate on the method’s output, for example an inductive lower bound. See [the method contracts](docs/reasoning-modes.md) and [the mixed-method example](examples/mixed-reasoning.eal). A mode label without its required evidence or result predicate is rejected.
+Computational reasoning declarations select a versioned method (or a legacy mode) and a predicate on the method’s output, for example an inductive lower bound. See [the method contracts](docs/reasoning-modes.md) and [the mixed-method example](examples/mixed-reasoning.eal). A computational method without its required evidence or result predicate is rejected. [Method extensions](docs/method-extensions.md) show how to add a typed numerical procedure through host configuration.
 
 ## CLI and MCP
 
@@ -83,7 +83,7 @@ eal-mcp --workspace . --registry examples/tools.toml
 
 The MCP tools are `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and `eal_grounded`. `eal describe` exposes syntax and contracts to a model without prior EAL knowledge. `eal format FILE` returns canonical source as JSON. Formatting changes exact source identity when its bytes change, so observations must then be recollected.
 
-A text-only model can emit a JSON operation request for `eal-host`; the host performs one MCP call. `eal-agent` adds the configured model/request/result/repair loop over a persistent MCP session. See [the model loop](docs/model-loop.md) and [model evaluation](docs/model-evaluation.md) for configuration, budgets and the distinction between a completed interaction and a correct engineering answer.
+A text-only model can emit a JSON operation request for `eal-host`; the host performs one MCP call. `eal-agent` adds the configured model/request/result/repair loop over a persistent MCP session. Its stateful interface retains exact source, context and current result identifiers; a model can request `{"operation":"assess"}` to validate, collect, reason and explain, then `{"operation":"finish"}` to return the checked result without copying them. Plain-text and native-function interfaces use the same operation semantics. See [the model loop](docs/model-loop.md) and [model evaluation](docs/model-evaluation.md) for configuration, budgets and the distinction between a completed interaction and a correct engineering answer.
 
 ## Read the design
 
@@ -94,6 +94,7 @@ A text-only model can emit a JSON operation request for `eal-host`; the host per
 - [Precise vocabulary](docs/vocabulary.md) and [typed propositions](docs/typed-propositions.md): formal queries, unit checks and result correspondence.
 - [Engineering tasks](docs/engineering-tasks.md): known-answer cases, adverse variants and remaining coverage gaps.
 - [Live model experiments](docs/live-model-results.md): actual API comparisons, retained failures, token usage and cost estimates.
+- [EAL/0.3 repeated experiments](docs/eal03-model-results.md): fresh tasks, multiple model/interface conditions and development ablations.
 - [Reasoning methods](docs/reasoning-modes.md): distinct evidence schemas, algorithms and interpretation limits.
 - [Grounded argumentation](docs/grounded-reasoning.md): counterargument, defence and undecided cycles.
 - [Implementation architecture](docs/implementation.md): Parr’s patterns, ANTLR4 and extension points.

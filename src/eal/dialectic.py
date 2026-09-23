@@ -8,6 +8,9 @@ from __future__ import annotations
 MAX_ARGUMENTS = 4096
 MAX_ATTACKS = 65536
 MAX_IDENTIFIER_LENGTH = 256
+MAX_COMPOSED_NODES = 4096
+MAX_COMPOSED_CLAIMS = 4096
+MAX_COMPOSED_EDGES = 131072
 
 
 class ArgumentationError(ValueError):
@@ -146,3 +149,172 @@ def solve_grounded(arguments: list[str], attacks: list[list[str]]) -> dict:
             for node in undecided
         },
     }
+
+
+def solve_composed(nodes: dict[str, dict], claims: dict[str, list[str]],
+                   attacks: list[list[str]]) -> dict:
+    """Solve the explicit AND/OR support extension by least information.
+
+    A node has exactly ``usable: bool`` and ``premises: list[claim_id]``. It is
+    accepted when locally usable, all premise claims are accepted and all its
+    attackers are rejected. It is rejected when locally unusable, a premise is
+    rejected or an attacker is accepted. A claim is accepted if any of its listed
+    nodes is accepted, and rejected if all are rejected (including an empty list).
+
+    Starting with every label undecided, apply these rules until no label changes.
+    This is an explicit support extension, not full ASPIC+. The attack-only
+    fragment, with all nodes usable, is Dung grounded labelling. Dependencies can
+    be cyclic: an unresolved cycle does not generate acceptance.
+
+    Node and claim identifiers occupy separate namespaces. Each node can support
+    zero, one or several claims. Local usability must already reflect the caller's
+    evidence and computational checks, before attack/support status is applied.
+    Invalid input raises ArgumentationError. Nothing is executed or mutated.
+    """
+    if not isinstance(nodes, dict) or not isinstance(claims, dict):
+        raise ArgumentationError("nodes and claims must be dictionaries")
+    if not isinstance(attacks, list):
+        raise ArgumentationError("attacks must be a list")
+    if len(nodes) > MAX_COMPOSED_NODES:
+        raise ArgumentationError(f"nodes exceeds the limit of {MAX_COMPOSED_NODES}")
+    if len(claims) > MAX_COMPOSED_CLAIMS:
+        raise ArgumentationError(f"claims exceeds the limit of {MAX_COMPOSED_CLAIMS}")
+    if len(attacks) > MAX_COMPOSED_EDGES:
+        raise ArgumentationError(f"relationships exceeds the limit of {MAX_COMPOSED_EDGES}")
+    for node in nodes:
+        _identifier(node, "node identifier")
+    for claim in claims:
+        _identifier(claim, "claim identifier")
+    node_ids, claim_ids = sorted(nodes), sorted(claims)
+    edge_count = len(attacks)
+
+    def references(value, declared, location):
+        nonlocal edge_count
+        if not isinstance(value, list):
+            raise ArgumentationError(f"{location} must be a list")
+        edge_count += len(value)
+        if edge_count > MAX_COMPOSED_EDGES:
+            raise ArgumentationError(f"relationships exceeds the limit of {MAX_COMPOSED_EDGES}")
+        found = set()
+        for item in value:
+            _identifier(item, location)
+            if item not in declared:
+                raise ArgumentationError(f"{location} contains an undeclared identifier: {item!r}")
+            if item in found:
+                raise ArgumentationError(f"{location} contains a duplicate identifier: {item!r}")
+            found.add(item)
+        return sorted(found)
+
+    premises = {}
+    for node in node_ids:
+        declaration = nodes[node]
+        if not isinstance(declaration, dict) or set(declaration) != {"usable", "premises"}:
+            raise ArgumentationError(f"Node {node!r} requires exactly usable and premises")
+        if type(declaration["usable"]) is not bool:
+            raise ArgumentationError(f"Node {node!r} usable must be a boolean")
+        premises[node] = references(declaration["premises"], claims, f"Node {node!r} premises")
+    derivations = {
+        claim: references(claims[claim], nodes, f"Claim {claim!r} derivations")
+        for claim in claim_ids
+    }
+    edge_set = set()
+    for index, edge in enumerate(attacks):
+        if not isinstance(edge, list) or len(edge) != 2:
+            raise ArgumentationError(f"attacks[{index}] must be a two-element list")
+        source = _identifier(edge[0], f"attacks[{index}][0]")
+        target = _identifier(edge[1], f"attacks[{index}][1]")
+        if source not in nodes or target not in nodes:
+            raise ArgumentationError(f"attack contains an undeclared node: {edge!r}")
+        pair = (source, target)
+        if pair in edge_set:
+            raise ArgumentationError(f"duplicate attack: {edge!r}")
+        edge_set.add(pair)
+
+    attackers = {node: [] for node in node_ids}
+    attacked_nodes = {node: [] for node in node_ids}
+    for source, target in sorted(edge_set):
+        attackers[target].append(source)
+        attacked_nodes[source].append(target)
+    premise_dependants = {claim: [] for claim in claim_ids}
+    derived_claims = {node: [] for node in node_ids}
+    for node in node_ids:
+        for claim in premises[node]:
+            premise_dependants[claim].append(node)
+    for claim in claim_ids:
+        for node in derivations[claim]:
+            derived_claims[node].append(claim)
+
+    node_labels = {node: "undecided" for node in node_ids}
+    claim_labels = {claim: "undecided" for claim in claim_ids}
+    premises_in = dict.fromkeys(node_ids, 0)
+    premises_out = dict.fromkeys(node_ids, 0)
+    attackers_in = dict.fromkeys(node_ids, 0)
+    attackers_out = dict.fromkeys(node_ids, 0)
+    derivations_in = dict.fromkeys(claim_ids, 0)
+    derivations_out = dict.fromkeys(claim_ids, 0)
+    pending_nodes, pending_claims = set(node_ids), set(claim_ids)
+    trace = []
+
+    while pending_nodes or pending_claims:
+        new_nodes, new_claims = {}, {}
+        # Each batch reads only labels determined in earlier batches. Counts
+        # prevent rescanning all undecided dependencies on every iteration.
+        for node in sorted(pending_nodes):
+            if node_labels[node] != "undecided":
+                continue
+            if not nodes[node]["usable"] or premises_out[node] or attackers_in[node]:
+                new_nodes[node] = "rejected"
+            elif (premises_in[node] == len(premises[node])
+                  and attackers_out[node] == len(attackers[node])):
+                new_nodes[node] = "accepted"
+        for claim in sorted(pending_claims):
+            if claim_labels[claim] != "undecided":
+                continue
+            if derivations_in[claim]:
+                new_claims[claim] = "accepted"
+            elif derivations_out[claim] == len(derivations[claim]):
+                new_claims[claim] = "rejected"
+        if not new_nodes and not new_claims:
+            break
+
+        node_trace, claim_trace = [], []
+        for node, label in new_nodes.items():
+            if label == "accepted":
+                reasons = [{"kind": "local", "usable": True}]
+                reasons.extend({"kind": "premise", "id": claim, "status": "accepted"}
+                               for claim in premises[node])
+                reasons.extend({"kind": "attacker", "id": attacker, "status": "rejected"}
+                               for attacker in attackers[node])
+            else:
+                reasons = ([{"kind": "local", "usable": False}]
+                           if not nodes[node]["usable"] else [])
+                reasons.extend({"kind": "premise", "id": claim, "status": "rejected"}
+                               for claim in premises[node] if claim_labels[claim] == "rejected")
+                reasons.extend({"kind": "attacker", "id": attacker, "status": "accepted"}
+                               for attacker in attackers[node] if node_labels[attacker] == "accepted")
+            node_trace.append({"id": node, "status": label, "reasons": reasons})
+        for claim, label in new_claims.items():
+            reasons = [
+                {"kind": "derivation", "id": node, "status": label}
+                for node in derivations[claim] if node_labels[node] == label
+            ] or [{"kind": "no_derivation"}]
+            claim_trace.append({"id": claim, "status": label, "reasons": reasons})
+        trace.append({"round": len(trace) + 1, "nodes": node_trace, "claims": claim_trace})
+
+        node_labels.update(new_nodes)
+        claim_labels.update(new_claims)
+        pending_nodes, pending_claims = set(), set()
+        for node, label in new_nodes.items():
+            for target in attacked_nodes[node]:
+                (attackers_in if label == "accepted" else attackers_out)[target] += 1
+                pending_nodes.add(target)
+            for claim in derived_claims[node]:
+                (derivations_in if label == "accepted" else derivations_out)[claim] += 1
+                pending_claims.add(claim)
+        for claim, label in new_claims.items():
+            for node in premise_dependants[claim]:
+                (premises_in if label == "accepted" else premises_out)[node] += 1
+                pending_nodes.add(node)
+
+    return {"semantics": "grounded_with_support", "nodes": node_labels,
+            "claims": claim_labels, "trace": trace}

@@ -49,10 +49,15 @@ class Assumption:
 @dataclass(frozen=True)
 class Reasoning:
     name: str
-    mode: str
+    mode: str | None
     rationale: str
     backing: tuple[str, ...]
     predicates: tuple[Predicate, ...]
+    method: str | None = None
+
+    @property
+    def selector(self) -> str:
+        return self.method or self.mode
 
 
 @dataclass(frozen=True)
@@ -92,6 +97,7 @@ class Objection:
     target_kind: str
     target: str
     evidence: tuple[str, ...]
+    premises: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)

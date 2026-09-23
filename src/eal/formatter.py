@@ -22,8 +22,8 @@ def semantic_ir(program: Program):
     return {key: value for key, value in asdict(program).items() if key != 'source_digest'}
 
 
-def format_program(program: Program) -> str:
-    diagnostics = validate(program)
+def format_program(program: Program, *, registry=None) -> str:
+    diagnostics = validate(program, registry=registry)
     if diagnostics:
         raise ValueError('; '.join(f'{d.code}: {d.message}' for d in diagnostics))
     blocks = [f'language {_json(program.language)};']
@@ -50,7 +50,8 @@ def format_program(program: Program) -> str:
                 lines.append(f'{key} {_json(getattr(value, key))};')
         emit('assumption', name, lines)
     for name, value in program.reasoning.items():
-        lines = [f'mode {value.mode};', f'rationale {_json(value.rationale)};']
+        selector = f'method {_json(value.method)};' if value.method is not None else f'mode {value.mode};'
+        lines = [selector, f'rationale {_json(value.rationale)};']
         if value.backing:
             lines.append(f'backing {", ".join(value.backing)};')
         emit('reasoning', name, [*lines, *predicates(value.predicates)])
@@ -75,11 +76,14 @@ def format_program(program: Program) -> str:
             lines.append(f'binding {value.binding};')
         emit('argument', name, lines)
     for name, value in program.objections.items():
-        emit('objection', name, [f'target {value.target_kind} {value.target};',
-                                f'evidence {", ".join(value.evidence)};'])
+        lines = [f'target {value.target_kind} {value.target};']
+        for key in ('evidence', 'premises'):
+            if getattr(value, key):
+                lines.append(f'{key} {", ".join(getattr(value, key))};')
+        emit('objection', name, lines)
     return '\n\n'.join(blocks) + '\n'
 
 
-def format_source(source: str) -> str:
+def format_source(source: str, *, registry=None) -> str:
     """Parse, validate and print source; invalid input is never repaired silently."""
-    return format_program(parse(source))
+    return format_program(parse(source), registry=registry)

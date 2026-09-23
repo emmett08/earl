@@ -88,12 +88,15 @@ def main() -> None:
     parser.add_argument("--workspace", type=Path, default=Path.cwd())
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
+    parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
     args = parser.parse_args()
     server_args = ["-m", "eal.server", "--workspace", str(args.workspace.resolve())]
     if args.registry:
         server_args.extend(["--registry", str(args.registry.resolve())])
     if args.database:
         server_args.extend(["--database", str(args.database.resolve())])
+    if args.methods:
+        server_args.extend(["--methods", args.methods])
     try:
         raw = sys.stdin.buffer.read(MAX_REQUEST_BYTES + 1)
         if len(raw) > MAX_REQUEST_BYTES:

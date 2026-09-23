@@ -22,15 +22,23 @@ MAX_FORMULA_NODES = 512
 _IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z0-9_]{0,63}\Z")
 
 
-def validate_mode(mode: str, kinds: list[str]) -> list[str]:
-    """Check a mode and the kinds in its explicitly supplied evidence set."""
-    if not isinstance(mode, str) or mode not in MODE_KINDS:
-        return [f"Unknown reasoning mode {mode!r}"]
+def evidence_kind(mode: str, registry=None):
+    from .methods import default_registry
+    contract = (registry or default_registry()).get(mode)
+    return contract.evidence_kind if contract else None
+
+
+def validate_mode(mode: str, kinds: list[str], registry=None) -> list[str]:
+    """Resolve the host registry and check designated computational evidence."""
+    from .methods import default_registry
+    contract = (registry or default_registry()).get(mode) if isinstance(mode, str) else None
+    if contract is None:
+        return [f"Unknown reasoning mode or registered method {mode!r}"]
     if not isinstance(kinds, list) or any(not isinstance(k, str) for k in kinds):
         return ["Evidence kinds must be a list of strings"]
     if len(kinds) > 4096:
         return ["At most 4096 evidence entries are allowed"]
-    required = MODE_KINDS[mode]
+    required = contract.evidence_kind
     if required is not None and kinds.count(required) != 1:
         return [f"Mode {mode!r} requires exactly one evidence entry of kind {required!r}"]
     return []
@@ -370,12 +378,14 @@ _COMPUTATIONS = {"deductive": _deductive, "inductive": _inductive, "abductive": 
                  "analogical": _analogical, "temporal": _temporal}
 
 
-def assess_mode(mode: str, evidence: list[dict], premises: list[dict]) -> dict:
+def assess_mode(mode: str, evidence: list[dict], premises: list[dict], registry=None) -> dict:
     """Return a bounded mode result without executing tools or trusting prose.
 
     Evidence entries are ``{id, kind, value}``; premise entries contain ``status``.
     The caller separately checks premise support and argument requirements.
     """
+    from .methods import default_registry, execute_extension
+    registry = registry or default_registry()
     try:
         if not isinstance(evidence, list) or len(evidence) > 4096:
             raise ValueError("Evidence must be a list with at most 4096 entries")
@@ -388,17 +398,19 @@ def assess_mode(mode: str, evidence: list[dict], premises: list[dict]) -> dict:
             raise ValueError("Evidence identifiers must be unique")
         if any(not isinstance(item, dict) for item in premises):
             raise ValueError("Premise entries must be objects")
-        errors = validate_mode(mode, [item["kind"] for item in evidence])
+        errors = validate_mode(mode, [item["kind"] for item in evidence], registry=registry)
         if errors:
             return {"status": "unsupported", "reasons": errors, "details": {}}
-        if mode == "structured":
+        contract = registry.get(mode)
+        if contract.builtin_mode == "structured":
             available = bool(evidence) or any(item.get("status") in ("supported", "contested") for item in premises)
             return _result(available, "Authored support is available; prose sufficiency is not mechanically established"
                            if available else "Structured reasoning requires evidence or a supported premise",
                            authored=True, mechanically_proved=False)
-        selected = next(item for item in evidence if item["kind"] == MODE_KINDS[mode])
+        selected = next(item for item in evidence if item["kind"] == contract.evidence_kind)
         _check_json(selected["value"])
-        result = _COMPUTATIONS[mode](selected["value"])
+        result = (_COMPUTATIONS[contract.builtin_mode](selected["value"]) if contract.builtin_mode
+                  else execute_extension(contract, selected["value"]))
         result["details"]["evidence_id"] = selected["id"]
         return result
     except (ValueError, TypeError, OverflowError, RecursionError, KeyError) as exc:

@@ -1,0 +1,64 @@
+{
+  "schema": "EAL/experiment-plan/1",
+  "name": "eal03-development-host-ablation",
+  "suite": "../engineering-v1/suite.json",
+  "split": "development",
+  "repetitions": 1,
+  "order_seed": 20260923,
+  "sampling_seeds": [
+    241
+  ],
+  "concurrency": 4,
+  "bootstrap_samples": 2000,
+  "per_mcp_call_usd": 0,
+  "budget": {
+    "max_iterations": 10,
+    "max_total_tokens": 120000,
+    "max_output_tokens": 4096,
+    "max_elapsed_seconds": 120,
+    "max_model_cost_usd": 0.035
+  },
+  "conditions": [
+    {
+      "id": "nano_text_stateful",
+      "provider": "../providers/openai-4.1-nano.toml",
+      "model_class": "non_reasoning_small",
+      "arm": "delegated",
+      "seed_supported": false,
+      "host_mode": "stateful",
+      "interaction_mode": "text"
+    },
+    {
+      "id": "nano_text_legacy",
+      "provider": "../providers/openai-4.1-nano.toml",
+      "model_class": "non_reasoning_small",
+      "arm": "delegated",
+      "seed_supported": false,
+      "host_mode": "legacy",
+      "interaction_mode": "text"
+    },
+    {
+      "id": "mini_text_stateful",
+      "provider": "../providers/openai-4.1-mini.toml",
+      "model_class": "non_reasoning_larger",
+      "arm": "delegated",
+      "seed_supported": false,
+      "host_mode": "stateful",
+      "interaction_mode": "text"
+    },
+    {
+      "id": "mini_text_legacy",
+      "provider": "../providers/openai-4.1-mini.toml",
+      "model_class": "non_reasoning_larger",
+      "arm": "delegated",
+      "seed_supported": false,
+      "host_mode": "legacy",
+      "interaction_mode": "text"
+    }
+  ],
+  "notes": "Development-only stateful versus legacy full-source host ablation. These engineering-v1 tasks and previous results informed implementation. Not held-out evidence.",
+  "task_ids": [
+    "nested-model-observation",
+    "text-model-repair-and-explain"
+  ]
+}

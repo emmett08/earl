@@ -87,6 +87,7 @@ def test_http_rejected_response_retains_reported_usage(data):
         asyncio.run(provider.complete([], 20))
     assert failure.value.response.input_tokens == 120
     assert failure.value.response.output_tokens == 10
+    assert failure.value.response.metadata["response_choices"] == data["choices"]
 
 
 def test_http_failure_body_and_credentials_do_not_enter_errors(monkeypatch):
@@ -128,3 +129,73 @@ def test_cost_requires_usage_and_explicit_rates_including_cached_tokens():
 def test_provider_configuration_rejects_unknown_or_invalid_contracts(config):
     with pytest.raises(ValueError):
         provider_from_config(config)
+
+
+OPERATIONS = [{"operation": "validate", "description": "Validate the active source", "input_schema": {
+    "type": "object", "additionalProperties": False, "properties": {"operation": {"const": "validate"}, "source": {"type": "string"}},
+    "required": ["operation"]}}]
+
+
+def test_explicit_reasoning_control_and_structured_schema_preserve_flat_host_contract():
+    def respond(request):
+        payload = json.loads(request.content)
+        assert payload["reasoning_effort"] == "low"
+        assert "temperature" not in payload
+        schema = payload["response_format"]
+        assert schema["type"] == "json_schema"
+        assert schema["json_schema"]["strict"] is False
+        assert schema["json_schema"]["schema"]["properties"]["request"]["anyOf"] == [OPERATIONS[0]["input_schema"]]
+        assert "wrap" in payload["messages"][-1]["content"]
+        return httpx.Response(200, json=response_data(
+            usage={"prompt_tokens": 20, "completion_tokens": 80, "completion_tokens_details": {"reasoning_tokens": 60}},
+            choices=[{"message": {"content": '{"request":{"operation":"validate"}}'}, "finish_reason": "stop"}]))
+
+    provider = ChatCompletionsProvider(model="configured-reasoning-model", api_key_env=None,
+                                      capabilities={"reasoning_effort": "low", "structured_output": "json_schema"},
+                                      transport=httpx.MockTransport(respond))
+    result = asyncio.run(provider.complete_request([], 200, operations=OPERATIONS))
+    assert json.loads(result.text) == {"operation": "validate"}
+    assert result.output_tokens == 80 and result.metadata["reasoning_tokens"] == 60
+    assert "request" in result.metadata["structured_response_text"]
+
+
+def test_json_object_capability_is_explicit_and_native_reasoning_requires_compatibility():
+    seen = []
+
+    def respond(request):
+        seen.append(json.loads(request.content))
+        return httpx.Response(200, json=response_data())
+
+    provider = ChatCompletionsProvider(model="configured-model", api_key_env=None,
+                                      capabilities={"structured_output": "json_object"}, transport=httpx.MockTransport(respond))
+    asyncio.run(provider.complete([], 20))
+    assert seen[0]["response_format"] == {"type": "json_object"}
+    assert "reasoning_effort" not in seen[0] and "tools" not in seen[0]
+    incompatible = ChatCompletionsProvider(model="explicit-model", api_key_env=None,
+                                           capabilities={"native_tools": True, "reasoning_effort": "low"},
+                                           transport=httpx.MockTransport(respond))
+    with pytest.raises(ProviderError, match="compatible"):
+        asyncio.run(incompatible.complete_request([], 20, operations=OPERATIONS, native_tools=True))
+    assert len(seen) == 1
+
+
+@pytest.mark.parametrize("calls", [[], [{"id": "a"}, {"id": "b"}],
+    [{"id": "a", "type": "function", "function": {"name": "invented", "arguments": "{}"}}],
+    [{"id": "a", "type": "function", "function": {"name": "validate", "arguments": '{"source":"a","source":"b"}'}}],
+    [{"id": "a", "type": "function", "function": {"name": "validate", "arguments": '{"operation":"finish"}'}}],
+])
+def test_native_invalid_calls_keep_usage_and_do_not_execute(calls):
+    provider = ChatCompletionsProvider(model="native-fixture", api_key_env=None, capabilities={"native_tools": True},
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, json=response_data(
+            choices=[{"finish_reason": "tool_calls", "message": {"content": None, "tool_calls": calls}}]))))
+    with pytest.raises(ProviderError) as failure:
+        asyncio.run(provider.complete_request([], 100, operations=OPERATIONS, native_tools=True))
+    assert failure.value.response.input_tokens == 120 and failure.value.response.output_tokens == 10
+    assert failure.value.response.metadata["response_choices"][0]["message"]["tool_calls"] == calls
+
+
+@pytest.mark.parametrize("capabilities", [{"native_tools": "yes"}, {"reasoning_effort": "invented"},
+    {"structured_output": "xml"}, {"invented": True}])
+def test_capability_configuration_does_not_guess_model_features(capabilities):
+    with pytest.raises(ValueError):
+        ChatCompletionsProvider(model="arbitrary-model-name", capabilities=capabilities)

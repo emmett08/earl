@@ -103,3 +103,13 @@ def test_static_validation_rejects_input_nesting_beyond_digest_resources():
     nested = '[' * 65 + '0' + ']' * 65
     source = BASE.replace('{"suite": "smoke", "args": [1, true, null]}', nested)
     assert 'invalid_input' in codes(source)
+
+
+def test_versioned_methods_are_explicit_and_unused_unknowns_are_rejected():
+    source = BASE.replace('EAL/0.1', 'EAL/0.3')
+    assert 'invalid_method_reference' in codes(source.replace('mode structured;', 'method "structured";'))
+    unknown = source + 'reasoning unused { method "unknown/contract/1"; rationale "Unknown"; }'
+    assert 'unknown_method' in codes(unknown)
+    from eal.methods import default_registry
+    identifier = default_registry().get('structured').identifier
+    assert not validate(parse(source.replace('mode structured;', f'method "{identifier}";')))

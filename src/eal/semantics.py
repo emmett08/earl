@@ -8,7 +8,7 @@ import math
 import re
 
 from .model import Diagnostic, Program
-from .modes import MODE_KINDS, validate_mode
+from .modes import evidence_kind, validate_mode
 from .propositions import proposition_errors
 
 MAX_DECLARATIONS = 4096
@@ -44,8 +44,10 @@ def _check_json_resources(value):
             pending.extend((child, depth + 1) for child in item)
 
 
-def validate(program: Program) -> list[Diagnostic]:
+def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     """Resolve names, verify types/scopes, reject cycles and resource excess."""
+    from .methods import default_registry
+    registry = registry or default_registry()
     problems: list[Diagnostic] = []
 
     def error(code, message, declaration=None):
@@ -61,8 +63,8 @@ def validate(program: Program) -> list[Diagnostic]:
         if actual != expected:
             error("environment_mismatch", f"{dependency!r} uses environment {actual!r}; expected {expected!r}", owner)
 
-    if program.language not in ("EAL/0.1", "EAL/0.2"):
-        error("unsupported_language", f"Expected EAL/0.1 or EAL/0.2, found {program.language!r}")
+    if program.language not in ("EAL/0.1", "EAL/0.2", "EAL/0.3"):
+        error("unsupported_language", f"Expected EAL/0.1, EAL/0.2 or EAL/0.3, found {program.language!r}")
     if program.declaration_count > MAX_DECLARATIONS:
         error("resource_limit", f"At most {MAX_DECLARATIONS} declarations are supported")
         return problems
@@ -107,7 +109,14 @@ def validate(program: Program) -> list[Diagnostic]:
         if len(dates) == 2 and dates[0] >= dates[1]:
             error("invalid_interval", "valid_from must precede valid_until", value.name)
     for value in program.reasoning.values():
-        if value.mode != "structured" and not value.predicates and program.language == "EAL/0.1":
+        contract = registry.get(value.selector)
+        if contract is None:
+            error("unknown_method", f"Unknown registered reasoning method {value.selector!r}", value.name)
+        elif value.method is not None and value.method != contract.identifier:
+            error("invalid_method_reference", "The method clause requires the contract's explicit versioned identifier", value.name)
+        if value.method is not None and program.language != "EAL/0.3":
+            error("versioned_construct", "Versioned method references require EAL/0.3", value.name)
+        if contract is not None and contract.builtin_mode != "structured" and not value.predicates and program.language == "EAL/0.1":
             error("missing_reasoning_predicate", "Computational reasoning requires an explicit output predicate", value.name)
         if not value.rationale.strip():
             error("empty_rationale", "A reasoning declaration requires its rationale", value.name)
@@ -118,9 +127,9 @@ def validate(program: Program) -> list[Diagnostic]:
             error("empty_statement", "A claim requires a statement", value.name)
         reference(value.environment, program.environments, "environment", value.name)
         if value.proposition is not None:
-            if program.language != "EAL/0.2":
-                error("versioned_construct", "Typed propositions require EAL/0.2", value.name)
-            for message in proposition_errors(value.proposition):
+            if program.language not in ("EAL/0.2", "EAL/0.3"):
+                error("versioned_construct", "Typed propositions require EAL/0.2 or later", value.name)
+            for message in proposition_errors(value.proposition, registry=registry):
                 error("invalid_proposition", message, value.name)
     for value in program.arguments.values():
         conclusion_exists = reference(value.conclusion, program.claims, "conclusion claim", value.name)
@@ -136,12 +145,13 @@ def validate(program: Program) -> list[Diagnostic]:
                     scope(table[item].environment, expected, value.name, item)
         if reasoning_exists:
             method = program.reasoning[value.reasoning]
+            contract = registry.get(method.selector)
             source_ids = set(value.evidence) | set(method.backing)
             source_ids.update(program.assumptions[a].validation for a in value.assumptions
                               if a in program.assumptions)
             proposition = program.claims[value.conclusion].proposition if conclusion_exists else None
-            if value.binding is not None and program.language != "EAL/0.2":
-                error("versioned_construct", "Typed bindings require EAL/0.2", value.name)
+            if value.binding is not None and program.language not in ("EAL/0.2", "EAL/0.3"):
+                error("versioned_construct", "Typed bindings require EAL/0.2 or later", value.name)
             if proposition is not None:
                 if value.binding is None:
                     error("missing_binding", "A typed conclusion requires an explicit evidence binding", value.name)
@@ -149,36 +159,55 @@ def validate(program: Program) -> list[Diagnostic]:
                     if reference(value.binding, program.evidence, "bound evidence", value.name):
                         if value.binding not in source_ids:
                             error("binding_source", "Bound evidence must be a source of this argument", value.name)
-                        if program.evidence[value.binding].kind != MODE_KINDS.get(method.mode):
+                        if program.evidence[value.binding].kind != evidence_kind(method.selector, registry=registry):
                             error("binding_source", "Binding must select the method's computational evidence", value.name)
-                for message in proposition_errors(proposition, method.mode):
+                for message in proposition_errors(proposition, method.selector, registry=registry):
                     error("proposition_method", message, value.name)
             elif value.binding is not None:
                 error("untyped_binding", "An evidence binding requires a typed conclusion", value.name)
-            if program.language == "EAL/0.2" and proposition is None and method.mode != "structured" and not method.predicates:
+            if program.language in ("EAL/0.2", "EAL/0.3") and proposition is None and contract is not None and contract.builtin_mode != "structured" and not method.predicates:
                 error("missing_reasoning_predicate", "An untyped computational conclusion requires an explicit output predicate", value.name)
             kinds = [program.evidence[e].kind for e in sorted(source_ids) if e in program.evidence]
-            for message in validate_mode(method.mode, kinds):
+            for message in validate_mode(method.selector, kinds, registry=registry):
                 error("reasoning_evidence_contract", message, value.name)
             if expected is not None:
                 for item in method.backing:
                     if item in program.evidence:
                         scope(program.evidence[item].environment, expected, value.name, item)
-    target_tables = {"claim": program.claims, "reasoning": program.reasoning, "assumption": program.assumptions}
+    target_tables = {"claim": program.claims, "reasoning": program.reasoning,
+                     "assumption": program.assumptions, "argument": program.arguments,
+                     "objection": program.objections}
+    scopes = objection_scopes(program)
     for value in program.objections.values():
         table = target_tables[value.target_kind]
         target_exists = reference(value.target, table, value.target_kind, value.name)
+        if program.language != "EAL/0.3" and (value.premises or value.target_kind in ("argument", "objection")):
+            error("versioned_construct", "Composed objections and defences require EAL/0.3", value.name)
+        if not value.evidence and not value.premises:
+            error("empty_objection", "An objection requires evidence or premise claims", value.name)
+        if program.language != "EAL/0.3" and not value.evidence:
+            error("empty_objection", "Legacy objections require evidence", value.name)
+        if len(scopes[value.name]) > 1:
+            error("environment_mismatch", "An objection's evidence and premise claims must share one environment", value.name)
         expected = set()
         if target_exists:
-            if value.target_kind != "reasoning":
+            if value.target_kind in ("claim", "assumption"):
                 expected.add(table[value.target].environment)
-            else:
+            elif value.target_kind == "argument":
+                conclusion = table[value.target].conclusion
+                if conclusion in program.claims:
+                    expected.add(program.claims[conclusion].environment)
+            elif value.target_kind == "objection":
+                expected.update(scopes[value.target])
+            elif program.language != "EAL/0.3":
                 expected.update(program.claims[a.conclusion].environment for a in program.arguments.values()
                                 if a.reasoning == value.target and a.conclusion in program.claims)
-        for item in value.evidence:
-            if reference(item, program.evidence, "objection evidence", value.name):
-                for environment in sorted(expected):
-                    scope(program.evidence[item].environment, environment, value.name, item)
+        for items, sources, kind in ((value.evidence, program.evidence, "objection evidence"),
+                                     (value.premises, program.claims, "objection premise claim")):
+            for item in items:
+                if reference(item, sources, kind, value.name):
+                    for environment in sorted(expected):
+                        scope(sources[item].environment, environment, value.name, item)
     # Edges point from a conclusion to its premises. Remove leaves iteratively,
     # computing longest paths without depending on Python recursion limits.
     graph = {name: set() for name in program.claims}
@@ -206,3 +235,10 @@ def validate(program: Program) -> list[Diagnostic]:
     if depth and max(depth.values()) > MAX_PREMISE_DEPTH:
         error("resource_limit", f"Premise chains may contain at most {MAX_PREMISE_DEPTH} edges")
     return problems
+
+
+def objection_scopes(program: Program) -> dict[str, set[str]]:
+    """Infer source scopes without traversing the potentially cyclic attack graph."""
+    return {name: {program.evidence[e].environment for e in value.evidence if e in program.evidence}
+                  | {program.claims[p].environment for p in value.premises if p in program.claims}
+            for name, value in program.objections.items()}

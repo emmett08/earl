@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from .runtime import ReasoningService, bounded_path, strict_json
+from .runtime import ReasoningService, bounded_path, strict_json, load_method_registry
 
 
 def main() -> None:
@@ -14,6 +14,7 @@ def main() -> None:
     parser.add_argument("--workspace", type=Path, default=Path.cwd())
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
+    parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
     subcommands = parser.add_subparsers(dest="operation", required=True)
     subcommands.add_parser("describe")
     for operation in ("validate", "format", "collect", "reason"):
@@ -42,7 +43,7 @@ def main() -> None:
                 raise ValueError("Graph must contain exactly arguments and attacks")
             result = solve_grounded(**graph)
         else:
-            service = ReasoningService(workspace, args.registry, args.database)
+            service = ReasoningService(workspace, args.registry, args.database, method_registry=load_method_registry(args.methods))
             if args.operation == "describe":
                 result = service.describe()
             elif args.operation == "explain":

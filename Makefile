@@ -24,6 +24,7 @@ modes-demo:
 
 tasks:
 	$(PYTHON) -m eal.benchmark --check-tasks --suite benchmarks/engineering-v1/suite.json --summary
+	$(PYTHON) -m eal.benchmark --check-tasks --suite benchmarks/engineering-v2/suite.json --summary
 
 build:
 	$(PYTHON) -m build

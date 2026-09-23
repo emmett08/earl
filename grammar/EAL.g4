@@ -11,7 +11,7 @@ evidenceDecl : 'evidence' identifier '{' 'tool' identifier ';' 'kind' identifier
 assumptionDecl : 'assumption' identifier '{' 'statement' STRING ';' 'environment' identifier ';'
                  'validate' identifier ';' ('valid_from' STRING ';')?
                  ('valid_until' STRING ';')? '}' ;
-reasoningDecl : 'reasoning' identifier '{' 'mode' reasoningMode ';' 'rationale' STRING ';' ('backing' idList ';')? predicate* '}' ;
+reasoningDecl : 'reasoning' identifier '{' ('mode' reasoningMode | 'method' methodName=STRING) ';' 'rationale' rationaleText=STRING ';' ('backing' idList ';')? predicate* '}' ;
 reasoningMode : 'structured' | 'deductive' | 'inductive' | 'abductive' | 'causal' | 'counterfactual' | 'analogical' | 'temporal' ;
 claimDecl : 'claim' identifier '{' 'statement' STRING ';' 'environment' identifier ';' propositionDecl? '}' ;
 propositionDecl : 'proposition' '{' 'subject' STRING ';' 'quantity' STRING ';'
@@ -22,8 +22,8 @@ argumentDecl : 'argument' identifier '{' 'conclusion' identifier ';' 'reasoning'
                ('assumptions' assumptionRefs=idList ';')?
                ('premises' premiseRefs=idList ';')? ('binding' identifier ';')? '}' ;
 objectionDecl : 'objection' identifier '{' 'target' targetKind identifier ';'
-                'evidence' idList ';' '}' ;
-targetKind : 'claim' | 'reasoning' | 'assumption' ;
+                ('evidence' evidenceRefs=idList ';')? ('premises' premiseRefs=idList ';')? '}' ;
+targetKind : 'claim' | 'reasoning' | 'assumption' | 'argument' | 'objection' ;
 idList : identifier (',' identifier)* ;
 predicate : 'require' STRING comparator jsonScalar ';' ;
 comparator : '==' | '!=' | '<=' | '>=' | '<' | '>' ;
@@ -31,7 +31,7 @@ jsonValue : jsonScalar | jsonObject | jsonArray ;
 jsonObject : '{' (STRING ':' jsonValue (',' STRING ':' jsonValue)*)? '}' ;
 jsonArray : '[' (jsonValue (',' jsonValue)*)? ']' ;
 jsonScalar : STRING | NUMBER | 'true' | 'false' | 'null' ;
-identifier : ID | 'proposition' | 'subject' | 'quantity' | 'unit' | 'scope' | 'result' | 'binding' | 'query' ;
+identifier : ID | 'proposition' | 'subject' | 'quantity' | 'unit' | 'scope' | 'result' | 'binding' | 'query' | 'method' ;
 ID : [a-zA-Z_] [a-zA-Z_0-9]* ;
 NUMBER : '-'? ('0' | [1-9] [0-9]*) ('.' [0-9]+)? ([eE] [+-]? [0-9]+)? ;
 STRING : '"' (ESC | ~["\\\r\n])* '"' ;

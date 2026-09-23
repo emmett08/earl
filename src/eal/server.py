@@ -8,7 +8,7 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
-from .runtime import ReasoningService
+from .runtime import ReasoningService, load_method_registry
 
 
 def create_server(service: ReasoningService) -> FastMCP:
@@ -63,8 +63,9 @@ def main() -> None:
     parser.add_argument("--workspace", type=Path, default=Path.cwd())
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
+    parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
     args = parser.parse_args()
-    service = ReasoningService(args.workspace, args.registry, args.database)
+    service = ReasoningService(args.workspace, args.registry, args.database, method_registry=load_method_registry(args.methods))
     create_server(service).run(transport="stdio")
 
 

@@ -11,6 +11,14 @@ max_response_bytes = 1048576
 [provider.sampling]
 temperature = 0.2
 
+# Optional model/endpoint capabilities. Defaults need only text generation.
+# Native interaction also requires --interaction-mode native.
+# [provider.capabilities]
+# native_tools = true
+# structured_output = "none" # none, json_object, json_schema
+# reasoning_effort = "low"  # only when supported; omit temperature if required
+# tool_reasoning_compatible = true # only for documented native+reasoning combinations
+
 # Supply rates applicable to the selected model and service tier, including the
 # cached-input rate when that endpoint reports cached prompt tokens. Omitting
 # rates deliberately makes monetary totals unknown, not zero.

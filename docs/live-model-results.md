@@ -1,5 +1,7 @@
 # Live model experiments: 23 September 2026
 
+These are the preserved EAL/0.2 experiments. The subsequent [EAL/0.3 repeated experiments](eal03-model-results.md) evaluate the revised host, compositional objections and registered methods; their results are reported separately.
+
 This is a small, single-run comparison using the actual OpenAI API and the actual local EAL MCP server. The task observations are synthetic fixtures. Both arms received the same EAL reference, source or repair draft, observations, context and assessment time. The delegated arm additionally received operation schemas, server results and bounded diagnostic feedback. No native function calling, structured-output API feature or reasoning parameter was used.
 
 The model snapshots were `gpt-4.1-nano-2025-04-14` and `gpt-4.1-mini-2025-04-14`, with temperature zero. Their official [nano](https://developers.openai.com/api/docs/models/gpt-4.1-nano) and [mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini) pages describe models without a reasoning step. They support tool calling, but this experiment deliberately used ordinary text responses, with the host executing requests.

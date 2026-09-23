@@ -35,10 +35,15 @@ python -m eal.benchmark \
 | `justified_unresolved` | A correct task containing an expected unsupported, contested or out-of-scope conclusion. These are useful answers, counted separately from fully supported tasks. |
 | `unjustified` | A model supplies support where the known answer does not, supports an unexpected claim, or obtains support after changing the reference argument. |
 | `unresolved` | A needed result is missing, a run is incomplete, or a model declines/denies support that the reference can supply. This can overlap with other errors on a multi-claim task. |
-| `source_correspondence` | The assessed source has the same parsed representation as the independent reference, ignoring source bytes but retaining JSON scalar types and all proposition/dependency fields. |
+| `source_correspondence` | The assessed declaration/reference graph is alpha-equivalent to the independent reference. Consistent internal identifier renaming is allowed; tool registry names and requested claim IDs remain fixed. JSON scalar types and all proposition/dependency fields are preserved. |
+| `evidence_trace` | The final assessment references a collection actually produced earlier in this run from the validated final source and fixed context. Every task-supplied observation is present with the same value, original time and collector outcome as the independent reference. |
 | `workflow` | Where required, successful validation, collection, assessment and explanation of the final assessment are present in the actual operation trace. |
 
-Protocol completion alone is not correctness. In draft-repair tasks the model can propose a different source, so the scorer compares its entire parsed representation with the independent corrected reference. A model cannot obtain credit merely by retaining a claim identifier while changing its statement, method, units, query, interval or premises. This conservative comparison can reject a semantically equivalent alternative argument; such a repair needs separate review and a revised acceptance specification.
+Protocol completion alone is not correctness. In draft-repair tasks the model can propose a different source, so scorer profile `alpha-equivalence+evidence-trace/1` compares its entire declaration/reference graph with the independent corrected reference. It permits consistently renaming an internal assumption, premise or argument. It preserves every reference and literal, including statements, rationale, method selectors, units, query atoms, scopes, intervals, predicates and JSON scalar types. Operator registry tool names and the requested claim identifiers are external anchors. Graph matching has a 100,000-step search limit; exceeding it yields `comparison_limit`, not inferred equivalence.
+
+A model cannot obtain credit merely by retaining a claim identifier while weakening its dependencies or changing its question. Alpha-equivalence does not attempt arbitrary logical equivalence, algebraic simplification, prose paraphrase or reordering of conjunctive reference lists. Such an alternative representation needs its own acceptance specification. Earlier `/1` reports retain their original exact-identifier scores; phase-one `/2` reports retain their alpha-equivalence scores. New paired reports use `/3` and name the combined scorer. Historical results are not silently rescored.
+
+Every delegated task also requires an independently checked validation–collection–assessment trace. The final reasoning request must use the exact final source, fixed context/time and a collection identifier returned earlier in that run. Every observation supplied by the task must occur in that collection, using the identifier mapping established by alpha-equivalence. Values, tool identity, original observation time and success/error outcomes must match the independent fixture collection. This prevents credit for guessing an expected `unsupported` result by reasoning over no observations. Intentionally omitted evidence and expected out-of-scope import errors remain legitimate; the scorer compares their actual reference outcomes rather than requiring all records to be successful. Explicit explanation retrieval remains an additional requirement for workflow tasks.
 
 The `claims` section of each score preserves expected and actual statuses. Keep these per-task results alongside aggregate figures: a single average hides the difference between numerical mistakes, ungrounded positive answers, scope failures and correctly identified missing evidence.
 
@@ -53,3 +58,42 @@ Total cost per correct task divides **all** task costs, including failures, by t
 The report's `measurement_kind` preserves the provider's declaration. `interface_only` identifies command adapters that exercise the interface without a live model. `unclassified` means the provider supplied no measurement classification. Neither supports a claim of empirical model performance. Selecting a named live model is necessary but not sufficient: inspect provider identity, actual responses and recorded failures before interpreting its results.
 
 Use the development split to construct prompts or interfaces, then freeze those choices before running held-out tasks. Repeated runs with recorded seeds/settings are needed to investigate variation. Public task labels alone do not establish generalisation, and a single successful run does not justify a production cost estimate. Report capability and any savings only for the models, task versions, budgets and accounting scope actually evaluated.
+
+## Repeated model and host comparisons
+
+`eal.experiment` runs an explicit matrix of model and host conditions. The supplied `benchmarks/experiments/eal03-matrix.json` contains three named model baselines and four delegated conditions: a smaller non-reasoning model with text and native requests, a larger non-reasoning model with text requests, and a reasoning-enabled model with native requests. These are declared experimental groups, not a promise about every model in a class. The native and text conditions use the same interpreter and task representations.
+
+The matrix uses six new engineering-v2 instances, two repetitions per instance, seven conditions and 84 total calls to the host/baseline runners. Each runner may itself make several model requests. The earlier v1 instances and former held-out results now count as development knowledge. A separate development plan compares legacy full-source requests with the stateful host on two v1 tasks; its results must not be reported as held-out measurements.
+
+Inspect the frozen definition without issuing model-generation requests:
+
+```sh
+python -m eal.experiment \
+  --plan benchmarks/experiments/eal03-matrix.json \
+  --output .eal/eal03-definition \
+  --freeze-only
+```
+
+Run into a new directory:
+
+```sh
+python -m eal.experiment \
+  --plan benchmarks/experiments/eal03-matrix.json \
+  --output .eal/eal03-matrix-run
+```
+
+An existing output directory is never overwritten. `freeze.json` records the exact plan, schedule, provider identities, dependency versions, installed EAL Python file hashes, expected answers and every selected task's source, observations, method-registry fingerprint and language reference. Each completed run is saved separately under `trials/` before its result is appended to `trials.jsonl`. `report.json` contains artifact hashes, coverage, aggregate measurements and paired comparisons. Raw responses, failed attempts and tool traces remain in the referenced trial artifacts. The final report flags changes to task references or EAL implementation files during execution.
+
+The shipped custom method is inside the hashed EAL package. A separately installed method factory needs its own retained source/package revision; the current runner does not hash every external dependency's implementation. Keep provider configuration files unchanged during a run: the recorded identity covers model, sampling, prices and advertised capabilities, but it is not a complete snapshot of every adapter setting such as an HTTP timeout. These limits do not change the recorded requests, responses or outcomes, but they narrow what can be reconstructed from the freeze alone.
+
+The plan declares `conditions`, `repetitions`, `order_seed`, optional per-repetition `sampling_seeds`, `concurrency`, budgets and cost assumptions. A condition names its provider configuration, model-class label, `unaided` or `delegated` arm, `stateful` or `legacy` host, and `text` or `native` interaction. A baseline can be shared across host conditions for the same model, avoiding duplicate baseline charges. Each trial constructs a fresh provider object and isolated runtime store. Concurrency is bounded at four, and requested launch order is recorded separately from completion order.
+
+The schedule permutes task/repetition blocks with a recorded seed, rotates condition positions and reverses alternate complete sweeps. Comparisons pair conditions on the same task and repetition. This controls requested ordering without promising equal wall-clock conditions under concurrent requests or provider caching. Provider sampling seeds are injected only when a condition explicitly declares support. The supplied plans leave that setting false; their seeds control scheduling, not the provider's random generation. Each artifact records the scheduled seed and the actually applied provider seed separately. Neither a fixed seed nor temperature zero guarantees exact replay by an external provider.
+
+## Uncertainty and coverage
+
+Condition summaries show all repeated outcomes by task, supported versus correctly unresolved answers, claim-status breakdowns, provider-returned model identities, actual host conditions, missing measurements and scheduled/completed coverage. Failed or incomplete runs count in cost and accuracy denominators. A completed trial artifact can still contain an unsuccessful model interaction; it is not an automatic success.
+
+Intervals use a seeded percentile bootstrap over **task clusters**, retaining repetitions of a task together. Paired differences preserve task/repetition matching and report `right_minus_left` for accuracy, cost and latency. Repeating six tasks twice therefore does not turn the experiment into twelve independent engineering problems. With fewer than two task clusters, intervals are omitted. Missing costs remain unknown; no cost interval is manufactured from partial billing data.
+
+These intervals describe observed variation within a small, selected suite. A zero-variance interval does not rule out unseen failures, and tasks were not sampled randomly from all engineering work. Two repetitions can expose run-to-run instability but provide little precision. Distinguish failure to complete a protocol, unjustified support, a correct unsupported/contested conclusion, and successful support for a negative computational finding. The results cannot establish reliability for all models, all model classes or unrestricted engineering reasoning.
