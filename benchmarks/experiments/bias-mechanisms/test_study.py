@@ -137,7 +137,10 @@ class StudyTests(unittest.TestCase):
             full = run.freeze(full_path, families=12, model_names=list(run.MODELS),
                               seed=240924, max_usd=25, max_output_tokens=1200)
             self.assertEqual((len(pilot["calls"]), len(full["calls"])), (72, 432))
-            for material_name in ("analyse.py", "PROTOCOL.md", "AMENDMENT-0.1.1.md"):
+            self.assertEqual(pilot["schema"], "eal2-bias-freeze/2")
+            self.assertEqual(pilot["execution_policy"], "continue_after_terminal_outcome/1")
+            for material_name in ("analyse.py", "PROTOCOL.md", "AMENDMENT-0.1.1.md",
+                                  "AMENDMENT-0.1.2.md"):
                 self.assertEqual(pilot["materials"][material_name],
                                  run.digest((run.HERE / material_name).read_bytes()))
             full_index = {call["id"]: call for call in full["calls"]}
@@ -267,27 +270,33 @@ class StudyTests(unittest.TestCase):
                     run.execute(full, root / "full.jsonl", root / "pilot.jsonl")
                 preflight.assert_not_called()
 
-    def test_missing_usage_is_retained_and_stops_before_second_charge(self):
+    def test_terminal_failures_are_retained_and_independent_calls_continue(self):
         with tempfile.TemporaryDirectory() as tmp:
             path, ledger = Path(tmp) / "pilot.json", Path(tmp) / "pilot.jsonl"
             frozen = run.freeze(path, families=1, model_names=["nano"], seed=2,
                                 max_usd=5, max_output_tokens=1200)
             first = frozen["calls"][0]
             case = next(c for c in self.cases if c["id"] == first["case_id"])
-            response = provider_response(answer_for(case), run.MODELS["nano"]["id"])
-            response.pop("usage")
+            invalid = provider_response(answer_for(case), run.MODELS["nano"]["id"])
+            invalid.pop("usage")
+            responses = [invalid]
+            for call in frozen["calls"][1:]:
+                next_case = next(c for c in self.cases if c["id"] == call["case_id"])
+                responses.append(provider_response(answer_for(next_case), run.MODELS["nano"]["id"]))
             with patch.dict(os.environ, {"OPENAI_API_KEY": "sk-proj-unit-test-secret-string"}), \
                  patch.object(run, "preflight"), \
-                 patch.object(run, "_post_response", return_value=(response, "req_local")) as post:
-                with self.assertRaisesRegex(RuntimeError, "validation failed"):
-                    run.execute(path, ledger)
-                self.assertEqual(post.call_count, 1)
-                with self.assertRaisesRegex(RuntimeError, "Invalid or failed prior call"):
-                    run.execute(path, ledger)
-                self.assertEqual(post.call_count, 1)
+                 patch.object(run, "_post_response",
+                              side_effect=[(r, "req_local") for r in responses]) as post:
+                result = run.execute(path, ledger)
+                self.assertEqual(result["terminal"], 12)
+                self.assertEqual(post.call_count, 12)
+                run.execute(path, ledger)
+                self.assertEqual(post.call_count, 12)
             events = run.ledger_events(ledger)
-            self.assertEqual(events[-1]["result"], "invalid")
-            self.assertIn("missing_usage", events[-1]["validation"])
+            outcomes = [event for event in events if event["kind"] == "outcome"]
+            self.assertEqual(outcomes[0]["result"], "invalid")
+            self.assertIn("missing_usage", outcomes[0]["validation"])
+            self.assertEqual(sum(event["result"] == "ok" for event in outcomes), 11)
 
 
 if __name__ == "__main__":

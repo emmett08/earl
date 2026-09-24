@@ -1,10 +1,22 @@
 # Run status — 24 September 2026 (UTC)
 
-**Paid calls: 0. Model outcomes: none.** The unauthenticated, no-key endpoint
-preflight timed out before key lookup. No agent topology or model can be
-ranked from this record, and no human bias mitigation has been observed.
+**Assigned calls: 432. Terminal outcomes: 432. Valid outcomes: 160.** After
+the first 0.1.1 pilot response stopped the old runner, amendment 0.1.2 made
+terminal failures measured outcomes rather than blockers for independent
+assignments. The first call was imported without retry. All remaining 71
+pilot calls then ran, followed by the dependent 360-call remainder of the full
+schedule. Exact freezes, ledgers, reports, commands and hashes are retained in
+`benchmarks/results/2026-09-24-bias-agent-stage-a/`. The configured uncached
+rate estimate is USD 2.4331466; it is not an invoice.
 
-The original 0.1.0 pilot and full frozen schedules remain in
+There were 272 invalid and 160 valid responses. Fully warranted counts were
+zero or two per 48-assignment cell, and every descriptive paired interval
+included zero. This exposed developmental synthetic matrix does not rank the
+models generally, demonstrate a topology benefit, establish safety, or show
+human bias mitigation. The earlier one-call stopped archive remains unchanged
+as provenance for the execution-policy amendment.
+
+The earlier 0.1.0 pilot and full frozen schedules remain in
 `benchmarks/results/2026-09-24-bias-agent-zero-call/` unchanged. Their internal
 digests are `4623418bc80a5e9bdc4bce5154e4cb2656a3fdc88e945bcf553cbcf1158d75cd`
 and `1684c165caa7306456c49efd919756df90425b85261916275571fbbf8f6e4df0`.
