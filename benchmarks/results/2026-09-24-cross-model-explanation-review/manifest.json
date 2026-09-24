@@ -1,0 +1,30 @@
+{
+  "all_in_cost_per_correct_accepted_decision": null,
+  "date_utc": "2026-09-24",
+  "review_kind": "exploratory_two_model_agents_no_human_adjudication",
+  "schema": "eal2-cross-model-explanation-review-archive/1",
+  "selected_outputs": 105,
+  "sha256_by_relative_path": {
+    "README.md": "5cb6bb0497941e72ac0984db25e7f41221af5a8e82818b7a055c4598206b2f0a",
+    "adjudication.json": "febd1a72e3838e959779bcd08f44eee88cbcec330c16a39dd0af73e1f4771683",
+    "arm_model_linkage.json": "21324fa75385ce0cbf358480e363e6516248d05188dae09b221f5903c6b33ed8",
+    "reviewer_a.json": "e09c040cac4ed902d1c34dcd507e0d2b41bfed2b51b9a9e2b9adbac2b3fd1462",
+    "reviewer_b.json": "46f78356c9226d95b495b6aec326700a296cff7d719314e9b859118b1891d7da",
+    "reviewer_items.json": "81acf076cf74a2a36bc542da6f46ddea585c209684e7e5a7fca91f4ca029c59b",
+    "source/extract_cross_model_review_sample.py": "ebd5bc17f85caf43a5d6791ac0ed836c8f17bae77abf0ad5318c8dfccfb0b2c4",
+    "source/summarise_cross_model_explanation_review.py": "75a76d8e13b1e44a88c337fc11a87ea4a0ece28ecac9098c12a001844e67c6d6"
+  },
+  "source_campaigns": [
+    {
+      "freeze_sha256": "3d6a33d88720772f63255a1fac1210c05717b08fe4b49d7900a176920939529d",
+      "ledger_sha256": "109e8d1e23a22f3af6ca092188ee39d98f4e8d314ad319cd9fa36ca0144bdb9c",
+      "run": "pilot"
+    },
+    {
+      "freeze_sha256": "b8f9cf8fa03ac03c446c94d4e32287edbc0f45fcf4360c00195046375b8e13ef",
+      "ledger_sha256": "95b645be674e25290781a7c087b6a66ec1abc5adbb9f16458c5e225cbec05838",
+      "run": "cohort"
+    }
+  ],
+  "summary_reproduces_exactly": true
+}

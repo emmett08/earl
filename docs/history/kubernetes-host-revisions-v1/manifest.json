@@ -1,0 +1,87 @@
+{
+  "schema": "eal2-kubernetes-host-revisions/1",
+  "status": "developmental_synthetic",
+  "assessment_time": "2026-09-24T12:00:00Z",
+  "context": {"cluster": "prod_east", "namespace": "checkout"},
+  "artifact_id": "k8s_checkout",
+  "primary_family": "checkout_latency",
+  "primary_claim": "checkout_latency",
+  "review": "Fixture author specified the expected results. No independent engineer reviewed cluster correspondence, collection authority or warranted production inference.",
+  "revisions": [
+    {
+      "id": "baseline",
+      "description": "A current passing load test with no qualifying pressure alert.",
+      "expected_status": "supported",
+      "expected_cause": "load_route",
+      "load": {"at": "2026-09-24T11:58:00Z", "deployment": "checkout-api", "replicas": 4, "rps": 420, "p99_ms": 172, "pass": true},
+      "pressure": {"at": "2026-09-24T11:59:00Z", "cluster": "prod_east", "source_namespace": "batch", "contention": false},
+      "isolation": {"at": "2026-09-24T11:59:00Z", "deployment": "checkout-api", "finding": "none"}
+    },
+    {
+      "id": "new_batch_contention",
+      "description": "A second engineer deploys a batch job; a current pressure observation challenges the earlier reading.",
+      "expected_status": "contested",
+      "expected_cause": "pressure_challenge",
+      "load": {"at": "2026-09-24T11:58:00Z", "deployment": "checkout-api", "replicas": 4, "rps": 420, "p99_ms": 172, "pass": true},
+      "pressure": {"at": "2026-09-24T11:59:00Z", "cluster": "prod_east", "source_namespace": "batch", "contention": true},
+      "isolation": {"at": "2026-09-24T11:59:00Z", "deployment": "checkout-api", "finding": "none"}
+    },
+    {
+      "id": "stale_load_record",
+      "description": "The passing load observation is now too old and pressure is current.",
+      "expected_status": "unsupported",
+      "expected_cause": "bounded_load",
+      "load": {"at": "2026-09-24T11:40:00Z", "deployment": "checkout-api", "replicas": 4, "rps": 420, "p99_ms": 172, "pass": true},
+      "pressure": {"at": "2026-09-24T11:59:00Z", "cluster": "prod_east", "source_namespace": "batch", "contention": true},
+      "isolation": {"at": "2026-09-24T11:59:00Z", "deployment": "checkout-api", "finding": "none"}
+    },
+    {
+      "id": "failed_current_test",
+      "description": "A fresh test reports p99 above the threshold after batch contention.",
+      "expected_status": "unsupported",
+      "expected_cause": "bounded_load",
+      "load": {"at": "2026-09-24T11:59:00Z", "deployment": "checkout-api", "replicas": 4, "rps": 420, "p99_ms": 278, "pass": false},
+      "pressure": {"at": "2026-09-24T11:59:00Z", "cluster": "prod_east", "source_namespace": "batch", "contention": true},
+      "isolation": {"at": "2026-09-24T11:59:00Z", "deployment": "checkout-api", "finding": "none"}
+    },
+    {
+      "id": "current_separate_reservation",
+      "description": "A fresh passing load test and separate current reservation observation answer the specific challenge.",
+      "expected_status": "supported",
+      "expected_cause": "reservation_response",
+      "load": {"at": "2026-09-24T11:59:00Z", "deployment": "checkout-api", "replicas": 4, "rps": 420, "p99_ms": 179, "pass": true},
+      "pressure": {"at": "2026-09-24T11:59:00Z", "cluster": "prod_east", "source_namespace": "batch", "contention": true},
+      "isolation": {"at": "2026-09-24T11:59:30Z", "deployment": "checkout-api", "finding": "cpu_reservation_effective"}
+    },
+    {
+      "id": "wrong_deployment",
+      "description": "The apparent passing test concerns a different deployment and cannot support the pinned claim.",
+      "expected_status": "unsupported",
+      "expected_cause": "bounded_load",
+      "load": {"at": "2026-09-24T11:59:00Z", "deployment": "checkout-v2", "replicas": 4, "rps": 420, "p99_ms": 170, "pass": true},
+      "pressure": {"at": "2026-09-24T11:59:00Z", "cluster": "prod_east", "source_namespace": "batch", "contention": false},
+      "isolation": {"at": "2026-09-24T11:59:00Z", "deployment": "checkout-api", "finding": "none"}
+    },
+    {
+      "id": "stale_pressure_gap",
+      "description": "A passing load result predates a batch deployment; the only pressure record is stale. The bounded test report can still be supported, but present or future service health is not established.",
+      "expected_status": "supported",
+      "expected_cause": "load_route",
+      "load": {"at": "2026-09-24T11:58:00Z", "deployment": "checkout-api", "replicas": 4, "rps": 420, "p99_ms": 172, "pass": true},
+      "pressure": {"at": "2026-09-24T11:40:00Z", "cluster": "prod_east", "source_namespace": "batch", "contention": true},
+      "isolation": {"at": "2026-09-24T11:40:00Z", "deployment": "checkout-api", "finding": "none"}
+    }
+  ],
+  "queries": [
+    {"id": "latency_exact", "query": "checkout latency load p99", "relevant": ["checkout_latency"]},
+    {"id": "rollout_exact", "query": "rollout digest admission", "relevant": ["rollout_digest"]},
+    {"id": "failover_exact", "query": "service failover endpoint", "relevant": ["service_failover"]},
+    {"id": "latency_synonym", "query": "response time percentile", "relevant": ["checkout_latency"]},
+    {"id": "rollout_synonym", "query": "image provenance attestation", "relevant": ["rollout_digest"]},
+    {"id": "failover_synonym", "query": "traffic switch backup", "relevant": ["service_failover"]},
+    {"id": "ambiguous", "query": "checkout service", "relevant": ["checkout_latency", "service_failover"]},
+    {"id": "generic", "query": "Kubernetes", "relevant": []},
+    {"id": "out_of_domain", "query": "tax invoice settlement", "relevant": []},
+    {"id": "new_cluster", "query": "checkout latency in prod_west", "relevant": ["checkout_latency"]}
+  ]
+}

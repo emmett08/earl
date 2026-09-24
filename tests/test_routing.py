@@ -2,15 +2,19 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import sys
 
 import pytest
+from mcp.server.fastmcp.exceptions import ToolError
 
 from eal.artifacts import ArtifactRegistry
 from eal.families import FamilyRegistry
 from eal.routing import TaskFamilyHost
 from eal.runtime import ReasoningService
+from eal.server import create_server
+from test_artifacts import SOURCE, setup_artifact
 from test_task_families import catalogue, family_catalogue
 
 
@@ -112,3 +116,33 @@ def test_invalid_operator_grants_fail_before_recipient_use(tmp_path):
     with pytest.raises(ValueError, match="host-assigned"):
         TaskFamilyHost(route.families, principal="", authorised_families={"rig"},
                        authorised_claims={"rig_pilot": {"accepted"}})
+
+
+@pytest.mark.parametrize("malformed", ["ab", {"a": True}, ["a", "a"]])
+def test_recipient_mcp_rejects_ambiguous_claim_collections(tmp_path, malformed):
+    source = (SOURCE.replace("claim works", "claim a")
+                    .replace("claim other", "claim b")
+                    .replace("conclusion works", "conclusion a"))
+    service, manifest, _ = setup_artifact(tmp_path, source=source, claims=("a", "b"))
+    artifacts = ArtifactRegistry.load(service, manifest)
+    with pytest.raises(ValueError, match="Recipient grant"):
+        create_server(service, artifacts, recipient_only=True, principal="caller_a",
+                      recipient_grants={"test": malformed})
+
+
+def test_recipient_mcp_grant_is_snapshot_after_server_construction(tmp_path):
+    service, manifest, _ = setup_artifact(tmp_path, claims=("works", "other"))
+    artifacts = ArtifactRegistry.load(service, manifest)
+    grants = {"test": {"works"}}
+    server = create_server(service, artifacts, recipient_only=True, principal="caller_a",
+                           recipient_grants=grants)
+
+    async def denied():
+        with pytest.raises(ToolError, match="not permitted"):
+            await server.call_tool("eal_assess_artifact_claim", {"artifact_id": "test", "claim": "other"})
+
+    asyncio.run(denied())
+    grants["test"].add("other")
+    asyncio.run(denied())
+    grants["test"] = {"other"}
+    asyncio.run(denied())

@@ -1,0 +1,994 @@
+{
+  "basis": "Frozen RUBRIC.md and all 21 synthetic source/evidence dossiers with actual delivered compact host packets. Exploratory agent review only; no independent human adjudication.",
+  "blinded_to_model_and_arm_linkage": true,
+  "borderline_item_ids": [
+    "f2fca3e66853a7c9ea933258",
+    "f811d6eab1301ecd563a761e",
+    "90f2ac0962ab198f1699cd3e",
+    "617283ca4a4c1936751ed026",
+    "e1fe3f2358e68a5c10b340e9",
+    "6098ccb36bb2941c975715d3",
+    "d33e3273f4e6e12f96d910fd",
+    "484cb504b8d7712412efbb41",
+    "cee88bd55b01ddc329e1510d",
+    "f4198fc22eb72b16339ee1a8",
+    "b1c35a9fb78b0c69147a96b4"
+  ],
+  "counts": {
+    "faithful": 11,
+    "incomplete_but_nonmisleading": 39,
+    "malformed_or_absent": 12,
+    "materially_false": 1
+  },
+  "elapsed_seconds": 177,
+  "finished_at": "2026-09-24T11:23:00Z",
+  "items": [
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "8b2f01a9fc6e7ce5a6b2b93a",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "f2fca3e66853a7c9ea933258",
+      "reason": "Cites host acceptance or an answered alert but omits loaded_failover 72% load and 187 ms as the threshold basis; the conclusion remains limited to records.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "stage_matches_build",
+      "dossier_id": "c9c3ec2060868453083566fa",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "e35bab028835ac73437072f8",
+      "reason": "staged_pull_record digest sha256:fb90 mismatches pinned sha256:8c4a, so the submitted records do not establish identity.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "continuation_preconditions",
+      "dossier_id": "ab2b3973cc5f7b80cf7ecaea",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "d03ef51b3988a1fb0bb3de4f",
+      "reason": "wiring_clearance lacks an explicit J4 position despite a four-check count; joint distinct-position condition fails.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "soak_preconditions",
+      "dossier_id": "57b085a1255178100643fe03",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "9bec01b3d9b226cf05d61404",
+      "reason": "qualifying_log at 11:40 is 20 minutes old at 12:00, beyond the 15-minute limit.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "67a8530a74fd5b3a4796aa8c",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "001ddf6e97eb5c954a71ce94",
+      "reason": "Leaves out the initial flow_record 1.8% and calibration_certificate C-88 grounds or the distinction between absent/answered drift_alert and its independent_crosscheck.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "soak_preconditions",
+      "dossier_id": "6f7b039ceb8c0c73fe239f36",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "baa6f8a32adc91532a908173",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "recorded_direction",
+      "dossier_id": "fbd56382b4862f9ab340fb34",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "90e83130ec1d5484258310af",
+      "reason": "Cites host acceptance but omits the required AH-73/r17/warm_restart forward direction_record and the alignment_notice finding none.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "soak_preconditions",
+      "dossier_id": "57b085a1255178100643fe03",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "31ebdbdcf90c5ee2bd930531",
+      "reason": "qualifying_log at 11:40 is 20 minutes old at 12:00, beyond the 15-minute limit.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "67a8530a74fd5b3a4796aa8c",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "0f61a81dce72442d8debf69e",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "continuation_preconditions",
+      "dossier_id": "ab2b3973cc5f7b80cf7ecaea",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "2f223f76642beec83cc1cdec",
+      "reason": "wiring_clearance lacks an explicit J4 position despite a four-check count; joint distinct-position condition fails.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "recorded_direction",
+      "dossier_id": "4a05f818fcae931fc9bb5797",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "f6f48cf773bbc24d00e58acd",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "e5b48f7c7508049fd3d9d27b",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "557396fb6cd1fa0fe1092d86",
+      "reason": "Leaves out the initial flow_record 1.8% and calibration_certificate C-88 grounds or the distinction between absent/answered drift_alert and its independent_crosscheck.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "183f7bb3ea20957b16f3428b",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "ee67a4f9b8611c7a28a7515a",
+      "reason": "Cites host acceptance or an answered alert but omits loaded_failover 72% load and 187 ms as the threshold basis; the conclusion remains limited to records.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "stage_matches_build",
+      "dossier_id": "c9c3ec2060868453083566fa",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "bcbb2c412dd6cefb6d9e6968",
+      "reason": "staged_pull_record digest sha256:fb90 mismatches pinned sha256:8c4a, so the submitted records do not establish identity.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "recorded_direction",
+      "dossier_id": "4e173a8dd917d556bcfc9be0",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "c97400e209628f5def9b02a4",
+      "reason": "Cites host acceptance but omits the required AH-73/r17/warm_restart forward direction_record and the alignment_notice finding none.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "8b2f01a9fc6e7ce5a6b2b93a",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "f811d6eab1301ecd563a761e",
+      "reason": "Cites host acceptance or an answered alert but omits loaded_failover 72% load and 187 ms as the threshold basis; the conclusion remains limited to records.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "intervention_within_limit",
+      "dossier_id": "b02ff5a612e3fd5b3ef55c60",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "63a6251eeb564c855cdacf16",
+      "reason": "Gives no decisive value from affine_model: intervention at valve_drive = 5 predicts vent_load 7 (coefficient 1.2) or 6 (coefficient 1), both ≤ 8, according to this dossier.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "recorded_direction",
+      "dossier_id": "fbd56382b4862f9ab340fb34",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "cf45a67e6d6fae99f345a7e7",
+      "reason": "Cites host acceptance but omits the required AH-73/r17/warm_restart forward direction_record and the alignment_notice finding none.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "continuation_preconditions",
+      "dossier_id": "d1680a2f097af29a579421a9",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "933629d042fb49111a91a3f1",
+      "reason": "Cites the host or general branches without the decisive step_record 109 ms, calibrated flow_reference REF-31, explicit distinct J1–J4 wiring_clearance and current acquisition.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "intervention_within_limit",
+      "dossier_id": "4fb9dfe15b354601a2c53467",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "90f2ac0962ab198f1699cd3e",
+      "reason": "The compact packet has no accepted derivation, but the supplied affine_model calculates 11 > 8; the explanation omits that decisive result.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "recorded_direction",
+      "dossier_id": "fbd56382b4862f9ab340fb34",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "877e41fd8930acf886539993",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "continuation_preconditions",
+      "dossier_id": "d1680a2f097af29a579421a9",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "b9d1bced1e4f289410dd2fe1",
+      "reason": "Cites the host or general branches without the decisive step_record 109 ms, calibrated flow_reference REF-31, explicit distinct J1–J4 wiring_clearance and current acquisition.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "intervention_within_limit",
+      "dossier_id": "cf982bfc5b6ea64a9b3ffc5f",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "e830e44eef8d2ad218c0fe67",
+      "reason": "Gives no decisive value from affine_model: intervention at valve_drive = 5 predicts vent_load 7 (coefficient 1.2) or 6 (coefficient 1), both ≤ 8, according to this dossier.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "recorded_direction",
+      "dossier_id": "4e173a8dd917d556bcfc9be0",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "b0e60e72b899ba5f9a281b13",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "intervention_within_limit",
+      "dossier_id": "b02ff5a612e3fd5b3ef55c60",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "a18f3be5beeed81879fe902e",
+      "reason": "Gives no decisive value from affine_model: intervention at valve_drive = 5 predicts vent_load 7 (coefficient 1.2) or 6 (coefficient 1), both ≤ 8, according to this dossier.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "0d82275a4b354d83305848d2",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "fdc7e943d172050c83f373c2",
+      "reason": "Leaves out at least one decisive part of the conditional route: flow_record 1.8%, calibration_certificate C-88, the active drift_alert, and independent_crosscheck finding none, which cannot answer it.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "0d82275a4b354d83305848d2",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "39fb433e2e881fa5eb1e8360",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "stage_matches_build",
+      "dossier_id": "cbe1039c5f04bbc31ba57817",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "617283ca4a4c1936751ed026",
+      "reason": "Identifies pinned digest and verification flags, but omits the 11:58 acquisition time satisfying the one-hour requirement.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "612609a230dbbd24fc31da28",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "9b3ac0f91788e2884dfa4a14",
+      "reason": "Leaves out decisive loaded_failover values (72% load and 187 ms) or why independent_trace finding none fails to answer the active buffer_alert.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "continuation_preconditions",
+      "dossier_id": "d1680a2f097af29a579421a9",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "e1fe3f2358e68a5c10b340e9",
+      "reason": "Cites the host or general branches without the decisive step_record 109 ms, calibrated flow_reference REF-31, explicit distinct J1–J4 wiring_clearance and current acquisition.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "67a8530a74fd5b3a4796aa8c",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "13db7b71e9ee5fc0cb4c3f53",
+      "reason": "Leaves out the initial flow_record 1.8% and calibration_certificate C-88 grounds or the distinction between absent/answered drift_alert and its independent_crosscheck.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "continuation_preconditions",
+      "dossier_id": "c235ac07badc518ebaf73021",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "6098ccb36bb2941c975715d3",
+      "reason": "Cites the host or general branches without the decisive step_record 109 ms, calibrated flow_reference REF-31, explicit distinct J1–J4 wiring_clearance and current acquisition.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "continuation_preconditions",
+      "dossier_id": "ab2b3973cc5f7b80cf7ecaea",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "1ca6ba43bc11d8108692cf1d",
+      "reason": "wiring_clearance lacks an explicit J4 position despite a four-check count; joint distinct-position condition fails.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "stage_matches_build",
+      "dossier_id": "bd721ece0ead85750697a006",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "02f109abac88f4ac59a5565d",
+      "reason": "Omits at least one decisive requirement from signed_build_record and staged_pull_record: pinned sha256:8c4a, true verification flags and one-hour recency.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "stage_matches_build",
+      "dossier_id": "c9c3ec2060868453083566fa",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "d1742a1735df9c6d3e242fee",
+      "reason": "staged_pull_record digest sha256:fb90 mismatches pinned sha256:8c4a, so the submitted records do not establish identity.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "intervention_within_limit",
+      "dossier_id": "b02ff5a612e3fd5b3ef55c60",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "31f9eaca88fa50a2416c6fc2",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "stage_matches_build",
+      "dossier_id": "cbe1039c5f04bbc31ba57817",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "1524a349c2ce2e2c167a968d",
+      "reason": "Cites a host identity match but omits the signed-build and staged-pull digest, flags and acquisition times.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "stage_matches_build",
+      "dossier_id": "bd721ece0ead85750697a006",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "d33e3273f4e6e12f96d910fd",
+      "reason": "Both timely signed_build_record and staged_pull_record identify PX-42/West-2 with pinned digest sha256:8c4a and true verification flags.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "materially_false",
+      "claim": "stage_matches_build",
+      "dossier_id": "cbe1039c5f04bbc31ba57817",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "484cb504b8d7712412efbb41",
+      "reason": "Misstates the accepted identity route as resting solely on release/lane and claims digest, flags and times are unestablished, although current source and records establish these.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "612609a230dbbd24fc31da28",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "cee88bd55b01ddc329e1510d",
+      "reason": "Names test, alert and unresolved trace, but does not state independent_trace finding none or the 72%/187 ms test values.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "recorded_direction",
+      "dossier_id": "4a05f818fcae931fc9bb5797",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "592aafcf32e64c3caa0467e8",
+      "reason": "direction_record identifies AH-74 rather than scoped AH-73; no matching bench evidence supports the claim.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "e5b48f7c7508049fd3d9d27b",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "98154b6370052c465d48eb2e",
+      "reason": "Leaves out the initial flow_record 1.8% and calibration_certificate C-88 grounds or the distinction between absent/answered drift_alert and its independent_crosscheck.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "soak_preconditions",
+      "dossier_id": "6f7b039ceb8c0c73fe239f36",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "4ee05368218409cb0f49d71d",
+      "reason": "Cites accepted log without its qualifying_log K2 calibration, peak/dwell values and acquisition inside 15 minutes of 12:00.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "intervention_within_limit",
+      "dossier_id": "4fb9dfe15b354601a2c53467",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "f4198fc22eb72b16339ee1a8",
+      "reason": "The compact packet has no accepted derivation showing ≤8, but affine_model calculates 11 > 8; the explanation omits that decisive result.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "intervention_within_limit",
+      "dossier_id": "4fb9dfe15b354601a2c53467",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "81933775386c1f7fcecd85a9",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "continuation_preconditions",
+      "dossier_id": "c235ac07badc518ebaf73021",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "3151c9b7d05938ea54c67824",
+      "reason": "Cites the host or general branches without the decisive step_record 109 ms, calibrated flow_reference REF-31, explicit distinct J1–J4 wiring_clearance and current acquisition.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "soak_preconditions",
+      "dossier_id": "7706878f063c6aa621d30239",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "e8c8d721814bbd96cd78a89a",
+      "reason": "Cites accepted log without its qualifying_log K2 calibration, peak/dwell values and acquisition inside 15 minutes of 12:00.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "183f7bb3ea20957b16f3428b",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "4244b71ae8b7e6ca65620aa9",
+      "reason": "Cites host acceptance or an answered alert but omits loaded_failover 72% load and 187 ms as the threshold basis; the conclusion remains limited to records.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "0d82275a4b354d83305848d2",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "b3de9c325cb46ced00179f20",
+      "reason": "Leaves out at least one decisive part of the conditional route: flow_record 1.8%, calibration_certificate C-88, the active drift_alert, and independent_crosscheck finding none, which cannot answer it.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "faithful",
+      "claim": "recorded_direction",
+      "dossier_id": "4a05f818fcae931fc9bb5797",
+      "faithful": true,
+      "host_packet_delivered": true,
+      "item_id": "c8addbacffaf8fc5439dcdd4",
+      "reason": "direction_record identifies AH-74 rather than scoped AH-73; no matching bench evidence supports the claim.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "612609a230dbbd24fc31da28",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "7c155ba74654303a071a61fc",
+      "reason": "Leaves out decisive loaded_failover values (72% load and 187 ms) or why independent_trace finding none fails to answer the active buffer_alert.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "bounded_dosing_error",
+      "dossier_id": "e5b48f7c7508049fd3d9d27b",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "97973f899ef420be3a374cd8",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "calibration_certificate",
+        "drift_alert",
+        "flow_record",
+        "independent_crosscheck"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "soak_preconditions",
+      "dossier_id": "57b085a1255178100643fe03",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "f46f86de971c4723211aa896",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "183f7bb3ea20957b16f3428b",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "6b4dafab03d0d349d54fbced",
+      "reason": "Cites host acceptance or an answered alert but omits loaded_failover 72% load and 187 ms as the threshold basis; the conclusion remains limited to records.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "intervention_within_limit",
+      "dossier_id": "cf982bfc5b6ea64a9b3ffc5f",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "1a6936171837b86aee2d21bd",
+      "reason": "Gives no decisive value from affine_model: intervention at valve_drive = 5 predicts vent_load 7 (coefficient 1.2) or 6 (coefficient 1), both ≤ 8, according to this dossier.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "bounded_failover",
+      "dossier_id": "8b2f01a9fc6e7ce5a6b2b93a",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "1c5b3ad8485882fa29cf5231",
+      "reason": "Cites host acceptance or an answered alert but omits loaded_failover 72% load and 187 ms as the threshold basis; the conclusion remains limited to records.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "buffer_alert",
+        "independent_trace",
+        "loaded_failover"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "recorded_direction",
+      "dossier_id": "4e173a8dd917d556bcfc9be0",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "b1c35a9fb78b0c69147a96b4",
+      "reason": "The compact host packet does not spell out tests, but the explanation omits the supplied r17 warm-restart direction_record and alignment_notice findings.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "alignment_notice",
+        "direction_record"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "soak_preconditions",
+      "dossier_id": "7706878f063c6aa621d30239",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "e3db15910f0c3d8767466bbb",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "continuation_preconditions",
+      "dossier_id": "c235ac07badc518ebaf73021",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "c647dc37e5e64fc4e4548239",
+      "reason": "Cites the host or general branches without the decisive step_record 109 ms, calibrated flow_reference REF-31, explicit distinct J1–J4 wiring_clearance and current acquisition.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "flow_reference",
+        "step_record",
+        "wiring_clearance"
+      ]
+    },
+    {
+      "category": "malformed_or_absent",
+      "claim": "intervention_within_limit",
+      "dossier_id": "cf982bfc5b6ea64a9b3ffc5f",
+      "faithful": false,
+      "host_packet_delivered": false,
+      "item_id": "103aefd2a18e5927c500e4f8",
+      "reason": "No valid substantive final claim/status/explanation answer; the output is a request or invalid final shape.",
+      "recipient_status_agrees_author_oracle": null,
+      "recipient_status_agrees_delivered_host": null,
+      "reference_evidence_ids": [
+        "affine_model"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "soak_preconditions",
+      "dossier_id": "7706878f063c6aa621d30239",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "6a49ad9d6def12f0c969810a",
+      "reason": "Cites accepted log without its qualifying_log K2 calibration, peak/dwell values and acquisition inside 15 minutes of 12:00.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "stage_matches_build",
+      "dossier_id": "bd721ece0ead85750697a006",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "67f85887dea7bfeae51f2248",
+      "reason": "Omits at least one decisive requirement from signed_build_record and staged_pull_record: pinned sha256:8c4a, true verification flags and one-hour recency.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "signed_build_record",
+        "staged_pull_record"
+      ]
+    },
+    {
+      "category": "incomplete_but_nonmisleading",
+      "claim": "soak_preconditions",
+      "dossier_id": "6f7b039ceb8c0c73fe239f36",
+      "faithful": false,
+      "host_packet_delivered": true,
+      "item_id": "212021a04434927082417c39",
+      "reason": "Cites accepted log without its qualifying_log K2 calibration, peak/dwell values and acquisition inside 15 minutes of 12:00.",
+      "recipient_status_agrees_author_oracle": true,
+      "recipient_status_agrees_delivered_host": true,
+      "reference_evidence_ids": [
+        "qualifying_log"
+      ]
+    }
+  ],
+  "notes": "Compact host accepted-route phrases alone are incomplete. The unsupported affine-model revision computes 11 > 8 although the packet has no accepted derivation. Borderline calls concern omission of exact loaded-test metrics, source times, or position names in otherwise correct general prose, and the packet-only wording of item index 38.",
+  "reviewer_id": "reviewer_b",
+  "schema": "route_v2_explanation_review_reviewer_v1",
+  "started_at": "2026-09-24T11:20:04Z"
+}

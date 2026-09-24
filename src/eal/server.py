@@ -42,15 +42,24 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
     The launcher authenticates the principal before constructing the latter.
     A client request never supplies or changes that identity or its grants.
     """
+    checked_grants: dict[str, frozenset[str]] = {}
     if recipient_only:
         if (artifacts is None or not isinstance(principal, str)
                 or not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9.-]{0,127}", principal)
-                or not recipient_grants):
+                or not isinstance(recipient_grants, Mapping)
+                or not 1 <= len(recipient_grants) <= 512):
             raise ValueError("Recipient server requires a trusted principal, artifact catalogue and grants")
         for artifact_id, claims in recipient_grants.items():
-            if (artifact_id not in artifacts.definitions or not claims or
-                    not set(claims) <= set(artifacts.definitions[artifact_id].claims)):
+            if (not isinstance(artifact_id, str) or artifact_id not in artifacts.definitions
+                    or not isinstance(claims, (set, frozenset, list, tuple))
+                    or not 1 <= len(claims) <= 64
+                    or any(type(claim) is not str or claim not in artifacts.definitions[artifact_id].claims
+                           for claim in claims)
+                    or len(set(claims)) != len(claims)):
                 raise ValueError("Recipient grant refers to an unknown registered claim")
+            # Snapshot the launcher grant. Later mutation of its mapping or
+            # claim collections must not expand a running recipient server.
+            checked_grants[artifact_id] = frozenset(claims)
     elif principal is not None or recipient_grants is not None:
         raise ValueError("Recipient identity and grants require recipient-only mode")
     server = StrictFastMCP(
@@ -105,7 +114,7 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
                 return artifacts.assess(artifact_id)
 
         def authorise(artifact_id: str, claim: str) -> None:
-            if recipient_only and claim not in recipient_grants.get(artifact_id, ()):
+            if recipient_only and claim not in checked_grants.get(artifact_id, ()):
                 raise ValueError("Recipient is not permitted to access that artifact claim")
             artifacts._registered_claim(artifact_id, claim)
 

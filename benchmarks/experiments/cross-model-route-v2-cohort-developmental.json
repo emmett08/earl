@@ -1,0 +1,34 @@
+{
+  "conditions": [
+    {
+      "arm": "skill_route",
+      "id": "nano_route",
+      "model_class": "small_text",
+      "provider": "campaign-config/nano.toml"
+    },
+    {
+      "arm": "skill_route",
+      "id": "luna_route",
+      "model_class": "text",
+      "provider": "campaign-config/luna.toml"
+    },
+    {
+      "arm": "skill_route",
+      "id": "sol_route",
+      "model_class": "reasoning",
+      "provider": "campaign-config/sol-high.toml"
+    }
+  ],
+  "corpus": "cross-model-delivery/manifest.json",
+  "max_cost_usd": 4.0,
+  "max_output_tokens": 2048,
+  "max_prompt_bytes": 20000,
+  "order_seed": 71,
+  "repetitions": 1,
+  "schema": "eal2-cross-model-campaign/1",
+  "skill": "campaign-config/recipient-skill.txt",
+  "study_kind": "developmental",
+  "response_model_aliases": {
+    "nano_route": "gpt-4.1-nano-2025-04-14"
+  }
+}

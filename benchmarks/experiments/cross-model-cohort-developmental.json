@@ -99,5 +99,12 @@
   "repetitions": 1,
   "schema": "eal2-cross-model-campaign/1",
   "skill": "campaign-config/recipient-skill.txt",
-  "study_kind": "developmental"
+  "study_kind": "developmental",
+  "response_model_aliases": {
+    "nano_raw": "gpt-4.1-nano-2025-04-14",
+    "nano_skill": "gpt-4.1-nano-2025-04-14",
+    "nano_route": "gpt-4.1-nano-2025-04-14",
+    "nano_eal": "gpt-4.1-nano-2025-04-14",
+    "nano_equal": "gpt-4.1-nano-2025-04-14"
+  }
 }

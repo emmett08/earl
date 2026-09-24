@@ -1,0 +1,94 @@
+language "EAL/2";
+
+environment checkout_window {
+  require "cluster" == "prod_east";
+  require "namespace" == "checkout";
+}
+
+tool load_reader { version "1"; mode deterministic; }
+tool coverage_reader { version "1"; mode deterministic; }
+tool pressure_reader { version "1"; mode deterministic; }
+tool isolation_reader { version "1"; mode deterministic; }
+tool digest_reader { version "1"; mode deterministic; }
+tool failover_reader { version "1"; mode deterministic; }
+
+evidence recorded_load {
+  tool load_reader; kind test; environment checkout_window; max_age 86400;
+  require "deployment" == "checkout-api";
+  require "replicas" >= 4;
+  require "rps" >= 400;
+  require "p99_ms" <= 200;
+  require "pass" == true;
+}
+evidence bounded_load {
+  tool load_reader; kind test; environment checkout_window; max_age 600;
+  require "deployment" == "checkout-api";
+  require "replicas" >= 4;
+  require "rps" >= 400;
+  require "p99_ms" <= 200;
+  require "pass" == true;
+}
+evidence monitor_complete {
+  tool coverage_reader; kind monitoring; environment checkout_window; max_age 300;
+  require "deployment" == "checkout-api";
+  require "coverage" == "complete";
+}
+evidence batch_pressure {
+  tool pressure_reader; kind monitoring; environment checkout_window; max_age 300;
+  require "cluster" == "prod_east";
+  require "source_namespace" == "batch";
+  require "contention" == true;
+}
+evidence separate_reservation {
+  tool isolation_reader; kind independent_check; environment checkout_window; max_age 300;
+  require "deployment" == "checkout-api";
+  require "finding" == "cpu_reservation_effective";
+}
+evidence pinned_digest {
+  tool digest_reader; kind observation; environment checkout_window; max_age 600;
+  require "deployment" == "checkout-api";
+  require "digest" == "sha256:ca42";
+  require "admission_verified" == true;
+}
+evidence routed_failover {
+  tool failover_reader; kind test; environment checkout_window; max_age 600;
+  require "service" == "checkout-api";
+  require "endpoint_ready" == true;
+  require "failover_ms" <= 250;
+}
+
+reasoning operating_inference {
+  method "structured/1";
+  rationale "A recent qualifying result and fresh monitoring coverage supply a defeasible basis to consider operation for the next five minutes under unchanged deployment, traffic and resource interference. A new batch contention observation challenges this forward inference without changing what an earlier record reported. A separate current reservation check can answer that specific challenge; the model does not verify the physical effect or future performance.";
+}
+reasoning recorded_identity {
+  method "structured/1";
+  rationale "A current scoped record supports only its specified identity and recorded result.";
+}
+
+claim checkout_test_record {
+  statement "At its observation time, the submitted checkout-api load record in prod_east checkout reports p99 at most 200 ms at at least 400 requests per second with at least four replicas.";
+  environment checkout_window;
+}
+claim checkout_latency {
+  statement "At the assessment cut, recent load and monitoring records supply a provisional basis to consider five minutes of checkout-api operation under unchanged traffic, deployment and resource conditions.";
+  environment checkout_window;
+}
+claim rollout_digest {
+  statement "The submitted checkout-api admission record for prod_east checkout identifies the pinned digest sha256:ca42.";
+  environment checkout_window;
+}
+claim service_failover {
+  statement "The submitted checkout-api service test in prod_east checkout reports a ready failover endpoint within 250 ms.";
+  environment checkout_window;
+}
+
+argument record_route { conclusion checkout_test_record; reasoning recorded_identity; evidence recorded_load; }
+argument load_route {
+  conclusion checkout_latency; reasoning operating_inference;
+  evidence bounded_load, monitor_complete; premises checkout_test_record;
+}
+objection pressure_challenge { target argument load_route; evidence batch_pressure; }
+objection reservation_response { target objection pressure_challenge; evidence separate_reservation; }
+argument digest_route { conclusion rollout_digest; reasoning recorded_identity; evidence pinned_digest; }
+argument failover_route { conclusion service_failover; reasoning recorded_identity; evidence routed_failover; }
