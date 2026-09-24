@@ -1,0 +1,41 @@
+{
+  "schema": "eal2-next-experiment/1",
+  "investigation_id": "INV-EAL-BIAS-REPRESENTATION-002",
+  "title": "Matched EAL/2 and canonical JSON representation trial",
+  "status": "specified_not_ready",
+  "source_language": "EAL/2",
+  "observation_schema": "bias-disposition/1",
+  "claim": "For a fixed model, topology, semantic graph and engineering record, rendering that graph as EAL/2 rather than canonical JSON changes fully warranted synthetic dispositions.",
+  "unit": "fresh independently authored engineering-decision family",
+  "family_namespace": "bias_representation_002",
+  "excluded_family_namespaces": ["bias_mechanisms_001", "bias_topology_003", "bias_human_004"],
+  "arms": ["eal2", "canonical_json"],
+  "fixed_factors": {
+    "topology": "one direct critic call",
+    "model_selection": "one returned model identity fixed before outcomes",
+    "tool_permissions": "none",
+    "answer_schema": "identical",
+    "facts_and_order": "identical",
+    "completion_token_ceiling": "identical"
+  },
+  "matching_contract": {
+    "derivation": "JSON is mechanically lowered from the typed EAL/2 IR; neither rendering is manually abridged.",
+    "required_receipt": "parse both renderings to the same typed graph; compare node, edge, text, identity, scope, method, assumption, objection and order fields in both directions",
+    "token_length_policy": "record natural token counts; do not pad or truncate either language; estimate representation under this defined rendering rather than equal length",
+    "forbidden": ["host conclusion", "gold label", "private role labels", "different field order", "content ablation"]
+  },
+  "assignment": "Within family, randomise rendering and counterbalance presentation order across independent calls; one response per rendering is the primary analysis.",
+  "primary_estimand": "family-average paired difference in fully warranted disposition, EAL/2 minus canonical JSON",
+  "safety_estimand": "paired difference in strong false attribution and introduced engineering error",
+  "analysis": "Family-level paired randomisation interval; failures remain in the assigned denominator; no call-level independence claim.",
+  "credential_env": "OPENAI_API_TOKEN",
+  "live_api_during_observation": true,
+  "required_receipts": {
+    "fresh_family_manifest_sha256": null,
+    "independent_gold_review_sha256": null,
+    "bidirectional_representation_receipt_sha256": null,
+    "frozen_schedule_sha256": null
+  },
+  "stop_conditions": ["credential absent", "receipt missing", "gold leakage", "model identity drift", "unresolved pending call", "cost cap reached"],
+  "outcomes": null
+}

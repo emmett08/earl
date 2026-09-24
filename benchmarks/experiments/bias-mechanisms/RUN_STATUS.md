@@ -41,3 +41,11 @@ completion, and concurrent ledger locks. The 48-case matrix still lacks paired
 irrelevant-cue, fluency, material-evidence, valid-argument and prompt-boundary
 controls. Stage B/C and independently adjudicated human cases are specified
 future work, not findings from these zero-call plans.
+
+The representation, topology and human questions now have separate prospective
+plans under `benchmarks/experiments/bias-next/`. They use disjoint family
+namespaces and independent freezes rather than adding arms to this exposed
+Stage A cohort. The two API plans name `OPENAI_API_TOKEN`; the human plan
+forbids live API calls during observation and remains blocked on ethics,
+registration, fresh tasks and independent review. None of those plans contains
+outcomes or is ready to execute merely because a credential is available.
