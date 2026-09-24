@@ -30,6 +30,11 @@ OPERATIONS = {
     "reason": ({"source", "context"}, {"collection_id", "now"}),
     "explain": ({"assessment_id"}, {"claim"}),
     "grounded": ({"arguments", "attacks"}, set()),
+    "task_candidates": (set(), set()),
+    "bound_task": (set(), set()),
+    "assess_bound_task": (set(), set()),
+    "explain_bound_task": ({"assessment_id"}, set()),
+    "finish_bound_task": ({"assessment_id"}, set()),
 }
 MAX_REQUEST_BYTES = 2 * 1024 * 1024
 
@@ -139,6 +144,24 @@ async def finalise_pinned_task(output: str, assessment_id: str, parameters: Stdi
     return {"checked_answer": packet, "recipient_output_unverified": output}
 
 
+async def finalise_bound_task(output: str, assessment_id: str, parameters: StdioServerParameters, *,
+                              timeout_seconds: float = 120.0) -> dict[str, Any]:
+    """Recover the checked status for the launcher's bound task after model prose."""
+    if not isinstance(output, str) or len(output.encode("utf-8")) > 16384:
+        raise ValueError("Recipient output must be UTF-8 text of at most 16384 bytes")
+    if not isinstance(assessment_id, str) or not assessment_id:
+        raise ValueError("assessment_id must be a nonempty string")
+    result = await _dispatch_tool("eal_finish_bound_task",
+                                  {"assessment_id": assessment_id},
+                                  parameters, timeout_seconds=timeout_seconds)
+    if result["is_error"]:
+        return result
+    packet = result["result"]
+    if not isinstance(packet, dict) or packet.get("assessment_id") != assessment_id:
+        raise ValueError("MCP final result differs from the addressed assessment")
+    return {"checked_answer": packet, "recipient_output_unverified": output}
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Send one text-model JSON request to the EAL MCP server")
     parser.add_argument("--workspace", type=Path, default=Path.cwd())
@@ -146,6 +169,17 @@ def main() -> None:
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
     parser.add_argument("--artifacts", type=Path, help="Trusted pinned EAL artifact catalogue")
+    parser.add_argument("--families", type=Path, help="Reviewed family catalogue for an exact task route")
+    parser.add_argument("--tasks", type=Path, help="Reviewed task applicability catalogue")
+    retrieval = parser.add_mutually_exclusive_group()
+    retrieval.add_argument("--aliases", type=Path, help="Optional reviewed candidate aliases")
+    retrieval.add_argument("--rag-catalogue", type=Path,
+                           help="Optional reviewed snippets for advisory local BM25 retrieval")
+    parser.add_argument("--recipient-task-file", type=Path,
+                        help="Launcher's immutable original question; never model-supplied")
+    parser.add_argument("--recipient-family-grant", action="append", default=[])
+    parser.add_argument("--recipient-task-grant", action="append", default=[])
+    parser.add_argument("--recipient-grant", action="append", default=[], metavar="ARTIFACT:CLAIM")
     parser.add_argument("--artifact-id", help="Artifact chosen by the trusted host")
     parser.add_argument("--claim", help="Registered claim chosen by the trusted host")
     parser.add_argument("--recipient-principal", help="Principal authenticated by the trusted launcher")
@@ -159,15 +193,40 @@ def main() -> None:
         server_args.extend(["--database", str(args.database.resolve())])
     if args.methods:
         server_args.extend(["--methods", args.methods])
-    pinned = any((args.artifacts, args.artifact_id, args.claim, args.recipient_principal, args.assessment_id))
-    if pinned:
+    reviewed = any((args.families, args.tasks, args.aliases, args.rag_catalogue,
+                    args.recipient_task_file,
+                    args.recipient_family_grant, args.recipient_task_grant, args.recipient_grant))
+    pinned = not reviewed and any((args.artifacts, args.artifact_id, args.claim,
+                                   args.recipient_principal, args.assessment_id))
+    if reviewed:
+        if (not all((args.artifacts, args.families, args.tasks, args.recipient_task_file,
+                     args.recipient_principal, args.recipient_family_grant,
+                     args.recipient_task_grant, args.recipient_grant))
+                or args.artifact_id or args.claim):
+            parser.error("Reviewed task mode requires catalogues, bound task file, principal and grants")
+        server_args.extend(["--artifacts", str(args.artifacts.resolve()),
+                            "--families", str(args.families.resolve()),
+                            "--tasks", str(args.tasks.resolve()),
+                            "--recipient-task-file", str(args.recipient_task_file.resolve()),
+                            "--recipient-only", "--recipient-principal", args.recipient_principal])
+        if args.aliases:
+            server_args.extend(["--aliases", str(args.aliases.resolve())])
+        if args.rag_catalogue:
+            server_args.extend(["--rag-catalogue", str(args.rag_catalogue.resolve())])
+        for grant in args.recipient_grant:
+            server_args.extend(["--recipient-grant", grant])
+        for grant in args.recipient_family_grant:
+            server_args.extend(["--recipient-family-grant", grant])
+        for grant in args.recipient_task_grant:
+            server_args.extend(["--recipient-task-grant", grant])
+    elif pinned:
         if not all((args.artifacts, args.artifact_id, args.claim, args.recipient_principal)):
             parser.error("Pinned host mode requires --artifacts, --artifact-id, --claim and --recipient-principal")
         server_args.extend(["--artifacts", str(args.artifacts.resolve()), "--recipient-only",
                             "--recipient-principal", args.recipient_principal,
                             "--recipient-grant", f"{args.artifact_id}:{args.claim}"])
     try:
-        limit = 16384 if args.assessment_id else 4096 if pinned else MAX_REQUEST_BYTES
+        limit = 16384 if args.assessment_id else 4096 if pinned or reviewed else MAX_REQUEST_BYTES
         raw = sys.stdin.buffer.read(limit + 1)
         if len(raw) > limit:
             raise ValueError("Host input exceeds its configured byte limit")
@@ -175,7 +234,10 @@ def main() -> None:
         # launcher's environment so a source checkout loads its matching server.
         parameters = StdioServerParameters(command=sys.executable, args=server_args,
                                             env=dict(os.environ))
-        if args.assessment_id:
+        if args.assessment_id and reviewed:
+            result = asyncio.run(finalise_bound_task(raw.decode("utf-8"), args.assessment_id,
+                                                     parameters, timeout_seconds=args.timeout))
+        elif args.assessment_id:
             result = asyncio.run(finalise_pinned_task(raw.decode("utf-8"), args.assessment_id,
                                                       parameters, artifact_id=args.artifact_id, claim=args.claim,
                                                       timeout_seconds=args.timeout))

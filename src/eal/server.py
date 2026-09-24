@@ -13,7 +13,11 @@ from jsonschema import Draft202012Validator
 
 from .runtime import ReasoningService, load_method_registry
 from .artifacts import ArtifactRegistry
+from .applicability import TaskApplicabilityRegistry
 from .evaluator import canonical_digest
+from .families import FamilyRegistry
+from .retrieval import CandidateIndex
+from .routing import TaskFamilyHost
 
 
 class StrictFastMCP(FastMCP):
@@ -36,13 +40,16 @@ class StrictFastMCP(FastMCP):
 
 def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None = None, *,
                   recipient_only: bool = False, principal: str | None = None,
-                  recipient_grants: Mapping[str, Collection[str]] | None = None) -> FastMCP:
+                  recipient_grants: Mapping[str, Collection[str]] | None = None,
+                  reviewed_task_host: TaskFamilyHost | None = None) -> FastMCP:
     """Create an operator server or a separate, principal-bound recipient server.
 
     The launcher authenticates the principal before constructing the latter.
     A client request never supplies or changes that identity or its grants.
     """
     checked_grants: dict[str, frozenset[str]] = {}
+    if recipient_only and artifacts is not None and artifacts.historical_evaluator:
+        raise ValueError("Historical evaluator cannot serve recipient claims")
     if recipient_only:
         if (artifacts is None or not isinstance(principal, str)
                 or not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9.-]{0,127}", principal)
@@ -62,6 +69,13 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
             checked_grants[artifact_id] = frozenset(claims)
     elif principal is not None or recipient_grants is not None:
         raise ValueError("Recipient identity and grants require recipient-only mode")
+    if reviewed_task_host is not None:
+        if (not recipient_only or reviewed_task_host.principal != principal
+                or reviewed_task_host.families.artifacts is not artifacts
+                or reviewed_task_host.applicability is None
+                or any(not claims <= checked_grants.get(artifact_id, frozenset())
+                       for artifact_id, claims in reviewed_task_host._claims.items())):
+            raise ValueError("Reviewed task route requires the same trusted recipient and grants")
     server = StrictFastMCP(
         "EAL engineering reasoning",
         instructions="Validate explicit engineering arguments, collect configured observations, reason over their declared scope, and explain results. Support is relative to declared inference rationales, not a proof of prose truth.",
@@ -106,7 +120,7 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
 
             return solve_grounded(arguments, attacks)
 
-    if artifacts is not None:
+    if artifacts is not None and reviewed_task_host is None:
         if not recipient_only:
             @server.tool(structured_output=True)
             def eal_assess_artifact(artifact_id: str) -> dict[str, Any]:
@@ -159,6 +173,33 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
             authorise(artifact_id, claim)
             return issued_packet(artifact_id, assessment_id, claim)
 
+    if reviewed_task_host is not None:
+        @server.tool(structured_output=True)
+        def eal_task_candidates() -> dict[str, Any]:
+            """Nominate authorised families for the launcher's task; scores cannot authorise an assessment."""
+            return {"candidates": reviewed_task_host.candidates(reviewed_task_host.task_text),
+                    "meaning": "suggestions_only"}
+
+        @server.tool(structured_output=True)
+        def eal_bound_task() -> dict[str, Any]:
+            """Discover the unique reviewed question, claim and grants without collecting evidence."""
+            return reviewed_task_host.describe_bound_task()
+
+        @server.tool(structured_output=True)
+        def eal_assess_bound_task() -> dict[str, Any]:
+            """Assess the launcher's exact reviewed question; no model-selected task ID or claim."""
+            return reviewed_task_host.assess_bound_task()
+
+        @server.tool(structured_output=True)
+        def eal_explain_bound_task(assessment_id: str) -> dict[str, Any]:
+            """Retrieve this principal's bounded trace under the same reviewed question and grants."""
+            return reviewed_task_host.explain_bound_task(assessment_id)
+
+        @server.tool(structured_output=True)
+        def eal_finish_bound_task(assessment_id: str) -> dict[str, Any]:
+            """Recover the host-owned packet under the same question, review and principal grant."""
+            return reviewed_task_host.finish_bound_task(assessment_id)
+
     return server
 
 
@@ -169,13 +210,32 @@ def main() -> None:
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
     parser.add_argument("--artifacts", type=Path, help="Host-pinned EAL artifact catalogue TOML")
+    parser.add_argument("--families", type=Path, help="Reviewed finite task-family catalogue TOML")
+    parser.add_argument("--tasks", type=Path, help="Reviewed exact-question applicability catalogue TOML")
+    retrieval = parser.add_mutually_exclusive_group()
+    retrieval.add_argument("--aliases", type=Path,
+                           help="Optional reviewed candidate-alias catalogue TOML")
+    retrieval.add_argument("--rag-catalogue", type=Path,
+                           help="Optional reviewed snippet catalogue for advisory local BM25 retrieval")
+    parser.add_argument("--recipient-task-file", type=Path,
+                        help="Trusted launcher's exact task text, read once at server start")
     parser.add_argument("--recipient-only", action="store_true", help="Expose only authorised pinned claim operations")
     parser.add_argument("--recipient-principal", help="Authenticated identity bound by the trusted launcher")
     parser.add_argument("--recipient-grant", action="append", default=[], metavar="ARTIFACT:CLAIM",
                         help="Trusted launcher grant; may be repeated for one principal")
+    parser.add_argument("--recipient-family-grant", action="append", default=[], metavar="FAMILY")
+    parser.add_argument("--recipient-task-grant", action="append", default=[], metavar="TASK")
     args = parser.parse_args()
     if args.recipient_grant and not args.recipient_only:
         parser.error("--recipient-grant requires --recipient-only")
+    task_options = (args.families, args.tasks, args.recipient_task_file)
+    if (any(task_options) or args.aliases or args.rag_catalogue
+            or args.recipient_family_grant or args.recipient_task_grant):
+        if (not all(task_options) or not args.artifacts or not args.recipient_only
+                or not args.recipient_principal or not args.recipient_family_grant
+                or not args.recipient_task_grant or not args.recipient_grant):
+            parser.error("Reviewed task route requires --artifacts, --families, --tasks, "
+                         "--recipient-task-file, --recipient-only, principal and all three grants")
     service = ReasoningService(args.workspace, args.registry, args.database, method_registry=load_method_registry(args.methods))
     artifacts = ArtifactRegistry.load(service, args.artifacts) if args.artifacts else None
     grants: dict[str, set[str]] = {}
@@ -184,9 +244,38 @@ def main() -> None:
             parser.error("--recipient-grant must be ARTIFACT:CLAIM")
         name, claim = raw.split(":", 1)
         grants.setdefault(name, set()).add(claim)
+    task_host = None
+    if args.tasks:
+        if (any(not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*", value)
+                for value in args.recipient_family_grant + args.recipient_task_grant)):
+            parser.error("Family and task grants must be exact identifiers")
+        with args.recipient_task_file.open("rb") as stream:
+            task_bytes = stream.read(4097)
+        if not 1 <= len(task_bytes) <= 4096:
+            parser.error("Recipient task text must contain one to 4096 UTF-8 bytes")
+        try:
+            task_text = task_bytes.decode("utf-8")
+        except UnicodeError:
+            parser.error("Recipient task text must be UTF-8")
+        families = FamilyRegistry.load(artifacts, args.families)
+        applicability = TaskApplicabilityRegistry.load(families, args.tasks)
+        if args.rag_catalogue:
+            from .rag import RagCandidateIndex
+
+            candidate_index = RagCandidateIndex.load(families, args.rag_catalogue)
+        else:
+            candidate_index = CandidateIndex.load(families, args.aliases) if args.aliases else None
+        task_host = TaskFamilyHost(
+            families, principal=args.recipient_principal,
+            authorised_families=set(args.recipient_family_grant),
+            authorised_claims=grants, applicability=applicability,
+            task_text=task_text, authorised_tasks=set(args.recipient_task_grant),
+            candidate_index=candidate_index,
+        )
     create_server(service, artifacts, recipient_only=args.recipient_only,
                   principal=args.recipient_principal,
-                  recipient_grants=grants if args.recipient_only else None).run(transport="stdio")
+                  recipient_grants=grants if args.recipient_only else None,
+                  reviewed_task_host=task_host).run(transport="stdio")
 
 
 if __name__ == "__main__":

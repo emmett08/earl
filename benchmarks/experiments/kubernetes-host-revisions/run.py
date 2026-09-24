@@ -26,6 +26,10 @@ ROOT = Path(__file__).resolve().parent
 FILES = ("source.eal", "artifacts.toml", "families.toml", "manifest.json")
 ALL_FAMILIES = frozenset(("checkout_latency", "rollout_digest", "service_failover"))
 CONTEXT = {"cluster": "prod_east", "namespace": "checkout"}
+# The frozen fixture predates the claim route's complete-collection gate. Its
+# EAL statuses remain a raw evaluator regression; these revisions now refuse
+# recipient delivery because evidence required by the claim is stale.
+EXPECTED_REFUSALS = frozenset(("stale_load_record", "stale_pressure_gap"))
 
 
 def _bytes(value: object) -> int:
@@ -110,9 +114,10 @@ def _workspace(path: Path, revision: dict) -> None:
     (path / "tools.toml").write_text("\n".join(lines), encoding="utf-8")
 
 
-def _host(path: Path) -> TaskFamilyHost:
+def _host(path: Path, *, historical_evaluator: bool = False) -> TaskFamilyHost:
     service = ReasoningService(path, path / "tools.toml", database_path=path / "runs.sqlite3")
-    artifacts = ArtifactRegistry.load(service, path / "artifacts.toml")
+    artifacts = ArtifactRegistry.load(service, path / "artifacts.toml",
+                                      historical_evaluator=historical_evaluator)
     families = FamilyRegistry.load(artifacts, path / "families.toml")
     return TaskFamilyHost(
         families, principal="synthetic_developmental_runner",
@@ -166,11 +171,31 @@ def _revision(path: Path, row: dict, repetitions: int) -> dict:
     _workspace(path, row)
     host = _host(path)
     timings = {"assess": [], "explain": [], "finish": [], "end_to_end": []}
-    packet = trace = None
+    packet = trace = refusal_reason = None
+    assessment = None
+    refused = row["id"] in EXPECTED_REFUSALS
+    store = host.families.artifacts.service.store
     for _ in range(repetitions):
         started = time.perf_counter_ns()
-        packet_start = started
-        packet = host.assess("checkout_latency", CONTEXT, "checkout_latency")
+        try:
+            packet = host.assess("checkout_latency", CONTEXT, "checkout_latency")
+        except ValueError as exc:
+            if not refused or not str(exc).startswith("Claim assessment unresolved: required evidence "):
+                raise
+            refusal_reason = str(exc)
+            packet = trace = None
+            packet_done = time.perf_counter_ns()
+            if store.list(kind="artifact_packet") or store.list(kind="artifact_claim_packet"):
+                raise AssertionError("Refused revision issued a recipient packet")
+            retained = store.list(kind="assessment", limit=1)
+            if not retained:
+                raise AssertionError("Refused revision did not retain its raw assessment")
+            assessment = store.get(retained[0]["id"], kind="assessment")
+            timings["assess"].append(packet_done - started)
+            timings["end_to_end"].append(packet_done - started)
+            continue
+        if refused:
+            raise AssertionError(f'{row["id"]}: stale required evidence issued a recipient packet')
         packet_done = time.perf_counter_ns()
         trace = host.explain("checkout_latency", CONTEXT, "checkout_latency", packet["assessment_id"])
         trace_done = time.perf_counter_ns()
@@ -178,43 +203,69 @@ def _revision(path: Path, row: dict, repetitions: int) -> dict:
         done = time.perf_counter_ns()
         if finished != packet:
             raise AssertionError("Host final packet changed after explanation")
-        timings["assess"].append(packet_done - packet_start)
+        assessment = store.get(packet["assessment_id"], kind="assessment")
+        timings["assess"].append(packet_done - started)
         timings["explain"].append(trace_done - packet_done)
         timings["finish"].append(done - trace_done)
         timings["end_to_end"].append(done - started)
-    assert packet is not None and trace is not None
-    decisive = json.dumps(packet["decisive"], sort_keys=True)
-    status = packet["status"]
-    assessment = host.families.artifacts.service.store.get(packet["assessment_id"], kind="assessment")
+    assert assessment is not None
+    raw_status = assessment["claims"]["checkout_latency"]["status"]
     record_status = assessment["claims"]["checkout_test_record"]["status"]
-    if status != row["expected_status"] or row["expected_cause"] not in decisive:
+    if raw_status != row["expected_status"]:
         raise AssertionError(
-            f'{row["id"]}: expected {row["expected_status"]}/{row["expected_cause"]}, '
-            f"saw {status}: {decisive}"
+            f'{row["id"]}: expected raw status {row["expected_status"]}, saw {raw_status}'
         )
     if record_status != row["expected_record_status"]:
         raise AssertionError(
             f'{row["id"]}: expected historical record {row["expected_record_status"]}, saw {record_status}'
         )
-    if packet["claim"] != "checkout_latency" or packet["artifact_id"] != "k8s_checkout":
-        raise AssertionError("Packet escaped its selected claim")
-    if trace["packet"] != packet or set(trace["arguments"]) != {"load_route"}:
-        raise AssertionError("Explanation escaped its selected claim")
-    if _bytes(packet) > 3072:
-        raise AssertionError("Packet exceeded its byte contract")
+    if refused:
+        if packet is not None or trace is not None or refusal_reason is None:
+            raise AssertionError("Unresolved revision returned a packet or trace")
+        collection = store.get(assessment["collection_id"], kind="collection")
+        unavailable = {name: assessment["evidence"][name]["reasons"]
+                       for name in sorted(collection["records"])
+                       if assessment["evidence"][name]["status"] != "available"}
+        if row["expected_cause"] not in unavailable:
+            raise AssertionError(f'{row["id"]}: expected stale evidence absent from raw assessment')
+        if not any("exceeds max_age" in reason for reasons in unavailable.values() for reason in reasons):
+            raise AssertionError(f'{row["id"]}: no stale required observation explains refusal')
+        decisive = None
+        packet_size = trace_size = ratio = packet_hash = evidence_integrity = None
+        refusal = {"reason": refusal_reason, "unavailable_evidence": unavailable}
+    else:
+        assert packet is not None and trace is not None
+        decisive = packet["decisive"]
+        if packet["status"] != row["expected_status"] or row["expected_cause"] not in json.dumps(decisive):
+            raise AssertionError(f'{row["id"]}: checked packet status or cause differs from fixture')
+        if packet["claim"] != "checkout_latency" or packet["artifact_id"] != "k8s_checkout":
+            raise AssertionError("Packet escaped its selected claim")
+        if (trace["packet"] != packet or set(trace["arguments"]) != {"load_route", "record_route"}
+                or set(trace["premises"]) != {"checkout_test_record"}):
+            raise AssertionError("Explanation omitted the selected claim's premise chain")
+        if _bytes(packet) > 3072:
+            raise AssertionError("Packet exceeded its byte contract")
+        packet_size, trace_size = _bytes(packet), _bytes(trace)
+        ratio = round(packet_size / trace_size, 4)
+        packet_hash = hashlib.sha256(
+            json.dumps(packet, sort_keys=True, separators=(",", ":")).encode()
+        ).hexdigest()
+        evidence_integrity = packet["evidence_integrity"]
+        refusal = None
     return {
         "id": row["id"], "expected_status": row["expected_status"],
-        "observed_status": status,
+        "observed_status": None if refused else packet["status"],
+        "raw_assessment_status": raw_status,
+        "host_outcome": "refused_unresolved" if refused else "issued",
+        "refusal": refusal,
         "expected_record_status": row["expected_record_status"],
         "observed_record_status": record_status,
-        "decisive": packet["decisive"],
-        "packet_bytes": _bytes(packet), "direct_trace_bytes": _bytes(trace),
-        "packet_to_trace_byte_ratio": round(_bytes(packet) / _bytes(trace), 4),
-        "latency": {key: _summary(samples) for key, samples in timings.items()},
-        "evidence_integrity": packet["evidence_integrity"],
-        "packet_hash_sha256": hashlib.sha256(
-            json.dumps(packet, sort_keys=True, separators=(",", ":")).encode()
-        ).hexdigest(),
+        "decisive": decisive,
+        "packet_bytes": packet_size, "direct_trace_bytes": trace_size,
+        "packet_to_trace_byte_ratio": ratio,
+        "latency": {key: _summary(samples) if samples else None for key, samples in timings.items()},
+        "evidence_integrity": evidence_integrity,
+        "packet_hash_sha256": packet_hash,
     }
 
 
@@ -245,12 +296,17 @@ def run(repetitions: int = 5) -> dict:
             else:
                 raise AssertionError(f"Unreviewed route {key} assessed a claim")
     return {
-        "schema": "eal2-kubernetes-host-revisions-result/1",
+        "schema": "eal2-kubernetes-host-revisions-result/2",
         "status": "developmental_synthetic_offline",
         "source_sha256": source_hash,
         "input_sha256": hashes,
         "repetitions_per_revision": repetitions,
-        "statuses_correct": sum(row["expected_status"] == row["observed_status"] for row in revision_results),
+        "statuses_correct": sum(row["expected_status"] == row["observed_status"] for row in revision_results
+                                if row["host_outcome"] == "issued"),
+        "raw_statuses_correct": sum(row["expected_status"] == row["raw_assessment_status"]
+                                    for row in revision_results),
+        "issued_count": sum(row["host_outcome"] == "issued" for row in revision_results),
+        "refused_count": sum(row["host_outcome"] == "refused_unresolved" for row in revision_results),
         "record_statuses_correct": sum(row["expected_record_status"] == row["observed_record_status"]
                                        for row in revision_results),
         "revision_count": len(revision_results),
@@ -264,6 +320,7 @@ def run(repetitions: int = 5) -> dict:
             "Packet bytes are not model tokens; no model decision, retries or paid cost is measured.",
             "The selected claim is a provisional operating basis, conditional on unchanged traffic, deployment and resource conditions; supported does not establish actual future SLO compliance.",
             "The historical record-content claim is separately measured from the same assessment and is not exposed in the selected claim packet.",
+            "Stale required evidence retains raw evaluator statuses for regression but yields no host packet or explanation under the complete-collection gate.",
         ],
     }
 

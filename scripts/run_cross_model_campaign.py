@@ -221,7 +221,10 @@ def _host_assessment(root: dict, state: dict, corpus_dir: Path) -> tuple[dict, l
                                    method_registry=load_method_registry(root.get("method_factory")))
         artifact = Artifact(source.name, digest(source.read_bytes()), service.method_registry.fingerprint,
                             (root["claim"],), root["context"], root["now"])
-        catalogue = ArtifactRegistry(service, {root["id"]: artifact})
+        # This frozen study predates complete-collection recipient gating. Its
+        # intentionally stale and partial states test raw evaluator parity.
+        catalogue = ArtifactRegistry(service, {root["id"]: artifact},
+                                     historical_evaluator=True)
         start = time.monotonic()
         if hasattr(catalogue, "assess_claim"):
             packet = catalogue.assess_claim(root["id"], root["claim"])

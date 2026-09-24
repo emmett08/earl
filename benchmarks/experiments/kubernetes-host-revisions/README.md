@@ -23,7 +23,8 @@ does not prove isolation or future SLO compliance.
 
 The fixture author specified seven revised status pairs and ten query
 relevance sets in `manifest.json` before the retained 20-repeat timing
-run. The original design, source and result remain under
+run. Those frozen input and result files retain their original bytes and
+describe the earlier host contract. The original design, source and result remain under
 `docs/history/kubernetes-host-revisions-v1/` as superseded developmental
 evidence: its contention attack targeted a literal record-reporting claim.
 The same person
@@ -34,17 +35,17 @@ cluster/namespace tuple, one prerequisite record claim and three family
 selected claims to an exact source,
 assessment time, method fingerprint and context. The catalogue's
 `reviewed_by` entry explicitly says that independent review has **not**
-occurred. Hashes of all input files appear in `results.offline.json`.
+occurred. Hashes of all input files appear in the retained
+`results.offline.json` from the earlier run.
 
 Primary operational questions:
 
-1. Does the host return the author's predeclared operating-basis status and
-   decisive cause after a passing, challenged, stale, failed, answered or
-   wrong-identity observation, while keeping the separate record-content
-   status unchanged by a new contention alert?
+1. Does the raw evaluator still derive the author's predeclared status pairs
+   for all seven revisions, while the current host issues checked packets
+   only when the full selected-claim evidence closure is acquired and fresh?
 2. Does a claim packet remain at most 3,072 UTF-8 JSON bytes and omit direct
-   traces for unrelated claims, while an authorised explanation remains
-   retrievable?
+   traces for unrelated claims, while an authorised explanation includes the
+   prerequisite record claim and its evidence?
 3. Does lexical retrieval nominate relevant families and abstain on
    underspecified or unrelated tasks, without turning a suggestion into
    an authorised binding?
@@ -54,8 +55,10 @@ Primary operational questions:
 The seven revisions are repeated 20 times in separate temporary workspaces
 per revision, using the same local JSON observations and a fixed assessment
 time. For each repeat the runner measures assessment, explanation, finish and
-combined host wall time with `perf_counter_ns`. It reports per-revision
-median and nearest-rank p95; the first assessment is included. The ten
+combined host wall time with `perf_counter_ns`. A refusal measures assessment
+and combined time only; packet, explanation and finish fields are null. It
+reports per-revision median and nearest-rank p95 where an operation occurred;
+the first assessment is included. The ten
 fixed queries are run once because retrieval is deterministic; its times are
 small local measurements, not network latency. JSON size uses compact UTF-8
 serialisation. There is no token proxy, API charge or cost estimand in this
@@ -71,11 +74,15 @@ for that parameter tuple, so the exact resolver rejects execution. Generic
 These are candidate labels, not evidence that a family is valid for the
 requester's actual task.
 
-The interpretation is: correct status pairs and cause across all revisions
-establish that this implementation followed these authored records and
-argument dependencies; a mismatch diagnoses a host/fixture defect. A packet above its
-bound, trace leakage or accepted unreviewed tuple invalidates the claimed
-interface property. Lower retrieval precision or synonym recall motivates
+The interpretation separates the raw EAL/2 assessment from host delivery.
+The evaluator's seven status pairs remain a regression against the authored
+fixture. The host must refuse the two revisions with stale required evidence:
+`bounded_load` in `stale_load_record`, and `batch_pressure`,
+`monitor_complete` and `separate_reservation` in `stale_pressure_gap`.
+The latter's raw `unsupported` result remains diagnostic; no recipient
+packet is issued. A mismatch diagnoses a host or fixture defect. A packet
+above its bound, trace leakage or accepted unreviewed tuple invalidates the
+claimed interface property. Lower retrieval precision or synonym recall motivates
 revised metadata or a separately evaluated retrieval system; it does not
 alter the host-owned verdict. An unforeseen result is reported as a failure
 requiring an amended fixture and a new developmental run.
@@ -87,11 +94,12 @@ Run with:
 ```bash
 PYTHONPATH=src python benchmarks/experiments/kubernetes-host-revisions/run.py \
   --repetitions 20 \
-  --output benchmarks/experiments/kubernetes-host-revisions/results.offline.json
+  --output benchmarks/experiments/kubernetes-host-revisions/results.current.json
 PYTHONPATH=src python -m pytest -q tests/test_kubernetes_host_revision_study.py
 ```
 
-The retained Linux x86-64/Python 3.12.14 run observed 7/7 expected
+The retained `results.offline.json` is historical and should not be overwritten
+by this command. Its Linux x86-64/Python 3.12.14 run observed 7/7 expected
 operating-basis statuses and decisive causes and 7/7 separate record-content
 statuses. The new batch contention was `contested` for the operating basis
 while the record remained `supported`. The stale load, failed test, wrong
@@ -102,8 +110,8 @@ monitoring coverage, a stale pressure record cannot supply an active
 challenge, but absence of a challenge does **not** restore an operating
 basis: its mandatory fresh-coverage premise fails.
 
-The mean compact packet was 1,553 bytes, versus 6,042 bytes for its direct
-explanation (mean ratio 0.257). Per-revision median end-to-end
+In that retained run, the mean compact packet was 1,553 bytes, versus 6,042
+bytes for its then-direct explanation (mean ratio 0.257). Per-revision median end-to-end
 assess/explain/finish times ranged from 161.0 to 174.4 ms locally.
 Candidate retrieval obtained 8 true positives, 6 false positives and
 1 false negative: micro precision@3 0.5714, recall@3 0.8889, top-one hit
@@ -112,16 +120,28 @@ queries. The miss was `traffic switch backup`; the generic
 `Kubernetes` query returned a spurious candidate. These ten authored
 queries are insufficient to estimate field retrieval quality.
 
+With the current complete-collection claim route, a one-repeat developmental
+rerun recovered 7/7 raw status pairs, issued five checked claim packets and
+refused two stale revisions. Valid observations that make an objection
+predicate false remain usable negative findings. Failed acquisition, stale
+records, invalid record identity or malformed predicates prevent delivery;
+the failure and raw assessment remain in the local store. The host also
+requires observations for alternative support branches, even when another
+branch could independently support the claim. Which adverse monitors belong
+in an argument remains an authored review obligation: the gate cannot detect
+an omitted declaration.
+
 The host rejected the unreviewed `prod_west` tuple, wrong family/claim
 pair and unknown family. The test suite also verifies that source drift
 invalidates the pinned artefact. Packet and trace byte sizes are not model
 token counts. The retrieved evidence here is fixture JSON with
 `consistency_checked_not_authenticated` integrity: it cannot authenticate
 apiserver state, the collector or the engineer's intervention.
-The selected claim's direct explanation names the prerequisite record claim
-and its acceptability label but does not include that premise's full evidence
-trace. An independent reviewer needs an authorised, bounded transitive trace
-or separate access to the prerequisite's assessment.
+The current authorised explanation follows the prerequisite
+`checkout_test_record` through `record_route` to `recorded_load`, including
+the relevant objection and defence evidence. It omits the unrelated digest
+and failover claims. The full trace remains bounded and accessible only for
+the selected claim route.
 
 ## What a cluster study would need
 

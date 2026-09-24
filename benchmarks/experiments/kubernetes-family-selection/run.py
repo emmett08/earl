@@ -216,7 +216,7 @@ def prepare(plan_path: Path = PLAN, providers: dict | None = None) -> dict:
             query, revision = _query_and_revision(manifest, item)
             workspace = Path(temporary) / item["id"]
             fixture._workspace(workspace, revision)
-            host = fixture._host(workspace)
+            host = fixture._host(workspace, historical_evaluator=True)
             suggestions = host.candidates(query["query"], limit=3)
             expected_status = _reference_check(item, query, suggestions, host, revision)
             candidate_metadata = _metadata(host, suggestions)
@@ -325,7 +325,7 @@ def _route(case: dict, selection: dict) -> dict:
     with tempfile.TemporaryDirectory(prefix="eal2-family-route-") as temporary:
         workspace = Path(temporary) / "instance"
         fixture._workspace(workspace, revision)
-        host = fixture._host(workspace)
+        host = fixture._host(workspace, historical_evaluator=True)
         started = time.perf_counter_ns()
         try:
             packet = host.assess(family, selection["bindings"], selection["claim"])

@@ -1,44 +1,43 @@
 # Host, family and retrieval completion audit
 
-**Cut:** 24 September 2026, with the post-campaign recipient-grant correction
-noted below. This audit distinguishes a working exact-case implementation from an operational
+**Cut:** 24 September 2026, package 2.5.0. This audit distinguishes a working exact-case implementation from an operational
 claim about changing engineering systems. It does not extend EAL/2 grammar.
 
 | Boundary | Implemented and checked locally | Remaining acceptance condition |
 | --- | --- | --- |
-| Claim assessment and final status | The host pins source, method, context and a granted claim, executes the interpreter and owns the final status. A recipient's conflicting prose cannot replace it. Recipient grants now validate exact claim IDs and are copied into immutable sets at server construction. | The saved `finish_claim` status is historical. A current decision requires fresh collection after a relevant change, an explicit assessment time, and a rule for unavailable or incoherent observations. A TTL alone does not establish continuity. |
-| Compact explanation | The selected-claim packet has a 3,072-byte JSON bound; an authorised direct trace is available separately. | The direct trace does not expand every transitive premise's evidence. Add a bounded, access-controlled premise-chain explanation and verify that it excludes unrelated claims. The packet's concise prose still needs independent fidelity review. |
-| Tool acquisition | Source, request, method, context, observation time and value digests are checked against declared records. | The generic `assess_claim` collects the entire artefact, including evidence outside the granted claim, and has no mandatory-monitor gate. Digest consistency does not authenticate the producer, prove monitor coverage, or validate the authored causal warrant. A live adapter needs an authenticated collector, coherent object identities, explicit failed/missing acquisition, and event-triggered reassessment. The [Kubernetes synthetic gate](../examples/kubernetes-resource-revision/README.md) demonstrates a fixture-specific fail-closed policy. |
-| Finite task families | Reviewed *declarations* map typed, listed parameter tuples to pinned artefacts and claims; changed source or unseen bindings are refused. | Reviewer labels are assertions. An independent review record, role-bound approval and a revision process are required. The current family route is in-process and its issuance is not durable across restart. |
-| Candidate retrieval | Lexical ranker proposes family IDs with matched terms; a proposal cannot supply a tuple, grant or verdict. | Establish independently labelled recall, precision, ambiguity and no-target refusal on new tasks. An authenticated application must resolve selected typed bindings. There is no family-resolution recipient MCP method at this cut. |
+| Claim assessment and final status | The host pins source, method, context and a granted claim, executes the interpreter and owns the final status. Recipient and reviewed-task issuance persist with principal and packet identity across restart. | A saved `finish_claim` or `finish_task` status is historical. A current decision requires fresh collection after relevant change; a TTL alone does not establish continuity. |
+| Compact explanation | The selected-claim packet has a 3,072-byte JSON bound. The authorised trace now includes a bounded transitive premise and objection chain and excludes unrelated claim data in local tests. | Independently assess explanation fidelity, truncation and disclosure on new task structures. Generated prose may still contradict the packet. |
+| Tool acquisition | Claim assessment collects its argument and objection evidence closure and refuses a packet when a required closure collector fails, is missing or stale. Source, request, method, context, observation time and value digests are checked against declared records. | The conservative gate can block an otherwise sufficient alternative argument when its collector fails. Digest consistency does not authenticate the producer, prove that the author listed every mandatory monitor, or validate the causal warrant. A live adapter needs authenticated collection, coherent object identities and event-triggered reassessment. The [Kubernetes synthetic gate](../examples/kubernetes-resource-revision/README.md) demonstrates a fixture-specific policy. |
+| Finite task families | Reviewed finite tuples map to pinned artefacts and claims. An additional exact-question manifest binds the launcher's immutable task text to one tuple and claim; changed source or unseen question is refused. Issuance survives restart. | Reviewer labels and checksums are assertions. Independent review records, role-bound approval and a revision process remain deployment responsibilities. Every new wording needs review. |
+| Candidate retrieval | Lexical ranking, reviewed aliases and a locally scored reviewed-snippet RAG index propose authorised family IDs. `eal_bound_task()` resolves the launcher's exact question without a model-supplied ID; retrieval cannot supply a tuple, grant or verdict. | Establish independently labelled recall, precision, ambiguity and no-target refusal on new tasks. Vector retrieval needs a compatible host-supplied embedder; neither lexical nor vector similarity authorises unseen wording. |
 | Independent comparator | The generic graph checker has separate code and matches selected synthetic status and attack cases. | Its semantics and source fidelity need independent review for every new mechanism. Matched endpoint parity is expected when both checked systems implement the same reviewed graph; it does not demonstrate an EAL-specific reasoning advantage. |
 
-The executable Kubernetes revision study supplies synthetic local checks of
+The earlier executable Kubernetes revision study supplies synthetic local checks of
 claim packet size, exact family denial and lexical candidate ranking. Its
 author wrote the expected statuses and query relevance labels. It does not
 authenticate cluster observations or estimate field retrieval quality. The
 cross-model recipient campaign supplies known artefact IDs in its request arm;
-that arm does not exercise `CandidateIndex` or `FamilyRegistry` selection. An
-exact authorised family/tuple can still be irrelevant to a vague task. A host
-can correctly assess that *different* claim and still produce false support
-as an answer to the user's task. Task applicability needs a trusted selection
-or separate review gate.
+that historical arm does not exercise `CandidateIndex` or `FamilyRegistry` selection. An
+exact authorised family/tuple can still be irrelevant to a vague task. The
+new exact-question gate refuses a route when the launcher's question differs
+from the reviewed entry. It cannot decide whether an unseen
+or paraphrased question has the same meaning; those questions remain uncovered.
 
 ## An operational acceptance sequence
 
 1. Preserve old assessment IDs and statuses as immutable history. For a new
    operating decision, acquire a fresh, coherent evidence set under a pinned
-   identity and assessment cut; return unavailable when mandatory collection
-   fails. Record which deployment, placement, traffic or resource event
+   identity and assessment cut; issue no accepted claim packet when required
+   collection fails. Record which deployment, placement, traffic or resource event
    invalidates the prior operating basis.
 2. Authenticate the source/build/deployment link and the observation producer
    separately. Require coverage evidence for mandatory defeaters, and test a
    missing, stale, forged, replayed, wrong-cluster and contradictory record.
    Review the engineering warrant and any statistical or causal inference.
-3. Give a remote recipient only principal-bound, reviewed family/tuple/claim
-   grants. Persist issued assessments with their review contract and recheck
-   grants and source identity on explanation and completion. Treat a lexical
-   candidate as a suggestion to a trusted resolver.
+3. Authenticate the task presented to the recipient. For recurring exact
+   questions, bind it to a reviewed task ID and principal grant; refuse
+   uncovered wording. Measure retrieval misses and wrongly suggested families
+   independently of exact-case assessment.
 4. Test a bounded transitive explanation against a separately reviewed
    reference, then measure recipient fidelity after delivery. Count model
    tokens, retries, latency, acquisition, host compute, source authoring and
