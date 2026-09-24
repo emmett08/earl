@@ -3,9 +3,11 @@
 `cases.json` describes twelve author-created engineering episodes. Read
 `AMENDMENT-0.1.1.md` and `AMENDMENT-0.1.2.md` with the original `PROTOCOL.md`
 before using this runner.
-The amendment was fixed before any paid call and removes public class labels,
-aligns the EAL candidate-objection scaffold, and makes raw agent accuracy the
-primary outcome. `run.py`
+Amendment 0.1.1 was fixed before the first paid call. It removes public class
+labels, aligns the EAL candidate-objection scaffold and makes raw agent accuracy
+the primary outcome. Amendment 0.1.2 followed the first invalid pilot response;
+it permits independent assignments to continue after terminal invalid outcomes.
+This Stage A run is developmental. `run.py`
 expands each into a process-supported candidate, a stronger technical rival, a
 missing-link case, and an insufficient-record case (48 total). Each API input
 contains a statically checked EAL/2 engineering decision argument, a separate
@@ -46,14 +48,15 @@ The superseded amendment 0.1.1 pilot and full freezes are archived as
 stop-on-invalid policy and must not be executed by the current runner.
 The original `pilot-freeze.json.gz` and `full-freeze.json.gz` remain historical
 zero-call inputs with known class leakage; current `load_freeze` rejects them.
-The 0.1.2 continuation freezes and exact execution commands are retained with
-their results under `benchmarks/results/2026-09-24-bias-agent-stage-a/`.
+The executed 0.1.2 continuation freezes and historical execution commands are
+retained with their results under `benchmarks/results/2026-09-24-bias-agent-stage-a/`.
 
 ```sh
 cat benchmarks/results/2026-09-24-bias-agent-stage-a/COMMANDS.txt
 ```
 
-To create a future amended plan, first version and review its changed source,
+The archived commands document the completed run; do not execute its calls
+again. To create a future amended plan, first version and review its changed source,
 then run `run.py freeze` with **new output filenames**. A freeze command never
 overwrites an existing path; do not run it against decompressed archive files.
 
