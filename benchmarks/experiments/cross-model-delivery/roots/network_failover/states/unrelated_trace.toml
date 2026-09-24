@@ -1,0 +1,17 @@
+[tools.failover_reader]
+kind = "json_file"
+path = "observations/test.json"
+version = "1"
+mode = "deterministic"
+
+[tools.buffer_alert_reader]
+kind = "json_file"
+path = "observations/alert_overrun.json"
+version = "1"
+mode = "deterministic"
+
+[tools.packet_trace_reader]
+kind = "json_file"
+path = "observations/trace_other_profile.json"
+version = "1"
+mode = "deterministic"

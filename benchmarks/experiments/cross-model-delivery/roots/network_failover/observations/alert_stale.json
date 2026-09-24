@@ -1,0 +1,21 @@
+{
+  "context": {
+    "profile": "dual_uplink_A",
+    "switch": "NS-9"
+  },
+  "observed_at": "2026-09-24T11:20:00Z",
+  "request": {
+    "context": {
+      "profile": "dual_uplink_A",
+      "switch": "NS-9"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "buffer_alert_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "finding": "switch_buffer_overrun",
+    "switch": "NS-9"
+  }
+}

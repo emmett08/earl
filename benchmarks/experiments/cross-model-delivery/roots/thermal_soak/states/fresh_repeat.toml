@@ -1,0 +1,5 @@
+[tools.soak_reader]
+kind = "json_file"
+path = "observations/soak_repeat.json"
+version = "1"
+mode = "deterministic"

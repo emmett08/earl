@@ -2,6 +2,18 @@
 
 Package 2.2.4 adds the optional artifact catalogue and `eal_assess_artifact` MCP operation. This is a host and package interface change; the EAL/2 source grammar and `EAL/typed-input/1` observation schema are unchanged.
 
+Package 2.3.0 adds a recipient-only, principal-bound claim assessment route and
+the compact `eal2-claim-packet/2` host output. Its bounded `decisive` section
+includes a failed premise's predicate cause or an active objection's observation,
+with counts and truncation flags when a short packet omits further detail. Exact finite task-family
+bindings (`eal2-task-families/1`) and candidate retrieval are host interfaces.
+The EAL/2 source grammar and `EAL/typed-input/1` observation schema remain
+unchanged. The caller must authenticate the principal before launching the
+recipient endpoint, and the host retains the checked status independently of
+model-generated prose. Recipient assessment issuance is persisted for that
+principal, artifact and claim. A second principal with the same claim grant
+cannot explain or finalise the first principal's assessment ID.
+
 The MCP server uses the official Python SDK pinned to 1.30.0. A real subprocess client/server test exercises the published 2025-11-25 protocol lifecycle, tool discovery and structured calls. The server is a local stdio service; HTTP MCP deployment is not included. The separate model host supports configured command and HTTP text-model providers; see [model-loop.md](model-loop.md).
 
 | Tool | Input | Operation |

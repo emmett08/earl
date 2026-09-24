@@ -1,0 +1,43 @@
+language "EAL/2";
+environment staged_release {
+  require "release" == "PX-42";
+  require "lane" == "West-2";
+}
+tool build_reader { version "1"; mode deterministic; }
+tool stage_reader { version "1"; mode deterministic; }
+evidence signed_build_record {
+  tool build_reader; kind provenance; environment staged_release; max_age 3600;
+  require "release" == "PX-42";
+  require "revision" == "b64";
+  require "digest" == "sha256:8c4a";
+  require "signature_verified" == true;
+}
+evidence staged_pull_record {
+  tool stage_reader; kind deployment_record; environment staged_release; max_age 3600;
+  require "release" == "PX-42";
+  require "lane" == "West-2";
+  require "digest" == "sha256:8c4a";
+  require "pull_verified" == true;
+}
+reasoning record_identity {
+  method "structured/1";
+  rationale "A current attestation and staged-pull record naming the same pinned digest establish identity of the submitted records under the stated verification flags. These synthetic flags do not authenticate a real signature or deployed byte stream.";
+}
+claim build_qualifies {
+  statement "The submitted PX-42 b64 build record names the pinned digest and reports signature verification.";
+  environment staged_release;
+}
+claim stage_qualifies {
+  statement "The submitted West-2 staged-pull record for PX-42 names the pinned digest and reports verification.";
+  environment staged_release;
+}
+claim stage_matches_build {
+  statement "The current signed-build and West-2 staged-pull records both identify the pinned PX-42 b64 digest sha256:8c4a.";
+  environment staged_release;
+}
+argument build_route { conclusion build_qualifies; reasoning record_identity; evidence signed_build_record; }
+argument stage_route { conclusion stage_qualifies; reasoning record_identity; evidence staged_pull_record; }
+argument identity_route {
+  conclusion stage_matches_build; reasoning record_identity;
+  premises build_qualifies, stage_qualifies;
+}

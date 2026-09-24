@@ -157,6 +157,143 @@ def test_text_only_recipient_gets_compact_packet_but_cannot_change_host_status(t
     assert ArtifactRegistry.load(service, manifest).finish("test", packet["assessment_id"])["claims"] == {"works": "supported"}
 
 
+def test_claim_packet_and_explanation_are_pinned_and_claim_scoped(tmp_path):
+    service, manifest, _ = setup_artifact(tmp_path, claims=("works", "other"))
+    registry = ArtifactRegistry.load(service, manifest)
+    packet = registry.assess_claim("test", "works")
+    assert packet["status"] == "supported"
+    assert packet["scope"]["environment"] == "lab"
+    assert packet["scope"]["status"] == "matched"
+    assert packet["decisive"]["arguments"][0]["id"] == "result"
+    assert packet["evidence_integrity"] == "consistency_checked_not_authenticated"
+    assert len(json.dumps(packet).encode()) < 3072
+    assert "other" not in json.dumps(packet)
+    explained = registry.explain_claim("test", packet["assessment_id"], "works")
+    assert explained["packet"] == packet
+    assert set(explained["arguments"]) == {"result"}
+    assert set(explained["evidence"]) == {"measured"}
+    assert "other" not in json.dumps(explained)
+    with pytest.raises(ValueError, match="prior host assessment"):
+        registry.explain_claim("test", packet["assessment_id"], "other")
+    assert ArtifactRegistry.load(service, manifest).finish_claim("test", packet["assessment_id"], "works") == packet
+    (tmp_path / "checked.eal").write_text(SOURCE + "// source revision\n")
+    with pytest.raises(ValueError, match="pinned digest"):
+        registry.finish_claim("test", packet["assessment_id"], "works")
+
+
+def test_text_only_claim_handoff_keeps_recipient_prose_separate(tmp_path):
+    service, manifest, _ = setup_artifact(tmp_path)
+    registry = ArtifactRegistry.load(service, manifest)
+
+    async def recipient(input_packet):
+        assert input_packet["checked_assessment"]["status"] == "supported"
+        assert "claims" not in input_packet["checked_assessment"]
+        return "The claim is unsupported."
+
+    result = asyncio.run(registry.assist_text_only("test", "Explain the result", recipient, claim="works"))
+    assert result["checked_answer"]["status"] == "supported"
+    assert result["recipient_output_unverified"] == "The claim is unsupported."
+
+
+def test_recipient_mcp_exposes_only_principal_granted_claim(tmp_path):
+    _, manifest, tools = setup_artifact(tmp_path, claims=("works", "other"))
+    server = StdioServerParameters(
+        command=sys.executable,
+        args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(tools),
+              "--artifacts", str(manifest), "--recipient-only", "--recipient-principal", "caller_a",
+              "--recipient-grant", "test:works"],
+        env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")},
+    )
+
+    async def exercise():
+        async with stdio_client(server) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                names = {tool.name for tool in (await session.list_tools()).tools}
+                assert names == {"eal_assess_artifact_claim", "eal_explain_artifact_claim",
+                                 "eal_finish_artifact_claim"}
+                denied = await session.call_tool("eal_assess_artifact_claim", {"artifact_id": "test", "claim": "other"})
+                assert denied.isError
+                answer = await session.call_tool("eal_assess_artifact_claim", {"artifact_id": "test", "claim": "works"})
+                assert not answer.isError
+                packet = answer.structuredContent
+                assert packet["status"] == "supported"
+                trace = await session.call_tool("eal_explain_artifact_claim", {
+                    "artifact_id": "test", "claim": "works", "assessment_id": packet["assessment_id"]})
+                assert not trace.isError
+                assert "other" not in json.dumps(trace.structuredContent)
+                denied_trace = await session.call_tool("eal_explain_artifact_claim", {
+                    "artifact_id": "test", "claim": "other", "assessment_id": packet["assessment_id"]})
+                assert denied_trace.isError
+
+    asyncio.run(exercise())
+
+
+def test_recipient_mcp_assessment_cannot_be_replayed_across_principals(tmp_path):
+    _, manifest, tools = setup_artifact(tmp_path)
+
+    def parameters(principal):
+        return StdioServerParameters(
+            command=sys.executable,
+            args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(tools),
+                  "--artifacts", str(manifest), "--recipient-only", "--recipient-principal", principal,
+                  "--recipient-grant", "test:works"],
+            env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")},
+        )
+
+    async def exercise():
+        async with stdio_client(parameters("reader_a")) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                result = await session.call_tool("eal_assess_artifact_claim",
+                                                 {"artifact_id": "test", "claim": "works"})
+                assert not result.isError
+                assessment_id = result.structuredContent["assessment_id"]
+        args = {"artifact_id": "test", "claim": "works", "assessment_id": assessment_id}
+        async with stdio_client(parameters("reader_b")) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                assert (await session.call_tool("eal_finish_artifact_claim", args)).isError
+                assert (await session.call_tool("eal_explain_artifact_claim", args)).isError
+        # A new process for the original principal can still retrieve its
+        # issued assessment from the persistent host store.
+        async with stdio_client(parameters("reader_a")) as (read, write):
+            async with ClientSession(read, write) as session:
+                await session.initialize()
+                finished = await session.call_tool("eal_finish_artifact_claim", args)
+                assert not finished.isError
+                assert finished.structuredContent["status"] == "supported"
+
+    asyncio.run(exercise())
+
+
+def test_compact_packet_follows_failed_premise_and_active_objection_predicates():
+    from scripts.run_cross_model_campaign import _host_assessment
+
+    cohort = Path(__file__).resolve().parents[1] / "benchmarks/experiments/cross-model-delivery"
+    manifest = json.loads((cohort / "manifest.json").read_text())
+
+    def packet_for(root_id, state_id):
+        root = next(root for root in manifest["roots"] if root["id"] == root_id)
+        state = next(state for state in root["states"] if state["id"] == state_id)
+        return _host_assessment(root, state, cohort)[0]
+
+    mismatch = packet_for("release_provenance", "digest_mismatch")
+    assert mismatch["schema"] == "eal2-claim-packet/2"
+    assert mismatch["status"] == "unsupported"
+    reason = mismatch["decisive"]["arguments"][0]["reason"]
+    assert "stage_qualifies" in reason and "sha256:8c4a" in reason and "sha256:fb90" in reason
+    challenge = packet_for("network_failover", "buffer_challenge")
+    assert challenge["status"] == "contested"
+    objection = challenge["decisive"]["objections"][0]
+    assert objection["status"] == "active" and "switch_buffer_overrun" in objection["reason"]
+    for packet in (mismatch, challenge):
+        assert packet["decisive"]["argument_count"] >= len(packet["decisive"]["arguments"])
+        assert packet["decisive"]["objection_count"] >= len(packet["decisive"]["objections"])
+        assert "details_truncated" in packet["decisive"]
+        assert len(json.dumps(packet, ensure_ascii=False).encode("utf-8")) <= 3072
+
+
 def test_operator_cli_assesses_artifact_before_any_model_call(tmp_path):
     _, manifest, tools = setup_artifact(tmp_path)
     result = subprocess.run(
