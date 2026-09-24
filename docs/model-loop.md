@@ -103,7 +103,7 @@ For source construction or repair, supply `draft_source` instead of `source`. So
 
 ## Reviewed recipient route
 
-`eal-agent` constructs or revises a draft source and reports its task correspondence as unverified unless the caller pinned the source. A separate `eal-host` recipient route uses an operator-reviewed [exact task catalogue](task-families.md#reviewed-recipient-route). The authenticated launcher supplies the original question file, principal and task, family and artefact-claim grants. The recipient can nominate an authorised task ID in JSON; it cannot supply the question, EAL source, bindings or claim.
+`eal-agent` constructs or revises a draft source and reports its task correspondence as unverified unless the caller pinned the source. A separate `eal-host` recipient route uses an operator-reviewed [exact task catalogue](task-families.md#reviewed-recipient-route). The authenticated launcher supplies the original question file, principal and task, family and artefact-claim grants. The host resolves the unique exact question itself. The recipient supplies no task ID, question, EAL source, bindings or claim.
 
 For the reviewed `field_inspection` example, the operator first saves the exact catalogue question bytes with no added newline, then invokes the host under an authenticated principal. The same database and grant must be available when finalising the returned assessment ID:
 
@@ -114,16 +114,16 @@ route=(--workspace . --registry tools.toml --database runs.sqlite3 \
   --recipient-task-file question.txt --recipient-principal caller_a \
   --recipient-family-grant rig --recipient-task-grant field_inspection \
   --recipient-grant rig_field:accepted)
-assessment_response=$(printf %s '{"operation":"assess_reviewed_task","task_id":"field_inspection"}' |
+assessment_response=$(printf %s '{"operation":"assess_bound_task"}' |
   eal-host "${route[@]}")
 printf '%s\n' "$assessment_response"
 assessment_id=$(printf %s "$assessment_response" |
   python -c 'import json,sys; print(json.load(sys.stdin)["result"]["assessment_id"])')
 printf %s 'The model explanation, if any' |
-  eal-host "${route[@]}" --task-id field_inspection --assessment-id "$assessment_id"
+  eal-host "${route[@]}" --assessment-id "$assessment_id"
 ```
 
-The first response contains the host-checked result packet. The final response separates `checked_answer` from `recipient_output_unverified`; generated prose cannot change the stored status. `{"operation":"task_candidates"}` can suggest accessible families, and `{"operation":"explain_reviewed_task","task_id":"field_inspection","assessment_id":"..."}` can retrieve the authorised trace. Candidate scores do not confer applicability. The task resolver requires an exact reviewed question and refuses unmatched, ambiguous or drifted contracts. The launcher must authenticate the principal independently of the CLI flag, and the operator must have reviewed the question, scope, source, methods and evidence obligations. A checked status remains conditional on the declared argument and actual observations; it does not certify the prose claim or remove the need to test adverse states.
+The first response contains the host-checked result packet. The final response separates `checked_answer` from `recipient_output_unverified`; generated prose cannot change the stored status. `{"operation":"bound_task"}` returns the exact-question digest and selected reviewed route before collection. `{"operation":"task_candidates"}` suggests accessible families only; `{"operation":"explain_bound_task","assessment_id":"..."}` retrieves the authorised trace. Candidate scores do not confer applicability. The task resolver requires an exact reviewed question and refuses unmatched, ambiguous or drifted contracts. The launcher must authenticate the principal independently of the CLI flag, and the operator must have reviewed the question, scope, source, methods and evidence obligations. A checked status remains conditional on the declared argument and actual observations; it does not certify the prose claim or remove the need to test adverse states.
 
 ## Configure a provider
 

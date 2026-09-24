@@ -1,15 +1,16 @@
 """Principal-bound route from reviewed tasks and families to claim assessments.
 
 The application authenticates a caller and constructs one route with its grant.
-Recipient text may nominate a task ID. The host binds the original task and
-refuses an inapplicable nomination before it can run an assessment.
+The host binds the original task and resolves its unique reviewed contract.
+Recipient text cannot change the question or promote a retrieval suggestion.
 """
 
 from __future__ import annotations
 
+import hashlib
 from collections.abc import Collection, Mapping
 from threading import RLock
-from typing import Any
+from typing import Any, Protocol
 
 from .applicability import TaskApplicabilityRegistry
 from .evaluator import canonical_digest
@@ -18,6 +19,17 @@ from .retrieval import CandidateIndex
 
 
 MAX_ISSUED_ASSESSMENTS = 512
+
+
+class CandidateRetriever(Protocol):
+    """Advisory search hook; its output never authorises an assessment."""
+
+    families: FamilyRegistry
+
+    def search(self, query: str, *, authorised_families: Collection[str],
+               authorised_artifacts: Collection[str],
+               authorised_claims: Mapping[str, Collection[str]],
+               limit: int = 8) -> list[dict[str, Any]]: ...
 
 
 class TaskFamilyHost:
@@ -35,7 +47,7 @@ class TaskFamilyHost:
                  applicability: TaskApplicabilityRegistry | None = None,
                  task_text: str | None = None,
                  authorised_tasks: Collection[str] = (),
-                 candidate_index: CandidateIndex | None = None):
+                 candidate_index: CandidateRetriever | None = None):
         if not isinstance(principal, str) or not principal.strip() or len(principal.encode("utf-8")) > 128:
             raise ValueError("Principal must be a nonempty host-assigned label of at most 128 bytes")
         family_ids = authorised_ids(authorised_families)
@@ -87,7 +99,9 @@ class TaskFamilyHost:
             if any(case.claims and set(case.claims) & self._claims.get(case.artifact_id, frozenset())
                    for case in self.families.families[name].cases)
         }
-        return self._index.search(query, authorised_families=available, limit=limit)
+        return self._index.search(query, authorised_families=available,
+                                  authorised_artifacts=frozenset(self._claims),
+                                  authorised_claims=self._claims, limit=limit)
 
     def _selected(self, family_id: str, bindings: dict[str, Any], claim: str) -> str:
         if not isinstance(claim, str):
@@ -140,25 +154,41 @@ class TaskFamilyHost:
         artifact_id = self._selected(family_id, bindings, claim)
         return self._assess_selected(family_id, artifact_id, claim)
 
-    def _reviewed(self, task_id: str) -> dict[str, Any]:
+    def _reviewed(self, task_id: str | None = None) -> dict[str, Any]:
         if self.applicability is None or self.task_text is None:
             raise ValueError("Host has no bound reviewed task")
-        selected = self.applicability.resolve(
-            self.task_text, task_id=task_id, authorised_tasks=self._tasks,
-            authorised_families=self._families,
-            authorised_artifacts=frozenset(self._claims),
-        )
+        grants = {"authorised_tasks": self._tasks,
+                  "authorised_families": self._families,
+                  "authorised_artifacts": frozenset(self._claims)}
+        selected = (self.applicability.resolve_bound(self.task_text, **grants)
+                    if task_id is None else
+                    self.applicability.resolve(self.task_text, task_id=task_id, **grants))
         if selected["claim"] not in self._claims[selected["artifact_id"]]:
             raise ValueError("Reviewed task claim is not granted to this caller")
         return selected
 
-    def assess_task(self, task_id: str) -> dict[str, Any]:
-        """Assess only a reviewed contract for the launcher's immutable task."""
-        selected = self._reviewed(task_id)
+    def _assess_reviewed(self, selected: dict[str, Any]) -> dict[str, Any]:
         return self._assess_selected(
             selected["family_id"], selected["artifact_id"], selected["claim"],
-            task_id=task_id, task_review=selected["review_contract_sha256"],
+            task_id=selected["task_id"], task_review=selected["review_contract_sha256"],
         )
+
+    def assess_task(self, task_id: str) -> dict[str, Any]:
+        """Assess only a reviewed contract for the launcher's immutable task."""
+        return self._assess_reviewed(self._reviewed(task_id))
+
+    def assess_bound_task(self) -> dict[str, Any]:
+        """Assess the unique reviewed contract for the launcher's original task.
+
+        The recipient supplies no ID, source, claim, bindings or question.
+        """
+        return self._assess_reviewed(self._reviewed())
+
+    def describe_bound_task(self) -> dict[str, Any]:
+        """Discover the reviewed route without collecting or evaluating evidence."""
+        selected = self._reviewed()
+        return {**selected,
+                "question_sha256": hashlib.sha256(self.task_text.encode("utf-8")).hexdigest()}
 
     def _addressed(self, family_id: str, bindings: dict[str, Any], claim: str,
                    assessment_id: str, *, task_id: str | None = None,
@@ -199,23 +229,36 @@ class TaskFamilyHost:
         artifact_id = self._addressed(family_id, bindings, claim, assessment_id)
         return self.families.artifacts.finish_claim(artifact_id, assessment_id, claim)
 
-    def explain_task(self, task_id: str, assessment_id: str) -> dict[str, Any]:
-        selected = self._reviewed(task_id)
-        artifact_id = self._addressed(
+    def _addressed_reviewed(self, selected: dict[str, Any], assessment_id: str) -> str:
+        return self._addressed(
             selected["family_id"], selected["bindings"], selected["claim"],
-            assessment_id, task_id=task_id,
+            assessment_id, task_id=selected["task_id"],
             task_review=selected["review_contract_sha256"],
         )
+
+    def explain_task(self, task_id: str, assessment_id: str) -> dict[str, Any]:
+        selected = self._reviewed(task_id)
+        artifact_id = self._addressed_reviewed(selected, assessment_id)
+        return self.families.artifacts.explain_claim(
+            artifact_id, assessment_id, selected["claim"])
+
+    def explain_bound_task(self, assessment_id: str) -> dict[str, Any]:
+        """Retrieve only this caller's issued trace for the bound question."""
+        selected = self._reviewed()
+        artifact_id = self._addressed_reviewed(selected, assessment_id)
         return self.families.artifacts.explain_claim(
             artifact_id, assessment_id, selected["claim"])
 
     def finish_task(self, task_id: str, assessment_id: str) -> dict[str, Any]:
         """Recover the historical checked packet under the same reviewed task."""
         selected = self._reviewed(task_id)
-        artifact_id = self._addressed(
-            selected["family_id"], selected["bindings"], selected["claim"],
-            assessment_id, task_id=task_id,
-            task_review=selected["review_contract_sha256"],
-        )
+        artifact_id = self._addressed_reviewed(selected, assessment_id)
+        return self.families.artifacts.finish_claim(
+            artifact_id, assessment_id, selected["claim"])
+
+    def finish_bound_task(self, assessment_id: str) -> dict[str, Any]:
+        """Recover this caller's checked packet for the bound original task."""
+        selected = self._reviewed()
+        artifact_id = self._addressed_reviewed(selected, assessment_id)
         return self.families.artifacts.finish_claim(
             artifact_id, assessment_id, selected["claim"])

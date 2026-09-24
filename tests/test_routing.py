@@ -11,6 +11,7 @@ from mcp.server.fastmcp.exceptions import ToolError
 
 from eal.artifacts import ArtifactRegistry
 from eal.families import FamilyRegistry
+from eal.retrieval import CandidateIndex
 from eal.routing import TaskFamilyHost
 from eal.runtime import ReasoningService
 from eal.server import create_server
@@ -47,6 +48,21 @@ def test_retrieval_only_suggests_accessible_family_and_does_not_assess(tmp_path,
     ]
     assert route.candidates("unrelated") == []
     assert not route._issued
+
+
+def test_lexical_candidates_obey_artifact_and_claim_grants(tmp_path):
+    route, _ = routed(tmp_path)
+    index = CandidateIndex(route.families)
+    selected = index.search("rig inspection", authorised_families={"rig"},
+                            authorised_artifacts={"rig_pilot"},
+                            authorised_claims={"rig_pilot": {"accepted"}})
+    assert [row["family_id"] for row in selected] == ["rig"]
+    assert index.search("rig inspection", authorised_families={"rig"},
+                        authorised_artifacts={"rig_pilot"},
+                        authorised_claims={"rig_pilot": set()}) == []
+    assert index.search("rig inspection", authorised_families={"rig"},
+                        authorised_artifacts={"rig_field"},
+                        authorised_claims={"rig_pilot": {"accepted"}}) == []
 
 
 def test_exact_reviewed_case_assesses_and_explains_only_granted_claim(tmp_path):

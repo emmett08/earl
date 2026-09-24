@@ -1,0 +1,15 @@
+{
+  "schema": "eal2-retrieval-developmental/1",
+  "review_status": "fixture_author_only_no_independent_review",
+  "queries": [
+    {"id": "release_exact", "kind": "exact", "brief_root": "release_provenance", "relevant_family": "release_provenance"},
+    {"id": "thermal_exact", "kind": "exact", "brief_root": "thermal_soak", "relevant_family": "thermal_soak"},
+    {"id": "network_exact", "kind": "exact", "brief_root": "network_failover", "relevant_family": "network_failover"},
+    {"id": "release_paraphrase", "kind": "paraphrase", "text": "Does the staged build have the approved release digest?", "relevant_family": "release_provenance"},
+    {"id": "thermal_paraphrase", "kind": "paraphrase", "text": "Check the soak calibration and dwell for this thermal run.", "relevant_family": "thermal_soak"},
+    {"id": "network_paraphrase", "kind": "paraphrase", "text": "Can the failover test survive the switch alert and packet trace challenge?", "relevant_family": "network_failover"},
+    {"id": "combined_decoy", "kind": "decoy", "text": "Should a release stage proceed when a network failover alert is active?", "relevant_family": null},
+    {"id": "mixed_decoy", "kind": "decoy", "text": "Does a thermal soak trace prove the staged build digest?", "relevant_family": null},
+    {"id": "unrelated_no_target", "kind": "no_target", "text": "Classify quarterly invoice tax for the payroll ledger.", "relevant_family": null}
+  ]
+}

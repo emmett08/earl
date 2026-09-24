@@ -14,11 +14,12 @@ model-generated prose. Recipient assessment issuance is persisted for that
 principal, artifact and claim. A second principal with the same claim grant
 cannot explain or finalise the first principal's assessment ID.
 
-Package 2.4.0 adds an optional reviewed exact-question task route. The launcher
+Package 2.5.0 provides an optional reviewed exact-question task route. The launcher
 binds the original task text, authorised task/family IDs and claim grants at
 server construction. Candidate ranking can suggest families but never executes
-one. A model can nominate a task ID only; the host checks the exact reviewed
-question, family tuple, source and claim before collection. Issued task
+one. The host selects the unique exact question and checks its reviewed family
+tuple, source, claim and grants before collection. The model supplies no task
+ID. Issued task
 assessments persist with principal, review contract and packet digest, and are
 rechecked on explanation or completion after restart. Direct artifact-claim
 tools are absent from this recipient endpoint so they cannot bypass the task
@@ -39,9 +40,10 @@ The MCP server uses the official Python SDK pinned to 1.30.0. A real subprocess 
 | `eal_grounded` | `arguments`, `attacks` | Calculate grounded labels for an explicit attack graph |
 | `eal_assess_artifact` (only with `--artifacts`) | `artifact_id` | Read one host-pinned EAL file, collect, evaluate and return its configured claim statuses with assessment ID |
 | `eal_task_candidates` (reviewed-task recipient endpoint) | None | Suggest authorised families for the launcher's bound question; no assessment |
-| `eal_assess_reviewed_task` | `task_id` | Check the exact reviewed question and grants, collect, evaluate and issue one claim packet |
-| `eal_explain_reviewed_task` | `task_id`, `assessment_id` | Retrieve that principal's bounded dependency trace |
-| `eal_finish_reviewed_task` | `task_id`, `assessment_id` | Recover the checked historical packet, independent of model wording |
+| `eal_bound_task` | None | Resolve the exact reviewed question and grants; return the route and question digest without collection |
+| `eal_assess_bound_task` | None | Collect, evaluate and issue one claim packet for that route |
+| `eal_explain_bound_task` | `assessment_id` | Retrieve that principal's bounded dependency trace |
+| `eal_finish_bound_task` | `assessment_id` | Recover the checked historical packet under the same question and grant |
 
 Run `eal-mcp --workspace /absolute/path/to/earl --registry /absolute/path/to/earl/examples/tools.toml`. The default database is `.eal/runs.sqlite3` under that workspace; `--database` overrides it. Keep stdout for MCP protocol messages. MCP validates requests against its advertised JSON schema before SDK conversion; extra fields and values of the wrong type are rejected. The CLI uses the same service and takes the same three global options before the subcommand.
 
@@ -146,14 +148,24 @@ eal-mcp --workspace . --registry TOOLS.toml --artifacts ARTIFACTS.toml \
   --recipient-family-grant rig --recipient-grant rig_pilot:accepted
 ```
 
-The endpoint accepts `eal_assess_reviewed_task({"task_id":"pilot_task"})` and
-later `eal_finish_reviewed_task` with the same task ID and returned assessment
-ID. The model cannot submit family bindings, source, context or question text.
+The endpoint accepts `eal_bound_task()` for a no-collection check,
+`eal_assess_bound_task()` to collect and assess, and later
+`eal_finish_bound_task({"assessment_id":"..."})` to recover the checked
+packet. The model cannot submit a task ID, family bindings, source, context or
+question text. A trusted Python application may still use the explicit task-ID
+methods when it holds an exact reviewed ID.
 The [text-model host](model-loop.md) accepts the corresponding strict JSON
 operation. A missing, differently worded or revoked task fails before
 collection. A candidate alone never reaches assessment. A completed packet
 is historical at its recorded assessment time; a new operating decision calls
-`eal_assess_reviewed_task` again after relevant evidence changes.
+`eal_assess_bound_task` again after relevant evidence changes.
+
+For advisory retrieval, use `--rag-catalogue RAG.toml` on `eal-mcp` or
+`eal-host` to rank locally reviewed snippets with BM25. It replaces the
+optional `--aliases` setting; the two options are mutually exclusive. A
+Python caller can instead inject an index with a configured query embedder.
+The CLI does not request embedding vectors. Neither ranking mode changes the
+exact-question assessment gate; see [reviewed retrieval](eal2-rag.md).
 
 This route is finite exact lookup, not semantic RAG for unseen questions. The
 current collectors check request identity and local consistency but do not

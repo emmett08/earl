@@ -10,7 +10,7 @@ from __future__ import annotations
 import re
 import tomllib
 from pathlib import Path
-from typing import Collection
+from typing import Collection, Mapping
 
 from .evaluator import canonical_digest
 from .families import FamilyRegistry, authorised_ids
@@ -84,6 +84,8 @@ class CandidateIndex:
         return cls(families, _aliases=aliases)
 
     def search(self, query: str, *, authorised_families: Collection[str],
+               authorised_artifacts: Collection[str] | None = None,
+               authorised_claims: Mapping[str, Collection[str]] | None = None,
                limit: int = 8) -> list[dict]:
         """Return possible family IDs with lexical overlap, ordered across ties.
 
@@ -100,6 +102,18 @@ class CandidateIndex:
         if not tokens or len(tokens) > 128:
             raise ValueError("Candidate query requires one to 128 searchable words")
         allowed = authorised_ids(authorised_families)
+        if authorised_artifacts is not None or authorised_claims is not None:
+            artifacts = (authorised_ids(authorised_artifacts)
+                         if authorised_artifacts is not None else None)
+            claims = ({artifact_id: authorised_ids(granted)
+                       for artifact_id, granted in authorised_claims.items()}
+                      if authorised_claims is not None else None)
+            allowed = {family_id for family_id in allowed
+                       if family_id in self.families.families and
+                       any((artifacts is None or case.artifact_id in artifacts)
+                           and (claims is None or bool(
+                               set(case.claims) & claims.get(case.artifact_id, set())))
+                           for case in self.families.families[family_id].cases)}
         matches = []
         for family_id, words in self.index.items():
             if family_id not in allowed:

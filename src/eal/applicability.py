@@ -1,9 +1,9 @@
 """Exact, reviewed task-to-family applicability contracts.
 
 A retrieval candidate or model-generated family ID cannot authorise an
-assessment. A trusted caller must supply the full question and an authorised
-task ID that identifies one reviewed question, binding and claim. Paraphrases
-need their own review entry; a semantic match is never inferred here.
+assessment. A trusted caller supplies the full original question. The host
+finds its unique reviewed task under an explicit grant, binding and claim.
+Paraphrases need their own review entry; a semantic match is never inferred.
 """
 
 from __future__ import annotations
@@ -154,3 +154,25 @@ class TaskApplicabilityRegistry:
         return {"task_id": task_id, "family_id": task.family_id,
                 "bindings": dict(task.bindings), "artifact_id": selected["artifact_id"],
                 "claim": task.claim, "review_contract_sha256": task.review_contract_sha256}
+
+    def resolve_bound(self, question: str, *, authorised_tasks: Collection[str],
+                      authorised_families: Collection[str],
+                      authorised_artifacts: Collection[str]) -> dict[str, Any]:
+        """Select only the unique reviewed contract for the trusted original text.
+
+        Candidate retrieval does not enter this decision. A duplicated exact
+        question is ambiguous even if only one of its task IDs was granted.
+        The ordinary resolver then checks the task and downstream grants and
+        rechecks the reviewed source and case before the host collects anything.
+        """
+        _checked_question(question)
+        matches = [task_id for task_id, task in self.tasks.items()
+                   if task.question == question]
+        if not matches:
+            raise NoApplicableTask("No reviewed task covers this exact question")
+        if len(matches) != 1:
+            raise AmbiguousTask("Multiple task contracts cover this exact question")
+        return self.resolve(question, task_id=matches[0],
+                            authorised_tasks=authorised_tasks,
+                            authorised_families=authorised_families,
+                            authorised_artifacts=authorised_artifacts)

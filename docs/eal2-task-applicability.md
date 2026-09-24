@@ -18,16 +18,24 @@ pinned EAL source. The catalogue refuses duplicate exact questions, including
 duplicates that would route to different cases. A changed question, case or
 source requires review again.
 
-The trusted application binds the *original task text* and permitted task IDs.
-A model may nominate one of those IDs, but cannot supply the question. The host calls
-`TaskApplicabilityRegistry.resolve(question, task_id=...,
-authorised_tasks=..., authorised_families=..., authorised_artifacts=...)`
-before any assessment. The model cannot supply or replace `question`. An
-authorised but irrelevant family ID cannot pass this gate, and an unavailable
-or ambiguous task results in refusal. The returned route contains the exact
-artifact ID, claim and task review digest so an issued assessment can retain
-the applicability identity. The assessment host then collects and checks the
-pinned source; the final model response cannot replace its status.
+The trusted application binds the *original task text* and grants. The host
+calls `TaskApplicabilityRegistry.resolve_bound(question,
+authorised_tasks=..., authorised_families=...,
+authorised_artifacts=...)` before any assessment. It selects the unique exact
+question in the reviewed catalogue, then checks the task, family and artefact
+grants and source contract. An absent, ambiguous or revoked entry refuses
+assessment before collection. The model supplies neither the question nor an
+opaque task ID, family, binding or claim. `eal_bound_task()` discovers the
+checked route and SHA-256 of the original question bytes without collecting
+evidence; `eal_assess_bound_task()` evaluates it. Finish and explanation need
+only the issued assessment ID and recheck the same route, principal and packet.
+Durable issuance records the packet, task and review digests;
+the final model response cannot replace its status.
+
+Trusted Python applications can still call `resolve(question, task_id=...)`
+and `TaskFamilyHost.assess_task(task_id)` when they already hold an exact task
+ID. Those methods perform the same applicability check; the recipient MCP
+surface exposes only the bound route. Candidate ranking remains advisory.
 
 This conservative gate handles repeated, reviewed questions. New wording,
 even a semantically equivalent paraphrase, needs another reviewed task entry.

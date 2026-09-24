@@ -179,19 +179,24 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
                     "meaning": "suggestions_only"}
 
         @server.tool(structured_output=True)
-        def eal_assess_reviewed_task(task_id: str) -> dict[str, Any]:
-            """Assess an exact reviewed task bound to the authenticated launcher's question."""
-            return reviewed_task_host.assess_task(task_id)
+        def eal_bound_task() -> dict[str, Any]:
+            """Discover the unique reviewed question, claim and grants without collecting evidence."""
+            return reviewed_task_host.describe_bound_task()
 
         @server.tool(structured_output=True)
-        def eal_explain_reviewed_task(task_id: str, assessment_id: str) -> dict[str, Any]:
-            """Retrieve the bounded trace of this principal's issued reviewed task assessment."""
-            return reviewed_task_host.explain_task(task_id, assessment_id)
+        def eal_assess_bound_task() -> dict[str, Any]:
+            """Assess the launcher's exact reviewed question; no model-selected task ID or claim."""
+            return reviewed_task_host.assess_bound_task()
 
         @server.tool(structured_output=True)
-        def eal_finish_reviewed_task(task_id: str, assessment_id: str) -> dict[str, Any]:
-            """Recover the host-owned status under the same task review and principal grant."""
-            return reviewed_task_host.finish_task(task_id, assessment_id)
+        def eal_explain_bound_task(assessment_id: str) -> dict[str, Any]:
+            """Retrieve this principal's bounded trace under the same reviewed question and grants."""
+            return reviewed_task_host.explain_bound_task(assessment_id)
+
+        @server.tool(structured_output=True)
+        def eal_finish_bound_task(assessment_id: str) -> dict[str, Any]:
+            """Recover the host-owned packet under the same question, review and principal grant."""
+            return reviewed_task_host.finish_bound_task(assessment_id)
 
     return server
 
@@ -205,7 +210,11 @@ def main() -> None:
     parser.add_argument("--artifacts", type=Path, help="Host-pinned EAL artifact catalogue TOML")
     parser.add_argument("--families", type=Path, help="Reviewed finite task-family catalogue TOML")
     parser.add_argument("--tasks", type=Path, help="Reviewed exact-question applicability catalogue TOML")
-    parser.add_argument("--aliases", type=Path, help="Optional reviewed candidate-alias catalogue TOML")
+    retrieval = parser.add_mutually_exclusive_group()
+    retrieval.add_argument("--aliases", type=Path,
+                           help="Optional reviewed candidate-alias catalogue TOML")
+    retrieval.add_argument("--rag-catalogue", type=Path,
+                           help="Optional reviewed snippet catalogue for advisory local BM25 retrieval")
     parser.add_argument("--recipient-task-file", type=Path,
                         help="Trusted launcher's exact task text, read once at server start")
     parser.add_argument("--recipient-only", action="store_true", help="Expose only authorised pinned claim operations")
@@ -218,7 +227,8 @@ def main() -> None:
     if args.recipient_grant and not args.recipient_only:
         parser.error("--recipient-grant requires --recipient-only")
     task_options = (args.families, args.tasks, args.recipient_task_file)
-    if any(task_options) or args.aliases or args.recipient_family_grant or args.recipient_task_grant:
+    if (any(task_options) or args.aliases or args.rag_catalogue
+            or args.recipient_family_grant or args.recipient_task_grant):
         if (not all(task_options) or not args.artifacts or not args.recipient_only
                 or not args.recipient_principal or not args.recipient_family_grant
                 or not args.recipient_task_grant or not args.recipient_grant):
@@ -247,7 +257,12 @@ def main() -> None:
             parser.error("Recipient task text must be UTF-8")
         families = FamilyRegistry.load(artifacts, args.families)
         applicability = TaskApplicabilityRegistry.load(families, args.tasks)
-        candidate_index = CandidateIndex.load(families, args.aliases) if args.aliases else None
+        if args.rag_catalogue:
+            from .rag import RagCandidateIndex
+
+            candidate_index = RagCandidateIndex.load(families, args.rag_catalogue)
+        else:
+            candidate_index = CandidateIndex.load(families, args.aliases) if args.aliases else None
         task_host = TaskFamilyHost(
             families, principal=args.recipient_principal,
             authorised_families=set(args.recipient_family_grant),

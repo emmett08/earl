@@ -31,9 +31,10 @@ OPERATIONS = {
     "explain": ({"assessment_id"}, {"claim"}),
     "grounded": ({"arguments", "attacks"}, set()),
     "task_candidates": (set(), set()),
-    "assess_reviewed_task": ({"task_id"}, set()),
-    "explain_reviewed_task": ({"task_id", "assessment_id"}, set()),
-    "finish_reviewed_task": ({"task_id", "assessment_id"}, set()),
+    "bound_task": (set(), set()),
+    "assess_bound_task": (set(), set()),
+    "explain_bound_task": ({"assessment_id"}, set()),
+    "finish_bound_task": ({"assessment_id"}, set()),
 }
 MAX_REQUEST_BYTES = 2 * 1024 * 1024
 
@@ -53,11 +54,9 @@ def parse_request(text: str) -> tuple[str, dict[str, Any]]:
         raise ValueError(f"Missing request fields: {', '.join(sorted(missing))}")
     if unknown := set(arguments) - required - optional:
         raise ValueError(f"Unknown request fields: {', '.join(sorted(unknown))}")
-    for key in ("source", "assessment_id", "task_id"):
+    for key in ("source", "assessment_id"):
         if key in arguments and not isinstance(arguments[key], str):
             raise ValueError(f"{key} must be a string")
-    if "task_id" in arguments and not arguments["task_id"]:
-        raise ValueError("task_id must be nonempty")
     for key in ("claim", "collection_id", "now"):
         if key in arguments and arguments[key] is not None and not isinstance(arguments[key], str):
             raise ValueError(f"{key} must be a string or null")
@@ -145,17 +144,15 @@ async def finalise_pinned_task(output: str, assessment_id: str, parameters: Stdi
     return {"checked_answer": packet, "recipient_output_unverified": output}
 
 
-async def finalise_reviewed_task(output: str, assessment_id: str, parameters: StdioServerParameters, *,
-                                 task_id: str, timeout_seconds: float = 120.0) -> dict[str, Any]:
-    """Recover the checked status for the launcher's reviewed task after model prose."""
+async def finalise_bound_task(output: str, assessment_id: str, parameters: StdioServerParameters, *,
+                              timeout_seconds: float = 120.0) -> dict[str, Any]:
+    """Recover the checked status for the launcher's bound task after model prose."""
     if not isinstance(output, str) or len(output.encode("utf-8")) > 16384:
         raise ValueError("Recipient output must be UTF-8 text of at most 16384 bytes")
     if not isinstance(assessment_id, str) or not assessment_id:
         raise ValueError("assessment_id must be a nonempty string")
-    if not isinstance(task_id, str) or not task_id:
-        raise ValueError("task_id must be a nonempty string")
-    result = await _dispatch_tool("eal_finish_reviewed_task",
-                                  {"task_id": task_id, "assessment_id": assessment_id},
+    result = await _dispatch_tool("eal_finish_bound_task",
+                                  {"assessment_id": assessment_id},
                                   parameters, timeout_seconds=timeout_seconds)
     if result["is_error"]:
         return result
@@ -174,13 +171,15 @@ def main() -> None:
     parser.add_argument("--artifacts", type=Path, help="Trusted pinned EAL artifact catalogue")
     parser.add_argument("--families", type=Path, help="Reviewed family catalogue for an exact task route")
     parser.add_argument("--tasks", type=Path, help="Reviewed task applicability catalogue")
-    parser.add_argument("--aliases", type=Path, help="Optional reviewed candidate aliases")
+    retrieval = parser.add_mutually_exclusive_group()
+    retrieval.add_argument("--aliases", type=Path, help="Optional reviewed candidate aliases")
+    retrieval.add_argument("--rag-catalogue", type=Path,
+                           help="Optional reviewed snippets for advisory local BM25 retrieval")
     parser.add_argument("--recipient-task-file", type=Path,
                         help="Launcher's immutable original question; never model-supplied")
     parser.add_argument("--recipient-family-grant", action="append", default=[])
     parser.add_argument("--recipient-task-grant", action="append", default=[])
     parser.add_argument("--recipient-grant", action="append", default=[], metavar="ARTIFACT:CLAIM")
-    parser.add_argument("--task-id", help="Reviewed task ID for finalising an issued assessment")
     parser.add_argument("--artifact-id", help="Artifact chosen by the trusted host")
     parser.add_argument("--claim", help="Registered claim chosen by the trusted host")
     parser.add_argument("--recipient-principal", help="Principal authenticated by the trusted launcher")
@@ -194,18 +193,17 @@ def main() -> None:
         server_args.extend(["--database", str(args.database.resolve())])
     if args.methods:
         server_args.extend(["--methods", args.methods])
-    reviewed = any((args.families, args.tasks, args.aliases, args.recipient_task_file,
-                    args.recipient_family_grant, args.recipient_task_grant, args.recipient_grant,
-                    args.task_id))
+    reviewed = any((args.families, args.tasks, args.aliases, args.rag_catalogue,
+                    args.recipient_task_file,
+                    args.recipient_family_grant, args.recipient_task_grant, args.recipient_grant))
     pinned = not reviewed and any((args.artifacts, args.artifact_id, args.claim,
                                    args.recipient_principal, args.assessment_id))
     if reviewed:
         if (not all((args.artifacts, args.families, args.tasks, args.recipient_task_file,
                      args.recipient_principal, args.recipient_family_grant,
                      args.recipient_task_grant, args.recipient_grant))
-                or args.artifact_id or args.claim or (args.assessment_id and not args.task_id)):
-            parser.error("Reviewed task mode requires catalogues, bound task file, principal and grants; "
-                         "finalisation also requires --task-id")
+                or args.artifact_id or args.claim):
+            parser.error("Reviewed task mode requires catalogues, bound task file, principal and grants")
         server_args.extend(["--artifacts", str(args.artifacts.resolve()),
                             "--families", str(args.families.resolve()),
                             "--tasks", str(args.tasks.resolve()),
@@ -213,6 +211,8 @@ def main() -> None:
                             "--recipient-only", "--recipient-principal", args.recipient_principal])
         if args.aliases:
             server_args.extend(["--aliases", str(args.aliases.resolve())])
+        if args.rag_catalogue:
+            server_args.extend(["--rag-catalogue", str(args.rag_catalogue.resolve())])
         for grant in args.recipient_grant:
             server_args.extend(["--recipient-grant", grant])
         for grant in args.recipient_family_grant:
@@ -235,9 +235,8 @@ def main() -> None:
         parameters = StdioServerParameters(command=sys.executable, args=server_args,
                                             env=dict(os.environ))
         if args.assessment_id and reviewed:
-            result = asyncio.run(finalise_reviewed_task(raw.decode("utf-8"), args.assessment_id,
-                                                        parameters, task_id=args.task_id,
-                                                        timeout_seconds=args.timeout))
+            result = asyncio.run(finalise_bound_task(raw.decode("utf-8"), args.assessment_id,
+                                                     parameters, timeout_seconds=args.timeout))
         elif args.assessment_id:
             result = asyncio.run(finalise_pinned_task(raw.decode("utf-8"), args.assessment_id,
                                                       parameters, artifact_id=args.artifact_id, claim=args.claim,

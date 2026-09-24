@@ -419,9 +419,12 @@ def provider_from_config(config: dict, *, workspace: Path | None = None) -> Text
             return CommandProvider(workspace=workspace, **values)
         if kind == "chat_completions":
             return ChatCompletionsProvider(**values)
+        if kind == "responses":
+            from .responses_provider import ResponsesProvider
+            return ResponsesProvider(**values)
     except TypeError as exc:
         raise ValueError("Provider configuration has missing or unknown fields") from exc
-    raise ValueError("provider.kind must be command or chat_completions")
+    raise ValueError("provider.kind must be command, chat_completions or responses")
 
 
 def load_provider(path: Path) -> TextProvider:

@@ -119,20 +119,29 @@ route = TaskFamilyHost(
     task_text=trusted_original_question,
     authorised_tasks={"field_inspection"},
 )
-checked = route.assess_task("field_inspection")
-trace = route.explain_task("field_inspection", checked["assessment_id"])
-final = route.finish_task("field_inspection", checked["assessment_id"])
+description = route.describe_bound_task()
+checked = route.assess_bound_task()
+trace = route.explain_bound_task(checked["assessment_id"])
+final = route.finish_bound_task(checked["assessment_id"])
 ```
 
 The authenticated launcher binds `trusted_original_question` before a model
-sees the task. A model may nominate a task ID; the host accepts it only if
-the task catalogue, original question, family case and all three grants agree.
-No match, ambiguity or changed review contract prevents an assessment.
-`CandidateIndex` can rank accessible families through `route.candidates()`;
-it uses bounded lexical overlap and optional reviewed aliases. Scores and
-aliases are suggestions, not applicability evidence. The exact reviewed task
+sees the task. The host selects its unique reviewed entry and checks the
+question, family case and all three grants. The returned description includes
+the SHA-256 digest of the exact original question bytes. No match, ambiguity,
+revoked grant or changed review contract prevents an assessment. The recipient
+MCP endpoint requires no task ID from a model; a trusted Python application
+may also use `route.assess_task("field_inspection")` for an explicit ID.
+`CandidateIndex` can rank accessible families through `route.candidates()`
+using bounded lexical overlap and optional reviewed aliases. The optional
+`RagCandidateIndex` ranks reviewed local snippets with BM25 or injected query
+vectors through the same advisory hook; the CLI selects it with
+`--rag-catalogue RAG.toml` for local BM25. Scores, aliases and snippets are suggestions,
+not applicability evidence. The exact reviewed task
 resolver gates assessment. Collection still checks observation context,
 acquisition request, age and EAL scope. See [the recipient CLI route](model-loop.md#reviewed-recipient-route).
+The [RAG index contract](eal2-rag.md) documents reviewed snippets and injected
+embedding vectors; the CLI does not request vectors.
 
 The current contract admits only finite string, integer and Boolean value
 sets. Every parameter maps to a distinct context path that is present in the

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import os
 import subprocess
@@ -16,6 +17,7 @@ from eal.applicability import NoApplicableTask, TaskApplicabilityRegistry, revie
 from eal.host import parse_request
 from eal.routing import TaskFamilyHost
 from eal.server import create_server
+from test_rag import _index as rag_index
 from test_routing import routed
 
 
@@ -71,6 +73,25 @@ def test_nomination_cannot_promote_authorised_wrong_family(tmp_path, monkeypatch
     assert not host._issued
 
 
+def test_bound_route_discovers_and_assesses_without_model_task_id(tmp_path):
+    host, _ = reviewed(tmp_path)
+    discovered = host.describe_bound_task()
+    assert discovered["question_sha256"] == hashlib.sha256(QUESTION.encode()).hexdigest()
+    assert (discovered["task_id"], discovered["family_id"], discovered["claim"]) == (
+        "pilot_task", "rig", "accepted")
+    packet = host.assess_bound_task()
+    assert packet["status"] == "supported"
+    restarted, _ = reviewed(tmp_path)
+    assert restarted.finish_bound_task(packet["assessment_id"]) == packet
+    assert restarted.explain_bound_task(packet["assessment_id"])["packet"] == packet
+    another_principal, _ = reviewed(tmp_path, principal="caller_b")
+    with pytest.raises(ValueError, match="not issued"):
+        another_principal.finish_bound_task(packet["assessment_id"])
+    different_question, _ = reviewed(tmp_path, question=OTHER, tasks=("maintenance_task",))
+    with pytest.raises(ValueError, match="not issued"):
+        different_question.finish_bound_task(packet["assessment_id"])
+
+
 def test_exact_task_packet_survives_restart_but_not_principal_or_task_replay(tmp_path):
     host, _ = reviewed(tmp_path)
     packet = host.assess_task("pilot_task")
@@ -93,9 +114,13 @@ def test_unknown_text_or_revoked_task_grant_never_assesses(tmp_path, monkeypatch
     monkeypatch.setattr(artifacts, "assess_claim", lambda *args: pytest.fail("unreviewed collection"))
     with pytest.raises(NoApplicableTask):
         host.assess_task("pilot_task")
+    with pytest.raises(NoApplicableTask):
+        host.assess_bound_task()
     revoked, _ = reviewed(tmp_path, tasks=())
     with pytest.raises(NoApplicableTask):
         revoked.assess_task("pilot_task")
+    with pytest.raises(NoApplicableTask):
+        revoked.assess_bound_task()
 
 
 def test_recipient_mcp_binds_task_text_outside_model_arguments(tmp_path):
@@ -107,31 +132,31 @@ def test_recipient_mcp_binds_task_text_outside_model_arguments(tmp_path):
 
     async def exercise():
         names = {tool.name for tool in (await server.list_tools())}
-        assert {"eal_task_candidates", "eal_assess_reviewed_task",
-                "eal_finish_reviewed_task", "eal_explain_reviewed_task"} <= names
+        assert names == {"eal_task_candidates", "eal_bound_task", "eal_assess_bound_task",
+                         "eal_finish_bound_task", "eal_explain_bound_task"}
         assert "eal_assess_artifact_claim" not in names
         with pytest.raises(ToolError):
             await server.call_tool("eal_assess_artifact_claim", {
                 "artifact_id": "rig_pilot", "claim": "accepted",
             })
         with pytest.raises(ValueError, match="schema rejected"):
-            await server.call_tool("eal_assess_reviewed_task", {
-                "task_id": "pilot_task", "question": OTHER,
-            })
+            await server.call_tool("eal_assess_bound_task", {"question": OTHER})
         with pytest.raises(ToolError):
-            await server.call_tool("eal_assess_reviewed_task", {"task_id": "maintenance_task"})
-        assessed = await server.call_tool("eal_assess_reviewed_task", {"task_id": "pilot_task"})
+            await server.call_tool("eal_assess_reviewed_task", {"task_id": "pilot_task"})
+        discovered = await server.call_tool("eal_bound_task", {})
+        assert discovered[1]["question_sha256"] == hashlib.sha256(QUESTION.encode()).hexdigest()
+        assessed = await server.call_tool("eal_assess_bound_task", {})
         packet = assessed[1]
-        finished = await server.call_tool("eal_finish_reviewed_task", {
-            "task_id": "pilot_task", "assessment_id": packet["assessment_id"],
-        })
+        finished = await server.call_tool("eal_finish_bound_task", {
+            "assessment_id": packet["assessment_id"]})
         assert finished[1] == packet
 
     asyncio.run(exercise())
 
 
 def test_text_model_host_uses_real_recipient_mcp_and_recovers_status(tmp_path):
-    reviewed(tmp_path)
+    route, _ = reviewed(tmp_path)
+    _, rag_path = rag_index(tmp_path, route.families)
     task_file = tmp_path / "trusted-question.txt"
     task_file.write_text(QUESTION, encoding="utf-8")
     base = [sys.executable, "-m", "eal.host", "--workspace", str(tmp_path),
@@ -139,22 +164,30 @@ def test_text_model_host_uses_real_recipient_mcp_and_recovers_status(tmp_path):
             "--artifacts", str(tmp_path / "artifacts.toml"),
             "--families", str(tmp_path / "families.toml"),
             "--tasks", str(tmp_path / "tasks.toml"),
+            "--rag-catalogue", str(rag_path),
             "--recipient-task-file", str(task_file),
             "--recipient-principal", "caller_a",
-            "--recipient-family-grant", "rig", "--recipient-task-grant", "pilot_task",
+            "--recipient-family-grant", "rig",
+            "--recipient-family-grant", "maintenance",
+            "--recipient-task-grant", "pilot_task",
             "--recipient-grant", "rig_pilot:accepted"]
     env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")}
     with pytest.raises(ValueError, match="Unknown request fields"):
-        parse_request(json.dumps({"operation": "assess_reviewed_task",
-                                  "task_id": "pilot_task", "question": OTHER}))
+        parse_request(json.dumps({"operation": "assess_bound_task", "question": OTHER}))
+    suggestions = subprocess.run(
+        base, input='{"operation":"task_candidates"}',
+        text=True, capture_output=True, timeout=20, check=True, env=env,
+    )
+    candidates = json.loads(suggestions.stdout)["result"]["candidates"]
+    assert [row["document_id"] for row in candidates] == ["service"]
     initial = subprocess.run(
-        base, input='{"operation":"assess_reviewed_task","task_id":"pilot_task"}',
+        base, input='{"operation":"assess_bound_task"}',
         text=True, capture_output=True, timeout=20, check=True, env=env,
     )
     packet = json.loads(initial.stdout)["result"]
     assert packet["status"] == "supported"
     final = subprocess.run(
-        base + ["--assessment-id", packet["assessment_id"], "--task-id", "pilot_task"],
+        base + ["--assessment-id", packet["assessment_id"]],
         input="The test is unsupported", text=True, capture_output=True,
         timeout=20, check=True, env=env,
     )
