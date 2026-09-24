@@ -1,4 +1,4 @@
-.PHONY: install test generate check-generated demo live-demo modes-demo tasks build check
+.PHONY: install test research-tests generate check-generated demo live-demo modes-demo tasks build check
 PYTHON ?= python3
 
 install:
@@ -6,6 +6,11 @@ install:
 
 test:
 	$(PYTHON) -m pytest -q
+
+research-tests:
+	$(PYTHON) -m unittest discover -s benchmarks/experiments/bias-mechanisms -p 'test_*.py'
+	$(PYTHON) -m unittest discover -s benchmarks/experiments/bias-followups -p 'test_*.py'
+	$(PYTHON) -m unittest discover -s benchmarks/experiments/bias-human-trial -p 'test_*.py'
 
 generate:
 	$(PYTHON) scripts/generate_parser.py
@@ -29,4 +34,4 @@ tasks:
 build:
 	$(PYTHON) -m build
 
-check: check-generated test demo live-demo modes-demo tasks
+check: check-generated test research-tests demo live-demo modes-demo tasks
