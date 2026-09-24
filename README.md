@@ -4,7 +4,7 @@ EAL represents engineering reasoning as claims, subordinate arguments, typed evi
 
 The language is **EAL/2**, with `.eal` source files. EAL/2 is the only supported source language; backwards compatibility is never a project requirement. Python 3.11 or later is required. Configured command adapters currently require a POSIX host.
 
-Package **2.2.4** adds an optional, operator-pinned artifact catalogue and compact assessment operation for reusing reviewed EAL files. Package 2.2.3 added the finite-state reachability method. The source language remains **EAL/2** and the observation schema remains **`EAL/typed-input/1`**. Earlier experiments retain their measured package labels. File imports still require `request` metadata.
+Package **2.4.0** adds reviewed exact-question applicability, durable family-route issuance, claim-scoped evidence collection and a bounded EAL/2 authoring helper. The source language remains **EAL/2**, the observation schema remains **`EAL/typed-input/1`**, and the compact claim packet remains `eal2-claim-packet/2`. Earlier experiments retain their measured package labels. File imports still require `request` metadata.
 
 ## What is implemented
 
@@ -18,6 +18,8 @@ Package **2.2.4** adds an optional, operator-pinned artifact catalogue and compa
 - Typed scalar propositions with declared formal queries, subject/quantity/unit/scope/time correspondence, and explicit method-result bindings. Canonical formatting preserves the parsed meaning.
 - An official-SDK MCP stdio server, a shared CLI, and a bounded interaction loop with plain-text and native-function interfaces, host-managed state, explicit draft revision, diagnostic feedback and usage accounting.
 - An optional host-pinned artifact catalogue: a recipient requests a reviewed EAL file by ID while the host selects its source, method registry, context, time and claims, then returns a compact checked status packet.
+- An optional reviewed-task recipient route: the trusted launcher binds the original question and grants; a model may nominate only a reviewed task ID. Exact task applicability, typed family bindings and claim grants are checked before collection. Task issuance is persisted for the principal and rechecked when finishing or explaining.
+- An optional reviewed alias index for family suggestions and a validated authoring helper with bounded diagnostic repair. Neither ranking nor syntactic validity establishes that an argument expresses the intended question.
 - Versioned engineering task corpora and a repeated, paired experiment runner with frozen references, balanced scheduling, structural source equivalence, evidence-trace scoring and retained failures. Provider trials measure outcomes and cost; scripted protocol tests do not establish model capability or savings.
 
 The interpreter computes the declared reasoning operations. Natural-language statements, relevance, modelling assumptions and empirical truth still require justified interpretation. The precise computational limits are documented for each method; this implementation does not claim the complete ASPIC+ framework.
@@ -91,11 +93,13 @@ eal grounded examples/grounded.json
 eal-mcp --workspace . --registry examples/tools.toml
 ```
 
-The MCP tools are `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and `eal_grounded`. With an operator-configured `--artifacts` catalogue, the server also offers `eal_assess_artifact(artifact_id)`. `eal describe` exposes syntax and contracts to a model without prior EAL knowledge. `eal format FILE` returns canonical source as JSON. Formatting changes exact source identity when its bytes change, so observations must then be recollected.
+The operator MCP tools are `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and `eal_grounded`. With an operator-configured `--artifacts` catalogue, the server also offers `eal_assess_artifact(artifact_id)` and claim-specific assessment, explanation and finish tools. A separate reviewed-task recipient endpoint exposes only candidate, assess, explain and finish task tools; its exact-question gate checks applicability before collection. `eal describe` exposes syntax and contracts to a model without prior EAL knowledge. `eal format FILE` returns canonical source as JSON. Formatting changes exact source identity when its bytes change, so observations must then be recollected.
 
 A text-only model can emit a JSON operation request for `eal-host`; the host performs one MCP call. `eal-agent` adds the configured model/request/result/repair loop over a persistent MCP session. Its stateful interface retains exact source, context and current result identifiers; a model can request `{"operation":"assess"}` to validate, collect, reason and explain, then `{"operation":"finish"}` to return the checked result without copying them. Plain-text and native-function interfaces use the same operation semantics. See [the model loop](docs/model-loop.md) and [model evaluation](docs/model-evaluation.md) for configuration, budgets and the distinction between a completed interaction and a correct engineering answer.
 
 For a reviewed source reused by another developer or a text-only model on the same registered question and context, configure an [artifact catalogue](docs/mcp-and-tools.md#reuse-a-reviewed-eal-artifact). The operator can call `python -m eal.artifacts --workspace . --registry TOOLS.toml --artifacts ARTIFACTS.toml --id NAME` before invoking a model. The result contains checked statuses and an explanation ID without transmitting the EAL source or language reference to the model. An application may call `ArtifactRegistry.assist_text_only` with a model adapter; it gives the model a compact packet and returns the host-owned status separately from unverified model prose. The present interface tests establish this status boundary; recipient token, latency and accuracy advantages require a prospective comparison.
+
+For exact recurring questions, [reviewed task applicability](docs/eal2-task-applicability.md) binds the launcher's original question to a pinned family case and claim before the model can receive a checked answer. The [authoring helper](docs/eal2-authoring-helper.md) exposes current contracts and retains validation failures during bounded repair. These are host interfaces, not evidence of an EAL/2 advantage over an equal JSON checker. The [host completion audit](docs/eal2-host-completeness-audit.md) records remaining live-acquisition and relevance limits.
 
 ## Read the design
 

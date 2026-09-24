@@ -7,20 +7,21 @@ context or assessment time through this interface.
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
 import re
 import stat
 import tomllib
-import argparse
+from collections import deque
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Awaitable, Callable
 
+from .evaluator import _predicate, canonical_digest
 from .parser import MAX_SOURCE_BYTES
-from .evaluator import canonical_digest
 from .runtime import ReasoningService, bounded_path
-from .semantics import parse_time
+from .semantics import objection_scopes, parse_time
 from .store import utc_now
 
 
@@ -32,6 +33,117 @@ class Artifact:
     claims: tuple[str, ...]
     context: dict[str, Any]
     now: str | None
+
+
+@dataclass(frozen=True)
+class _ClaimClosure:
+    """Declarations which can affect one claim under the EAL/2 support graph."""
+
+    claims: frozenset[str]
+    arguments: frozenset[str]
+    objections: frozenset[str]
+    evidence: frozenset[str]
+    assumptions: frozenset[str]
+    reasoning: frozenset[str]
+
+
+def _claim_closure(program, target: str) -> _ClaimClosure:
+    """Include all alternative derivations, attacks, defences and their premises.
+
+    Objection premise claims can themselves have arguments and objections. The
+    worklist follows those edges as well as ordinary argument premises, so a
+    collector is never omitted merely because its attack is currently inactive.
+    """
+    by_conclusion: dict[str, list[str]] = {}
+    for name, argument in program.arguments.items():
+        by_conclusion.setdefault(argument.conclusion, []).append(name)
+    by_target: dict[tuple[str, str], list[str]] = {}
+    for name, objection in program.objections.items():
+        by_target.setdefault((objection.target_kind, objection.target), []).append(name)
+    scopes = objection_scopes(program)
+    claims: set[str] = set()
+    arguments: set[str] = set()
+    objections: set[str] = set()
+    evidence: set[str] = set()
+    assumptions: set[str] = set()
+    reasoning: set[str] = set()
+    pending = deque([("claim", target)])
+
+    def attacks(kind: str, identifier: str, environment: str) -> None:
+        for objection_id in by_target.get((kind, identifier), ()):
+            if scopes[objection_id] == {environment}:
+                pending.append(("objection", objection_id))
+
+    while pending:
+        kind, name = pending.popleft()
+        if kind == "claim":
+            if name in claims:
+                continue
+            claims.add(name)
+            environment = program.claims[name].environment
+            pending.extend(("argument", item) for item in by_conclusion.get(name, ()))
+            attacks("claim", name, environment)
+        elif kind == "argument":
+            if name in arguments:
+                continue
+            arguments.add(name)
+            argument = program.arguments[name]
+            environment = program.claims[argument.conclusion].environment
+            evidence.update(argument.evidence)
+            reasoning.add(argument.reasoning)
+            evidence.update(program.reasoning[argument.reasoning].backing)
+            assumptions.update(argument.assumptions)
+            evidence.update(program.assumptions[item].validation for item in argument.assumptions)
+            pending.extend(("claim", item) for item in argument.premises)
+            attacks("argument", name, environment)
+            attacks("reasoning", argument.reasoning, environment)
+            for item in argument.assumptions:
+                attacks("assumption", item, environment)
+        else:
+            if name in objections:
+                continue
+            objections.add(name)
+            objection = program.objections[name]
+            evidence.update(objection.evidence)
+            pending.extend(("claim", item) for item in objection.premises)
+            attacks("objection", name, next(iter(scopes[name])))
+
+    return _ClaimClosure(*(frozenset(group) for group in
+                           (claims, arguments, objections, evidence, assumptions, reasoning)))
+
+
+def _require_complete_collection(program, evidence_ids: set[str] | frozenset[str],
+                                 collection: dict[str, Any], assessment: dict[str, Any] | None = None) -> None:
+    """Require an actual, fresh observation even for an inactive objection.
+
+    A valid predicate comparison that finds an adverse condition false remains
+    usable. A missing field, wrong type or invalid evidence identity does not.
+    All alternative support branches are included, too: this is a conservative
+    complete-collection contract, rather than an existential-support contract.
+    """
+    records = collection.get("records", {})
+    if set(records) != set(evidence_ids):
+        raise ValueError("Claim assessment unresolved: required evidence collection is incomplete")
+    for evidence_id in sorted(evidence_ids):
+        record = records[evidence_id]
+        if record.get("status") != "ok":
+            raise ValueError(f"Claim assessment unresolved: required evidence {evidence_id!r} "
+                             "collection failed; see the retained collection record")
+        if assessment is None:
+            continue
+        result = assessment["evidence"][evidence_id]
+        if result["status"] == "available":
+            continue
+        declaration = program.evidence[evidence_id]
+        predicates = [_predicate(item, record.get("value")) for item in declaration.predicates]
+        complete = bool(predicates) and result["reasons"] == [reason for _, reason in predicates]
+        for predicate, (_, reason) in zip(declaration.predicates, predicates):
+            prefix = f"Field {predicate.path!r} {predicate.operator} {predicate.expected!r} "
+            complete &= reason.startswith(prefix) and reason[len(prefix):].startswith(
+                ("holds (observed ", "does not hold (observed "))
+        if not complete:
+            raise ValueError(f"Claim assessment unresolved: required evidence {evidence_id!r} "
+                             "failed its identity, scope, freshness or predicate contract")
 
 
 class ArtifactRegistry:
@@ -123,12 +235,25 @@ class ArtifactRegistry:
 
     def assess(self, name: str) -> dict[str, Any]:
         """Collect and assess an immutable source; return only pinned claim statuses."""
+        return self._assess(name)
+
+    def _assess(self, name: str, *, claim: str | None = None) -> dict[str, Any]:
+        from .parser import parse
+
         source = self._source(name)
+        program = parse(source)
         artifact = self.definitions[name]
         context = artifact.context
-        collection = self.service.collect(source, context)
-        if collection.get("source_digest") != artifact.sha256 or collection.get("context") != context:
+        selected_claims = artifact.claims if claim is None else (claim,)
+        evidence_ids = (None if claim is None else
+                        sorted(_claim_closure(program, claim).evidence))
+        collection = self.service.collect(source, context, evidence_ids=evidence_ids)
+        expected_evidence = set(program.evidence) if evidence_ids is None else set(evidence_ids)
+        if (collection.get("source_digest") != artifact.sha256 or collection.get("context") != context
+                or set(collection.get("records", {})) != expected_evidence):
             raise ValueError("Collection identity differs from the registered artifact")
+        if claim is not None:
+            _require_complete_collection(program, expected_evidence, collection)
         now = artifact.now or utc_now()
         assessment = self.service.reason(source, context, collection["collection_id"], now)
         expected_time = parse_time(now).isoformat().replace("+00:00", "Z")
@@ -138,22 +263,26 @@ class ArtifactRegistry:
                 or assessment.get("assessed_at") != expected_time
                 or assessment.get("method_registry_fingerprint") != artifact.method_registry_fingerprint):
             raise ValueError("Assessment identity differs from the registered artifact")
+        if claim is not None:
+            _require_complete_collection(program, expected_evidence, collection, assessment)
         all_claims = assessment.get("claims")
         if not isinstance(all_claims, dict):
             raise ValueError("Assessment did not return claim statuses")
-        selected = {}
-        for claim in artifact.claims:
-            status = all_claims.get(claim, {}).get("status")
+        selected_statuses = {}
+        for selected_claim in selected_claims:
+            status = all_claims.get(selected_claim, {}).get("status")
             if status not in {"supported", "contested", "unsupported", "out_of_scope"}:
-                raise ValueError(f"Assessment did not return a valid status for {claim!r}")
-            selected[claim] = status
-        packet = {"artifact_id": name, "claims": selected,
+                raise ValueError(f"Assessment did not return a valid status for {selected_claim!r}")
+            selected_statuses[selected_claim] = status
+        packet = {"artifact_id": name, "claims": selected_statuses,
                 "source_digest": artifact.sha256,
                 "method_registry_fingerprint": artifact.method_registry_fingerprint,
                 "collection_id": collection["collection_id"],
                 "assessment_id": assessment["assessment_id"],
                 "assessed_at": assessment["assessed_at"],
                 "verification": "server_assessment"}
+        if claim is not None:
+            packet["claim_scope"] = claim
         self.service.store.put("artifact_packet", packet, record_id=f"artifact:{assessment['assessment_id']}")
         return packet
 
@@ -165,7 +294,10 @@ class ArtifactRegistry:
         the addressed server assessment. Distinct concurrent recipients retain
         separate assessments with explicit as-of times.
         """
-        self._source(name)
+        from .parser import parse
+
+        source = self._source(name)
+        program = parse(source)
         try:
             packet = self.service.store.get(f"artifact:{assessment_id}", kind="artifact_packet")
         except KeyError as exc:
@@ -183,7 +315,20 @@ class ArtifactRegistry:
         collection = self.service.store.get(packet["collection_id"], kind="collection")
         if collection.get("source_digest") != artifact.sha256 or collection.get("context") != artifact.context:
             raise ValueError("Stored collection no longer matches the registered artifact")
-        claims = {claim: saved.get("claims", {}).get(claim, {}).get("status") for claim in artifact.claims}
+        claim_scope = packet.get("claim_scope")
+        if claim_scope is None:
+            selected = artifact.claims
+            expected_evidence = set(program.evidence)
+        elif claim_scope in artifact.claims:
+            selected = (claim_scope,)
+            expected_evidence = set(_claim_closure(program, claim_scope).evidence)
+        else:
+            raise ValueError("Stored claim scope differs from the registered artifact")
+        if set(collection.get("records", {})) != expected_evidence:
+            raise ValueError("Stored collection differs from the claim's evidence closure")
+        if claim_scope is not None:
+            _require_complete_collection(program, expected_evidence, collection, saved)
+        claims = {claim: saved.get("claims", {}).get(claim, {}).get("status") for claim in selected}
         if claims != packet["claims"]:
             raise ValueError("Stored statuses differ from the checked artifact packet")
         return json.loads(json.dumps(packet))
@@ -202,6 +347,8 @@ class ArtifactRegistry:
 
     def _claim_packet(self, name: str, claim: str, assessment_id: str) -> dict[str, Any]:
         full = self.finish(name, assessment_id)
+        if full.get("claim_scope") != claim:
+            raise ValueError("Claim packet requires its own scoped assessment")
         assessment = self.service.store.get(assessment_id, kind="assessment")
         entry = assessment["claims"][claim]
         environment = entry["environment"]
@@ -344,7 +491,7 @@ class ArtifactRegistry:
     def assess_claim(self, name: str, claim: str) -> dict[str, Any]:
         """Assess before the recipient call and disclose one registered claim."""
         self._registered_claim(name, claim)
-        assessment_id = self.assess(name)["assessment_id"]
+        assessment_id = self._assess(name, claim=claim)["assessment_id"]
         packet = self._claim_packet(name, claim, assessment_id)
         self.service.store.put("artifact_claim_packet", packet,
                                record_id=f"artifact-claim:{assessment_id}:{claim}")
@@ -363,54 +510,32 @@ class ArtifactRegistry:
         return json.loads(json.dumps(packet))
 
     def explain_claim(self, name: str, assessment_id: str, claim: str) -> dict[str, Any]:
-        """Expose a checked claim's direct dependencies, omitting other claim results.
+        """Expose the bounded transitive argument and objection closure."""
+        from .parser import parse
 
-        Premise IDs and labels can occur in direct argument entries; statements
-        and traces for those claims remain unavailable through this operation.
-        """
         packet = self.finish_claim(name, assessment_id, claim)
         assessment = self.service.store.get(assessment_id, kind="assessment")
-        arguments = {identifier: value for identifier, value in assessment["arguments"].items()
-                     if value["conclusion"] == claim}
-        evidence_ids: set[str] = set()
-        assumption_ids: set[str] = set()
-        reasoning_ids: set[str] = set()
-        for argument in arguments.values():
-            deps = argument["dependencies"]
-            evidence_ids.update(deps["evidence"])
-            assumption_ids.update(deps["assumptions"])
-            reasoning_ids.add(deps["reasoning"])
-        for identifier in assumption_ids:
-            evidence_ids.add(assessment["assumptions"][identifier]["validation"])
-        for identifier in reasoning_ids:
-            evidence_ids.update(assessment["reasoning"][identifier]["backing"])
+        closure = _claim_closure(parse(self._source(name)), claim)
+        if len(closure.objections) > 128:
+            raise ValueError("Claim explanation exceeds its objection bound")
         environment = assessment["claims"][claim]["environment"]
-        objections = {identifier: value for identifier, value in assessment["objections"].items()
-                      if value["environment"] == environment and
-                      ((value["target_kind"] == "claim" and value["target"] == claim)
-                       or (value["target_kind"] == "argument" and value["target"] in arguments)
-                       or (value["target_kind"] == "reasoning" and value["target"] in reasoning_ids)
-                       or (value["target_kind"] == "assumption" and value["target"] in assumption_ids))}
-        # A counter-objection can determine whether a direct challenge remains
-        # active. Include those counter-attacks, but no unrelated objections.
-        frontier = set(objections)
-        while frontier:
-            if len(objections) > 128:
-                raise ValueError("Claim explanation exceeds its objection bound")
-            added = {identifier: value for identifier, value in assessment["objections"].items()
-                     if value["target_kind"] == "objection" and value["target"] in frontier
-                     and identifier not in objections and value["environment"] == environment}
-            objections.update(added)
-            frontier = set(added)
-        for value in objections.values():
-            evidence_ids.update(value["evidence"])
+
+        def scoped_entry(table: str, identifier: str) -> dict[str, Any]:
+            entry = assessment[table][identifier]
+            if "objection_statuses" not in entry:
+                return entry
+            return {**entry, "objection_statuses": {
+                key: value for key, value in entry["objection_statuses"].items()
+                if key in closure.objections}}
+
         explanation = {"packet": packet, "result": assessment["claims"][claim],
                 "scope": assessment["environments"][environment],
-                "arguments": arguments,
-                "evidence": {key: assessment["evidence"][key] for key in sorted(evidence_ids)},
-                "assumptions": {key: assessment["assumptions"][key] for key in sorted(assumption_ids)},
-                "reasoning": {key: assessment["reasoning"][key] for key in sorted(reasoning_ids)},
-                "objections": objections}
+                "premises": {key: assessment["claims"][key] for key in sorted(closure.claims - {claim})},
+                "arguments": {key: assessment["arguments"][key] for key in sorted(closure.arguments)},
+                "evidence": {key: assessment["evidence"][key] for key in sorted(closure.evidence)},
+                "assumptions": {key: scoped_entry("assumptions", key) for key in sorted(closure.assumptions)},
+                "reasoning": {key: scoped_entry("reasoning", key) for key in sorted(closure.reasoning)},
+                "objections": {key: assessment["objections"][key] for key in sorted(closure.objections)}}
         if len(json.dumps(explanation, ensure_ascii=False, allow_nan=False).encode("utf-8")) > 65536:
             raise ValueError("Claim explanation exceeds its 65536-byte limit")
         return explanation

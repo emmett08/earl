@@ -101,6 +101,30 @@ The caller supplies optional `initial_data` JSON. Its `source`, `context` and `n
 
 For source construction or repair, supply `draft_source` instead of `source`. Source revision is then allowed, and `task_correspondence` is `unverified`. Required claim identifiers alone cannot establish that a model preserved the intended proposition. The final report includes the actual assessed source and context so an independent task checker can compare their meaning. The benchmark does that comparison separately; a renamed or weakened proposition must not receive success credit merely because its identifier remains unchanged.
 
+## Reviewed recipient route
+
+`eal-agent` constructs or revises a draft source and reports its task correspondence as unverified unless the caller pinned the source. A separate `eal-host` recipient route uses an operator-reviewed [exact task catalogue](task-families.md#reviewed-recipient-route). The authenticated launcher supplies the original question file, principal and task, family and artefact-claim grants. The recipient can nominate an authorised task ID in JSON; it cannot supply the question, EAL source, bindings or claim.
+
+For the reviewed `field_inspection` example, the operator first saves the exact catalogue question bytes with no added newline, then invokes the host under an authenticated principal. The same database and grant must be available when finalising the returned assessment ID:
+
+```bash
+printf %s 'Does the field rig satisfy the reviewed inspection claim?' > question.txt
+route=(--workspace . --registry tools.toml --database runs.sqlite3 \
+  --artifacts artifacts.toml --families families.toml --tasks tasks.toml \
+  --recipient-task-file question.txt --recipient-principal caller_a \
+  --recipient-family-grant rig --recipient-task-grant field_inspection \
+  --recipient-grant rig_field:accepted)
+assessment_response=$(printf %s '{"operation":"assess_reviewed_task","task_id":"field_inspection"}' |
+  eal-host "${route[@]}")
+printf '%s\n' "$assessment_response"
+assessment_id=$(printf %s "$assessment_response" |
+  python -c 'import json,sys; print(json.load(sys.stdin)["result"]["assessment_id"])')
+printf %s 'The model explanation, if any' |
+  eal-host "${route[@]}" --task-id field_inspection --assessment-id "$assessment_id"
+```
+
+The first response contains the host-checked result packet. The final response separates `checked_answer` from `recipient_output_unverified`; generated prose cannot change the stored status. `{"operation":"task_candidates"}` can suggest accessible families, and `{"operation":"explain_reviewed_task","task_id":"field_inspection","assessment_id":"..."}` can retrieve the authorised trace. Candidate scores do not confer applicability. The task resolver requires an exact reviewed question and refuses unmatched, ambiguous or drifted contracts. The launcher must authenticate the principal independently of the CLI flag, and the operator must have reviewed the question, scope, source, methods and evidence obligations. A checked status remains conditional on the declared argument and actual observations; it does not certify the prose claim or remove the need to test adverse states.
+
 ## Configure a provider
 
 Use `examples/agent-http.toml` as a configuration template. Set an explicit model name/version and endpoint, then select rates from the provider's applicable pricing schedule if cost estimates are needed. No model name, price or capability is silently assumed. Credentials are looked up by an environment variable name and are absent from the stored provider identity. Ordinary text mode sends `messages`, `model`, `n: 1`, `stream: false`, the selected output limit and configured sampling settings. Tool and response-format fields are added only through the explicit capabilities described below.
