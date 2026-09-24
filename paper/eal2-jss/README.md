@@ -5,7 +5,9 @@ Software* (JSS). It is an author-review draft, not a submitted or accepted
 manuscript. The historical relay and notation records remain pinned to
 `2b0815f111f831bf237f600cf9e65f28eca0403e`. The later host, family,
 checker and offline records are described at
-`d78836b8fd769c236c646f263246e7728a488922`.
+`d78836b8fd769c236c646f263246e7728a488922`. The amended 96-, 960- and
+800-call records were merged in [PR #8](https://github.com/emmett08/earl/pull/8)
+at `b9177df`. The new bias-agent study is a separate prospective protocol.
 
 ## Why this journal
 
@@ -65,6 +67,9 @@ complete listing reproduces `examples/rms.eal` byte for byte.
 | Mechanism developmental schedule and result | `benchmarks/experiments/mechanisms-960/` and `benchmarks/results/eal2-960-campaign-20260924.tar.gz`; 960 assigned/attempted, 942 strict completions, four malformed, fourteen provider failures, 460 exact available-information statuses and 130 admitted false supports on selected synthetic roots; 11 response-less requests have unknown charges |
 | Deployment developmental schedule and result | `benchmarks/experiments/deployment-800/`, `benchmarks/results/2026-09-24-deployment-800-a3-developmental/a3-terminal.tar.gz`, `docs/eal2-study-amendment-20260924.md` and `docs/eal2-grammar-decision-20260924.md`; 800 completed assigned slots in 804 actual requests, 290/384 fixed-source exact statuses, 0/32 valid final authored products and 320 unavailable recipient packets. A1/A2/C1 stopped diagnostic attempts are separate and not pooled |
 | Deployment exploratory explanation reviews | `docs/reviews/deployment-800-a3-*` and the archived postcall review frame; two isolated AI reviewers agreed 4/48 preselected actual-prompt responses faithful, all in raw-source cases. All 16 checked-host statuses in this subset matched their synthetic reference, but none of the sixteen recipient explanations was rated faithful; not a human quality estimate |
+| Prospective bias attribution and agent comparison | `benchmarks/experiments/bias-mechanisms/PROTOCOL.md`, `AMENDMENT-0.1.1.md` and `RUN_STATUS.md`; 12 synthetic families with four dependent variants, three model classes, two Stage A topologies, 288 assigned model--case--route cells and 432 planned API calls. Static source validation passed 48/48 with zero diagnostics and thirteen offline tests passed. The original zero-call freezes are retained as invalidated historical material after variant-label leakage and scoring repairs. Amended version 0.1.1 pilot and full freezes in `benchmarks/results/2026-09-24-bias-agent-zero-call/` retain 72 and 432 planned calls, with internal SHA-256 values `ddff588b8b619397ad052fd2fae20b03012267b7a35dbccbd6325bd2d2fc3f72` and `28d1610056b3c68f12d2d4f73445096211cc505b60a11169288552e45163690e`; their material checks pin `analyse.py`, `PROTOCOL.md` and the amendment. A no-key connectivity preflight timed out before any paid call. No response ledger or model result exists. Raw agent judgements are primary; the author-labelled gate is an oracle-assisted diagnostic. Human causal benefit requires a separate randomised engineer study |
+| Matched format and equal-allocation follow-ups | `benchmarks/experiments/bias-followups/` and `benchmarks/results/2026-09-24-bias-followups-zero-call/`; checked EAL/2 versus mechanically derived typed JSON and two general critics versus mechanism/rival critics, with two assigned calls per cell. The exposed 12 families yield 128 pilot and 768 full planned calls, frozen at internal SHA-256 `1d543e38827ee95ec7e17535ff6c1777d60e9a967d7677d1be696d88de05b678` and `1f790f06b2078a6244e9d7039b9a51f43e503df81dd71cc303e23d74dcdc68f2`. Five offline tests passed; endpoint preflight timed out before credential lookup, so there are no model calls or performance results. Actual billed compute and input length may differ |
+| Human decision trial protocol | `benchmarks/experiments/bias-human-trial/`; six assistance arms crossed with fluent/plain wording, with staged pre/post packets and descriptive scoring. Four synthetic administrative tests passed. New independent case review, ethics arrangements, recruitment, power analysis and preregistration are needed; no participants or human outcomes exist |
 
 The amendment document is a pre-run design record at its stated audit cut. The
 later terminal result archives and this manuscript report the amended runs;
@@ -86,7 +91,18 @@ is unavailable.
 
 ## Argument and visual decisions
 
-The preferred root claim is that EAL/2 supplies a bounded, inspectable
+EAL/2 began as a way to help a person question a fluent AI answer by exposing
+the claim, grounds, inference, assumptions and objections. The paper now
+separates that human-facing purpose from the demonstrated host checks and from
+the prospective experiment. An inaccurate or unjustified argument is not, by
+itself, evidence of a particular human cognitive bias. The study therefore
+requires cue exposure, an opportunity, evidence of uptake, a predicted
+directional signature, a discriminating contrast and serious rival accounts;
+it scores false bias attribution and agent-induced engineering errors alongside
+correct detection. Model cue sensitivity tests concern the model system. A
+randomised human study would be needed to show improved human decisions.
+
+The preferred current result claim is that EAL/2 supplies a bounded, inspectable
 calculation over authored engineering arguments, and that a host can keep the
 checked status authoritative when model prose is inconsistent. The historical
 diagnostic separates computed-result transfer from raw-record interpretation.

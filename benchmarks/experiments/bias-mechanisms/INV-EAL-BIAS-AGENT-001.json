@@ -1,0 +1,768 @@
+{
+  "schema_version": "1.0",
+  "investigation_id": "INV-EAL-BIAS-AGENT-001",
+  "title": "Developmental EAL/2 synthetic bias-attribution route study",
+  "version": "0.1.0",
+  "status": "specified",
+  "question": "On twelve frozen author-created synthetic engineering episodes, how does assigned direct versus independent-challenge model analysis change a fully warranted bias disposition and unsupported strong attribution?",
+  "primary_claim_id": "CLM-ROUTE",
+  "scope": {
+    "system_or_population": "The 12 synthetic families and 48 generated process/rival/missing-link/insufficient cases in cases.json, not real engineers.",
+    "conditions": "Three requested OpenAI model IDs; one direct call versus two independent serially executed calls with agreement-only deterministic synthesis; frozen prompts, answer contract and case records.",
+    "spatial_scope": "One repository study and provider API execution.",
+    "temporal_scope": "One frozen developmental run on 2026-09-24 or a versioned later execution interval; aliases logged per request.",
+    "exclusions": [
+      "Real human cognitive diagnoses",
+      "Population claim about engineering decisions",
+      "Causal decomposition of independent challenge versus additional model calls",
+      "Stage B/C/D prospective comparisons"
+    ],
+    "knowledge_cut": "2026-09-24"
+  },
+  "claims": [
+    {
+      "id": "CLM-ROUTE",
+      "statement": "Assignment to the two-call independent-challenge route changes fully warranted dispositions within the fixed synthetic case suite relative to direct analysis.",
+      "claim_type": "causal",
+      "role": "primary",
+      "scope_limit": "Finite author-created cases, actual returned model identities and exact route implementations only; no human-bias mitigation or topology mechanism inference.",
+      "success_consequence": "Report a bounded developmental route difference with family-level uncertainty.",
+      "failure_consequence": "Report no detected gain or a harmful route difference; keep future testing separate."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-CASE",
+      "statement": "The authored gold and stable evidence IDs encode the stipulated episode consistently across both arms.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Offline schema checks and independent content review; parse/typecheck source in full tree.",
+      "failure_consequence": "Suspend affected case scores and do not infer an EAL argument effect."
+    },
+    {
+      "id": "ASM-ROUTE",
+      "statement": "Both arms see the same case evidence and differ only in the declared route and its compute.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Hash prompt materials, inspect answer-key exclusion and compare public case payloads.",
+      "failure_consequence": "No route assignment interpretation."
+    },
+    {
+      "id": "ASM-MODEL",
+      "statement": "Returned alias identity is stable within each compared block or reported separately.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Log returned response.model, response ID and UTC; stop or split on drift.",
+      "failure_consequence": "Do not pool alias responses as one model."
+    },
+    {
+      "id": "ASM-TRANSFER",
+      "statement": "Author-created cases correspond to new real engineering decisions.",
+      "role": "transport",
+      "status": "untested",
+      "test_or_justification": "Unestablished; recruit independent human cases in later investigation.",
+      "failure_consequence": "Do not generalise beyond the fixed synthetic corpus."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-GAIN",
+      "label": "Pragmatic route gain",
+      "kind": "substantive",
+      "statement": "The two-call challenge yields more fully warranted dispositions than the one-call direct route in the fixed suite.",
+      "claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-CASE",
+        "ASM-ROUTE",
+        "ASM-MODEL"
+      ],
+      "scope": "Frozen synthetic suite and returned model identity."
+    },
+    {
+      "id": "H-NO-GAIN",
+      "label": "No pragmatic route gain",
+      "kind": "rival",
+      "statement": "The two-call challenge does not increase fully warranted dispositions, or reduces them by abstaining on supported cases.",
+      "claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-CASE",
+        "ASM-ROUTE",
+        "ASM-MODEL"
+      ],
+      "scope": "Frozen synthetic suite and returned model identity."
+    },
+    {
+      "id": "H-STAT",
+      "label": "Route statistical null",
+      "kind": "statistical-null",
+      "statement": "H0: Delta_Y <= 0 for the fixed family-average comparison; Stage A reports an interval without a confirmatory superiority decision.",
+      "claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-CASE",
+        "ASM-ROUTE"
+      ],
+      "scope": "Descriptive developmental route comparison."
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P-GAIN",
+      "hypothesis_ids": [
+        "H-GAIN"
+      ],
+      "claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "estimand_ids": [
+        "EST-Y"
+      ],
+      "measurement_ids": [
+        "M-Y"
+      ],
+      "expected_pattern": "Positive family-averaged paired difference in fully warranted disposition.",
+      "direction": "increase",
+      "magnitude_or_range": "No effect-size threshold fixed for developmental Stage A.",
+      "time_window": "One assigned case response, before feedback.",
+      "tolerance": "Exact stipulated label/options/role evidence with masked review of factual additions.",
+      "auxiliary_assumption_ids": [
+        "ASM-CASE",
+        "ASM-ROUTE",
+        "ASM-MODEL"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-NO-GAIN"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-NO-GAIN",
+      "hypothesis_ids": [
+        "H-NO-GAIN"
+      ],
+      "claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "estimand_ids": [
+        "EST-Y",
+        "EST-COVER"
+      ],
+      "measurement_ids": [
+        "M-Y",
+        "M-COVER"
+      ],
+      "expected_pattern": "Nonpositive disposition difference, or a higher abstention rate with reduced supported-case recall.",
+      "direction": "decrease",
+      "magnitude_or_range": "No threshold fixed for developmental Stage A.",
+      "time_window": "One assigned case response.",
+      "tolerance": "Exact synthetic supported-status and resolution definitions.",
+      "auxiliary_assumption_ids": [
+        "ASM-CASE",
+        "ASM-ROUTE",
+        "ASM-MODEL"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-GAIN"
+      ],
+      "shared_prediction": false
+    }
+  ],
+  "constructs": [
+    {
+      "id": "CON-Y",
+      "name": "Fully warranted synthetic disposition",
+      "definition": "Correct bounded status and mechanism, required role evidence IDs, rival/defeater disposition, underlying defect and safe correction under the author-scripted record.",
+      "role": "outcome",
+      "scope": "Only the stipulated synthetic process record.",
+      "proxy_for_claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "validity_evidence": [
+        "Deterministic fields can be compared with a frozen case oracle."
+      ],
+      "validity_threats": [
+        "Oracle and case source share an author.",
+        "Valid real alternatives may be excluded.",
+        "No measurement of an actual human process."
+      ]
+    },
+    {
+      "id": "CON-F",
+      "name": "Strong unsupported attribution",
+      "definition": "Status EPISODE-SUPPORTED or stronger for a mechanism not supported by a negative or insufficient scripted record.",
+      "role": "outcome",
+      "scope": "Rival, missing-link and insufficient variants.",
+      "proxy_for_claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "validity_evidence": [
+        "Exact synthetic status reference."
+      ],
+      "validity_threats": [
+        "Weak categorical accusatory prose needs masked manual coding."
+      ]
+    },
+    {
+      "id": "CON-COVER",
+      "name": "Resolved supported case",
+      "definition": "A positive process case receives a specific supported status rather than UNDECIDED or refusal.",
+      "role": "outcome",
+      "scope": "Twelve synthetic process variants.",
+      "proxy_for_claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "validity_evidence": [
+        "Deterministic status classification."
+      ],
+      "validity_threats": [
+        "Overly rigid exact matching may penalise qualified alternatives."
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M-Y",
+      "construct_ids": [
+        "CON-Y"
+      ],
+      "observable": "All required structured fields match permitted synthetic gold and cite real role IDs.",
+      "instrument_or_procedure": "Frozen run.py schema parser and analyse.py deterministic scorer; blind manual review for unsupported prose.",
+      "scale_or_units": "Binary per case and final route output.",
+      "timing": "After assigned response; never shown as feedback.",
+      "preprocessing": "Keep failures in assigned denominator; average variants inside family.",
+      "calibration": "Adversarial scorer fixtures and independent case review before provider calls.",
+      "reliability": "Deterministic structured fields; manual review agreement to be reported separately.",
+      "validity": "Stipulated synthetic-record performance, not psychological truth.",
+      "measurement_invariance": "Same case IDs and option IDs in both arms; inspect model/schema failures.",
+      "reactivity": "Scorer and private gold absent from API prompts.",
+      "error_model": "Author-oracle misclassification and omitted valid responses; sensitivity by manually audited cases.",
+      "blinding": "Model blind to gold and scorer; manual judges masked to model and arm."
+    },
+    {
+      "id": "M-F",
+      "construct_ids": [
+        "CON-F"
+      ],
+      "observable": "A negative case receives unsupported EPISODE-SUPPORTED or stronger status.",
+      "instrument_or_procedure": "Frozen run.py schema parser and analyse.py deterministic scorer; blind manual review for unsupported prose.",
+      "scale_or_units": "Binary per case and final route output.",
+      "timing": "After assigned response; never shown as feedback.",
+      "preprocessing": "Keep failures in assigned denominator; average variants inside family.",
+      "calibration": "Adversarial scorer fixtures and independent case review before provider calls.",
+      "reliability": "Deterministic structured fields; manual review agreement to be reported separately.",
+      "validity": "Stipulated synthetic-record performance, not psychological truth.",
+      "measurement_invariance": "Same case IDs and option IDs in both arms; inspect model/schema failures.",
+      "reactivity": "Scorer and private gold absent from API prompts.",
+      "error_model": "Author-oracle misclassification and omitted valid responses; sensitivity by manually audited cases.",
+      "blinding": "Model blind to gold and scorer; manual judges masked to model and arm."
+    },
+    {
+      "id": "M-COVER",
+      "construct_ids": [
+        "CON-COVER"
+      ],
+      "observable": "Positive case receives supported status and non-UNDECIDED disposition.",
+      "instrument_or_procedure": "Frozen run.py schema parser and analyse.py deterministic scorer; blind manual review for unsupported prose.",
+      "scale_or_units": "Binary per case and final route output.",
+      "timing": "After assigned response; never shown as feedback.",
+      "preprocessing": "Keep failures in assigned denominator; average variants inside family.",
+      "calibration": "Adversarial scorer fixtures and independent case review before provider calls.",
+      "reliability": "Deterministic structured fields; manual review agreement to be reported separately.",
+      "validity": "Stipulated synthetic-record performance, not psychological truth.",
+      "measurement_invariance": "Same case IDs and option IDs in both arms; inspect model/schema failures.",
+      "reactivity": "Scorer and private gold absent from API prompts.",
+      "error_model": "Author-oracle misclassification and omitted valid responses; sensitivity by manually audited cases.",
+      "blinding": "Model blind to gold and scorer; manual judges masked to model and arm."
+    }
+  ],
+  "design": {
+    "design_type": "controlled-experiment",
+    "rationale": "Every frozen synthetic case is assigned to both routes under each requested model; assignment order is seeded and outputs are retained.",
+    "setting": "Author-created synthetic EAL/2 source and process ledger, Responses API.",
+    "temporal_structure": "Pilot of first two families followed by the remaining fixed plan only if operational gates pass.",
+    "assignment_method": "Seeded random call order within frozen case/model/route schedule.",
+    "allocation_concealment": "Gold remains in local fixture/scorer and is omitted from request body.",
+    "masking": "Prompts do not reveal gold; analysts do not see one another; deterministic synthesis follows fixed rule.",
+    "comparator": "Direct one-call route versus independent two-call agreement route.",
+    "control_ids": [
+      "CTRL-RIVAL",
+      "CTRL-MISSING",
+      "CTRL-INSUFF"
+    ]
+  },
+  "units": {
+    "target_population_or_system": "Fixed twelve synthetic families, not a sampled population.",
+    "sampling_frame": "All twelve preauthored episodes in cases.json.",
+    "experimental_unit": "One fresh model request; route final output is composed from one or two requests.",
+    "observational_unit": "Response or failed/unknown attempt, plus final route output.",
+    "assignment_unit": "Case/model/route block with seeded request ordering.",
+    "analysis_unit": "Independent synthetic family; four variants remain clustered.",
+    "inclusion_criteria": [
+      "All twelve frozen families and four variants each",
+      "Every assigned call including failure"
+    ],
+    "exclusion_criteria": [
+      "Nonfrozen development probes",
+      "Changed model identities analysed as separate cohort"
+    ],
+    "recruitment_or_selection": "Author-designed cases selected for mechanism diversity; no representative sampling."
+  },
+  "interventions_or_exposures": [
+    {
+      "id": "INT-ROUTE",
+      "kind": "intervention",
+      "description": "Assign direct one-call or independent two-call separately prompted mechanism/rival analysis with deterministic agreement-only synthesis.",
+      "target": "Model route outputs and error patterns.",
+      "implementation": "Frozen run.py request bodies and route synthesis.",
+      "dose_or_intensity": "One versus two API requests per case/model, maximum output fixed in freeze.",
+      "timing": "Fresh independent calls before private scoring feedback.",
+      "admissibility": "admissible",
+      "manipulation_checks": [
+        "Freeze contains one versus two distinct calls",
+        "No analyst sees the other analyst response"
+      ],
+      "off_target_checks": [
+        "Record unequal compute/cost and abstention",
+        "Check identical evidence payload"
+      ],
+      "recovery_checks": [
+        "Fresh sessions and no retry on unknown outcome"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTRL-RIVAL",
+      "control_type": "negative",
+      "description": "Same family includes a documented stronger technical or organisational rival.",
+      "failure_mode_addressed": "Bad outcome treated as proof of bias.",
+      "implementation": "Rival variant with explicit defeater and matched contrast.",
+      "diagnostic_consequence": "Strong attribution on this variant counts as false attribution."
+    },
+    {
+      "id": "CTRL-MISSING",
+      "control_type": "negative",
+      "description": "Rotate absent exposure, absent choice and evidenced absent uptake across twelve families.",
+      "failure_mode_addressed": "Cue presence mistaken for uptake or discretionary response.",
+      "implementation": "Four families per missing premise with distinct gold status.",
+      "diagnostic_consequence": "Status inflation invalidates attribution accuracy."
+    },
+    {
+      "id": "CTRL-INSUFF",
+      "control_type": "calibration",
+      "description": "Six compatible and six undecided records lack necessary process or contrast.",
+      "failure_mode_addressed": "Uncertainty is forced into categorical diagnosis.",
+      "implementation": "Insufficient variant per family.",
+      "diagnostic_consequence": "Report both overclaiming and indiscriminate abstention."
+    }
+  ],
+  "confounds": [
+    {
+      "id": "CF-COMPUTE",
+      "description": "Independent route uses two calls where direct uses one.",
+      "causal_or_measurement_path": "Extra compute could explain an observed pragmatic gain.",
+      "control_or_adjustment": "Report route effect only; plan call-matched Stage B.",
+      "diagnostic": "Compare cost, tokens and coverage; no mechanism attribution in A.",
+      "residual_risk": "Topology contribution unidentified."
+    },
+    {
+      "id": "CF-AUTHOR",
+      "description": "All case scripts and gold share design authors.",
+      "causal_or_measurement_path": "Rubric artefacts can favour taught prompt structure.",
+      "control_or_adjustment": "Independent masked cases/review in Stage C.",
+      "diagnostic": "Manual disagreements and holdout design.",
+      "residual_risk": "Stage A cannot generalise."
+    }
+  ],
+  "estimands": [
+    {
+      "id": "EST-Y",
+      "claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Fixed twelve synthetic case families conditional on returned model identity.",
+      "intervention_or_exposure": "Assign independent challenge.",
+      "comparator": "Assign direct route.",
+      "outcome_measurement_ids": [
+        "M-Y"
+      ],
+      "time": "One final output per case/model/route.",
+      "summary_measure": "Equal-family-weighted paired mean difference, variants averaged within family.",
+      "interpretation": "Pragmatic route change in warranted synthetic disposition, with extra computation included."
+    },
+    {
+      "id": "EST-F",
+      "claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Fixed twelve synthetic case families conditional on returned model identity.",
+      "intervention_or_exposure": "Assign independent challenge.",
+      "comparator": "Assign direct route.",
+      "outcome_measurement_ids": [
+        "M-F"
+      ],
+      "time": "One final output per case/model/route.",
+      "summary_measure": "Equal-family-weighted paired mean difference, variants averaged within family.",
+      "interpretation": "Pragmatic route change in strong false attribution among negative cases."
+    },
+    {
+      "id": "EST-COVER",
+      "claim_ids": [
+        "CLM-ROUTE"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Fixed twelve synthetic case families conditional on returned model identity.",
+      "intervention_or_exposure": "Assign independent challenge.",
+      "comparator": "Assign direct route.",
+      "outcome_measurement_ids": [
+        "M-COVER"
+      ],
+      "time": "One final output per case/model/route.",
+      "summary_measure": "Equal-family-weighted paired mean difference, variants averaged within family.",
+      "interpretation": "Pragmatic route change in supported-case resolution/coverage."
+    }
+  ],
+  "identification": {
+    "target_estimand_ids": [
+      "EST-Y",
+      "EST-F",
+      "EST-COVER"
+    ],
+    "status": "partially-identified",
+    "causal_and_measurement_structure": "All fixed cases assigned both routes; request order seeded. Route includes call count, prompts and deterministic synthesis together. Synthetic oracle quality is not independently established.",
+    "assumption_ids": [
+      "ASM-CASE",
+      "ASM-ROUTE",
+      "ASM-MODEL"
+    ],
+    "identified_parameters": [
+      "Paired route outcome differences on author-labelled fixed cases, conditional on stable response model."
+    ],
+    "nonidentified_alternatives": [
+      "Independent challenge versus extra compute and agreement abstention",
+      "Transfer to real human decisions",
+      "True private psychological cause"
+    ],
+    "threats": [
+      "Oracle error",
+      "Alias drift",
+      "Request failures",
+      "Wrong content scope in generated EAL source"
+    ],
+    "diagnostics": [
+      "48-case parser/typecheck",
+      "Request/returned model log",
+      "Gold leakage check",
+      "Manual case-content review"
+    ],
+    "rescue_actions": [
+      "New call-matched route trial",
+      "Independent family and gold authors",
+      "Prospective human process experiment"
+    ]
+  },
+  "sampling": {
+    "method": "Complete fixed developmental case census with family-level precision report.",
+    "sample_size_or_information_target": "12 families × 4 variants × 3 requested models × (1+2 calls) = 432 assigned calls, 288 final outputs.",
+    "inputs": [
+      "12 author-created families",
+      "Four dependent variants per family",
+      "One response per model/arm/case"
+    ],
+    "dependence_structure": "Case variants and repeated model comparisons share family; returned aliases may change by time.",
+    "multiplicity": "Three model-specific contrasts and outcomes reported separately; no confirmatory ranking.",
+    "attrition_or_loss": "Failures and unknown calls retained in assignment denominator.",
+    "result": "Feasibility and effect interval only; 12 families cannot establish small superiority or safety margins.",
+    "sensitivity_analysis": "Family bootstrap/permutation, oracle ambiguity audit, fail-all versus response-only estimates.",
+    "stopping_implications": "Operational 72-call gate ($5), then $25 cumulative cap; no outcome-based stopping."
+  },
+  "analysis": {
+    "preprocessing_lock": "Parse frozen schema, retain all assignments; group four variants per family and composition calls by case/model/route.",
+    "exclusion_lock": "Only explicitly non-scored endpoint probes excluded; no post-hoc failed-call exclusion.",
+    "models": [
+      {
+        "id": "MOD-PAIR",
+        "estimand_ids": [
+          "EST-Y",
+          "EST-F",
+          "EST-COVER"
+        ],
+        "model_or_procedure": "Equal-family paired differences with family-level permutation or bootstrap intervals; descriptive by returned model identity.",
+        "assumptions": [
+          "Stipulated gold valid for this finite corpus",
+          "Stable identity per compared block"
+        ],
+        "diagnostics": [
+          "Family directions",
+          "Coverage by class",
+          "Unknown-cost/response count"
+        ],
+        "outputs": [
+          "Delta_Y",
+          "Delta_F",
+          "Delta_coverage",
+          "family uncertainty interval"
+        ]
+      }
+    ],
+    "contrasts": [
+      "Independent versus direct within each model on same cases"
+    ],
+    "uncertainty": "Report family-level intervals and individual family results; no call-level binomial independence.",
+    "multiplicity": "No confirmatory discovery claim; report all planned contrasts, future Holm gate for selected confirmation.",
+    "missing_data": "Failures count unsuccessful in system outcome; unknown billed attempts are retained unresolved and not retried.",
+    "stopping_rule": "Fixed 72-call operational pilot and 432-call ceiling, with preflight reservations and $5/$25 caps; no score-driven stop.",
+    "robustness_checks": [
+      "Strict versus permissive uncertain-status scoring",
+      "All assignments versus completed responses",
+      "Supported-case recall at measured abstention"
+    ],
+    "software_and_versions": [
+      "run.py and analyse.py digests in frozen manifest",
+      "EAL/2 parser revision from full repository"
+    ],
+    "inconclusive_handling": "Insufficient independent families, invalid content or model drift yields feasibility report only."
+  },
+  "decision_matrix": [
+    {
+      "id": "DM-GAIN",
+      "prediction_ids": [
+        "P-GAIN"
+      ],
+      "observation_region": "Valid reference and positive Delta_Y without clear safety deterioration, with supported recall retained.",
+      "analysis_outputs": [
+        "Delta_Y",
+        "Delta_F",
+        "Delta_coverage"
+      ],
+      "decision_rule": "Describe observed route gain on fixed synthetic cases; no superiority certification in Stage A.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-ROUTE"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Bounded route difference is observed on this exact corpus.",
+          "scope_limit": "No topology-component, human or population claim."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-GAIN compatible",
+        "H-NO-GAIN weakened on finite suite"
+      ],
+      "assumption_failure_response": "Suspend if oracle/content/model identity check fails.",
+      "next_action": "Independent call-matched Stage B and held-out confirmation."
+    },
+    {
+      "id": "DM-NO",
+      "prediction_ids": [
+        "P-NO-GAIN"
+      ],
+      "observation_region": "Nonpositive Delta_Y or supported recall reduced by abstention.",
+      "analysis_outputs": [
+        "Delta_Y",
+        "Delta_coverage"
+      ],
+      "decision_rule": "Do not advance route as beneficial.",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-ROUTE"
+          ],
+          "disposition": "weaken",
+          "rationale": "Fixed suite does not show the proposed pragmatic gain.",
+          "scope_limit": "No general null/equivalence claim."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-GAIN weakened"
+      ],
+      "assumption_failure_response": "Suspend if reference invalid.",
+      "next_action": "Inspect failure cases; do not select by post-hoc tuning."
+    },
+    {
+      "id": "DM-INCONCLUSIVE",
+      "prediction_ids": [
+        "P-GAIN",
+        "P-NO-GAIN"
+      ],
+      "observation_region": "Wide interval, unanticipated pattern, reference dispute, failed API or material alias drift.",
+      "analysis_outputs": [
+        "Delta_Y",
+        "Delta_F",
+        "Delta_coverage"
+      ],
+      "decision_rule": "Report feasibility, uncertainty and invalid/unknown denominators.",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-ROUTE"
+          ],
+          "disposition": "no-change",
+          "rationale": "Observation cannot distinguish a useful gain from a rival or invalid data.",
+          "scope_limit": "No efficacy claim."
+        }
+      ],
+      "hypothesis_effects": [
+        "Neither hypothesis established"
+      ],
+      "assumption_failure_response": "Do not pool invalid blocks.",
+      "next_action": "Repair measurement and freeze a new independent cohort."
+    }
+  ],
+  "bias_assessment": {
+    "risks": [
+      {
+        "id": "R-ORACLE",
+        "risk_type": "measurement",
+        "mechanism": "Author case content and gold share design assumptions.",
+        "prevention": "Freeze cases, independently inspect content and reference statuses.",
+        "detection": "Blind case-review disagreement.",
+        "sensitivity_or_correction": "Report ambiguous-case bounds.",
+        "residual_risk": "No real-process validation."
+      },
+      {
+        "id": "R-DRIFT",
+        "risk_type": "other",
+        "mechanism": "Luna/Sol aliases may change during calls.",
+        "prevention": "Randomise order and log returned model per request.",
+        "detection": "Check returned identities by UTC.",
+        "sensitivity_or_correction": "Split cohort on drift.",
+        "residual_risk": "Unobservable provider changes."
+      }
+    ],
+    "researcher_degrees_of_freedom": [
+      "Prompt wording",
+      "Case wording",
+      "Response parsing",
+      "Status permissiveness",
+      "Model choice"
+    ],
+    "negative_controls": [
+      "Technical-rival and missing-link cases"
+    ],
+    "positive_controls": [
+      "Scripted comparative process cases"
+    ],
+    "falsification_checks": [
+      "No gold in model request",
+      "Different status on relevant process/rival evidence"
+    ],
+    "reporting_controls": [
+      "Freeze and retain every assigned attempt",
+      "Separate development and future confirmation"
+    ],
+    "residual_limitations": [
+      "Synthetic labels",
+      "No call-matched topology isolation",
+      "No human efficacy endpoint"
+    ]
+  },
+  "ethics_and_safety": {
+    "applicable": true,
+    "rationale": "Synthetic API calls only; no human subjects in Stage A, but the supplied credential and billing require protection.",
+    "risks": [
+      "Credential disclosure",
+      "Unbounded API spending",
+      "Overclaiming a psychological diagnosis"
+    ],
+    "mitigations": [
+      "Environment-only credential",
+      "Frozen $5/$25 spending caps",
+      "No real-person attribution"
+    ],
+    "monitoring": [
+      "WAL and usage accounting",
+      "Request/returned model identity"
+    ],
+    "stopping_rules": [
+      "Halt on uncertain usage, drift or exceeded conservative reserve"
+    ],
+    "stop_authority": "Study operator",
+    "review_status": "not-required",
+    "post_stop_actions": [
+      "Retain incomplete attempts and report exact reason; no implicit retry"
+    ]
+  },
+  "feasibility": {
+    "current_status": "partially-feasible",
+    "apparatus_or_data": [
+      "12 author-created families",
+      "48 synthetic generated sources and process ledgers",
+      "Python run/analysis harness"
+    ],
+    "access": "Provider network path and models must pass probe; current environment may block API egress.",
+    "skills": [
+      "Cognitive-bias mechanism protocol",
+      "EAL parser/static check",
+      "Statistical paired analysis"
+    ],
+    "resources": [
+      "Three requested model routes",
+      "Budget caps $5 pilot/$25 cumulative"
+    ],
+    "dependencies": [
+      "Final source content-validity check",
+      "Full-tree parser/typechecker gate",
+      "Provider availability/returned identity"
+    ],
+    "blockers": [
+      "Independent human review and fresh cohorts are not present",
+      "API egress can be blocked"
+    ],
+    "fallback": "Publish offline protocol and validation; no fabricated API outcomes."
+  },
+  "reproducibility": {
+    "preregistration_status": "planned",
+    "registration": "Frozen manifest is internal development registration; no external preregistration.",
+    "immutable_materials": [
+      "cases.json",
+      "run.py",
+      "analyse.py",
+      "PROTOCOL.md",
+      "model request JSON and hashed freeze"
+    ],
+    "data_plan": "WAL retains raw request IDs, responses, errors, usage and answer options without key.",
+    "code_plan": "Publish harness/scorer with run materials.",
+    "randomisation_or_seed_plan": "Seed 240924 in freeze, with shuffled call order and stable option permutations.",
+    "provenance_plan": "SHA-256 of fixtures, prompts, source, request and response identities.",
+    "deviation_and_amendment_plan": "Any changed prompt/case/model starts a versioned cohort, preserving prior attempts.",
+    "replication_plan": "Fresh independent families and masked human gold review, followed by human trial."
+  },
+  "execution": {
+    "protocol_version_used": null,
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": null,
+    "code_location": null,
+    "observed_results": [],
+    "interpretation_status": "not-started"
+  },
+  "provenance": {
+    "authors": [
+      "EAL study team"
+    ],
+    "created_at": "2026-09-24T23:30:00+00:00",
+    "updated_at": "2026-09-24T23:30:00+00:00",
+    "sources": [
+      "benchmarks/experiments/bias-mechanisms/PROTOCOL.md",
+      "https://doi.org/10.1145/3449287",
+      "https://proceedings.mlr.press/v235/smit24a.html"
+    ],
+    "knowledge_cut": "2026-09-24",
+    "change_log": [
+      "0.1.0: specified developmental Stage A only; independent confirmation and human trial remain unrun."
+    ]
+  }
+}
