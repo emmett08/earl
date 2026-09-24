@@ -149,12 +149,18 @@ def _require_complete_collection(program, evidence_ids: set[str] | frozenset[str
 class ArtifactRegistry:
     """A bounded, host-configured catalogue of exact source and task bindings."""
 
-    def __init__(self, service: ReasoningService, definitions: dict[str, Artifact]):
+    def __init__(self, service: ReasoningService, definitions: dict[str, Artifact], *,
+                 historical_evaluator: bool = False):
         self.service = service
         self.definitions = dict(definitions)
+        # Frozen offline studies include deliberately stale and incomplete
+        # observations. Their evaluator verdicts predate the recipient gate.
+        # Production callers retain the complete-collection policy by default.
+        self.historical_evaluator = historical_evaluator
 
     @classmethod
-    def load(cls, service: ReasoningService, path: str | Path) -> "ArtifactRegistry":
+    def load(cls, service: ReasoningService, path: str | Path, *,
+             historical_evaluator: bool = False) -> "ArtifactRegistry":
         with Path(path).open("rb") as stream:
             document = tomllib.load(stream)
         if set(document) != {"artifacts"} or not isinstance(document["artifacts"], dict):
@@ -199,7 +205,7 @@ class ArtifactRegistry:
                 parse_time(now)
             definitions[name] = Artifact(relative, digest, method_id, tuple(claims),
                                          json.loads(encoded_context), now)
-        registry = cls(service, definitions)
+        registry = cls(service, definitions, historical_evaluator=historical_evaluator)
         for name in definitions:
             registry._source(name)
         return registry
@@ -252,7 +258,7 @@ class ArtifactRegistry:
         if (collection.get("source_digest") != artifact.sha256 or collection.get("context") != context
                 or set(collection.get("records", {})) != expected_evidence):
             raise ValueError("Collection identity differs from the registered artifact")
-        if claim is not None:
+        if claim is not None and not self.historical_evaluator:
             _require_complete_collection(program, expected_evidence, collection)
         now = artifact.now or utc_now()
         assessment = self.service.reason(source, context, collection["collection_id"], now)
@@ -263,7 +269,7 @@ class ArtifactRegistry:
                 or assessment.get("assessed_at") != expected_time
                 or assessment.get("method_registry_fingerprint") != artifact.method_registry_fingerprint):
             raise ValueError("Assessment identity differs from the registered artifact")
-        if claim is not None:
+        if claim is not None and not self.historical_evaluator:
             _require_complete_collection(program, expected_evidence, collection, assessment)
         all_claims = assessment.get("claims")
         if not isinstance(all_claims, dict):
@@ -283,6 +289,8 @@ class ArtifactRegistry:
                 "verification": "server_assessment"}
         if claim is not None:
             packet["claim_scope"] = claim
+        if self.historical_evaluator:
+            packet["historical_evaluator"] = True
         self.service.store.put("artifact_packet", packet, record_id=f"artifact:{assessment['assessment_id']}")
         return packet
 
@@ -326,7 +334,9 @@ class ArtifactRegistry:
             raise ValueError("Stored claim scope differs from the registered artifact")
         if set(collection.get("records", {})) != expected_evidence:
             raise ValueError("Stored collection differs from the claim's evidence closure")
-        if claim_scope is not None:
+        if packet.get("historical_evaluator", False) is not self.historical_evaluator:
+            raise ValueError("Stored assessment uses a different evidence collection policy")
+        if claim_scope is not None and not self.historical_evaluator:
             _require_complete_collection(program, expected_evidence, collection, saved)
         claims = {claim: saved.get("claims", {}).get(claim, {}).get("status") for claim in selected}
         if claims != packet["claims"]:
@@ -484,6 +494,8 @@ class ArtifactRegistry:
             "verification": "server_assessment",
             "evidence_integrity": "consistency_checked_not_authenticated",
         }
+        if self.historical_evaluator:
+            packet["historical_evaluator"] = True
         if len(json.dumps(packet, ensure_ascii=False, allow_nan=False).encode("utf-8")) > 3072:
             raise ValueError("Claim packet exceeds its 3072-byte recipient limit")
         return packet

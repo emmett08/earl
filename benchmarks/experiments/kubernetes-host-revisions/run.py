@@ -114,9 +114,10 @@ def _workspace(path: Path, revision: dict) -> None:
     (path / "tools.toml").write_text("\n".join(lines), encoding="utf-8")
 
 
-def _host(path: Path) -> TaskFamilyHost:
+def _host(path: Path, *, historical_evaluator: bool = False) -> TaskFamilyHost:
     service = ReasoningService(path, path / "tools.toml", database_path=path / "runs.sqlite3")
-    artifacts = ArtifactRegistry.load(service, path / "artifacts.toml")
+    artifacts = ArtifactRegistry.load(service, path / "artifacts.toml",
+                                      historical_evaluator=historical_evaluator)
     families = FamilyRegistry.load(artifacts, path / "families.toml")
     return TaskFamilyHost(
         families, principal="synthetic_developmental_runner",

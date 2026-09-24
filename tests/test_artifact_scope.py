@@ -135,3 +135,21 @@ def test_complete_collection_gate_also_requires_optional_alternative(tmp_path):
     collection_id = service.store.list(kind="collection")[0]["id"]
     raw = service.reason(source, {"site": "bench"}, collection_id, "2040-01-31T08:30:00Z")
     assert raw["claims"]["decision"]["status"] == "supported"
+
+
+def test_frozen_historical_evaluator_is_explicit_and_cannot_cross_recipient_boundary(tmp_path):
+    from eal.server import create_server
+
+    service, strict = setup_registry(tmp_path)
+    (tmp_path / "stale.txt").write_text("challenge_record")
+    historical = ArtifactRegistry.load(service, tmp_path / "artifacts.toml",
+                                       historical_evaluator=True)
+    packet = historical.assess_claim("reviewed", "decision")
+    assert packet["status"] == "supported"
+    assert packet["historical_evaluator"] is True
+    assert historical.finish_claim("reviewed", packet["assessment_id"], "decision") == packet
+    with pytest.raises(ValueError, match="different evidence collection policy"):
+        strict.finish_claim("reviewed", packet["assessment_id"], "decision")
+    with pytest.raises(ValueError, match="Historical evaluator cannot serve recipient"):
+        create_server(service, historical, recipient_only=True, principal="reviewer",
+                      recipient_grants={"reviewed": {"decision"}})

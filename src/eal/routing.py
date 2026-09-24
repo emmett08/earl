@@ -74,6 +74,8 @@ class TaskFamilyHost:
                 raise ValueError("Reviewed task grants require an applicability catalogue")
             self._tasks = frozenset()
         else:
+            if families.artifacts.historical_evaluator:
+                raise ValueError("Reviewed task route requires complete evidence collection")
             if applicability.families is not families:
                 raise ValueError("Task catalogue must use this family registry")
             if (not isinstance(task_text, str) or not task_text.strip()

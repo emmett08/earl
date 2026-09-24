@@ -48,6 +48,8 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
     A client request never supplies or changes that identity or its grants.
     """
     checked_grants: dict[str, frozenset[str]] = {}
+    if recipient_only and artifacts is not None and artifacts.historical_evaluator:
+        raise ValueError("Historical evaluator cannot serve recipient claims")
     if recipient_only:
         if (artifacts is None or not isinstance(principal, str)
                 or not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9.-]{0,127}", principal)
