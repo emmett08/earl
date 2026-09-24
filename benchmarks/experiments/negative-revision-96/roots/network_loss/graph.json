@@ -1,0 +1,51 @@
+{
+  "absence_claim": "qualified_absence",
+  "absence_positive_route": false,
+  "bound": 3,
+  "context": {
+    "asset": "NW-44",
+    "run": "load-test-L8"
+  },
+  "defences": [
+    {
+      "evidence": "audit_reader",
+      "target": "first_reader"
+    }
+  ],
+  "explanation": "Submitted test routes are provisional. An eligible violating sample challenges both; complete calibrated non-detection is a separate, limited claim.",
+  "id": "network_loss",
+  "negative_claim": "violating_sample",
+  "objections": [
+    {
+      "premise": "violating_sample",
+      "target": "first_reader"
+    },
+    {
+      "premise": "violating_sample",
+      "target": "second_reader"
+    }
+  ],
+  "positive_routes": [
+    "first_reader",
+    "second_reader"
+  ],
+  "quantity": "dimensionless",
+  "query": {
+    "detector_contract": {
+      "maximum_detection_limit": 0.1,
+      "minimum_sensitivity": 0.9
+    },
+    "end": 12,
+    "max_gap": 4,
+    "property": {
+      "operator": "lt",
+      "value": 3
+    },
+    "semantics": "sampled",
+    "start": 0
+  },
+  "schema": "negative-revision-equal-graph/1",
+  "scope": "load-test-L8",
+  "subject": "NW-44",
+  "unit": "1"
+}

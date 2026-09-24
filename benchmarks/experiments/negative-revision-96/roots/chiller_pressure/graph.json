@@ -1,0 +1,46 @@
+{
+  "absence_claim": "qualified_absence",
+  "absence_positive_route": false,
+  "bound": 1000,
+  "context": {
+    "asset": "CH-75",
+    "run": "cooling-run-R2"
+  },
+  "defences": [],
+  "explanation": "Submitted test routes are provisional. An eligible violating sample challenges both; complete calibrated non-detection is a separate, limited claim.",
+  "id": "chiller_pressure",
+  "negative_claim": "violating_sample",
+  "objections": [
+    {
+      "premise": "violating_sample",
+      "target": "first_reader"
+    },
+    {
+      "premise": "violating_sample",
+      "target": "second_reader"
+    }
+  ],
+  "positive_routes": [
+    "first_reader",
+    "second_reader"
+  ],
+  "quantity": "pressure",
+  "query": {
+    "detector_contract": {
+      "maximum_detection_limit": 0.1,
+      "minimum_sensitivity": 0.9
+    },
+    "end": 12,
+    "max_gap": 4,
+    "property": {
+      "operator": "le",
+      "value": 1000
+    },
+    "semantics": "sampled",
+    "start": 0
+  },
+  "schema": "negative-revision-equal-graph/1",
+  "scope": "cooling-run-R2",
+  "subject": "CH-75",
+  "unit": "kPa"
+}

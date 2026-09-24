@@ -1,0 +1,544 @@
+{
+  "now": "2026-09-24T12:00:00Z",
+  "provenance": "Synthetic, single-author; labels are intended references, not independent adjudication.",
+  "review_status": "pending_independent_ai_review_unmasked",
+  "roots": [
+    {
+      "brief": "For the battery bus BB-17 in trial peak-load-P7, assess whether a recent primary or independent alternative test reports at least 80 A load, a 45--55 V bus and module temperature at most 70 C. The alternative must contain the same quantitative observations and an 'independent_qualified' finding. A current 'primary_probe_overheat' monitoring finding challenges the primary test only. A separately collected 'alarm_from_test_injection' finding for the same asset and trial answers that specific primary challenge. A sound independent alternative route can still support the claim while the primary route is challenged. Every record must identify this asset and trial where declared, use the named collector and be no more than 15 minutes old at 12:00 UTC. The question is about the submitted finite test, not a guarantee of current physical behaviour. Report the claim status and its decisive evidence and qualification.",
+      "claim": "bus_margin",
+      "context": {
+        "asset": "BB-17",
+        "trial": "peak-load-P7"
+      },
+      "effort": {
+        "status": "unmeasured"
+      },
+      "family": "battery bus",
+      "genealogy": "Eight domain parameterisations of a shared two-route, one-targeted-alert graph generator",
+      "graph": "graphs/battery_bus.json",
+      "id": "battery_bus",
+      "now": "2026-09-24T12:00:00Z",
+      "source": "roots/battery_bus/source.eal",
+      "states": [
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/battery_bus/states/initial/alert_reader.json",
+            "alternate_reader": "roots/battery_bus/states/initial/alternate_reader.json",
+            "primary_reader": "roots/battery_bus/states/initial/primary_reader.json",
+            "resolution_reader": "roots/battery_bus/states/initial/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "initial",
+          "registry": "roots/battery_bus/states/initial.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/battery_bus/states/adverse/alert_reader.json",
+            "alternate_reader": "roots/battery_bus/states/adverse/alternate_reader.json",
+            "primary_reader": "roots/battery_bus/states/adverse/primary_reader.json",
+            "resolution_reader": "roots/battery_bus/states/adverse/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "adverse",
+          "registry": "roots/battery_bus/states/adverse.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/battery_bus/states/restored/alert_reader.json",
+            "alternate_reader": "roots/battery_bus/states/restored/alternate_reader.json",
+            "primary_reader": "roots/battery_bus/states/restored/primary_reader.json",
+            "resolution_reader": "roots/battery_bus/states/restored/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "restored",
+          "registry": "roots/battery_bus/states/restored.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        }
+      ]
+    },
+    {
+      "brief": "For the database restore DB-41 in trial restore-R8, assess whether a recent primary or independent alternative test reports snapshot B481, WAL end B500 and at least 1000 restored rows. The alternative must contain the same quantitative observations and an 'independent_qualified' finding. A current 'primary_wal_segment_missing' monitoring finding challenges the primary test only. A separately collected 'independent_replay_index_complete' finding for the same asset and trial answers that specific primary challenge. A sound independent alternative route can still support the claim while the primary route is challenged. Every record must identify this asset and trial where declared, use the named collector and be no more than 15 minutes old at 12:00 UTC. The question is about the submitted finite test, not a guarantee of current physical behaviour. Report the claim status and its decisive evidence and qualification.",
+      "claim": "restore_record",
+      "context": {
+        "asset": "DB-41",
+        "trial": "restore-R8"
+      },
+      "effort": {
+        "status": "unmeasured"
+      },
+      "family": "database restore",
+      "genealogy": "Eight domain parameterisations of a shared two-route, one-targeted-alert graph generator",
+      "graph": "graphs/sql_backup.json",
+      "id": "sql_backup",
+      "now": "2026-09-24T12:00:00Z",
+      "source": "roots/sql_backup/source.eal",
+      "states": [
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/sql_backup/states/initial/alert_reader.json",
+            "alternate_reader": "roots/sql_backup/states/initial/alternate_reader.json",
+            "primary_reader": "roots/sql_backup/states/initial/primary_reader.json",
+            "resolution_reader": "roots/sql_backup/states/initial/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "initial",
+          "registry": "roots/sql_backup/states/initial.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/sql_backup/states/adverse/alert_reader.json",
+            "alternate_reader": "roots/sql_backup/states/adverse/alternate_reader.json",
+            "primary_reader": "roots/sql_backup/states/adverse/primary_reader.json",
+            "resolution_reader": "roots/sql_backup/states/adverse/resolution_reader.json"
+          },
+          "expected": "contested",
+          "id": "adverse",
+          "registry": "roots/sql_backup/states/adverse.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/sql_backup/states/restored/alert_reader.json",
+            "alternate_reader": "roots/sql_backup/states/restored/alternate_reader.json",
+            "primary_reader": "roots/sql_backup/states/restored/primary_reader.json",
+            "resolution_reader": "roots/sql_backup/states/restored/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "restored",
+          "registry": "roots/sql_backup/states/restored.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        }
+      ]
+    },
+    {
+      "brief": "For the robot emergency-stop RX-12 in trial stop-test-E3, assess whether a recent primary or independent alternative test reports stop p99 at most 110 ms, full monitored coverage and no bypass. The alternative must contain the same quantitative observations and an 'independent_qualified' finding. A current 'primary_interlock_bypass' monitoring finding challenges the primary test only. A separately collected 'harness_only_event' finding for the same asset and trial answers that specific primary challenge. A sound independent alternative route can still support the claim while the primary route is challenged. Every record must identify this asset and trial where declared, use the named collector and be no more than 15 minutes old at 12:00 UTC. The question is about the submitted finite test, not a guarantee of current physical behaviour. Report the claim status and its decisive evidence and qualification.",
+      "claim": "estop_record",
+      "context": {
+        "asset": "RX-12",
+        "trial": "stop-test-E3"
+      },
+      "effort": {
+        "status": "unmeasured"
+      },
+      "family": "robot emergency-stop",
+      "genealogy": "Eight domain parameterisations of a shared two-route, one-targeted-alert graph generator",
+      "graph": "graphs/robot_estop.json",
+      "id": "robot_estop",
+      "now": "2026-09-24T12:00:00Z",
+      "source": "roots/robot_estop/source.eal",
+      "states": [
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/robot_estop/states/initial/alert_reader.json",
+            "alternate_reader": "roots/robot_estop/states/initial/alternate_reader.json",
+            "primary_reader": "roots/robot_estop/states/initial/primary_reader.json",
+            "resolution_reader": "roots/robot_estop/states/initial/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "initial",
+          "registry": "roots/robot_estop/states/initial.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/robot_estop/states/adverse/alert_reader.json",
+            "alternate_reader": "roots/robot_estop/states/adverse/alternate_reader.json",
+            "primary_reader": "roots/robot_estop/states/adverse/primary_reader.json",
+            "resolution_reader": "roots/robot_estop/states/adverse/resolution_reader.json"
+          },
+          "expected": "contested",
+          "id": "adverse",
+          "registry": "roots/robot_estop/states/adverse.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/robot_estop/states/restored/alert_reader.json",
+            "alternate_reader": "roots/robot_estop/states/restored/alternate_reader.json",
+            "primary_reader": "roots/robot_estop/states/restored/primary_reader.json",
+            "resolution_reader": "roots/robot_estop/states/restored/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "restored",
+          "registry": "roots/robot_estop/states/restored.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        }
+      ]
+    },
+    {
+      "brief": "For the water-treatment dosing WT-63 in trial dose-check-D6, assess whether a recent primary or independent alternative test reports pH between 6.5 and 8.5, dose at most 4 mg/L and at least 24 samples. The alternative must contain the same quantitative observations and an 'independent_qualified' finding. A current 'primary_sensor_contamination' monitoring finding challenges the primary test only. A separately collected 'independent_lab_assay_agrees' finding for the same asset and trial answers that specific primary challenge. A sound independent alternative route can still support the claim while the primary route is challenged. Every record must identify this asset and trial where declared, use the named collector and be no more than 15 minutes old at 12:00 UTC. The question is about the submitted finite test, not a guarantee of current physical behaviour. Report the claim status and its decisive evidence and qualification.",
+      "claim": "dose_record",
+      "context": {
+        "asset": "WT-63",
+        "trial": "dose-check-D6"
+      },
+      "effort": {
+        "status": "unmeasured"
+      },
+      "family": "water-treatment dosing",
+      "genealogy": "Eight domain parameterisations of a shared two-route, one-targeted-alert graph generator",
+      "graph": "graphs/water_dose.json",
+      "id": "water_dose",
+      "now": "2026-09-24T12:00:00Z",
+      "source": "roots/water_dose/source.eal",
+      "states": [
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/water_dose/states/initial/alert_reader.json",
+            "alternate_reader": "roots/water_dose/states/initial/alternate_reader.json",
+            "primary_reader": "roots/water_dose/states/initial/primary_reader.json",
+            "resolution_reader": "roots/water_dose/states/initial/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "initial",
+          "registry": "roots/water_dose/states/initial.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/water_dose/states/adverse/alert_reader.json",
+            "alternate_reader": "roots/water_dose/states/adverse/alternate_reader.json",
+            "primary_reader": "roots/water_dose/states/adverse/primary_reader.json",
+            "resolution_reader": "roots/water_dose/states/adverse/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "adverse",
+          "registry": "roots/water_dose/states/adverse.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/water_dose/states/restored/alert_reader.json",
+            "alternate_reader": "roots/water_dose/states/restored/alternate_reader.json",
+            "primary_reader": "roots/water_dose/states/restored/primary_reader.json",
+            "resolution_reader": "roots/water_dose/states/restored/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "restored",
+          "registry": "roots/water_dose/states/restored.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        }
+      ]
+    },
+    {
+      "brief": "For the payment replay PAY-21 in trial duplicate-D2, assess whether a recent primary or independent alternative test reports at least four replay attempts on key K9 and no duplicate charge. The alternative must contain the same quantitative observations and an 'independent_qualified' finding. A current 'primary_ledger_divergence' monitoring finding challenges the primary test only. A separately collected 'independent_settlement_reconciled' finding for the same asset and trial answers that specific primary challenge. A sound independent alternative route can still support the claim while the primary route is challenged. Every record must identify this asset and trial where declared, use the named collector and be no more than 15 minutes old at 12:00 UTC. The question is about the submitted finite test, not a guarantee of current physical behaviour. Report the claim status and its decisive evidence and qualification.",
+      "claim": "idempotency_record",
+      "context": {
+        "asset": "PAY-21",
+        "trial": "duplicate-D2"
+      },
+      "effort": {
+        "status": "unmeasured"
+      },
+      "family": "payment replay",
+      "genealogy": "Eight domain parameterisations of a shared two-route, one-targeted-alert graph generator",
+      "graph": "graphs/payment_replay.json",
+      "id": "payment_replay",
+      "now": "2026-09-24T12:00:00Z",
+      "source": "roots/payment_replay/source.eal",
+      "states": [
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/payment_replay/states/initial/alert_reader.json",
+            "alternate_reader": "roots/payment_replay/states/initial/alternate_reader.json",
+            "primary_reader": "roots/payment_replay/states/initial/primary_reader.json",
+            "resolution_reader": "roots/payment_replay/states/initial/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "initial",
+          "registry": "roots/payment_replay/states/initial.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/payment_replay/states/adverse/alert_reader.json",
+            "alternate_reader": "roots/payment_replay/states/adverse/alternate_reader.json",
+            "primary_reader": "roots/payment_replay/states/adverse/primary_reader.json",
+            "resolution_reader": "roots/payment_replay/states/adverse/resolution_reader.json"
+          },
+          "expected": "contested",
+          "id": "adverse",
+          "registry": "roots/payment_replay/states/adverse.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/payment_replay/states/restored/alert_reader.json",
+            "alternate_reader": "roots/payment_replay/states/restored/alternate_reader.json",
+            "primary_reader": "roots/payment_replay/states/restored/primary_reader.json",
+            "resolution_reader": "roots/payment_replay/states/restored/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "restored",
+          "registry": "roots/payment_replay/states/restored.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        }
+      ]
+    },
+    {
+      "brief": "For the rail switch interlock RS-19 in trial throw-T4, assess whether a recent primary or independent alternative test reports throw in at most 3000 ms, clearance at least 12 mm and a locked sensor. The alternative must contain the same quantitative observations and an 'independent_qualified' finding. A current 'primary_turnout_lock_fault' monitoring finding challenges the primary test only. A separately collected 'separate_contact_inspection_clear' finding for the same asset and trial answers that specific primary challenge. A sound independent alternative route can still support the claim while the primary route is challenged. Every record must identify this asset and trial where declared, use the named collector and be no more than 15 minutes old at 12:00 UTC. The question is about the submitted finite test, not a guarantee of current physical behaviour. Report the claim status and its decisive evidence and qualification.",
+      "claim": "interlock_record",
+      "context": {
+        "asset": "RS-19",
+        "trial": "throw-T4"
+      },
+      "effort": {
+        "status": "unmeasured"
+      },
+      "family": "rail switch interlock",
+      "genealogy": "Eight domain parameterisations of a shared two-route, one-targeted-alert graph generator",
+      "graph": "graphs/rail_switch.json",
+      "id": "rail_switch",
+      "now": "2026-09-24T12:00:00Z",
+      "source": "roots/rail_switch/source.eal",
+      "states": [
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/rail_switch/states/initial/alert_reader.json",
+            "alternate_reader": "roots/rail_switch/states/initial/alternate_reader.json",
+            "primary_reader": "roots/rail_switch/states/initial/primary_reader.json",
+            "resolution_reader": "roots/rail_switch/states/initial/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "initial",
+          "registry": "roots/rail_switch/states/initial.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/rail_switch/states/adverse/alert_reader.json",
+            "alternate_reader": "roots/rail_switch/states/adverse/alternate_reader.json",
+            "primary_reader": "roots/rail_switch/states/adverse/primary_reader.json",
+            "resolution_reader": "roots/rail_switch/states/adverse/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "adverse",
+          "registry": "roots/rail_switch/states/adverse.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/rail_switch/states/restored/alert_reader.json",
+            "alternate_reader": "roots/rail_switch/states/restored/alternate_reader.json",
+            "primary_reader": "roots/rail_switch/states/restored/primary_reader.json",
+            "resolution_reader": "roots/rail_switch/states/restored/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "restored",
+          "registry": "roots/rail_switch/states/restored.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        }
+      ]
+    },
+    {
+      "brief": "For the data pipeline ETL-44 in trial batch-B7, assess whether a recent primary or independent alternative test reports at least 5000 processed rows, zero reported gaps and matching checkpoint digest. The alternative must contain the same quantitative observations and an 'independent_qualified' finding. A current 'primary_downstream_gap' monitoring finding challenges the primary test only. A separately collected 'independent_replay_digest_matches' finding for the same asset and trial answers that specific primary challenge. A sound independent alternative route can still support the claim while the primary route is challenged. Every record must identify this asset and trial where declared, use the named collector and be no more than 15 minutes old at 12:00 UTC. The question is about the submitted finite test, not a guarantee of current physical behaviour. Report the claim status and its decisive evidence and qualification.",
+      "claim": "batch_record",
+      "context": {
+        "asset": "ETL-44",
+        "trial": "batch-B7"
+      },
+      "effort": {
+        "status": "unmeasured"
+      },
+      "family": "data pipeline",
+      "genealogy": "Eight domain parameterisations of a shared two-route, one-targeted-alert graph generator",
+      "graph": "graphs/batch_pipeline.json",
+      "id": "batch_pipeline",
+      "now": "2026-09-24T12:00:00Z",
+      "source": "roots/batch_pipeline/source.eal",
+      "states": [
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/batch_pipeline/states/initial/alert_reader.json",
+            "alternate_reader": "roots/batch_pipeline/states/initial/alternate_reader.json",
+            "primary_reader": "roots/batch_pipeline/states/initial/primary_reader.json",
+            "resolution_reader": "roots/batch_pipeline/states/initial/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "initial",
+          "registry": "roots/batch_pipeline/states/initial.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/batch_pipeline/states/adverse/alert_reader.json",
+            "alternate_reader": "roots/batch_pipeline/states/adverse/alternate_reader.json",
+            "primary_reader": "roots/batch_pipeline/states/adverse/primary_reader.json",
+            "resolution_reader": "roots/batch_pipeline/states/adverse/resolution_reader.json"
+          },
+          "expected": "contested",
+          "id": "adverse",
+          "registry": "roots/batch_pipeline/states/adverse.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/batch_pipeline/states/restored/alert_reader.json",
+            "alternate_reader": "roots/batch_pipeline/states/restored/alternate_reader.json",
+            "primary_reader": "roots/batch_pipeline/states/restored/primary_reader.json",
+            "resolution_reader": "roots/batch_pipeline/states/restored/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "restored",
+          "registry": "roots/batch_pipeline/states/restored.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        }
+      ]
+    },
+    {
+      "brief": "For the solar inverter INV-31 in trial peak-P5, assess whether a recent primary or independent alternative test reports harmonic distortion at most 5%, temperature at most 85 C and output at least 30 kW. The alternative must contain the same quantitative observations and an 'independent_qualified' finding. A current 'primary_uncommanded_derating' monitoring finding challenges the primary test only. A separately collected 'separate_module_test_clear' finding for the same asset and trial answers that specific primary challenge. A sound independent alternative route can still support the claim while the primary route is challenged. Every record must identify this asset and trial where declared, use the named collector and be no more than 15 minutes old at 12:00 UTC. The question is about the submitted finite test, not a guarantee of current physical behaviour. Report the claim status and its decisive evidence and qualification.",
+      "claim": "inverter_record",
+      "context": {
+        "asset": "INV-31",
+        "trial": "peak-P5"
+      },
+      "effort": {
+        "status": "unmeasured"
+      },
+      "family": "solar inverter",
+      "genealogy": "Eight domain parameterisations of a shared two-route, one-targeted-alert graph generator",
+      "graph": "graphs/solar_inverter.json",
+      "id": "solar_inverter",
+      "now": "2026-09-24T12:00:00Z",
+      "source": "roots/solar_inverter/source.eal",
+      "states": [
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/solar_inverter/states/initial/alert_reader.json",
+            "alternate_reader": "roots/solar_inverter/states/initial/alternate_reader.json",
+            "primary_reader": "roots/solar_inverter/states/initial/primary_reader.json",
+            "resolution_reader": "roots/solar_inverter/states/initial/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "initial",
+          "registry": "roots/solar_inverter/states/initial.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/solar_inverter/states/adverse/alert_reader.json",
+            "alternate_reader": "roots/solar_inverter/states/adverse/alternate_reader.json",
+            "primary_reader": "roots/solar_inverter/states/adverse/primary_reader.json",
+            "resolution_reader": "roots/solar_inverter/states/adverse/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "adverse",
+          "registry": "roots/solar_inverter/states/adverse.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        },
+        {
+          "checker_evidence": {
+            "alert_reader": "roots/solar_inverter/states/restored/alert_reader.json",
+            "alternate_reader": "roots/solar_inverter/states/restored/alternate_reader.json",
+            "primary_reader": "roots/solar_inverter/states/restored/primary_reader.json",
+            "resolution_reader": "roots/solar_inverter/states/restored/resolution_reader.json"
+          },
+          "expected": "supported",
+          "id": "restored",
+          "registry": "roots/solar_inverter/states/restored.toml",
+          "review": {
+            "rationale": "Declared finite synthetic brief-level expectation.",
+            "reviewers": [],
+            "status": "pending_independent_ai_review_unmasked"
+          }
+        }
+      ]
+    }
+  ],
+  "schema": "eal2-deployment-800-corpus/1"
+}

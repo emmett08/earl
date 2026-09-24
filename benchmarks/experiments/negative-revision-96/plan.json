@@ -1,0 +1,14 @@
+{
+  "schema": "eal2-negative-revision-96-plan/1",
+  "study_id": "INV-EAL-NEGATIVE-REVISION-001-A1-developmental",
+  "protocol_parent": "INV-EAL-NEGATIVE-REVISION-001/0.1.0",
+  "amendment": "0.2.0-dependent-family-developmental",
+  "provider": "nano.toml",
+  "response_model": "gpt-4.1-nano-2025-04-14",
+  "now": "2040-01-31T08:30:00Z",
+  "seed": 960924,
+  "max_prompt_bytes": 50000,
+  "max_output_tokens": 3000,
+  "max_cost_usd": 1.2,
+  "stop": "No retries. Stop at a failed/pending request, unknown usage, model drift or planned budget exhaustion; retain every attempt."
+}

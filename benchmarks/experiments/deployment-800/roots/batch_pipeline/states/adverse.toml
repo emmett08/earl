@@ -1,0 +1,23 @@
+[tools.primary_reader]
+kind = "json_file"
+version = "1"
+mode = "deterministic"
+path = "states/adverse/primary_reader.json"
+
+[tools.alternate_reader]
+kind = "json_file"
+version = "1"
+mode = "deterministic"
+path = "states/adverse/alternate_reader.json"
+
+[tools.alert_reader]
+kind = "json_file"
+version = "1"
+mode = "deterministic"
+path = "states/adverse/alert_reader.json"
+
+[tools.resolution_reader]
+kind = "json_file"
+version = "1"
+mode = "deterministic"
+path = "states/adverse/resolution_reader.json"

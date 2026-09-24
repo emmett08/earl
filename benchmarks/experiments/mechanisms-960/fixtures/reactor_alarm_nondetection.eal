@@ -1,0 +1,23 @@
+language "EAL/2";
+environment task_scope {
+  require "vessel" == "M4";
+  require "episode" == "A6";
+}
+tool trace_reader { version "1"; mode deterministic; }
+evidence trace_input { tool trace_reader; kind sampled_negative_trace; environment task_scope; max_age 1800; require "schema" == "EAL/typed-input/1"; }
+reasoning sampled_step { method "engineering/sampled-negative/1"; rationale "A finite sampled negative finding is conditioned on sample coverage and detector capability; no continuous-time or physical truth follows from this imported trace."; }
+claim sampled_finding {
+  statement "With sampled five-second coverage and the stipulated detector contract, is there no recorded normalised concentration score at or above 0.6?";
+  environment task_scope;
+  proposition {
+    subject "M4";
+    quantity "dimensionless";
+    unit "1";
+    scope "alarm-A6";
+    valid_from "2026-09-24T12:00:00Z";
+    valid_until "2026-09-24T12:09:00Z";
+    query {"detector_contract":{"maximum_detection_limit":0.55,"minimum_sensitivity":0.91},"end":15,"max_gap":5,"mode":"non_detection","property":{"operator":"lt","value":0.6},"semantics":"sampled","start":0};
+    result "finding" == true;
+  }
+}
+argument sampled_route { conclusion sampled_finding; reasoning sampled_step; evidence trace_input; binding trace_input; }

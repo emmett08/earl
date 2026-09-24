@@ -1,0 +1,24 @@
+{
+  "context": {
+    "asset": "ETL-44",
+    "trial": "batch-B7"
+  },
+  "observed_at": "2026-09-24T11:58:00Z",
+  "request": {
+    "context": {
+      "asset": "ETL-44",
+      "trial": "batch-B7"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "primary_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "asset": "ETL-44",
+    "checkpoint_digest": "sha256:a43f",
+    "gap_count": 0,
+    "processed_rows": 5000,
+    "trial": "batch-B7"
+  }
+}

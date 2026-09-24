@@ -1,0 +1,25 @@
+{
+  "context": {
+    "asset": "DB-41",
+    "trial": "restore-R8"
+  },
+  "observed_at": "2026-09-24T11:58:00Z",
+  "request": {
+    "context": {
+      "asset": "DB-41",
+      "trial": "restore-R8"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "alternate_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "asset": "DB-41",
+    "finding": "none",
+    "restored_rows": 1023,
+    "snapshot_lsn": "B481",
+    "trial": "restore-R8",
+    "wal_end_lsn": "B500"
+  }
+}

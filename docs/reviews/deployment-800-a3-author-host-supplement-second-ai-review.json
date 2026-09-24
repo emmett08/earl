@@ -1,0 +1,976 @@
+{
+  "actual_author_packet_sha256": "2ab5a77a6a9e997e39501d450a2ab3a0c6c3655ae2f1871fc5751d06d01b76a3",
+  "items": [
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "7e91f036c3f97dab745cf09be1ae24f73b692c786ee4a92c38f584831aabcf7f",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "7e91f036c3f97dab745cf09be1ae24f73b692c786ee4a92c38f584831aabcf7f",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "7e91f036c3f97dab745cf09be1ae24f73b692c786ee4a92c38f584831aabcf7f",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A01",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "7e91f036c3f97dab745cf09be1ae24f73b692c786ee4a92c38f584831aabcf7f",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "7e91f036c3f97dab745cf09be1ae24f73b692c786ee4a92c38f584831aabcf7f",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "7e91f036c3f97dab745cf09be1ae24f73b692c786ee4a92c38f584831aabcf7f",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A02",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "28cfe3a4eb6ce6602bb13f809d7a6b464d59607ab12defa07b02eaeecd1204b2",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "28cfe3a4eb6ce6602bb13f809d7a6b464d59607ab12defa07b02eaeecd1204b2",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "28cfe3a4eb6ce6602bb13f809d7a6b464d59607ab12defa07b02eaeecd1204b2",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A03",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "44542bb86fb6920c16b095dd7475af949d4a22c7ee475366895f8f73e2b718f7",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "44542bb86fb6920c16b095dd7475af949d4a22c7ee475366895f8f73e2b718f7",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "44542bb86fb6920c16b095dd7475af949d4a22c7ee475366895f8f73e2b718f7",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A04",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 7098 (char 7097)",
+          "packet_sha256": "6a316ceec1583fada2af48ff7ba6b9baf1f61398fb0e2c8eacfd13802e041248",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 7098 (char 7097)",
+          "packet_sha256": "6a316ceec1583fada2af48ff7ba6b9baf1f61398fb0e2c8eacfd13802e041248",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 7098 (char 7097)",
+          "packet_sha256": "6a316ceec1583fada2af48ff7ba6b9baf1f61398fb0e2c8eacfd13802e041248",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A05",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "fb37175f3be4ce6b8984263b73c55fb791e0ab6352474052877a1a0fa499a983",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "fb37175f3be4ce6b8984263b73c55fb791e0ab6352474052877a1a0fa499a983",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "fb37175f3be4ce6b8984263b73c55fb791e0ab6352474052877a1a0fa499a983",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A06",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ade8db9b4b95268c187dd4ff5a263f4c61a29f1e40b168c6fd20cf1f024b14cd",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ade8db9b4b95268c187dd4ff5a263f4c61a29f1e40b168c6fd20cf1f024b14cd",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ade8db9b4b95268c187dd4ff5a263f4c61a29f1e40b168c6fd20cf1f024b14cd",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A07",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ade8db9b4b95268c187dd4ff5a263f4c61a29f1e40b168c6fd20cf1f024b14cd",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ade8db9b4b95268c187dd4ff5a263f4c61a29f1e40b168c6fd20cf1f024b14cd",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ade8db9b4b95268c187dd4ff5a263f4c61a29f1e40b168c6fd20cf1f024b14cd",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A08",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 4265 (char 4264)",
+          "packet_sha256": "964e5476a1e169b5d495181d91a33d62088c2c036894c743f7ccbfcd65c6e842",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 4265 (char 4264)",
+          "packet_sha256": "964e5476a1e169b5d495181d91a33d62088c2c036894c743f7ccbfcd65c6e842",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 4265 (char 4264)",
+          "packet_sha256": "964e5476a1e169b5d495181d91a33d62088c2c036894c743f7ccbfcd65c6e842",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A09",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "f77e78f5bb3c49afeb6f299238396cb7204d4c6987dc9f91ffd1875e89a59482",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "f77e78f5bb3c49afeb6f299238396cb7204d4c6987dc9f91ffd1875e89a59482",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "f77e78f5bb3c49afeb6f299238396cb7204d4c6987dc9f91ffd1875e89a59482",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A10",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "4f2a556957a700dd729d6f1f1621f13f50781a4f4df12ed8e978d753a931b655",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "4f2a556957a700dd729d6f1f1621f13f50781a4f4df12ed8e978d753a931b655",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "4f2a556957a700dd729d6f1f1621f13f50781a4f4df12ed8e978d753a931b655",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A11",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "4f2a556957a700dd729d6f1f1621f13f50781a4f4df12ed8e978d753a931b655",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "4f2a556957a700dd729d6f1f1621f13f50781a4f4df12ed8e978d753a931b655",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "4f2a556957a700dd729d6f1f1621f13f50781a4f4df12ed8e978d753a931b655",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A12",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 6118 (char 6117)",
+          "packet_sha256": "8fecccbd4ef216a780efe771482afe697ac09707214787d4901b56e6e0154f52",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 6118 (char 6117)",
+          "packet_sha256": "8fecccbd4ef216a780efe771482afe697ac09707214787d4901b56e6e0154f52",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 6118 (char 6117)",
+          "packet_sha256": "8fecccbd4ef216a780efe771482afe697ac09707214787d4901b56e6e0154f52",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A13",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "f348cff4c7ed5f1578a6bb9f7bd4cc87db555cc97a9abf32600cce9d46ecf8d0",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "f348cff4c7ed5f1578a6bb9f7bd4cc87db555cc97a9abf32600cce9d46ecf8d0",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "f348cff4c7ed5f1578a6bb9f7bd4cc87db555cc97a9abf32600cce9d46ecf8d0",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A14",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ad061fe7c08ea19f31a97e61a238b31288fc8d8369dc44afada7da6a8befedc1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ad061fe7c08ea19f31a97e61a238b31288fc8d8369dc44afada7da6a8befedc1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ad061fe7c08ea19f31a97e61a238b31288fc8d8369dc44afada7da6a8befedc1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A15",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ad061fe7c08ea19f31a97e61a238b31288fc8d8369dc44afada7da6a8befedc1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ad061fe7c08ea19f31a97e61a238b31288fc8d8369dc44afada7da6a8befedc1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "ad061fe7c08ea19f31a97e61a238b31288fc8d8369dc44afada7da6a8befedc1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A16",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 7088 (char 7087)",
+          "packet_sha256": "a4d861c0cfbf2fb81935132d1ec81700dd6520d841f57f39fa3790734c050e9b",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 7088 (char 7087)",
+          "packet_sha256": "a4d861c0cfbf2fb81935132d1ec81700dd6520d841f57f39fa3790734c050e9b",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 7088 (char 7087)",
+          "packet_sha256": "a4d861c0cfbf2fb81935132d1ec81700dd6520d841f57f39fa3790734c050e9b",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A17",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "6ca663712857c5566a9e5961ef3223f66cb96b3f311b6f49b52d09e21dfd78c4",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "6ca663712857c5566a9e5961ef3223f66cb96b3f311b6f49b52d09e21dfd78c4",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "6ca663712857c5566a9e5961ef3223f66cb96b3f311b6f49b52d09e21dfd78c4",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A18",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 3033 (char 3032)",
+          "packet_sha256": "643e1fb98c58c006d6e95773284ed4edb4320b3dbbc287873dba748a77a1c9ce",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 3033 (char 3032)",
+          "packet_sha256": "643e1fb98c58c006d6e95773284ed4edb4320b3dbbc287873dba748a77a1c9ce",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 3033 (char 3032)",
+          "packet_sha256": "643e1fb98c58c006d6e95773284ed4edb4320b3dbbc287873dba748a77a1c9ce",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A19",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "77ae015a43b1f00eb250a9eddb1ba8849bb6aa60517e9e9c7054a001eda7a24f",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "77ae015a43b1f00eb250a9eddb1ba8849bb6aa60517e9e9c7054a001eda7a24f",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "77ae015a43b1f00eb250a9eddb1ba8849bb6aa60517e9e9c7054a001eda7a24f",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A20",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "6edfa9057a5bb0f9b1a522917a6bd3a42ad7901ee05290696c2f01f2bb8210c5",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "6edfa9057a5bb0f9b1a522917a6bd3a42ad7901ee05290696c2f01f2bb8210c5",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "6edfa9057a5bb0f9b1a522917a6bd3a42ad7901ee05290696c2f01f2bb8210c5",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A21",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "6edfa9057a5bb0f9b1a522917a6bd3a42ad7901ee05290696c2f01f2bb8210c5",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "6edfa9057a5bb0f9b1a522917a6bd3a42ad7901ee05290696c2f01f2bb8210c5",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "6edfa9057a5bb0f9b1a522917a6bd3a42ad7901ee05290696c2f01f2bb8210c5",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A22",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "2fe2349354523cd24947641656a815af57ed28ad7acd70e24eea78fc65c108cf",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "2fe2349354523cd24947641656a815af57ed28ad7acd70e24eea78fc65c108cf",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "2fe2349354523cd24947641656a815af57ed28ad7acd70e24eea78fc65c108cf",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A23",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "2cbbb6f08845c398f15ee280a933da850ca37da334881156028cca2ad9f0dfe1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "2cbbb6f08845c398f15ee280a933da850ca37da334881156028cca2ad9f0dfe1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "2cbbb6f08845c398f15ee280a933da850ca37da334881156028cca2ad9f0dfe1",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A24",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "03e726f5d8a81b0e5ae1a6f2ac8599f2203543963132426254bde3a428608a4d",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "03e726f5d8a81b0e5ae1a6f2ac8599f2203543963132426254bde3a428608a4d",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "03e726f5d8a81b0e5ae1a6f2ac8599f2203543963132426254bde3a428608a4d",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A25",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "03e726f5d8a81b0e5ae1a6f2ac8599f2203543963132426254bde3a428608a4d",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "03e726f5d8a81b0e5ae1a6f2ac8599f2203543963132426254bde3a428608a4d",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "03e726f5d8a81b0e5ae1a6f2ac8599f2203543963132426254bde3a428608a4d",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A26",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "7bf54282fd5c5ec7627d89f8a2464a99340ee614216633d858bb10da521c4c0e",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "7bf54282fd5c5ec7627d89f8a2464a99340ee614216633d858bb10da521c4c0e",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph schema must be generic-argument-graph/1",
+          "packet_sha256": "7bf54282fd5c5ec7627d89f8a2464a99340ee614216633d858bb10da521c4c0e",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A27",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "846929730e539d3fbb5f2b3a4b34b351afda5275fabeef7ed533a02d5d88787e",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "846929730e539d3fbb5f2b3a4b34b351afda5275fabeef7ed533a02d5d88787e",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "846929730e539d3fbb5f2b3a4b34b351afda5275fabeef7ed533a02d5d88787e",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A28",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 6594 (char 6593)",
+          "packet_sha256": "c92f06c87ca5b421dfe5e3691436649bb73abdf1eb80a79ea858c746879d841d",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 6594 (char 6593)",
+          "packet_sha256": "c92f06c87ca5b421dfe5e3691436649bb73abdf1eb80a79ea858c746879d841d",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "JSONDecodeError: Extra data: line 1 column 6594 (char 6593)",
+          "packet_sha256": "c92f06c87ca5b421dfe5e3691436649bb73abdf1eb80a79ea858c746879d841d",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A29",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": null,
+          "packet_sha256": "82d5c676f27306e58e22efd37cd7751c3c81aad5db1f033a068b35b8457958d0",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": null,
+          "packet_sha256": "82d5c676f27306e58e22efd37cd7751c3c81aad5db1f033a068b35b8457958d0",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": null,
+          "packet_sha256": "82d5c676f27306e58e22efd37cd7751c3c81aad5db1f033a068b35b8457958d0",
+          "reason": "ValueError: Authored source failed syntax or binding validation",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "eal",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A30",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "59e6c76489508b4c2b5e727be74d23ff349258467eff30fbdd222ffe36b053cb",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "59e6c76489508b4c2b5e727be74d23ff349258467eff30fbdd222ffe36b053cb",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "59e6c76489508b4c2b5e727be74d23ff349258467eff30fbdd222ffe36b053cb",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A31",
+      "three_state_host_status_available": false
+    },
+    {
+      "actual_host_by_state": {
+        "adverse": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "59e6c76489508b4c2b5e727be74d23ff349258467eff30fbdd222ffe36b053cb",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "initial": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "59e6c76489508b4c2b5e727be74d23ff349258467eff30fbdd222ffe36b053cb",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        },
+        "restored": {
+          "candidate_error": "CheckerInputError: graph requires a nonempty claim",
+          "packet_sha256": "59e6c76489508b4c2b5e727be74d23ff349258467eff30fbdd222ffe36b053cb",
+          "reason": "invalid authored candidate",
+          "status": "unavailable"
+        }
+      },
+      "format_visible_in_artifact": "graph",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A32",
+      "three_state_host_status_available": false
+    }
+  ],
+  "previous_author_review_sha256": "286604caa52fd99b7220e2e159d6c43444126bba7ccf3e653e2a425b9fc93419",
+  "rubric_sha256": "94b31e9762e5e567cbdff5f03c892fc6db126b61c7d6d2f62c21b1183285bb9c",
+  "schema": "eal2-deployment-800-a3-author-host-availability-second-ai-addendum/1",
+  "scope": "Read-only supplement to sealed second author-product review; host packet supplied to each author recipient per state, no peer ratings, model linkage or global analysis inspected. The original item-level source ratings are unchanged.",
+  "summary": {
+    "assigned_state_replays": 96,
+    "final_author_products": 32,
+    "host_status_available": 0,
+    "host_status_unavailable": 96,
+    "products_with_all_three_accepted": 0
+  }
+}

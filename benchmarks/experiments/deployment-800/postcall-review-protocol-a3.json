@@ -1,0 +1,30 @@
+{
+  "schema": "eal2-deployment-800-postcall-review-protocol/1",
+  "amendment": "A3-fresh-balanced-incomplete-native-single-call-one-5xx-retry-developmental",
+  "status": "fixed_before_any_A3_model_output",
+  "disclosure": "A1/A2/C1 operational outcomes and errors were known before A3. No A3 model outputs were inspected when this review rule was fixed. This remains exploratory independent-from-author AI review, not prospective masked human adjudication or confirmation of the full 800-assignment explanation population.",
+  "authored_products": {
+    "frame": "All 32 assigned final author turns (turn 2) across eight roots, two formats and two author models, including failed calls, invalid wrappers and unavailable host assessments.",
+    "selection": "Census: select every case with stage=author and turn=2 from the frozen A3 cases, ordered by case index. Do not filter on completion, syntax, fidelity, answer, cost or recipient outcome.",
+    "review": "Provide the evolving three-turn brief, actual linked prompts and outputs, final source or graph, all three state records, exact target claim and scope, and expected reference for source-to-task fidelity review. Record reviewers' evidence and reasons per root/state; never infer truth of a physical deployment from synthetic records."
+  },
+  "explanations": {
+    "frame": "All 24 root×state blocks with eligible assigned fixed-direct, fixed-host-owned and authored-recipient cases. Native tool requests have no recipient-produced explanation and are outside this frame. Failed, missing and malformed results remain eligible and retain their assigned exposure.",
+    "block_order": "Sort root IDs lexicographically; within each root order initial, adverse, restored.",
+    "exposure_order": [
+      "fixed_direct",
+      "fixed_host_owned",
+      "authored_recipient"
+    ],
+    "exposure_allocation": "For block index b from 0 to 23, omit exposure_order[b modulo 3], and include the other two. Exactly 48 slots: two per root×state and 16 per exposure. This decision depends on neither model responses nor accepted statuses.",
+    "within_exposure_selection": "For each selected block and exposure, select the frozen eligible case that minimises SHA256 of the UTF-8 string '240924801|<case_id>'; break a theoretical hash tie with lexicographically smaller case_id. Stage/delivery determine exposure; do not inspect a result. Preserve the selected slot and mark missing if no response; never replace it with another completed case.",
+    "review": "Supply the actual recipient messages and host packet, output verbatim, brief, claim, complete synthetic record and the pinned reference status/qualification. In addition supply the authored candidate and its source-fidelity review where relevant. Review status faithfulness, claim/scope identity, decisive evidence, objection/alternative handling, uncertainty and unsupported claims. A one-sentence omission may fail fidelity even when status matches.",
+    "blinding": "Assign opaque sample IDs and retain a separate mapping to model, format and exposure. Redact model identity and explicit exposure names from the review view where possible, but the actual packet and native format can reveal treatment; report any such leakage. Do not call this a masked review.",
+    "outcomes": "Record each reviewed explanation as faithful, unfaithful or unassessable with reason. Failed or absent outputs count as missing/unassessable in the fixed 48-slot frame. Report sampled denominators and exposure-specific counts; do not extrapolate to all 800 explanations as a confirmatory primary result."
+  },
+  "reviewers": "Two independent-from-author AI agents, separately reviewing the same fixed packet. Log agreement and discrepancies. This is not human review or measured human labour.",
+  "all_in_cost": "Do not compute all-in cost per correct qualified decision until source/explanation fidelity, human labour, host/evidence cost and all provider requests including unknown-billing retries are reconciled.",
+  "a3_plan_sha256": "b751ff58bd72e500531729e7449f587c95da087263a1a32ca71801495f72b301",
+  "schedule_case_ids_sha256": "8c684c56dfe406e6ef3356adb4aaa761915b2c092a4690f5574e44a4876db78e",
+  "requests": "Each A3 assigned slot may contain one or two provider requests. The review unit is the assigned slot and its final response, or a failed/missing slot; preserve all request-level errors/usage in private linkage. No outcome-based replacement."
+}

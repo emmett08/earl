@@ -1,0 +1,23 @@
+language "EAL/2";
+environment task_scope {
+  require "site" == "drive-5";
+  require "motor" == "M73";
+}
+tool numerical_reader { version "1"; mode deterministic; }
+evidence numerical_input { tool numerical_reader; kind measurement_series; environment task_scope; max_age 1800; require "schema" == "EAL/typed-input/1"; }
+reasoning numerical_step { method "engineering/rms/1"; rationale "Evaluate the named finite method on this exact query and attached record; the computation does not verify physical interpretation or source authenticity."; }
+claim computed_record {
+  statement "For motor M73's identified four-sample run, was RMS vibration velocity about zero at most 0.43 m/s?";
+  environment task_scope;
+  proposition {
+    subject "M73";
+    quantity "velocity";
+    unit "m/s";
+    scope "run-M73-4";
+    valid_from "2026-09-24T12:00:00Z";
+    valid_until "2026-09-24T12:09:00Z";
+    query {"origin":0};
+    result "rms" <= 0.43;
+  }
+}
+argument measured_route { conclusion computed_record; reasoning numerical_step; evidence numerical_input; binding numerical_input; }

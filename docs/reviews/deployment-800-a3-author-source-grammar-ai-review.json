@@ -1,0 +1,863 @@
+{
+  "schema": "eal2-deployment-800-a3-author-source-independent-ai-review/1",
+  "reviewer": "grammar_review independent-from-author AI agent",
+  "review_class": "exploratory post-call AI review; source-only and unmasked to reference statuses and synthetic records; no human adjudication",
+  "material": {
+    "author_only_packet_sha256": "ed81bbbd9baf4bd847f2aae729d570a663991b125c9ba7e6d7c50a8318ff6ac3",
+    "index_sha256": "c0dc2391c2d7fcbb573ee9fde54d311236b0eabb80fca14f4c9b0230d65d2546",
+    "rubric_sha256": "94b31e9762e5e567cbdff5f03c892fc6db126b61c7d6d2f62c21b1183285bb9c",
+    "packet_path": "/workspace/scratch/4d452efe689d/deployment-800-a3-reviewer-grammar/author-only-review-packet.json",
+    "rubric_path": "/workspace/scratch/4d452efe689d/deployment-800-a3-reviewer-grammar/rubric.json"
+  },
+  "independence": "Only the assigned author-only packet, its index and frozen rubric were read for A3; no peer review, private linkage, live recipient outputs or aggregate outcomes were consulted. Graph execution contract was separately supplied identically to both reviewers by the fixture author. No local checker execution was performed.",
+  "interpretation": "Criterion booleans for claim, routes, objections, resolution and qualification assess distinguishable semantic content in the actual response text where present. `provenance_time` requires a usable binding to the supplied tool/envelope context, which no final candidate provides under its requested format. `three_state_status` requires the unchanged emitted candidate to run and yield the reference vector; it fails for all 32 because the requested format is invalid. `unfaithful` is an author-artifact judgment, not a recipient outcome. No repair of source, JSON, graph keys or record paths was allowed.",
+  "count_summary": {
+    "assigned_author_slots": 32,
+    "completed_with_response": 32,
+    "invalid_outer_json": 6,
+    "eal_source_artifacts_without_required_language_declaration": 16,
+    "graph_artifacts_with_object_valued_claim": 16,
+    "executable_unchanged_candidates": 0,
+    "unfaithful_author_products": 32,
+    "unassessable_author_products": 0
+  },
+  "cross_item_caveats": [
+    "The actual prompts request an EAL/2 source or generic graph and list desired constructs, but do not provide the complete grammar or the checker’s precise generic field/typed-scope/path contract. Format failures therefore measure performance under those exact prompts, not competence after a full schema handoff.",
+    "The synthetic alert value in the inspected reference records omits `trial` while its acquisition request/context includes exact asset and trial. Several authored candidates inspect only value fields and consequently reject a valid scoped alert or resolution.",
+    "All final author outputs were retained. This review establishes no conclusion about A3 recipient performance, host packet fidelity, all-in cost, real cluster correctness or human agreement."
+  ],
+  "items": [
+    {
+      "sample_id": "A01",
+      "root_id": "battery_bus",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "3fd2c2f1edab8aba3c52dbcc07fa11809b86c4d2c757a108566f21f4e5682050",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names bus_margin for BB-17/peak-load-P7; reference states are supported/supported/supported. The source starts `EAL/2` followed by YAML-like `environment:` rather than an EAL/2 language declaration and legal blocks; its `evaluation.status: supported` is a static restored-state assertion, not a three-state rule. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A02",
+      "root_id": "battery_bus",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "a83f266335776763184ebe2f4fe6ac5664e913c5ef5365d677c1b1abc4ddc270",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names bus_margin for BB-17/peak-load-P7; reference states are supported/supported/supported. The source starts `language EAL/2` without the quoted, terminated declaration and uses pseudo-EAL fields such as `source:` and `support:`; the answer is written as another objection, so the proposed route logic cannot be evaluated. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A03",
+      "root_id": "battery_bus",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "a15c1b81ebb3bde846bc637087419079d4374dbf5b64c6b75e5b301305cb1767",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names bus_margin for BB-17/peak-load-P7; reference states are supported/supported/supported. The graph has no `schema`, has object-valued `claim` and nested scope, and stores acquisitions under `evidence.acquisition_contracts`; the objection uses `applies_to`, not executable `target_route`/`when`. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A04",
+      "root_id": "battery_bus",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "52863df41ee44cceb570e37ef8b97fdecd6b96e13a766607b899b34e16695063",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names bus_margin for BB-17/peak-load-P7; reference states are supported/supported/supported. Although `schema` is present, `claim` is an object and scope is nested inside it; `positive_routes` replaces `routes`, predicates replace route `all`, and `target` replaces `target_route`. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A05",
+      "root_id": "sql_backup",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "043d14df6d4c000033ccbec1442dde85fe8f0be9ecf6f3457292486626aa08a9",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": false,
+      "requested_wrapper_present": false,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": false,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names restore_record for DB-41/restore-R8; reference states are supported/contested/supported. The outer JSON is malformed and contains YAML-like EAL. Its `primary_alert` note rejects the alert because its value lacks `trial`, although the supplied acquisition envelope has the exact DB-41/restore-R8 context; its restored support has the wrong reason. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A06",
+      "root_id": "sql_backup",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "65ebb100c598262f8434ee5faf21bcc14657e65f2a85431e5e374377b78192d2",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": false,
+        "matched_resolution": false,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names restore_record for DB-41/restore-R8; reference states are supported/contested/supported. The EAL header lacks its semicolon and the body is pseudo-EAL. `primary_alert.requires` demands `trial` in the alert value; the supplied alert carries trial in acquisition context, so that check would miss the adverse primary challenge. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A07",
+      "root_id": "sql_backup",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "6f63f1a5685e5937fe42a1df38157f7d805178528226b6fc5060ede9e7d60cb0",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": false,
+        "matched_resolution": false,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names restore_record for DB-41/restore-R8; reference states are supported/contested/supported. The graph has object-valued `claim`, no top-level scope or named executable evidence map, and uses `predicates`/`applies_to` instead of `all`/`target_route`/`when`. Its alert predicates demand value-level `trial`, `collector`, and computed age fields absent from the submitted record. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A08",
+      "root_id": "sql_backup",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "cf7ce66e5dfa7b4efea0abd2af69b800c6112e360e31a66cf194850067e40bea",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names restore_record for DB-41/restore-R8; reference states are supported/contested/supported. The graph uses object-valued `claim`, `positive_routes` rather than `routes`, no top-level typed scope, and `targets` rather than `target_route`; `tool_version` is set to reader names instead of the supplied version `1`. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A09",
+      "root_id": "robot_estop",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "6f88a6b26c1bbb725abc19c9f62ec9838691060fb940bff9da9869234c70b2ea",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": false,
+      "requested_wrapper_present": false,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": false,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names estop_record for RX-12/stop-test-E3; reference states are supported/contested/supported. The outer JSON is malformed and the source is TOML-like rather than EAL/2. Its `primary-challenge` targets the shared `qualifying-test` argument, so it has no executable separation that preserves a qualified independent route under the adverse alert. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A10",
+      "root_id": "robot_estop",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "3aa9074770b6e332c50c4918a44d8d22cab3ab66f605778b7c38ca8acb46c26e",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names estop_record for RX-12/stop-test-E3; reference states are supported/contested/supported. The source begins bare `EAL/2` and uses pseudo-EAL `evidence ... from` and `argument ... supports` syntax. `status estop_record: supported` and `report` encode the restored observation rather than a runnable rule for all three states. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A11",
+      "root_id": "robot_estop",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "fbb2ad08a614d46b0dc47b514be7db676a2cf084cc1a1fa0b8259f8cba1a6631",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names estop_record for RX-12/stop-test-E3; reference states are supported/contested/supported. The graph uses object-valued `claim` with scope nested inside it, `evidence_acquisitions` rather than the named evidence map, and locates route targeting in `objection.scope.route` instead of `target_route` with `when`. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A12",
+      "root_id": "robot_estop",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "f23a14048ca69cafa8b749309151f9984514d32e6d5004cc9346291c2b699bfd",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names estop_record for RX-12/stop-test-E3; reference states are supported/contested/supported. The graph has object-valued `claim`, no top-level typed scope, `positive_routes` instead of `routes`, and an objection with `route`/`predicates` in place of `target_route`/`when`. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A13",
+      "root_id": "water_dose",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "a9106b939eba346aa91db34dcf8b685180f3ad5737eeb04248c1c756b77a38a8",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": false,
+      "requested_wrapper_present": false,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": false,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names dose_record for WT-63/dose-check-D6; reference states are supported/supported/supported. The outer JSON is malformed and its YAML-like source is not EAL/2. `primary_sensor_contamination_challenge` targets the shared `qualifying_test`, so the purported separate alternative has no executable protection from that attack. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A14",
+      "root_id": "water_dose",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "b382fef1408ab42fd8a580c07a5a65551884959b4e73e8b17f6617de8df7c323",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": false,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names dose_record for WT-63/dose-check-D6; reference states are supported/supported/supported. The EAL header lacks its semicolon and the source uses pseudo-EAL blocks. `primary_test.requires` and `alternative_test.requires` demand exactly the observed 7.1 pH and 3.5 mg/L rather than the brief’s threshold ranges, so the candidate would reject other qualifying measurements. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A15",
+      "root_id": "water_dose",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "ab3ec6937de5ec21338654e671c191710a4a2e48825984286368a0c4686bc4c3",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names dose_record for WT-63/dose-check-D6; reference states are supported/supported/supported. The graph has object-valued `claim`, `positive_routes` in place of `routes`, and objections with `applies_to`/`predicates` instead of `target_route`/`when`; acquisition versions and modes do not match the supplied deterministic version-1 envelopes. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A16",
+      "root_id": "water_dose",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "ecee322cc471878cd7e02625faa5b343b195c30697c31114e2ab9ab20e9a7c4f",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": false,
+        "matched_resolution": false,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names dose_record for WT-63/dose-check-D6; reference states are supported/supported/supported. The graph has object-valued `claim` and `positive_routes` rather than `routes`, and omits the required `objections` entirely. It cannot distinguish an open primary sensor alert from an answered one even as a conceptual graph. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A17",
+      "root_id": "payment_replay",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "628dbf7c94717d5697f30e72437b39428b7941c1565e25c94acd13d5a13d15ad",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": false,
+      "requested_wrapper_present": false,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": false,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names idempotency_record for PAY-21/duplicate-D2; reference states are supported/contested/supported. The outer JSON is malformed and its source is YAML-like, not EAL/2. Its fixed `status: inconclusive` asserts that the supplied matching resolution lacks collector and time, although the actual envelope supplies `request.tool` and `observed_at`; it therefore misses restored support. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A18",
+      "root_id": "payment_replay",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "492c6d92010ae049039da9055c89c974d2748f98825e91faa316f627f0913f3e",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names idempotency_record for PAY-21/duplicate-D2; reference states are supported/contested/supported. The source starts `language EAL/2` without the required syntax and uses pseudo-EAL object notation. A fixed `result: established_for_submitted_test` describes the restored record but cannot yield the adverse contested state. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A19",
+      "root_id": "payment_replay",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "baf57ffc81931cd2fb67d554297bdb53ccc8a5e230bd68f91028f2cc0e400baa",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": false,
+      "requested_wrapper_present": false,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names idempotency_record for PAY-21/duplicate-D2; reference states are supported/contested/supported. The response is not a JSON object because a `</final>` trailer follows it. The embedded graph also has object-valued `claim`, `positive_routes`, and predicates that seek a value-level `collector` field rather than the acquisition-envelope tool. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A20",
+      "root_id": "payment_replay",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "ed48320f69eecc8f9ca3be8aa516025ecfe2e66db6f4aae2c0c79f668901c20f",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names idempotency_record for PAY-21/duplicate-D2; reference states are supported/contested/supported. The graph has object-valued `claim`, scope nested inside it, `positive_routes` instead of `routes`, and `target` instead of `target_route`; its acquisition `tool_version`/mode strings differ from the supplied deterministic version-1 records. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A21",
+      "root_id": "rail_switch",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "c0b7b64f784c93ce06a54427e879e72512a3a57cf259b03029672579cacd2e9d",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": false,
+        "targeted_objection": false,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names interlock_record for RS-19/throw-T4; reference states are supported/supported/supported. The source starts bare `EAL/2`, duplicates `argument positive_interlock_record`, and combines primary and alternate support in that one argument. `primary_route_challenged` targets the combined argument, so the supposed primary-only objection has no separate executable route. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A22",
+      "root_id": "rail_switch",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "5859e16e0792351c678386b59ba6359aa8732bebcbc003714e98d188b57a7f15",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names interlock_record for RS-19/throw-T4; reference states are supported/supported/supported. The source starts `language EAL/2` without the required quotation and semicolon and uses pseudo-EAL declarations. Its primary and alternative routes and answer are conceptually distinguished, but no submitted state can be evaluated from this source. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A23",
+      "root_id": "rail_switch",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "5711300ea5e60422c5e8411053fb3b8a466b2b080c0c339793829b88bc92696c",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names interlock_record for RS-19/throw-T4; reference states are supported/supported/supported. The graph uses `version` instead of `schema`, an object-valued claim, `positive_routes` instead of `routes`, and `applies_to` rather than `target_route`; its acquisition modes and version differ from the supplied deterministic version-1 envelopes. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A24",
+      "root_id": "rail_switch",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "4c66d0667663621ad9244a7c6900730a904d19bb5ab48841d4de2f631accadd3",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names interlock_record for RS-19/throw-T4; reference states are supported/supported/supported. The graph has object-valued claim, no top-level typed scope, `positive_routes` instead of `routes`, and `against` instead of `target_route`; its evidence modes are invented labels rather than supplied `deterministic`. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A25",
+      "root_id": "batch_pipeline",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "bf1aeebb38b56d1ce056608f1fb7cf3c1c5caa3441e84e458f0d3d795214e609",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": false,
+        "targeted_objection": false,
+        "matched_resolution": false,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names batch_record for ETL-44/batch-B7; reference states are supported/contested/supported. The source starts bare `EAL/2` and uses pseudo-EAL. Its root `assert` requires `primary_challenge_resolved` even in the initial state with no alert; the initial alternative has `finding: none`, so its own rule has no supporting route there. Its objection targets the combined `batch_record_argument`. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A26",
+      "root_id": "batch_pipeline",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "4595715f60ad4df09b2e2bda905f1b1e4b3da17140840b1b1bcf426f5cc5dd70",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names batch_record for ETL-44/batch-B7; reference states are supported/contested/supported. The EAL header lacks its semicolon and the body is pseudo-EAL. `submitted_record_assessment` embeds the restored `supported` conclusion instead of deriving initial supported, adverse contested, and restored supported from the three record sets. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A27",
+      "root_id": "batch_pipeline",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "9b6eb059908c037f1c50e4be7dd0ff364a654e441ff77e181bb6655bc21c1dd2",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names batch_record for ETL-44/batch-B7; reference states are supported/contested/supported. The graph uses `format` instead of `schema`, an object-valued claim, `positive_routes` instead of `routes`, and `challenges` rather than `target_route`; its typed scope uses `string`/`value` instead of the reference `str`/`equals` contract. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A28",
+      "root_id": "batch_pipeline",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "be2e9a9476290cbcceb0cce05a1f4794514bb200f8a80244299b0efd37b685a2",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "contested",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names batch_record for ETL-44/batch-B7; reference states are supported/contested/supported. The graph uses object-valued claim, no top-level typed scope, `positive_routes` instead of `routes`, and `target` instead of `target_route`; its evidence mode `read` differs from the supplied `deterministic` mode. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A29",
+      "root_id": "solar_inverter",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "003a379e12d1867924bab7f2dc9b6045bb1cb8e8176b59afd71000d617ae6342",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": false,
+      "requested_wrapper_present": false,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": false,
+        "matched_resolution": false,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names inverter_record for INV-31/peak-P5; reference states are supported/supported/supported. The outer JSON is malformed and the source is YAML-like, not EAL/2. Its `exact_scope_check` requires every record value, including the primary alert, to declare trial; the supplied alert value omits trial while its acquisition context is exact, so the alert/answer path is misread. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A30",
+      "root_id": "solar_inverter",
+      "format_visible_in_artifact": "eal",
+      "final_attempt_status": "completed",
+      "response_sha256": "a3606b7a26e0d63c9fa8a01041cc0776724fffae9c1501cc6bc2483348edfab7",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names inverter_record for INV-31/peak-P5; reference states are supported/supported/supported. The source starts bare `EAL/2` and nests pseudo-EAL declarations inside `reasoning structured/1`; no legal EAL/2 declaration or executable evidence/objection structure is present. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A31",
+      "root_id": "solar_inverter",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "53e3d9f7e26cc6c9c0cc9555ce07bcd76d729fb087fe77bc40d013085f8f9221",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names inverter_record for INV-31/peak-P5; reference states are supported/supported/supported. The graph has object-valued claim, `positive_routes` instead of `routes`, and `applies_to` rather than `target_route`; its acquisition mode names differ from the supplied `deterministic` mode despite including `max_age_seconds: 900`. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    },
+    {
+      "sample_id": "A32",
+      "root_id": "solar_inverter",
+      "format_visible_in_artifact": "graph",
+      "final_attempt_status": "completed",
+      "response_sha256": "d6223f49949a6a5a6c956dd6fbfbee196daf5ed93b0f90efddd3b284de2a13ef",
+      "expected_status_by_state": {
+        "initial": "supported",
+        "adverse": "supported",
+        "restored": "supported"
+      },
+      "outer_json_valid": true,
+      "requested_wrapper_present": true,
+      "candidate_executable_under_exposed_contract": false,
+      "criteria": {
+        "claim_scope": true,
+        "positive_paths": true,
+        "targeted_objection": true,
+        "matched_resolution": true,
+        "provenance_time": false,
+        "three_state_status": false,
+        "qualification": true
+      },
+      "rating": "unfaithful",
+      "rationale": "Final response `three_linked_turns[2].response_text` names inverter_record for INV-31/peak-P5; reference states are supported/supported/supported. The graph has object-valued claim and nested scope, `positive_routes` instead of `routes`, and `targets` instead of `target_route`; its acquisition mode `acquire` differs from the supplied `deterministic` mode. The exact final artifact cannot be run unchanged against those three synthetic acquisition sets."
+    }
+  ]
+}

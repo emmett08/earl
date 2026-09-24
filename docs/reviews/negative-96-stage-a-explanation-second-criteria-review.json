@@ -1,0 +1,1202 @@
+{
+  "assessment": "post-call exploratory, synthetic reference; no human adjudication",
+  "items": [
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The trace has an in-scope 4 mm sample, so the violating sample remains supported and qualified absence is unsupported; the sensor-artifact audit answers objections to positive routes rather than making the sample a violation.",
+      "explanation_audit_excerpt": "The evidence supports the sampled bounds and the absence claim but indicates a violation through the sensor artifact.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "5933d79bf261097b200065d6",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "1876fc3c09b3024cf3e0bdc65c892a7955def62c8da1d019cbe702dc7508d3e6",
+      "review_ordinal": 0,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The audit gives an authored defence for each objection; it does not measure a sub-3 mm bound or remove the supported sampled counterexample. The crossing also defeats qualified absence.",
+      "explanation_audit_excerpt": "The sensor audit confirms the position tracking error is below 3 mm, supporting the bounded property claim, while the matching crossing challenge and limited calibration warrant co",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "c5a71d2c502c4606a17e8d2d",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "e1a69467bf4ba795e4fdd31d448e2807c48a87eaf724317fe11144bd0cc410d5",
+      "review_ordinal": 1,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 1100 kPa sample belongs to cooling-run-R2-other, so it cannot challenge CH-75 in R2 or support the named violation. The malformed but legible sentence was reviewed.",
+      "explanation_audit_excerpt": "The records show that the pressure at CH-75 was observed to be at or below 1000 kPa, supporting the bounded property claim, but a sample with 1100 kPa challenges the claim, making ",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "7aa17c319a560ab7f6e5aaea",
+      "malformed_but_readable": true,
+      "parse_valid": false,
+      "response_sha256": "43bbfaa92dd544e83a0e8ef8151527404d644b01c82208bf4b6ee10f265647f3",
+      "review_ordinal": 2,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": true
+      },
+      "criterion_rationale": "The three conclusions are consistent, but the sentence does not explain that an endpoint/gap-covered calibrated non-detection, within the finite sampled scope, supports qualified absence.",
+      "explanation_audit_excerpt": "The evidence supports the routes' support for the sampled bound and the absence of violations, but the sampled negative trace challenges the violation claim.",
+      "failed_criteria": [
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "725fb54f876d4a90de7fec71",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "457cd52fb55553f51f8264f991b073fedca0fa821c4e653f073c67ebc45b51e7",
+      "review_ordinal": 3,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": true
+      },
+      "criterion_rationale": "The 1100 kPa crossing and provisional positive routes are described consistently; the sentence omits the supported violating-sample status and the precise reason qualified absence is unsupported.",
+      "explanation_audit_excerpt": "The records show that the pressure reading of 1100 kPa challenges the support for the property bound of 1000 kPa, but the tests are provisional and do not definitively support qual",
+      "failed_criteria": [
+        "M",
+        "N"
+      ],
+      "item_id": "fa1a1df283ae3ca6e4ca3505",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "3427b11d641184e726258a78745e81d586107055765b87e469d4b575b4ec1d80",
+      "review_ordinal": 4,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The trace is complete non-detection with all four values below 0.005 m/s; no sampled violation challenges the bound.",
+      "explanation_audit_excerpt": "The submitted records support the provisional support for the bound and the qualified absence, but the sampled violation challenges the bound's validity.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "e0b9c4399d962f3655113403",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "6f12b00093b566610ecd3ae3903f6b6dc52f5d71a8c1f0ad1257365311290ea4",
+      "review_ordinal": 5,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 0.006 m/s event is scoped to spin-test-J2-other; it cannot challenge the in-scope qualified-absence claim. No matching complete search supports absence either.",
+      "explanation_audit_excerpt": "All tests support the bounds for BV-48, but a sampled violation at 0.006 m/s challenges the qualified absence claim.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "6d9b73fd74d0cb92f9c94983",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "c7199cff2e2e4bc814089f4d4741345a006c8c6a10dca9a42904e9cc7e0d35c7",
+      "review_ordinal": 6,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": true
+      },
+      "criterion_rationale": "The three labels match, but the explanation supplies no finite calibrated endpoint/gap-search basis for the absence and violating-sample decisions.",
+      "explanation_audit_excerpt": "The submitted records support the bounds and the absence claim but do not support the violating sample claim.",
+      "failed_criteria": [
+        "M",
+        "N"
+      ],
+      "item_id": "d8d3c9caf9fc8aae7eec743d",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "571ff9daa36b39d006ee4f879605ccef669fad04811d783d802ffd56c44bdab4",
+      "review_ordinal": 7,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 0.006 m/s event belongs to spin-test-J2-other, so the asserted violation is outside the claim scope. In-scope absence lacks a complete search, rather than being defeated by that event.",
+      "explanation_audit_excerpt": "The submitted records support the provisional support for the bound, but the sampled negative trace indicates a violation, and the absence claim is unsupported due to incomplete co",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "0f9a8d8d388dca0b444ba8f1",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "ddd9c9c1dc9cb284f06d0032e0a8b5e0073735ed27f3b5c029fb76b0ed70f987",
+      "review_ordinal": 8,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 9 C sample is in charge-Q3-other. Treating it as a challenge to BP-84 in charge-Q3 is a material scope error.",
+      "explanation_audit_excerpt": "All test routes support the temperature being below 8\u00b0C, but a violating sample challenges this, and the absence claim remains contested due to partial crossing issues.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "4aa9860a9a34b53f85c13af9",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "246e3b6a52b2519b5c54b193d51e40e785d5063da99a6911be36ca8cd8d3952c",
+      "review_ordinal": 9,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope trace is a complete calibrated non-detection over 0, 4, 8 and 12; it does establish the qualified finite sampled absence.",
+      "explanation_audit_excerpt": "The evidence supports the provisionally supported routes but the sampled negative trace challenges the violation claim, and the complete calibrated search does not establish the ab",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N"
+      ],
+      "item_id": "21ed770a4d45ce681b6260cb",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "25878285291d9dd6b589f4ff52b91f9f5de9fc113dc1cbe8225b44cd7f07643c",
+      "review_ordinal": 10,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 4-loss event is in load-test-L8-other, and no complete in-scope search reports non-detection. Both the asserted violation and search are misattributed.",
+      "explanation_audit_excerpt": "The evidence supports the support for the sampled bound but indicates a violation in the sampled data, and the complete search reports no violation, leading to mixed support status",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "37960b7a20ea95db4890861b",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "7a49104e04730ff36433612cfd5cd04048308957691554a1b88201c48999c8eb",
+      "review_ordinal": 11,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": true,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope 1500 kPa event supports a violation and defeats qualified absence; the sentence omits that it challenges both provisional routes, leaving the bounded-property claim contested.",
+      "explanation_audit_excerpt": "The evidence shows a sampled value exceeding 1400 kPa, violating the declared bound, and the absence of violations within the scope is unsupported due to the detected violation.",
+      "failed_criteria": [
+        "R",
+        "M"
+      ],
+      "item_id": "5cf9aa32539258068a42c5b6",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "ad6966f5fa53b9fd028728bf4ab7324ce6542d67cc6bb855d1ceaf765b7ce634",
+      "review_ordinal": 12,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope 17 C sample supports the violation and challenges both positive routes. There is no record of a corrective state substitution or defeated violation.",
+      "explanation_audit_excerpt": "The synthetic records show that the property is supported, but the violating sample remains contested due to the synthetic state substitution not confirming the initial violation.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "0e3e0088f6c512d70fb761c7",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "4ef18e072a863b24d4df438b8f155ffffe148d211c8a2232004245007f18b832",
+      "review_ordinal": 13,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": true,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope 1500 kPa sample supports a violation and defeats absence, but the account omits the two attacked positive routes and their contested parent claim.",
+      "explanation_audit_excerpt": "The recorded sample at time 4 shows a pressure of 1500 kPa, challenging the claim of qualified absence and supporting the presence of a violation.",
+      "failed_criteria": [
+        "R",
+        "M"
+      ],
+      "item_id": "39d26eb544d65ab5f98d1112",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "cc302ca5963839956558a8bb5f030ca3ee01d26340545153d258775d352e5930",
+      "review_ordinal": 14,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": true,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": true,
+        "M": true,
+        "N": true,
+        "R": true
+      },
+      "criterion_rationale": "It attributes provisional bound support to sampled tests, qualified absence to a complete search within its scope, and lack of a violating finding to the same finite trace.",
+      "explanation_audit_excerpt": "The evidence indicates that the sampled tests support the bound during trajectory-T5, and the complete search reports no violations within its scope, while the sampled negative tra",
+      "failed_criteria": [],
+      "item_id": "be93031c4a284a69c93c855e",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "5090ede3ac8a968f876f9f2fb838e370198c2f4ba722bf98586febffa6fad018",
+      "review_ordinal": 15,
+      "text_faithful": true
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The submitted trace is a complete non-detection, not a contested violating sample or correction that leaves it contested; qualified absence is supported.",
+      "explanation_audit_excerpt": "The synthetic records show that the bounded property is supported by the evidence, but the violating sample remains contested due to the synthetic correction not confirming the ini",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "1a6e04179d2c3839f4627630",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "d839dc305f85856df4ca5336334e843d9f75a0ea1f1eb9a2274555a10eac4eab",
+      "review_ordinal": 16,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "Only the first two provisional tests pass; the distinct third route needs complete non-detection and has none. The in-scope 9 C crossing attacks the two routes and supports the violation.",
+      "explanation_audit_excerpt": "All test routes support the temperature rise below 8\u00b0C, but the violating sample challenges this, and the qualified absence claim remains unsupported due to the partial crossing.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "6a7f75a84f44591dc559ac4f",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "757390b663970a9433cd2ba722ca19b6f6ee66176cbd7a1e3d731802219f6352",
+      "review_ordinal": 17,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 1500 kPa event is scoped to seal-cycle-C9-other, so it does not challenge qualified absence in C9 or support that named sampled violation.",
+      "explanation_audit_excerpt": "The records show a sampled violation at time 4, challenging the qualified absence claim, while the support for bounded property remains valid based on the records.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "e54481d2eb741ba427c363e8",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "14a9e6407f544b89412ba475a26ce22f8996c12c942b82df0202c9a1344f7f23",
+      "review_ordinal": 18,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope 1100 kPa sample directly contradicts the asserted absence of violations and contests the two provisional positive routes.",
+      "explanation_audit_excerpt": "The submitted evidence confirms the support for the bound and the absence of violations, while a sampled negative trace indicates a violation within the scope.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "2d76ec36bb8c8d1e08cc85a2",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "624b7fc872de32be70584bc819aa1b22ee725465c23c66b02afee66e611de648",
+      "review_ordinal": 19,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The acquired trace is an in-scope 0.006 m/s counterexample, supporting the violating-sample claim; there is no separate absence report that negates it.",
+      "explanation_audit_excerpt": "The submitted records support the provisional support for the bound, but the sampled violation at 0.006 m/s challenges it, and the absence report does not confirm a violation withi",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "e36f4a31e285f660a984280b",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "bf82824640b447f5c27e88174ef16a397b7a9c085edb2a57239fb3a3e97b110f",
+      "review_ordinal": 20,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The complete calibrated in-scope non-detection supports qualified absence; the supposed conflicting evidence is absent.",
+      "explanation_audit_excerpt": "The records support the bounded property and do not confirm a violating sample, but the qualified absence remains contested due to provisional testing and conflicting evidence.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "7fd78299098f883b89f254b0",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "1e63ce7390494505c4a876e3764bc7afae4cd4690bd5114dc64306d6ba3df3df",
+      "review_ordinal": 21,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The four in-scope readings are 700, 800, 900 and 800 kPa. The claimed sample at or above 1400 kPa is not present.",
+      "explanation_audit_excerpt": "The sampled readings at times 0, 4, 8, and 12 all pass the test, but the presence of a sample with pressure at least 1400 kPa challenges the support for the qualified absence claim",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "57398edb05eb7a5e3cfcd899",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "58ab0dc7c0147b0858264873eacd48f6ad3d49f4b89b096e7be4faa368c9a77c",
+      "review_ordinal": 22,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": true
+      },
+      "criterion_rationale": "The 9 C event is outside charge-Q3, so it provides no conflicting in-scope evidence. The positive routes remain supported, while neither violation nor complete absence is established.",
+      "explanation_audit_excerpt": "The submitted records support the provisionally supported routes but do not establish a violation or qualified absence due to conflicting evidence.",
+      "failed_criteria": [
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "d5fa598a803ccecb42b56853",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "5feefcd346cfdc2cbceeaa2b7b921985e6e3844449d950ab0cef306b187e025e",
+      "review_ordinal": 23,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": true
+      },
+      "criterion_rationale": "The explanation confines measurements to specified sampled times, relates the passing values to the bound and qualified absence, and notes no threshold-crossing support for a violation.",
+      "explanation_audit_excerpt": "The sampled data shows all measurements below 1400 kPa within the specified times, supporting the bounds and qualified absence, while the violation claim is unsupported due to no e",
+      "failed_criteria": [
+        "M",
+        "N"
+      ],
+      "item_id": "6c0482bc768a1de2b61e85e0",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "b12b6810ff3b91d4fb123eaeff29df97e331efdfbe54c8b9a063b8cca3fd726d",
+      "review_ordinal": 24,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The run-M6 record is a complete calibrated no-violation search; it supports qualified absence rather than leaving the absence claim contested or unsupported.",
+      "explanation_audit_excerpt": "The synthetic records demonstrate that the support for the bounded property remains provisional, while the violation and qualified absence claims are contested due to the substitut",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "9cf288c16e8e08e8b274ab83",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "c542750160325f8593d4c0e7de9d84249bad852fec7f9724ee8f8c65fdec858d",
+      "review_ordinal": 25,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope 9 C event supports a violating sample, attacks both provisional routes, and leaves the parent contested; the explanation denies support for the violation.",
+      "explanation_audit_excerpt": "The submitted records support the provisionally supported routes but do not establish the absence claim or support the violation.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N"
+      ],
+      "item_id": "08ca9ab7c73613f44fded253",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "9c7db1f2e35aae26538729ddaf33b47c9b1b1782d928619f29d0d679b5b580e0",
+      "review_ordinal": 26,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope trace is a complete non-detection below 0.005 m/s. No violating sample challenges its supported qualified absence.",
+      "explanation_audit_excerpt": "All three tests support the velocity being below 0.005 m/s, but the presence of a violating sample challenges the qualified absence claim, which remains contested.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "3ad67469c3154453c9f86bd0",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "a91c30f51b8e82f5a0435db1e4bad4e2fa4df0ac418540e95dc976cc7d44adfb",
+      "review_ordinal": 27,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The audit has independently_explained=false and finding=none, not a no-violation search or affirmative defence. The 4 mm trace is wrong-scope; two valid positive routes explain bound support.",
+      "explanation_audit_excerpt": "The independent audit found no detection of violations, supporting the supported claim of bounded property, but a challenged violating sample and contested qualified absence due to",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "f426707183e5f5275a352f80",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "084e738eacc4a8ca2e3ee88317c3f069c102be75d42e684a27e73670bbf93657",
+      "review_ordinal": 28,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope complete calibrated search over 0, 4, 8 and 12 confirms the finite qualified absence; it is not merely an unconfirmed possibility.",
+      "explanation_audit_excerpt": "The synthetic records support the bounded property but do not confirm the absence of violations, aligning with the provisional support status.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N"
+      ],
+      "item_id": "9b420cee21c094a2f54c933d",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "38cec9aa597c87b4d3fb49d079a857771ef4251f87c4027b94d0450daafdb41a",
+      "review_ordinal": 29,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The audit is not a complete non-detection search, and the 4-loss trace is wrong-scope. It cannot support the qualified absence claim.",
+      "explanation_audit_excerpt": "The records show that the first and second readers support the property being less than 3, while the audit finds no violations, supporting the claims of support and absence.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "78b4fd552fccc2f9e294eb2a",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "f0fffb23a1760cd67c9d7b4fd87faeae30d2097ff3d600fc396ee8d67c7e6726",
+      "review_ordinal": 30,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 17 C in-scope counterexample challenges both positive routes and supports violating_sample. No complete no-violation search is present.",
+      "explanation_audit_excerpt": "The synthetic records support the bounded property but show a violation within the scope, and the complete search reports no violation, leading to supported, unsupported, unsupport",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "0994649f6698220adec43f93",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "17583da7c07548d630d28e850916e2c0c1084292453a57c207967ceb17b5f184",
+      "review_ordinal": 31,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The non-detection report was submitted and not withdrawn; it is complete and supports qualified absence. The explanation invents a withdrawal.",
+      "explanation_audit_excerpt": "The synthetic records support the bounded property as supported, but the violating sample is not supported due to the calibration and testing context, and the qualified absence rem",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "7f8f9e78ff16daf0fc78bafb",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "fe05f4322b8705cebf5070fad6f77b466ac9429d5e5d47cd52f4d3031b9034a6",
+      "review_ordinal": 32,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 4 mm event is scoped to trajectory-T5-other and cannot conflict with the bound or establish in-scope qualified absence; no complete search is present.",
+      "explanation_audit_excerpt": "The evidence supports the sampled bound and absence claims but indicates a violation sample that conflicts with the bounds.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "fb3d5e5ee492a2d2d8c440cd",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "6d7a3a7336871152b9bb83e6ed81786c7b9382eec53c49fb043b113170930e67",
+      "review_ordinal": 33,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": true
+      },
+      "criterion_rationale": "Both positive tests pass and the complete trace has no counterexample, as stated; the explanation omits the calibrated endpoint/gap basis and named supported qualified-absence claim.",
+      "explanation_audit_excerpt": "All submitted evidence supports the bounded property without establishing a violation, and the violation claim is unsupported due to the sampled negative trace indicating no violat",
+      "failed_criteria": [
+        "M",
+        "N"
+      ],
+      "item_id": "201026348b48e675caa4c131",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "c3493197837024590a46f40e444c1c2176027ee61ebe45f5bedc29b8e84b3220",
+      "review_ordinal": 34,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The audit record has finding=none but independently_explained=false; qualified absence comes from the trace reader\u2019s complete non-detection, not the audit. The trace yields unsupported rather than contested violation.",
+      "explanation_audit_excerpt": "The records show that both routes passed the property test and the audit found no violations, supporting the claims of support and qualified absence while contesting the violating ",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "1ebda690c5411274e4d2a55b",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "d8dcde2fdd1239c2cb52f0694582aa125b7d0eb94af78113fe7aadc51fd3afd1",
+      "review_ordinal": 35,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The second positive reader has passed=false, so it does not support the bounded property. The 5-error trace also attacks the sole positive route.",
+      "explanation_audit_excerpt": "The evidence shows the first and second routes support the bound provisionally, but the trace record indicates a violation, challenging the qualified absence claim.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "f1854c2b00532cb6ae321ffd",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "ccb7e14e5e9293e6f5cd318b0a56a7761c83d021e3968da7a5b7fa87528d6f73",
+      "review_ordinal": 36,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The second positive record fails and the third record is an in-scope 5-error counterexample. It supports violating_sample and defeats qualified absence, not the reverse.",
+      "explanation_audit_excerpt": "The first and third records support the bounded property and qualified absence claims, while the second record's failure to support the violating sample claim indicates contestatio",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "155afcf76871bb3a07350d41",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "4b89bb60922b264de30adc88ee0d5d052b5b4b262234d3ea83a69556ea82991d",
+      "review_ordinal": 37,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The in-scope 4-loss counterexample still supports violating_sample after the audit answers the positive-route objections; there is no complete no-violation search.",
+      "explanation_audit_excerpt": "The evidence supports the support for the sampled bound but challenges the violation sample, and the complete search reports no violation, leading to mixed support and unsupported ",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "357ea0c91c0d2bdab75a05cb",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "4ef8ba78bf8624c4dc257e4dc651a75bc2dc36d8878ffeba0ea4b166d4cbb6ed",
+      "review_ordinal": 38,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The absence of an admissible violation and complete absence search is compatible with the sentence, but it fails to identify that the 5-error event is wrong-scope, leaving those claims unsupported.",
+      "explanation_audit_excerpt": "The records support the bounded property but do not definitively confirm or deny the violating sample or qualified absence.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N"
+      ],
+      "item_id": "4f2ddd912f2d6b247f7b8e9c",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "3f24208211d78079595f6692e3c6f2ce7a1ea905d21213b42bc415a3da315871",
+      "review_ordinal": 39,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": true
+      },
+      "criterion_rationale": "The positive readers and no-violation observation are consistent with the labels, but the sentence omits the complete calibrated finite search that qualifies absence.",
+      "explanation_audit_excerpt": "All submitted records support the claim that the pressure is at most 1000 kPa for CH-75 during R2, with no evidence of violation.",
+      "failed_criteria": [
+        "M",
+        "N"
+      ],
+      "item_id": "448211c8a90a96b05113595f",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "fd8ae409779dc2dba983fbe173c8532f6693f23ea419454751ad97dbb88f70dd",
+      "review_ordinal": 40,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 0.006 m/s sample is in scope and makes qualified absence unsupported; incompleteness is not the reason for a contested absence.",
+      "explanation_audit_excerpt": "All submitted records support the checks below 0.005 m/s, but a sampled event at 0.006 m/s challenges the absence claim, which remains contested due to incomplete coverage.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N"
+      ],
+      "item_id": "92b1e806173dd9c7e370e0a8",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "840ace49ca748c792c2fcb4333274301c5f781c9ef3bf5756dd5380aa535863a",
+      "review_ordinal": 41,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The audit is not the complete non-detection search, and an in-scope calibrated search supports qualified absence rather than leaving it contested.",
+      "explanation_audit_excerpt": "The audit reports no detection of violations, supporting the claim of bounded property support, but a challenging violating sample remains unconfirmed, and the qualified absence is",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "ca88aae3bdc182213519ce66",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "4080c269737df9dde0c3ae5994b22dfa2155efebbb9fb6b77ae98db9a231d3b2",
+      "review_ordinal": 42,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 1100 kPa event is from cooling-run-R2-other, not in scope, and the trace is a counterexample rather than a complete no-violation search.",
+      "explanation_audit_excerpt": "The in-scope sampled value for CH-75 exceeds the bound, challenging the support for the property, while the complete search reports no violation, supporting the qualified absence.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "b02179316189c56fdc7aab86",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "e8bd25e651cbef3283c260ba44d961335c2207e28b820fdca9e6ab274b85e7a5",
+      "review_ordinal": 43,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "There is no violating sample in the complete calibrated non-detection trace. A supposed sample cannot challenge qualified absence, whose finite status is supported.",
+      "explanation_audit_excerpt": "All submitted records support the temperature rise claim within the bounds, while the violating sample challenges the absence claim, which remains supported due to the separate, li",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "0040e13a4b18c1f4fb4dde9b",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "942c360fc25989476e7f4f7582b45a560127b958e8083c4d28203a5b37edc25b",
+      "review_ordinal": 44,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": true,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 1500 kPa event is scoped to seal-cycle-C9-other. It cannot support the named in-scope violation or contest the supported positive routes.",
+      "explanation_audit_excerpt": "The sampled negative trace indicates a pressure reading of 1500 kPa at time 4, violating the declared bound, thus supporting the violating sample claim and contesting the supported",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "6705c212e5684e59b5c6a967",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "68b6809d5cc93e9668fc156c024efa27894684cf5dc03a56bb7599dc4e22dc43",
+      "review_ordinal": 45,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": true,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 4-loss event is an in-scope supported violating sample despite the audit\u2019s defence of positive routes; describing it as still contested is false.",
+      "explanation_audit_excerpt": "The records support the claim that fewer than three packets are supported, but the violating sample remains contested.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N"
+      ],
+      "item_id": "2150821e99fc7d63e19391ff",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "fc918cf548793f271be274fb690b04b893d9b33c56fe372540bb1b68032c0d65",
+      "review_ordinal": 46,
+      "text_faithful": false
+    },
+    {
+      "accepted_faithful": false,
+      "attempt_state": "completed",
+      "claims_exact": false,
+      "criteria_pass": {
+        "B": false,
+        "M": false,
+        "N": false,
+        "R": false
+      },
+      "criterion_rationale": "The 5-error trace is scoped to write-window-W7-other; it neither demonstrates an in-scope violation nor reports a complete non-detection.",
+      "explanation_audit_excerpt": "The evidence supports the routes provisionally supporting the sampled bound and reports no violation, while a sampled violation is demonstrated by the trace record.",
+      "failed_criteria": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "item_id": "746119f1b6cf09d38ff02a04",
+      "malformed_but_readable": false,
+      "parse_valid": true,
+      "response_sha256": "1914b322c51b46ccea87d38903e8fcaf72db575952a3ab4250141e10a7c8db4a",
+      "review_ordinal": 47,
+      "text_faithful": false
+    }
+  ],
+  "masking": "All 48 actual exposed prompts and response texts examined; arm/root linkage and first reviewer per-item labels unopened before this file was frozen. Formal syntax was necessarily visible. First reviewer aggregate (1 faithful, 47 parsed, 13 exact) and its root/view aggregate appeared during a metadata inspection after my initial category decisions, before this criteria pass; that is a masking limitation.",
+  "method_change": "First 48-item category review applied a similarly named but different rubric (7d22733f); this is a separate criteria pass under frozen e8e59d82. Do not pool the categories or overwrite either file.",
+  "packet_canonical_sha256": "c82633deb4fb52032e9419d15bcfdde96207592693fb1e33fd699074c85277a2",
+  "packet_file_sha256": "95be46a8c837e48851e09307529184b0c4c603adcf2e3059397605fcbac9ba9a",
+  "prior_different_rubric_review_file_sha256": "8d28081821f17a61d621cec36762a51236df4a492088381ffeeaa0ae683d5c22",
+  "reviewer": "fixture24 independent AI agent",
+  "reviewer_type": "AI_agent_independent_from_96_fixture_author",
+  "rubric_sha256": "e8e59d827d2bdfac50921f51b2bd8cf865e794637dcfd2e1adcb58379f67f7cc",
+  "schema": "eal2-negative-96-stage-a-second-criteria-review/1",
+  "summary": {
+    "accepted_faithful": 1,
+    "assigned": 48,
+    "attempts_completed": 48,
+    "claims_exact": 13,
+    "criteria_pass": {
+      "B": 14,
+      "M": 1,
+      "N": 3,
+      "R": 8
+    },
+    "parse_valid": 47,
+    "text_faithful": 1
+  },
+  "terminal_ledger_sha256": "da2173ea14346f05e76308c07ab5786b77d1517c3055ecc6857b628081cc98ca"
+}

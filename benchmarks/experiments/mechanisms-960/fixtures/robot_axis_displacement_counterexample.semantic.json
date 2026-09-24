@@ -1,0 +1,108 @@
+{
+  "applications": {},
+  "arguments": {
+    "sampled_route": {
+      "assumptions": [],
+      "binding": "trace_input",
+      "conclusion": "sampled_finding",
+      "evidence": [
+        "trace_input"
+      ],
+      "name": "sampled_route",
+      "premises": [],
+      "reasoning": "sampled_step"
+    }
+  },
+  "assumptions": {},
+  "claims": {
+    "sampled_finding": {
+      "environment": "task_scope",
+      "name": "sampled_finding",
+      "proposition": {
+        "quantity": "length",
+        "query": {
+          "detector_contract": {
+            "maximum_detection_limit": 10,
+            "minimum_sensitivity": 0.8
+          },
+          "end": 7,
+          "max_gap": 2,
+          "mode": "counterexample",
+          "property": {
+            "operator": "le",
+            "value": 11
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "result": {
+          "expected": true,
+          "operator": "==",
+          "path": "finding"
+        },
+        "scope": "axis-displacement-K9",
+        "subject": "arm-12",
+        "unit": "mm",
+        "valid_from": "2026-09-24T12:00:00Z",
+        "valid_until": "2026-09-24T12:09:00Z"
+      },
+      "statement": "Did at least one finite robot-axis displacement sample exceed the declared 11 mm ceiling?"
+    }
+  },
+  "declaration_count": 6,
+  "duplicates": [],
+  "environments": {
+    "task_scope": {
+      "name": "task_scope",
+      "predicates": [
+        {
+          "expected": "arm-12",
+          "operator": "==",
+          "path": "robot"
+        },
+        {
+          "expected": "K9",
+          "operator": "==",
+          "path": "move"
+        }
+      ]
+    }
+  },
+  "evidence": {
+    "trace_input": {
+      "environment": "task_scope",
+      "input": {},
+      "kind": "sampled_negative_trace",
+      "max_age": 1800.0,
+      "name": "trace_input",
+      "predicates": [
+        {
+          "expected": "EAL/typed-input/1",
+          "operator": "==",
+          "path": "schema"
+        }
+      ],
+      "tool": "trace_reader"
+    }
+  },
+  "language": "EAL/2",
+  "lowering_diagnostics": [],
+  "objections": {},
+  "patterns": {},
+  "reasoning": {
+    "sampled_step": {
+      "backing": [],
+      "method": "engineering/sampled-negative/1",
+      "name": "sampled_step",
+      "predicates": [],
+      "rationale": "A finite sampled negative finding is conditioned on sample coverage and detector capability; no continuous-time or physical truth follows from this imported trace."
+    }
+  },
+  "tools": {
+    "trace_reader": {
+      "mode": "deterministic",
+      "name": "trace_reader",
+      "version": "1"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "applications": {},
+  "arguments": {
+    "measured_route": {
+      "assumptions": [],
+      "binding": "numerical_input",
+      "conclusion": "computed_record",
+      "evidence": [
+        "numerical_input"
+      ],
+      "name": "measured_route",
+      "premises": [],
+      "reasoning": "numerical_step"
+    }
+  },
+  "assumptions": {},
+  "claims": {
+    "computed_record": {
+      "environment": "task_scope",
+      "name": "computed_record",
+      "proposition": {
+        "quantity": "probability",
+        "query": {
+          "candidates": [
+            {
+              "likelihood": 0.8,
+              "name": "sensor",
+              "prior": 0.6
+            },
+            {
+              "likelihood": 0.2,
+              "name": "winding",
+              "prior": 0.4
+            }
+          ],
+          "observed": "phase_alert"
+        },
+        "result": {
+          "expected": 0.7,
+          "operator": ">=",
+          "path": "best_posterior"
+        },
+        "scope": "fault-model-F8",
+        "subject": "converter-4",
+        "unit": "1",
+        "valid_from": "2026-09-24T12:00:00Z",
+        "valid_until": "2026-09-24T12:09:00Z"
+      },
+      "statement": "For the stipulated finite fault model given the phase-alert pattern, is the leading fault hypothesis posterior at least 0.70?"
+    }
+  },
+  "declaration_count": 6,
+  "duplicates": [],
+  "environments": {
+    "task_scope": {
+      "name": "task_scope",
+      "predicates": [
+        {
+          "expected": "converter-4",
+          "operator": "==",
+          "path": "line"
+        },
+        {
+          "expected": "F8",
+          "operator": "==",
+          "path": "episode"
+        }
+      ]
+    }
+  },
+  "evidence": {
+    "numerical_input": {
+      "environment": "task_scope",
+      "input": {},
+      "kind": "hypotheses",
+      "max_age": 1800.0,
+      "name": "numerical_input",
+      "predicates": [
+        {
+          "expected": "EAL/typed-input/1",
+          "operator": "==",
+          "path": "schema"
+        }
+      ],
+      "tool": "numerical_reader"
+    }
+  },
+  "language": "EAL/2",
+  "lowering_diagnostics": [],
+  "objections": {},
+  "patterns": {},
+  "reasoning": {
+    "numerical_step": {
+      "backing": [],
+      "method": "abductive/1",
+      "name": "numerical_step",
+      "predicates": [],
+      "rationale": "Evaluate the named finite method on this exact query and attached record; the computation does not verify physical interpretation or source authenticity."
+    }
+  },
+  "tools": {
+    "numerical_reader": {
+      "mode": "deterministic",
+      "name": "numerical_reader",
+      "version": "1"
+    }
+  }
+}

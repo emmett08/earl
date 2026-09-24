@@ -1,0 +1,20 @@
+language "EAL/2";
+environment run_scope { require "asset" == "CV-20"; require "run" == "run-M6"; }
+tool first_reader { version "1"; mode deterministic; }
+tool second_reader { version "1"; mode deterministic; }
+tool trace_reader { version "1"; mode deterministic; }
+evidence first_record { tool first_reader; kind test; environment run_scope; max_age 3600; require "passed" == true; require "subject" == "CV-20"; require "scope" == "run-M6"; require "property.operator" == "lt"; require "property.value" == 15; }
+evidence second_record { tool second_reader; kind test; environment run_scope; max_age 3600; require "passed" == true; require "subject" == "CV-20"; require "scope" == "run-M6"; require "property.operator" == "lt"; require "property.value" == 15; }
+evidence trace_record { tool trace_reader; kind sampled_negative_trace; environment run_scope; max_age 3600; require "schema" == "EAL/typed-input/1"; }
+reasoning provisional_test { method "structured/1"; rationale "A submitted matching positive test supports only this sampled run under the authored test warrant."; }
+reasoning witnessed_violation { method "engineering/sampled-negative/1"; rationale "One correctly bound violating sample challenges either positive test without establishing values outside the sampled times."; }
+reasoning complete_search { method "engineering/sampled-negative/1"; rationale "Qualified non-detection requires all sampled gaps and detector information; physical continuity is not asserted."; }
+claim bounded_property_supported { statement "The submitted routes provisionally support the sampled bound for CV-20 during run-M6, subject to their declared challenges."; environment run_scope; }
+claim violating_sample { statement "An in-scope sampled value for CV-20 violates the declared bound."; environment run_scope; proposition { subject "CV-20"; quantity "temperature_difference"; unit "delta_degC"; scope "run-M6"; valid_from "2040-01-31T08:00:00Z"; valid_until "2040-01-31T09:00:00Z"; query {"start":0,"end":12,"max_gap":4,"property":{"operator":"lt","value":15},"semantics":"sampled","detector_contract":{"maximum_detection_limit":0.1,"minimum_sensitivity":0.9},"mode":"counterexample"}; result "finding" == true; } }
+claim qualified_absence { statement "The complete calibrated sampled search for CV-20 reported no violation within its finite scope."; environment run_scope; proposition { subject "CV-20"; quantity "temperature_difference"; unit "delta_degC"; scope "run-M6"; valid_from "2040-01-31T08:00:00Z"; valid_until "2040-01-31T09:00:00Z"; query {"start":0,"end":12,"max_gap":4,"property":{"operator":"lt","value":15},"semantics":"sampled","detector_contract":{"maximum_detection_limit":0.1,"minimum_sensitivity":0.9},"mode":"non_detection"}; result "finding" == true; } }
+argument first_route { conclusion bounded_property_supported; reasoning provisional_test; evidence first_record; }
+argument second_route { conclusion bounded_property_supported; reasoning provisional_test; evidence second_record; }
+argument adverse_route { conclusion violating_sample; reasoning witnessed_violation; evidence trace_record; binding trace_record; }
+argument absence_route { conclusion qualified_absence; reasoning complete_search; evidence trace_record; binding trace_record; }
+objection challenge_first { target argument first_route; premises violating_sample; }
+objection challenge_second { target argument second_route; premises violating_sample; }

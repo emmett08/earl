@@ -1,0 +1,959 @@
+{
+  "assessment_limit": "This is an AI review of synthetic author briefs, not independent human or physical adjudication. The packet does not include a runnable validator; executable graph requirements were clarified by the study owner from frozen pre-output code. No model API charge or reviewer labour cost was measured for this review.",
+  "index_file_sha256": "c0dc2391c2d7fcbb573ee9fde54d311236b0eabb80fca14f4c9b0230d65d2546",
+  "items": [
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "3fd2c2f1edab8aba3c52dbcc07fa11809b86c4d2c757a108566f21f4e5682050",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The readable YAML-like source includes both threshold routes, a primary-only overheat challenge and the exact injection answer, but hard-codes one supported assessment and has no EAL tool versions.",
+      "reference_asset_trial": {
+        "asset": "BB-17",
+        "trial": "peak-load-P7"
+      },
+      "reference_claim": "bus_margin",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A01",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "a83f266335776763184ebe2f4fe6ac5664e913c5ef5365d677c1b1abc4ddc270",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The source starts `language EAL/2` without quoted name or semicolon; otherwise its readable primary and independent-alternative conditions and matching primary answer reflect the BB-17 brief.",
+      "reference_asset_trial": {
+        "asset": "BB-17",
+        "trial": "peak-load-P7"
+      },
+      "reference_claim": "bus_margin",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A02",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "a15c1b81ebb3bde846bc637087419079d4374dbf5b64c6b75e5b301305cb1767",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph omits `schema`, nests scope inside an object-valued claim and uses non-deterministic acquisition modes; its route predicates and primary-only challenge/answer show the intended BB-17 mechanism.",
+      "reference_asset_trial": {
+        "asset": "BB-17",
+        "trial": "peak-load-P7"
+      },
+      "reference_claim": "bus_margin",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A03",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "52863df41ee44cceb570e37ef8b97fdecd6b96e13a766607b899b34e16695063",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph has an object-valued claim and `positive_routes` in place of executable `routes`; the acquisition mode is `acquire`. The visible route and answer predicates match the BB-17 numeric and finding requirements.",
+      "reference_asset_trial": {
+        "asset": "BB-17",
+        "trial": "peak-load-P7"
+      },
+      "reference_claim": "bus_margin",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A04",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "043d14df6d4c000033ccbec1442dde85fe8f0be9ecf6f3457292486626aa08a9",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The response is malformed JSON enclosing YAML-like text. It says the SQL alert lacks a trial in its value and the resolution lacks collector/freshness proof; the reviewed alert requires asset/finding in value, and request/observed_at carry acquisition identity/time. It also targets a shared argument.",
+      "reference_asset_trial": {
+        "asset": "DB-41",
+        "trial": "restore-R8"
+      },
+      "reference_claim": "restore_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A05",
+      "transport_json_valid": false
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "65ebb100c598262f8434ee5faf21bcc14657e65f2a85431e5e374377b78192d2",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The EAL header lacks a semicolon and the pseudo tool declarations lack version. Its alert evidence additionally requires trial in alert value, so the submitted DB-41 adverse alert would not challenge the primary route; the resolution condition itself names the correct finding.",
+      "reference_asset_trial": {
+        "asset": "DB-41",
+        "trial": "restore-R8"
+      },
+      "reference_claim": "restore_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A06",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": false,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "6f63f1a5685e5937fe42a1df38157f7d805178528226b6fc5060ede9e7d60cb0",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses an object-valued claim and noncontract fields; its route, alert and answer predicates demand `collector` and `age_seconds_at_1200_utc` inside record values, and trial in alert value, though those properties are carried by acquisition envelopes or not declared there.",
+      "reference_asset_trial": {
+        "asset": "DB-41",
+        "trial": "restore-R8"
+      },
+      "reference_claim": "restore_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A07",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "cf7ce66e5dfa7b4efea0abd2af69b800c6112e360e31a66cf194850067e40bea",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses `positive_routes`, an object-valued claim and a list-valued evidence field; each `tool_version` is a reader name rather than `1`, with mode `recent`. Its readable predicates retain both SQL routes and exact answer.",
+      "reference_asset_trial": {
+        "asset": "DB-41",
+        "trial": "restore-R8"
+      },
+      "reference_claim": "restore_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A08",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "6f88a6b26c1bbb725abc19c9f62ec9838691060fb940bff9da9869234c70b2ea",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The wrapper is malformed JSON containing TOML-like text, a fixed supported status and an objection against a combined argument. It demands trial in the RX-12 alert value, which the reviewed alert does not require or supply.",
+      "reference_asset_trial": {
+        "asset": "RX-12",
+        "trial": "stop-test-E3"
+      },
+      "reference_claim": "estop_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A09",
+      "transport_json_valid": false
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "3aa9074770b6e332c50c4918a44d8d22cab3ab66f605778b7c38ca8acb46c26e",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The source begins `EAL/2` rather than a valid language declaration and lacks versioned tools. Its visible numeric paths, primary-only bypass challenge and harness answer are semantically aligned, but it hard-codes a supported assessment rather than an executable three-state rule.",
+      "reference_asset_trial": {
+        "asset": "RX-12",
+        "trial": "stop-test-E3"
+      },
+      "reference_claim": "estop_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A10",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "fbb2ad08a614d46b0dc47b514be7db676a2cf084cc1a1fa0b8259f8cba1a6631",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph has an object-valued claim and noncontract evidence-acquisition field; tool version `synthetic-reader/1` and mode `read` differ from the supplied requests. The readable objection scope identifies only the primary route and the harness answer.",
+      "reference_asset_trial": {
+        "asset": "RX-12",
+        "trial": "stop-test-E3"
+      },
+      "reference_claim": "estop_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A11",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "f23a14048ca69cafa8b749309151f9984514d32e6d5004cc9346291c2b699bfd",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses an object-valued claim and `positive_routes`, with mode `acquire`; its readable numeric routes, primary bypass objection and matching harness answer reflect the brief.",
+      "reference_asset_trial": {
+        "asset": "RX-12",
+        "trial": "stop-test-E3"
+      },
+      "reference_claim": "estop_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A12",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "a9106b939eba346aa91db34dcf8b685180f3ad5737eeb04248c1c756b77a38a8",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The wrapper is malformed JSON with YAML-like source, a fixed supported conclusion and an objection against the shared qualifying-test argument. Its prose says the contamination finding is primary-only, but the authored topology does not target an independent primary route.",
+      "reference_asset_trial": {
+        "asset": "WT-63",
+        "trial": "dose-check-D6"
+      },
+      "reference_claim": "dose_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A13",
+      "transport_json_valid": false
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": false,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "b382fef1408ab42fd8a580c07a5a65551884959b4e73e8b17f6617de8df7c323",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The EAL header lacks a semicolon and tools lack versions. The evidence requires the observed 7.1 pH and 3.5 mg/L values exactly rather than the brief's 6.5--8.5 and at-most-4 bounds, even though an argument mentions those bounds.",
+      "reference_asset_trial": {
+        "asset": "WT-63",
+        "trial": "dose-check-D6"
+      },
+      "reference_claim": "dose_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A14",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": false,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "ab3ec6937de5ec21338654e671c191710a4a2e48825984286368a0c4686bc4c3",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses an object-valued claim and `positive_routes`; its alternative route adds exact equality to primary values beyond the independently qualified threshold route, and the supposed answer is a separate objection against the primary route rather than a defeat of the contamination objection.",
+      "reference_asset_trial": {
+        "asset": "WT-63",
+        "trial": "dose-check-D6"
+      },
+      "reference_claim": "dose_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A15",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "ecee322cc471878cd7e02625faa5b343b195c30697c31114e2ab9ab20e9a7c4f",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses an object-valued claim and `positive_routes` instead of the executable contract, with role words as acquisition modes. Its nested primary-route objection and lab-assay answer preserve the conceptual primary-only boundary.",
+      "reference_asset_trial": {
+        "asset": "WT-63",
+        "trial": "dose-check-D6"
+      },
+      "reference_claim": "dose_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A16",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "628dbf7c94717d5697f30e72437b39428b7941c1565e25c94acd13d5a13d15ad",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The response is malformed JSON with YAML-like source. It declares the PAY-21 resolution unqualified for absent collector and freshness inside the value even though the submitted acquisition envelope supplies its named request and observed time; its objection is attached to a shared argument.",
+      "reference_asset_trial": {
+        "asset": "PAY-21",
+        "trial": "duplicate-D2"
+      },
+      "reference_claim": "idempotency_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A17",
+      "transport_json_valid": false
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "492c6d92010ae049039da9055c89c974d2748f98825e91faa316f627f0913f3e",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The pseudo source starts `language EAL/2` without quotes/semicolon and its tools have no declared versions. The readable K9/zero-charge routes, primary-only ledger challenge and settlement answer are otherwise aligned.",
+      "reference_asset_trial": {
+        "asset": "PAY-21",
+        "trial": "duplicate-D2"
+      },
+      "reference_claim": "idempotency_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A18",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": false,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "baf57ffc81931cd2fb67d554297bdb53ccc8a5e230bd68f91028f2cc0e400baa",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. A trailing `</final>` makes the response invalid JSON. Its graph also uses object claim/`positive_routes` and demands `collector` inside record values, which the PAY-21 acquisition envelopes rather than values identify; this would suppress both routes and the challenge/answer.",
+      "reference_asset_trial": {
+        "asset": "PAY-21",
+        "trial": "duplicate-D2"
+      },
+      "reference_claim": "idempotency_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A19",
+      "transport_json_valid": false
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "ed48320f69eecc8f9ca3be8aa516025ecfe2e66db6f4aae2c0c79f668901c20f",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph has an object-valued claim, `positive_routes` and non-deterministic role-named modes/tool versions; the readable replay thresholds and primary-only ledger challenge with matching settlement answer agree with the brief.",
+      "reference_asset_trial": {
+        "asset": "PAY-21",
+        "trial": "duplicate-D2"
+      },
+      "reference_claim": "idempotency_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A20",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "c0b7b64f784c93ce06a54427e879e72512a3a57cf259b03029672579cacd2e9d",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The pseudo EAL source lacks the required header and versioned tools. Its lock-fault evidence requires trial inside the alert value, and the objection targets the combined interlock argument while describing only a primary-route effect; an absence condition is modelled as another objection rather than an exact answer.",
+      "reference_asset_trial": {
+        "asset": "RS-19",
+        "trial": "throw-T4"
+      },
+      "reference_claim": "interlock_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A21",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "5859e16e0792351c678386b59ba6359aa8732bebcbc003714e98d188b57a7f15",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The source starts `language EAL/2` without quotes/semicolon and lacks tool versions. The two quantitative routes and primary-only lock-fault challenge with exact contact-inspection answer are readable but not executable EAL.",
+      "reference_asset_trial": {
+        "asset": "RS-19",
+        "trial": "throw-T4"
+      },
+      "reference_claim": "interlock_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A22",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "5711300ea5e60422c5e8411053fb3b8a466b2b080c0c339793829b88bc92696c",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses `version` instead of `schema`, an object-valued claim and `positive_routes`; its alert predicate requires trial in alert value, which the RS-19 reviewed alert does not declare. That prevents the intended primary challenge and its answer on submitted records.",
+      "reference_asset_trial": {
+        "asset": "RS-19",
+        "trial": "throw-T4"
+      },
+      "reference_claim": "interlock_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A23",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "4c66d0667663621ad9244a7c6900730a904d19bb5ab48841d4de2f631accadd3",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses an object-valued claim and `positive_routes`, and role-named acquisition modes. The readable RS-19 route thresholds and primary lock-fault/inspection-answer predicates are present.",
+      "reference_asset_trial": {
+        "asset": "RS-19",
+        "trial": "throw-T4"
+      },
+      "reference_claim": "interlock_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A24",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": false,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "bf1aeebb38b56d1ce056608f1fb7cf3c1c5caa3441e84e458f0d3d795214e609",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The pseudo EAL source lacks a valid header/tools and imposes `matching_digest` across primary and alternative records even for primary support, making the supposedly independent routes interdependent. The alert objection targets the shared batch argument, and the missing-resolution objection does not supply an exact answer edge.",
+      "reference_asset_trial": {
+        "asset": "ETL-44",
+        "trial": "batch-B7"
+      },
+      "reference_claim": "batch_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A25",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "4595715f60ad4df09b2e2bda905f1b1e4b3da17140840b1b1bcf426f5cc5dd70",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The EAL header lacks a semicolon and tool versions; its two ETL-44 routes, primary gap challenge and exact replay resolution are readable, but an extra assessment argument hard-codes support for one record state.",
+      "reference_asset_trial": {
+        "asset": "ETL-44",
+        "trial": "batch-B7"
+      },
+      "reference_claim": "batch_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A26",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": false,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "9b6eb059908c037f1c50e4be7dd0ff364a654e441ff77e181bb6655bc21c1dd2",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses `format` rather than `schema`, an object claim and `positive_routes`; it tests collector/age and alert trial inside value records, where the acquisition envelopes or reviewed alert do not supply them, and couples the alternative values to the primary record.",
+      "reference_asset_trial": {
+        "asset": "ETL-44",
+        "trial": "batch-B7"
+      },
+      "reference_claim": "batch_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A27",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "be2e9a9476290cbcceb0cce05a1f4794514bb200f8a80244299b0efd37b685a2",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses an object-valued claim, `positive_routes` and noncontract `[path,value]` predicate arrays. The visible ETL-44 thresholds and primary gap/replay-resolution intent are present, but the checker cannot interpret those predicates.",
+      "reference_asset_trial": {
+        "asset": "ETL-44",
+        "trial": "batch-B7"
+      },
+      "reference_claim": "batch_record",
+      "reference_statuses": {
+        "adverse": "contested",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A28",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "003a379e12d1867924bab7f2dc9b6045bb1cb8e8176b59afd71000d617ae6342",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The response is malformed JSON containing YAML-like source. It requires trial inside every value including the INV-31 alert, although the reviewed alert declares only asset/finding, and its objection targets the combined inverter argument with a missing-resolution objection rather than an exact defence.",
+      "reference_asset_trial": {
+        "asset": "INV-31",
+        "trial": "peak-P5"
+      },
+      "reference_claim": "inverter_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A29",
+      "transport_json_valid": false
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "a3606b7a26e0d63c9fa8a01041cc0776724fffae9c1501cc6bc2483348edfab7",
+      "format_visible_in_artifact": "eal",
+      "rating": "unfaithful",
+      "rationale": "No final EAL source begins the required exact `language \"EAL/2\";` header; the visible source is pseudo-EAL/YAML and omits versioned acquisition contracts. The source begins `EAL/2` rather than `language \"EAL/2\";` and contains unversioned pseudo tools. Its readable inverter thresholds, primary-only derating objection and exact separate-module answer match the brief.",
+      "reference_asset_trial": {
+        "asset": "INV-31",
+        "trial": "peak-P5"
+      },
+      "reference_claim": "inverter_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A30",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": false,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": false,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "53e3d9f7e26cc6c9c0cc9555ce07bcd76d729fb087fe77bc40d013085f8f9221",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses object-valued claim and `positive_routes`; the objection applies to `primary_test`, but its primary route is named `qualified_primary_test_with_no_open_challenge`, leaving no matching target for the otherwise stated exact module-test answer.",
+      "reference_asset_trial": {
+        "asset": "INV-31",
+        "trial": "peak-P5"
+      },
+      "reference_claim": "inverter_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A31",
+      "transport_json_valid": true
+    },
+    {
+      "attempt_status": "completed",
+      "criteria": {
+        "claim_scope": true,
+        "matched_resolution": true,
+        "positive_paths": true,
+        "provenance_time": false,
+        "qualification": true,
+        "targeted_objection": true,
+        "three_state_status": false
+      },
+      "executable_format_valid": false,
+      "final_response_sha256": "d6223f49949a6a5a6c956dd6fbfbee196daf5ed93b0f90efddd3b284de2a13ef",
+      "format_visible_in_artifact": "graph",
+      "rating": "unfaithful",
+      "rationale": "The executable graph requires string `claim`, typed top-level `scope`, named `evidence`, `routes` and `objections[].target_route/when`; the final graph has an object-valued claim and cannot be evaluated by that contract. The graph uses an object-valued claim and `positive_routes`, with mode `acquire`; the visible inverter thresholds, targeted derating alert and exact module-test answer preserve the intended conceptual mechanism.",
+      "reference_asset_trial": {
+        "asset": "INV-31",
+        "trial": "peak-P5"
+      },
+      "reference_claim": "inverter_record",
+      "reference_statuses": {
+        "adverse": "supported",
+        "initial": "supported",
+        "restored": "supported"
+      },
+      "sample_id": "A32",
+      "transport_json_valid": true
+    }
+  ],
+  "packet_file_sha256": "ed81bbbd9baf4bd847f2aae729d570a663991b125c9ba7e6d7c50a8318ff6ac3",
+  "review_process": "Only the sealed second-review author packet, bundled rubric/index and a pre-output graph-schema clarification from study800 were read. No peer labels, aggregates, private model linkage or live recipient outputs were consulted. The booleans for claim/scope and other conceptual criteria record readable intent even in an invalid wrapper; executable_format_valid and three_state_status enforce the frozen acceptance boundary.",
+  "review_scope": "all 32 final author products and three synthetic states; provisional source fidelity only; no recipient explanations or recipient outcomes examined",
+  "reviewer": "second independent AI reviewer, study96 agent",
+  "rubric_file_sha256": "94b31e9762e5e567cbdff5f03c892fc6db126b61c7d6d2f62c21b1183285bb9c",
+  "schema": "eal2-deployment-800-a3-author-products-second-ai-review/1",
+  "summary": {
+    "assigned": 32,
+    "by_format": {
+      "eal": {
+        "assigned": 16,
+        "faithful": 0
+      },
+      "graph": {
+        "assigned": 16,
+        "faithful": 0
+      }
+    },
+    "executable_format_valid": 0,
+    "faithful": 0,
+    "final_responses_present": 32,
+    "transport_json_valid": 26,
+    "unassessable": 0,
+    "unfaithful": 32
+  }
+}

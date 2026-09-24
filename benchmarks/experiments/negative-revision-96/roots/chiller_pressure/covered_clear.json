@@ -1,0 +1,128 @@
+{
+  "expected": {
+    "bounded_property_supported": "supported",
+    "qualified_absence": "supported",
+    "violating_sample": "unsupported"
+  },
+  "records": {
+    "first_reader": {
+      "context": {
+        "asset": "CH-75",
+        "run": "cooling-run-R2"
+      },
+      "observed_at": "2040-01-31T08:18:00Z",
+      "request": {
+        "context": {
+          "asset": "CH-75",
+          "run": "cooling-run-R2"
+        },
+        "input": {},
+        "mode": "deterministic",
+        "tool": "first_reader",
+        "tool_version": "1"
+      },
+      "value": {
+        "passed": true,
+        "property": {
+          "operator": "le",
+          "value": 1000
+        },
+        "scope": "cooling-run-R2",
+        "subject": "CH-75"
+      }
+    },
+    "second_reader": {
+      "context": {
+        "asset": "CH-75",
+        "run": "cooling-run-R2"
+      },
+      "observed_at": "2040-01-31T08:19:00Z",
+      "request": {
+        "context": {
+          "asset": "CH-75",
+          "run": "cooling-run-R2"
+        },
+        "input": {},
+        "mode": "deterministic",
+        "tool": "second_reader",
+        "tool_version": "1"
+      },
+      "value": {
+        "passed": true,
+        "property": {
+          "operator": "le",
+          "value": 1000
+        },
+        "scope": "cooling-run-R2",
+        "subject": "CH-75"
+      }
+    },
+    "trace_reader": {
+      "context": {
+        "asset": "CH-75",
+        "run": "cooling-run-R2"
+      },
+      "observed_at": "2040-01-31T08:20:00Z",
+      "request": {
+        "context": {
+          "asset": "CH-75",
+          "run": "cooling-run-R2"
+        },
+        "input": {},
+        "mode": "deterministic",
+        "tool": "trace_reader",
+        "tool_version": "1"
+      },
+      "value": {
+        "method": "engineering/sampled-negative/1",
+        "payload": {
+          "calibration": {
+            "detection_limit": 0.05,
+            "sensitivity_lower_bound": 0.95
+          },
+          "detector_contract": {
+            "maximum_detection_limit": 0.1,
+            "minimum_sensitivity": 0.9
+          },
+          "end": 12,
+          "events": [
+            {
+              "time": 0,
+              "value": 500
+            },
+            {
+              "time": 4,
+              "value": 600
+            },
+            {
+              "time": 8,
+              "value": 700
+            },
+            {
+              "time": 12,
+              "value": 600
+            }
+          ],
+          "max_gap": 4,
+          "mode": "non_detection",
+          "property": {
+            "operator": "le",
+            "value": 1000
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "quantity": "pressure",
+        "schema": "EAL/typed-input/1",
+        "scope": "cooling-run-R2",
+        "subject": "CH-75",
+        "unit": "kPa",
+        "valid_from": "2040-01-31T08:00:00Z",
+        "valid_until": "2040-01-31T09:00:00Z"
+      }
+    }
+  },
+  "root": "chiller_pressure",
+  "schema": "negative-revision-records/1",
+  "state": "covered_clear"
+}

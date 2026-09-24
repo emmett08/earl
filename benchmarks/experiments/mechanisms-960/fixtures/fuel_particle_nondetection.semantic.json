@@ -1,0 +1,108 @@
+{
+  "applications": {},
+  "arguments": {
+    "sampled_route": {
+      "assumptions": [],
+      "binding": "trace_input",
+      "conclusion": "sampled_finding",
+      "evidence": [
+        "trace_input"
+      ],
+      "name": "sampled_route",
+      "premises": [],
+      "reasoning": "sampled_step"
+    }
+  },
+  "assumptions": {},
+  "claims": {
+    "sampled_finding": {
+      "environment": "task_scope",
+      "name": "sampled_finding",
+      "proposition": {
+        "quantity": "dimensionless",
+        "query": {
+          "detector_contract": {
+            "maximum_detection_limit": 0.35,
+            "minimum_sensitivity": 0.9
+          },
+          "end": 9,
+          "max_gap": 3,
+          "mode": "non_detection",
+          "property": {
+            "operator": "lt",
+            "value": 0.4
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "result": {
+          "expected": true,
+          "operator": "==",
+          "path": "finding"
+        },
+        "scope": "particle-samples-F8",
+        "subject": "filter-F2",
+        "unit": "1",
+        "valid_from": "2026-09-24T12:00:00Z",
+        "valid_until": "2026-09-24T12:09:00Z"
+      },
+      "statement": "In the finite fuel-filter sample sequence, can the calibrated 0.35 limit detector support non-detection of normalised particle scores at or above 0.4?"
+    }
+  },
+  "declaration_count": 6,
+  "duplicates": [],
+  "environments": {
+    "task_scope": {
+      "name": "task_scope",
+      "predicates": [
+        {
+          "expected": "filter-F2",
+          "operator": "==",
+          "path": "rig"
+        },
+        {
+          "expected": "F8",
+          "operator": "==",
+          "path": "batch"
+        }
+      ]
+    }
+  },
+  "evidence": {
+    "trace_input": {
+      "environment": "task_scope",
+      "input": {},
+      "kind": "sampled_negative_trace",
+      "max_age": 1800.0,
+      "name": "trace_input",
+      "predicates": [
+        {
+          "expected": "EAL/typed-input/1",
+          "operator": "==",
+          "path": "schema"
+        }
+      ],
+      "tool": "trace_reader"
+    }
+  },
+  "language": "EAL/2",
+  "lowering_diagnostics": [],
+  "objections": {},
+  "patterns": {},
+  "reasoning": {
+    "sampled_step": {
+      "backing": [],
+      "method": "engineering/sampled-negative/1",
+      "name": "sampled_step",
+      "predicates": [],
+      "rationale": "A finite sampled negative finding is conditioned on sample coverage and detector capability; no continuous-time or physical truth follows from this imported trace."
+    }
+  },
+  "tools": {
+    "trace_reader": {
+      "mode": "deterministic",
+      "name": "trace_reader",
+      "version": "1"
+    }
+  }
+}

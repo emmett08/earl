@@ -1,0 +1,23 @@
+language "EAL/2";
+environment task_scope {
+  require "plant" == "sump-2";
+  require "trial" == "P9";
+}
+tool numerical_reader { version "1"; mode deterministic; }
+evidence numerical_input { tool numerical_reader; kind experiment; environment task_scope; max_age 1800; require "schema" == "EAL/typed-input/1"; }
+reasoning numerical_step { method "causal/1"; rationale "Evaluate the named finite method on this exact query and attached record; the computation does not verify physical interpretation or source authenticity."; }
+claim computed_record {
+  statement "In the declared randomised sump pump trial, did treated flow exceed control flow by at least 0.004 m3/s?";
+  environment task_scope;
+  proposition {
+    subject "pump-S2";
+    quantity "volumetric_flow";
+    unit "m3/s";
+    scope "trial-P9";
+    valid_from "2026-09-24T12:00:00Z";
+    valid_until "2026-09-24T12:09:00Z";
+    query {"assignment":"randomised"};
+    result "estimate" >= 0.004;
+  }
+}
+argument measured_route { conclusion computed_record; reasoning numerical_step; evidence numerical_input; binding numerical_input; }

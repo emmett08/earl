@@ -1,0 +1,21 @@
+{
+  "context": {
+    "asset": "PAY-21",
+    "trial": "duplicate-D2"
+  },
+  "observed_at": "2026-09-24T11:58:00Z",
+  "request": {
+    "context": {
+      "asset": "PAY-21",
+      "trial": "duplicate-D2"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "alert_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "asset": "PAY-21",
+    "finding": "primary_ledger_divergence"
+  }
+}

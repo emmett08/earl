@@ -1,0 +1,96 @@
+{
+  "applications": {},
+  "arguments": {
+    "measured_route": {
+      "assumptions": [],
+      "binding": "numerical_input",
+      "conclusion": "computed_record",
+      "evidence": [
+        "numerical_input"
+      ],
+      "name": "measured_route",
+      "premises": [],
+      "reasoning": "numerical_step"
+    }
+  },
+  "assumptions": {},
+  "claims": {
+    "computed_record": {
+      "environment": "task_scope",
+      "name": "computed_record",
+      "proposition": {
+        "quantity": "volumetric_flow",
+        "query": {
+          "assignment": "randomised"
+        },
+        "result": {
+          "expected": 0.004,
+          "operator": ">=",
+          "path": "estimate"
+        },
+        "scope": "trial-P9",
+        "subject": "pump-S2",
+        "unit": "m3/s",
+        "valid_from": "2026-09-24T12:00:00Z",
+        "valid_until": "2026-09-24T12:09:00Z"
+      },
+      "statement": "In the declared randomised sump pump trial, did treated flow exceed control flow by at least 0.004 m3/s?"
+    }
+  },
+  "declaration_count": 6,
+  "duplicates": [],
+  "environments": {
+    "task_scope": {
+      "name": "task_scope",
+      "predicates": [
+        {
+          "expected": "sump-2",
+          "operator": "==",
+          "path": "plant"
+        },
+        {
+          "expected": "P9",
+          "operator": "==",
+          "path": "trial"
+        }
+      ]
+    }
+  },
+  "evidence": {
+    "numerical_input": {
+      "environment": "task_scope",
+      "input": {},
+      "kind": "experiment",
+      "max_age": 1800.0,
+      "name": "numerical_input",
+      "predicates": [
+        {
+          "expected": "EAL/typed-input/1",
+          "operator": "==",
+          "path": "schema"
+        }
+      ],
+      "tool": "numerical_reader"
+    }
+  },
+  "language": "EAL/2",
+  "lowering_diagnostics": [],
+  "objections": {},
+  "patterns": {},
+  "reasoning": {
+    "numerical_step": {
+      "backing": [],
+      "method": "causal/1",
+      "name": "numerical_step",
+      "predicates": [],
+      "rationale": "Evaluate the named finite method on this exact query and attached record; the computation does not verify physical interpretation or source authenticity."
+    }
+  },
+  "tools": {
+    "numerical_reader": {
+      "mode": "deterministic",
+      "name": "numerical_reader",
+      "version": "1"
+    }
+  }
+}
