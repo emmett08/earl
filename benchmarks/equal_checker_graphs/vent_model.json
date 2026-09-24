@@ -1,0 +1,20 @@
+{
+  "schema": "generic-argument-graph/1",
+  "id": "vent_model",
+  "claim": "intervention_within_limit",
+  "scope": {
+    "fixture": {"type": "str", "equals": "vent-controller-6"},
+    "recipe": {"type": "str", "equals": "R5"}
+  },
+  "evidence": {
+    "model_reader": {"tool_version": "1", "mode": "deterministic", "max_age_seconds": 3600}
+  },
+  "routes": [{
+    "id": "conditional_affine_prediction",
+    "all": [
+      {"op": "affine_at_most", "record": "model_reader", "outcome": "vent_load",
+       "intervention": {"variable": "valve_drive", "value": 5}, "limit": 8}
+    ]
+  }],
+  "objections": []
+}

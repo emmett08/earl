@@ -1,0 +1,104 @@
+{
+  "conditions": [
+    {
+      "arm": "raw",
+      "id": "nano_raw",
+      "model_class": "small_text",
+      "provider": "campaign-config/nano.toml"
+    },
+    {
+      "arm": "skill",
+      "id": "nano_skill",
+      "model_class": "small_text",
+      "provider": "campaign-config/nano.toml"
+    },
+    {
+      "arm": "skill_route",
+      "id": "nano_route",
+      "model_class": "small_text",
+      "provider": "campaign-config/nano.toml"
+    },
+    {
+      "arm": "eal_host",
+      "id": "nano_eal",
+      "model_class": "small_text",
+      "provider": "campaign-config/nano.toml"
+    },
+    {
+      "arm": "equal_checker",
+      "id": "nano_equal",
+      "model_class": "small_text",
+      "provider": "campaign-config/nano.toml"
+    },
+    {
+      "arm": "raw",
+      "id": "luna_raw",
+      "model_class": "text",
+      "provider": "campaign-config/luna.toml"
+    },
+    {
+      "arm": "skill",
+      "id": "luna_skill",
+      "model_class": "text",
+      "provider": "campaign-config/luna.toml"
+    },
+    {
+      "arm": "skill_route",
+      "id": "luna_route",
+      "model_class": "text",
+      "provider": "campaign-config/luna.toml"
+    },
+    {
+      "arm": "eal_host",
+      "id": "luna_eal",
+      "model_class": "text",
+      "provider": "campaign-config/luna.toml"
+    },
+    {
+      "arm": "equal_checker",
+      "id": "luna_equal",
+      "model_class": "text",
+      "provider": "campaign-config/luna.toml"
+    },
+    {
+      "arm": "raw",
+      "id": "sol_raw",
+      "model_class": "reasoning",
+      "provider": "campaign-config/sol-high.toml"
+    },
+    {
+      "arm": "skill",
+      "id": "sol_skill",
+      "model_class": "reasoning",
+      "provider": "campaign-config/sol-high.toml"
+    },
+    {
+      "arm": "skill_route",
+      "id": "sol_route",
+      "model_class": "reasoning",
+      "provider": "campaign-config/sol-high.toml"
+    },
+    {
+      "arm": "eal_host",
+      "id": "sol_eal",
+      "model_class": "reasoning",
+      "provider": "campaign-config/sol-high.toml"
+    },
+    {
+      "arm": "equal_checker",
+      "id": "sol_equal",
+      "model_class": "reasoning",
+      "provider": "campaign-config/sol-high.toml"
+    }
+  ],
+  "corpus": "cross-model-delivery/manifest.json",
+  "max_cost_usd": 4.0,
+  "max_output_tokens": 2048,
+  "max_prompt_bytes": 20000,
+  "order_seed": 71,
+  "repetitions": 1,
+  "review_attestation": "campaign-config/independent-review.json",
+  "schema": "eal2-cross-model-campaign/1",
+  "skill": "campaign-config/recipient-skill.txt",
+  "study_kind": "confirmatory"
+}

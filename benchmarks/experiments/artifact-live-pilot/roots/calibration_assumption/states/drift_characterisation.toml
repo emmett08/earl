@@ -1,0 +1,23 @@
+[tools.flow_reader]
+kind = "json_file"
+path = "observations/flow.json"
+version = "1"
+mode = "deterministic"
+
+[tools.certificate_reader]
+kind = "json_file"
+path = "observations/certificate.json"
+version = "1"
+mode = "deterministic"
+
+[tools.drift_reader]
+kind = "json_file"
+path = "observations/drift_alert.json"
+version = "1"
+mode = "deterministic"
+
+[tools.crosscheck_reader]
+kind = "json_file"
+path = "observations/crosscheck_none.json"
+version = "1"
+mode = "deterministic"

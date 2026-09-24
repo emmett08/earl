@@ -1,0 +1,55 @@
+language "EAL/2";
+environment loop_run {
+  require "loop" == "HL-5";
+  require "run" == "Q17";
+}
+tool step_reader { version "1"; mode deterministic; }
+tool reference_reader { version "1"; mode deterministic; }
+tool wiring_reader { version "1"; mode deterministic; }
+evidence step_record {
+  tool step_reader; kind test; environment loop_run; max_age 3600;
+  require "run" == "Q17";
+  require "settling_ms" <= 120;
+}
+evidence flow_reference {
+  tool reference_reader; kind calibration; environment loop_run; max_age 3600;
+  require "run" == "Q17";
+  require "reference_id" == "REF-31";
+  require "calibrated" == true;
+}
+evidence wiring_clearance {
+  tool wiring_reader; kind inspection; environment loop_run; max_age 3600;
+  require "run" == "Q17";
+  require "finding" == "no_reversal_observed";
+  require "checked_connectors" == 4;
+  require "inspection_complete" == true;
+  require "positions.J1" == "clear";
+  require "positions.J2" == "clear";
+  require "positions.J3" == "clear";
+  require "positions.J4" == "clear";
+}
+reasoning direct_record { method "structured/1"; rationale "Each record supplies only its own stated bench precondition."; }
+reasoning conjunction { method "structured/1"; rationale "The provisional continuation decision requires the step and reference records plus a reported negative inspection of each of J1, J2, J3 and J4. A count or completion flag alone cannot establish distinct-position coverage; neither can these self-reported fields authenticate the physical inspection."; }
+claim step_qualifies {
+  statement "The HL-5 run Q17 bench record reports settlement within 120 ms.";
+  environment loop_run;
+}
+claim reference_qualifies {
+  statement "The HL-5 run Q17 flow reference is documented as calibrated against REF-31 in a current record.";
+  environment loop_run;
+}
+claim wiring_qualifies {
+  statement "The completed Q17 inspection record reports no reversed pair at each of J1, J2, J3 and J4.";
+  environment loop_run;
+}
+claim continuation_preconditions {
+  statement "For HL-5 run Q17, the recorded step, flow-reference and bounded connector-inspection preconditions jointly hold for the provisional continuation decision.";
+  environment loop_run;
+}
+argument step_route { conclusion step_qualifies; reasoning direct_record; evidence step_record; }
+argument reference_route { conclusion reference_qualifies; reasoning direct_record; evidence flow_reference; }
+argument wiring_route { conclusion wiring_qualifies; reasoning direct_record; evidence wiring_clearance; }
+argument combined_route {
+  conclusion continuation_preconditions; reasoning conjunction;
+  premises step_qualifies, reference_qualifies, wiring_qualifies;
+}

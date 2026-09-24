@@ -3,6 +3,7 @@ import json
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 import pytest
 from mcp import StdioServerParameters
@@ -48,3 +49,25 @@ def test_host_cli_reports_server_startup_failure_as_json(tmp_path):
     response = json.loads(completed.stdout)
     assert response["is_error"]
     assert "Connection closed" in response["error"]
+
+
+def test_host_cli_preassesses_text_only_task_and_finalises_without_recipient_status(tmp_path):
+    from test_artifacts import setup_artifact
+
+    _, manifest, tools = setup_artifact(tmp_path)
+    base = [sys.executable, "-m", "eal.host", "--workspace", str(tmp_path),
+            "--registry", str(tools), "--artifacts", str(manifest),
+            "--artifact-id", "test", "--claim", "works", "--recipient-principal", "caller_a"]
+    env = {**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")}
+    initial = subprocess.run(base, input="Explain the result", text=True, capture_output=True,
+                             check=True, timeout=15, env=env)
+    result = json.loads(initial.stdout)
+    packet = result["checked_answer"]
+    assert packet["status"] == "supported"
+    assert result["model_input"] == {"task": "Explain the result", "checked_assessment": packet}
+    final = subprocess.run(base + ["--assessment-id", packet["assessment_id"]],
+                           input="The status is unsupported", text=True, capture_output=True,
+                           check=True, timeout=15, env=env)
+    finished = json.loads(final.stdout)
+    assert finished["checked_answer"] == packet
+    assert finished["recipient_output_unverified"] == "The status is unsupported"

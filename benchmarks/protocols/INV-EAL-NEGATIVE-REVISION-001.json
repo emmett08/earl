@@ -1,0 +1,1431 @@
+{
+  "schema_version": "1.0",
+  "investigation_id": "INV-EAL-NEGATIVE-REVISION-001",
+  "title": "Explicit negative findings and evidence revision in EAL/2",
+  "version": "0.1.0",
+  "status": "specified",
+  "question": "For eight independently authored bounded engineering roots, does a checked EAL/2 argument preserve correct status transitions when valid negative findings are added and then invalidated, and does model-authored EAL revision outperform an equally capable generic argument graph under the same budget?",
+  "primary_claim_id": "CLM-REVISION",
+  "scope": {
+    "system_or_population": "A pinned text-only model, EAL/2 host, and independent equal-capability generic graph checker on eight selected new synthetic engineering roots.",
+    "conditions": "Two-stage pilot: Stage A uses reviewed pre-authored multi-route arguments; Stage B drafts and revises from ordinary independent briefs. Three frozen evidence states per root.",
+    "spatial_scope": "Local host and one pinned model API, with synthetic finite observations and no physical device claim.",
+    "temporal_scope": "One frozen campaign after fixture, oracle, provider and scorer validation; Stage B is released only by pre-outcome readiness gates.",
+    "exclusions": [
+      "Population-level model advantage",
+      "Hidden model cognition inferred from public output",
+      "Continuous-time absence from a sampled trace",
+      "Physical truth of an asserted measurement",
+      "Unique computational expressivity against an equal generic argument engine",
+      "A conclusion about Stage B from Stage A pre-authored programmes"
+    ],
+    "knowledge_cut": "2026-09-23"
+  },
+  "claims": [
+    {
+      "id": "CLM-REVISION",
+      "statement": "On frozen bounded tasks with a faithful pre-authored programme and trusted synthetic records, a checked EAL/2 host yields more correct qualified status transitions and fewer false supports under negative-evidence change than a tool-free model reading raw EAL.",
+      "claim_type": "causal",
+      "role": "primary",
+      "scope_limit": "Finite synthetic roots, reviewed programme and trusted input only; a whole-system allocation effect rather than a syntax or model-cognition effect.",
+      "success_consequence": "Use checked EAL as a candidate status-and-revision interface for this workflow.",
+      "failure_consequence": "Repair the source, method, objection or host correspondence before claiming a benefit."
+    },
+    {
+      "id": "CLM-AUTHORING",
+      "statement": "At equal model budget and equal interpreter/gate capability, model-authored EAL programmes survive a negative-evidence addition and invalidation more faithfully than model-authored generic argument graphs.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "Practical draft-and-revision pipeline on eight independent briefs, not intrinsic language superiority.",
+      "success_consequence": "Replicate a measured EAL-specific authoring and maintenance benefit.",
+      "failure_consequence": "Treat EAL as one equally capable representation and investigate the generic alternative."
+    },
+    {
+      "id": "CLM-SEMANTICS",
+      "statement": "An explicit typed negative predicate, used as a required premise of an objection, activates or withdraws an attack according to coverage, provenance, scope and method result in the installed bounded EAL/2 fragment.",
+      "claim_type": "descriptive",
+      "role": "secondary",
+      "scope_limit": "Only the independently referenced synthetic finite trace and checked binding; no real-world non-detection or continuous-time inference.",
+      "success_consequence": "Retain this bounded negative-finding pattern and inspect its trace.",
+      "failure_consequence": "Repair the parser, method or graph semantics before live calls."
+    },
+    {
+      "id": "CLM-PRESENTATION",
+      "statement": "Raw EAL source improves a tool-free recipient’s revision statuses relative to a meaning-equivalent concise generic graph.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "Rendering-bundle effect on one model; tokenisation, familiarity and prompt length can mediate it.",
+      "success_consequence": "Replicate the finite positive contrast on new roots.",
+      "failure_consequence": "Drop raw notation as a basis for adoption."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-REFERENCE",
+      "statement": "Expected source and report statuses are specified independently of both runtimes before model outputs.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Two reviewers independently adjudicate each ordinary brief, evidence state, finite coverage condition, objection target and transition; reconcile before freeze and cross-check with a third hand-worked route.",
+      "failure_consequence": "Suspend correctness claims for disputed roots."
+    },
+    {
+      "id": "ASM-FIDELITY",
+      "statement": "A formal source represents the intended ordinary engineering claim, evidence identity, scope, method and attacks.",
+      "role": "theoretical",
+      "status": "untested",
+      "test_or_justification": "Blinded reviewers compare every Stage B submitted source with the immutable brief before execution; report exact failed fields.",
+      "failure_consequence": "A correct runtime status cannot count as success on that brief."
+    },
+    {
+      "id": "ASM-NEGATIVE",
+      "statement": "A negative predicate is licensed only by a finite explicit detection or sampled-trace contract with appropriate coverage and binding.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Include direct witnessed violation, complete sampled non-violation, incomplete coverage and scope-mismatched controls; inspect method output and typed proposition.",
+      "failure_consequence": "Reject unsupported absence claims; no inference from missing records alone."
+    },
+    {
+      "id": "ASM-PARITY",
+      "statement": "Generic graph and EAL systems receive the same propositions, registered method, attack semantics, records, host gate and diagnostic budget.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Parse-equivalence and independent implementation parity on pre-outcome positive, attack, invalidation and restoration fixtures; log code reuse.",
+      "failure_consequence": "Attribute differences only to an implementation bundle, not representation."
+    },
+    {
+      "id": "ASM-NEW",
+      "statement": "Eight root briefs are genealogically distinct from the five exposed templates and from each other.",
+      "role": "sampling",
+      "status": "untested",
+      "test_or_justification": "Independent authoring and duplicate/genealogy review before freeze, with method and attack-family counts.",
+      "failure_consequence": "Restrict findings to dependent template demonstrations."
+    },
+    {
+      "id": "ASM-SESSIONS",
+      "statement": "Condition order, model snapshot, cache and session history do not systematically track format or evidence state.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Fresh Stage A one-shot contexts; counterbalanced order, recorded seed/model/usage, no automatic retry; parallel Stage B threads have separate root and route contexts.",
+      "failure_consequence": "Do not attribute observed differences to the assigned format."
+    },
+    {
+      "id": "ASM-SOURCE",
+      "statement": "Synthetic observation identities are bound to a separately frozen acquisition fixture; this does not establish the truth of an actual sensor.",
+      "role": "operational",
+      "status": "untested",
+      "test_or_justification": "Source/observation/time/context/method digest cross-check; forged, stale and restoration controls.",
+      "failure_consequence": "Host integrity and any real-world inference fail."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-CHECK",
+      "label": "Checked revision",
+      "kind": "substantive",
+      "statement": "Checked EAL source binding, negative-predicate computation and attack resolution produce a practically useful gain in status reversal and false-support control over raw tool-free EAL.",
+      "claim_ids": [
+        "CLM-REVISION"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-NEGATIVE",
+        "ASM-SOURCE"
+      ],
+      "scope": "Pre-authored Stage A roots."
+    },
+    {
+      "id": "H-RAW",
+      "label": "Raw sufficiency",
+      "kind": "rival",
+      "statement": "The text-only model already performs these binding and attack operations, leaving no meaningful endpoint gain for checked execution on these roots.",
+      "claim_ids": [
+        "CLM-REVISION"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-SESSIONS"
+      ],
+      "scope": "Same Stage A roots and evidence."
+    },
+    {
+      "id": "H-AUTHOR",
+      "label": "EAL revision advantage",
+      "kind": "substantive",
+      "statement": "Under equal host capabilities and diagnostic budgets, EAL model drafts and evidence-change revisions retain brief correspondence and correct statuses more often than generic graph drafts.",
+      "claim_ids": [
+        "CLM-AUTHORING"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-FIDELITY",
+        "ASM-PARITY"
+      ],
+      "scope": "Stage B independent briefs, pinned model and budget."
+    },
+    {
+      "id": "H-GENERIC",
+      "label": "Generic graph rival",
+      "kind": "rival",
+      "statement": "An equally capable reusable generic graph is at least as faithful and efficient under negative-evidence revision.",
+      "claim_ids": [
+        "CLM-AUTHORING"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-FIDELITY",
+        "ASM-PARITY"
+      ],
+      "scope": "Same Stage B briefs."
+    },
+    {
+      "id": "H-NEG",
+      "label": "Typed negative attack",
+      "kind": "mechanism",
+      "statement": "Only a covered, bound negative claim activates its dependent objection; invalidating the negative source withdraws the attack without altering the original positive records.",
+      "claim_ids": [
+        "CLM-SEMANTICS"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-NEGATIVE"
+      ],
+      "scope": "Finite synthetic graphs and observations."
+    },
+    {
+      "id": "H-MISSING",
+      "label": "Absence shortcut",
+      "kind": "rival",
+      "statement": "A missing, partial or wrong-scope non-detection is incorrectly treated as a decisive negative finding despite the explicit contract.",
+      "claim_ids": [
+        "CLM-SEMANTICS"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-NEGATIVE"
+      ],
+      "scope": "Same finite fixtures."
+    },
+    {
+      "id": "H-SURFACE",
+      "label": "Raw syntax effect",
+      "kind": "substantive",
+      "statement": "EAL source yields more correct negative-finding revision statuses than the parse-equivalent generic view without host execution.",
+      "claim_ids": [
+        "CLM-PRESENTATION"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-SESSIONS"
+      ],
+      "scope": "Stage A rendering comparison."
+    },
+    {
+      "id": "H-NOSURFACE",
+      "label": "No raw syntax gain",
+      "kind": "rival",
+      "statement": "The generic graph equals or exceeds EAL raw-status accuracy on the same states.",
+      "claim_ids": [
+        "CLM-PRESENTATION"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-SESSIONS"
+      ],
+      "scope": "Stage A rendering comparison."
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P-CHECK",
+      "hypothesis_ids": [
+        "H-CHECK"
+      ],
+      "claim_ids": [
+        "CLM-REVISION"
+      ],
+      "estimand_ids": [
+        "EST-CHECK"
+      ],
+      "measurement_ids": [
+        "M-STATUS",
+        "M-FALSE"
+      ],
+      "expected_pattern": "Host statuses follow the independent three-state references more often than raw EAL responses, with no increase in false support.",
+      "direction": "increase",
+      "magnitude_or_range": "Pilot target: >=0.20 root-weighted complete-sequence correctness gain; descriptive only.",
+      "time_window": "Stage A one-shot state or Stage B current revision turn as specified",
+      "tolerance": "Exact status/reference/trace scoring; eight-root descriptive uncertainty; no population p-value.",
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-NEGATIVE"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-RAW"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-RAW",
+      "hypothesis_ids": [
+        "H-RAW"
+      ],
+      "claim_ids": [
+        "CLM-REVISION"
+      ],
+      "estimand_ids": [
+        "EST-CHECK"
+      ],
+      "measurement_ids": [
+        "M-STATUS"
+      ],
+      "expected_pattern": "Raw model returns the complete correct three-state sequence on as many roots as the host.",
+      "direction": "no-direction",
+      "magnitude_or_range": "Report exact discordance and uncertainty, not equivalence from a nonsignificant result.",
+      "time_window": "Stage A one-shot state or Stage B current revision turn as specified",
+      "tolerance": "Exact status/reference/trace scoring; eight-root descriptive uncertainty; no population p-value.",
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-NEGATIVE"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-CHECK"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-AUTHOR",
+      "hypothesis_ids": [
+        "H-AUTHOR"
+      ],
+      "claim_ids": [
+        "CLM-AUTHORING"
+      ],
+      "estimand_ids": [
+        "EST-AUTHOR"
+      ],
+      "measurement_ids": [
+        "M-FIDELITY",
+        "M-STATUS",
+        "M-COST"
+      ],
+      "expected_pattern": "At the same three calls per root/route, EAL drafts and revisions preserve more complete brief correspondence and correct final statuses than the generic route; any cost premium is reported.",
+      "direction": "increase",
+      "magnitude_or_range": "Pilot target: >=0.20 root-weighted complete-sequence gain with no increased false support; not a confirmed threshold.",
+      "time_window": "Stage A one-shot state or Stage B current revision turn as specified",
+      "tolerance": "Exact status/reference/trace scoring; eight-root descriptive uncertainty; no population p-value.",
+      "auxiliary_assumption_ids": [
+        "ASM-FIDELITY",
+        "ASM-PARITY"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-GENERIC"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-NEG",
+      "hypothesis_ids": [
+        "H-NEG"
+      ],
+      "claim_ids": [
+        "CLM-SEMANTICS"
+      ],
+      "estimand_ids": [
+        "EST-NEG"
+      ],
+      "measurement_ids": [
+        "M-STATUS",
+        "M-TRACE"
+      ],
+      "expected_pattern": "A covered negative claim changes the selected objection/target status; losing coverage or scope makes that objection inactive and restores the independently expected result.",
+      "direction": "no-direction",
+      "magnitude_or_range": "All frozen semantic invariants exact; any contrary result is an implementation or fixture defect.",
+      "time_window": "Stage A one-shot state or Stage B current revision turn as specified",
+      "tolerance": "Exact status/reference/trace scoring; eight-root descriptive uncertainty; no population p-value.",
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-NEGATIVE"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-MISSING"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-FORMAT",
+      "hypothesis_ids": [
+        "H-SURFACE"
+      ],
+      "claim_ids": [
+        "CLM-PRESENTATION"
+      ],
+      "estimand_ids": [
+        "EST-FORMAT"
+      ],
+      "measurement_ids": [
+        "M-STATUS"
+      ],
+      "expected_pattern": "Within the same root/state, raw EAL yields more correct statuses than the equivalent generic view.",
+      "direction": "increase",
+      "magnitude_or_range": "Finite paired estimate and per-root discordance, no prior effect size.",
+      "time_window": "Stage A one-shot state or Stage B current revision turn as specified",
+      "tolerance": "Exact status/reference/trace scoring; eight-root descriptive uncertainty; no population p-value.",
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-SESSIONS"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-NOSURFACE"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-PARITY",
+      "hypothesis_ids": [
+        "H-AUTHOR",
+        "H-GENERIC"
+      ],
+      "claim_ids": [
+        "CLM-AUTHORING"
+      ],
+      "estimand_ids": [
+        "EST-PARITY"
+      ],
+      "measurement_ids": [
+        "M-STATUS",
+        "M-TRACE"
+      ],
+      "expected_pattern": "Before model authoring, both equal-capability runtimes agree on all frozen canonical states and reject the same invalid identities.",
+      "direction": "no-direction",
+      "magnitude_or_range": "Exact 24 paired states plus signed-input tamper controls; shared prediction that cannot select a format.",
+      "time_window": "Stage A one-shot state or Stage B current revision turn as specified",
+      "tolerance": "Exact status/reference/trace scoring; eight-root descriptive uncertainty; no population p-value.",
+      "auxiliary_assumption_ids": [
+        "ASM-REFERENCE",
+        "ASM-NEGATIVE"
+      ],
+      "discriminates_from_hypothesis_ids": [],
+      "shared_prediction": true
+    }
+  ],
+  "constructs": [
+    {
+      "id": "CON-STATUS",
+      "name": "Correct qualified status sequence",
+      "definition": "Exact requested claim statuses and justified support across three evidence states against an independent reference, including revision after negative finding changes.",
+      "role": "outcome",
+      "scope": "One root and its immutable synthetic variants.",
+      "proxy_for_claim_ids": [
+        "CLM-REVISION",
+        "CLM-AUTHORING",
+        "CLM-PRESENTATION"
+      ],
+      "validity_evidence": [
+        "Pre-outcome independent brief adjudication planned"
+      ],
+      "validity_threats": [
+        "A single correct label can be guessed or copied",
+        "Selected roots and semantic reference errors"
+      ]
+    },
+    {
+      "id": "CON-FIDELITY",
+      "name": "Brief-to-formal correspondence",
+      "definition": "The draft represents the brief’s target, quantity, scope, time, evidence identity, method, negative predicate, attack target and defeater without unintended change.",
+      "role": "outcome",
+      "scope": "Stage B ordinary briefs and three revision turns.",
+      "proxy_for_claim_ids": [
+        "CLM-AUTHORING"
+      ],
+      "validity_evidence": [
+        "Masked two-reviewer audit of every source planned"
+      ],
+      "validity_threats": [
+        "Ambiguous ordinary brief",
+        "Reviewers may infer route from syntax"
+      ]
+    },
+    {
+      "id": "CON-NEG",
+      "name": "Bounded negative finding",
+      "definition": "A method-checked proposition about a witnessed violation or a complete finite sampled record, used as a required premise of an objection; lack of a record is not itself an observation of absence.",
+      "role": "intervention",
+      "scope": "Installed typed temporal/method fragment only.",
+      "proxy_for_claim_ids": [
+        "CLM-SEMANTICS"
+      ],
+      "validity_evidence": [
+        "Temporal output includes coverage and explicitly disclaims continuous truth"
+      ],
+      "validity_threats": [
+        "Unmodelled detector sensitivity",
+        "Collector may assert false completeness"
+      ]
+    },
+    {
+      "id": "CON-RESOURCE",
+      "name": "Representation and revision burden",
+      "definition": "Recorded model tokens, calls, elapsed time and implementation time for each route at matched task and budget.",
+      "role": "outcome",
+      "scope": "Pilot pipelines and local machine only.",
+      "proxy_for_claim_ids": [
+        "CLM-AUTHORING"
+      ],
+      "validity_evidence": [
+        "Provider usage and host clocks retained"
+      ],
+      "validity_threats": [
+        "Provider caching and run order",
+        "Developer implementation time not prospectively observed"
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M-STATUS",
+      "construct_ids": [
+        "CON-STATUS"
+      ],
+      "observable": "Exact requested status map and three-state transition, plus strict response admission.",
+      "instrument_or_procedure": "Independent oracle and strict JSON parser; host emits assessed status directly.",
+      "scale_or_units": "Binary per state and complete-sequence per root; categorical confusion; paired discordance.",
+      "timing": "First Stage A response per root/state/view or end of each Stage B revision turn.",
+      "preprocessing": "Preserve raw bytes; malformed/provider errors count unsuccessful among attempted calls; unattempted slots separate.",
+      "calibration": "Freeze independently worked valid, invalid and restoration references; cross-run both engines before release.",
+      "reliability": "Deterministic rescore and per-reviewer agreement/disagreement ledger.",
+      "validity": "Conditional status accuracy for represented synthetic information only.",
+      "measurement_invariance": "Identical status/trace criteria across routes; semantic graph equality audited before comparison.",
+      "reactivity": "Prompt/output contract and host diagnostics may affect model behaviour and are held matched within route comparison.",
+      "error_model": "Oracle disagreement, model schema errors and authored-source semantic mismatch separately recorded.",
+      "blinding": "Reference adjudicators do not see outputs; brief-fidelity reviewers are masked to model outcome and route where syntax allows."
+    },
+    {
+      "id": "M-FALSE",
+      "construct_ids": [
+        "CON-STATUS"
+      ],
+      "observable": "A returned supported status lacking admissible support for the supplied state.",
+      "instrument_or_procedure": "Compare strict admitted statuses with independent state-specific oracle.",
+      "scale_or_units": "Count and rate per attempt, with malformed outcomes separately bounded.",
+      "timing": "First Stage A response per root/state/view or end of each Stage B revision turn.",
+      "preprocessing": "Preserve raw bytes; malformed/provider errors count unsuccessful among attempted calls; unattempted slots separate.",
+      "calibration": "Freeze independently worked valid, invalid and restoration references; cross-run both engines before release.",
+      "reliability": "Deterministic rescore and per-reviewer agreement/disagreement ledger.",
+      "validity": "A fixture false-support indicator; no physical safety claim.",
+      "measurement_invariance": "Identical status/trace criteria across routes; semantic graph equality audited before comparison.",
+      "reactivity": "Prompt/output contract and host diagnostics may affect model behaviour and are held matched within route comparison.",
+      "error_model": "Malformed outputs may contain uncoded false support; worst-case sensitivity counts all as errors.",
+      "blinding": "Reference adjudicators do not see outputs; brief-fidelity reviewers are masked to model outcome and route where syntax allows."
+    },
+    {
+      "id": "M-FIDELITY",
+      "construct_ids": [
+        "CON-FIDELITY"
+      ],
+      "observable": "Target, polarity, quantity, time, scope, identity, negative coverage, method, graph edge and rebuttal in each Stage B source.",
+      "instrument_or_procedure": "Two masked reviewers score against the frozen ordinary brief before execution; reconcile with original ratings retained.",
+      "scale_or_units": "Field-level binary and all-fields-correct per root/turn.",
+      "timing": "First Stage A response per root/state/view or end of each Stage B revision turn.",
+      "preprocessing": "Preserve raw bytes; malformed/provider errors count unsuccessful among attempted calls; unattempted slots separate.",
+      "calibration": "Freeze independently worked valid, invalid and restoration references; cross-run both engines before release.",
+      "reliability": "Deterministic rescore and per-reviewer agreement/disagreement ledger.",
+      "validity": "Whether model-authored formal text corresponds to the specified brief, before interpreter correctness.",
+      "measurement_invariance": "Identical status/trace criteria across routes; semantic graph equality audited before comparison.",
+      "reactivity": "Prompt/output contract and host diagnostics may affect model behaviour and are held matched within route comparison.",
+      "error_model": "Brief ambiguity, inter-rater disagreement and unexpressed domain assumptions are reported.",
+      "blinding": "Reference adjudicators do not see outputs; brief-fidelity reviewers are masked to model outcome and route where syntax allows."
+    },
+    {
+      "id": "M-TRACE",
+      "construct_ids": [
+        "CON-NEG"
+      ],
+      "observable": "Bound evidence IDs, coverage result, computed negative predicate, active objection, defeated status and version digests.",
+      "instrument_or_procedure": "Byte-verified host trace and equal graph trace mapped to common fields.",
+      "scale_or_units": "Binary required-field completeness and categorical failure locus.",
+      "timing": "First Stage A response per root/state/view or end of each Stage B revision turn.",
+      "preprocessing": "Preserve raw bytes; malformed/provider errors count unsuccessful among attempted calls; unattempted slots separate.",
+      "calibration": "Freeze independently worked valid, invalid and restoration references; cross-run both engines before release.",
+      "reliability": "Deterministic rescore and per-reviewer agreement/disagreement ledger.",
+      "validity": "Public dependency and binding record, not internal model thought process.",
+      "measurement_invariance": "Identical status/trace criteria across routes; semantic graph equality audited before comparison.",
+      "reactivity": "Prompt/output contract and host diagnostics may affect model behaviour and are held matched within route comparison.",
+      "error_model": "A self-consistent but false acquisition record remains a residual threat.",
+      "blinding": "Reference adjudicators do not see outputs; brief-fidelity reviewers are masked to model outcome and route where syntax allows."
+    },
+    {
+      "id": "M-COST",
+      "construct_ids": [
+        "CON-RESOURCE"
+      ],
+      "observable": "Provider calls/tokens/configured-rate estimated cost, host latency and revision steps.",
+      "instrument_or_procedure": "Provider usage metadata, monotonic local timers and immutable run log.",
+      "scale_or_units": "Counts, USD estimate, seconds; paired root distribution.",
+      "timing": "First Stage A response per root/state/view or end of each Stage B revision turn.",
+      "preprocessing": "Preserve raw bytes; malformed/provider errors count unsuccessful among attempted calls; unattempted slots separate.",
+      "calibration": "Freeze independently worked valid, invalid and restoration references; cross-run both engines before release.",
+      "reliability": "Deterministic rescore and per-reviewer agreement/disagreement ledger.",
+      "validity": "Resource cost of this pinned workflow, not a general price or human labour estimate.",
+      "measurement_invariance": "Identical status/trace criteria across routes; semantic graph equality audited before comparison.",
+      "reactivity": "Prompt/output contract and host diagnostics may affect model behaviour and are held matched within route comparison.",
+      "error_model": "Cache variability, provider drift and unmeasured future maintenance costs.",
+      "blinding": "Reference adjudicators do not see outputs; brief-fidelity reviewers are masked to model outcome and route where syntax allows."
+    }
+  ],
+  "design": {
+    "design_type": "controlled-experiment",
+    "rationale": "Within-root assigned text views and a sequential authoring comparison separate raw rendering, checked execution and draft/revision fidelity; deterministic negative-evidence perturbations test attack activation and restoration.",
+    "setting": "Eight new synthetic briefs with independent references and two independent equal-capability runtimes.",
+    "temporal_structure": "Stage A: independent one-shot states presented in counterbalanced order. Stage B: separate three-turn route threads per root; draft, valid negative finding, then scope/coverage invalidation or independently grounded defence.",
+    "assignment_method": "Randomise Stage A root/state/view order and Stage B route order within root using a retained seed; every root receives every assigned arm.",
+    "allocation_concealment": "Freeze source, briefs, references, state changes and route schedule before any generation; models never see expected statuses.",
+    "masking": "Reference reviewers blind to responses; Stage B fidelity reviewers blind to outcome, with route masking limited by syntax; scorer frozen.",
+    "comparator": "Raw EAL versus equivalent generic graph; checked EAL versus raw EAL; EAL model-authored pipeline versus equal generic graph pipeline.",
+    "control_ids": [
+      "CTRL-VALID",
+      "CTRL-INVALID",
+      "CTRL-GENERIC",
+      "CTRL-TAMPER",
+      "CTRL-BASELINE"
+    ]
+  },
+  "units": {
+    "target_population_or_system": "Selected finite synthetic engineering arguments on a pinned text-only model and host; no probability sample of engineering work.",
+    "sampling_frame": "Eight independently commissioned and genealogy-screened new ordinary briefs, including distinct negative-predicate and attack/rebuttal families.",
+    "experimental_unit": "Root/state/view in Stage A; root/representation thread in Stage B.",
+    "observational_unit": "One attempted model call, one source submission and one host/checker result.",
+    "assignment_unit": "Root-state presentation and route order within root.",
+    "analysis_unit": "Root, with three states and two formats treated as dependent; family summaries retain genealogy.",
+    "inclusion_criteria": [
+      "New brief with two independent positive routes, a typed negative finding and an attack target whose status changes when the finding is valid",
+      "Negative finding can be made inapplicable by exactly one predeclared scope/coverage/provenance change without altering positive values",
+      "Both runtimes and two reviewers agree before generation"
+    ],
+    "exclusion_criteria": [
+      "Near duplicate of exposed five tasks or another root",
+      "Ambiguous independent reference unresolved before freeze",
+      "Generic graph lacks equal method/attack/gate capacity"
+    ],
+    "recruitment_or_selection": "Purposefully select eight distinct bounded problems before outcomes; keep excluded drafts and reasons in a pre-freeze log."
+  },
+  "interventions_or_exposures": [
+    {
+      "id": "INT-STATES",
+      "kind": "intervention",
+      "description": "Three evidence states per root: base support/route structure, valid covered negative predicate activating an objection, then invalidated scope/coverage/provenance or independent defence; references may vary in label pattern across roots.",
+      "target": "Negative finding and nonmonotonic revision.",
+      "implementation": "The negative proposition is a typed claim with bound registered method; objection requires it as a premise and targets a specified claim/route. Alter one field or add a genuinely independent defence at turn 3; preserve positive values.",
+      "dose_or_intensity": "8 roots x 3 states.",
+      "timing": "Stage and turn fixed in immutable schedule.",
+      "admissibility": "conditional",
+      "manipulation_checks": [
+        "Check finite coverage, bound query, polarity and objection premise/target",
+        "Freeze all three independently adjudicated statuses"
+      ],
+      "off_target_checks": [
+        "Check token differences, unchanged positive sources and accidental final-status leakage"
+      ],
+      "recovery_checks": [
+        "Restore valid negative source and confirm original attack returns"
+      ]
+    },
+    {
+      "id": "INT-A",
+      "kind": "intervention",
+      "description": "Stage A: raw EAL and parse-equivalent concise generic graph in independent one-shot status requests; verified EAL and equal generic checker execute those exact states without model calls.",
+      "target": "Raw notation versus checked execution.",
+      "implementation": "8 roots x 3 states x 2 text views = 48 live calls; 8 x 3 x 2 deterministic canonical checker assessments = 48 executions. Host owns final status, and neither text view receives a computed verdict.",
+      "dose_or_intensity": "48 model calls and 48 checker executions.",
+      "timing": "Stage and turn fixed in immutable schedule.",
+      "admissibility": "conditional",
+      "manipulation_checks": [
+        "Normalise both views to equal semantic IR",
+        "Verify model identity and prompt hashes"
+      ],
+      "off_target_checks": [
+        "Track length, EAL vocabulary bias and format failure"
+      ],
+      "recovery_checks": [
+        "Counterbalanced order and exact valid/invalid reversal"
+      ]
+    },
+    {
+      "id": "INT-B",
+      "kind": "intervention",
+      "description": "Stage B: author and revise source from ordinary brief in EAL or equal generic graph across three turns.",
+      "target": "Specific authoring/revision value.",
+      "implementation": "8 roots x 2 routes x 3 calls = 48 live calls: draft, add a valid negative finding, then invalidate or independently defeat it. Each route receives same brief/change, model budget, prior source and bounded parser diagnostics, with no hidden answer. Run each output through assigned host and independent fidelity review.",
+      "dose_or_intensity": "48 further model calls; deterministic validations outside this count.",
+      "timing": "Stage and turn fixed in immutable schedule.",
+      "admissibility": "conditional",
+      "manipulation_checks": [
+        "At each turn audit brief correspondence, graph parity and same permitted diagnostics"
+      ],
+      "off_target_checks": [
+        "Record diagnostics token count and route order; reject extra repair calls"
+      ],
+      "recovery_checks": [
+        "Reassess earlier source after restoration and audit unintended edits"
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTRL-VALID",
+      "control_type": "positive",
+      "description": "Covered direct violation and complete bounded sampled-property cases.",
+      "failure_mode_addressed": "An invalid negative predicate could pass vacuously.",
+      "implementation": "Hand-worked method results and independent oracle before any generation.",
+      "diagnostic_consequence": "If valid controls fail, halt Stage A."
+    },
+    {
+      "id": "CTRL-INVALID",
+      "control_type": "negative",
+      "description": "Identical measured values with one missing endpoint, wrong scope, stale identity or rejected provenance.",
+      "failure_mode_addressed": "Non-detection or out-of-scope value falsely activates an objection.",
+      "implementation": "Pair each valid negative with one predeclared invalid counterpart; confirm objection state and target reference.",
+      "diagnostic_consequence": "Any invalid record that activates the objection fails the semantic test."
+    },
+    {
+      "id": "CTRL-GENERIC",
+      "control_type": "active-comparator",
+      "description": "Independently implemented reusable generic graph with equal rules, methods, gate and bounded diagnostics.",
+      "failure_mode_addressed": "Checked computation or host enforcement is credited uniquely to EAL.",
+      "implementation": "Cross-run all canonical states; equal authoring budget in Stage B.",
+      "diagnostic_consequence": "Parity failure blocks an EAL-specific conclusion."
+    },
+    {
+      "id": "CTRL-TAMPER",
+      "control_type": "falsification",
+      "description": "Alter source/observation digest, time or context while retaining internally coherent status prose.",
+      "failure_mode_addressed": "A copied label bypasses the host acquisition identity.",
+      "implementation": "Synthetic signed-log tamper/replay/restore check in both runtimes before Stage A.",
+      "diagnostic_consequence": "Any accepted invalid identity fails the gate and blocks Stage B."
+    },
+    {
+      "id": "CTRL-BASELINE",
+      "control_type": "baseline",
+      "description": "Always-supported and always-unsupported status maps and exact proposal-copy baseline, calculated separately for each arm.",
+      "failure_mode_addressed": "Label imbalance gives a trivial high score.",
+      "implementation": "Compute from frozen references before calls; no synthetic baseline model calls.",
+      "diagnostic_consequence": "A reported gain must be interpreted against structural baselines and root-level transitions."
+    }
+  ],
+  "confounds": [
+    {
+      "id": "CF-ROOT",
+      "description": "A few related roots and uneven status mix.",
+      "causal_or_measurement_path": "Shared templates or frequent unsupported labels inflate apparent repeated successes.",
+      "control_or_adjustment": "Genealogy audit, root analysis and structural label baselines.",
+      "diagnostic": "Per-root tables and leave-one-family-out sensitivity.",
+      "residual_risk": "No population transport from eight purposive roots."
+    },
+    {
+      "id": "CF-PROMPT",
+      "description": "EAL and generic views differ in tokenisation and learned familiarity.",
+      "causal_or_measurement_path": "Surface and length change salience independent of formal semantics.",
+      "control_or_adjustment": "Common compact reference, semantic IR equality, matched response contract, token log.",
+      "diagnostic": "Input lengths and format errors by route.",
+      "residual_risk": "Identifies a rendering bundle, not an intrinsic language property."
+    },
+    {
+      "id": "CF-ORACLE",
+      "description": "Reference or checker coupled to EAL implementation.",
+      "causal_or_measurement_path": "A shared error favours EAL checked status and makes negative switch apparently correct.",
+      "control_or_adjustment": "Independent brief adjudication and independent generic implementation.",
+      "diagnostic": "Publish every pre-outcome disagreement and resolve before model calls.",
+      "residual_risk": "Reviewers can share domain assumptions."
+    },
+    {
+      "id": "CF-DIAGNOSTIC",
+      "description": "Unequal syntax diagnostics after invalid Stage B source.",
+      "causal_or_measurement_path": "One route receives more correction information.",
+      "control_or_adjustment": "Equal bounded field/category diagnostics and exact three-call cap.",
+      "diagnostic": "Token and field leakage audit.",
+      "residual_risk": "Formal languages differ in error localisability; report as part of pipeline effect."
+    }
+  ],
+  "estimands": [
+    {
+      "id": "EST-CHECK",
+      "claim_ids": [
+        "CLM-REVISION"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Eight pre-authored new roots under the pinned model and checked EAL host.",
+      "intervention_or_exposure": "Host-derived EAL final status for identical frozen source and observations.",
+      "comparator": "First tool-free raw-EAL response to those exact inputs.",
+      "outcome_measurement_ids": [
+        "M-STATUS",
+        "M-FALSE"
+      ],
+      "time": "At each frozen evidence state and root-complete sequence.",
+      "summary_measure": "Root mean of complete three-state correctness difference; paired false-support counts and support→contested→restored transitions.",
+      "interpretation": "Conditional whole-system allocation contrast; checker receives an executable method and host gate, so no syntax-specific attribution."
+    },
+    {
+      "id": "EST-AUTHOR",
+      "claim_ids": [
+        "CLM-AUTHORING"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Eight ordinary root briefs assigned both routes.",
+      "intervention_or_exposure": "Model authors and revises EAL under three equal calls.",
+      "comparator": "Same model authors/revises equal generic graph under three calls.",
+      "outcome_measurement_ids": [
+        "M-FIDELITY",
+        "M-STATUS",
+        "M-COST"
+      ],
+      "time": "At each frozen evidence state and root-complete sequence.",
+      "summary_measure": "Within-root difference in all-turn brief fidelity and oracle-correct final assessment, with resource differences and exact discordant roots.",
+      "interpretation": "Practical authoring-and-revision route effect; not a universal expressivity theorem."
+    },
+    {
+      "id": "EST-NEG",
+      "claim_ids": [
+        "CLM-SEMANTICS"
+      ],
+      "estimand_type": "mechanistic",
+      "population_or_system": "Canonical finite signed synthetic states.",
+      "intervention_or_exposure": "Valid covered negative proposition then one-field invalidation/defence.",
+      "comparator": "Baseline before negative source and restored valid state.",
+      "outcome_measurement_ids": [
+        "M-STATUS",
+        "M-TRACE"
+      ],
+      "time": "At each frozen evidence state and root-complete sequence.",
+      "summary_measure": "Exact attack activation and expected status transitions on each frozen root; no sampling inference.",
+      "interpretation": "Implementation of declared finite semantics conditional on authentic input."
+    },
+    {
+      "id": "EST-FORMAT",
+      "claim_ids": [
+        "CLM-PRESENTATION"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Eight roots times three states.",
+      "intervention_or_exposure": "Tool-free raw EAL rendering.",
+      "comparator": "Parse-equivalent concise generic graph view with same records and response contract.",
+      "outcome_measurement_ids": [
+        "M-STATUS"
+      ],
+      "time": "At each frozen evidence state and root-complete sequence.",
+      "summary_measure": "Paired root-average complete correctness difference and state-level discordance.",
+      "interpretation": "Whole-prompt presentation effect only."
+    },
+    {
+      "id": "EST-PARITY",
+      "claim_ids": [
+        "CLM-AUTHORING"
+      ],
+      "estimand_type": "descriptive",
+      "population_or_system": "24 canonical states and planned tamper controls.",
+      "intervention_or_exposure": "Checked EAL status and trace.",
+      "comparator": "Independent generic checker with same data, method, attack rules and host gate.",
+      "outcome_measurement_ids": [
+        "M-STATUS",
+        "M-TRACE"
+      ],
+      "time": "At each frozen evidence state and root-complete sequence.",
+      "summary_measure": "Exact status, attack, refusal and trace-field discordance count.",
+      "interpretation": "Necessary fairness check, not proof of equivalence beyond fixtures."
+    }
+  ],
+  "identification": {
+    "target_estimand_ids": [
+      "EST-CHECK",
+      "EST-AUTHOR",
+      "EST-NEG",
+      "EST-FORMAT",
+      "EST-PARITY"
+    ],
+    "status": "partially-identified",
+    "causal_and_measurement_structure": "Brief and independent acquired records define intended finite statuses; assigned format and stage alter visible source and host operations; checker outputs depend on interpreted propositions, methods and attacks; brief fidelity is a prior bridge. Randomised within-root formats identify finite-route differences if parity, references, sessions and diagnostic budgets hold. Host-versus-raw contrasts bundle computation, verification and response ownership.",
+    "assumption_ids": [
+      "ASM-REFERENCE",
+      "ASM-FIDELITY",
+      "ASM-NEGATIVE",
+      "ASM-PARITY",
+      "ASM-NEW",
+      "ASM-SESSIONS",
+      "ASM-SOURCE"
+    ],
+    "identified_parameters": [
+      "Finite-root paired Stage A presentation and execution differences",
+      "Finite-root Stage B route-specific draft/revision fidelity and end-to-end status differences",
+      "Deterministic gate and attack response to frozen perturbations"
+    ],
+    "nonidentified_alternatives": [
+      "Model internal reasoning versus label copying",
+      "EAL-specific runtime advantage if equal generic checker is identical",
+      "Continuous or physical truth from finite synthetic samples",
+      "Population engineering performance from purposive eight roots"
+    ],
+    "threats": [
+      "Translation mismatch",
+      "Reference circularity",
+      "Unequal generic capacity",
+      "Label imbalance",
+      "Root dependence",
+      "Provider drift"
+    ],
+    "diagnostics": [
+      "Independent reference review",
+      "IR and gate parity",
+      "Prompt/response hash audit",
+      "Trivial-label baselines",
+      "Family and root report",
+      "Tamper and restoration checks"
+    ],
+    "rescue_actions": [
+      "Suspend affected root before generation if pre-freeze parity fails",
+      "Revise generic comparator in a new frozen cohort if structural parity fails",
+      "Replicate on independent roots and authors for external validity",
+      "Build a registered finite detection method before any non-detection outside sampled semantics"
+    ]
+  },
+  "sampling": {
+    "method": "Purposive pilot with eight independently authored roots; each has three linked states and both representation routes.",
+    "sample_size_or_information_target": "Stage A: 8 x 3 x 2 = 48 one-shot model calls; 8 x 3 x 2 = 48 deterministic canonical runtime executions. Stage B: 8 x 2 x 3 = 48 further authoring/revision calls. Total maximum = 96 prospective model calls, contingent on pre-outcome readiness; previous 960-call plan had 24 roots x 10 packet arms x 2 syntaxes x 2 reference lengths. Neither count is 960 independent tasks. A 0.20 paired gain on eight roots is imprecise and is a pilot target, not a discovery threshold.",
+    "inputs": [
+      "Five-task/180-call archive motivates mechanisms only",
+      "Prior 960-call protocol INV-EAL-MECHANISMS-001 is specified, not executed; it would compare graded supplied answer packets and checked system on pre-authored sources but cannot show model internal cognition, physical truth, ordinary-brief translation or EAL-specific authoring advantage",
+      "New briefs, references, parity implementation, final runner and current model price must be established before live calls"
+    ],
+    "dependence_structure": "Root is primary unit; three states and two formats are dependent. Stage B turns share a source/thread. Related families and one author may remain correlated.",
+    "multiplicity": "Primary Stage A whole-system contrast and primary Stage B authoring contrast are separate bounded pilot claims; all diagnostics and costs reported without significance fishing.",
+    "attrition_or_loss": "Malformed and provider failures stay in attempted denominators; missing/unattempted separately logged; no silent replacement.",
+    "result": "Feasibility and effect-range calibration; no credible population 95% interval at eight selected roots.",
+    "sensitivity_analysis": "Before execution enumerate discordant-root scenarios and worst-case malformed false support; after execution report root counts, descriptive intervals, leave-one-root/family-out and trivial status baselines.",
+    "stopping_implications": "No outcome-dependent stop; Stage B gate checks fixture/oracle/parity and acquisition integrity before any Stage A outputs, then Stage B only on predeclared readiness independent of observed benefit. Freeze budget/cost using current price before live calls."
+  },
+  "analysis": {
+    "preprocessing_lock": "Freeze exact briefs, source views, oracle statuses, method versions, graph IR, acquisition log, scorer, randomisation seed, model snapshot and request bytes. Archive raw outputs and host traces before scoring. Do not reinterpret missing evidence as physical absence.",
+    "exclusion_lock": "Exclude only pre-freeze ambiguous or non-parity roots with logged reasons. All attempted calls, malformed responses and authored invalid sources stay in denominators; no post-outcome fixture replacement.",
+    "models": [
+      {
+        "id": "MOD-ROOT",
+        "estimand_ids": [
+          "EST-CHECK",
+          "EST-FORMAT",
+          "EST-NEG",
+          "EST-PARITY"
+        ],
+        "model_or_procedure": "Within-root exact statuses, three-state sequence pass, reverse/restore transitions, false supports, syntax pair discordance, checker parity and tamper refusals.",
+        "assumptions": [
+          "Independent reference and same frozen semantic graph",
+          "Canonical integrity and parser validity"
+        ],
+        "diagnostics": [
+          "Root and family tables",
+          "Label baselines",
+          "Complete pair coverage",
+          "Trace field audit"
+        ],
+        "outputs": [
+          "delta_checked",
+          "delta_format",
+          "false_support",
+          "switch_pass",
+          "parity_discordance",
+          "coverage"
+        ]
+      },
+      {
+        "id": "MOD-AUTHOR",
+        "estimand_ids": [
+          "EST-AUTHOR"
+        ],
+        "model_or_procedure": "Score all three model-authored source submissions against masked brief fields, then execute valid submitted source through its assigned runtime; paired complete-sequence fidelity and status, with cost and time.",
+        "assumptions": [
+          "Equal budgets, diagnostics and checker semantics",
+          "No route carry-over"
+        ],
+        "diagnostics": [
+          "Per-turn syntax/admissibility",
+          "Reviewer disagreements",
+          "Token and feedback parity"
+        ],
+        "outputs": [
+          "delta_author_fidelity",
+          "delta_author_status",
+          "author_false_support",
+          "resource_difference",
+          "author_coverage"
+        ]
+      }
+    ],
+    "contrasts": [
+      "Stage A primary: checked EAL host status versus tool-free raw EAL on identical reviewed source and records; raw model does not have the checked computation.",
+      "Stage A secondary: raw EAL versus equivalent generic graph, as a rendering-bundle estimate.",
+      "Stage B primary: model-authored/revised EAL versus model-authored/revised equal generic graph from ordinary briefs with three calls per route and no additional repairs.",
+      "Canonical deterministic EAL versus generic checker exact semantic and tamper parity, before interpreting Stage B."
+    ],
+    "uncertainty": "Report each discordant root and exact finite counts, descriptive root-level interval/sensitivity only; do not treat 96 calls as independent or claim population significance.",
+    "multiplicity": "No hypothesis-significance threshold. Separate Stage A whole-system and Stage B EAL-specific questions; all prespecified diagnostic contrasts reported.",
+    "missing_data": "Attempted malformed/provider errors and invalid authored source count as endpoint failure; false support is assessed only for admitted responses with worst-case bound for missing content; unknown usage reported.",
+    "stopping_rule": "No model calls until prospective freeze. After pre-outcome fixture/parity/safety gate, attempt fixed 48 Stage A slots. Stage B proceeds only if previously specified fixture/oracle/parity/credential/cost checks still pass; this gate does not depend on Stage A success. Stop on compromised credential, unbounded cost, unknown usage or provider incompatibility, retaining markers and all attempts. No silent retries.",
+    "robustness_checks": [
+      "Score claim-level confusion and strict contract separately",
+      "Replace malformed false-support count by worst-case bound",
+      "Leave one root and one family out",
+      "Audit whether final positive status is retained for an independent route when the objection targets only one argument",
+      "Re-run valid negative after invalidation to check restoration"
+    ],
+    "software_and_versions": [
+      "Freeze EAL commit, independent generic checker, method registry fingerprint, parser, provider adapter, scorer and model snapshot before calls"
+    ],
+    "inconclusive_handling": "A tie, mixed direction, wide uncertainty, failed pair coverage or reviewer disagreement leaves corresponding comparative claim open. Report unexpected status sequences in an unanticipated row rather than choosing favourable cases."
+  },
+  "decision_matrix": [
+    {
+      "id": "DM-CHECK",
+      "prediction_ids": [
+        "P-CHECK",
+        "P-NEG",
+        "P-PARITY"
+      ],
+      "observation_region": "All pre-outcome gates pass; host follows references and gates; Stage A checked-minus-raw complete-sequence gain reaches predeclared 0.20 pilot target without increased false support.",
+      "analysis_outputs": [
+        "delta_checked",
+        "false_support",
+        "switch_pass",
+        "parity_discordance"
+      ],
+      "decision_rule": "Strengthen conditional whole-system claim for the eight roots; report exact root discordance and uncertainty.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-REVISION"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Checked operations improved finite endpoint and reversal accuracy.",
+          "scope_limit": "Pre-authored reviewed source and trusted synthetic record only."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-CHECK favoured over H-RAW on this finite pilot; no EAL-specific authoring conclusion."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Replicate on more independent roots."
+    },
+    {
+      "id": "DM-RAW",
+      "prediction_ids": [
+        "P-RAW",
+        "P-CHECK"
+      ],
+      "observation_region": "All gates pass; raw recipient matches or exceeds checked host across three-state sequences and false support.",
+      "analysis_outputs": [
+        "delta_checked",
+        "false_support",
+        "switch_pass"
+      ],
+      "decision_rule": "Weaken incremental checked endpoint value for this tested range; do not infer universal equivalence.",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-REVISION"
+          ],
+          "disposition": "weaken",
+          "rationale": "No observed finite endpoint gain despite valid switch opportunity.",
+          "scope_limit": "Selected model and roots only."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-RAW remains viable."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Test independent harder families or stop expanding EAL runtime claims."
+    },
+    {
+      "id": "DM-AUTHOR",
+      "prediction_ids": [
+        "P-AUTHOR",
+        "P-PARITY"
+      ],
+      "observation_region": "Parity passes; model-authored EAL exceeds equal generic graph by at least 0.20 root-weighted complete-sequence brief fidelity and correct final status, with no higher false support and disclosed costs.",
+      "analysis_outputs": [
+        "delta_author_fidelity",
+        "delta_author_status",
+        "author_false_support",
+        "resource_difference",
+        "parity_discordance"
+      ],
+      "decision_rule": "Strengthen bounded practical EAL authoring/revision value; pilot effect requires independent replication.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-AUTHORING"
+          ],
+          "disposition": "strengthen",
+          "rationale": "A paired representational workflow gain survived independent brief review and equal runtime capacity.",
+          "scope_limit": "Eight selected briefs, one model and three-turn budget."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-AUTHOR favoured over H-GENERIC on this implementation pair."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Replicate with independent authors and longer change sequences."
+    },
+    {
+      "id": "DM-GENERIC",
+      "prediction_ids": [
+        "P-AUTHOR",
+        "P-PARITY"
+      ],
+      "observation_region": "Parity passes; generic graph equals/exceeds EAL on brief fidelity, correct revision and false support, or EAL advantage is confined to runtime under unequal rules.",
+      "analysis_outputs": [
+        "delta_author_fidelity",
+        "delta_author_status",
+        "author_false_support",
+        "parity_discordance"
+      ],
+      "decision_rule": "Weaken the specific comparative claim, report route costs and precise discordances.",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-AUTHORING"
+          ],
+          "disposition": "weaken",
+          "rationale": "An equal reusable representation matched or bettered the measured authoring route.",
+          "scope_limit": "Finite route comparison only."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-GENERIC remains viable."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Consider EAL integration value without superiority claim."
+    },
+    {
+      "id": "DM-NEG",
+      "prediction_ids": [
+        "P-NEG"
+      ],
+      "observation_region": "Oracle and parity pass; EAL negative predicate and objection follow every predeclared valid/invalid/restored transition.",
+      "analysis_outputs": [
+        "switch_pass",
+        "parity_discordance"
+      ],
+      "decision_rule": "Confirm only finite implementation behaviour.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-SEMANTICS"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Negative-finding contract and attack relation executed on all selected fixtures.",
+          "scope_limit": "No physical or continuous-time truth follows."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-NEG supported for canonical fixtures; H-MISSING contradicted there."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Extend to independent event-detection methods after their contracts are specified."
+    },
+    {
+      "id": "DM-NEG-FAIL",
+      "prediction_ids": [
+        "P-NEG"
+      ],
+      "observation_region": "A missing endpoint, wrong-scope or stale record activates an objection, or valid restoration does not restore expected status.",
+      "analysis_outputs": [
+        "switch_pass",
+        "parity_discordance"
+      ],
+      "decision_rule": "Fail the corresponding semantic/gate invariant, irrespective of model outcomes.",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-SEMANTICS"
+          ],
+          "disposition": "contradict",
+          "rationale": "The installed method or graph failed a predeclared finite counterexample.",
+          "scope_limit": "Specific failing fixture and variant."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-MISSING remains viable for that implementation."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Repair method/binding/graph and freeze a new cohort."
+    },
+    {
+      "id": "DM-FORMAT",
+      "prediction_ids": [
+        "P-FORMAT"
+      ],
+      "observation_region": "Raw EAL differs from equivalent generic rendering with all semantic and session checks passing.",
+      "analysis_outputs": [
+        "delta_format",
+        "coverage"
+      ],
+      "decision_rule": "Report direction and per-root discordance; only a positive EAL rendering estimate merits replication.",
+      "discrimination_result": "fails-to-discriminate",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-PRESENTATION"
+          ],
+          "disposition": "revise",
+          "rationale": "Presentation affected output but length/familiarity remain bundled.",
+          "scope_limit": "Pinned prompt and model only."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-SURFACE or H-NOSURFACE remains a bounded rendering hypothesis according to sign."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Run matched-length/placement replication if material."
+    },
+    {
+      "id": "DM-INVALID",
+      "prediction_ids": [
+        "P-CHECK",
+        "P-RAW",
+        "P-AUTHOR",
+        "P-NEG",
+        "P-FORMAT",
+        "P-PARITY"
+      ],
+      "observation_region": "Independent oracle, brief correspondence, negative coverage, signed input, semantic parity or route diagnostic equality fails; pre-outcome release gate blocks calls, or late failure invalidates affected outputs.",
+      "analysis_outputs": [
+        "coverage",
+        "parity_discordance",
+        "switch_pass",
+        "author_coverage"
+      ],
+      "decision_rule": "Suspend affected contrasts; archive failures and fix in a separately frozen version.",
+      "discrimination_result": "invalid-measurement",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-REVISION",
+            "CLM-AUTHORING",
+            "CLM-SEMANTICS",
+            "CLM-PRESENTATION"
+          ],
+          "disposition": "suspend",
+          "rationale": "The intervention or comparator was not the declared one.",
+          "scope_limit": "Unaffected contrasts may remain descriptive."
+        }
+      ],
+      "hypothesis_effects": [
+        "No substantive hypothesis strengthened."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Correct and re-freeze without overwriting attempts."
+    },
+    {
+      "id": "DM-INCONCLUSIVE",
+      "prediction_ids": [
+        "P-CHECK",
+        "P-RAW",
+        "P-AUTHOR",
+        "P-NEG",
+        "P-FORMAT",
+        "P-PARITY"
+      ],
+      "observation_region": "Mixed, small or uncertain effects, incomplete paired coverage, reviewer disagreement, cost threshold or any unanticipated pattern not classified above.",
+      "analysis_outputs": [
+        "delta_checked",
+        "delta_author_fidelity",
+        "delta_author_status",
+        "coverage",
+        "resource_difference"
+      ],
+      "decision_rule": "Report finite observed counts and limits; leave comparative claims open.",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-REVISION",
+            "CLM-AUTHORING",
+            "CLM-PRESENTATION"
+          ],
+          "disposition": "no-change",
+          "rationale": "Pilot evidence does not discriminate the rivals at selected roots.",
+          "scope_limit": "No population inference."
+        }
+      ],
+      "hypothesis_effects": [
+        "Rivals retained."
+      ],
+      "assumption_failure_response": "Independent oracle, acquisition, parity or manipulation failure overrides this row and sends affected inference to DM-INVALID.",
+      "next_action": "Choose the smallest new intervention separating observed error classes."
+    }
+  ],
+  "bias_assessment": {
+    "risks": [
+      {
+        "id": "B-SELECT",
+        "risk_type": "selection",
+        "mechanism": "Familiar or related task roots exaggerate transfer.",
+        "prevention": "Independent briefs and genealogy screening before freeze.",
+        "detection": "Publish lineage and near-duplicate audit.",
+        "sensitivity_or_correction": "Family and leave-one-root-out reports.",
+        "residual_risk": "Unknown model training contamination."
+      },
+      {
+        "id": "B-ORACLE",
+        "risk_type": "measurement",
+        "mechanism": "EAL-derived reference favours EAL.",
+        "prevention": "Two masked independent brief adjudicators and separately implemented generic checker.",
+        "detection": "Retain all pre-outcome disagreements.",
+        "sensitivity_or_correction": "Suspend ambiguous roots before generation.",
+        "residual_risk": "Shared domain assumptions may remain."
+      },
+      {
+        "id": "B-FORMAT",
+        "risk_type": "confounding",
+        "mechanism": "Unequal token/diagnostic information changes performance.",
+        "prevention": "Common response contract, semantic IR check and matched bounded feedback.",
+        "detection": "Prompt length and diagnostic disclosure ledger.",
+        "sensitivity_or_correction": "Report rendering-bundle effect; do not isolate tokenisation.",
+        "residual_risk": "Syntax familiarity cannot be held constant."
+      },
+      {
+        "id": "B-REPORT",
+        "risk_type": "reporting",
+        "mechanism": "Choosing the most favourable status, root or stage after outcomes.",
+        "prevention": "Freeze all 96 slot identities, primary contrasts, baseline maps and decision matrix.",
+        "detection": "Compare archive to schedule and report all attempted outcomes.",
+        "sensitivity_or_correction": "Label any additions exploratory.",
+        "residual_risk": "Eight-root pilot remains imprecise."
+      }
+    ],
+    "researcher_degrees_of_freedom": [
+      "Root selection and branch/attack design before freeze",
+      "Model snapshot and prompt wording",
+      "Human brief-fidelity coding",
+      "Cost threshold and stage release"
+    ],
+    "negative_controls": [
+      "Partial coverage and wrong-scope/stale negative source",
+      "Forged or replayed acquisition metadata"
+    ],
+    "positive_controls": [
+      "Covered negative predicate activates declared attack",
+      "Independent defence or invalidation restores support"
+    ],
+    "falsification_checks": [
+      "A bare absence of record cannot activate the objection",
+      "A stale/wrong-scope record cannot release a supported status through the gate"
+    ],
+    "reporting_controls": [
+      "Immutable schedule, raw outcomes and reviewer disagreement retained; no post-outcome replacement"
+    ],
+    "residual_limitations": [
+      "Purposive synthetic roots",
+      "Public labels do not reveal model thought",
+      "Signed false records remain possible",
+      "Physical measurement not tested"
+    ]
+  },
+  "ethics_and_safety": {
+    "applicable": false,
+    "rationale": "Synthetic records and no human participants or actuation; API spending and credential handling remain operational controls.",
+    "risks": [
+      "Unbounded model charges",
+      "Credential accidentally placed in prompts, logs or repository"
+    ],
+    "mitigations": [
+      "Read credential only from process environment",
+      "Pre-call maximum charge reservation and secret scan",
+      "No key material in immutable artifacts"
+    ],
+    "monitoring": [
+      "Usage/model snapshot, configured-rate estimate, prompt and output integrity"
+    ],
+    "stopping_rules": [
+      "Stop on secret detection, unknown usage, provider drift or exceeding frozen cost cap"
+    ],
+    "stop_authority": "Investigator operating prospective campaign",
+    "review_status": "not-required",
+    "post_stop_actions": [
+      "Retain attempt marker and all prior raw records",
+      "Use a new protocol/continuation record before resuming"
+    ]
+  },
+  "feasibility": {
+    "current_status": "partially-feasible",
+    "apparatus_or_data": [
+      "Installed EAL/2 evaluator and prior response archive",
+      "Independent new briefs, generic graph parity implementation and prospective 96-call runner remain unbuilt"
+    ],
+    "access": "Pinned provider snapshot and authorised credential must be checked prospectively; protocol preparation makes no API calls.",
+    "skills": [
+      "EAL semantics and registered methods",
+      "Independent oracle and blind brief review",
+      "Experiment runner and cost accounting"
+    ],
+    "resources": [
+      "At most 96 model calls, subject to a frozen current-price cost cap",
+      "48 canonical deterministic checker executions plus model-authored source validations, tamper and restoration tests"
+    ],
+    "dependencies": [
+      "Eight new briefs and adjudicated references",
+      "Equal generic graph implementation, method and gate",
+      "Signed synthetic acquisition and typed negative-finding contracts",
+      "Frozen scorer/schedule/provider and pre-run precision calibration"
+    ],
+    "blockers": [
+      "Root corpus, independent reference and equal checker have not been built",
+      "Runner, cost schedule and provider snapshot not frozen",
+      "No justification for a population effect at eight roots"
+    ],
+    "fallback": "Execute finite negative-predicate/objection and parity checks locally; report as implementation verification and leave model claims untested."
+  },
+  "reproducibility": {
+    "preregistration_status": "planned",
+    "registration": "Specified only. Register a new immutable version after fixture, checker, schedule and analysis validation, before any model call.",
+    "immutable_materials": [
+      "Eight ordinary briefs and independently adjudicated state-specific references",
+      "Three EAL and equivalent generic state renderings per root",
+      "Signed synthetic input log and intentionally invalid variants",
+      "Parser/method/graph/gate code hashes, response schema, complete 96-slot schedule and random seed"
+    ],
+    "data_plan": "Retain raw prompts/responses, usage, model identity, source/observation/method digests, host traces, fidelity ratings/disagreements, cost and every attempted failure; scan before public release.",
+    "code_plan": "Version a no-retry 96-call campaign runner, independent generic evaluator, scorer and replay script; write to a new results directory.",
+    "randomisation_or_seed_plan": "Freeze seed, within-root Stage A order and Stage B route order; fresh one-shot Stage A context, separate three-turn Stage B route thread; no replacement for charged failures.",
+    "provenance_plan": "Record UTC time, commit, programme/brief hashes, method version, provider snapshot, response metadata, reviewer record and deviations.",
+    "deviation_and_amendment_plan": "Preserve old protocol and raw attempts; change corpus, rules, cost cap or schedule only in a new version before a new cohort.",
+    "replication_plan": "After this eight-root feasibility pilot, preregister an independently authored larger corpus and new model/provider. If EAL appears advantaged, include human authoring and real trusted acquisition separately."
+  },
+  "execution": {
+    "protocol_version_used": null,
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": null,
+    "code_location": null,
+    "observed_results": [],
+    "interpretation_status": "not-started; no prospective model calls performed under this protocol"
+  },
+  "provenance": {
+    "authors": [
+      "Prepared for Emmett Miller with Codex; no independent external review claimed"
+    ],
+    "created_at": "2026-09-23T22:30:00Z",
+    "updated_at": "2026-09-23T22:30:00Z",
+    "sources": [
+      "benchmarks/protocols/INV-EAL-MECHANISMS-001.json",
+      "docs/eal2-evidence-failure-analysis.md",
+      "docs/eal2-mechanism-experiment.md",
+      "benchmarks/engineering-v2/sources/sampled-counterexample.eal",
+      "docs/language.md",
+      "docs/typed-propositions.md"
+    ],
+    "knowledge_cut": "2026-09-23",
+    "change_log": [
+      "0.1.0: specified 48-call negative-finding presentation/host pilot and 48-call equal-capacity authoring/revision follow-up; no generation or execution."
+    ]
+  }
+}

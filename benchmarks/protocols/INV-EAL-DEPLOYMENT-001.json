@@ -1,0 +1,849 @@
+{
+  "schema_version": "1.0",
+  "investigation_id": "INV-EAL-DEPLOYMENT-001",
+  "title": "When a reusable EAL/2 argument is worth constructing and executing",
+  "version": "0.1.0",
+  "status": "specified",
+  "question": "For independently written engineering briefs with changing evidence, which combinations of EAL/2 grammar, explicit application instruction, checked execution, model class and cross-developer reuse improve qualified decisions, and when does EAL/2 outperform an equally capable generic argument graph after authoring and review costs?",
+  "primary_claim_id": "CLM-EAL-REUSE",
+  "scope": {
+    "system_or_population": "Pinned text-only model endpoints, EAL/2 and semantically equivalent generic graph hosts, and finite engineering briefs sampled by declared mechanism family; two developer roles are simulated as isolated author and recipient sessions.",
+    "conditions": "Three evidence states per root (initial support, eligible adverse evidence, then invalidated or defended adverse evidence), with alternative support routes and explicit objection targets. The reuse estimand holds a registered claim, context, scope and assessment interval fixed while eligible observations change; a new scope or question requires a newly approved artifact/version and adds author/review cost. Drafts and reference decisions are independently reviewed before exposure.",
+    "spatial_scope": "Synthetic records and local registered methods; source authenticity outside the frozen fixture is untested.",
+    "temporal_scope": "One calibration cohort, followed by separately frozen confirmatory roots if calibration passes; model and provider versions pinned within a cohort.",
+    "exclusions": [
+      "Physical truth of synthetic observations or correctness of an unvalidated engineering model",
+      "A universal benefit of formal notation across tasks and models",
+      "Hidden cognitive mechanisms inferred from response text",
+      "An EAL-specific gain inferred only from EAL-plus-interpreter versus a tool-free model",
+      "Equivalence of a null difference without a prespecified noninferiority interval"
+    ],
+    "knowledge_cut": "2026-09-23"
+  },
+  "claims": [
+    {
+      "id": "CLM-EAL-REUSE",
+      "statement": "At ten isolated recipient decisions in the same registered claim and scope, a model-assisted EAL/2 author-and-host workflow uses at least 20% fewer cumulative provider-billed model tokens per correct qualified decision than a semantically equal generic argument-graph author-and-host workflow, while its probability of false support is no greater by more than two percentage points.",
+      "claim_type": "causal",
+      "role": "primary",
+      "scope_limit": "The tested models, independently selected finite task families, declared author/reviewer procedure, same-scope ten-recipient reuse regime and compact status outcome; the two hosts must have equal binding, caching, methods, answer detail and status semantics. Scope changes incur new-artifact review cost.",
+      "success_consequence": "Recommend EAL/2 for the measured token-sensitive reuse regime only after separately accounting for reviewer labour, host resources and latency; report the uncertainty, fidelity and break-even recipient count.",
+      "failure_consequence": "Prefer the equal graph or retain EAL/2 only for a separately measured property; do not infer superiority from model-only failures."
+    },
+    {
+      "id": "CLM-CHECKED",
+      "statement": "With faithful reviewed source and trusted synthetic records, host-owned execution reduces false supports and improves exact revision status over model-only interpretation of the same information.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "A system allocation effect shared by EAL/2 and an equal checker; no EAL-specific conclusion.",
+      "success_consequence": "Use a host assessment when the task demands bounded status and trace.",
+      "failure_consequence": "Inspect source correspondence, interface use and scorer before choosing a host."
+    },
+    {
+      "id": "CLM-INSTRUCTION",
+      "statement": "A format-matched application skill increases the exact qualified-status rate of a model without tools for at least one pinned model class.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "The assigned instruction and models; content and length of the skill may mediate the effect.",
+      "success_consequence": "Use a measured low-cost instruction where its false-support rate is acceptable.",
+      "failure_consequence": "A prompt alone is insufficient on these roots."
+    },
+    {
+      "id": "CLM-GRAMMAR",
+      "statement": "An explicit attack-and-negative-finding EAL/2 grammar makes model-authored and model-revised formal sources more faithful to ordinary briefs than the current grammar at equal semantics and review budget.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "Only after both grammars parse, execute and render the same frozen semantic graph; otherwise the contrast is a changed language capability.",
+      "success_consequence": "Consider a grammar change with the measured fidelity, error and token trade-off.",
+      "failure_consequence": "Do not change grammar for this hypothesised comprehension gain."
+    },
+    {
+      "id": "CLM-DEPLOY",
+      "statement": "A route-selection rule based on calibrated error, specification fidelity, fixed authoring cost, per-recipient tokens and host overhead predicts on held-out roots which workflow meets a declared error limit at the lowest all-in cost.",
+      "claim_type": "prediction",
+      "role": "secondary",
+      "scope_limit": "The candidate workflows and sampled families; pre-outcome threshold and held-out evaluation only.",
+      "success_consequence": "Ship the decision rule with its calibration range and uncertainty.",
+      "failure_consequence": "Use a simple checked default or collect further independent roots before routing."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-ORACLE",
+      "statement": "Independent reviewers can resolve the intended brief, methods, objection targets and three reference decisions without consulting tested outputs.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Two masked reviewers author references before freezes; a third adjudicates disagreement and an independent checker verifies finite invariants.",
+      "failure_consequence": "Remove disputed roots before randomisation, report removal and withhold accuracy inference if no stable reference exists."
+    },
+    {
+      "id": "ASM-PARITY",
+      "statement": "EAL/2 and the generic graph can encode the same typed claims, methods, source binding, attacks, defences and revision operations with equivalent diagnostics and host gate.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Bidirectional canonical graph conversion, both parser round trips, mutation tests, and parity on independently hand-scored states before model exposure; log remaining presentation differences.",
+      "failure_consequence": "Classify the contrast as differing capabilities rather than EAL-specific notation or authoring value."
+    },
+    {
+      "id": "ASM-FIDELITY",
+      "statement": "A final status only addresses the ordinary brief if the authored scope, evidence identities, propositions, method contracts and objection targets correspond to it.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Masked comparison of each draft and revision to frozen brief by two reviewers; adjudicate fields before running the source.",
+      "failure_consequence": "A technically correct assessment of a mistranslated source is scored as an end-to-end failure."
+    },
+    {
+      "id": "ASM-TRANSFER",
+      "statement": "Recipient tasks are independent of the author session and neither outcome labels nor evaluation fixtures leak into authoring prompts.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Separate sessions and snapshots; inspect prompt and archive provenance; blind authors to future perturbation labels.",
+      "failure_consequence": "Restrict inference to rehearsed template execution."
+    },
+    {
+      "id": "ASM-COST",
+      "statement": "Token, time, human review and host overhead are logged consistently for every route, including failed drafts and revisions.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Reconcile provider usage per attempt and timed review/host execution; evaluate warm/cold cache and labour-price sensitivities separately.",
+      "failure_consequence": "No total-cost or break-even claim."
+    },
+    {
+      "id": "ASM-CLASS",
+      "statement": "Model classes are operationally defined by pinned products and observed tool/reasoning interfaces, not inferred parameter count or marketing tier.",
+      "role": "sampling",
+      "status": "untested",
+      "test_or_justification": "Before task calls, record model IDs, tool support, allowed reasoning setting, output limits, provider documentation and availability probes.",
+      "failure_consequence": "Report model-specific results only and abandon class-level inference."
+    },
+    {
+      "id": "ASM-INSTRUCTION",
+      "statement": "EAL and graph instruction variants convey equivalent procedures and differ only in representation terms; ordinary task facts and budgets are equal.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Independent semantic review and prompt-length audit before freeze; include both neutral and explicit-application conditions.",
+      "failure_consequence": "Attribute any difference to the whole prompt bundle."
+    },
+    {
+      "id": "ASM-AUTHZ",
+      "statement": "A trusted host authorises the exact task, caller, registered artifact digest, claim set, context, scope and assessment interval before fetching records or returning any status.",
+      "role": "operational",
+      "status": "untested",
+      "test_or_justification": "Try selector-only access, wrong caller/task, changed artifact bytes, expired interval and altered scope in both EAL and equal-graph hosts; require denial. The registered ID selects an artifact but grants no authority.",
+      "failure_consequence": "Suspend host and reuse results, since the status may refer to an unauthorised or different claim."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-EAL",
+      "label": "EAL reuse economy",
+      "kind": "substantive",
+      "statement": "The grammar and validation affordances of EAL/2 reduce authoring/revision errors or recipient work enough to outperform an equal graph in cumulative provider-billed model tokens at bounded error after ten isolated uses.",
+      "claim_ids": ["CLM-EAL-REUSE"],
+      "auxiliary_assumption_ids": ["ASM-PARITY", "ASM-FIDELITY", "ASM-COST"],
+      "scope": "Model-assisted draft, blinded review, host execution and ten-recipient reuse on new roots."
+    },
+    {
+      "id": "H-GRAPH",
+      "label": "Generic graph suffices",
+      "kind": "rival",
+      "statement": "Equal semantics, diagnostics and reusable host give the generic graph equal or lower all-in cost at equal or lower false-support risk.",
+      "claim_ids": ["CLM-EAL-REUSE"],
+      "auxiliary_assumption_ids": ["ASM-PARITY", "ASM-COST"],
+      "scope": "Same author, reviewer and recipient allocation."
+    },
+    {
+      "id": "H-CHECK",
+      "label": "Execution supplies missing operation",
+      "kind": "mechanism",
+      "statement": "A host executing source binding, registered methods and objections makes correct status changes more reliable than a tool-free model asked to interpret source text.",
+      "claim_ids": ["CLM-CHECKED"],
+      "auxiliary_assumption_ids": ["ASM-ORACLE", "ASM-FIDELITY"],
+      "scope": "Reviewed fixed programmes and synthetic records."
+    },
+    {
+      "id": "H-PROMPT",
+      "label": "Instruction suffices",
+      "kind": "rival",
+      "statement": "An explicit application skill makes unaided models as accurate as host-owned status on these bounded cases.",
+      "claim_ids": ["CLM-CHECKED", "CLM-INSTRUCTION"],
+      "auxiliary_assumption_ids": ["ASM-INSTRUCTION", "ASM-ORACLE"],
+      "scope": "Same prompts, records and task roots."
+    },
+    {
+      "id": "H-GRAMMAR",
+      "label": "Explicit syntax aids authoring",
+      "kind": "mechanism",
+      "statement": "Making the negative predicate and target of each objection obligatory in syntax reduces omitted attacks and wrong-scope drafts and revisions even when the semantic engine is unchanged.",
+      "claim_ids": ["CLM-GRAMMAR"],
+      "auxiliary_assumption_ids": ["ASM-PARITY", "ASM-FIDELITY"],
+      "scope": "Two parser-compatible semantically equivalent EAL renderings."
+    },
+    {
+      "id": "H-NOGRAMMAR",
+      "label": "Syntax overhead",
+      "kind": "rival",
+      "statement": "Explicit syntax imposes at least as many parsing, authoring or revision errors, or its token burden erases any fidelity gain.",
+      "claim_ids": ["CLM-GRAMMAR"],
+      "auxiliary_assumption_ids": ["ASM-PARITY", "ASM-COST"],
+      "scope": "Same briefs and budgets."
+    },
+    {
+      "id": "H-ROUTE",
+      "label": "Calibrated deployment rule",
+      "kind": "substantive",
+      "statement": "Task-family and model-class error estimates combined with measured fixed and marginal costs select a lowest-cost eligible route more reliably than a fixed rule on held-out roots.",
+      "claim_ids": ["CLM-DEPLOY"],
+      "auxiliary_assumption_ids": ["ASM-COST", "ASM-CLASS", "ASM-TRANSFER"],
+      "scope": "Held-out roots, fixed candidate routes and error constraint."
+    },
+    {
+      "id": "H-FIXED",
+      "label": "Simple fixed route",
+      "kind": "rival",
+      "statement": "A fixed always-check or always-use-equal-graph rule matches or exceeds the learned selector at the same error threshold.",
+      "claim_ids": ["CLM-DEPLOY"],
+      "auxiliary_assumption_ids": ["ASM-COST"],
+      "scope": "Same held-out roots."
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P-EAL",
+      "hypothesis_ids": ["H-EAL"],
+      "claim_ids": ["CLM-EAL-REUSE"],
+      "estimand_ids": ["EST-REUSE"],
+      "measurement_ids": ["M-ENDPOINT", "M-COST", "M-FIDELITY"],
+      "expected_pattern": "EAL's ten-recipient cumulative provider-billed model tokens per correct qualified answer are at least 20% lower than equal graph with a two-percentage-point false-support noninferiority bound; human review, host resource use and latency are additional deployment outcomes.",
+      "direction": "decrease",
+      "magnitude_or_range": "Ratio <=0.80 and false-support risk difference <0.02; confirmatory uncertainty criteria in DM-EAL.",
+      "time_window": "After source creation, two revisions and ten isolated recipient decisions per root",
+      "tolerance": "Paired root-level uncertainty; no post-hoc exclusions of failed drafts.",
+      "auxiliary_assumption_ids": ["ASM-PARITY", "ASM-FIDELITY", "ASM-COST"],
+      "discriminates_from_hypothesis_ids": ["H-GRAPH"],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-GRAPH",
+      "hypothesis_ids": ["H-GRAPH"],
+      "claim_ids": ["CLM-EAL-REUSE"],
+      "estimand_ids": ["EST-REUSE"],
+      "measurement_ids": ["M-ENDPOINT", "M-COST"],
+      "expected_pattern": "Graph ties or beats EAL at ten reuses on all-in tokens per correct answer at acceptable error, or EAL costs less only by increasing false support.",
+      "direction": "no-direction",
+      "magnitude_or_range": "EAL ratio >=1 or false-support disadvantage >=0.02 is decisive against the declared primary threshold; intermediate values may remain inconclusive.",
+      "time_window": "Same ten-recipient window",
+      "tolerance": "Paired uncertainty and prespecified noninferiority margin.",
+      "auxiliary_assumption_ids": ["ASM-PARITY", "ASM-COST"],
+      "discriminates_from_hypothesis_ids": ["H-EAL"],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-CHECK",
+      "hypothesis_ids": ["H-CHECK"],
+      "claim_ids": ["CLM-CHECKED"],
+      "estimand_ids": ["EST-CHECK"],
+      "measurement_ids": ["M-ENDPOINT", "M-TRACE"],
+      "expected_pattern": "Checked host reduces false supports by at least 0.10 and improves exact three-state sequences by at least 0.15 relative to unaided source reading on specified classes.",
+      "direction": "increase",
+      "magnitude_or_range": "Thresholds describe meaningful engineering effects, not predicted findings.",
+      "time_window": "Three-state recipient sequence",
+      "tolerance": "All baselines scored under the same end-to-end reference.",
+      "auxiliary_assumption_ids": ["ASM-ORACLE", "ASM-FIDELITY"],
+      "discriminates_from_hypothesis_ids": ["H-PROMPT"],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-PROMPT",
+      "hypothesis_ids": ["H-PROMPT"],
+      "claim_ids": ["CLM-INSTRUCTION", "CLM-CHECKED"],
+      "estimand_ids": ["EST-SKILL", "EST-CHECK"],
+      "measurement_ids": ["M-ENDPOINT", "M-COST"],
+      "expected_pattern": "Format-matched application instruction alone matches checked statuses within the prespecified three-point difference, with no greater false support.",
+      "direction": "no-direction",
+      "magnitude_or_range": "Noninferiority margin 0.03; report token and latency cost of the instruction.",
+      "time_window": "Three-state recipient sequence",
+      "tolerance": "No equality conclusion from a nonsignificant contrast.",
+      "auxiliary_assumption_ids": ["ASM-INSTRUCTION", "ASM-ORACLE"],
+      "discriminates_from_hypothesis_ids": ["H-CHECK"],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-GRAMMAR",
+      "hypothesis_ids": ["H-GRAMMAR"],
+      "claim_ids": ["CLM-GRAMMAR"],
+      "estimand_ids": ["EST-GRAMMAR"],
+      "measurement_ids": ["M-FIDELITY", "M-COST"],
+      "expected_pattern": "Explicit grammar reduces missing attack or wrong scope on newly authored and revised sources at equal semantic capability.",
+      "direction": "increase",
+      "magnitude_or_range": "At least 0.10 root-weighted complete-translation gain with declared token and revision overhead.",
+      "time_window": "Initial draft and both revisions",
+      "tolerance": "Blinded field-by-field review and parser validation.",
+      "auxiliary_assumption_ids": ["ASM-PARITY", "ASM-FIDELITY"],
+      "discriminates_from_hypothesis_ids": ["H-NOGRAMMAR"],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-ROUTE",
+      "hypothesis_ids": ["H-ROUTE"],
+      "claim_ids": ["CLM-DEPLOY"],
+      "estimand_ids": ["EST-ROUTE"],
+      "measurement_ids": ["M-ENDPOINT", "M-COST"],
+      "expected_pattern": "Locked route selector meets the held-out false-support constraint and has lower all-in cost per correct decision than fixed always-check and always-graph routes.",
+      "direction": "decrease",
+      "magnitude_or_range": "At least 0.15 relative cost reduction against the better eligible fixed route at ten reuses.",
+      "time_window": "Prospectively held-out roots only",
+      "tolerance": "Root-level uncertainty and no retraining on held-out outcomes.",
+      "auxiliary_assumption_ids": ["ASM-COST", "ASM-CLASS", "ASM-TRANSFER"],
+      "discriminates_from_hypothesis_ids": ["H-FIXED"],
+      "shared_prediction": false
+    }
+  ],
+  "constructs": [
+    {
+      "id": "CON-DECISION",
+      "name": "Correct qualified decision under change",
+      "definition": "All three reported statuses, necessary scope qualifications and support/attack trace agree with an independently frozen brief-level reference; a correct status for a mistranslated source fails.",
+      "role": "outcome",
+      "scope": "Finite synthetic engineering roots",
+      "proxy_for_claim_ids": ["CLM-EAL-REUSE", "CLM-CHECKED", "CLM-INSTRUCTION", "CLM-DEPLOY"],
+      "validity_evidence": ["Reviewer adjudication and independently checked finite invariants required before execution"],
+      "validity_threats": ["Ambiguous ordinary brief", "Unverified acquisition", "Status equality may conceal wrong trace"]
+    },
+    {
+      "id": "CON-FIDELITY",
+      "name": "Brief-to-specification correspondence",
+      "definition": "Preservation of required subject, scope, query, quantifier, evidence source, method assumptions, support routes, objections, defences and coverage qualification through initial authoring and both revisions.",
+      "role": "mediator",
+      "scope": "Both EAL and equal graph sources",
+      "proxy_for_claim_ids": ["CLM-EAL-REUSE", "CLM-GRAMMAR"],
+      "validity_evidence": ["Two masked independent field reviews with reconciliation and a pre-frozen rubric"],
+      "validity_threats": ["Reviewer knowledge of syntax", "A shared specification error in both formats"]
+    },
+    {
+      "id": "CON-COST",
+      "name": "Total workflow resource consumption",
+      "definition": "One-time authoring, model-assisted review and revisions plus context assembly, all recipient requests including failures, host calls, explanation requests and bytes, and separately priced human time over N isolated recipient decisions in one registered scope.",
+      "role": "outcome",
+      "scope": "Declared warm/cold cache and N in {1, 3, 10, 30}",
+      "proxy_for_claim_ids": ["CLM-EAL-REUSE", "CLM-DEPLOY"],
+      "validity_evidence": ["Reconciled provider usage and timed host and reviewer logs"],
+      "validity_threats": ["Variable price schedules", "Cache availability", "Human labour assumptions"]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M-ENDPOINT",
+      "construct_ids": ["CON-DECISION"],
+      "observable": "Reference-matched status, required qualification, attack trace, false support, false abstention and complete three-state sequence for every assigned root, model, route and recipient.",
+      "instrument_or_procedure": "Frozen machine scorer plus blinded adjudication of natural language scope; report both component and conjunctive outcomes.",
+      "scale_or_units": "Binary per item, route/status counts, proportions and root-weighted differences.",
+      "timing": "Every initial, adverse and restoration state after a frozen independent brief.",
+      "preprocessing": "Normalise declared status vocabulary; otherwise preserve raw output and failures as incorrect primary outcomes.",
+      "calibration": "Hand-scored adversarial positive/negative/irrelevant/ambiguous cases must match scorer before any model calls.",
+      "reliability": "Duplicate blind scope coding on all disagreements and at least 20% of other outputs; report agreement and reconcile.",
+      "validity": "Measures correctness for frozen synthetic decisions, not hidden reasoning or real-world safety.",
+      "measurement_invariance": "Same rubric, source-to-brief audit and reference across formats/model classes.",
+      "reactivity": "Model may copy a supplied status; distinguish outcome correction from independent calculation.",
+      "error_model": "Reference disputes, malformed output and missing calls remain counted and described separately.",
+      "blinding": "Outcome reviewers do not see route or model label where redaction is possible."
+    },
+    {
+      "id": "M-FIDELITY",
+      "construct_ids": ["CON-FIDELITY"],
+      "observable": "Exact preservation of every required typed field and all independently intended attacks after draft and each revision.",
+      "instrument_or_procedure": "Field rubric applied before host execution; two masked reviewers inspect anonymous canonical forms and source as necessary for syntax errors.",
+      "scale_or_units": "Conjunctive binary and error taxonomy per root/route/version.",
+      "timing": "After each author attempt and before delivery to recipient.",
+      "preprocessing": "Parser failures, missing objections and wrong scopes fail; no researcher repair except logged equal-budget review procedure.",
+      "calibration": "Reviewers score fixed seeded errors; resolve rubric disputes before revealing assignments.",
+      "reliability": "Double code every draft; record initial agreement and adjudication.",
+      "validity": "Direct specification-to-brief correspondence for listed fields, not warrant truth outside the brief.",
+      "measurement_invariance": "Canonical graph field checklist is common to both representations and grammars.",
+      "reactivity": "Review itself improves drafts and is included in fixed and marginal costs.",
+      "error_model": "Undetected common reviewer errors remain; audit a blind third-review sample.",
+      "blinding": "Hide route/model identifiers and randomise review order; syntax may reveal format."
+    },
+    {
+      "id": "M-COST",
+      "construct_ids": ["CON-COST"],
+      "observable": "Input, output and reasoning tokens if exposed; status and explanation requests and bytes; author/reviewer minutes; host CPU/network time; wall latency; failed attempts; cache and billed charges.",
+      "instrument_or_procedure": "Provider usage and timestamps joined to immutable per-attempt IDs; time logs and host instrumentation.",
+      "scale_or_units": "Tokens, seconds, configured-currency charge and labour-price sensitivity per root and recipient.",
+      "timing": "Every attempt and each review and host event.",
+      "preprocessing": "Primary provider token total T_r(N)=T_author(r)+T_model_review(r)+T_revision(r)+N[T_recipient(r)+T_tool_model(r)] with all failed attempts included; host CPU/network and human review minutes have no provider-token units. Separately C_total(r,N)=C_model_billing(r,N)+C_human_review(r)+C_host(r,N)+C_network(r,N), plus sequential/parallel elapsed latency. Report response bytes, tool calls, cache hits, cold/warm prices, and each component. Primary answer is compact status; explanation-rich answer is paired separately at equivalent required detail. A new claim/scope starts a new artifact and adds fixed cost.",
+      "calibration": "Reconcile sum of attempt usage with provider billing where accessible and wall clock with monotonic timers.",
+      "reliability": "Recompute from raw logs by independent script and verify identities/counts.",
+      "validity": "All-in per selected pricing scenario; token-only cannot substitute for engineering labour cost.",
+      "measurement_invariance": "Use common contemporaneous pricing assumptions and the same cache scenarios.",
+      "reactivity": "Instrumentation adds small overhead measured equally.",
+      "error_model": "Unknown billed charges suspend currency comparisons; known tokens remain reportable.",
+      "blinding": "Cost calculation locked before outcomes; analysts see anonymised routes for primary check."
+    },
+    {
+      "id": "M-TRACE",
+      "construct_ids": ["CON-DECISION"],
+      "observable": "Method result, binding outcome, activated objection, defeated route and final claim status with source and record digest.",
+      "instrument_or_procedure": "Both interpreters export a canonical assessment trace; compare with frozen oracle and tamper controls.",
+      "scale_or_units": "Exact Boolean field agreement and failure category.",
+      "timing": "After each source or evidence change.",
+      "preprocessing": "Canonicalise names but preserve predicate polarity, scope, coverage and route identifiers.",
+      "calibration": "Independent fixed-state reference checker and seeded wrong-scope and missing-attack controls.",
+      "reliability": "Deterministic replay with retained source and record hashes.",
+      "validity": "Tests internal trace correspondence only; a signed false observation remains false.",
+      "measurement_invariance": "Same canonical fields for EAL and generic graph.",
+      "reactivity": "An exposed trace can reveal a final answer; distinguish trace delivery from raw source interpretation.",
+      "error_model": "Missing or malformed trace fails the respective gate and is recorded.",
+      "blinding": "Canonical-trace reviewers receive anonymised route identifiers and frozen reference fields."
+    }
+  ],
+  "design": {
+    "design_type": "controlled-experiment",
+    "rationale": "Within-root assignment and paired formats separate representation from instructions, access, host ownership and model class; author/recipient isolation measures amortised reuse. Engineering parity checks precede the model comparison.",
+    "setting": "Local synthetic fixture, pinned model endpoints and two local equal-capability interpreters.",
+    "temporal_structure": "Stage 0 parity; Stage 1 fixed reviewed source factorial over three evidence states; Stage 2 isolated developer A drafts/revises then developer B consumes frozen material; Stage 3 held-out routing validation.",
+    "assignment_method": "Counterbalanced seeded route/model order within independent task root; separate provider sessions per recipient and format; no selection after outcomes.",
+    "allocation_concealment": "Freeze root, author assignment, prompt variants and randomised schedule before calls; blind reference authors to allocation.",
+    "masking": "Independent oracle and specification reviewers do not see model outputs; outcome scorers see anonymised route IDs where feasible.",
+    "comparator": "Semantic-equal generic argument graph with the same method and host, raw brief, neutral versus format-matched application instruction, and host status versus model answer.",
+    "control_ids": ["CTRL-PARITY", "CTRL-RAW", "CTRL-SKILL", "CTRL-TAMPER", "CTRL-ALWAYS", "CTRL-SOURCE"]
+  },
+  "units": {
+    "target_population_or_system": "Finite multi-route engineering decisions in selected task families with adverse and invalidated evidence.",
+    "sampling_frame": "Prospectively authored and genealogically screened task-family list; exclude all exposed regression and notation-transfer roots from independent inference.",
+    "experimental_unit": "Root and its three-state sequence for formalisation; isolated recipient session for route assignment within root.",
+    "observational_unit": "Author attempt, revision, recipient answer, host assessment and billed operation.",
+    "assignment_unit": "Root-by-creator-by-route independent session; within-root presentation and instruction order counterbalanced for recipient sessions.",
+    "analysis_unit": "Independent root, clustered over recipients, versions, model calls, and evidence states.",
+    "inclusion_criteria": ["Independent ordinary brief", "Two alternative support routes with attack scope", "Finite oracle and reproducible relevant/adverse/wrong-scope states"],
+    "exclusion_criteria": ["Ambiguous independently adjudicated reference before allocation", "Exposed task or near-duplicate"],
+    "recruitment_or_selection": "Two domain-aware authors construct roots from frozen families before model results and document genealogy; this is a selected finite population, not a random draw from all engineering work."
+  },
+  "interventions_or_exposures": [
+    {
+      "id": "INT-FORMAT",
+      "kind": "intervention",
+      "description": "Current EAL/2 source versus semantic-equal generic graph, with candidate explicit-negative EAL syntax nested within EAL once implemented; preserve canonical graph and fact set.",
+      "target": "Representation and formalisation error",
+      "implementation": "Bidirectional parse comparison and token audit; candidate grammar changes syntax only in the surface test and any changed capability is evaluated separately.",
+      "dose_or_intensity": "Two common formats; nested two EAL grammar variants conditional on parity gate.",
+      "timing": "Before authoring and recipient delivery; no mid-task assignment change.",
+      "admissibility": "conditional",
+      "manipulation_checks": ["Both renderings parse to same canonical semantics", "Candidate parser round trip succeeds"],
+      "off_target_checks": ["Prompt length and order", "Parser error feedback parity"],
+      "recovery_checks": ["Round-trip after revision retains the intended attacks"]
+    },
+    {
+      "id": "INT-SKILL",
+      "kind": "intervention",
+      "description": "Candidate skills/eal-assessment-routing/SKILL.md application instruction versus neutral format orientation, each supplied in EAL and equal-graph variants with matched information and budget.",
+      "target": "Recipient's procedural selection of relevant scope, method, objection and final status",
+      "implementation": "Freeze concise, reviewable skill text; include mandatory check sequence and status reporting in active version; neutral version gives syntax orientation only.",
+      "dose_or_intensity": "One pinned instruction per representation and task.",
+      "timing": "Before reading the source and evidence in a fresh context.",
+      "admissibility": "admissible",
+      "manipulation_checks": ["Prompt text and order logged", "Blinded semantic equivalence of EAL and graph checklists"],
+      "off_target_checks": ["Additional facts or reference labels in active skill", "Length differences"],
+      "recovery_checks": ["Skill omitted in neutral arm"]
+    },
+    {
+      "id": "INT-EXECUTION",
+      "kind": "intervention",
+      "description": "No interpreter, trusted assessment delivered as text, or native MCP eal_assess_artifact(artifact_id) calls by a tool-capable model; host-owned final-status gate is crossed with advisory status only where assessment exists.",
+      "target": "Allocation of graph computation and authority for final status",
+      "implementation": "Same EAL and graph methods with frozen records; native MCP condition requires assess call and logs invocation; external facilitator supplies equivalent computed report to every model class; gated output reads host report directly and never accepts a model paraphrase as the authoritative status. A required MCP call not made, a stale assessment or failed authorisation yields no host status (explicit unavailable), not a model fallback. The trusted host authenticates caller/task and verifies an approved artifact digest, registered claims/context/scope and time; artifact_id is a selector, not authorisation. For a new scope, an operator approves a new artifact/version. Compare compact status-only response and explanation-rich response at matched required detail.",
+      "dose_or_intensity": "Three delivery modes and nested two final-authority modes; native MCP unavailable on endpoints lacking tool calls.",
+      "timing": "After records are fixed, before final response; no tool access in unaided arm.",
+      "admissibility": "conditional",
+      "manipulation_checks": ["Exact assessment digest and method IDs", "Native tool call records", "Host gate final status matches assessment", "Wrong caller/task or unapproved artifact rejected"],
+      "off_target_checks": ["Text-only model saw a reference answer in report", "Tool retries or different diagnostics", "Full trace bytes dwarf compact result or one route has a warm-cache advantage"],
+      "recovery_checks": ["Withhold/revoke adverse observation and reassess; host gate changes status accordingly"]
+    },
+    {
+      "id": "INT-REUSE",
+      "kind": "intervention",
+      "description": "Developer A uses a pinned author model to create and revise a reusable EAL or generic graph source from an ordinary brief; isolated developer B sessions use the approved frozen artifact for N separate decisions within its registered claim, scope, context and time interval while eligible evidence changes. Sessions are independent contexts, not independent task roots or independent statistical outcomes.",
+      "target": "Amortisation, translation fidelity and recipient error",
+      "implementation": "Cross two author-model capabilities with recipient classes; freeze author draft and equal-budget review before recipient prompts; count all author failures and review repairs. If B presents a different scope or claim, reject that artifact and open a separate approved artifact/version with its authoring/review charge.",
+      "dose_or_intensity": "Ten actual fresh recipient sessions per authored source, assigned across the three evidence states 4/3/3 and across three recipient classes 4/3/3 with imbalance counterbalanced across roots; primary N=10, exploratory model-based N=1,3,30 projections. No within-root call counts as an independent root.",
+      "timing": "Author/review/revise first, then recipient sessions with no author context.",
+      "admissibility": "conditional",
+      "manipulation_checks": ["Recipient sees only frozen authored material and fresh record", "No root or output labels in author context"],
+      "off_target_checks": ["One route receives more source facts or review time", "Recipients share prior messages", "An artifact ID alone bypasses trusted task-to-artifact authorisation"],
+      "recovery_checks": ["Apply adverse and invalidated adverse change and compare required source edits"]
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTRL-PARITY",
+      "control_type": "active-comparator",
+      "description": "Generic graph receives identical typed predicates, binding, methods, attacks, defences, errors, host gate, acquisition fixture, compact and explanation-rich responses, and cache-optimised registered-artifact serving.",
+      "failure_mode_addressed": "Calling a generic interpreter benefit EAL-specific.",
+      "implementation": "Canonical graph equivalence and mutation suite before calls; warm and cold cache parity plus identical status/explanation requirements; publish mismatch list.",
+      "diagnostic_consequence": "Suspend EAL-specific contrasts if parity fails."
+    },
+    {
+      "id": "CTRL-RAW",
+      "control_type": "baseline",
+      "description": "Recipient receives ordinary brief and current record under equal total budget without reusable formalisation.",
+      "failure_mode_addressed": "Attributing precomputed work to syntax.",
+      "implementation": "Independently frozen prompt and equal external fact access; include author cost for prepared routes.",
+      "diagnostic_consequence": "Report total workflow gain as a separate system contrast."
+    },
+    {
+      "id": "CTRL-SKILL",
+      "control_type": "sham",
+      "description": "Neutral orientation matches delivery and budget but omits apply/execute instructions.",
+      "failure_mode_addressed": "Longer or more salient prompt falsely credited to a procedural skill.",
+      "implementation": "Matched fact content and placement; report token counts.",
+      "diagnostic_consequence": "If skills leak task answer or change facts, suspend skill attribution."
+    },
+    {
+      "id": "CTRL-TAMPER",
+      "control_type": "falsification",
+      "description": "Wrong-scope, incomplete non-detection, expired source and internally coherent but externally false synthetic source.",
+      "failure_mode_addressed": "Copying verdict, over-closing absence and confusing binding with physical authentication.",
+      "implementation": "Freeze variants and check expected rejection or trust limit separately.",
+      "diagnostic_consequence": "Accepted wrong-scope or expired record invalidates corresponding host claim; coherent false source limits physical inference."
+    },
+    {
+      "id": "CTRL-ALWAYS",
+      "control_type": "negative",
+      "description": "Always-supported, always-unsupported and always-copy-tool baselines.",
+      "failure_mode_addressed": "Class imbalance and leaked final labels.",
+      "implementation": "Score on identical root/status units.",
+      "diagnostic_consequence": "If candidate does not beat trivial baselines, withhold utility claim."
+    },
+    {
+      "id": "CTRL-SOURCE",
+      "control_type": "calibration",
+      "description": "Independent brief-level oracle and source-fidelity assessment precede interpreter outputs.",
+      "failure_mode_addressed": "Correct answer to the wrong formalised problem.",
+      "implementation": "Double review and independent finite checker, with disputed root quarantine before randomisation.",
+      "diagnostic_consequence": "No end-to-end result on unresolved root."
+    }
+  ],
+  "confounds": [
+    {
+      "id": "CF-TOKEN",
+      "description": "Instruction and syntax alter token length, placement and provider cache behaviour.",
+      "causal_or_measurement_path": "Changes attention and billed cost alongside intended syntax or skill intervention.",
+      "control_or_adjustment": "Freeze exact prompts, run length-matched sensitivity pair where practical and report natural total effect separately.",
+      "diagnostic": "Prompt token distribution by condition and cache hit logs.",
+      "residual_risk": "Length is a mediator of deployment effects; no unique cognitive attribution."
+    },
+    {
+      "id": "CF-MODEL",
+      "description": "Different model capacities and tool support prevent a complete orthogonal cross.",
+      "causal_or_measurement_path": "Native MCP arm is unavailable for non-tool models and model choice may drive apparent representation gain.",
+      "control_or_adjustment": "Predeclared within-model estimates; model class is a moderator and native-tool contrasts are nested only within tool-capable endpoints.",
+      "diagnostic": "Availability probes, product snapshot and observed tool logs.",
+      "residual_risk": "Cannot extrapolate native tool effects to non-tooling SLMs."
+    },
+    {
+      "id": "CF-AUTHOR",
+      "description": "More expert review of one format yields cleaner source.",
+      "causal_or_measurement_path": "Source-quality advantage masquerades as language advantage.",
+      "control_or_adjustment": "Equal review budget, crossed author class, blinded fidelity rubric and all repair attempts retained.",
+      "diagnostic": "Author/reviewer time, error taxonomy and initial draft fidelity per format.",
+      "residual_risk": "Format familiarity of human reviewer remains."
+    }
+  ],
+  "estimands": [
+    {
+      "id": "EST-REUSE",
+      "claim_ids": ["CLM-EAL-REUSE"],
+      "estimand_type": "causal",
+      "population_or_system": "Predeclared task-family finite population under crossed author and recipient classes.",
+      "intervention_or_exposure": "Developer A authors and revises EAL/2 under equal review, then developer B recipients use checked EAL artefact.",
+      "comparator": "Same developer/model/reviewer allocation using an equal-capability generic graph and checker.",
+      "outcome_measurement_ids": ["M-ENDPOINT", "M-COST", "M-FIDELITY"],
+      "time": "One authoring and revision episode plus ten isolated recipients with varying eligible evidence for one registered claim and scope.",
+      "summary_measure": "Paired root-weighted ratio of cumulative provider-billed model tokens per correct qualified decision at ten actual recipient calls; paired false-support risk difference and end-to-end source fidelity. Report provider token totals and correct counts separately; monetary cost including reviewer labour, host and network plus latency is a distinct secondary outcome.",
+      "interpretation": "Practical EAL-specific provider-token efficiency conditional on source semantics, equal host capability, one registered claim and scope; deployment requires separate total resource analysis. Token ratio has no finite value if either route never succeeds."
+    },
+    {
+      "id": "EST-CHECK",
+      "claim_ids": ["CLM-CHECKED"],
+      "estimand_type": "causal",
+      "population_or_system": "Reviewed fixed sources on new three-state roots, each pinned recipient model.",
+      "intervention_or_exposure": "Host-owned status from checked source and record.",
+      "comparator": "Model-only interpretation of identical raw source, record and matched instruction.",
+      "outcome_measurement_ids": ["M-ENDPOINT", "M-TRACE"],
+      "time": "After third state.",
+      "summary_measure": "Root-weighted exact-sequence difference and false-support risk difference within model and format.",
+      "interpretation": "Whole-system execution and authority effect, not EAL-specific parser advantage or model reasoning."
+    },
+    {
+      "id": "EST-SKILL",
+      "claim_ids": ["CLM-INSTRUCTION"],
+      "estimand_type": "causal",
+      "population_or_system": "Fixed-source unaided recipient arms within pinned class.",
+      "intervention_or_exposure": "Format-matched apply/verify skill.",
+      "comparator": "Neutral format orientation.",
+      "outcome_measurement_ids": ["M-ENDPOINT", "M-COST"],
+      "time": "After three-state sequence.",
+      "summary_measure": "Root-weighted complete-sequence accuracy difference, false-support difference and tokens, separately by EAL/graph and model.",
+      "interpretation": "Effect of assigned instruction bundle, with length as a measured part."
+    },
+    {
+      "id": "EST-GRAMMAR",
+      "claim_ids": ["CLM-GRAMMAR"],
+      "estimand_type": "causal",
+      "population_or_system": "New briefs under a pinned author model and equal diagnostic budget.",
+      "intervention_or_exposure": "Explicit negative-finding/attack EAL syntax with unchanged canonical semantics.",
+      "comparator": "Current EAL/2 syntax with the same checks.",
+      "outcome_measurement_ids": ["M-FIDELITY", "M-COST"],
+      "time": "Draft and two evidence revisions.",
+      "summary_measure": "Root-weighted complete-source-fidelity risk difference, omitted-attack and wrong-scope differences, with per-version token cost.",
+      "interpretation": "A grammar rendering effect only after exact semantic parity and equal diagnostics; otherwise a compound language-change effect."
+    },
+    {
+      "id": "EST-ROUTE",
+      "claim_ids": ["CLM-DEPLOY"],
+      "estimand_type": "predictive",
+      "population_or_system": "Prospectively held-out independent roots from frozen task families.",
+      "intervention_or_exposure": "Locked route rule selecting neutral model, skilled model, tool model, EAL host or equal graph host based on calibration features available before answer.",
+      "comparator": "Better of fixed always-check and fixed always-equal-graph strategies selected without held-out data.",
+      "outcome_measurement_ids": ["M-ENDPOINT", "M-COST"],
+      "time": "Ten-recipient aggregate on held-out roots.",
+      "summary_measure": "Cost per correct qualified decision subject to prespecified false-support <=0.02 absolute risk constraint, compared by root.",
+      "interpretation": "Prospective routing performance; no mechanistic attribution to an assumed internal model representation."
+    }
+  ],
+  "identification": {
+    "target_estimand_ids": ["EST-REUSE", "EST-CHECK", "EST-SKILL", "EST-GRAMMAR", "EST-ROUTE"],
+    "status": "partially-identified",
+    "causal_and_measurement_structure": "Brief -> authored source and fidelity -> host status -> recipient output; assigned format and skill can affect fidelity/attention; model class modifies all stages; source review and interpreter capability are held equal across representation routes; evidence acquisition is fixed synthetic. Potential outcomes identify effects within selected roots under session isolation, not an unrestricted engineering population.",
+    "assumption_ids": ["ASM-ORACLE", "ASM-PARITY", "ASM-FIDELITY", "ASM-TRANSFER", "ASM-COST", "ASM-CLASS", "ASM-INSTRUCTION", "ASM-AUTHZ"],
+    "identified_parameters": ["Finite-root average paired route contrast if randomized/frozen and parity gates hold", "Observed N-specific cost break-even in declared pricing scenarios"],
+    "nonidentified_alternatives": ["Hidden internal model mechanism", "Real-world source truth", "Effect outside selected models/families", "Native MCP effect for endpoints without native tool capability"],
+    "threats": ["Semantic mismatch", "Reference leakage", "Selected templates", "Provider drift", "Cost missingness", "Variable human review quality"],
+    "diagnostics": ["Canonical graph parity", "Blinded fidelity rubric", "Genealogy and duplicate audit", "Session traces", "Usage reconciliation", "Control-arm performance"],
+    "rescue_actions": ["Suspend affected contrast", "Build equal-capability comparator and re-freeze", "Restrict inference to observed product and roots", "Run new independent cohort after amendment"]
+  },
+  "sampling": {
+    "method": "Calibration pilot on eight new roots with all planned factorial arms, then a separately locked root-cluster power and precision simulation before fixing independent confirmatory root count. No confirmatory claim from pilot.",
+    "sample_size_or_information_target": "Compact-status pilot: eight independent roots x three evidence states x two formats x two instruction states x three delivery modes x two tool-capable model snapshots = 288 fixed-source calls; one non-tool small snapshot has two eligible delivery modes and adds eight x three x two x two x two = 96 calls (Stage 1 total 384). Developer stage: eight roots x two formats x two author models x three author/revision calls = 96 calls, plus eight x two formats x two authors x ten isolated recipient sessions = 320 calls (Stage 2 total 416; complete pilot 800). Ten recipients per source are counterbalanced 4/3/3 across evidence states and 4/3/3 across recipient classes; they share root and authored artifact. Host-owned gates are deterministic and add no model call. Explanation-rich outcomes and grammar extension need separately costed amendments. Exact schedule and budget must be frozen before calls. Confirmatory independent-root n is not specified yet.",
+    "inputs": ["Paired discordance q, root-family intraclass correlation, source fidelity, cost variance, missing/error rates and practical thresholds from pilot", "Five-percent two-sided familywise error for primary superiority plus noninferiority gate; sensitivity to costs and cache"],
+    "dependence_structure": "Root is independent cluster; three states, repeats, models and recipients within a root are correlated. Author output is shared by recipients and cannot count as independent replication.",
+    "multiplicity": "Primary EAL versus graph cost-at-error is one hierarchical gate; all grammar, skill, model class and interactions secondary with Holm intervals or descriptive exploratory labels after gate.",
+    "attrition_or_loss": "All scheduled attempts, errors, timeouts and truncated responses retained; incomplete paid calls are failures for intention-to-treat endpoint and separately tagged for cost uncertainty.",
+    "result": "At n=24 independent roots and paired discordance q=0.30 with true paired difference 0.15, normal approximation SE=sqrt((0.30-0.15^2)/24)=0.108 and 95% half-width ~0.21. At q=0.30 and target 0.10 half-width, n~107 roots before family correlation. Worst-case q=1 requires ~385 independent roots. Thus 800 compact-status pilot calls on eight roots cannot confirm a modest EAL-specific advantage.",
+    "sensitivity_analysis": "Before confirmatory freeze, simulate hierarchical paired binary and skewed cost outcomes over q in {0.2,0.3,0.6}, family ICC in {0,0.1,0.3}, true accuracy differences in {0,0.05,0.10,0.20}, cost ratio {0.7,0.8,1.0}, cache and labour ranges; require >=80% joint success of cost superiority and false-support noninferiority at chosen n under the minimal effect of interest. Report interval width where power is infeasible.",
+    "stopping_implications": "Pilot stops after frozen schedule or safety/billing incident; no result-driven extension. Confirmatory n and spending cap require prospective amendment before outcome access."
+  },
+  "analysis": {
+    "preprocessing_lock": "Hash briefs, oracles, prompts, source representations, method registry, model IDs, adjudication rubric and schedule. Recompute canonical semantics and billed tokens. Never selectively drop failed parser/model attempts.",
+    "exclusion_lock": "Only pre-randomisation ambiguous or genealogically duplicate roots can be excluded by frozen independent adjudication; post-randomisation failures remain in assigned denominators.",
+    "models": [
+      {
+        "id": "MOD-REUSE",
+        "estimand_ids": ["EST-REUSE"],
+        "model_or_procedure": "Compute each route's cumulative provider-billed model tokens T_r(N) and exact correct-qualified count Q_r(N), report T and Q separately and T/Q where Q>0; paired root bootstrap stratified by predeclared task family for log token-per-correct ratio and false-support risk difference. A route with Q=0 has infinite tokens per correct. Separately estimate same-scope token and fully priced break-even N from fixed versus marginal cost and new-scope mix from artifact reapproval rate. Pair status-only and explanation-rich outcomes at matched requested detail; count tool calls and response bytes and compare cold and cache-optimised EAL and equal-graph hosts.",
+      "assumptions": ["Roots independently selected conditional on declared family", "Equal capability, caching and instruction budget", "Price scenario declared before primary calculation", "Task-to-artifact authorisation succeeds for each eligible recipient"],
+        "diagnostics": ["Cost outliers", "Success denominator", "Missing usage", "Source fidelity and reviewer effort imbalance"],
+        "outputs": ["ratio10", "false_support_difference", "reliability", "break_even_N", "explanation_quality", "tool_calls", "tool_bytes", "new_scope_cost"]
+      },
+      {
+        "id": "MOD-FACTOR",
+        "estimand_ids": ["EST-CHECK", "EST-SKILL", "EST-GRAMMAR"],
+        "model_or_procedure": "Paired root-level differences within pinned model and eligible interface; hierarchical logistic model with root and family effects for sensitivity only. Estimate factorial interactions representation x instruction, instruction x delivery, representation x delivery and model x delivery without collapsing non-tool classes into native MCP.",
+        "assumptions": ["No session interference", "Versioned provider", "Semantic parity for representation contrasts"],
+        "diagnostics": ["Always-support/always-abstain baseline", "Root-family heterogeneity", "Malformed outputs", "Tool non-invocation"],
+        "outputs": ["delta_checked", "delta_skill", "delta_grammar", "interaction_estimates", "false_support", "trace_agreement"]
+      },
+      {
+        "id": "MOD-ROUTE",
+        "estimand_ids": ["EST-ROUTE"],
+        "model_or_procedure": "Use calibration data only to fit constrained expected-cost rule: choose cheapest route whose upper predictive false-support bound is <=0.02 and whose estimated status success is adequate. Lock coefficients/thresholds, then compare with eligible fixed rules on held-out roots.",
+        "assumptions": ["Calibration features available before outcome", "Held-out roots not used for rule choice"],
+        "diagnostics": ["Calibration by task family and model", "Out-of-distribution flags", "Rule abstention rate"],
+        "outputs": ["route_cost_ratio", "route_error_bound", "route_coverage"]
+      }
+    ],
+    "contrasts": ["Primary: cumulative provider-model-tokens-per-correct EAL/equal-graph ratio at ten actual same-scope recipients with paired false-support noninferiority", "Secondary: fully priced total cost, authoring and revision fidelity, latency and explanation-quality-adjusted cost", "Checked versus unaided within both formal languages", "Apply skill versus neutral orientation within no-tool cells", "Text assessment versus native MCP only within tool-capable products", "Advisory answer versus host-owned final on the same assessment", "Explicit versus current EAL syntax conditional on grammar implementation and parity"],
+    "uncertainty": "Root-cluster paired percentile/bootstrap or exact finite-population intervals, with family strata; report raw root values and sensitivity to interval procedure. Pilot gives descriptive intervals only.",
+    "multiplicity": "Primary joint criterion fixed before confirmatory cohort. Gate secondary tests after primary; adjust secondary families via Holm or label exploratory. No pooling of exposed developmental roots.",
+    "missing_data": "No silent retries. Include failed attempts in assigned endpoint outcome; preserve unknown billed cost and suspend currency analysis when total unbounded; show best/worst missing outcome bounds.",
+    "stopping_rule": "Fixed pilot schedule; any secret exposure, provider identity change, unresolved oracle/parity failure or unknown billing halts new calls and preserves records. Confirmatory schedule has an independently frozen n and no outcome-triggered stopping.",
+    "robustness_checks": ["Remove source-fidelity failures only in explicitly labelled conditional analysis", "Recompute with N=1,3,30 and cold/warm cache", "Cost without and with human review", "Alternative family weights and leave-one-family-out", "Length-matched skill control", "Report completed and all-attempt intention-to-treat results"],
+    "software_and_versions": ["Pin repository commit, EAL/2 parser, registered methods, generic checker, host MCP schema, runner, scorer, provider model snapshot and prompt hashes before execution"],
+    "inconclusive_handling": "Do not infer EAL-specific benefit from a generic checked-host gain. If confidence region straddles material thresholds, retain both rival hypotheses and specify the additional independent-root requirement."
+  },
+  "decision_matrix": [
+    {
+      "id": "DM-EAL",
+      "prediction_ids": ["P-EAL", "P-GRAPH"],
+      "observation_region": "All validity gates pass; upper 95% confidence bound of EAL/equal-graph provider-model-tokens-per-correct ratio at ten actual same-scope uses is below 0.80 and upper 95% bound of EAL-minus-graph false-support risk difference is below 0.02; no worse than prespecified absolute accuracy floor. Fully priced resources and latency are reported separately before deployment advice.",
+      "analysis_outputs": ["ratio10", "false_support_difference", "reliability", "break_even_N"],
+      "decision_rule": "Strengthen only the bounded EAL-specific cost-at-error claim for tested workflow; report authoring contribution and predicted break-even with uncertainty.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [{"claim_ids": ["CLM-EAL-REUSE"], "disposition": "strengthen", "rationale": "The equal-capability route uses more cumulative provider model tokens per correct qualified decision at acceptable false-support risk under ten isolated same-scope uses.", "scope_limit": "Selected roots, models, representation and review regime only; monetary labour/host and latency may reverse the practical choice."}],
+      "hypothesis_effects": ["H-EAL strengthened relative to H-GRAPH"],
+      "assumption_failure_response": "Any parity, fidelity-oracle or cost gate failure redirects to DM-INVALID.",
+      "next_action": "Independent task-family and provider replication, then deployment only in calibrated region."
+    },
+    {
+      "id": "DM-GRAPH",
+      "prediction_ids": ["P-GRAPH", "P-EAL"],
+      "observation_region": "Validity gates pass; EAL either has a false-support disadvantage whose lower 95% bound exceeds 0.02, or the lower 95% bound of EAL/equal-graph provider-model-tokens-per-correct ratio is above 1.00.",
+      "analysis_outputs": ["ratio10", "false_support_difference"],
+      "decision_rule": "Weaken the primary EAL-specific claim for the tested workflow; a generic checked system may still be useful.",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [{"claim_ids": ["CLM-EAL-REUSE"], "disposition": "weaken", "rationale": "Equal graph dominates on error or cost in the specified regime.", "scope_limit": "No universal inference about all grammar and training choices."}],
+      "hypothesis_effects": ["H-GRAPH favoured for this regime"],
+      "assumption_failure_response": "Use DM-INVALID if parity or measurement fails.",
+      "next_action": "Deploy the lower-cost eligible checker and isolate any remaining EAL authoring advantage."
+    },
+    {
+      "id": "DM-CHECKED",
+      "prediction_ids": ["P-CHECK", "P-PROMPT"],
+      "observation_region": "Host gate improves complete-sequence accuracy by at least 0.15 and reduces false support by at least 0.10 relative to no-tool skilled model within selected product, and equal graph host shows the same direction.",
+      "analysis_outputs": ["delta_checked", "delta_skill", "false_support"],
+      "decision_rule": "Strengthen whole-system execution claim, retain EAL-specific claim only according to separate DM-EAL result.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [{"claim_ids": ["CLM-CHECKED"], "disposition": "strengthen", "rationale": "Execution and authority supply reliable finite transitions on the tested roots.", "scope_limit": "Pre-authored source and trusted synthetic records."}],
+      "hypothesis_effects": ["H-CHECK strengthened; H-PROMPT weakened for this product"],
+      "assumption_failure_response": "Source mismatch or tool non-invocation is reported as workflow failure, not omitted.",
+      "next_action": "Measure end-to-end authoring and source authenticity."
+    },
+    {
+      "id": "DM-SKILL",
+      "prediction_ids": ["P-PROMPT", "P-CHECK"],
+      "observation_region": "Tool-free skilled model is noninferior within a three-point exact-status difference from host and has no greater false support, on the same roots with valid comparator.",
+      "analysis_outputs": ["delta_skill", "delta_checked", "false_support"],
+      "decision_rule": "Do not require tools for this bounded model/task stratum; compare instruction token overhead and replicate adversarial changes.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [{"claim_ids": ["CLM-INSTRUCTION"], "disposition": "strengthen", "rationale": "The explicit instruction supplies sufficient measured endpoint performance in this stratum.", "scope_limit": "No transfer to weaker models, new source, or acquisition errors."}],
+      "hypothesis_effects": ["H-PROMPT retained for tested model and task family"],
+      "assumption_failure_response": "No noninferiority inference from an inconclusive p-value.",
+      "next_action": "Replicate on unseen task families and monitor false support."
+    },
+    {
+      "id": "DM-GRAMMAR",
+      "prediction_ids": ["P-GRAMMAR"],
+      "observation_region": "Candidate and current grammar are semantically equal and candidate improves complete source fidelity at least 0.10 with acceptable authoring and token cost.",
+      "analysis_outputs": ["delta_grammar", "interaction_estimates"],
+      "decision_rule": "Support syntax change as an authoring benefit only; release requires separate grammar, documentation and implementation review.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [{"claim_ids": ["CLM-GRAMMAR"], "disposition": "strengthen", "rationale": "A surface change improves independently judged formalisation at equal semantics.", "scope_limit": "Named author models and briefs."}],
+      "hypothesis_effects": ["H-GRAMMAR strengthened relative to H-NOGRAMMAR"],
+      "assumption_failure_response": "A semantic change makes this a capability comparison and blocks syntax inference.",
+      "next_action": "Independent root replication and code review before choosing replacement EAL grammar."
+    },
+    {
+      "id": "DM-ROUTE",
+      "prediction_ids": ["P-ROUTE"],
+      "observation_region": "Locked route remains below held-out false-support limit and has at least 0.15 lower cost per correct than best eligible fixed comparator, with improvement surviving root-level uncertainty.",
+      "analysis_outputs": ["route_cost_ratio", "route_error_bound", "route_coverage"],
+      "decision_rule": "Strengthen predictive selection claim for measured support region.",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [{"claim_ids": ["CLM-DEPLOY"], "disposition": "strengthen", "rationale": "Prospective routing chooses a cheaper eligible workflow on held-out roots.", "scope_limit": "No selection outside calibration features or tested models."}],
+      "hypothesis_effects": ["H-ROUTE strengthened relative to H-FIXED"],
+      "assumption_failure_response": "Out-of-distribution roots count as abstentions, not silent successes.",
+      "next_action": "Monitor live calibration and replicate."
+    },
+    {
+      "id": "DM-INVALID",
+      "prediction_ids": ["P-EAL", "P-CHECK", "P-PROMPT", "P-GRAMMAR", "P-ROUTE"],
+      "observation_region": "Oracle dispute, semantics or diagnostic parity failure, task leakage, unauthorised source repair, incoherent billing, provider drift or unavailable required model class.",
+      "analysis_outputs": ["reliability", "trace_agreement", "false_support", "ratio10"],
+      "decision_rule": "Suspend the affected inference and preserve all attempted records; correct materials only in a newly versioned cohort.",
+      "discrimination_result": "assumption-failure",
+      "claim_effects": [{"claim_ids": ["CLM-EAL-REUSE", "CLM-CHECKED", "CLM-GRAMMAR", "CLM-INSTRUCTION", "CLM-DEPLOY"], "disposition": "suspend", "rationale": "The assigned treatment or measurement is not the declared one.", "scope_limit": "Unaffected descriptive diagnostics remain reportable."}],
+      "hypothesis_effects": ["No causal hypothesis strengthened"],
+      "assumption_failure_response": "Stop affected stage and log reason before reading further outcomes.",
+      "next_action": "Repair, revalidate, and freeze a distinct cohort."
+    },
+    {
+      "id": "DM-INCONCLUSIVE",
+      "prediction_ids": ["P-EAL", "P-GRAPH", "P-CHECK", "P-PROMPT", "P-GRAMMAR", "P-ROUTE"],
+      "observation_region": "Valid pilot, intermediate effect, wide interval, mixed outcomes, failed practical threshold or unanticipated pattern not covered above.",
+      "analysis_outputs": ["ratio10", "false_support_difference", "delta_checked", "delta_skill", "delta_grammar", "route_cost_ratio"],
+      "decision_rule": "Report paired roots, error types, cost and interval; no EAL-specific conclusion; define a separately frozen discriminating cohort if worthwhile.",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [{"claim_ids": ["CLM-EAL-REUSE", "CLM-CHECKED", "CLM-GRAMMAR", "CLM-INSTRUCTION", "CLM-DEPLOY"], "disposition": "no-change", "rationale": "Observation does not meet declared practical and inferential thresholds.", "scope_limit": "Finite observations and model snapshots only."}],
+      "hypothesis_effects": ["H-EAL and H-GRAPH both retained where neither dominates"],
+      "assumption_failure_response": "If a validity gate failed, use DM-INVALID.",
+      "next_action": "Prioritise the smallest intervention discriminating source translation, skill compliance or host value."
+    }
+  ],
+  "bias_assessment": {
+    "risks": [
+      {"id": "B-TEMPLATE", "risk_type": "selection", "mechanism": "Task roots share superficial patterns from previous archives or each other.", "prevention": "New ordinary briefs and genealogy audit before randomisation.", "detection": "Publish overlap and family inventory.", "sensitivity_or_correction": "Leave-one-family-out and disclose overlap; do not retroactively relabel tasks held out.", "residual_risk": "Model training contamination unknown."},
+      {"id": "B-CHECKER", "risk_type": "measurement", "mechanism": "Reference depends on the EAL interpreter or comparator semantics differ.", "prevention": "Independent brief-level oracle, separately coded finite checks and bidirectional parity.", "detection": "Mismatch and mutation report before model calls.", "sensitivity_or_correction": "Suspend EAL-specific claim for affected features.", "residual_risk": "Reviewers may share an erroneous engineering warrant."},
+      {"id": "B-LEAK", "risk_type": "interference", "mechanism": "Author or recipient sees answer key or a prior recipient outcome.", "prevention": "Fresh contexts and strict prompt-source separation.", "detection": "Archive exact prompt and session IDs.", "sensitivity_or_correction": "Exclude leaked cohort prospectively and re-freeze new roots.", "residual_risk": "Undetectable pretrained familiarity."},
+      {"id": "B-COST", "risk_type": "measurement", "mechanism": "Omitted review, retries, caching or failed bills bias amortised advantage.", "prevention": "Attempt-level usage and timed operations; primary cost scenario frozen.", "detection": "Independent reconciliation and cache audit.", "sensitivity_or_correction": "Bound unknown cost or suspend cost claim.", "residual_risk": "Real deployments have different prices and labour rates."}
+    ],
+    "researcher_degrees_of_freedom": ["Grammar candidate and skill wording", "Choice of root families and model snapshots", "Review intervention and repair allowance", "Pricing and recipient reuse distribution", "Route-selection features and thresholds"],
+    "negative_controls": ["Wrong scope, missing negative coverage, expired evidence, always-supported and always-abstain baselines"],
+    "positive_controls": ["Valid adverse counterexample, restored support and independently verified finite method"],
+    "falsification_checks": ["Generic checker and EAL disagree on canonical equal graph", "Host gate accepts wrong-scope source", "Small model with no MCP appears to have made native call", "False but coherent source accepted as true of real device"],
+    "reporting_controls": ["Freeze protocol/runner/tasks before provider use", "Retain every assigned and attempted call, exact model identity and cost", "Publish failed and unfavourable cases by root/model/route"],
+    "residual_limitations": ["Selected synthetic families", "No universal optimal route", "No inference to physical source authenticity", "Prompt length and familiarity remain real components of representation effects"]
+  },
+  "ethics_and_safety": {
+    "applicable": false,
+    "rationale": "Synthetic engineering records; no human subjects recruited and no physical actuation. A future human-developer experiment needs a separate review.",
+    "risks": ["API spending", "Accidental credential retention", "Overstated assurance from asserted observations"],
+    "mitigations": ["Credential only through secret-managed environment", "Pre-call budget estimate and secret scan", "Label synthetic source trust boundary"],
+    "monitoring": ["Per-call usage and error count", "Archive secret scan", "Host gate tamper checks"],
+    "stopping_rules": ["Unknown billed usage, leaked secret, changed endpoint identity or failed source/host integrity halts further calls"],
+    "stop_authority": "Investigator controlling execution",
+    "review_status": "not-required",
+    "post_stop_actions": ["Preserve and audit attempted records", "Rotate exposed credential if any", "Amend protocol before new cohort"]
+  },
+  "feasibility": {
+    "current_status": "partially-feasible",
+    "apparatus_or_data": ["EAL interpreter and prior synthetic regression/relay records exist", "Equal generic graph checker, candidate grammar and factorial runner must be built and parity-tested"],
+    "access": "Repository is available; provider endpoint, model snapshots and secure credentials must be independently confirmed at execution time.",
+    "skills": ["Independent engineering reference review", "Typed method and grammar implementation", "Causal factorial design", "Cost logging and hierarchical simulation"],
+    "resources": ["Eight-root exploratory compact-status schedule of 800 calls excluding grammar extension and separately paired explanation requests", "Independent oracle and blind source reviewers", "A separately costed confirmatory cohort after calibration"],
+    "dependencies": ["New independent roots and calibrated rubric", "Two equal-capability runtimes", "Exact skill texts and grammar candidate", "Native MCP and facilitator interfaces", "Model eligibility probes", "Budget/cost plan and precision simulation"],
+    "blockers": ["No implemented equal checker or candidate grammar frozen for this factorial", "No new independent root sampling frame and pre-run oracle", "No measured root discordance/cost variance to justify confirmatory n", "Current environment may lack model endpoint access"],
+    "fallback": "Run stage 0 deterministic parity, parser, source-fidelity and tamper fixtures locally. Execute only a versioned calibration pilot when provider and parity gates pass; do not present simulated results as empirical model outcomes."
+  },
+  "reproducibility": {
+    "preregistration_status": "planned",
+    "registration": "Not registered. Freeze a versioned full protocol with exact grammar, skill texts, root list, model snapshots, scorer, analysis, n and schedule before confirmatory calls.",
+    "immutable_materials": ["Ordinary briefs and reference statuses", "Equivalent canonical argument graphs and both renderings", "Three-state synthetic records and perturbation labels", "Skill variants and grammar candidate", "Model/provider options and prompt templates", "Checker source and parser/host method hashes"],
+    "data_plan": "Store raw prompts/responses, failed attempts, usage, review forms, source revisions, interpreter traces and immutable hashes; scan all records for secrets before publication.",
+    "code_plan": "Implement independent parity suite, bounded model scheduler, blind scorer, cost aggregation and root-cluster simulation in repository after design freeze.",
+    "randomisation_or_seed_plan": "Record cryptographic schedule seed and complete within-root allocation. No success-based response retry.",
+    "provenance_plan": "Record commit, source/grammar/skill/checker hashes, provider model identity, timestamps, cost configuration, reviewer assignments and deviations.",
+    "deviation_and_amendment_plan": "Keep this specified version and every observed pilot unchanged. Any changed grammar/skill/model/sample target starts a separately numbered protocol and new output directory.",
+    "replication_plan": "Replicate decisive route contrast on new task families and a second author/recipient model pair. Test human-developer authoring separately if claiming human workflow advantage."
+  },
+  "deployment_model": {
+    "purpose": "Predict the cheapest route satisfying an independently chosen false-support and answer-quality constraint, rather than inferring an internal language-model algorithm.",
+    "pre_outcome_features": ["Pinned product and tool eligibility", "Claim/attack route count and graph depth", "Availability and precision of registered method", "Evidence change frequency and proportion of new scopes", "Estimated creator/reviewer effort", "Recipient count N", "Required output: compact status or justified explanation", "Cache and pricing scenario"],
+    "validity_chain": "P(correct brief-level outcome) = P(faithful source) x P(eligible authentic input | faithful source) x P(correct method/argument assessment | prior stages) x P(correct final delivery | prior stages). This is an exact conditional chain, not an independence assumption. Each factor must be estimated or bounded on calibration tasks; an unknown factor blocks a confident route choice.",
+    "token_break_even": "For two routes E and J under a common correct-decision requirement, T_E(N)=F_E+N m_E and T_J(N)=F_J+N m_J. If m_J>m_E, the nominal break-even is N>(F_E-F_J)/(m_J-m_E); otherwise no growing-N token advantage follows. Recompute with measured route success and quality costs, not only raw tokens.",
+    "scope_turnover": "When claim, context, scope or interval changes, a new approved artifact/version contributes a new fixed F. Estimate the probability of such changes and report thresholds by this turnover rate; never reuse an old artifact for a new question.",
+    "decision": "Select an eligible route only if its upper calibrated false-support bound meets the task-specific limit and its expected all-in cost is lowest. If factors are uncalibrated or outside support, use a checked authorised route with an explicit unavailable state when assessment fails.",
+    "limits": ["The chain can be modelled without claiming direct access to latent LLM cognition", "Observed correlations of complexity with failure do not identify a specific internal mechanism", "No fixed number of recipients makes EAL universally economical"]
+  },
+  "response_targets": {
+    "compact_status": "Primary pilot: exact status plus limited scope/attack identifiers; equal graph and EAL hosts return the same required fields. Account model tokens, host calls and bytes separately.",
+    "explanation_rich": "Separately frozen extension: request rationale with source, method result, scope, adverse evidence, objection path and qualification; blinded reviewer checks correctness, completeness and unsupported additions. Pair routes at the same requested detail and include all tool-response bytes and tokens; do not treat a verbose trace as a free status result."
+  },
+  "execution": {
+    "protocol_version_used": null,
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": null,
+    "code_location": null,
+    "observed_results": [],
+    "interpretation_status": "not-started; this document records prospective design, not model measurements"
+  },
+  "provenance": {
+    "authors": ["Prepared for Emmett Miller with Codex; no external scientific review claimed"],
+    "created_at": "2026-09-23T23:00:00Z",
+    "updated_at": "2026-09-23T23:00:00Z",
+    "sources": ["docs/eal2-negative-revision-results.md", "docs/eal2-negative-evidence-research.md", "docs/general-reasoning-and-notation-argument.md", "docs/eal2-companion-investigation.md", "docs/eal2-relay-results.md", "benchmarks/protocols/INV-EAL-NEGATIVE-REVISION-001.json", "Design-scientific-investigations investigation-protocol contract"],
+    "knowledge_cut": "2026-09-23",
+    "change_log": ["0.1.0: specified unrun factorial and two-developer reuse programme; no model calls or EAL-specific gains claimed"]
+  }
+}

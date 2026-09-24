@@ -1,0 +1,24 @@
+{
+  "schema": "generic-argument-graph/1",
+  "id": "thermal_soak",
+  "claim": "soak_preconditions",
+  "scope": {
+    "rig": {"type": "str", "equals": "TC-9"},
+    "run": {"type": "str", "equals": "H4"}
+  },
+  "evidence": {
+    "soak_reader": {"tool_version": "1", "mode": "deterministic", "max_age_seconds": 900}
+  },
+  "routes": [{
+    "id": "qualified_sensor_soak",
+    "all": [
+      {"op": "eq", "record": "soak_reader", "path": ["value", "rig"], "value": "TC-9"},
+      {"op": "eq", "record": "soak_reader", "path": ["value", "run"], "value": "H4"},
+      {"op": "eq", "record": "soak_reader", "path": ["value", "sensor"], "value": "K2"},
+      {"op": "is_true", "record": "soak_reader", "path": ["value", "calibration_valid"]},
+      {"op": "lte", "record": "soak_reader", "path": ["value", "peak_c"], "value": 82},
+      {"op": "gte", "record": "soak_reader", "path": ["value", "dwell_min"], "value": 30}
+    ]
+  }],
+  "objections": []
+}

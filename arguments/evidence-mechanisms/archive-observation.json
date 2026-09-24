@@ -1,0 +1,45 @@
+{
+  "context": {
+    "study": "EAL2-evidence-mechanisms"
+  },
+  "observed_at": "2026-09-23T21:56:49Z",
+  "request": {
+    "context": {
+      "study": "EAL2-evidence-mechanisms"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "archive_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "attempted": 180,
+    "eal": {
+      "correct_answer": {
+        "answer_correct": 10,
+        "raw_correct": 2
+      },
+      "incorrect_answer": {
+        "answer_copied": 10,
+        "assessed_correct": 7,
+        "correct": 0,
+        "raw_copied": 2,
+        "raw_correct": 2
+      },
+      "raw_only": {
+        "correct": 4
+      }
+    },
+    "irrelevant": {
+      "available_correct": 3,
+      "false_support": 26
+    },
+    "json": {
+      "raw_only": {
+        "correct": 5
+      }
+    },
+    "source_archive_sha256": "646fef0d015e8f855bc6b35cb60944f90f70b7e23732a5d97a3c463a308609bf",
+    "tasks": 5
+  }
+}

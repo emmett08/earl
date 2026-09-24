@@ -1,0 +1,58 @@
+{
+  "observed_at": "2026-09-24T11:29:30Z",
+  "now": "2026-09-24T11:30:00Z",
+  "context": {
+    "cluster_uid": "synthetic-cluster-A",
+    "namespace": "payments",
+    "workload": "checkout-api",
+    "node_pool": "shared-A",
+    "target_rps": 200,
+    "node_uid": "node-17",
+    "target_pod_uid": "checkout-pod-7"
+  },
+  "measurement_details": {
+    "sampled_responses": {"trial_id": "checkout-trial-1130", "node_uid": "node-17", "target_pod_uid": "checkout-pod-7", "window_start": "2026-09-24T11:24:30Z", "window_end": "2026-09-24T11:29:30Z", "series_kind": "response_outcomes", "series_id": "responses-1130", "payload_digest": "2ff0361cc955816f80eff8b3078b81bfcf1d9c0e556ad85c6a370e0487b18ddd"},
+    "sampled_p99": {"trial_id": "checkout-trial-1130", "node_uid": "node-17", "target_pod_uid": "checkout-pod-7", "window_start": "2026-09-24T11:24:30Z", "window_end": "2026-09-24T11:29:30Z", "series_kind": "p99_ms", "series_id": "p99-1130", "payload_digest": "f93cf9633c7414f7a27cdae25a2273323d5aa0019de0813f3e96b9be80d91aa9"}
+  },
+  "values": {
+    "build_attestation": {
+      "source_commit": "9f4c7a1",
+      "image_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "signature_verified": true
+    },
+    "rollout_snapshot": {
+      "cluster_uid": "synthetic-cluster-A",
+      "deployment_uid": "deployment-42",
+      "observed_generation": 12,
+      "ready_replicas": 3,
+      "ready_endpoints": 3,
+      "node_uid": "node-17",
+      "target_pod_uid": "checkout-pod-7",
+      "image_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "sampled_responses": {"successes": 9995, "trials": 10000, "confidence": 0.95},
+    "sampled_p99": {
+      "start": 0, "end": 300, "max_gap": 100, "semantics": "sampled",
+      "property": {"operator": "le", "value": 150},
+      "events": [
+        {"time": 0, "value": 125},
+        {"time": 100, "value": 132},
+        {"time": 200, "value": 140},
+        {"time": 300, "value": 145}
+      ]
+    },
+    "sampling_manifest": {"complete": true, "route": "checkout-create", "sampled_count": 10000, "target_pod_uid": "checkout-pod-7", "trial_id": "checkout-trial-1130", "series_id": "responses-1130", "payload_digest": "2ff0361cc955816f80eff8b3078b81bfcf1d9c0e556ad85c6a370e0487b18ddd", "window_start": "2026-09-24T11:24:30Z", "window_end": "2026-09-24T11:29:30Z"},
+    "telemetry_manifest": {"complete": true, "histogram_unit": "ms", "target_pod_uid": "checkout-pod-7", "trial_id": "checkout-trial-1130", "series_id": "p99-1130", "payload_digest": "f93cf9633c7414f7a27cdae25a2273323d5aa0019de0813f3e96b9be80d91aa9", "window_start": "2026-09-24T11:24:30Z", "window_end": "2026-09-24T11:29:30Z"},
+    "scheduler_snapshot": {
+      "node_uid": "node-17", "allocatable_cpu_milli": 8000,
+      "headroom_requests_milli": 1100, "hpa_current_replicas": 3,
+      "target_pod_uid": "checkout-pod-7", "sampled_at": "2026-09-24T11:29:30Z"
+    },
+    "monitor_manifest": {"complete": true, "query_complete": true, "node_uid": "node-17", "target_pod_uid": "checkout-pod-7", "trial_id": "checkout-trial-1130", "query_id": "node-17-checkout-1130", "window_start": "2026-09-24T11:24:30Z", "window_end": "2026-09-24T11:29:30Z"},
+    "observed_contention": {
+      "finding": "co_tenant_cpu_competition", "node_uid": "node-17", "target_pod_uid": "checkout-pod-7",
+      "query_complete": true, "trial_id": "checkout-trial-1130", "query_id": "node-17-checkout-1130", "window_start": "2026-09-24T11:24:30Z", "window_end": "2026-09-24T11:29:30Z",
+      "batch_request_milli": 200, "batch_cpu_milli": 2900, "target_throttled_ratio": 0.28
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[provider]
+kind = "chat_completions"
+model = "gpt-4.1-nano"
+api_key_env = "OPENAI_API_KEY"
+max_tokens_field = "max_completion_tokens"
+timeout_seconds = 90
+label = "openai-chat-completions-nano"
+
+[provider.sampling]
+temperature = 0
+
+[provider.pricing]
+input_usd_per_million = 0.10
+output_usd_per_million = 0.40

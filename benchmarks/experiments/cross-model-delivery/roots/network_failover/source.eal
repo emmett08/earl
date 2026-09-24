@@ -1,0 +1,38 @@
+language "EAL/2";
+environment failover_run {
+  require "switch" == "NS-9";
+  require "profile" == "dual_uplink_A";
+}
+tool failover_reader { version "1"; mode deterministic; }
+tool buffer_alert_reader { version "1"; mode deterministic; }
+tool packet_trace_reader { version "1"; mode deterministic; }
+evidence loaded_failover {
+  tool failover_reader; kind test; environment failover_run; max_age 1800;
+  require "switch" == "NS-9";
+  require "profile" == "dual_uplink_A";
+  require "switchover_ms" <= 250;
+  require "load_pct" >= 70;
+  require "pass" == true;
+}
+evidence buffer_alert {
+  tool buffer_alert_reader; kind monitoring; environment failover_run; max_age 1800;
+  require "switch" == "NS-9";
+  require "finding" == "switch_buffer_overrun";
+}
+evidence independent_trace {
+  tool packet_trace_reader; kind independent_check; environment failover_run; max_age 1800;
+  require "switch" == "NS-9";
+  require "profile" == "dual_uplink_A";
+  require "finding" == "alert_from_test_generator";
+}
+reasoning failover_record {
+  method "structured/1";
+  rationale "The current loaded-failover test supports only the reported bounded switch result. A matching buffer alert challenges its interpretation; a separate packet trace explicitly attributing that alert to the generator answers that specific challenge, subject to review of the trace's provenance.";
+}
+claim bounded_failover {
+  statement "For the NS-9 dual-uplink-A loaded test, the submitted record reports successful switchover within 250 ms at at least 70 percent load.";
+  environment failover_run;
+}
+argument loaded_route { conclusion bounded_failover; reasoning failover_record; evidence loaded_failover; }
+objection buffer_challenge { target argument loaded_route; evidence buffer_alert; }
+objection separate_trace { target objection buffer_challenge; evidence independent_trace; }

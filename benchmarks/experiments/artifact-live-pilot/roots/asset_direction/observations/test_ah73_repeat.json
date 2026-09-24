@@ -1,0 +1,25 @@
+{
+  "context": {
+    "facility": "North-1",
+    "unit": "AH-73"
+  },
+  "observed_at": "2026-09-24T11:59:00Z",
+  "request": {
+    "context": {
+      "facility": "North-1",
+      "unit": "AH-73"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "probe_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "direction": "forward",
+    "drive_firmware": "r17",
+    "pass": true,
+    "programme": "warm_restart",
+    "repeat_id": "R2",
+    "unit": "AH-73"
+  }
+}

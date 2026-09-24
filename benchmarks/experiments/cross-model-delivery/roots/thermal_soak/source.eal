@@ -1,0 +1,24 @@
+language "EAL/2";
+environment thermal_run {
+  require "rig" == "TC-9";
+  require "run" == "H4";
+}
+tool soak_reader { version "1"; mode deterministic; }
+evidence qualifying_log {
+  tool soak_reader; kind test; environment thermal_run; max_age 900;
+  require "rig" == "TC-9";
+  require "run" == "H4";
+  require "sensor" == "K2";
+  require "calibration_valid" == true;
+  require "peak_c" <= 82;
+  require "dwell_min" >= 30;
+}
+reasoning threshold_record {
+  method "structured/1";
+  rationale "The current submitted H4 log must report all stated thermal and sensor conditions. This only describes that record; it does not independently validate a physical soak cycle or calibration.";
+}
+claim soak_preconditions {
+  statement "A TC-9 H4 log acquired within 15 minutes reports valid K2 calibration, a peak no greater than 82 C and dwell of at least 30 minutes.";
+  environment thermal_run;
+}
+argument logged_run { conclusion soak_preconditions; reasoning threshold_record; evidence qualifying_log; }

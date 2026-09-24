@@ -1,0 +1,105 @@
+{
+  "corpus_sha256": "dc5eca8ad42db50f1bbf607a707d4d51d0fda9c6d8d4c0d84e1133645386a1a2",
+  "response_adjudication": {
+    "adjudication_cost_usd_per_case": null,
+    "reviewers_per_case": 2
+  },
+  "roots": {
+    "network_failover": {
+      "common": {
+        "author_hours": null,
+        "direct_usd": null,
+        "rate_usd_per_hour": null,
+        "review_hours": null
+      },
+      "eal_host": null,
+      "equal_checker": null,
+      "skill": null,
+      "skill_route": null,
+      "status": "unmeasured"
+    },
+    "release_provenance": {
+      "common": {
+        "author_hours": null,
+        "direct_usd": null,
+        "rate_usd_per_hour": null,
+        "review_hours": null
+      },
+      "eal_host": null,
+      "equal_checker": null,
+      "skill": null,
+      "skill_route": null,
+      "status": "unmeasured"
+    },
+    "thermal_soak": {
+      "common": {
+        "author_hours": null,
+        "direct_usd": null,
+        "rate_usd_per_hour": null,
+        "review_hours": null
+      },
+      "eal_host": null,
+      "equal_checker": null,
+      "skill": null,
+      "skill_route": null,
+      "status": "unmeasured"
+    }
+  },
+  "schema": "eal2-cross-model-cost-measurement-template/1",
+  "states": {
+    "network_failover/buffer_challenge": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    },
+    "network_failover/qualifying_test": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    },
+    "network_failover/separate_trace": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    },
+    "release_provenance/digest_mismatch": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    },
+    "release_provenance/matching_repull": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    },
+    "release_provenance/matching_stage": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    },
+    "thermal_soak/fresh_repeat": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    },
+    "thermal_soak/recent_qualifying": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    },
+    "thermal_soak/stale_qualifying": {
+      "acquisition_usd": null,
+      "checker_compute_usd": null,
+      "eal_compute_usd": null,
+      "status": "unmeasured"
+    }
+  }
+}

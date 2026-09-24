@@ -1,0 +1,11 @@
+[tools.probe_reader]
+kind = "json_file"
+path = "observations/test_ah73_repeat.json"
+version = "1"
+mode = "deterministic"
+
+[tools.alignment_reader]
+kind = "json_file"
+path = "observations/alignment_none.json"
+version = "1"
+mode = "deterministic"

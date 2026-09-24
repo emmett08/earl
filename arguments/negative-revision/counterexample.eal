@@ -1,0 +1,25 @@
+language "EAL/2";
+environment rig { require "site" == "test-rig-9"; }
+tool first_test { version "1"; mode deterministic; }
+tool second_test { version "1"; mode deterministic; }
+tool trace_reader { version "1"; mode deterministic; }
+tool independent_check { version "1"; mode deterministic; }
+evidence first_record { tool first_test; kind test; environment rig; max_age 3600; require "passed" == true; require "subject" == "rig-9"; require "scope" == "vibration-interval-9"; require "property.operator" == "lt"; require "property.value" == 1; }
+evidence second_record { tool second_test; kind test; environment rig; max_age 3600; require "passed" == true; require "subject" == "rig-9"; require "scope" == "vibration-interval-9"; require "property.operator" == "lt"; require "property.value" == 1; }
+evidence trace_record { tool trace_reader; kind sampled_negative_trace; environment rig; max_age 3600; require "schema" == "EAL/typed-input/1"; }
+evidence defence_record { tool independent_check; kind test; environment rig; max_age 3600; require "independently_explained" == true; require "subject" == "rig-9"; require "scope" == "vibration-interval-9"; require "sample_time" == 4; }
+
+reasoning test_relation { method "structured/1"; rationale "Each test supplies provisional support for the specified sampled property; the relation itself is an authored assumption."; }
+reasoning observed_violation { method "engineering/sampled-negative/1"; rationale "One bound violating observation is a counterexample to the sampled universal, even if other samples are missing."; }
+claim property_supported { statement "At least one of two tests provisionally supports the specified sampled property in this rig."; environment rig; }
+claim violating_sample { statement "At least one in-scope sampled value violates the declared bound; no claim about unsampled time is made."; environment rig;
+ proposition { subject "rig-9"; quantity "dimensionless"; unit "1"; scope "vibration-interval-9"; valid_from "2040-01-31T08:00:00Z"; valid_until "2040-01-31T09:00:00Z";
+ query {"mode":"counterexample","start":0,"end":12,"max_gap":4,"property":{"operator":"lt","value":1},"semantics":"sampled","detector_contract":{"maximum_detection_limit":0.1,"minimum_sensitivity":0.9}}; result "finding" == true; }
+}
+argument first_route { conclusion property_supported; reasoning test_relation; evidence first_record; }
+argument second_route { conclusion property_supported; reasoning test_relation; evidence second_record; }
+argument negative_route { conclusion violating_sample; reasoning observed_violation; evidence trace_record; binding trace_record; }
+objection challenge_first { target argument first_route; premises violating_sample; }
+objection challenge_second { target argument second_route; premises violating_sample; }
+objection independent_defence_first { target objection challenge_first; evidence defence_record; }
+objection independent_defence_second { target objection challenge_second; evidence defence_record; }

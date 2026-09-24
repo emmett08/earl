@@ -1,0 +1,27 @@
+{
+  "schema": "generic-argument-graph/1",
+  "id": "release_provenance",
+  "claim": "stage_matches_build",
+  "scope": {
+    "release": {"type": "str", "equals": "PX-42"},
+    "lane": {"type": "str", "equals": "West-2"}
+  },
+  "evidence": {
+    "build_reader": {"tool_version": "1", "mode": "deterministic", "max_age_seconds": 3600},
+    "stage_reader": {"tool_version": "1", "mode": "deterministic", "max_age_seconds": 3600}
+  },
+  "routes": [{
+    "id": "pinned_build_matches_staged_pull",
+    "all": [
+      {"op": "eq", "record": "build_reader", "path": ["value", "release"], "value": "PX-42"},
+      {"op": "eq", "record": "build_reader", "path": ["value", "revision"], "value": "b64"},
+      {"op": "eq", "record": "build_reader", "path": ["value", "digest"], "value": "sha256:8c4a"},
+      {"op": "is_true", "record": "build_reader", "path": ["value", "signature_verified"]},
+      {"op": "eq", "record": "stage_reader", "path": ["value", "release"], "value": "PX-42"},
+      {"op": "eq", "record": "stage_reader", "path": ["value", "lane"], "value": "West-2"},
+      {"op": "eq", "record": "stage_reader", "path": ["value", "digest"], "value": "sha256:8c4a"},
+      {"op": "is_true", "record": "stage_reader", "path": ["value", "pull_verified"]}
+    ]
+  }],
+  "objections": []
+}

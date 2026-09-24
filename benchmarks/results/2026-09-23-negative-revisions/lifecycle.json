@@ -1,0 +1,615 @@
+{
+  "cases": [
+    {
+      "actual": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "binding_status": null,
+      "expected": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "expected_method_status": "not_run",
+      "expected_objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "not_run",
+      "objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "331c56ee2f8506f6b5665bfb808cfad1fab25b80cdbe39a414185db78545523d",
+      "reference": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "initial_tests",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "binding_status": null,
+      "expected": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "expected_method_status": "not_run",
+      "expected_objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "not_run",
+      "objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "0b02ca7e006c4384ef1b62e02e03d4be162e5a1ff742ba19b91fa506703c0d29",
+      "reference": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "single_matching_test",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "binding_status": "supported",
+      "expected": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "expected_method_status": "supported",
+      "expected_objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "supported",
+      "objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "d63987721d64267c495dba15c72183c81872b0702a553e428a292bf457abe9fb",
+      "reference": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "partial_witness",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "unsupported",
+        "violating_sample": "supported"
+      },
+      "binding_status": "supported",
+      "expected": {
+        "property_supported": "unsupported",
+        "violating_sample": "supported"
+      },
+      "expected_method_status": "supported",
+      "expected_objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "supported",
+      "objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "5ead261ab6b7e28e088fb01980d85dd8fc0d313d978983a6e94e75a39356aa99",
+      "reference": {
+        "property_supported": "unsupported",
+        "violating_sample": "supported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "tests_wrong_property",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "binding_status": "unsupported",
+      "expected": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "expected_method_status": "unsupported",
+      "expected_objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "unsupported",
+      "objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "1e1c8211e0ee8845baac84cd9d315e3829bde572750369f953eb178c2ad2810b",
+      "reference": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "wrong_scope_same_value",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "binding_status": "unsupported",
+      "expected": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "expected_method_status": "unsupported",
+      "expected_objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "unsupported",
+      "objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "92f4fbff2036013c7fba44755f0dd84389bb09623c5f2d3fb4c31daa706d0ed3",
+      "reference": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "partial_no_violation",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "binding_status": "supported",
+      "expected": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "expected_method_status": "supported",
+      "expected_objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "supported",
+      "objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "d63987721d64267c495dba15c72183c81872b0702a553e428a292bf457abe9fb",
+      "reference": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "restore_witness",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "supported",
+        "violating_sample": "supported"
+      },
+      "binding_status": "supported",
+      "expected": {
+        "property_supported": "supported",
+        "violating_sample": "supported"
+      },
+      "expected_method_status": "supported",
+      "expected_objections": {
+        "challenge_first": "defeated",
+        "challenge_second": "defeated",
+        "independent_defence_first": "active",
+        "independent_defence_second": "active"
+      },
+      "method_status": "supported",
+      "objections": {
+        "challenge_first": "defeated",
+        "challenge_second": "defeated",
+        "independent_defence_first": "active",
+        "independent_defence_second": "active"
+      },
+      "passes_oracle": true,
+      "records_sha256": "9d9ac620f697c1530a96fd1622ddb2e95d9d746fcc805b1fe6012c958ca1821a",
+      "reference": {
+        "property_supported": "supported",
+        "violating_sample": "supported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "independent_defence",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "binding_status": "supported",
+      "expected": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "expected_method_status": "supported",
+      "expected_objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "supported",
+      "objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "cb7d23f3bbc6513b77b4061693e0b1e85890f628f077a8d0656b740c45768b1e",
+      "reference": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "defence_wrong_sample",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "binding_status": "supported",
+      "expected": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "expected_method_status": "supported",
+      "expected_objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "supported",
+      "objections": {
+        "challenge_first": "active",
+        "challenge_second": "active",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "d63987721d64267c495dba15c72183c81872b0702a553e428a292bf457abe9fb",
+      "reference": {
+        "property_supported": "contested",
+        "violating_sample": "supported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "withdraw_defence",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "binding_status": null,
+      "expected": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "expected_method_status": "not_run",
+      "expected_objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "method_status": "not_run",
+      "objections": {
+        "challenge_first": "inactive",
+        "challenge_second": "inactive",
+        "independent_defence_first": "inactive",
+        "independent_defence_second": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "331c56ee2f8506f6b5665bfb808cfad1fab25b80cdbe39a414185db78545523d",
+      "reference": {
+        "property_supported": "supported",
+        "violating_sample": "unsupported"
+      },
+      "source_sha256": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71",
+      "step": "retract_witness",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "property_supported": "supported",
+        "violating_sample": "supported"
+      },
+      "binding_status": "supported",
+      "expected": {
+        "property_supported": "supported",
+        "violating_sample": "supported"
+      },
+      "expected_method_status": "supported",
+      "expected_objections": {
+        "challenge_first": "active",
+        "independent_defence_first": "inactive"
+      },
+      "method_status": "supported",
+      "objections": {
+        "challenge_first": "active",
+        "independent_defence_first": "inactive"
+      },
+      "passes_oracle": true,
+      "records_sha256": "7fc7322a9ef04bd82512ff669612ced4b03d74f6c996696c79ab8c4f4ff8b293",
+      "reference": {
+        "property_supported": "supported",
+        "violating_sample": "supported"
+      },
+      "source_sha256": "5cf2d9fbeb313796b33e4e47ce56cc1ddbf219754a158e62e481ad1e038f2250",
+      "step": "one_route_unlinked",
+      "track": "counterexample"
+    },
+    {
+      "actual": {
+        "proceed_within_sampled_contract": "supported",
+        "qualified_absence": "supported"
+      },
+      "binding_status": "supported",
+      "expected": {
+        "proceed_within_sampled_contract": "supported",
+        "qualified_absence": "supported"
+      },
+      "expected_method_status": "supported",
+      "expected_objections": {},
+      "method_status": "supported",
+      "objections": {},
+      "passes_oracle": true,
+      "records_sha256": "ac025981283a76a326936245b60a073991c03faab403731aacbcb6cd98535318",
+      "reference": {
+        "proceed_within_sampled_contract": "supported",
+        "qualified_absence": "supported"
+      },
+      "source_sha256": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+      "step": "complete_clear",
+      "track": "closure"
+    },
+    {
+      "actual": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "binding_status": "unsupported",
+      "expected": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "expected_method_status": "unsupported",
+      "expected_objections": {},
+      "method_status": "unsupported",
+      "objections": {},
+      "passes_oracle": true,
+      "records_sha256": "d46a75d529596b08ad956e9b1de72aaae82a84311101c034e752297311e7e2a5",
+      "reference": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "source_sha256": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+      "step": "partial_clear",
+      "track": "closure"
+    },
+    {
+      "actual": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "binding_status": "unsupported",
+      "expected": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "expected_method_status": "unsupported",
+      "expected_objections": {},
+      "method_status": "unsupported",
+      "objections": {},
+      "passes_oracle": true,
+      "records_sha256": "78740603a1542dcee18f1c2e036eeb0723ca3e1fa62e5eefc4a1f34dfbe5419d",
+      "reference": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "source_sha256": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+      "step": "wrong_scope_clear",
+      "track": "closure"
+    },
+    {
+      "actual": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "binding_status": "unsupported",
+      "expected": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "expected_method_status": "unsupported",
+      "expected_objections": {},
+      "method_status": "unsupported",
+      "objections": {},
+      "passes_oracle": true,
+      "records_sha256": "274d75a8bee60548fb216659aad2a6aa5edfbda9c328d2980f8c15d7d549bb56",
+      "reference": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "source_sha256": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+      "step": "insensitive_detector",
+      "track": "closure"
+    },
+    {
+      "actual": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "binding_status": "unsupported",
+      "expected": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "expected_method_status": "unsupported",
+      "expected_objections": {},
+      "method_status": "unsupported",
+      "objections": {},
+      "passes_oracle": true,
+      "records_sha256": "e26f614787e961494d887154c0e665417a21a5903f6a96dff5a18a1652196706",
+      "reference": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "source_sha256": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+      "step": "high_detection_limit",
+      "track": "closure"
+    },
+    {
+      "actual": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "binding_status": "unsupported",
+      "expected": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "expected_method_status": "unsupported",
+      "expected_objections": {},
+      "method_status": "unsupported",
+      "objections": {},
+      "passes_oracle": true,
+      "records_sha256": "475ee53025ac3d29306b04355e1b4427f6045045d43c743088d11acc68497343",
+      "reference": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "source_sha256": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+      "step": "complete_with_violation",
+      "track": "closure"
+    },
+    {
+      "actual": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "binding_status": "unsupported",
+      "expected": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "expected_method_status": "unsupported",
+      "expected_objections": {},
+      "method_status": "unsupported",
+      "objections": {},
+      "passes_oracle": true,
+      "records_sha256": "5e6d7b037e3392369555c2f99e801c26b225379a1fecd7acaa5d47314ad2ebbf",
+      "reference": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "source_sha256": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+      "step": "empty_search",
+      "track": "closure"
+    },
+    {
+      "actual": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "binding_status": null,
+      "expected": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "expected_method_status": "not_run",
+      "expected_objections": {},
+      "method_status": "not_run",
+      "objections": {},
+      "passes_oracle": true,
+      "records_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "reference": {
+        "proceed_within_sampled_contract": "unsupported",
+        "qualified_absence": "unsupported"
+      },
+      "source_sha256": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+      "step": "missing_search",
+      "track": "closure"
+    }
+  ],
+  "interpretation": "Fixed synthetic observations match an explicit oracle and a narrow independent checker. The old temporal/1 method detects the partial witness in details but marks the method unsupported. No model calls, physical authentication, general equal-checker comparison, authoring benefit or population transfer is measured.",
+  "legacy_temporal_partial_witness": {
+    "coverage": false,
+    "status": "unsupported",
+    "violation_count": 1
+  },
+  "method_registry_fingerprint": "5dd089493752d094d9034cc7a8ba5f31472ff32c5252102ae2326302a766a042",
+  "passed": 20,
+  "schema": "EAL/negative-revision-result/1",
+  "source_sha256": {
+    "closure": "1640bf84a764c9cbbf7d1e7a11bb347f777e740e31ec4c62cb62240549a9fc19",
+    "counterexample": "39d99be16c97ce41ab77ef9c70d457e65d4255df350834a684578f8934b03a71"
+  },
+  "study_type": "deterministic-developmental",
+  "total": 20
+}

@@ -1,0 +1,620 @@
+{
+  "input_sha256": {
+    "artifacts.toml": "db190f41486c1387409994de50348673b043e7970c2668b358373bf28d39ce5b",
+    "families.toml": "8df248aee21781e5830a694c29dd6e7fc5bf76c3b4a3e6fce58a306def6c29b5",
+    "manifest.json": "90a66f1da08219eafbd6468130f90641fe2b5250c497ec29528f7d96a04edd80",
+    "source.eal": "a927713a6e933115bf42cbaa46cd4718932a2f172bb735830c0674f242a09ebd"
+  },
+  "limitations": [
+    "Records are synthetic local JSON, not authenticated Kubernetes observations.",
+    "Reference statuses and relevance sets were specified by the fixture author without independent masked review.",
+    "Wall-clock timings describe this local Python host and filesystem, not provider calls, MCP transport or a live cluster.",
+    "Packet bytes are not model tokens; no model decision, retries or paid cost is measured.",
+    "The selected claim is a provisional operating basis, conditional on unchanged traffic, deployment and resource conditions; supported does not establish actual future SLO compliance.",
+    "The historical record-content claim is separately measured from the same assessment and is not exposed in the selected claim packet."
+  ],
+  "record_statuses_correct": 7,
+  "rejected_routes": {
+    "unknown_family": "Unknown or unauthorised family",
+    "unreviewed_cluster": "No reviewed case exists for these family bindings",
+    "wrong_family_claim": "Claim is not reviewed and granted for this family case"
+  },
+  "repetitions_per_revision": 20,
+  "retrieval": {
+    "abstention_rate_on_zero_target_queries": 0.5,
+    "counts": {
+      "fn": 1,
+      "fp": 6,
+      "tp": 8,
+      "zero_target": 2,
+      "zero_target_abstentions": 1
+    },
+    "interpretation": "Single-author relevance labels assess lexical candidate ranking only; suggestions cannot select bindings or assert a claim.",
+    "micro_precision_at_3": 0.5714,
+    "micro_recall_at_3": 0.8889,
+    "queries": [
+      {
+        "candidates": [
+          {
+            "family_id": "checkout_latency",
+            "matched_terms": [
+              "checkout",
+              "latency",
+              "load",
+              "p99"
+            ],
+            "score": 4
+          },
+          {
+            "family_id": "rollout_digest",
+            "matched_terms": [
+              "checkout"
+            ],
+            "score": 1
+          },
+          {
+            "family_id": "service_failover",
+            "matched_terms": [
+              "checkout"
+            ],
+            "score": 1
+          }
+        ],
+        "false_negative": 0,
+        "false_positive": 2,
+        "id": "latency_exact",
+        "relevant": [
+          "checkout_latency"
+        ],
+        "true_positive": 1
+      },
+      {
+        "candidates": [
+          {
+            "family_id": "rollout_digest",
+            "matched_terms": [
+              "admission",
+              "digest",
+              "rollout"
+            ],
+            "score": 3
+          }
+        ],
+        "false_negative": 0,
+        "false_positive": 0,
+        "id": "rollout_exact",
+        "relevant": [
+          "rollout_digest"
+        ],
+        "true_positive": 1
+      },
+      {
+        "candidates": [
+          {
+            "family_id": "service_failover",
+            "matched_terms": [
+              "endpoint",
+              "failover",
+              "service"
+            ],
+            "score": 3
+          }
+        ],
+        "false_negative": 0,
+        "false_positive": 0,
+        "id": "failover_exact",
+        "relevant": [
+          "service_failover"
+        ],
+        "true_positive": 1
+      },
+      {
+        "candidates": [
+          {
+            "family_id": "checkout_latency",
+            "matched_terms": [
+              "response"
+            ],
+            "score": 1
+          }
+        ],
+        "false_negative": 0,
+        "false_positive": 0,
+        "id": "latency_synonym",
+        "relevant": [
+          "checkout_latency"
+        ],
+        "true_positive": 1
+      },
+      {
+        "candidates": [
+          {
+            "family_id": "rollout_digest",
+            "matched_terms": [
+              "image"
+            ],
+            "score": 1
+          }
+        ],
+        "false_negative": 0,
+        "false_positive": 0,
+        "id": "rollout_synonym",
+        "relevant": [
+          "rollout_digest"
+        ],
+        "true_positive": 1
+      },
+      {
+        "candidates": [],
+        "false_negative": 1,
+        "false_positive": 0,
+        "id": "failover_synonym",
+        "relevant": [
+          "service_failover"
+        ],
+        "true_positive": 0
+      },
+      {
+        "candidates": [
+          {
+            "family_id": "service_failover",
+            "matched_terms": [
+              "checkout",
+              "service"
+            ],
+            "score": 2
+          },
+          {
+            "family_id": "checkout_latency",
+            "matched_terms": [
+              "checkout"
+            ],
+            "score": 1
+          },
+          {
+            "family_id": "rollout_digest",
+            "matched_terms": [
+              "checkout"
+            ],
+            "score": 1
+          }
+        ],
+        "false_negative": 0,
+        "false_positive": 1,
+        "id": "ambiguous",
+        "relevant": [
+          "checkout_latency",
+          "service_failover"
+        ],
+        "true_positive": 2
+      },
+      {
+        "candidates": [
+          {
+            "family_id": "checkout_latency",
+            "matched_terms": [
+              "kubernetes"
+            ],
+            "score": 1
+          }
+        ],
+        "false_negative": 0,
+        "false_positive": 1,
+        "id": "generic",
+        "relevant": [],
+        "true_positive": 0
+      },
+      {
+        "candidates": [],
+        "false_negative": 0,
+        "false_positive": 0,
+        "id": "out_of_domain",
+        "relevant": [],
+        "true_positive": 0
+      },
+      {
+        "candidates": [
+          {
+            "family_id": "checkout_latency",
+            "matched_terms": [
+              "checkout",
+              "latency"
+            ],
+            "score": 2
+          },
+          {
+            "family_id": "rollout_digest",
+            "matched_terms": [
+              "checkout"
+            ],
+            "score": 1
+          },
+          {
+            "family_id": "service_failover",
+            "matched_terms": [
+              "checkout"
+            ],
+            "score": 1
+          }
+        ],
+        "false_negative": 0,
+        "false_positive": 2,
+        "id": "new_cluster",
+        "relevant": [
+          "checkout_latency"
+        ],
+        "true_positive": 1
+      }
+    ],
+    "retrieval_latency": {
+      "median_ms": 0.007,
+      "p95_ms": 0.042
+    },
+    "top_one_hit_rate_over_target_queries": 0.875
+  },
+  "revision_count": 7,
+  "revisions": [
+    {
+      "decisive": {
+        "argument_count": 1,
+        "arguments": [
+          {
+            "id": "load_route",
+            "reason": "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+            "reason_truncated": false,
+            "status": "supported"
+          }
+        ],
+        "details_truncated": false,
+        "objection_count": 0,
+        "objections": [],
+        "summary": "Accepted derivations: load_route",
+        "summary_truncated": false
+      },
+      "direct_trace_bytes": 6112,
+      "evidence_integrity": "consistency_checked_not_authenticated",
+      "expected_record_status": "supported",
+      "expected_status": "supported",
+      "id": "baseline",
+      "latency": {
+        "assess": {
+          "median_ms": 81.051,
+          "p95_ms": 85.709
+        },
+        "end_to_end": {
+          "median_ms": 166.107,
+          "p95_ms": 171.334
+        },
+        "explain": {
+          "median_ms": 40.978,
+          "p95_ms": 46.079
+        },
+        "finish": {
+          "median_ms": 41.674,
+          "p95_ms": 48.75
+        }
+      },
+      "observed_record_status": "supported",
+      "observed_status": "supported",
+      "packet_bytes": 1418,
+      "packet_hash_sha256": "a93f4457eb2f04b6fe346deae4eccb1414b8ee061a416715dee01e7ef15b9f68",
+      "packet_to_trace_byte_ratio": 0.232
+    },
+    {
+      "decisive": {
+        "argument_count": 1,
+        "arguments": [
+          {
+            "id": "load_route",
+            "reason": "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+            "reason_truncated": false,
+            "status": "contested"
+          }
+        ],
+        "details_truncated": false,
+        "objection_count": 1,
+        "objections": [
+          {
+            "evidence_count": 1,
+            "evidence_truncated": false,
+            "id": "pressure_challenge",
+            "reason": "batch_pressure: Field 'contention' == True holds (observed True)",
+            "reason_truncated": false,
+            "status": "active"
+          }
+        ],
+        "summary": "Source-usable derivations are rejected or undecided: load_route",
+        "summary_truncated": false
+      },
+      "direct_trace_bytes": 6350,
+      "evidence_integrity": "consistency_checked_not_authenticated",
+      "expected_record_status": "supported",
+      "expected_status": "contested",
+      "id": "new_batch_contention",
+      "latency": {
+        "assess": {
+          "median_ms": 81.742,
+          "p95_ms": 103.662
+        },
+        "end_to_end": {
+          "median_ms": 167.665,
+          "p95_ms": 191.569
+        },
+        "explain": {
+          "median_ms": 41.661,
+          "p95_ms": 49.595
+        },
+        "finish": {
+          "median_ms": 42.31,
+          "p95_ms": 51.846
+        }
+      },
+      "observed_record_status": "supported",
+      "observed_status": "contested",
+      "packet_bytes": 1641,
+      "packet_hash_sha256": "9439d4f0ce321a7fff715255ab2bddea124f92ecc9516b1926ebb261979ea076",
+      "packet_to_trace_byte_ratio": 0.2584
+    },
+    {
+      "decisive": {
+        "argument_count": 1,
+        "arguments": [
+          {
+            "id": "load_route",
+            "reason": "bounded_load: Observation age 1200s exceeds max_age 600s",
+            "reason_truncated": false,
+            "status": "unsupported"
+          }
+        ],
+        "details_truncated": false,
+        "objection_count": 1,
+        "objections": [
+          {
+            "evidence_count": 1,
+            "evidence_truncated": false,
+            "id": "pressure_challenge",
+            "reason": "batch_pressure: Field 'contention' == True holds (observed True)",
+            "reason_truncated": false,
+            "status": "active"
+          }
+        ],
+        "summary": "No source-usable derivation supplies support; this does not establish falsity",
+        "summary_truncated": false
+      },
+      "direct_trace_bytes": 5866,
+      "evidence_integrity": "consistency_checked_not_authenticated",
+      "expected_record_status": "supported",
+      "expected_status": "unsupported",
+      "id": "stale_load_record",
+      "latency": {
+        "assess": {
+          "median_ms": 85.85,
+          "p95_ms": 97.615
+        },
+        "end_to_end": {
+          "median_ms": 174.419,
+          "p95_ms": 186.38
+        },
+        "explain": {
+          "median_ms": 42.533,
+          "p95_ms": 51.667
+        },
+        "finish": {
+          "median_ms": 42.661,
+          "p95_ms": 49.225
+        }
+      },
+      "observed_record_status": "supported",
+      "observed_status": "unsupported",
+      "packet_bytes": 1614,
+      "packet_hash_sha256": "38f5d6593d902b0ba97cb9abb39dbf42ad64537b4c2bba99c11af7cb815d6bfe",
+      "packet_to_trace_byte_ratio": 0.2751
+    },
+    {
+      "decisive": {
+        "argument_count": 1,
+        "arguments": [
+          {
+            "id": "load_route",
+            "reason": "bounded_load: Field 'p99_ms' <= 200 does not hold (observed 278)",
+            "reason_truncated": false,
+            "status": "unsupported"
+          }
+        ],
+        "details_truncated": false,
+        "objection_count": 1,
+        "objections": [
+          {
+            "evidence_count": 1,
+            "evidence_truncated": false,
+            "id": "pressure_challenge",
+            "reason": "batch_pressure: Field 'contention' == True holds (observed True)",
+            "reason_truncated": false,
+            "status": "active"
+          }
+        ],
+        "summary": "No source-usable derivation supplies support; this does not establish falsity",
+        "summary_truncated": false
+      },
+      "direct_trace_bytes": 6094,
+      "evidence_integrity": "consistency_checked_not_authenticated",
+      "expected_record_status": "unsupported",
+      "expected_status": "unsupported",
+      "id": "failed_current_test",
+      "latency": {
+        "assess": {
+          "median_ms": 82.542,
+          "p95_ms": 108.854
+        },
+        "end_to_end": {
+          "median_ms": 165.144,
+          "p95_ms": 199.312
+        },
+        "explain": {
+          "median_ms": 41.246,
+          "p95_ms": 58.019
+        },
+        "finish": {
+          "median_ms": 41.89,
+          "p95_ms": 52.037
+        }
+      },
+      "observed_record_status": "unsupported",
+      "observed_status": "unsupported",
+      "packet_bytes": 1622,
+      "packet_hash_sha256": "7d67e91ccadafa971bbfc1bd595b796dd7d78b653f96577a3d29aad37f2351c0",
+      "packet_to_trace_byte_ratio": 0.2662
+    },
+    {
+      "decisive": {
+        "argument_count": 1,
+        "arguments": [
+          {
+            "id": "load_route",
+            "reason": "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+            "reason_truncated": false,
+            "status": "supported"
+          }
+        ],
+        "details_truncated": false,
+        "objection_count": 1,
+        "objections": [
+          {
+            "evidence_count": 1,
+            "evidence_truncated": false,
+            "id": "pressure_challenge",
+            "reason": "Answered by reservation_response; separate_reservation: Field 'finding' == 'cpu_reservation_effective' holds (observed 'cpu_reservation_effective')",
+            "reason_truncated": false,
+            "status": "defeated"
+          }
+        ],
+        "summary": "Accepted derivations: load_route",
+        "summary_truncated": false
+      },
+      "direct_trace_bytes": 6381,
+      "evidence_integrity": "consistency_checked_not_authenticated",
+      "expected_record_status": "supported",
+      "expected_status": "supported",
+      "id": "current_separate_reservation",
+      "latency": {
+        "assess": {
+          "median_ms": 77.247,
+          "p95_ms": 82.81
+        },
+        "end_to_end": {
+          "median_ms": 160.97,
+          "p95_ms": 181.216
+        },
+        "explain": {
+          "median_ms": 40.278,
+          "p95_ms": 50.243
+        },
+        "finish": {
+          "median_ms": 40.421,
+          "p95_ms": 49.133
+        }
+      },
+      "observed_record_status": "supported",
+      "observed_status": "supported",
+      "packet_bytes": 1695,
+      "packet_hash_sha256": "ffa13d938b8d3e0cb8d14a2fe5089f557455bc6f023f9e4bf550d157ab0ddd13",
+      "packet_to_trace_byte_ratio": 0.2656
+    },
+    {
+      "decisive": {
+        "argument_count": 1,
+        "arguments": [
+          {
+            "id": "load_route",
+            "reason": "bounded_load: Field 'deployment' == 'checkout-api' does not hold (observed 'checkout-v2')",
+            "reason_truncated": false,
+            "status": "unsupported"
+          }
+        ],
+        "details_truncated": false,
+        "objection_count": 0,
+        "objections": [],
+        "summary": "No source-usable derivation supplies support; this does not establish falsity",
+        "summary_truncated": false
+      },
+      "direct_trace_bytes": 5933,
+      "evidence_integrity": "consistency_checked_not_authenticated",
+      "expected_record_status": "unsupported",
+      "expected_status": "unsupported",
+      "id": "wrong_deployment",
+      "latency": {
+        "assess": {
+          "median_ms": 78.847,
+          "p95_ms": 91.001
+        },
+        "end_to_end": {
+          "median_ms": 163.23,
+          "p95_ms": 173.13
+        },
+        "explain": {
+          "median_ms": 41.563,
+          "p95_ms": 50.803
+        },
+        "finish": {
+          "median_ms": 41.272,
+          "p95_ms": 45.324
+        }
+      },
+      "observed_record_status": "unsupported",
+      "observed_status": "unsupported",
+      "packet_bytes": 1455,
+      "packet_hash_sha256": "5c9f998cf994fc4de78999fc43e1f53b1bbe0a111941cb393d7e336676cc19a4",
+      "packet_to_trace_byte_ratio": 0.2452
+    },
+    {
+      "decisive": {
+        "argument_count": 1,
+        "arguments": [
+          {
+            "id": "load_route",
+            "reason": "monitor_complete: Observation age 1200s exceeds max_age 300s",
+            "reason_truncated": false,
+            "status": "unsupported"
+          }
+        ],
+        "details_truncated": false,
+        "objection_count": 0,
+        "objections": [],
+        "summary": "No source-usable derivation supplies support; this does not establish falsity",
+        "summary_truncated": false
+      },
+      "direct_trace_bytes": 5561,
+      "evidence_integrity": "consistency_checked_not_authenticated",
+      "expected_record_status": "supported",
+      "expected_status": "unsupported",
+      "id": "stale_pressure_gap",
+      "latency": {
+        "assess": {
+          "median_ms": 78.029,
+          "p95_ms": 88.276
+        },
+        "end_to_end": {
+          "median_ms": 162.733,
+          "p95_ms": 173.148
+        },
+        "explain": {
+          "median_ms": 41.046,
+          "p95_ms": 47.741
+        },
+        "finish": {
+          "median_ms": 40.473,
+          "p95_ms": 47.904
+        }
+      },
+      "observed_record_status": "supported",
+      "observed_status": "unsupported",
+      "packet_bytes": 1426,
+      "packet_hash_sha256": "e6d11756f7ff177147f398dc9367bf476ea5c619ed85804e9c954b8ddf7f7187",
+      "packet_to_trace_byte_ratio": 0.2564
+    }
+  ],
+  "schema": "eal2-kubernetes-host-revisions-result/1",
+  "source_sha256": "a927713a6e933115bf42cbaa46cd4718932a2f172bb735830c0674f242a09ebd",
+  "status": "developmental_synthetic_offline",
+  "statuses_correct": 7
+}

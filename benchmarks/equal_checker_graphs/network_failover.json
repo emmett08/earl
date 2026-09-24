@@ -1,0 +1,39 @@
+{
+  "schema": "generic-argument-graph/1",
+  "id": "network_failover",
+  "claim": "bounded_failover",
+  "scope": {
+    "switch": {"type": "str", "equals": "NS-9"},
+    "profile": {"type": "str", "equals": "dual_uplink_A"}
+  },
+  "evidence": {
+    "failover_reader": {"tool_version": "1", "mode": "deterministic", "max_age_seconds": 1800},
+    "buffer_alert_reader": {"tool_version": "1", "mode": "deterministic", "max_age_seconds": 1800},
+    "packet_trace_reader": {"tool_version": "1", "mode": "deterministic", "max_age_seconds": 1800}
+  },
+  "routes": [{
+    "id": "loaded_failover_test",
+    "all": [
+      {"op": "eq", "record": "failover_reader", "path": ["value", "switch"], "value": "NS-9"},
+      {"op": "eq", "record": "failover_reader", "path": ["value", "profile"], "value": "dual_uplink_A"},
+      {"op": "lte", "record": "failover_reader", "path": ["value", "switchover_ms"], "value": 250},
+      {"op": "gte", "record": "failover_reader", "path": ["value", "load_pct"], "value": 70},
+      {"op": "is_true", "record": "failover_reader", "path": ["value", "pass"]}
+    ]
+  }],
+  "objections": [{
+    "id": "switch_buffer_overrun",
+    "when": [
+      {"op": "eq", "record": "buffer_alert_reader", "path": ["value", "switch"], "value": "NS-9"},
+      {"op": "eq", "record": "buffer_alert_reader", "path": ["value", "finding"], "value": "switch_buffer_overrun"}
+    ],
+    "answers": [{
+      "id": "separate_packet_trace",
+      "all": [
+        {"op": "eq", "record": "packet_trace_reader", "path": ["value", "switch"], "value": "NS-9"},
+        {"op": "eq", "record": "packet_trace_reader", "path": ["value", "profile"], "value": "dual_uplink_A"},
+        {"op": "eq", "record": "packet_trace_reader", "path": ["value", "finding"], "value": "alert_from_test_generator"}
+      ]
+    }]
+  }]
+}

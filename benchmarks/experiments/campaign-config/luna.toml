@@ -1,0 +1,14 @@
+[provider]
+kind = "chat_completions"
+model = "gpt-6-luna"
+api_key_env = "OPENAI_API_KEY"
+max_tokens_field = "max_completion_tokens"
+timeout_seconds = 90
+label = "openai-chat-completions-luna"
+
+[provider.pricing]
+input_usd_per_million = 0.10
+output_usd_per_million = 0.50
+
+[provider.capabilities]
+reasoning_effort = "none"

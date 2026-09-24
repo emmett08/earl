@@ -1,0 +1,33 @@
+{
+  "schema": "eal2-family-selection-paid/1",
+  "study_kind": "developmental_synthetic",
+  "fixture": "../kubernetes-host-revisions",
+  "provider_configs": {
+    "nano": "../campaign-config/nano.toml",
+    "luna": "../campaign-config/luna.toml",
+    "sol_high": "../campaign-config/sol-high.toml"
+  },
+  "provider_order": ["nano", "luna", "sol_high"],
+  "response_model_aliases": {
+    "nano": "gpt-4.1-nano-2025-04-14"
+  },
+  "max_prompt_bytes": 4096,
+  "max_output_tokens": 2048,
+  "max_cost_usd": 1.0,
+  "input_reserve_multiplier": 2,
+  "order_seed": 240924,
+  "cases": [
+    {"id": "latency_baseline", "query_id": "latency_exact", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "checkout_latency"},
+    {"id": "latency_contention", "query_id": "latency_exact", "revision_id": "new_batch_contention", "cluster": "prod_east", "namespace": "checkout", "reference": "checkout_latency"},
+    {"id": "latency_stale_coverage", "query_id": "latency_exact", "revision_id": "stale_pressure_gap", "cluster": "prod_east", "namespace": "checkout", "reference": "checkout_latency"},
+    {"id": "rollout_exact", "query_id": "rollout_exact", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "rollout_digest"},
+    {"id": "failover_exact", "query_id": "failover_exact", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "service_failover"},
+    {"id": "latency_synonym", "query_id": "latency_synonym", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "checkout_latency"},
+    {"id": "rollout_synonym", "query_id": "rollout_synonym", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "rollout_digest"},
+    {"id": "failover_synonym", "query_id": "failover_synonym", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "retrieval_miss"},
+    {"id": "ambiguous_checkout_service", "query_id": "ambiguous", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "abstain_ambiguous"},
+    {"id": "generic_kubernetes", "query_id": "generic", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "abstain_no_target"},
+    {"id": "out_of_domain", "query_id": "out_of_domain", "revision_id": "baseline", "cluster": "prod_east", "namespace": "checkout", "reference": "abstain_no_target"},
+    {"id": "unseen_cluster", "query_id": "new_cluster", "revision_id": "baseline", "cluster": "prod_west", "namespace": "checkout", "reference": "unreviewed_no_accept"}
+  ]
+}
