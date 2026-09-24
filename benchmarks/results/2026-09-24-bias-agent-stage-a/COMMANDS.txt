@@ -1,0 +1,9 @@
+umask 077
+mkdir -p /tmp/eal2-bias-stage-a
+gzip -dc benchmarks/results/2026-09-24-bias-agent-stage-a/pilot-freeze-0.1.2.json.gz > /tmp/eal2-bias-stage-a/pilot-freeze-0.1.2.json
+gzip -dc benchmarks/results/2026-09-24-bias-agent-stage-a/full-freeze-0.1.2.json.gz > /tmp/eal2-bias-stage-a/full-freeze-0.1.2.json
+cp benchmarks/results/2026-09-24-bias-agent-pilot-stopped/pilot-ledger.jsonl /tmp/eal2-bias-stage-a/pilot-ledger.jsonl
+python benchmarks/experiments/bias-mechanisms/run.py execute /tmp/eal2-bias-stage-a/pilot-freeze-0.1.2.json /tmp/eal2-bias-stage-a/pilot-ledger.jsonl
+python benchmarks/experiments/bias-mechanisms/analyse.py /tmp/eal2-bias-stage-a/pilot-freeze-0.1.2.json /tmp/eal2-bias-stage-a/pilot-ledger.jsonl /tmp/eal2-bias-stage-a/pilot-report.json
+python benchmarks/experiments/bias-mechanisms/run.py execute /tmp/eal2-bias-stage-a/full-freeze-0.1.2.json /tmp/eal2-bias-stage-a/full-ledger.jsonl --prior-ledger /tmp/eal2-bias-stage-a/pilot-ledger.jsonl
+python benchmarks/experiments/bias-mechanisms/analyse.py /tmp/eal2-bias-stage-a/full-freeze-0.1.2.json /tmp/eal2-bias-stage-a/full-ledger.jsonl /tmp/eal2-bias-stage-a/full-report.json --prior-ledger /tmp/eal2-bias-stage-a/pilot-ledger.jsonl

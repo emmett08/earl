@@ -25,7 +25,7 @@ import urllib.request
 
 HERE = Path(__file__).resolve().parent
 CASES = HERE / "cases.json"
-SCHEMA = "eal2-bias-freeze/1"
+SCHEMA = "eal2-bias-freeze/2"
 LEDGER_SCHEMA = "eal2-bias-ledger/1"
 API_URL = "https://api.openai.com/v1/responses"
 STATUSES = ("NOT-APPLICABLE", "HYPOTHESISED", "COMPATIBLE", "EPISODE-SUPPORTED",
@@ -394,8 +394,10 @@ def freeze(path: Path, *, families: int, model_names: list[str], seed: int,
                 "analyse.py": digest((HERE / "analyse.py").read_bytes()),
                 "PROTOCOL.md": digest((HERE / "PROTOCOL.md").read_bytes()),
                 "AMENDMENT-0.1.1.md": digest((HERE / "AMENDMENT-0.1.1.md").read_bytes()),
+                "AMENDMENT-0.1.2.md": digest((HERE / "AMENDMENT-0.1.2.md").read_bytes()),
                 **parser_materials}
     result = {"schema": SCHEMA, "synthetic": True, "created_utc": utc_now(),
+              "execution_policy": "continue_after_terminal_outcome/1",
               "materials": material, "seed": seed, "models": {name: MODELS[name]
               for name in model_names}, "max_usd": max_usd, "max_output_tokens": max_output_tokens,
               "families": families, "case_count": len(selected), "calls": calls}
@@ -427,14 +429,16 @@ def load_freeze(path: Path, *, verify_materials: bool = True) -> dict:
                    "run.py": digest(Path(__file__).read_bytes()),
                    "analyse.py": digest((HERE / "analyse.py").read_bytes()),
                    "PROTOCOL.md": digest((HERE / "PROTOCOL.md").read_bytes()),
-                   "AMENDMENT-0.1.1.md": digest((HERE / "AMENDMENT-0.1.1.md").read_bytes())}
+                   "AMENDMENT-0.1.1.md": digest((HERE / "AMENDMENT-0.1.1.md").read_bytes()),
+                   "AMENDMENT-0.1.2.md": digest((HERE / "AMENDMENT-0.1.2.md").read_bytes())}
         files = [root / "grammar/EAL.g4", *(root / "src/eal").rglob("*.py")]
         current.update({file.relative_to(root).as_posix(): digest(file.read_bytes())
                         for file in files})
         if result["materials"] != current:
             raise ValueError("Study materials changed since freeze")
     names = list(result["models"])
-    if not (1 <= result["families"] <= 12 and names and set(names) <= set(MODELS)
+    if not (result.get("execution_policy") == "continue_after_terminal_outcome/1"
+            and 1 <= result["families"] <= 12 and names and set(names) <= set(MODELS)
             and result["models"] == {name: MODELS[name] for name in names}
             and 256 <= result["max_output_tokens"] <= 4096
             and 0 < result["max_usd"] <= 100):
@@ -597,8 +601,9 @@ def _safe_to_continue(events: list[dict]) -> None:
     outcomes = {event["call_id"]: event for event in events if event["kind"] == "outcome"}
     if pending - set(outcomes):
         raise RuntimeError("Unresolved pending call: reconcile provider billing and response before continuation; no automatic retry")
-    if any(event["result"] != "ok" for event in outcomes.values()):
-        raise RuntimeError("Invalid or failed prior call: inspect retained response before continuation")
+    # Every terminal outcome remains in its assigned denominator. Invalid,
+    # refused, provider-error and usage-unknown calls are not retried, but they
+    # do not prevent independent scheduled assignments from running.
 
 
 def _execute_locked(freeze_path: Path, ledger_path: Path, prior_path: Path | None = None) -> dict:
@@ -703,9 +708,10 @@ def _execute_locked(freeze_path: Path, ledger_path: Path, prior_path: Path | Non
         }, previous)
         spent += (outcome["cost_usd"] if outcome["cost_usd"] is not None else
                   call["reserved_usd"]) - call["reserved_usd"]
-        if outcome["result"] != "ok":
-            raise RuntimeError("Provider or response validation failed; call retained without retry. Inspect the ledger.")
-    return {"attempted": len(attempted_prior | attempted_current), "calls": len(calls),
+    terminal = {event["call_id"] for event in prior + ledger_events(ledger_path)
+                if event["kind"] == "outcome"}
+    return {"attempted": len(attempted_prior | attempted_current), "terminal": len(terminal),
+            "calls": len(calls),
             "conservative_spent_usd": round(spent, 5), "cap_usd": frozen["max_usd"]}
 
 
