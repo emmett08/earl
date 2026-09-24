@@ -5,8 +5,8 @@ engineering roots, three evidence states per root and four recipient arms per
 state. The roots are the analysis units. The twelve states are correlated
 within their roots. The files under
 `benchmarks/experiments/artifact-live-pilot/` are synthetic fixtures and must
-pass their independent brief/oracle review before model calls. The run has **not
-been executed against an API** in this environment.
+pass their independent brief/oracle review before model calls. The run was executed on 24 September 2026 after the protocol and synthetic
+inputs were frozen. See the [live results](eal2-artifact-live-results.md).
 
 The arms are `raw_eal` (source and complete acquired observation envelopes),
 `raw_graph` (the same source parsed into a typed JSON graph and the same
