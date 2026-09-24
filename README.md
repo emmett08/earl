@@ -111,6 +111,7 @@ For a reviewed source reused by another developer or a text-only model on the sa
 - [Why supplied arguments and evidence fail](docs/eal2-evidence-failure-analysis.md): a verified reanalysis of 180 retained model calls, five EAL/2 perturbation pairs, an executable bounded argument and a new discriminating investigation protocol.
 - [Negative findings and revision](docs/eal2-negative-revision-results.md): a registered sampled-finding method, explicit EAL/2 objections, 20 deterministic status transitions, research synthesis and a staged prospective pilot.
 - [Deployment research](docs/eal2-deployment-research.md): candidate EAL workflows, competing explanations and the evidence needed to choose a model, skill or tool route.
+- [Artifact handoff live pilot](docs/eal2-artifact-live-pilot.md): four new synthetic roots, twelve checked states, a frozen 48-request model plan, offline preflight and the explicit limits of its EAL/JSON comparison.
 - [Amortisation model](docs/eal2-amortisation.md): a bounded decision model for repeated use, source-review costs and compact recipient assessments.
 - [Skill arm](docs/eal2-skill-arm.md): a scoped instruction experiment and its relationship to the checked artifact route.
 - [Prospective deployment protocol](benchmarks/protocols/INV-EAL-DEPLOYMENT-001.json): the comparison needed to measure EAL-specific effects and cost on new tasks.

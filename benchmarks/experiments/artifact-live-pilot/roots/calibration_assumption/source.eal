@@ -1,0 +1,51 @@
+language "EAL/2";
+environment dosing_rig {
+  require "rig" == "DX-14";
+  require "run" == "S6";
+}
+tool flow_reader { version "1"; mode deterministic; }
+tool certificate_reader { version "1"; mode deterministic; }
+tool drift_reader { version "1"; mode deterministic; }
+tool crosscheck_reader { version "1"; mode deterministic; }
+evidence flow_record {
+  tool flow_reader; kind test; environment dosing_rig; max_age 3600;
+  require "run" == "S6";
+  require "max_error_pct" <= 2;
+}
+evidence calibration_certificate {
+  tool certificate_reader; kind validation; environment dosing_rig; max_age 3600;
+  require "rig" == "DX-14";
+  require "calibration_id" == "C-88";
+  require "passed" == true;
+}
+evidence drift_alert {
+  tool drift_reader; kind inspection; environment dosing_rig; max_age 3600;
+  require "rig" == "DX-14";
+  require "finding" == "offset_drift";
+}
+evidence independent_crosscheck {
+  tool crosscheck_reader; kind independent_check; environment dosing_rig; max_age 3600;
+  require "rig" == "DX-14";
+  require "finding" == "separate_reference_agrees";
+}
+assumption reference_current {
+  statement "The C-88 reference characterisation applies to DX-14 during run S6.";
+  environment dosing_rig;
+  validate calibration_certificate;
+  valid_from "2026-09-24T11:00:00Z";
+  valid_until "2026-09-24T13:00:00Z";
+}
+reasoning recorded_error {
+  method "structured/1";
+  rationale "The reported error qualifies the limited bench conclusion only while the separately validated reference assumption can be used. Independent crosscheck can answer the drift alert but does not authenticate the device.";
+}
+claim bounded_dosing_error {
+  statement "For DX-14 run S6, the reported dosing error is no greater than two percent under its applicable C-88 reference characterisation.";
+  environment dosing_rig;
+}
+argument flow_route {
+  conclusion bounded_dosing_error;
+  reasoning recorded_error; evidence flow_record; assumptions reference_current;
+}
+objection reference_drift { target assumption reference_current; evidence drift_alert; }
+objection separate_reference { target objection reference_drift; evidence independent_crosscheck; }

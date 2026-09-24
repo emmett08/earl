@@ -1,0 +1,29 @@
+{
+  "context": {
+    "loop": "HL-5",
+    "run": "Q17"
+  },
+  "observed_at": "2026-09-24T11:59:00Z",
+  "request": {
+    "context": {
+      "loop": "HL-5",
+      "run": "Q17"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "wiring_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "checked_connectors": 4,
+    "finding": "no_reversal_observed",
+    "inspection_complete": true,
+    "positions": {
+      "J1": "clear",
+      "J2": "clear",
+      "J3": "clear",
+      "J3_repeat": "clear"
+    },
+    "run": "Q17"
+  }
+}
