@@ -1,0 +1,163 @@
+{
+  "comparator_sha256": "181036b72b4a568136f2b6c414aa9ebdfeea3a28595f7b5265ff59749272564c",
+  "corpus_sha256": "e41664d36040accc0890c467fcdfa3644395eb0018fadde557c9c0455ca98ace",
+  "coverage": "Read all eight domain briefs, EAL source route/target/answer structures, graph predicates and 24 state records. Derived route statuses per state, then checked authored labels. Ran offline preflight: 800 assigned cases, 24/24 EAL/equal graph parity, 120/120 paired acquisition tamper rejections, zero model calls.",
+  "date_utc": "2026-09-24",
+  "genealogy": "The eight briefs are domain parameterisations of one generated two-positive-route, primary-targeted-alert, separate-resolution skeleton from one author. The four adverse supported states exercise qualifying alternatives; the other four exercise contested primary routes. This is selected developmental coverage, not eight independent graph mechanisms.",
+  "limitations": [
+    "Authored labels were visible; this is an unmasked AI review and not human adjudication.",
+    "Independence, findings, quantitative observations and acquisition are assertions in synthetic records; different named tools do not prove independent physical measurement.",
+    "Source EAL and generic graph share a fixture generator even though the checker is independent code.",
+    "The finite statuses do not establish current physical system behaviour."
+  ],
+  "reviewer": "grammar_review_codex",
+  "reviewer_type": "AI_agent_independent_of_fixture_author_unmasked_to_candidate_labels",
+  "schema": "eal2-deployment-800-second-independent-ai-review/1",
+  "states": [
+    {
+      "expected": "supported",
+      "rationale": "The scoped primary test reports 86 A, 49.2 V and 67 C, meeting every finite brief predicate. Its 11:58 record is within the 15-minute window; no primary_probe_overheat alert is active. The alternate finding is unqualified and is not needed.",
+      "root_id": "battery_bus",
+      "state_id": "initial"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_probe_overheat finding challenges only the primary route. The separately named alternate reader reports 86 A, 49.2 V and 67 C with independent_qualified for this asset and trial; that route remains usable while the primary is challenged.",
+      "root_id": "battery_bus",
+      "state_id": "adverse"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_probe_overheat alert remains, but a separate, in-scope resolution_reader record gives alarm_from_test_injection. It answers that exact targeted objection; the primary record still reports 86 A, 49.2 V and 67 C within the finite window.",
+      "root_id": "battery_bus",
+      "state_id": "restored"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The scoped primary test reports snapshot B481, WAL B500 and 1023 restored rows, meeting every finite brief predicate. Its 11:58 record is within the 15-minute window; no primary_wal_segment_missing alert is active. The alternate finding is unqualified and is not needed.",
+      "root_id": "sql_backup",
+      "state_id": "initial"
+    },
+    {
+      "expected": "contested",
+      "rationale": "The primary_wal_segment_missing finding challenges the primary route. The alternate reports snapshot B481, WAL B500 and 1023 restored rows but lacks independent_qualified, and there is no matching resolution. The primary route remains contested with no usable alternative.",
+      "root_id": "sql_backup",
+      "state_id": "adverse"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_wal_segment_missing alert remains, but a separate, in-scope resolution_reader record gives independent_replay_index_complete. It answers that exact targeted objection; the primary record still reports snapshot B481, WAL B500 and 1023 restored rows within the finite window.",
+      "root_id": "sql_backup",
+      "state_id": "restored"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The scoped primary test reports 103 ms p99, 100% monitored coverage and bypass false, meeting every finite brief predicate. Its 11:58 record is within the 15-minute window; no primary_interlock_bypass alert is active. The alternate finding is unqualified and is not needed.",
+      "root_id": "robot_estop",
+      "state_id": "initial"
+    },
+    {
+      "expected": "contested",
+      "rationale": "The primary_interlock_bypass finding challenges the primary route. The alternate reports 103 ms p99, 100% monitored coverage and bypass false but lacks independent_qualified, and there is no matching resolution. The primary route remains contested with no usable alternative.",
+      "root_id": "robot_estop",
+      "state_id": "adverse"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_interlock_bypass alert remains, but a separate, in-scope resolution_reader record gives harness_only_event. It answers that exact targeted objection; the primary record still reports 103 ms p99, 100% monitored coverage and bypass false within the finite window.",
+      "root_id": "robot_estop",
+      "state_id": "restored"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The scoped primary test reports pH 7.1, dose 3.5 mg/L and 24 samples, meeting every finite brief predicate. Its 11:58 record is within the 15-minute window; no primary_sensor_contamination alert is active. The alternate finding is unqualified and is not needed.",
+      "root_id": "water_dose",
+      "state_id": "initial"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_sensor_contamination finding challenges only the primary route. The separately named alternate reader reports pH 7.1, dose 3.5 mg/L and 24 samples with independent_qualified for this asset and trial; that route remains usable while the primary is challenged.",
+      "root_id": "water_dose",
+      "state_id": "adverse"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_sensor_contamination alert remains, but a separate, in-scope resolution_reader record gives independent_lab_assay_agrees. It answers that exact targeted objection; the primary record still reports pH 7.1, dose 3.5 mg/L and 24 samples within the finite window.",
+      "root_id": "water_dose",
+      "state_id": "restored"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The scoped primary test reports key K9, four attempts and zero duplicate charges, meeting every finite brief predicate. Its 11:58 record is within the 15-minute window; no primary_ledger_divergence alert is active. The alternate finding is unqualified and is not needed.",
+      "root_id": "payment_replay",
+      "state_id": "initial"
+    },
+    {
+      "expected": "contested",
+      "rationale": "The primary_ledger_divergence finding challenges the primary route. The alternate reports key K9, four attempts and zero duplicate charges but lacks independent_qualified, and there is no matching resolution. The primary route remains contested with no usable alternative.",
+      "root_id": "payment_replay",
+      "state_id": "adverse"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_ledger_divergence alert remains, but a separate, in-scope resolution_reader record gives independent_settlement_reconciled. It answers that exact targeted objection; the primary record still reports key K9, four attempts and zero duplicate charges within the finite window.",
+      "root_id": "payment_replay",
+      "state_id": "restored"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The scoped primary test reports 2800 ms throw, 15 mm clearance and locked true, meeting every finite brief predicate. Its 11:58 record is within the 15-minute window; no primary_turnout_lock_fault alert is active. The alternate finding is unqualified and is not needed.",
+      "root_id": "rail_switch",
+      "state_id": "initial"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_turnout_lock_fault finding challenges only the primary route. The separately named alternate reader reports 2800 ms throw, 15 mm clearance and locked true with independent_qualified for this asset and trial; that route remains usable while the primary is challenged.",
+      "root_id": "rail_switch",
+      "state_id": "adverse"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_turnout_lock_fault alert remains, but a separate, in-scope resolution_reader record gives separate_contact_inspection_clear. It answers that exact targeted objection; the primary record still reports 2800 ms throw, 15 mm clearance and locked true within the finite window.",
+      "root_id": "rail_switch",
+      "state_id": "restored"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The scoped primary test reports 5000 processed rows, zero gaps and checkpoint digest sha256:a43f, meeting every finite brief predicate. Its 11:58 record is within the 15-minute window; no primary_downstream_gap alert is active. The alternate finding is unqualified and is not needed.",
+      "root_id": "batch_pipeline",
+      "state_id": "initial"
+    },
+    {
+      "expected": "contested",
+      "rationale": "The primary_downstream_gap finding challenges the primary route. The alternate reports 5000 processed rows, zero gaps and checkpoint digest sha256:a43f but lacks independent_qualified, and there is no matching resolution. The primary route remains contested with no usable alternative.",
+      "root_id": "batch_pipeline",
+      "state_id": "adverse"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_downstream_gap alert remains, but a separate, in-scope resolution_reader record gives independent_replay_digest_matches. It answers that exact targeted objection; the primary record still reports 5000 processed rows, zero gaps and checkpoint digest sha256:a43f within the finite window.",
+      "root_id": "batch_pipeline",
+      "state_id": "restored"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The scoped primary test reports 4.2% THD, 82 C and 32 kW output, meeting every finite brief predicate. Its 11:58 record is within the 15-minute window; no primary_uncommanded_derating alert is active. The alternate finding is unqualified and is not needed.",
+      "root_id": "solar_inverter",
+      "state_id": "initial"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_uncommanded_derating finding challenges only the primary route. The separately named alternate reader reports 4.2% THD, 82 C and 32 kW output with independent_qualified for this asset and trial; that route remains usable while the primary is challenged.",
+      "root_id": "solar_inverter",
+      "state_id": "adverse"
+    },
+    {
+      "expected": "supported",
+      "rationale": "The primary_uncommanded_derating alert remains, but a separate, in-scope resolution_reader record gives separate_module_test_clear. It answers that exact targeted objection; the primary record still reports 4.2% THD, 82 C and 32 kW output within the finite window.",
+      "root_id": "solar_inverter",
+      "state_id": "restored"
+    }
+  ],
+  "status": "accepted_developmental"
+}

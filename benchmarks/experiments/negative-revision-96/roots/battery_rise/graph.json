@@ -1,0 +1,46 @@
+{
+  "absence_claim": "qualified_absence",
+  "absence_positive_route": true,
+  "bound": 8,
+  "context": {
+    "asset": "BP-84",
+    "run": "charge-Q3"
+  },
+  "defences": [],
+  "explanation": "Submitted test routes are provisional. An eligible violating sample challenges both; complete calibrated non-detection is a separate, limited claim.",
+  "id": "battery_rise",
+  "negative_claim": "violating_sample",
+  "objections": [
+    {
+      "premise": "violating_sample",
+      "target": "first_reader"
+    },
+    {
+      "premise": "violating_sample",
+      "target": "second_reader"
+    }
+  ],
+  "positive_routes": [
+    "first_reader",
+    "second_reader"
+  ],
+  "quantity": "temperature_difference",
+  "query": {
+    "detector_contract": {
+      "maximum_detection_limit": 0.1,
+      "minimum_sensitivity": 0.9
+    },
+    "end": 12,
+    "max_gap": 4,
+    "property": {
+      "operator": "lt",
+      "value": 8
+    },
+    "semantics": "sampled",
+    "start": 0
+  },
+  "schema": "negative-revision-equal-graph/1",
+  "scope": "charge-Q3",
+  "subject": "BP-84",
+  "unit": "delta_degC"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "eal2-deployment-800-a3-postcall-rubric/1",
+  "scope": "Exploratory independent-from-author AI review of all 32 final author products and 48 predeclared explanation slots. Reviewers see reference claims, statuses and synthetic records, but not model or treatment labels except information inherent in actual prompts and packets.",
+  "disclosure": "This rubric was fixed during A3 execution after aggregate request/failure counts were visible, before any A3 authored product or sampled explanation content was inspected by the study author. It is not a blinded prospective human review.",
+  "author_product": {
+    "unit": "One frozen final author slot and its actual linked three-turn transcript; a failed or absent final response remains in the census.",
+    "criteria": {
+      "claim_scope": "Names the specified claim and exact asset/trial scope without substituting another target.",
+      "positive_paths": "Represents both primary and independently acquired alternative routes with their quantitative and identity requirements, or gives a justified equivalent for the specific brief.",
+      "targeted_objection": "The monitoring finding challenges only its specified route; an unaffected qualified alternative may still support the claim.",
+      "matched_resolution": "A separately acquired answer removes only the matching challenge for the same asset/trial and does not erase unrelated objections.",
+      "provenance_time": "Preserves named collector/tool, evidence type, exact context and no-more-than-15-minute recency constraints for the bounded synthetic assessment.",
+      "three_state_status": "The actual authored candidate, evaluated on each of the three submitted synthetic record sets, warrants the independently reviewed reference status and a bounded explanation.",
+      "qualification": "Does not turn asserted synthetic acquisition records into proof of current physical behaviour or of future cluster state."
+    },
+    "rating": "faithful only if all applicable criteria pass for the actual final candidate and all three states; unfaithful for any material failure; unassessable when no final candidate/host packet exists. Report criterion booleans and concrete source/record references, not just a label. Invalid syntax or wrong wrapper is unfaithful if a response exists."
+  },
+  "explanation": {
+    "unit": "One assigned, predeclared recipient slot including its exact actual prompt, host packet if any, output, brief and source records. Failed or absent outputs stay selected.",
+    "criteria": {
+      "target_scope": "Addresses only the named claim and exact asset/trial, not a generic or stronger physical claim.",
+      "status": "The explained status agrees with the independently reviewed state and with the host-owned status where the actual packet assigns host authority.",
+      "decisive_evidence": "Names or accurately describes the evidence path that is decisive for that state; does not invent unavailable observations.",
+      "challenge_handling": "Correctly distinguishes the targeted adverse finding, surviving alternative route and separately matched resolution when material.",
+      "qualification": "Expresses the finite submitted-evidence and freshness limits; avoids a claim of present or future physical truth. A concise sentence need not list every field if it accurately preserves the decisive qualification.",
+      "recipient_format": "A malformed, absent or off-claim response cannot be faithful even if a host packet carried a correct status."
+    },
+    "rating": "faithful only if applicable criteria pass; unfaithful for material error or omitted decisive qualification; unassessable for failed/no response. Include a reason with precise prompt/record references. A host status may count as exact status while the recipient explanation remains unfaithful."
+  },
+  "review_process": "Two separate AI agents independently receive the same de-identified packets and this rubric, without the other's judgments or aggregates. Each returns per-ID criteria, rating and rationale. Record agreement and disagreements before any adjudication; do not treat this as human review or a full-population explanation estimate.",
+  "cost": "Review agent time/cost and any later human time must be logged separately. No all-in cost per faithful accepted decision follows from these sampled explanations or configured provider rates alone."
+}

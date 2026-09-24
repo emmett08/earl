@@ -1,0 +1,15 @@
+language "EAL/2";
+environment task_scope {
+  require "building" == "annex-4";
+  require "ahu" == "AHU-8";
+}
+tool flow_reader { version "1"; mode deterministic; }
+evidence balance {
+  tool flow_reader; kind measurement; environment task_scope; max_age 1800;
+  require "point" == "B2";
+  require "flow_l_s" >= 125;
+  require "sensor" == "P9";
+}
+reasoning registered_record { method "structured/1"; rationale "These imported records report only the stated bounded test, identity and operating point; the acquisition assertion requires independent authentication."; }
+claim accepted_record { statement "The B2 AHU-8 report gives an intake of at least 125 litres per second."; environment task_scope; }
+argument source_report { conclusion accepted_record; reasoning registered_record; evidence balance; }

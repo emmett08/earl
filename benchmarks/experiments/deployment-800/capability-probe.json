@@ -1,0 +1,39 @@
+{
+  "credential_retained": false,
+  "date_utc": "2026-09-24",
+  "limits": [
+    "Probe sent a smaller prompt than full trial cases",
+    "Function calling tested with reasoning_effort none",
+    "No claim about human authoring or telemetry truth"
+  ],
+  "luna": {
+    "configuration_sha256": "cdc2aba48ce0639bd8e1db4a9043b636a9429b76dfe0c1b802b4ec39512df048",
+    "configured_cost_usd": 5.62e-05,
+    "exact_root_claim_scope_request": true,
+    "input_tokens": 357,
+    "interface": "native_single_function",
+    "output_tokens": 41,
+    "returned_model": "gpt-6-luna"
+  },
+  "nano": {
+    "configuration_sha256": "9fdbd47af53dc2c839712f9200bd5cf9cd2aed340025ea81b849923b1530573d",
+    "configured_cost_usd": 1.5e-06,
+    "finish_reason": "stop",
+    "input_tokens": 11,
+    "interface": "text",
+    "output_tokens": 1,
+    "returned_model": "gpt-4.1-nano-2025-04-14"
+  },
+  "native_operation_sha256": "da9bf6c6f26a4c8091e228230535b7c4a80546d88d17c4491cfeab2cb659b090",
+  "schema": "eal2-deployment-800-capability-probe/1",
+  "sol": {
+    "configuration_sha256": "729f5fd545d8db04c23f753f76d9a0b3d0fad5f2feab56890c4795bb286c6d79",
+    "configured_cost_usd": 0.001124,
+    "exact_root_claim_scope_request": true,
+    "input_tokens": 357,
+    "interface": "native_single_function",
+    "output_tokens": 41,
+    "returned_model": "gpt-6-sol"
+  },
+  "status": "passed"
+}

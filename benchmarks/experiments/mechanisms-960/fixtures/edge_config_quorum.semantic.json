@@ -1,0 +1,122 @@
+{
+  "applications": {},
+  "arguments": {
+    "source_report": {
+      "assumptions": [],
+      "binding": null,
+      "conclusion": "accepted_record",
+      "evidence": [
+        "north_ack",
+        "south_ack"
+      ],
+      "name": "source_report",
+      "premises": [],
+      "reasoning": "registered_record"
+    }
+  },
+  "assumptions": {},
+  "claims": {
+    "accepted_record": {
+      "environment": "task_scope",
+      "name": "accepted_record",
+      "proposition": null,
+      "statement": "Both named edge zones report revision E19 for this rollout."
+    }
+  },
+  "declaration_count": 8,
+  "duplicates": [],
+  "environments": {
+    "task_scope": {
+      "name": "task_scope",
+      "predicates": [
+        {
+          "expected": "edge-map",
+          "operator": "==",
+          "path": "service"
+        },
+        {
+          "expected": "E19",
+          "operator": "==",
+          "path": "rollout"
+        }
+      ]
+    }
+  },
+  "evidence": {
+    "north_ack": {
+      "environment": "task_scope",
+      "input": {},
+      "kind": "ack",
+      "max_age": 1800.0,
+      "name": "north_ack",
+      "predicates": [
+        {
+          "expected": "north",
+          "operator": "==",
+          "path": "zone"
+        },
+        {
+          "expected": "E19",
+          "operator": "==",
+          "path": "revision"
+        },
+        {
+          "expected": true,
+          "operator": "==",
+          "path": "ack"
+        }
+      ],
+      "tool": "north_reader"
+    },
+    "south_ack": {
+      "environment": "task_scope",
+      "input": {},
+      "kind": "ack",
+      "max_age": 1800.0,
+      "name": "south_ack",
+      "predicates": [
+        {
+          "expected": "south",
+          "operator": "==",
+          "path": "zone"
+        },
+        {
+          "expected": "E19",
+          "operator": "==",
+          "path": "revision"
+        },
+        {
+          "expected": true,
+          "operator": "==",
+          "path": "ack"
+        }
+      ],
+      "tool": "south_reader"
+    }
+  },
+  "language": "EAL/2",
+  "lowering_diagnostics": [],
+  "objections": {},
+  "patterns": {},
+  "reasoning": {
+    "registered_record": {
+      "backing": [],
+      "method": "structured/1",
+      "name": "registered_record",
+      "predicates": [],
+      "rationale": "These imported records report only the stated bounded test, identity and operating point; the acquisition assertion requires independent authentication."
+    }
+  },
+  "tools": {
+    "north_reader": {
+      "mode": "deterministic",
+      "name": "north_reader",
+      "version": "1"
+    },
+    "south_reader": {
+      "mode": "deterministic",
+      "name": "south_reader",
+      "version": "1"
+    }
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "schema": "generic-argument-graph/1",
+  "id": "payment_replay",
+  "claim": "idempotency_record",
+  "scope": {
+    "asset": {
+      "type": "str",
+      "equals": "PAY-21"
+    },
+    "trial": {
+      "type": "str",
+      "equals": "duplicate-D2"
+    }
+  },
+  "evidence": {
+    "primary_reader": {
+      "tool_version": "1",
+      "mode": "deterministic",
+      "max_age_seconds": 900
+    },
+    "alternate_reader": {
+      "tool_version": "1",
+      "mode": "deterministic",
+      "max_age_seconds": 900
+    },
+    "alert_reader": {
+      "tool_version": "1",
+      "mode": "deterministic",
+      "max_age_seconds": 900
+    },
+    "resolution_reader": {
+      "tool_version": "1",
+      "mode": "deterministic",
+      "max_age_seconds": 900
+    }
+  },
+  "routes": [
+    {
+      "id": "positive_route",
+      "all": [
+        {
+          "op": "eq",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "asset"
+          ],
+          "value": "PAY-21"
+        },
+        {
+          "op": "eq",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "trial"
+          ],
+          "value": "duplicate-D2"
+        },
+        {
+          "op": "eq",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "retry_key"
+          ],
+          "value": "K9"
+        },
+        {
+          "op": "gte",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "attempt_count"
+          ],
+          "value": 4
+        },
+        {
+          "op": "eq",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "duplicate_charges"
+          ],
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "independent_route",
+      "all": [
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "asset"
+          ],
+          "value": "PAY-21"
+        },
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "trial"
+          ],
+          "value": "duplicate-D2"
+        },
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "retry_key"
+          ],
+          "value": "K9"
+        },
+        {
+          "op": "gte",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "attempt_count"
+          ],
+          "value": 4
+        },
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "duplicate_charges"
+          ],
+          "value": 0
+        },
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "finding"
+          ],
+          "value": "independent_qualified"
+        }
+      ]
+    }
+  ],
+  "objections": [
+    {
+      "id": "primary_ledger_divergence",
+      "target_route": "positive_route",
+      "when": [
+        {
+          "op": "eq",
+          "record": "alert_reader",
+          "path": [
+            "value",
+            "asset"
+          ],
+          "value": "PAY-21"
+        },
+        {
+          "op": "eq",
+          "record": "alert_reader",
+          "path": [
+            "value",
+            "finding"
+          ],
+          "value": "primary_ledger_divergence"
+        }
+      ],
+      "answers": [
+        {
+          "id": "independent_settlement_reconciled",
+          "all": [
+            {
+              "op": "eq",
+              "record": "resolution_reader",
+              "path": [
+                "value",
+                "asset"
+              ],
+              "value": "PAY-21"
+            },
+            {
+              "op": "eq",
+              "record": "resolution_reader",
+              "path": [
+                "value",
+                "trial"
+              ],
+              "value": "duplicate-D2"
+            },
+            {
+              "op": "eq",
+              "record": "resolution_reader",
+              "path": [
+                "value",
+                "finding"
+              ],
+              "value": "independent_settlement_reconciled"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

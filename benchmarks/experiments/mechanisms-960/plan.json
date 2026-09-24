@@ -1,0 +1,21 @@
+{
+  "schema": "eal2-mechanisms-960-plan/2",
+  "protocol_id": "INV-EAL-MECHANISMS-001",
+  "protocol_version": "0.1.0",
+  "amendment": "developmental-executable-v2",
+  "study_kind": "developmental",
+  "fixtures": "fixtures/manifest.json",
+  "provider": "provider-nano.toml",
+  "compact_reference": "compact-reference.md",
+  "long_reference": [
+    "docs/argument-model.md",
+    "docs/reasoning-modes.md",
+    "docs/typed-propositions.md"
+  ],
+  "order_seed": 20260924,
+  "max_output_tokens": 768,
+  "max_inflight": 6,
+  "max_prompt_bytes": 90000,
+  "max_configured_model_cost_usd": 5.0,
+  "accepted_response_models": ["gpt-4.1-nano-2025-04-14"]
+}

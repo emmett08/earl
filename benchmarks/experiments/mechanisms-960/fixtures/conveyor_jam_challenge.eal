@@ -1,0 +1,24 @@
+language "EAL/2";
+environment task_scope {
+  require "facility" == "sort-3";
+  require "conveyor" == "C7";
+}
+tool test_reader { version "1"; mode deterministic; }
+evidence test { tool test_reader; kind measurement; environment task_scope; max_age 1800;
+  require "parcels_per_min" >= 90;
+  require "passed" == true;
+}
+tool alert_reader { version "1"; mode deterministic; }
+evidence jam { tool alert_reader; kind measurement; environment task_scope; max_age 1800;
+  require "event" == "jam_observed";
+  require "active" == true;
+}
+tool diagnosis_reader { version "1"; mode deterministic; }
+evidence diagnosis { tool diagnosis_reader; kind measurement; environment task_scope; max_age 1800;
+  require "origin" == "drive_coupling_fault";
+  require "independently_checked" == true;
+}
+reasoning test_step { method "structured/1"; rationale "The finite test log supports its explicitly bounded result, conditional on the authored inference and acquisition identity."; }
+claim operational_record { statement "The C7 throughput test reports at least 90 parcels per minute without a qualifying objection."; environment task_scope; }
+argument primary_test { conclusion operational_record; reasoning test_step; evidence test; }
+objection recorded_alert { target claim operational_record; evidence jam; }

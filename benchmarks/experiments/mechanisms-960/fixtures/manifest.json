@@ -1,0 +1,4495 @@
+{
+  "review": {
+    "acquisition_status": "unsigned_synthetic_file_envelopes_only",
+    "genealogy_rationale": "Twenty-four newly written ordinary questions in four mechanism families, with different equipment, outcome relation, evidence conditions and source; related family members are correlated and selected, not independent population draws. Existing public examples were inspected before construction.",
+    "reference_status": "single_author_rule_plus_local_machine_crosscheck",
+    "reviewer_placeholders": [
+      "masked_reference_a",
+      "masked_reference_b"
+    ],
+    "status": "pending_independent_human_review"
+  },
+  "roots": [
+    {
+      "absent_status": "unsupported",
+      "brief": "Does the Orion API admission log identify the pinned image digest in the payments namespace at generation 34?",
+      "claim": "accepted_record",
+      "context": {
+        "cluster": "arc-1",
+        "namespace": "payments"
+      },
+      "eligibility_memo": "Source sha256:bb7eeb46feeb9fde6ff6952bae8316526dadcd1ce9c215e363f99eb96ed7b661; current task {\"cluster\":\"arc-1\",\"namespace\":\"payments\"} at 2026-09-24T12:10:00Z. Imported records admission=admission_reader/1 at 2026-09-24T12:05:00Z value-sha256:4fb8b26dbc59eab6 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "eligibility",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "cluster": "arc-1",
+          "namespace": "payments"
+        },
+        "decisive_basis": "The selected accepted_record status follows from the admitted admission records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "f335b9ec45f76d9f0c73418bbadf4265ffb60d983151649bd7b663785afef0aa",
+        "source_sha256": "bb7eeb46feeb9fde6ff6952bae8316526dadcd1ce9c215e363f99eb96ed7b661",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Admission generation and pinned image in a Kubernetes namespace; tool-version forgery",
+        "nearest_prior": "Prior release_provenance example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "rollout_admission",
+      "invalid_records": {
+        "admission": {
+          "context": {
+            "cluster": "arc-1",
+            "namespace": "payments"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cluster": "arc-1",
+              "namespace": "payments"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "admission_reader",
+            "tool_version": "0"
+          },
+          "value": {
+            "admission_verified": true,
+            "generation": 34,
+            "image": "sha256:d742",
+            "workload": "orion-api"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "cluster": "arc-1",
+          "namespace": "payments"
+        },
+        "records_sha256": "f335b9ec45f76d9f0c73418bbadf4265ffb60d983151649bd7b663785afef0aa",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "authored": true,
+        "mechanically_proved": false
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "request.tool_version",
+        "conditions": {
+          "admission": [
+            [
+              "workload",
+              "==",
+              "orion-api"
+            ],
+            [
+              "image",
+              "==",
+              "sha256:d742"
+            ],
+            [
+              "generation",
+              "==",
+              34
+            ],
+            [
+              "admission_verified",
+              "==",
+              true
+            ]
+          ]
+        },
+        "invalid": "unsupported",
+        "valid": "supported"
+      },
+      "semantic_view": "rollout_admission.semantic.json",
+      "source": "rollout_admission.eal",
+      "valid_records": {
+        "admission": {
+          "context": {
+            "cluster": "arc-1",
+            "namespace": "payments"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cluster": "arc-1",
+              "namespace": "payments"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "admission_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "admission_verified": true,
+            "generation": 34,
+            "image": "sha256:d742",
+            "workload": "orion-api"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Did relay R17's current commissioning trace record a trip below 45 ms for a test pulse of at least 610 A?",
+      "claim": "accepted_record",
+      "context": {
+        "relay": "R17",
+        "substation": "N10"
+      },
+      "eligibility_memo": "Source sha256:cad38b887046ce450ca2ad6290c348255608f3236af70312dad2a6ccfb8ecbec; current task {\"relay\":\"R17\",\"substation\":\"N10\"} at 2026-09-24T12:10:00Z. Imported records trip=relay_reader/1 at 2026-09-24T12:05:00Z value-sha256:0c3868a29ef6bd99 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "eligibility",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "relay": "R17",
+          "substation": "N10"
+        },
+        "decisive_basis": "The selected accepted_record status follows from the admitted trip records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "7399a3d9f4242306a2de8efb3af7832704cbd1f9a7a724648b4497ab0bd8d6fe",
+        "source_sha256": "cad38b887046ce450ca2ad6290c348255608f3236af70312dad2a6ccfb8ecbec",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Protective relay trip pulse and time criterion; expired commissioning trace",
+        "nearest_prior": "Prior thermal_soak freshness example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "relay_trip_window",
+      "invalid_records": {
+        "trip": {
+          "context": {
+            "relay": "R17",
+            "substation": "N10"
+          },
+          "observed_at": "2026-09-24T10:30:00Z",
+          "request": {
+            "context": {
+              "relay": "R17",
+              "substation": "N10"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "relay_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "commissioning": "C7",
+            "pulse_a": 645,
+            "trip_ms": 39
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "relay": "R17",
+          "substation": "N10"
+        },
+        "records_sha256": "7399a3d9f4242306a2de8efb3af7832704cbd1f9a7a724648b4497ab0bd8d6fe",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "authored": true,
+        "mechanically_proved": false
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "observed_at",
+        "conditions": {
+          "trip": [
+            [
+              "pulse_a",
+              ">=",
+              610
+            ],
+            [
+              "trip_ms",
+              "<",
+              45
+            ],
+            [
+              "commissioning",
+              "==",
+              "C7"
+            ]
+          ]
+        },
+        "invalid": "unsupported",
+        "valid": "supported"
+      },
+      "semantic_view": "relay_trip_window.semantic.json",
+      "source": "relay_trip_window.eal",
+      "valid_records": {
+        "trip": {
+          "context": {
+            "relay": "R17",
+            "substation": "N10"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "relay": "R17",
+              "substation": "N10"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "relay_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "commissioning": "C7",
+            "pulse_a": 645,
+            "trip_ms": 39
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Does the synthetic stroke report show chilled valve V6 reached at least 39 mm and seated on its sixth cycle?",
+      "claim": "accepted_record",
+      "context": {
+        "device": "V6",
+        "plant": "cold-loop-3"
+      },
+      "eligibility_memo": "Source sha256:ae6888c3de890ec874773b4d52f3fc4a995f4d71a9fda723922330d46c510f64; current task {\"device\":\"V6\",\"plant\":\"cold-loop-3\"} at 2026-09-24T12:10:00Z. Imported records stroke=stroke_reader/1 at 2026-09-24T12:05:00Z value-sha256:7361b4b017f3fcdf match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "eligibility",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "device": "V6",
+          "plant": "cold-loop-3"
+        },
+        "decisive_basis": "The selected accepted_record status follows from the admitted stroke records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "f997ba670084301f3e97241ed29460ef1ea1180c5d7ff4dd7a6fbe8e39f4c535",
+        "source_sha256": "ae6888c3de890ec874773b4d52f3fc4a995f4d71a9fda723922330d46c510f64",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Valve travel and seating switch; changed plant context",
+        "nearest_prior": "Prior thermal_soak freshness example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "chilled_valve_stroke",
+      "invalid_records": {
+        "stroke": {
+          "context": {
+            "device": "V6",
+            "plant": "cold-loop-2"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "device": "V6",
+              "plant": "cold-loop-3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "stroke_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "cycle": 6,
+            "seat_switch": true,
+            "travel_mm": 41
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "device": "V6",
+          "plant": "cold-loop-3"
+        },
+        "records_sha256": "f997ba670084301f3e97241ed29460ef1ea1180c5d7ff4dd7a6fbe8e39f4c535",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "authored": true,
+        "mechanically_proved": false
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "context",
+        "conditions": {
+          "stroke": [
+            [
+              "cycle",
+              "==",
+              6
+            ],
+            [
+              "travel_mm",
+              ">=",
+              39
+            ],
+            [
+              "seat_switch",
+              "==",
+              true
+            ]
+          ]
+        },
+        "invalid": "unsupported",
+        "valid": "supported"
+      },
+      "semantic_view": "chilled_valve_stroke.semantic.json",
+      "source": "chilled_valve_stroke.eal",
+      "valid_records": {
+        "stroke": {
+          "context": {
+            "device": "V6",
+            "plant": "cold-loop-3"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "device": "V6",
+              "plant": "cold-loop-3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "stroke_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "cycle": 6,
+            "seat_switch": true,
+            "travel_mm": 41
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Do two independent edge acknowledgements identify config revision E19 in both zones before claiming a completed propagation?",
+      "claim": "accepted_record",
+      "context": {
+        "rollout": "E19",
+        "service": "edge-map"
+      },
+      "eligibility_memo": "Source sha256:eff7a4054b3743b037e2dd4f1efd49fc43868bb9202f2be07ba443f6b6b1465d; current task {\"rollout\":\"E19\",\"service\":\"edge-map\"} at 2026-09-24T12:10:00Z. Imported records north_ack=north_reader/1 at 2026-09-24T12:05:00Z value-sha256:9481a7a557ab535d, south_ack=south_reader/1 at 2026-09-24T12:05:00Z value-sha256:6a2e37fa59ef612e match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "eligibility",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "rollout": "E19",
+          "service": "edge-map"
+        },
+        "decisive_basis": "The selected accepted_record status follows from the admitted north_ack, south_ack records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "bb7b906f11719ff95b7644367e7c3dc234278fe80f63c6dc98cc45af6af9d3ce",
+        "source_sha256": "eff7a4054b3743b037e2dd4f1efd49fc43868bb9202f2be07ba443f6b6b1465d",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Two edge-zone acknowledgements for one config revision; second-reader version swap",
+        "nearest_prior": "Prior release_provenance conjunction example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "edge_config_quorum",
+      "invalid_records": {
+        "north_ack": {
+          "context": {
+            "rollout": "E19",
+            "service": "edge-map"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rollout": "E19",
+              "service": "edge-map"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "north_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "ack": true,
+            "revision": "E19",
+            "zone": "north"
+          }
+        },
+        "south_ack": {
+          "context": {
+            "rollout": "E19",
+            "service": "edge-map"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rollout": "E19",
+              "service": "edge-map"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "south_reader",
+            "tool_version": "7"
+          },
+          "value": {
+            "ack": true,
+            "revision": "E19",
+            "zone": "south"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "rollout": "E19",
+          "service": "edge-map"
+        },
+        "records_sha256": "bb7b906f11719ff95b7644367e7c3dc234278fe80f63c6dc98cc45af6af9d3ce",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "authored": true,
+        "mechanically_proved": false
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "request.tool_version",
+        "conditions": {
+          "north_ack": [
+            [
+              "zone",
+              "==",
+              "north"
+            ],
+            [
+              "revision",
+              "==",
+              "E19"
+            ],
+            [
+              "ack",
+              "==",
+              true
+            ]
+          ],
+          "south_ack": [
+            [
+              "zone",
+              "==",
+              "south"
+            ],
+            [
+              "revision",
+              "==",
+              "E19"
+            ],
+            [
+              "ack",
+              "==",
+              true
+            ]
+          ]
+        },
+        "invalid": "unsupported",
+        "valid": "supported"
+      },
+      "semantic_view": "edge_config_quorum.semantic.json",
+      "source": "edge_config_quorum.eal",
+      "valid_records": {
+        "north_ack": {
+          "context": {
+            "rollout": "E19",
+            "service": "edge-map"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rollout": "E19",
+              "service": "edge-map"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "north_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "ack": true,
+            "revision": "E19",
+            "zone": "north"
+          }
+        },
+        "south_ack": {
+          "context": {
+            "rollout": "E19",
+            "service": "edge-map"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rollout": "E19",
+              "service": "edge-map"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "south_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "ack": true,
+            "revision": "E19",
+            "zone": "south"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Did a restore drill for object A72 match the expected digest and complete in less than 300 seconds?",
+      "claim": "accepted_record",
+      "context": {
+        "exercise": "D4",
+        "vault": "vault-C"
+      },
+      "eligibility_memo": "Source sha256:540af4d5de5f9b5b05751539d192b915ab364829b8a3b94e2aeb530c78ad7278; current task {\"exercise\":\"D4\",\"vault\":\"vault-C\"} at 2026-09-24T12:10:00Z. Imported records restore=restore_reader/1 at 2026-09-24T12:05:00Z value-sha256:57c3f5d500f084a2, approved=approval_reader/1 at 2026-09-24T12:05:00Z value-sha256:f66de5f14aeef119 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "eligibility",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "exercise": "D4",
+          "vault": "vault-C"
+        },
+        "decisive_basis": "The selected accepted_record status follows from the admitted restore, approved records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "5ffb16fb815682854af7c15ee3603dec54996947e52b02088cc37107da403797",
+        "source_sha256": "540af4d5de5f9b5b05751539d192b915ab364829b8a3b94e2aeb530c78ad7278",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Separate approved-digest and restore reports for one object plus duration; changed restore object identity",
+        "nearest_prior": "Prior release_provenance identity example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "archive_restore_identity",
+      "invalid_records": {
+        "approved": {
+          "context": {
+            "exercise": "D4",
+            "vault": "vault-C"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "exercise": "D4",
+              "vault": "vault-C"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "approval_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "approval_valid": true,
+            "digest": "sha256:12af",
+            "object": "A72"
+          }
+        },
+        "restore": {
+          "context": {
+            "exercise": "D4",
+            "vault": "vault-C"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "exercise": "D4",
+              "vault": "vault-C"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "restore_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "digest": "sha256:12af",
+            "elapsed_s": 274,
+            "match": true,
+            "object": "A73"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "exercise": "D4",
+          "vault": "vault-C"
+        },
+        "records_sha256": "5ffb16fb815682854af7c15ee3603dec54996947e52b02088cc37107da403797",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "authored": true,
+        "mechanically_proved": false
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "value.object",
+        "conditions": {
+          "approved": [
+            [
+              "object",
+              "==",
+              "A72"
+            ],
+            [
+              "digest",
+              "==",
+              "sha256:12af"
+            ],
+            [
+              "approval_valid",
+              "==",
+              true
+            ]
+          ],
+          "restore": [
+            [
+              "object",
+              "==",
+              "A72"
+            ],
+            [
+              "digest",
+              "==",
+              "sha256:12af"
+            ],
+            [
+              "elapsed_s",
+              "<",
+              300
+            ],
+            [
+              "match",
+              "==",
+              true
+            ]
+          ]
+        },
+        "invalid": "unsupported",
+        "valid": "supported"
+      },
+      "semantic_view": "archive_restore_identity.semantic.json",
+      "source": "archive_restore_identity.eal",
+      "valid_records": {
+        "approved": {
+          "context": {
+            "exercise": "D4",
+            "vault": "vault-C"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "exercise": "D4",
+              "vault": "vault-C"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "approval_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "approval_valid": true,
+            "digest": "sha256:12af",
+            "object": "A72"
+          }
+        },
+        "restore": {
+          "context": {
+            "exercise": "D4",
+            "vault": "vault-C"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "exercise": "D4",
+              "vault": "vault-C"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "restore_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "digest": "sha256:12af",
+            "elapsed_s": 274,
+            "match": true,
+            "object": "A72"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Does the P9 sensor's AHU-8 intake balance report show at least 125 litres per second on operating point B2?",
+      "claim": "accepted_record",
+      "context": {
+        "ahu": "AHU-8",
+        "building": "annex-4"
+      },
+      "eligibility_memo": "Source sha256:dc3fbb7b147121611f08919caced06a85de3044fafeeb1497a788640723774bf; current task {\"ahu\":\"AHU-8\",\"building\":\"annex-4\"} at 2026-09-24T12:10:00Z. Imported records balance=flow_reader/1 at 2026-09-24T12:05:00Z value-sha256:e7ddf6ba98f7f67d match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "eligibility",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "ahu": "AHU-8",
+          "building": "annex-4"
+        },
+        "decisive_basis": "The selected accepted_record status follows from the admitted balance records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "5508a79c0299ec762e35a2d39e380e28a6c04c2a75624c403912ff55e8fb7b9e",
+        "source_sha256": "dc3fbb7b147121611f08919caced06a85de3044fafeeb1497a788640723774bf",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Air handler operating point and intake flow; point changes while measurement is constant",
+        "nearest_prior": "Prior numerical threshold record example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "air_handler_flow",
+      "invalid_records": {
+        "balance": {
+          "context": {
+            "ahu": "AHU-8",
+            "building": "annex-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "ahu": "AHU-8",
+              "building": "annex-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "flow_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "flow_l_s": 132,
+            "point": "B1",
+            "sensor": "P9"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "accepted_record",
+        "context": {
+          "ahu": "AHU-8",
+          "building": "annex-4"
+        },
+        "records_sha256": "5508a79c0299ec762e35a2d39e380e28a6c04c2a75624c403912ff55e8fb7b9e",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "authored": true,
+        "mechanically_proved": false
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "value.point",
+        "conditions": {
+          "balance": [
+            [
+              "point",
+              "==",
+              "B2"
+            ],
+            [
+              "flow_l_s",
+              ">=",
+              125
+            ],
+            [
+              "sensor",
+              "==",
+              "P9"
+            ]
+          ]
+        },
+        "invalid": "unsupported",
+        "valid": "supported"
+      },
+      "semantic_view": "air_handler_flow.semantic.json",
+      "source": "air_handler_flow.eal",
+      "valid_records": {
+        "balance": {
+          "context": {
+            "ahu": "AHU-8",
+            "building": "annex-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "ahu": "AHU-8",
+              "building": "annex-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "flow_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "flow_l_s": 132,
+            "point": "B2",
+            "sensor": "P9"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "For motor M73's identified four-sample run, was RMS vibration velocity about zero at most 0.43 m/s?",
+      "claim": "computed_record",
+      "context": {
+        "motor": "M73",
+        "site": "drive-5"
+      },
+      "eligibility_memo": "Source sha256:45ea3aad98ae3bbaa6c349d2fc2817ebd1f4ee090fe20559745c49e0cb245cd9; current task {\"motor\":\"M73\",\"site\":\"drive-5\"} at 2026-09-24T12:10:00Z. Imported records numerical_input=numerical_reader/1 at 2026-09-24T12:05:00Z value-sha256:1f32affd2016d838 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "typed_numerical",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "computed_record",
+        "context": {
+          "motor": "M73",
+          "site": "drive-5"
+        },
+        "decisive_basis": "The selected computed_record status follows from the admitted numerical_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "0ff94eb7ddc07f117ac3c1487968078584889775abba12ad33535950be67096b",
+        "source_sha256": "45ea3aad98ae3bbaa6c349d2fc2817ebd1f4ee090fe20559745c49e0cb245cd9",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Different four-sample motor sign pattern, threshold and run binding; same RMS contract",
+        "nearest_prior": "Prior vibration-rms example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "bearing_vibration_rms",
+      "invalid_records": {
+        "numerical_input": {
+          "context": {
+            "motor": "M73",
+            "site": "drive-5"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "motor": "M73",
+              "site": "drive-5"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/rms/1",
+            "payload": {
+              "origin": 0,
+              "samples": [
+                0.2,
+                -0.3,
+                0.4,
+                -0.5
+              ]
+            },
+            "quantity": "velocity",
+            "schema": "EAL/typed-input/1",
+            "scope": "run-M73-3",
+            "subject": "M73",
+            "unit": "m/s",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "computed_record",
+        "context": {
+          "motor": "M73",
+          "site": "drive-5"
+        },
+        "records_sha256": "0ff94eb7ddc07f117ac3c1487968078584889775abba12ad33535950be67096b",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": "eal.extensions:example_registry",
+      "method_result": {
+        "method": "engineering/rms/1",
+        "output": {
+          "rms": 0.3674234614174767,
+          "sample_size": 4
+        },
+        "qualification": "Calculation from supplied typed values; acquisition and engineering assumptions unverified",
+        "query": {
+          "origin": 0
+        },
+        "scope": "run-M73-4",
+        "subject": "M73"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "value.scope",
+        "expected_value": 0.3674234614174767,
+        "invalid": "unsupported",
+        "method": "engineering/rms/1",
+        "operator": "<=",
+        "query": {
+          "origin": 0
+        },
+        "required_scope": "run-M73-4",
+        "required_subject": "M73",
+        "result_path": "rms",
+        "threshold": 0.43,
+        "valid": "supported"
+      },
+      "semantic_view": "bearing_vibration_rms.semantic.json",
+      "source": "bearing_vibration_rms.eal",
+      "valid_records": {
+        "numerical_input": {
+          "context": {
+            "motor": "M73",
+            "site": "drive-5"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "motor": "M73",
+              "site": "drive-5"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/rms/1",
+            "payload": {
+              "origin": 0,
+              "samples": [
+                0.2,
+                -0.3,
+                0.4,
+                -0.5
+              ]
+            },
+            "quantity": "velocity",
+            "schema": "EAL/typed-input/1",
+            "scope": "run-M73-4",
+            "subject": "M73",
+            "unit": "m/s",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "In the declared randomised sump pump trial, did treated flow exceed control flow by at least 0.004 m3/s?",
+      "claim": "computed_record",
+      "context": {
+        "plant": "sump-2",
+        "trial": "P9"
+      },
+      "eligibility_memo": "Source sha256:f0eed3b3ccb9ab8861c472d3efb2af0ffcd96f9ad1904585955003f1ba17bea5; current task {\"plant\":\"sump-2\",\"trial\":\"P9\"} at 2026-09-24T12:10:00Z. Imported records numerical_input=numerical_reader/1 at 2026-09-24T12:05:00Z value-sha256:3965c70424fcdcfa match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "typed_numerical",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "computed_record",
+        "context": {
+          "plant": "sump-2",
+          "trial": "P9"
+        },
+        "decisive_basis": "The selected computed_record status follows from the admitted numerical_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "d8cb4131656b6477dc4dc8cd8fd636f704046aeabdabf892c07b813664df408d",
+        "source_sha256": "f0eed3b3ccb9ab8861c472d3efb2af0ffcd96f9ad1904585955003f1ba17bea5",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Randomised flow contrast in m3/s; imported reader version changes",
+        "nearest_prior": "Prior pressure-trial example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "sump_pump_trial",
+      "invalid_records": {
+        "numerical_input": {
+          "context": {
+            "plant": "sump-2",
+            "trial": "P9"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "plant": "sump-2",
+              "trial": "P9"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "0"
+          },
+          "value": {
+            "method": "causal/1",
+            "payload": {
+              "assignment": "randomised",
+              "control": [
+                0.027,
+                0.028,
+                0.026
+              ],
+              "treatment": [
+                0.032,
+                0.034,
+                0.033
+              ]
+            },
+            "quantity": "volumetric_flow",
+            "schema": "EAL/typed-input/1",
+            "scope": "trial-P9",
+            "subject": "pump-S2",
+            "unit": "m3/s",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "computed_record",
+        "context": {
+          "plant": "sump-2",
+          "trial": "P9"
+        },
+        "records_sha256": "d8cb4131656b6477dc4dc8cd8fd636f704046aeabdabf892c07b813664df408d",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "method": "causal/1",
+        "output": {
+          "assumptions_verified": false,
+          "control_mean": 0.027,
+          "control_size": 3,
+          "estimate": 0.006000000000000002,
+          "sample_size": 6,
+          "standard_error": 0.0008164965809277268,
+          "treatment_mean": 0.033,
+          "treatment_size": 3
+        },
+        "qualification": "Calculation from supplied typed values; acquisition and engineering assumptions unverified",
+        "query": {
+          "assignment": "randomised"
+        },
+        "scope": "trial-P9",
+        "subject": "pump-S2"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "request.tool_version",
+        "expected_value": 0.006,
+        "invalid": "unsupported",
+        "method": "causal/1",
+        "operator": ">=",
+        "query": {
+          "assignment": "randomised"
+        },
+        "required_scope": "trial-P9",
+        "required_subject": "pump-S2",
+        "result_path": "estimate",
+        "threshold": 0.004,
+        "valid": "supported"
+      },
+      "semantic_view": "sump_pump_trial.semantic.json",
+      "source": "sump_pump_trial.eal",
+      "valid_records": {
+        "numerical_input": {
+          "context": {
+            "plant": "sump-2",
+            "trial": "P9"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "plant": "sump-2",
+              "trial": "P9"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "causal/1",
+            "payload": {
+              "assignment": "randomised",
+              "control": [
+                0.027,
+                0.028,
+                0.026
+              ],
+              "treatment": [
+                0.032,
+                0.034,
+                0.033
+              ]
+            },
+            "quantity": "volumetric_flow",
+            "schema": "EAL/typed-input/1",
+            "scope": "trial-P9",
+            "subject": "pump-S2",
+            "unit": "m3/s",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Under the stated binomial sampling model, does the 95% Wilson lower bound for successful queue acknowledgements in 400 trials exceed 0.96?",
+      "claim": "computed_record",
+      "context": {
+        "cohort": "Q7",
+        "service": "task-queue"
+      },
+      "eligibility_memo": "Source sha256:1ef13fa6bfe01edc3de81cab6620db4c13d63e213ffb9edd680d5228c0b2aebf; current task {\"cohort\":\"Q7\",\"service\":\"task-queue\"} at 2026-09-24T12:10:00Z. Imported records numerical_input=numerical_reader/1 at 2026-09-24T12:05:00Z value-sha256:1beca7c4a29b93c7 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "typed_numerical",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "computed_record",
+        "context": {
+          "cohort": "Q7",
+          "service": "task-queue"
+        },
+        "decisive_basis": "The selected computed_record status follows from the admitted numerical_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "c762006606b8a11986aa69dd8d549ceb8e7381b6b4611da32f83a86639fcf3ad",
+        "source_sha256": "1ef13fa6bfe01edc3de81cab6620db4c13d63e213ffb9edd680d5228c0b2aebf",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Queue acknowledgement Wilson interval at 400 trials; subject mismatch",
+        "nearest_prior": "Prior mixed-reasoning inductive example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "queue_ack_lower_bound",
+      "invalid_records": {
+        "numerical_input": {
+          "context": {
+            "cohort": "Q7",
+            "service": "task-queue"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cohort": "Q7",
+              "service": "task-queue"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "inductive/1",
+            "payload": {
+              "confidence": 0.95,
+              "successes": 397,
+              "trials": 400
+            },
+            "quantity": "probability",
+            "schema": "EAL/typed-input/1",
+            "scope": "ack-Q7-400",
+            "subject": "queue-Q6",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "computed_record",
+        "context": {
+          "cohort": "Q7",
+          "service": "task-queue"
+        },
+        "records_sha256": "c762006606b8a11986aa69dd8d549ceb8e7381b6b4611da32f83a86639fcf3ad",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "method": "inductive/1",
+        "output": {
+          "assumptions_verified": false,
+          "confidence": 0.95,
+          "estimate": 0.9925,
+          "interpretation": "approximate_frequentist",
+          "lower": 0.978184279275968,
+          "method": "wilson_score",
+          "sample_size": 400,
+          "successes": 397,
+          "upper": 0.99744611080475
+        },
+        "qualification": "Calculation from supplied typed values; acquisition and engineering assumptions unverified",
+        "query": {
+          "confidence": 0.95
+        },
+        "scope": "ack-Q7-400",
+        "subject": "queue-Q7"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "value.subject",
+        "expected_value": 0.9779,
+        "invalid": "unsupported",
+        "method": "inductive/1",
+        "operator": ">",
+        "query": {
+          "confidence": 0.95
+        },
+        "required_scope": "ack-Q7-400",
+        "required_subject": "queue-Q7",
+        "result_path": "lower",
+        "threshold": 0.96,
+        "valid": "supported"
+      },
+      "semantic_view": "queue_ack_lower_bound.semantic.json",
+      "source": "queue_ack_lower_bound.eal",
+      "valid_records": {
+        "numerical_input": {
+          "context": {
+            "cohort": "Q7",
+            "service": "task-queue"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cohort": "Q7",
+              "service": "task-queue"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "inductive/1",
+            "payload": {
+              "confidence": 0.95,
+              "successes": 397,
+              "trials": 400
+            },
+            "quantity": "probability",
+            "schema": "EAL/typed-input/1",
+            "scope": "ack-Q7-400",
+            "subject": "queue-Q7",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Within the supplied affine dryer model and its fixed exogenous terms, does setting heater_power to 4 predict outlet_delta at most 9 K?",
+      "claim": "computed_record",
+      "context": {
+        "machine": "dryer-11",
+        "model": "D2"
+      },
+      "eligibility_memo": "Source sha256:f178dc3e99eb21051d86c1b43a5fb1662a35b38502d1308da41a7024db7d6755; current task {\"machine\":\"dryer-11\",\"model\":\"D2\"} at 2026-09-24T12:10:00Z. Imported records numerical_input=numerical_reader/1 at 2026-09-24T12:05:00Z value-sha256:d1ffe9616ee02c87 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "typed_numerical",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "computed_record",
+        "context": {
+          "machine": "dryer-11",
+          "model": "D2"
+        },
+        "decisive_basis": "The selected computed_record status follows from the admitted numerical_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "9a9acdf1fc85a9db8e61d5dcf12a2c8c084a2800490d9110a0fab6822b384127",
+        "source_sha256": "f178dc3e99eb21051d86c1b43a5fb1662a35b38502d1308da41a7024db7d6755",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Dryer heater to outlet-temperature two-node affine model; stale model record",
+        "nearest_prior": "Prior vent_model example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "dryer_intervention",
+      "invalid_records": {
+        "numerical_input": {
+          "context": {
+            "machine": "dryer-11",
+            "model": "D2"
+          },
+          "observed_at": "2026-09-24T10:00:00Z",
+          "request": {
+            "context": {
+              "machine": "dryer-11",
+              "model": "D2"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "counterfactual/1",
+            "payload": {
+              "intervention": {
+                "value": 4,
+                "variable": "heater_power"
+              },
+              "outcome": "outlet_delta",
+              "variables": {
+                "heater_power": {
+                  "coefficients": {},
+                  "intercept": 2,
+                  "noise": 0
+                },
+                "outlet_delta": {
+                  "coefficients": {
+                    "heater_power": 2
+                  },
+                  "intercept": 1,
+                  "noise": 0
+                }
+              }
+            },
+            "quantity": "temperature_difference",
+            "schema": "EAL/typed-input/1",
+            "scope": "model-D2",
+            "subject": "dryer-11",
+            "unit": "K",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "computed_record",
+        "context": {
+          "machine": "dryer-11",
+          "model": "D2"
+        },
+        "records_sha256": "9a9acdf1fc85a9db8e61d5dcf12a2c8c084a2800490d9110a0fab6822b384127",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "method": "counterfactual/1",
+        "output": {
+          "assumptions_verified": false,
+          "counterfactual": 9,
+          "counterfactual_values": {
+            "heater_power": 4,
+            "outlet_delta": 9
+          },
+          "difference": 4,
+          "evaluation_order": [
+            "heater_power",
+            "outlet_delta"
+          ],
+          "factual": 5,
+          "factual_values": {
+            "heater_power": 2,
+            "outlet_delta": 5
+          },
+          "outcome": "outlet_delta"
+        },
+        "qualification": "Calculation from supplied typed values; acquisition and engineering assumptions unverified",
+        "query": {
+          "intervention": {
+            "value": 4,
+            "variable": "heater_power"
+          },
+          "outcome": "outlet_delta",
+          "variables": {
+            "heater_power": {
+              "coefficients": {},
+              "intercept": 2,
+              "noise": 0
+            },
+            "outlet_delta": {
+              "coefficients": {
+                "heater_power": 2
+              },
+              "intercept": 1,
+              "noise": 0
+            }
+          }
+        },
+        "scope": "model-D2",
+        "subject": "dryer-11"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "observed_at",
+        "expected_value": 9,
+        "invalid": "unsupported",
+        "method": "counterfactual/1",
+        "operator": "<=",
+        "query": {
+          "intervention": {
+            "value": 4,
+            "variable": "heater_power"
+          },
+          "outcome": "outlet_delta",
+          "variables": {
+            "heater_power": {
+              "coefficients": {},
+              "intercept": 2,
+              "noise": 0
+            },
+            "outlet_delta": {
+              "coefficients": {
+                "heater_power": 2
+              },
+              "intercept": 1,
+              "noise": 0
+            }
+          }
+        },
+        "required_scope": "model-D2",
+        "required_subject": "dryer-11",
+        "result_path": "counterfactual",
+        "threshold": 9,
+        "valid": "supported"
+      },
+      "semantic_view": "dryer_intervention.semantic.json",
+      "source": "dryer_intervention.eal",
+      "valid_records": {
+        "numerical_input": {
+          "context": {
+            "machine": "dryer-11",
+            "model": "D2"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "machine": "dryer-11",
+              "model": "D2"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "counterfactual/1",
+            "payload": {
+              "intervention": {
+                "value": 4,
+                "variable": "heater_power"
+              },
+              "outcome": "outlet_delta",
+              "variables": {
+                "heater_power": {
+                  "coefficients": {},
+                  "intercept": 2,
+                  "noise": 0
+                },
+                "outlet_delta": {
+                  "coefficients": {
+                    "heater_power": 2
+                  },
+                  "intercept": 1,
+                  "noise": 0
+                }
+              }
+            },
+            "quantity": "temperature_difference",
+            "schema": "EAL/typed-input/1",
+            "scope": "model-D2",
+            "subject": "dryer-11",
+            "unit": "K",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "For the stipulated finite fault model given the phase-alert pattern, is the leading fault hypothesis posterior at least 0.70?",
+      "claim": "computed_record",
+      "context": {
+        "episode": "F8",
+        "line": "converter-4"
+      },
+      "eligibility_memo": "Source sha256:2ddc73ef3df565a4a46b5725da5a34d275a8d6cdca2a1569dfecea8c9dfafddd; current task {\"episode\":\"F8\",\"line\":\"converter-4\"} at 2026-09-24T12:10:00Z. Imported records numerical_input=numerical_reader/1 at 2026-09-24T12:05:00Z value-sha256:691ccd994bd354d0 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "typed_numerical",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "computed_record",
+        "context": {
+          "episode": "F8",
+          "line": "converter-4"
+        },
+        "decisive_basis": "The selected computed_record status follows from the admitted numerical_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "03c4753984d2b6f52288a243f4447b91f0c616215e8ea75be8e62430d128317f",
+        "source_sha256": "2ddc73ef3df565a4a46b5725da5a34d275a8d6cdca2a1569dfecea8c9dfafddd",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Finite phase-alert hypothesis posterior; method version mismatch",
+        "nearest_prior": "Prior mixed-reasoning abductive example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "inverter_fault_posterior",
+      "invalid_records": {
+        "numerical_input": {
+          "context": {
+            "episode": "F8",
+            "line": "converter-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "episode": "F8",
+              "line": "converter-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "abductive/2",
+            "payload": {
+              "candidates": [
+                {
+                  "likelihood": 0.8,
+                  "name": "sensor",
+                  "prior": 0.6
+                },
+                {
+                  "likelihood": 0.2,
+                  "name": "winding",
+                  "prior": 0.4
+                }
+              ],
+              "observed": "phase_alert"
+            },
+            "quantity": "probability",
+            "schema": "EAL/typed-input/1",
+            "scope": "fault-model-F8",
+            "subject": "converter-4",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "computed_record",
+        "context": {
+          "episode": "F8",
+          "line": "converter-4"
+        },
+        "records_sha256": "03c4753984d2b6f52288a243f4447b91f0c616215e8ea75be8e62430d128317f",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "method": "abductive/1",
+        "output": {
+          "assumptions_verified": false,
+          "best": "sensor",
+          "best_posterior": 0.8571428571428571,
+          "log_evidence_probability": -0.579818495252942,
+          "posterior": {
+            "sensor": 0.8571428571428571,
+            "winding": 0.14285714285714288
+          },
+          "ties": []
+        },
+        "qualification": "Calculation from supplied typed values; acquisition and engineering assumptions unverified",
+        "query": {
+          "candidates": [
+            {
+              "likelihood": 0.8,
+              "name": "sensor",
+              "prior": 0.6
+            },
+            {
+              "likelihood": 0.2,
+              "name": "winding",
+              "prior": 0.4
+            }
+          ],
+          "observed": "phase_alert"
+        },
+        "scope": "fault-model-F8",
+        "subject": "converter-4"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "value.method",
+        "expected_value": 0.8571428571428571,
+        "invalid": "unsupported",
+        "method": "abductive/1",
+        "operator": ">=",
+        "query": {
+          "candidates": [
+            {
+              "likelihood": 0.8,
+              "name": "sensor",
+              "prior": 0.6
+            },
+            {
+              "likelihood": 0.2,
+              "name": "winding",
+              "prior": 0.4
+            }
+          ],
+          "observed": "phase_alert"
+        },
+        "required_scope": "fault-model-F8",
+        "required_subject": "converter-4",
+        "result_path": "best_posterior",
+        "threshold": 0.7,
+        "valid": "supported"
+      },
+      "semantic_view": "inverter_fault_posterior.semantic.json",
+      "source": "inverter_fault_posterior.eal",
+      "valid_records": {
+        "numerical_input": {
+          "context": {
+            "episode": "F8",
+            "line": "converter-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "episode": "F8",
+              "line": "converter-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "abductive/1",
+            "payload": {
+              "candidates": [
+                {
+                  "likelihood": 0.8,
+                  "name": "sensor",
+                  "prior": 0.6
+                },
+                {
+                  "likelihood": 0.2,
+                  "name": "winding",
+                  "prior": 0.4
+                }
+              ],
+              "observed": "phase_alert"
+            },
+            "quantity": "probability",
+            "schema": "EAL/typed-input/1",
+            "scope": "fault-model-F8",
+            "subject": "converter-4",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "For the four predeclared fixture features, does candidate C21 match at least three quarters of the reference values exactly?",
+      "claim": "computed_record",
+      "context": {
+        "bench": "assembly-7",
+        "candidate": "C21"
+      },
+      "eligibility_memo": "Source sha256:8306ae5f19c2ef419872bbbb65aadc5d09225a948f9cd3a3062b62cf683fb254; current task {\"bench\":\"assembly-7\",\"candidate\":\"C21\"} at 2026-09-24T12:10:00Z. Imported records numerical_input=numerical_reader/1 at 2026-09-24T12:05:00Z value-sha256:2f05eff605c8adb5 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "typed_numerical",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "computed_record",
+        "context": {
+          "bench": "assembly-7",
+          "candidate": "C21"
+        },
+        "decisive_basis": "The selected computed_record status follows from the admitted numerical_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "1b95c39d4a8c99542da47c9282d8bf177036109c47d73b1296af15e90cba367f",
+        "source_sha256": "8306ae5f19c2ef419872bbbb65aadc5d09225a948f9cd3a3062b62cf683fb254",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Exact four-feature fixture fraction; candidate context mismatch",
+        "nearest_prior": "Prior mixed-reasoning analogical example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "fixture_feature_match",
+      "invalid_records": {
+        "numerical_input": {
+          "context": {
+            "bench": "assembly-7",
+            "candidate": "C20"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "bench": "assembly-7",
+              "candidate": "C21"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "analogical/1",
+            "payload": {
+              "relevant_features": [
+                "mount",
+                "drive",
+                "diameter",
+                "firmware"
+              ],
+              "source": {
+                "diameter": 12,
+                "drive": "dual",
+                "firmware": "A",
+                "mount": "M6"
+              },
+              "target": {
+                "diameter": 12,
+                "drive": "dual",
+                "firmware": "B",
+                "mount": "M6"
+              }
+            },
+            "quantity": "dimensionless",
+            "schema": "EAL/typed-input/1",
+            "scope": "feature-check-C21",
+            "subject": "C21",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "computed_record",
+        "context": {
+          "bench": "assembly-7",
+          "candidate": "C21"
+        },
+        "records_sha256": "1b95c39d4a8c99542da47c9282d8bf177036109c47d73b1296af15e90cba367f",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "method": "analogical/1",
+        "output": {
+          "assumptions_verified": false,
+          "complete": true,
+          "feature_count": 4,
+          "interpretation": "feature_correspondence",
+          "match_fraction": 0.75,
+          "matched": 3,
+          "mismatches": [
+            "firmware"
+          ],
+          "missing": []
+        },
+        "qualification": "Calculation from supplied typed values; acquisition and engineering assumptions unverified",
+        "query": {
+          "relevant_features": [
+            "mount",
+            "drive",
+            "diameter",
+            "firmware"
+          ],
+          "source": {
+            "diameter": 12,
+            "drive": "dual",
+            "firmware": "A",
+            "mount": "M6"
+          },
+          "target": {
+            "diameter": 12,
+            "drive": "dual",
+            "firmware": "B",
+            "mount": "M6"
+          }
+        },
+        "scope": "feature-check-C21",
+        "subject": "C21"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "context",
+        "expected_value": 0.75,
+        "invalid": "unsupported",
+        "method": "analogical/1",
+        "operator": ">=",
+        "query": {
+          "relevant_features": [
+            "mount",
+            "drive",
+            "diameter",
+            "firmware"
+          ],
+          "source": {
+            "diameter": 12,
+            "drive": "dual",
+            "firmware": "A",
+            "mount": "M6"
+          },
+          "target": {
+            "diameter": 12,
+            "drive": "dual",
+            "firmware": "B",
+            "mount": "M6"
+          }
+        },
+        "required_scope": "feature-check-C21",
+        "required_subject": "C21",
+        "result_path": "match_fraction",
+        "threshold": 0.75,
+        "valid": "supported"
+      },
+      "semantic_view": "fixture_feature_match.semantic.json",
+      "source": "fixture_feature_match.eal",
+      "valid_records": {
+        "numerical_input": {
+          "context": {
+            "bench": "assembly-7",
+            "candidate": "C21"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "bench": "assembly-7",
+              "candidate": "C21"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "numerical_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "analogical/1",
+            "payload": {
+              "relevant_features": [
+                "mount",
+                "drive",
+                "diameter",
+                "firmware"
+              ],
+              "source": {
+                "diameter": 12,
+                "drive": "dual",
+                "firmware": "A",
+                "mount": "M6"
+              },
+              "target": {
+                "diameter": 12,
+                "drive": "dual",
+                "firmware": "B",
+                "mount": "M6"
+              }
+            },
+            "quantity": "dimensionless",
+            "schema": "EAL/typed-input/1",
+            "scope": "feature-check-C21",
+            "subject": "C21",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "In the finite fuel-filter sample sequence, can the calibrated 0.35 limit detector support non-detection of normalised particle scores at or above 0.4?",
+      "claim": "sampled_finding",
+      "context": {
+        "batch": "F8",
+        "rig": "filter-F2"
+      },
+      "eligibility_memo": "Source sha256:20ecd38ee48273d21e6d848417426e0684a7d8f01e56e5ead0ede81fad12ef06; current task {\"batch\":\"F8\",\"rig\":\"filter-F2\"} at 2026-09-24T12:10:00Z. Imported records trace_input=trace_reader/1 at 2026-09-24T12:05:00Z value-sha256:b6e13657a0388716 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "sampled_negative",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "batch": "F8",
+          "rig": "filter-F2"
+        },
+        "decisive_basis": "The selected sampled_finding status follows from the admitted trace_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "7c9a1a7979fe507e7ac437739efca34a22ae3d307da052267275cd69ff3f1730",
+        "source_sha256": "20ecd38ee48273d21e6d848417426e0684a7d8f01e56e5ead0ede81fad12ef06",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Calibration-qualified strict upper-bound non-detection; trace scope mismatch",
+        "nearest_prior": "Prior sampled-negative example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "fuel_particle_nondetection",
+      "invalid_records": {
+        "trace_input": {
+          "context": {
+            "batch": "F8",
+            "rig": "filter-F2"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "batch": "F8",
+              "rig": "filter-F2"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 0.32999999999999996,
+                "sensitivity_lower_bound": 0.92
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 0.35,
+                "minimum_sensitivity": 0.9
+              },
+              "end": 9,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 0.18
+                },
+                {
+                  "time": 3,
+                  "value": 0.2
+                },
+                {
+                  "time": 6,
+                  "value": 0.23
+                },
+                {
+                  "time": 9,
+                  "value": 0.21
+                }
+              ],
+              "max_gap": 3,
+              "mode": "non_detection",
+              "property": {
+                "operator": "lt",
+                "value": 0.4
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "dimensionless",
+            "schema": "EAL/typed-input/1",
+            "scope": "particle-samples-F7",
+            "subject": "filter-F2",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "batch": "F8",
+          "rig": "filter-F2"
+        },
+        "records_sha256": "7c9a1a7979fe507e7ac437739efca34a22ae3d307da052267275cd69ff3f1730",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": "eal.sampled_negative:sampled_negative_registry",
+      "method_result": {
+        "method": "engineering/sampled-negative/1",
+        "output": {
+          "continuous_truth_established": false,
+          "coverage": true,
+          "detector_contract_met": true,
+          "finding": true,
+          "largest_gap": 3,
+          "mode": "non_detection",
+          "sample_size": 4,
+          "violation_count": 0
+        },
+        "qualification": "Finite sampled finding; record acquisition and physical detector capability remain assertions",
+        "query": {
+          "detector_contract": {
+            "maximum_detection_limit": 0.35,
+            "minimum_sensitivity": 0.9
+          },
+          "end": 9,
+          "max_gap": 3,
+          "mode": "non_detection",
+          "property": {
+            "operator": "lt",
+            "value": 0.4
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "scope": "particle-samples-F8",
+        "subject": "filter-F2"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "value.scope",
+        "coverage": true,
+        "invalid": "unsupported",
+        "mode": "non_detection",
+        "property": {
+          "operator": "lt",
+          "value": 0.4
+        },
+        "scope": "particle-samples-F8",
+        "subject": "filter-F2",
+        "valid": "supported"
+      },
+      "semantic_view": "fuel_particle_nondetection.semantic.json",
+      "source": "fuel_particle_nondetection.eal",
+      "valid_records": {
+        "trace_input": {
+          "context": {
+            "batch": "F8",
+            "rig": "filter-F2"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "batch": "F8",
+              "rig": "filter-F2"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 0.32999999999999996,
+                "sensitivity_lower_bound": 0.92
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 0.35,
+                "minimum_sensitivity": 0.9
+              },
+              "end": 9,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 0.18
+                },
+                {
+                  "time": 3,
+                  "value": 0.2
+                },
+                {
+                  "time": 6,
+                  "value": 0.23
+                },
+                {
+                  "time": 9,
+                  "value": 0.21
+                }
+              ],
+              "max_gap": 3,
+              "mode": "non_detection",
+              "property": {
+                "operator": "lt",
+                "value": 0.4
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "dimensionless",
+            "schema": "EAL/typed-input/1",
+            "scope": "particle-samples-F8",
+            "subject": "filter-F2",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Does the logged sampled chiller branch trace contain a flow excursion above 7 L/s, despite incomplete coverage of the full run?",
+      "claim": "sampled_finding",
+      "context": {
+        "chiller": "C17",
+        "run": "U4"
+      },
+      "eligibility_memo": "Source sha256:5d22db191e151837cf52d3238ea04bda6a30a9517b35618ca787624f6c2944e4; current task {\"chiller\":\"C17\",\"run\":\"U4\"} at 2026-09-24T12:10:00Z. Imported records trace_input=trace_reader/1 at 2026-09-24T12:05:00Z value-sha256:efefc3c996f3d4a4 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "sampled_negative",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "chiller": "C17",
+          "run": "U4"
+        },
+        "decisive_basis": "The selected sampled_finding status follows from the admitted trace_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "6b6f5f660aa37f50e449206ec8c3715b2d5a8666eb4257aeaccff296925dca32",
+        "source_sha256": "5d22db191e151837cf52d3238ea04bda6a30a9517b35618ca787624f6c2944e4",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Incomplete interval with observed chiller-flow breach in L/s; reader version mismatch",
+        "nearest_prior": "Prior sampled-counterexample example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "chiller_flow_counterexample",
+      "invalid_records": {
+        "trace_input": {
+          "context": {
+            "chiller": "C17",
+            "run": "U4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "chiller": "C17",
+              "run": "U4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "0"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 6.48,
+                "sensitivity_lower_bound": 0.87
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 6.5,
+                "minimum_sensitivity": 0.85
+              },
+              "end": 8,
+              "events": [
+                {
+                  "time": 1,
+                  "value": 6.2
+                },
+                {
+                  "time": 4,
+                  "value": 7.3
+                },
+                {
+                  "time": 7,
+                  "value": 6.5
+                }
+              ],
+              "max_gap": 3,
+              "mode": "counterexample",
+              "property": {
+                "operator": "le",
+                "value": 7
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "volumetric_flow",
+            "schema": "EAL/typed-input/1",
+            "scope": "flow-U4",
+            "subject": "C17",
+            "unit": "L/s",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "chiller": "C17",
+          "run": "U4"
+        },
+        "records_sha256": "6b6f5f660aa37f50e449206ec8c3715b2d5a8666eb4257aeaccff296925dca32",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": "eal.sampled_negative:sampled_negative_registry",
+      "method_result": {
+        "method": "engineering/sampled-negative/1",
+        "output": {
+          "continuous_truth_established": false,
+          "coverage": false,
+          "detector_contract_met": false,
+          "finding": true,
+          "largest_gap": 3,
+          "mode": "counterexample",
+          "sample_size": 3,
+          "violation_count": 1
+        },
+        "qualification": "Finite sampled finding; record acquisition and physical detector capability remain assertions",
+        "query": {
+          "detector_contract": {
+            "maximum_detection_limit": 6.5,
+            "minimum_sensitivity": 0.85
+          },
+          "end": 8,
+          "max_gap": 3,
+          "mode": "counterexample",
+          "property": {
+            "operator": "le",
+            "value": 7
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "scope": "flow-U4",
+        "subject": "C17"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "request.tool_version",
+        "coverage": false,
+        "invalid": "unsupported",
+        "mode": "counterexample",
+        "property": {
+          "operator": "le",
+          "value": 7
+        },
+        "scope": "flow-U4",
+        "subject": "C17",
+        "valid": "supported"
+      },
+      "semantic_view": "chiller_flow_counterexample.semantic.json",
+      "source": "chiller_flow_counterexample.eal",
+      "valid_records": {
+        "trace_input": {
+          "context": {
+            "chiller": "C17",
+            "run": "U4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "chiller": "C17",
+              "run": "U4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 6.48,
+                "sensitivity_lower_bound": 0.87
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 6.5,
+                "minimum_sensitivity": 0.85
+              },
+              "end": 8,
+              "events": [
+                {
+                  "time": 1,
+                  "value": 6.2
+                },
+                {
+                  "time": 4,
+                  "value": 7.3
+                },
+                {
+                  "time": 7,
+                  "value": 6.5
+                }
+              ],
+              "max_gap": 3,
+              "mode": "counterexample",
+              "property": {
+                "operator": "le",
+                "value": 7
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "volumetric_flow",
+            "schema": "EAL/typed-input/1",
+            "scope": "flow-U4",
+            "subject": "C17",
+            "unit": "L/s",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "During the complete sampled block-check window, did a calibrated detector record no dimensionless error score above 0.5?",
+      "claim": "sampled_finding",
+      "context": {
+        "array": "B19",
+        "scan": "S3"
+      },
+      "eligibility_memo": "Source sha256:b5443e28eeab709b80a456eedbce9ee025c57696e4ec30f2946f4040a04017ed; current task {\"array\":\"B19\",\"scan\":\"S3\"} at 2026-09-24T12:10:00Z. Imported records trace_input=trace_reader/1 at 2026-09-24T12:05:00Z value-sha256:d9a563bc017974f3 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "sampled_negative",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "array": "B19",
+          "scan": "S3"
+        },
+        "decisive_basis": "The selected sampled_finding status follows from the admitted trace_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "7a38d251448e75d02583987ce147655276b57b548b9e1ff1c313096099931434",
+        "source_sha256": "b5443e28eeab709b80a456eedbce9ee025c57696e4ec30f2946f4040a04017ed",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Inclusive block-error threshold and complete two-second spacing; expired imported trace",
+        "nearest_prior": "Prior sampled-negative example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "storage_error_nondetection",
+      "invalid_records": {
+        "trace_input": {
+          "context": {
+            "array": "B19",
+            "scan": "S3"
+          },
+          "observed_at": "2026-09-24T09:20:00Z",
+          "request": {
+            "context": {
+              "array": "B19",
+              "scan": "S3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 0.43,
+                "sensitivity_lower_bound": 0.9500000000000001
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 0.45,
+                "minimum_sensitivity": 0.93
+              },
+              "end": 6,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 0.1
+                },
+                {
+                  "time": 2,
+                  "value": 0.2
+                },
+                {
+                  "time": 4,
+                  "value": 0.1
+                },
+                {
+                  "time": 6,
+                  "value": 0.3
+                }
+              ],
+              "max_gap": 2,
+              "mode": "non_detection",
+              "property": {
+                "operator": "le",
+                "value": 0.5
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "dimensionless",
+            "schema": "EAL/typed-input/1",
+            "scope": "block-check-S3",
+            "subject": "B19",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "array": "B19",
+          "scan": "S3"
+        },
+        "records_sha256": "7a38d251448e75d02583987ce147655276b57b548b9e1ff1c313096099931434",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": "eal.sampled_negative:sampled_negative_registry",
+      "method_result": {
+        "method": "engineering/sampled-negative/1",
+        "output": {
+          "continuous_truth_established": false,
+          "coverage": true,
+          "detector_contract_met": true,
+          "finding": true,
+          "largest_gap": 2,
+          "mode": "non_detection",
+          "sample_size": 4,
+          "violation_count": 0
+        },
+        "qualification": "Finite sampled finding; record acquisition and physical detector capability remain assertions",
+        "query": {
+          "detector_contract": {
+            "maximum_detection_limit": 0.45,
+            "minimum_sensitivity": 0.93
+          },
+          "end": 6,
+          "max_gap": 2,
+          "mode": "non_detection",
+          "property": {
+            "operator": "le",
+            "value": 0.5
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "scope": "block-check-S3",
+        "subject": "B19"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "observed_at",
+        "coverage": true,
+        "invalid": "unsupported",
+        "mode": "non_detection",
+        "property": {
+          "operator": "le",
+          "value": 0.5
+        },
+        "scope": "block-check-S3",
+        "subject": "B19",
+        "valid": "supported"
+      },
+      "semantic_view": "storage_error_nondetection.semantic.json",
+      "source": "storage_error_nondetection.eal",
+      "valid_records": {
+        "trace_input": {
+          "context": {
+            "array": "B19",
+            "scan": "S3"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "array": "B19",
+              "scan": "S3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 0.43,
+                "sensitivity_lower_bound": 0.9500000000000001
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 0.45,
+                "minimum_sensitivity": 0.93
+              },
+              "end": 6,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 0.1
+                },
+                {
+                  "time": 2,
+                  "value": 0.2
+                },
+                {
+                  "time": 4,
+                  "value": 0.1
+                },
+                {
+                  "time": 6,
+                  "value": 0.3
+                }
+              ],
+              "max_gap": 2,
+              "mode": "non_detection",
+              "property": {
+                "operator": "le",
+                "value": 0.5
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "dimensionless",
+            "schema": "EAL/typed-input/1",
+            "scope": "block-check-S3",
+            "subject": "B19",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Does any observed crane-travel sample reach or exceed the strict 1.2 m/s speed limit?",
+      "claim": "sampled_finding",
+      "context": {
+        "crane": "G5",
+        "lift": "L8"
+      },
+      "eligibility_memo": "Source sha256:be4dd94b444e489a3fd8e86927d4ebf9c6165550fc65e1d70f2f9a33e24e590b; current task {\"crane\":\"G5\",\"lift\":\"L8\"} at 2026-09-24T12:10:00Z. Imported records trace_input=trace_reader/1 at 2026-09-24T12:05:00Z value-sha256:b54276c7ddbed8e9 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "sampled_negative",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "crane": "G5",
+          "lift": "L8"
+        },
+        "decisive_basis": "The selected sampled_finding status follows from the admitted trace_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "656d2d05727ebc1df1fcb86cbd5816b7a4f6efdf8d44019f27fce56384ab310e",
+        "source_sha256": "be4dd94b444e489a3fd8e86927d4ebf9c6165550fc65e1d70f2f9a33e24e590b",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Strict speed boundary equality in m/s as witness despite partial coverage; subject mismatch",
+        "nearest_prior": "Prior sampled-counterexample example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "crane_speed_counterexample",
+      "invalid_records": {
+        "trace_input": {
+          "context": {
+            "crane": "G5",
+            "lift": "L8"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "crane": "G5",
+              "lift": "L8"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 0.98,
+                "sensitivity_lower_bound": 0.8200000000000001
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 1.0,
+                "minimum_sensitivity": 0.8
+              },
+              "end": 11,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 0.8
+                },
+                {
+                  "time": 5,
+                  "value": 1.2
+                },
+                {
+                  "time": 10,
+                  "value": 0.9
+                }
+              ],
+              "max_gap": 5,
+              "mode": "counterexample",
+              "property": {
+                "operator": "lt",
+                "value": 1.2
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "velocity",
+            "schema": "EAL/typed-input/1",
+            "scope": "travel-L8",
+            "subject": "G6",
+            "unit": "m/s",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "crane": "G5",
+          "lift": "L8"
+        },
+        "records_sha256": "656d2d05727ebc1df1fcb86cbd5816b7a4f6efdf8d44019f27fce56384ab310e",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": "eal.sampled_negative:sampled_negative_registry",
+      "method_result": {
+        "method": "engineering/sampled-negative/1",
+        "output": {
+          "continuous_truth_established": false,
+          "coverage": false,
+          "detector_contract_met": false,
+          "finding": true,
+          "largest_gap": 5,
+          "mode": "counterexample",
+          "sample_size": 3,
+          "violation_count": 1
+        },
+        "qualification": "Finite sampled finding; record acquisition and physical detector capability remain assertions",
+        "query": {
+          "detector_contract": {
+            "maximum_detection_limit": 1.0,
+            "minimum_sensitivity": 0.8
+          },
+          "end": 11,
+          "max_gap": 5,
+          "mode": "counterexample",
+          "property": {
+            "operator": "lt",
+            "value": 1.2
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "scope": "travel-L8",
+        "subject": "G5"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "value.subject",
+        "coverage": false,
+        "invalid": "unsupported",
+        "mode": "counterexample",
+        "property": {
+          "operator": "lt",
+          "value": 1.2
+        },
+        "scope": "travel-L8",
+        "subject": "G5",
+        "valid": "supported"
+      },
+      "semantic_view": "crane_speed_counterexample.semantic.json",
+      "source": "crane_speed_counterexample.eal",
+      "valid_records": {
+        "trace_input": {
+          "context": {
+            "crane": "G5",
+            "lift": "L8"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "crane": "G5",
+              "lift": "L8"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 0.98,
+                "sensitivity_lower_bound": 0.8200000000000001
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 1.0,
+                "minimum_sensitivity": 0.8
+              },
+              "end": 11,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 0.8
+                },
+                {
+                  "time": 5,
+                  "value": 1.2
+                },
+                {
+                  "time": 10,
+                  "value": 0.9
+                }
+              ],
+              "max_gap": 5,
+              "mode": "counterexample",
+              "property": {
+                "operator": "lt",
+                "value": 1.2
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "velocity",
+            "schema": "EAL/typed-input/1",
+            "scope": "travel-L8",
+            "subject": "G5",
+            "unit": "m/s",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "With sampled five-second coverage and the stipulated detector contract, is there no recorded normalised concentration score at or above 0.6?",
+      "claim": "sampled_finding",
+      "context": {
+        "episode": "A6",
+        "vessel": "M4"
+      },
+      "eligibility_memo": "Source sha256:60d610c63ffb2f69358676dfb4b43ef623f21b739878a33f0fd00a013ce4fc33; current task {\"episode\":\"A6\",\"vessel\":\"M4\"} at 2026-09-24T12:10:00Z. Imported records trace_input=trace_reader/1 at 2026-09-24T12:05:00Z value-sha256:6059fa54fcc59357 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "sampled_negative",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "episode": "A6",
+          "vessel": "M4"
+        },
+        "decisive_basis": "The selected sampled_finding status follows from the admitted trace_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "8847e9feb9d297aafbe28411e7332534298629bfed7b51b56028a6bc86c977ed",
+        "source_sha256": "60d610c63ffb2f69358676dfb4b43ef623f21b739878a33f0fd00a013ce4fc33",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Fifteen-second concentration detector capacity and complete coverage; episode context mismatch",
+        "nearest_prior": "Prior sampled-negative example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "reactor_alarm_nondetection",
+      "invalid_records": {
+        "trace_input": {
+          "context": {
+            "episode": "A5",
+            "vessel": "M4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "episode": "A6",
+              "vessel": "M4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 0.53,
+                "sensitivity_lower_bound": 0.93
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 0.55,
+                "minimum_sensitivity": 0.91
+              },
+              "end": 15,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 0.1
+                },
+                {
+                  "time": 5,
+                  "value": 0.2
+                },
+                {
+                  "time": 10,
+                  "value": 0.4
+                },
+                {
+                  "time": 15,
+                  "value": 0.2
+                }
+              ],
+              "max_gap": 5,
+              "mode": "non_detection",
+              "property": {
+                "operator": "lt",
+                "value": 0.6
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "dimensionless",
+            "schema": "EAL/typed-input/1",
+            "scope": "alarm-A6",
+            "subject": "M4",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "episode": "A6",
+          "vessel": "M4"
+        },
+        "records_sha256": "8847e9feb9d297aafbe28411e7332534298629bfed7b51b56028a6bc86c977ed",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": "eal.sampled_negative:sampled_negative_registry",
+      "method_result": {
+        "method": "engineering/sampled-negative/1",
+        "output": {
+          "continuous_truth_established": false,
+          "coverage": true,
+          "detector_contract_met": true,
+          "finding": true,
+          "largest_gap": 5,
+          "mode": "non_detection",
+          "sample_size": 4,
+          "violation_count": 0
+        },
+        "qualification": "Finite sampled finding; record acquisition and physical detector capability remain assertions",
+        "query": {
+          "detector_contract": {
+            "maximum_detection_limit": 0.55,
+            "minimum_sensitivity": 0.91
+          },
+          "end": 15,
+          "max_gap": 5,
+          "mode": "non_detection",
+          "property": {
+            "operator": "lt",
+            "value": 0.6
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "scope": "alarm-A6",
+        "subject": "M4"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "context",
+        "coverage": true,
+        "invalid": "unsupported",
+        "mode": "non_detection",
+        "property": {
+          "operator": "lt",
+          "value": 0.6
+        },
+        "scope": "alarm-A6",
+        "subject": "M4",
+        "valid": "supported"
+      },
+      "semantic_view": "reactor_alarm_nondetection.semantic.json",
+      "source": "reactor_alarm_nondetection.eal",
+      "valid_records": {
+        "trace_input": {
+          "context": {
+            "episode": "A6",
+            "vessel": "M4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "episode": "A6",
+              "vessel": "M4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 0.53,
+                "sensitivity_lower_bound": 0.93
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 0.55,
+                "minimum_sensitivity": 0.91
+              },
+              "end": 15,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 0.1
+                },
+                {
+                  "time": 5,
+                  "value": 0.2
+                },
+                {
+                  "time": 10,
+                  "value": 0.4
+                },
+                {
+                  "time": 15,
+                  "value": 0.2
+                }
+              ],
+              "max_gap": 5,
+              "mode": "non_detection",
+              "property": {
+                "operator": "lt",
+                "value": 0.6
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "dimensionless",
+            "schema": "EAL/typed-input/1",
+            "scope": "alarm-A6",
+            "subject": "M4",
+            "unit": "1",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Did at least one finite robot-axis displacement sample exceed the declared 11 mm ceiling?",
+      "claim": "sampled_finding",
+      "context": {
+        "move": "K9",
+        "robot": "arm-12"
+      },
+      "eligibility_memo": "Source sha256:3a1dafacaf81d339456f17ba2e0ae9660753db895a7290b797187b2214f29436; current task {\"move\":\"K9\",\"robot\":\"arm-12\"} at 2026-09-24T12:10:00Z. Imported records trace_input=trace_reader/1 at 2026-09-24T12:05:00Z value-sha256:2babcd7250f88956 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "sampled_negative",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "move": "K9",
+          "robot": "arm-12"
+        },
+        "decisive_basis": "The selected sampled_finding status follows from the admitted trace_input records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "24869f10ec65b772271f7d3d8e67f9a8f85f21bd2a0522f95a6cfa837e3ff70a",
+        "source_sha256": "3a1dafacaf81d339456f17ba2e0ae9660753db895a7290b797187b2214f29436",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Axis-displacement breach in mm with narrowed input validity interval",
+        "nearest_prior": "Prior sampled-counterexample example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "robot_axis_displacement_counterexample",
+      "invalid_records": {
+        "trace_input": {
+          "context": {
+            "move": "K9",
+            "robot": "arm-12"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "move": "K9",
+              "robot": "arm-12"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 9.98,
+                "sensitivity_lower_bound": 0.8200000000000001
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 10,
+                "minimum_sensitivity": 0.8
+              },
+              "end": 7,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 8
+                },
+                {
+                  "time": 2,
+                  "value": 9
+                },
+                {
+                  "time": 4,
+                  "value": 12
+                },
+                {
+                  "time": 6,
+                  "value": 7
+                }
+              ],
+              "max_gap": 2,
+              "mode": "counterexample",
+              "property": {
+                "operator": "le",
+                "value": 11
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "length",
+            "schema": "EAL/typed-input/1",
+            "scope": "axis-displacement-K9",
+            "subject": "arm-12",
+            "unit": "mm",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:07:00Z"
+          }
+        }
+      },
+      "invalid_status": "unsupported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "sampled_finding",
+        "context": {
+          "move": "K9",
+          "robot": "arm-12"
+        },
+        "records_sha256": "24869f10ec65b772271f7d3d8e67f9a8f85f21bd2a0522f95a6cfa837e3ff70a",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": "eal.sampled_negative:sampled_negative_registry",
+      "method_result": {
+        "method": "engineering/sampled-negative/1",
+        "output": {
+          "continuous_truth_established": false,
+          "coverage": false,
+          "detector_contract_met": false,
+          "finding": true,
+          "largest_gap": 2,
+          "mode": "counterexample",
+          "sample_size": 4,
+          "violation_count": 1
+        },
+        "qualification": "Finite sampled finding; record acquisition and physical detector capability remain assertions",
+        "query": {
+          "detector_contract": {
+            "maximum_detection_limit": 10,
+            "minimum_sensitivity": 0.8
+          },
+          "end": 7,
+          "max_gap": 2,
+          "mode": "counterexample",
+          "property": {
+            "operator": "le",
+            "value": 11
+          },
+          "semantics": "sampled",
+          "start": 0
+        },
+        "scope": "axis-displacement-K9",
+        "subject": "arm-12"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "changed_field": "value.valid_until",
+        "coverage": false,
+        "invalid": "unsupported",
+        "mode": "counterexample",
+        "property": {
+          "operator": "le",
+          "value": 11
+        },
+        "scope": "axis-displacement-K9",
+        "subject": "arm-12",
+        "valid": "supported"
+      },
+      "semantic_view": "robot_axis_displacement_counterexample.semantic.json",
+      "source": "robot_axis_displacement_counterexample.eal",
+      "valid_records": {
+        "trace_input": {
+          "context": {
+            "move": "K9",
+            "robot": "arm-12"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "move": "K9",
+              "robot": "arm-12"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "trace_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "method": "engineering/sampled-negative/1",
+            "payload": {
+              "calibration": {
+                "detection_limit": 9.98,
+                "sensitivity_lower_bound": 0.8200000000000001
+              },
+              "detector_contract": {
+                "maximum_detection_limit": 10,
+                "minimum_sensitivity": 0.8
+              },
+              "end": 7,
+              "events": [
+                {
+                  "time": 0,
+                  "value": 8
+                },
+                {
+                  "time": 2,
+                  "value": 9
+                },
+                {
+                  "time": 4,
+                  "value": 12
+                },
+                {
+                  "time": 6,
+                  "value": 7
+                }
+              ],
+              "max_gap": 2,
+              "mode": "counterexample",
+              "property": {
+                "operator": "le",
+                "value": 11
+              },
+              "semantics": "sampled",
+              "start": 0
+            },
+            "quantity": "length",
+            "schema": "EAL/typed-input/1",
+            "scope": "axis-displacement-K9",
+            "subject": "arm-12",
+            "unit": "mm",
+            "valid_from": "2026-09-24T12:00:00Z",
+            "valid_until": "2026-09-24T12:09:00Z"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "For switch SX-4's failover test, is the measured transfer claim still usable after a packet-loss alert and a separate generator-origin diagnosis?",
+      "claim": "operational_record",
+      "context": {
+        "rack": "R8",
+        "switch": "SX-4"
+      },
+      "eligibility_memo": "Source sha256:f5e3d07d285acfe8f1261e44d5387b1c276b185cda368893eb2dd76bd9677b2d; current task {\"rack\":\"R8\",\"switch\":\"SX-4\"} at 2026-09-24T12:10:00Z. Imported records test=test_reader/1 at 2026-09-24T12:05:00Z value-sha256:fce1df51ba8bf144, alert=alert_reader/1 at 2026-09-24T12:05:00Z value-sha256:e84ea23a105c06ad, diagnosis=diagnosis_reader/1 at 2026-09-24T12:05:00Z value-sha256:391fb1ab87dbd0a3 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "objection_defence",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "operational_record",
+        "context": {
+          "rack": "R8",
+          "switch": "SX-4"
+        },
+        "decisive_basis": "The selected operational_record status follows from the admitted test, alert, diagnosis records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "84308024698ce7ec48e8c37d7840939b44871304d27a324a4525296cc138114d",
+        "source_sha256": "f5e3d07d285acfe8f1261e44d5387b1c276b185cda368893eb2dd76bd9677b2d",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Separate generator diagnosis as claim premise for defence; wrong diagnosis origin",
+        "nearest_prior": "Prior network_failover example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "packet_loss_generator",
+      "invalid_records": {
+        "alert": {
+          "context": {
+            "rack": "R8",
+            "switch": "SX-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rack": "R8",
+              "switch": "SX-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "packet_loss",
+            "severity": "high"
+          }
+        },
+        "diagnosis": {
+          "context": {
+            "rack": "R8",
+            "switch": "SX-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rack": "R8",
+              "switch": "SX-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": true,
+            "origin": "unresolved"
+          }
+        },
+        "test": {
+          "context": {
+            "rack": "R8",
+            "switch": "SX-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rack": "R8",
+              "switch": "SX-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "R8",
+            "passed": true,
+            "transfer_ms": 208
+          }
+        }
+      },
+      "invalid_status": "contested",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "operational_record",
+        "context": {
+          "rack": "R8",
+          "switch": "SX-4"
+        },
+        "records_sha256": "84308024698ce7ec48e8c37d7840939b44871304d27a324a4525296cc138114d",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "alert": "alert",
+        "changed_field": "value.origin",
+        "defence": "diagnosis",
+        "invalid": "contested",
+        "primary": "test",
+        "target_kind": "argument",
+        "valid": "supported"
+      },
+      "semantic_view": "packet_loss_generator.semantic.json",
+      "source": "packet_loss_generator.eal",
+      "valid_records": {
+        "alert": {
+          "context": {
+            "rack": "R8",
+            "switch": "SX-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rack": "R8",
+              "switch": "SX-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "packet_loss",
+            "severity": "high"
+          }
+        },
+        "diagnosis": {
+          "context": {
+            "rack": "R8",
+            "switch": "SX-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rack": "R8",
+              "switch": "SX-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": true,
+            "origin": "generator_injection"
+          }
+        },
+        "test": {
+          "context": {
+            "rack": "R8",
+            "switch": "SX-4"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "rack": "R8",
+              "switch": "SX-4"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "R8",
+            "passed": true,
+            "transfer_ms": 208
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Can station LT-8's cut-width pass record survive an independent overwidth report when a separate optics audit identifies that report's calibration fault?",
+      "claim": "operational_record",
+      "context": {
+        "line": "laser-2",
+        "station": "LT-8"
+      },
+      "eligibility_memo": "Source sha256:9ae813e0945a3a8a10b64e6d5c798885f16ca7056ad97a1b02abe94e28c9e9ee; current task {\"line\":\"laser-2\",\"station\":\"LT-8\"} at 2026-09-24T12:10:00Z. Imported records test=test_reader/1 at 2026-09-24T12:05:00Z value-sha256:9aed51f90fa5fa86, overwidth=alert_reader/1 at 2026-09-24T12:05:00Z value-sha256:f7a07e6b2c386c1d, audit=diagnosis_reader/1 at 2026-09-24T12:05:00Z value-sha256:ae2e664094f784a2 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "objection_defence",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "operational_record",
+        "context": {
+          "line": "laser-2",
+          "station": "LT-8"
+        },
+        "decisive_basis": "The selected operational_record status follows from the admitted test, overwidth, audit records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "59adb560f646a19edb64be76d319aef1920e1492b93d231839a864807d60788f",
+        "source_sha256": "9ae813e0945a3a8a10b64e6d5c798885f16ca7056ad97a1b02abe94e28c9e9ee",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Optics audit repairs a cut-width challenge; stale audit observation",
+        "nearest_prior": "Prior defended-instrument example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "laser_calibration_defence",
+      "invalid_records": {
+        "audit": {
+          "context": {
+            "line": "laser-2",
+            "station": "LT-8"
+          },
+          "observed_at": "2026-09-24T10:00:00Z",
+          "request": {
+            "context": {
+              "line": "laser-2",
+              "station": "LT-8"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": true,
+            "origin": "optics_probe_fault"
+          }
+        },
+        "overwidth": {
+          "context": {
+            "line": "laser-2",
+            "station": "LT-8"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "line": "laser-2",
+              "station": "LT-8"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "overwidth_seen",
+            "severity": "high"
+          }
+        },
+        "test": {
+          "context": {
+            "line": "laser-2",
+            "station": "LT-8"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "line": "laser-2",
+              "station": "LT-8"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "laser-2",
+            "passed": true,
+            "width_mm": 0.95
+          }
+        }
+      },
+      "invalid_status": "contested",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "operational_record",
+        "context": {
+          "line": "laser-2",
+          "station": "LT-8"
+        },
+        "records_sha256": "59adb560f646a19edb64be76d319aef1920e1492b93d231839a864807d60788f",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "alert": "overwidth",
+        "changed_field": "observed_at",
+        "defence": "audit",
+        "invalid": "contested",
+        "primary": "test",
+        "target_kind": "argument",
+        "valid": "supported"
+      },
+      "semantic_view": "laser_calibration_defence.semantic.json",
+      "source": "laser_calibration_defence.eal",
+      "valid_records": {
+        "audit": {
+          "context": {
+            "line": "laser-2",
+            "station": "LT-8"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "line": "laser-2",
+              "station": "LT-8"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": true,
+            "origin": "optics_probe_fault"
+          }
+        },
+        "overwidth": {
+          "context": {
+            "line": "laser-2",
+            "station": "LT-8"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "line": "laser-2",
+              "station": "LT-8"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "overwidth_seen",
+            "severity": "high"
+          }
+        },
+        "test": {
+          "context": {
+            "line": "laser-2",
+            "station": "LT-8"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "line": "laser-2",
+              "station": "LT-8"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "laser-2",
+            "passed": true,
+            "width_mm": 0.95
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Does a lease-renewal timing result remain supported when a timeout alert is attributed by a separate trace to a synthetic test injector?",
+      "claim": "operational_record",
+      "context": {
+        "cluster": "db-east",
+        "shard": "S12"
+      },
+      "eligibility_memo": "Source sha256:2301e527092f105e26a6899db0fca86785f370e4cb8d64d40937477127a51740; current task {\"cluster\":\"db-east\",\"shard\":\"S12\"} at 2026-09-24T12:10:00Z. Imported records test=test_reader/1 at 2026-09-24T12:05:00Z value-sha256:e7236811aabe2b40, timeout=alert_reader/1 at 2026-09-24T12:05:00Z value-sha256:4131736098a815bf, trace=diagnosis_reader/1 at 2026-09-24T12:05:00Z value-sha256:78f7c55a7ba8c940 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "objection_defence",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "operational_record",
+        "context": {
+          "cluster": "db-east",
+          "shard": "S12"
+        },
+        "decisive_basis": "The selected operational_record status follows from the admitted test, timeout, trace records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "b48d35e2b6e5c4fd3c66b14b4e5ed2d5d106db2f3491670f81ad27894e257396",
+        "source_sha256": "2301e527092f105e26a6899db0fca86785f370e4cb8d64d40937477127a51740",
+        "status": "supported"
+      },
+      "genealogy": {
+        "mechanism_difference": "Lease-renewal test challenged at reasoning level; independent injector diagnosis and wrong reader version",
+        "nearest_prior": "Prior network_failover example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "database_lease_defence",
+      "invalid_records": {
+        "test": {
+          "context": {
+            "cluster": "db-east",
+            "shard": "S12"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cluster": "db-east",
+              "shard": "S12"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "db-east",
+            "passed": true,
+            "renewal_ms": 138
+          }
+        },
+        "timeout": {
+          "context": {
+            "cluster": "db-east",
+            "shard": "S12"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cluster": "db-east",
+              "shard": "S12"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "timeout_alert",
+            "severity": "high"
+          }
+        },
+        "trace": {
+          "context": {
+            "cluster": "db-east",
+            "shard": "S12"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cluster": "db-east",
+              "shard": "S12"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "0"
+          },
+          "value": {
+            "independently_checked": true,
+            "origin": "injector_origin"
+          }
+        }
+      },
+      "invalid_status": "contested",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "operational_record",
+        "context": {
+          "cluster": "db-east",
+          "shard": "S12"
+        },
+        "records_sha256": "b48d35e2b6e5c4fd3c66b14b4e5ed2d5d106db2f3491670f81ad27894e257396",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "supported"
+      },
+      "method_factory": null,
+      "method_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "alert": "timeout",
+        "changed_field": "request.tool_version",
+        "defence": "trace",
+        "invalid": "contested",
+        "primary": "test",
+        "target_kind": "reasoning",
+        "valid": "supported"
+      },
+      "semantic_view": "database_lease_defence.semantic.json",
+      "source": "database_lease_defence.eal",
+      "valid_records": {
+        "test": {
+          "context": {
+            "cluster": "db-east",
+            "shard": "S12"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cluster": "db-east",
+              "shard": "S12"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "db-east",
+            "passed": true,
+            "renewal_ms": 138
+          }
+        },
+        "timeout": {
+          "context": {
+            "cluster": "db-east",
+            "shard": "S12"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cluster": "db-east",
+              "shard": "S12"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "timeout_alert",
+            "severity": "high"
+          }
+        },
+        "trace": {
+          "context": {
+            "cluster": "db-east",
+            "shard": "S12"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "cluster": "db-east",
+              "shard": "S12"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": true,
+            "origin": "injector_origin"
+          }
+        }
+      },
+      "valid_status": "supported",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Does conveyor C7's throughput test remain unchallenged after a current jam alarm for that belt? Treat an alarm identifying another belt as inapplicable.",
+      "claim": "operational_record",
+      "context": {
+        "conveyor": "C7",
+        "facility": "sort-3"
+      },
+      "eligibility_memo": "Source sha256:a7e5e0a77ed15394cdb919e7b5d0849d6295ecd035444e8e3e83548dd7c45ec9; current task {\"conveyor\":\"C7\",\"facility\":\"sort-3\"} at 2026-09-24T12:10:00Z. Imported records test=test_reader/1 at 2026-09-24T12:05:00Z value-sha256:9d1e7b64e84f4164, jam=alert_reader/1 at 2026-09-24T12:05:00Z value-sha256:0b77153c76902a41, diagnosis=diagnosis_reader/1 at 2026-09-24T12:05:00Z value-sha256:ea788a3b48f37956 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "objection_defence",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "operational_record",
+        "context": {
+          "conveyor": "C7",
+          "facility": "sort-3"
+        },
+        "decisive_basis": "The selected operational_record status follows from the admitted test, jam, diagnosis records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "9ee86201714ffef857961552b3f08500aa6867422d209b175b8cdd23b177eb22",
+        "source_sha256": "a7e5e0a77ed15394cdb919e7b5d0849d6295ecd035444e8e3e83548dd7c45ec9",
+        "status": "contested"
+      },
+      "genealogy": {
+        "mechanism_difference": "Jam alarm targets claim directly; no authored defence despite extraneous diagnosis record",
+        "nearest_prior": "Prior defended-instrument example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "conveyor_jam_challenge",
+      "invalid_records": {
+        "diagnosis": {
+          "context": {
+            "conveyor": "C7",
+            "facility": "sort-3"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "conveyor": "C7",
+              "facility": "sort-3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": false,
+            "origin": "drive_coupling_fault"
+          }
+        },
+        "jam": {
+          "context": {
+            "conveyor": "C7",
+            "facility": "sort-3"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "conveyor": "C7",
+              "facility": "sort-3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "wrong_belt",
+            "severity": "high"
+          }
+        },
+        "test": {
+          "context": {
+            "conveyor": "C7",
+            "facility": "sort-3"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "conveyor": "C7",
+              "facility": "sort-3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "sort-3",
+            "parcels_per_min": 94,
+            "passed": true
+          }
+        }
+      },
+      "invalid_status": "supported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "operational_record",
+        "context": {
+          "conveyor": "C7",
+          "facility": "sort-3"
+        },
+        "records_sha256": "9ee86201714ffef857961552b3f08500aa6867422d209b175b8cdd23b177eb22",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "contested"
+      },
+      "method_factory": null,
+      "method_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "alert": "jam",
+        "changed_field": "value.event",
+        "defence": null,
+        "invalid": "supported",
+        "primary": "test",
+        "target_kind": "claim",
+        "valid": "contested"
+      },
+      "semantic_view": "conveyor_jam_challenge.semantic.json",
+      "source": "conveyor_jam_challenge.eal",
+      "valid_records": {
+        "diagnosis": {
+          "context": {
+            "conveyor": "C7",
+            "facility": "sort-3"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "conveyor": "C7",
+              "facility": "sort-3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": false,
+            "origin": "drive_coupling_fault"
+          }
+        },
+        "jam": {
+          "context": {
+            "conveyor": "C7",
+            "facility": "sort-3"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "conveyor": "C7",
+              "facility": "sort-3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "jam_observed",
+            "severity": "high"
+          }
+        },
+        "test": {
+          "context": {
+            "conveyor": "C7",
+            "facility": "sort-3"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "conveyor": "C7",
+              "facility": "sort-3"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "sort-3",
+            "parcels_per_min": 94,
+            "passed": true
+          }
+        }
+      },
+      "valid_status": "contested",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Can a bounded booster pressure test support the loop claim while a qualifying downstream pressure-collapse observation remains unanswered?",
+      "claim": "operational_record",
+      "context": {
+        "loop": "L3",
+        "plant": "water-6"
+      },
+      "eligibility_memo": "Source sha256:0e6a11f33231ab6af89d53bfda36e54aa57763f1f56e4e978c17dc67b8e55d14; current task {\"loop\":\"L3\",\"plant\":\"water-6\"} at 2026-09-24T12:10:00Z. Imported records test=test_reader/1 at 2026-09-24T12:05:00Z value-sha256:e301d04089c6e556, collapse=alert_reader/1 at 2026-09-24T12:05:00Z value-sha256:f00f4d526f85974c, diagnosis=diagnosis_reader/1 at 2026-09-24T12:05:00Z value-sha256:ad868fc4f8329d9c match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "objection_defence",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "operational_record",
+        "context": {
+          "loop": "L3",
+          "plant": "water-6"
+        },
+        "decisive_basis": "The selected operational_record status follows from the admitted test, collapse, diagnosis records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "308cbe070eefb8c3be383b1b32ed8217cfbba11dbd05f0a5f3b66c3b848b16c2",
+        "source_sha256": "0e6a11f33231ab6af89d53bfda36e54aa57763f1f56e4e978c17dc67b8e55d14",
+        "status": "contested"
+      },
+      "genealogy": {
+        "mechanism_difference": "Pressure-collapse objection targets reasoning; wrong-plant attack record withdrawn",
+        "nearest_prior": "Prior network_failover example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "water_loop_pressure_challenge",
+      "invalid_records": {
+        "collapse": {
+          "context": {
+            "loop": "L3",
+            "plant": "water-5"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "loop": "L3",
+              "plant": "water-6"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "pressure_drop",
+            "severity": "high"
+          }
+        },
+        "diagnosis": {
+          "context": {
+            "loop": "L3",
+            "plant": "water-6"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "loop": "L3",
+              "plant": "water-6"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": false,
+            "origin": "sensor_fault"
+          }
+        },
+        "test": {
+          "context": {
+            "loop": "L3",
+            "plant": "water-6"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "loop": "L3",
+              "plant": "water-6"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "water-6",
+            "passed": true,
+            "pressure_kpa": 325
+          }
+        }
+      },
+      "invalid_status": "supported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "operational_record",
+        "context": {
+          "loop": "L3",
+          "plant": "water-6"
+        },
+        "records_sha256": "308cbe070eefb8c3be383b1b32ed8217cfbba11dbd05f0a5f3b66c3b848b16c2",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "contested"
+      },
+      "method_factory": null,
+      "method_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "alert": "collapse",
+        "changed_field": "context",
+        "defence": null,
+        "invalid": "supported",
+        "primary": "test",
+        "target_kind": "reasoning",
+        "valid": "contested"
+      },
+      "semantic_view": "water_loop_pressure_challenge.semantic.json",
+      "source": "water_loop_pressure_challenge.eal",
+      "valid_records": {
+        "collapse": {
+          "context": {
+            "loop": "L3",
+            "plant": "water-6"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "loop": "L3",
+              "plant": "water-6"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "pressure_drop",
+            "severity": "high"
+          }
+        },
+        "diagnosis": {
+          "context": {
+            "loop": "L3",
+            "plant": "water-6"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "loop": "L3",
+              "plant": "water-6"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": false,
+            "origin": "sensor_fault"
+          }
+        },
+        "test": {
+          "context": {
+            "loop": "L3",
+            "plant": "water-6"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "loop": "L3",
+              "plant": "water-6"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "episode": "water-6",
+            "passed": true,
+            "pressure_kpa": 325
+          }
+        }
+      },
+      "valid_status": "contested",
+      "wrong_proposal": "out_of_scope"
+    },
+    {
+      "absent_status": "unsupported",
+      "brief": "Does the boot completion log settle the F10 firmware start claim when a separate watchdog-reset record applies to that same boot?",
+      "claim": "operational_record",
+      "context": {
+        "boot": "F10",
+        "device": "servo-13"
+      },
+      "eligibility_memo": "Source sha256:1260cc3cce50c402c10a5d1abeb9e84785bc6a2e5336f8cda38d2a57ce516ee9; current task {\"boot\":\"F10\",\"device\":\"servo-13\"} at 2026-09-24T12:10:00Z. Imported records test=test_reader/1 at 2026-09-24T12:05:00Z value-sha256:8636675a4e7ff489, watchdog=alert_reader/1 at 2026-09-24T12:05:00Z value-sha256:27143008b37ec4f7, diagnosis=diagnosis_reader/1 at 2026-09-24T12:05:00Z value-sha256:fd21421730a0eb34 match their declared tool versions, empty acquisition inputs, task context and 1800-second age bounds; their source-level evidence predicates and applicable typed metadata are admissible. This memo does not state whether the claim is supported or whether physical acquisition is authentic.",
+      "family": "objection_defence",
+      "full_status": {
+        "assessed_at": "2026-09-24T12:10:00Z",
+        "claim": "operational_record",
+        "context": {
+          "boot": "F10",
+          "device": "servo-13"
+        },
+        "decisive_basis": "The selected operational_record status follows from the admitted test, watchdog, diagnosis records and the authored argument for this synthetic task; method output alone does not authenticate the measurements.",
+        "records_sha256": "728de080719d29bcca5c768fbc090c5f3adf0d590a5857538b3dc097878b8c34",
+        "source_sha256": "1260cc3cce50c402c10a5d1abeb9e84785bc6a2e5336f8cda38d2a57ce516ee9",
+        "status": "contested"
+      },
+      "genealogy": {
+        "mechanism_difference": "Watchdog objection to boot-duration argument; expired attack record withdrawn",
+        "nearest_prior": "Prior defended-instrument example",
+        "sampling_note": "Selected synthetic task; related family members share code and are not independent population draws"
+      },
+      "id": "firmware_watchdog_challenge",
+      "invalid_records": {
+        "diagnosis": {
+          "context": {
+            "boot": "F10",
+            "device": "servo-13"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "boot": "F10",
+              "device": "servo-13"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": false,
+            "origin": "test_fixture_reset"
+          }
+        },
+        "test": {
+          "context": {
+            "boot": "F10",
+            "device": "servo-13"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "boot": "F10",
+              "device": "servo-13"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "boot_s": 5.1,
+            "episode": "servo-13",
+            "passed": true
+          }
+        },
+        "watchdog": {
+          "context": {
+            "boot": "F10",
+            "device": "servo-13"
+          },
+          "observed_at": "2026-09-24T10:00:00Z",
+          "request": {
+            "context": {
+              "boot": "F10",
+              "device": "servo-13"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "reset_seen",
+            "severity": "high"
+          }
+        }
+      },
+      "invalid_status": "supported",
+      "invalid_verdict": {
+        "assessed_at": "2026-09-24T10:00:00Z",
+        "claim": "operational_record",
+        "context": {
+          "boot": "F10",
+          "device": "servo-13"
+        },
+        "records_sha256": "728de080719d29bcca5c768fbc090c5f3adf0d590a5857538b3dc097878b8c34",
+        "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "status": "contested"
+      },
+      "method_factory": null,
+      "method_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1"
+      },
+      "now": "2026-09-24T12:10:00Z",
+      "reference_rule": {
+        "alert": "watchdog",
+        "changed_field": "observed_at",
+        "defence": null,
+        "invalid": "supported",
+        "primary": "test",
+        "target_kind": "argument",
+        "valid": "contested"
+      },
+      "semantic_view": "firmware_watchdog_challenge.semantic.json",
+      "source": "firmware_watchdog_challenge.eal",
+      "valid_records": {
+        "diagnosis": {
+          "context": {
+            "boot": "F10",
+            "device": "servo-13"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "boot": "F10",
+              "device": "servo-13"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "diagnosis_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "independently_checked": false,
+            "origin": "test_fixture_reset"
+          }
+        },
+        "test": {
+          "context": {
+            "boot": "F10",
+            "device": "servo-13"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "boot": "F10",
+              "device": "servo-13"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "test_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "boot_s": 5.1,
+            "episode": "servo-13",
+            "passed": true
+          }
+        },
+        "watchdog": {
+          "context": {
+            "boot": "F10",
+            "device": "servo-13"
+          },
+          "observed_at": "2026-09-24T12:05:00Z",
+          "request": {
+            "context": {
+              "boot": "F10",
+              "device": "servo-13"
+            },
+            "input": {},
+            "mode": "deterministic",
+            "tool": "alert_reader",
+            "tool_version": "1"
+          },
+          "value": {
+            "active": true,
+            "event": "reset_seen",
+            "severity": "high"
+          }
+        }
+      },
+      "valid_status": "contested",
+      "wrong_proposal": "out_of_scope"
+    }
+  ],
+  "schema": "eal2-mechanism-roots/1",
+  "version": "developmental-1"
+}

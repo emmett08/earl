@@ -1,0 +1,208 @@
+{
+  "schema": "generic-argument-graph/1",
+  "id": "rail_switch",
+  "claim": "interlock_record",
+  "scope": {
+    "asset": {
+      "type": "str",
+      "equals": "RS-19"
+    },
+    "trial": {
+      "type": "str",
+      "equals": "throw-T4"
+    }
+  },
+  "evidence": {
+    "primary_reader": {
+      "tool_version": "1",
+      "mode": "deterministic",
+      "max_age_seconds": 900
+    },
+    "alternate_reader": {
+      "tool_version": "1",
+      "mode": "deterministic",
+      "max_age_seconds": 900
+    },
+    "alert_reader": {
+      "tool_version": "1",
+      "mode": "deterministic",
+      "max_age_seconds": 900
+    },
+    "resolution_reader": {
+      "tool_version": "1",
+      "mode": "deterministic",
+      "max_age_seconds": 900
+    }
+  },
+  "routes": [
+    {
+      "id": "positive_route",
+      "all": [
+        {
+          "op": "eq",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "asset"
+          ],
+          "value": "RS-19"
+        },
+        {
+          "op": "eq",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "trial"
+          ],
+          "value": "throw-T4"
+        },
+        {
+          "op": "lte",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "throw_ms"
+          ],
+          "value": 3000
+        },
+        {
+          "op": "gte",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "clearance_mm"
+          ],
+          "value": 12
+        },
+        {
+          "op": "eq",
+          "record": "primary_reader",
+          "path": [
+            "value",
+            "locked"
+          ],
+          "value": true
+        }
+      ]
+    },
+    {
+      "id": "independent_route",
+      "all": [
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "asset"
+          ],
+          "value": "RS-19"
+        },
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "trial"
+          ],
+          "value": "throw-T4"
+        },
+        {
+          "op": "lte",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "throw_ms"
+          ],
+          "value": 3000
+        },
+        {
+          "op": "gte",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "clearance_mm"
+          ],
+          "value": 12
+        },
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "locked"
+          ],
+          "value": true
+        },
+        {
+          "op": "eq",
+          "record": "alternate_reader",
+          "path": [
+            "value",
+            "finding"
+          ],
+          "value": "independent_qualified"
+        }
+      ]
+    }
+  ],
+  "objections": [
+    {
+      "id": "primary_turnout_lock_fault",
+      "target_route": "positive_route",
+      "when": [
+        {
+          "op": "eq",
+          "record": "alert_reader",
+          "path": [
+            "value",
+            "asset"
+          ],
+          "value": "RS-19"
+        },
+        {
+          "op": "eq",
+          "record": "alert_reader",
+          "path": [
+            "value",
+            "finding"
+          ],
+          "value": "primary_turnout_lock_fault"
+        }
+      ],
+      "answers": [
+        {
+          "id": "separate_contact_inspection_clear",
+          "all": [
+            {
+              "op": "eq",
+              "record": "resolution_reader",
+              "path": [
+                "value",
+                "asset"
+              ],
+              "value": "RS-19"
+            },
+            {
+              "op": "eq",
+              "record": "resolution_reader",
+              "path": [
+                "value",
+                "trial"
+              ],
+              "value": "throw-T4"
+            },
+            {
+              "op": "eq",
+              "record": "resolution_reader",
+              "path": [
+                "value",
+                "finding"
+              ],
+              "value": "separate_contact_inspection_clear"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

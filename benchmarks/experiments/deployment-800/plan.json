@@ -1,0 +1,22 @@
+{
+  "schema": "eal2-deployment-800-plan/1",
+  "protocol_id": "INV-EAL-DEPLOYMENT-001",
+  "protocol_version": "0.1.0",
+  "amendment": "A2-balanced-incomplete-native-single-call-developmental",
+  "study_kind": "developmental_synthetic",
+  "corpus": "manifest.json",
+  "review_attestation": "reviews.json",
+  "providers": {
+    "nano": "nano-text.toml",
+    "luna": "luna-native.toml",
+    "sol": "sol-native.toml"
+  },
+  "response_model_aliases": {"nano": "gpt-4.1-nano-2025-04-14"},
+  "order_seed": 240924800,
+  "max_prompt_bytes": 24576,
+  "max_output_tokens": {"recipient": 384, "author": 4096},
+  "max_cost_usd": 45.0,
+  "cache_write_reserve_multiplier": 1.25,
+  "concurrency": 8,
+  "review_requirement": "Two independent-from-author AI reviewers see candidate labels and record reasoned checks; this is unmasked agent review, not human review or confirmatory adjudication."
+}

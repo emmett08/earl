@@ -60,14 +60,29 @@ complete listing reproduces `examples/rms.eal` byte for byte.
 | Corrected request route | `benchmarks/results/2026-09-24-cross-model-route-v2/` and `benchmarks/results/2026-09-24-cross-model-route-v2-explanation-review/`; 63 separately frozen attempts, 51 host-accepted and recipient-consistent statuses, 11/63 strict agent-judged faithful explanations; fixed menu, not family retrieval or native MCP; no human review |
 | Synthetic Kubernetes contention and exact-family revision | `examples/kubernetes-resource-revision.eal`, `examples/kubernetes-resource-revision/README.md`, `benchmarks/experiments/kubernetes-host-revisions/results.offline.json`; 7/7 author-predeclared operating and 7/7 historical-record statuses, ten single-author retrieval queries, no cluster or model calls; superseded first fixture is under `docs/history/kubernetes-host-revisions-v1/` |
 | Paid family selection | `benchmarks/results/2026-09-24-kubernetes-family-selection/README.md` and `family-selection-36.tar.gz`; 36 calls on twelve single-author synthetic tasks, two task-level false supports from an authorised but irrelevant family, no live cluster or independent relevance adjudication |
-| Earlier 96-, 960- and 800-call designs | `benchmarks/protocols/INV-EAL-NEGATIVE-REVISION-001.json`, `INV-EAL-MECHANISMS-001.json`, `INV-EAL-DEPLOYMENT-001.json`, `docs/eal2-study-amendment-20260924.md`; specified, unrun, requiring current-contract freezes; the 800-call candidate grammar factor conflicts with the present no-extension scope and changes count if removed |
+| Earlier 96-, 960- and 800-call designs | `benchmarks/protocols/INV-EAL-NEGATIVE-REVISION-001.json`, `INV-EAL-MECHANISMS-001.json`, `INV-EAL-DEPLOYMENT-001.json`; their version 0.1.0 human-adjudication protocols remain unrun. The full fixed-source factorial written for the 800 design is 768, giving 1,184 with its other stages; the separately versioned amendment uses a balanced 384-cell fraction and does not add grammar syntax |
+| Negative-revision developmental schedule | `benchmarks/experiments/negative-revision-96/`, `benchmarks/results/2026-09-24-negative-revision-96-developmental/` and the separate explanation review archive; 96 completed calls, 24/24 finite EAL/comparator parity cases, 1/48 strictly faithful and correctly accepted one-shot explanations by two exploratory AI reviews under criteria frozen during the campaign before reviewer exposure; eight selected roots from one generated scaffold |
+| Mechanism developmental schedule and result | `benchmarks/experiments/mechanisms-960/` and `benchmarks/results/eal2-960-campaign-20260924.tar.gz`; 960 assigned/attempted, 942 strict completions, four malformed, fourteen provider failures, 460 exact available-information statuses and 130 admitted false supports on selected synthetic roots; 11 response-less requests have unknown charges |
+| Deployment developmental schedule and result | `benchmarks/experiments/deployment-800/`, `benchmarks/results/2026-09-24-deployment-800-a3-developmental/a3-terminal.tar.gz`, `docs/eal2-study-amendment-20260924.md` and `docs/eal2-grammar-decision-20260924.md`; 800 completed assigned slots in 804 actual requests, 290/384 fixed-source exact statuses, 0/32 valid final authored products and 320 unavailable recipient packets. A1/A2/C1 stopped diagnostic attempts are separate and not pooled |
+| Deployment exploratory explanation reviews | `docs/reviews/deployment-800-a3-*` and the archived postcall review frame; two isolated AI reviewers agreed 4/48 preselected actual-prompt responses faithful, all in raw-source cases. All 16 checked-host statuses in this subset matched their synthetic reference, but none of the sixteen recipient explanations was rated faithful; not a human quality estimate |
 
-The tables count attempted calls. Two repetitions per task are dependent.
+The amendment document is a pre-run design record at its stated audit cut. The
+later terminal result archives and this manuscript report the amended runs;
+its earlier "unmeasured" statements are not the status of those later runs.
+
+The tables count attempted calls. Revisions and repeated conditions within a
+root are dependent. A scheduled decision slot may have more than one paid API
+attempt under a separately declared retry rule; the ledgers retain both.
 Full-information agreement and correctness under the observations supplied
 are different endpoints. The 661 repository tests reported in PR #4 and
 newer implementation checks are regression tests, not a model or human
 comprehension result.
 The article intentionally makes no significance or equivalence claim.
+The developmental studies use author-created synthetic records and AI reviews,
+not authenticated cluster evidence or masked human adjudication. Provider model
+charges omit initial fixture authoring, source review, acquisition and host
+work, so total cost per correctly accepted and faithfully explained decision
+is unavailable.
 
 ## Argument and visual decisions
 
@@ -87,6 +102,26 @@ notation-superiority claim has no support from the strict raw-only diagnostic
 carry the same typed meaning and remains a credible alternative
 representation. The downstream test requires independent briefs, equivalent
 operations and separate explanation and cost measurement.
+The finite negative-finding task uses existing typed methods, claim premises
+and targeted objections. The language review found no need to change EAL/2
+grammar for these campaigns or to add ASPIC+ machinery. If a future task
+requires default rules, implicit attacks or preferences, a versioned host
+method could consume a separately specified finite argumentation profile.
+Its typed inputs, construction and defeat semantics, trace and binding to
+EAL claims would need explicit validation and an engineering use case.
+
+The amended 96 and 960 schedules show substantial raw interpretation and
+source-authoring failures on selected synthetic records. The fresh 800-slot
+fixed-source host and native routes retained 240/240 checked statuses by
+construction, whereas direct interpretation retained 50/144; all 32 final
+authored sources failed the exposed executable contract, so none of the 320
+recipient packets had an accepted status. These are different estimands and
+cannot be combined into a notation benefit. Four response-less first requests
+in the 800 schedule were retried identically, raising actual API requests to
+804. An exploratory 48-response AI review found four faithful explanations,
+all in the raw subset. Configured model charges, retries and latency are reported in the result
+archives; human effort, independent human explanation adjudication and all-in
+cost per faithfully correct accepted decision remain unavailable.
 
 The figure search used the visualisation skill's weighted criteria:
 explanatory gain .30, inferential force .25, semantic fidelity .20,

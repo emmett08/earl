@@ -1,0 +1,25 @@
+{
+  "context": {
+    "asset": "WT-63",
+    "trial": "dose-check-D6"
+  },
+  "observed_at": "2026-09-24T11:58:00Z",
+  "request": {
+    "context": {
+      "asset": "WT-63",
+      "trial": "dose-check-D6"
+    },
+    "input": {},
+    "mode": "deterministic",
+    "tool": "alternate_reader",
+    "tool_version": "1"
+  },
+  "value": {
+    "asset": "WT-63",
+    "dose_mg_l": 3.5,
+    "finding": "none",
+    "ph": 7.1,
+    "samples": 24,
+    "trial": "dose-check-D6"
+  }
+}

@@ -1,0 +1,559 @@
+{
+  "cases": [
+    {
+      "disagreement_codes": [
+        "R",
+        "M",
+        "N",
+        "B"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two chiller checks provisionally support pressure at most 1000 kPa for CH-75 during R2. An in-scope reading of 1100 kPa challenges both; exactly 1000 is within the inclusive bound. A complete calibrated search can support qualified sampled non-detection. The invalidated variant's crossing refers to another run and cannot challenge R2.\nFormal generic source:\n{\"absence_claim\": \"qualified_absence\", \"absence_positive_route\": false, \"bound\": 1000, \"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"defences\": [], \"explanation\": \"Submitted test routes are provisional. An eligible violating sample challenges both; complete calibrated non-detection is a separate, limited claim.\", \"id\": \"chiller_pressure\", \"negative_claim\": \"violating_sample\", \"objections\": [{\"premise\": \"violating_sample\", \"target\": \"first_reader\"}, {\"premise\": \"violating_sample\", \"target\": \"second_reader\"}], \"positive_routes\": [\"first_reader\", \"second_reader\"], \"quantity\": \"pressure\", \"query\": {\"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"max_gap\": 4, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"semantics\": \"sampled\", \"start\": 0}, \"schema\": \"negative-revision-equal-graph/1\", \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\", \"unit\": \"kPa\"}\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\"}}, \"second_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\"}}, \"trace_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:20:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 4, \"value\": 1100}], \"max_gap\": 4, \"mode\": \"counterexample\", \"property\": {\"operator\": \"le\", \"value\": 1000}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"pressure\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"cooling-run-R2-other\", \"subject\": \"CH-75\", \"unit\": \"kPa\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "7aa17c319a560ab7f6e5aaea",
+      "packet_ordinal": 2,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"contested\",\n    \"qualified_absence\": \"unsupported\"\n  },\n  \"explanation\": The records show that the pressure at CH-75 was observed to be at or below 1000 kPa, supporting the bounded property claim, but a sample with 1100 kPa challenges the claim, making the absence claim unsupported and the violating sample contested.\n}",
+      "recipient_parse": {
+        "claims": null,
+        "error": "Expecting value: line 7 column 18 (char 161)",
+        "explanation": null,
+        "valid": false
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "supported",
+        "qualified_absence": "unsupported",
+        "violating_sample": "unsupported"
+      },
+      "response_sha256": "43bbfaa92dd544e83a0e8ef8151527404d644b01c82208bf4b6ee10f265647f3",
+      "review_1": {
+        "criteria_pass": {
+          "B": null,
+          "M": null,
+          "N": null,
+          "R": null
+        },
+        "review_note": "Invalid JSON: the explanation value is unquoted; no explanation string is available under the rubric.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": false,
+          "M": false,
+          "N": false,
+          "R": false
+        },
+        "criterion_rationale": "The 1100 kPa sample belongs to cooling-run-R2-other, so it cannot challenge CH-75 in R2 or support the named violation. The malformed but legible sentence was reviewed.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "N",
+        "B"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two loaded-network checks provisionally support fewer than three lost packets per bucket on NW-44 in L8. A matching partial crossing challenges both. An independent audit explains only the first route's counter; the second route remains challenged, but the answered first alternative restores the parent status. A complete detector-qualified search concerns only sampled buckets.\nFormal eal source:\nlanguage \"EAL/2\";\nenvironment run_scope { require \"asset\" == \"NW-44\"; require \"run\" == \"load-test-L8\"; }\ntool first_reader { version \"1\"; mode deterministic; }\ntool second_reader { version \"1\"; mode deterministic; }\ntool trace_reader { version \"1\"; mode deterministic; }\ntool audit_reader { version \"1\"; mode deterministic; }\nevidence first_record { tool first_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"NW-44\"; require \"scope\" == \"load-test-L8\"; require \"property.operator\" == \"lt\"; require \"property.value\" == 3; }\nevidence second_record { tool second_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"NW-44\"; require \"scope\" == \"load-test-L8\"; require \"property.operator\" == \"lt\"; require \"property.value\" == 3; }\nevidence audit_record { tool audit_reader; kind independent_check; environment run_scope; max_age 3600; require \"independently_explained\" == true; require \"subject\" == \"NW-44\"; require \"scope\" == \"load-test-L8\"; require \"sample_time\" == 4; require \"finding\" == \"sensor_artifact\"; }\nevidence trace_record { tool trace_reader; kind sampled_negative_trace; environment run_scope; max_age 3600; require \"schema\" == \"EAL/typed-input/1\"; }\nreasoning provisional_test { method \"structured/1\"; rationale \"A submitted matching positive test supports only this sampled run under the authored test warrant.\"; }\nreasoning witnessed_violation { method \"engineering/sampled-negative/1\"; rationale \"One correctly bound violating sample challenges either positive test without establishing values outside the sampled times.\"; }\nreasoning complete_search { method \"engineering/sampled-negative/1\"; rationale \"Qualified non-detection requires all sampled gaps and detector information; physical continuity is not asserted.\"; }\nclaim bounded_property_supported { statement \"The submitted routes provisionally support the sampled bound for NW-44 during load-test-L8, subject to their declared challenges.\"; environment run_scope; }\nclaim violating_sample { statement \"An in-scope sampled value for NW-44 violates the declared bound.\"; environment run_scope; proposition { subject \"NW-44\"; quantity \"dimensionless\"; unit \"1\"; scope \"load-test-L8\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"lt\",\"value\":3},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.1,\"minimum_sensitivity\":0.9},\"mode\":\"counterexample\"}; result \"finding\" == true; } }\nclaim qualified_absence { statement \"The complete calibrated sampled search for NW-44 reported no violation within its finite scope.\"; environment run_scope; proposition { subject \"NW-44\"; quantity \"dimensionless\"; unit \"1\"; scope \"load-test-L8\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"lt\",\"value\":3},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.1,\"minimum_sensitivity\":0.9},\"mode\":\"non_detection\"}; result \"finding\" == true; } }\nargument first_route { conclusion bounded_property_supported; reasoning provisional_test; evidence first_record; }\nargument second_route { conclusion bounded_property_supported; reasoning provisional_test; evidence second_record; }\nargument adverse_route { conclusion violating_sample; reasoning witnessed_violation; evidence trace_record; binding trace_record; }\nargument absence_route { conclusion qualified_absence; reasoning complete_search; evidence trace_record; binding trace_record; }\nobjection challenge_first { target argument first_route; premises violating_sample; }\nobjection challenge_second { target argument second_route; premises violating_sample; }\nobjection answer_first { target objection challenge_first; evidence audit_record; }\n\nAcquired synthetic records:\n{\"audit_reader\": {\"context\": {\"asset\": \"NW-44\", \"run\": \"load-test-L8\"}, \"observed_at\": \"2040-01-31T08:21:00Z\", \"request\": {\"context\": {\"asset\": \"NW-44\", \"run\": \"load-test-L8\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"audit_reader\", \"tool_version\": \"1\"}, \"value\": {\"finding\": \"none\", \"independently_explained\": false, \"sample_time\": 4, \"scope\": \"load-test-L8\", \"subject\": \"NW-44\"}}, \"first_reader\": {\"context\": {\"asset\": \"NW-44\", \"run\": \"load-test-L8\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"NW-44\", \"run\": \"load-test-L8\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 3}, \"scope\": \"load-test-L8\", \"subject\": \"NW-44\"}}, \"second_reader\": {\"context\": {\"asset\": \"NW-44\", \"run\": \"load-test-L8\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"NW-44\", \"run\": \"load-test-L8\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 3}, \"scope\": \"load-test-L8\", \"subject\": \"NW-44\"}}, \"trace_reader\": {\"context\": {\"asset\": \"NW-44\", \"run\": \"load-test-L8\"}, \"observed_at\": \"2040-01-31T08:20:00Z\", \"request\": {\"context\": {\"asset\": \"NW-44\", \"run\": \"load-test-L8\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"calibration\": {\"detection_limit\": 0.05, \"sensitivity_lower_bound\": 0.95}, \"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 0, \"value\": 0}, {\"time\": 4, \"value\": 1}, {\"time\": 8, \"value\": 2}, {\"time\": 12, \"value\": 1}], \"max_gap\": 4, \"mode\": \"non_detection\", \"property\": {\"operator\": \"lt\", \"value\": 3}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"dimensionless\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"load-test-L8\", \"subject\": \"NW-44\", \"unit\": \"1\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "725fb54f876d4a90de7fec71",
+      "packet_ordinal": 3,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"supported\"\n  },\n  \"explanation\": \"The evidence supports the routes' support for the sampled bound and the absence of violations, but the sampled negative trace challenges the violation claim.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "supported",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "The evidence supports the routes' support for the sampled bound and the absence of violations, but the sampled negative trace challenges the violation claim.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "supported",
+        "qualified_absence": "supported",
+        "violating_sample": "unsupported"
+      },
+      "response_sha256": "457cd52fb55553f51f8264f991b073fedca0fa821c4e653f073c67ebc45b51e7",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": true,
+          "R": true
+        },
+        "review_note": "States support and sampled absence but omits complete calibrated coverage as the qualifying basis.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": false,
+          "M": false,
+          "N": false,
+          "R": true
+        },
+        "criterion_rationale": "The three conclusions are consistent, but the sentence does not explain that an endpoint/gap-covered calibrated non-detection, within the finite sampled scope, supports qualified absence.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "N"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two chiller checks provisionally support pressure at most 1000 kPa for CH-75 during R2. An in-scope reading of 1100 kPa challenges both; exactly 1000 is within the inclusive bound. A complete calibrated search can support qualified sampled non-detection. The invalidated variant's crossing refers to another run and cannot challenge R2.\nFormal generic source:\n{\"absence_claim\": \"qualified_absence\", \"absence_positive_route\": false, \"bound\": 1000, \"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"defences\": [], \"explanation\": \"Submitted test routes are provisional. An eligible violating sample challenges both; complete calibrated non-detection is a separate, limited claim.\", \"id\": \"chiller_pressure\", \"negative_claim\": \"violating_sample\", \"objections\": [{\"premise\": \"violating_sample\", \"target\": \"first_reader\"}, {\"premise\": \"violating_sample\", \"target\": \"second_reader\"}], \"positive_routes\": [\"first_reader\", \"second_reader\"], \"quantity\": \"pressure\", \"query\": {\"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"max_gap\": 4, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"semantics\": \"sampled\", \"start\": 0}, \"schema\": \"negative-revision-equal-graph/1\", \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\", \"unit\": \"kPa\"}\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\"}}, \"second_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\"}}, \"trace_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:20:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 4, \"value\": 1100}], \"max_gap\": 4, \"mode\": \"counterexample\", \"property\": {\"operator\": \"le\", \"value\": 1000}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"pressure\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\", \"unit\": \"kPa\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "fa1a1df283ae3ca6e4ca3505",
+      "packet_ordinal": 4,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"contested\"\n  },\n  \"explanation\": \"The records show that the pressure reading of 1100 kPa challenges the support for the property bound of 1000 kPa, but the tests are provisional and do not definitively support qualified absence.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "contested",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "The records show that the pressure reading of 1100 kPa challenges the support for the property bound of 1000 kPa, but the tests are provisional and do not definitively support qualified absence.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "contested",
+        "qualified_absence": "unsupported",
+        "violating_sample": "supported"
+      },
+      "response_sha256": "3427b11d641184e726258a78745e81d586107055765b87e469d4b575b4ec1d80",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": true,
+          "R": true
+        },
+        "review_note": "The 1100 kPa challenge is recognised, but neither both targeted routes nor partial coverage are identified.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": false,
+          "R": true
+        },
+        "criterion_rationale": "The 1100 kPa crossing and provisional positive routes are described consistently; the sentence omits the supported violating-sample status and the precise reason qualified absence is unsupported.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "N"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two chiller checks provisionally support pressure at most 1000 kPa for CH-75 during R2. An in-scope reading of 1100 kPa challenges both; exactly 1000 is within the inclusive bound. A complete calibrated search can support qualified sampled non-detection. The invalidated variant's crossing refers to another run and cannot challenge R2.\nFormal eal source:\nlanguage \"EAL/2\";\nenvironment run_scope { require \"asset\" == \"CH-75\"; require \"run\" == \"cooling-run-R2\"; }\ntool first_reader { version \"1\"; mode deterministic; }\ntool second_reader { version \"1\"; mode deterministic; }\ntool trace_reader { version \"1\"; mode deterministic; }\nevidence first_record { tool first_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"CH-75\"; require \"scope\" == \"cooling-run-R2\"; require \"property.operator\" == \"le\"; require \"property.value\" == 1000; }\nevidence second_record { tool second_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"CH-75\"; require \"scope\" == \"cooling-run-R2\"; require \"property.operator\" == \"le\"; require \"property.value\" == 1000; }\nevidence trace_record { tool trace_reader; kind sampled_negative_trace; environment run_scope; max_age 3600; require \"schema\" == \"EAL/typed-input/1\"; }\nreasoning provisional_test { method \"structured/1\"; rationale \"A submitted matching positive test supports only this sampled run under the authored test warrant.\"; }\nreasoning witnessed_violation { method \"engineering/sampled-negative/1\"; rationale \"One correctly bound violating sample challenges either positive test without establishing values outside the sampled times.\"; }\nreasoning complete_search { method \"engineering/sampled-negative/1\"; rationale \"Qualified non-detection requires all sampled gaps and detector information; physical continuity is not asserted.\"; }\nclaim bounded_property_supported { statement \"The submitted routes provisionally support the sampled bound for CH-75 during cooling-run-R2, subject to their declared challenges.\"; environment run_scope; }\nclaim violating_sample { statement \"An in-scope sampled value for CH-75 violates the declared bound.\"; environment run_scope; proposition { subject \"CH-75\"; quantity \"pressure\"; unit \"kPa\"; scope \"cooling-run-R2\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"le\",\"value\":1000},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.1,\"minimum_sensitivity\":0.9},\"mode\":\"counterexample\"}; result \"finding\" == true; } }\nclaim qualified_absence { statement \"The complete calibrated sampled search for CH-75 reported no violation within its finite scope.\"; environment run_scope; proposition { subject \"CH-75\"; quantity \"pressure\"; unit \"kPa\"; scope \"cooling-run-R2\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"le\",\"value\":1000},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.1,\"minimum_sensitivity\":0.9},\"mode\":\"non_detection\"}; result \"finding\" == true; } }\nargument first_route { conclusion bounded_property_supported; reasoning provisional_test; evidence first_record; }\nargument second_route { conclusion bounded_property_supported; reasoning provisional_test; evidence second_record; }\nargument adverse_route { conclusion violating_sample; reasoning witnessed_violation; evidence trace_record; binding trace_record; }\nargument absence_route { conclusion qualified_absence; reasoning complete_search; evidence trace_record; binding trace_record; }\nobjection challenge_first { target argument first_route; premises violating_sample; }\nobjection challenge_second { target argument second_route; premises violating_sample; }\n\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\"}}, \"second_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\"}}, \"trace_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:20:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"calibration\": {\"detection_limit\": 0.05, \"sensitivity_lower_bound\": 0.95}, \"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 0, \"value\": 500}, {\"time\": 4, \"value\": 600}, {\"time\": 8, \"value\": 700}, {\"time\": 12, \"value\": 600}], \"max_gap\": 4, \"mode\": \"non_detection\", \"property\": {\"operator\": \"le\", \"value\": 1000}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"pressure\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\", \"unit\": \"kPa\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "d8d3c9caf9fc8aae7eec743d",
+      "packet_ordinal": 7,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"supported\"\n  },\n  \"explanation\": \"The submitted records support the bounds and the absence claim but do not support the violating sample claim.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "supported",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "The submitted records support the bounds and the absence claim but do not support the violating sample claim.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "supported",
+        "qualified_absence": "supported",
+        "violating_sample": "unsupported"
+      },
+      "response_sha256": "571ff9daa36b39d006ee4f879605ccef669fad04811d783d802ffd56c44bdab4",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": true,
+          "R": true
+        },
+        "review_note": "Reports the correct statuses without explaining the complete calibrated search or two positive routes.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": false,
+          "R": true
+        },
+        "criterion_rationale": "The three labels match, but the explanation supplies no finite calibrated endpoint/gap-search basis for the absence and violating-sample decisions.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "B"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two conveyor run checks provisionally support housing temperature rise below 15 C on CV-20 in M6. A partial matching threshold crossing challenges both. In the third synthetic state the author stipulates withdrawal of that report and substitutes a complete calibrated no-violation search under the same finite contract. This state substitution restores the bounded record status; it does not authenticate a correction or show the first crossing never happened.\nFormal generic source:\n{\"absence_claim\": \"qualified_absence\", \"absence_positive_route\": false, \"bound\": 15, \"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"defences\": [], \"explanation\": \"Submitted test routes are provisional. An eligible violating sample challenges both; complete calibrated non-detection is a separate, limited claim.\", \"id\": \"conveyor_temperature\", \"negative_claim\": \"violating_sample\", \"objections\": [{\"premise\": \"violating_sample\", \"target\": \"first_reader\"}, {\"premise\": \"violating_sample\", \"target\": \"second_reader\"}], \"positive_routes\": [\"first_reader\", \"second_reader\"], \"quantity\": \"temperature_difference\", \"query\": {\"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"max_gap\": 4, \"property\": {\"operator\": \"lt\", \"value\": 15}, \"semantics\": \"sampled\", \"start\": 0}, \"schema\": \"negative-revision-equal-graph/1\", \"scope\": \"run-M6\", \"subject\": \"CV-20\", \"unit\": \"delta_degC\"}\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 15}, \"scope\": \"run-M6\", \"subject\": \"CV-20\"}}, \"second_reader\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 15}, \"scope\": \"run-M6\", \"subject\": \"CV-20\"}}, \"trace_reader\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"observed_at\": \"2040-01-31T08:25:00Z\", \"request\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"synthetic_correction\": {\"asserted_by\": \"fixture_author\", \"sequence\": 2, \"supersedes_sha256\": \"75ab36482c53fd731fff1c5e8f5302f286898cbc03a6df23725bfd566bb5e15f\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"calibration\": {\"detection_limit\": 0.05, \"sensitivity_lower_bound\": 0.95}, \"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 0, \"value\": 10}, {\"time\": 4, \"value\": 12}, {\"time\": 8, \"value\": 14}, {\"time\": 12, \"value\": 13}], \"max_gap\": 4, \"mode\": \"non_detection\", \"property\": {\"operator\": \"lt\", \"value\": 15}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"temperature_difference\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"run-M6\", \"subject\": \"CV-20\", \"unit\": \"delta_degC\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "1a6e04179d2c3839f4627630",
+      "packet_ordinal": 16,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"contested\"\n  },\n  \"explanation\": \"The synthetic records show that the bounded property is supported by the evidence, but the violating sample remains contested due to the synthetic correction not confirming the initial violation.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "contested",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "The synthetic records show that the bounded property is supported by the evidence, but the violating sample remains contested due to the synthetic correction not confirming the initial violation.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "supported",
+        "qualified_absence": "supported",
+        "violating_sample": "unsupported"
+      },
+      "response_sha256": "d839dc305f85856df4ca5336334e843d9f75a0ea1f1eb9a2274555a10eac4eab",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": false,
+          "R": false
+        },
+        "review_note": "Calls both negative and absence claims contested, omitting the later qualified substitute search.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": false,
+          "M": false,
+          "N": false,
+          "R": false
+        },
+        "criterion_rationale": "The submitted trace is a complete non-detection, not a contested violating sample or correction that leaves it contested; qualified absence is supported.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "N",
+        "B"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two charge checks provisionally support temperature rise below 8 C on BP-84 in Q3. A third, distinct positive route requires a complete calibrated non-detection claim as a premise. A partial in-scope crossing challenges both test routes and defeats the absence route by invalidating its premise. The three routes must remain separately accounted for; none establishes temperature between samples.\nFormal generic source:\n{\"absence_claim\": \"qualified_absence\", \"absence_positive_route\": true, \"bound\": 8, \"context\": {\"asset\": \"BP-84\", \"run\": \"charge-Q3\"}, \"defences\": [], \"explanation\": \"Submitted test routes are provisional. An eligible violating sample challenges both; complete calibrated non-detection is a separate, limited claim.\", \"id\": \"battery_rise\", \"negative_claim\": \"violating_sample\", \"objections\": [{\"premise\": \"violating_sample\", \"target\": \"first_reader\"}, {\"premise\": \"violating_sample\", \"target\": \"second_reader\"}], \"positive_routes\": [\"first_reader\", \"second_reader\"], \"quantity\": \"temperature_difference\", \"query\": {\"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"max_gap\": 4, \"property\": {\"operator\": \"lt\", \"value\": 8}, \"semantics\": \"sampled\", \"start\": 0}, \"schema\": \"negative-revision-equal-graph/1\", \"scope\": \"charge-Q3\", \"subject\": \"BP-84\", \"unit\": \"delta_degC\"}\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"BP-84\", \"run\": \"charge-Q3\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"BP-84\", \"run\": \"charge-Q3\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 8}, \"scope\": \"charge-Q3\", \"subject\": \"BP-84\"}}, \"second_reader\": {\"context\": {\"asset\": \"BP-84\", \"run\": \"charge-Q3\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"BP-84\", \"run\": \"charge-Q3\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 8}, \"scope\": \"charge-Q3\", \"subject\": \"BP-84\"}}, \"trace_reader\": {\"context\": {\"asset\": \"BP-84\", \"run\": \"charge-Q3\"}, \"observed_at\": \"2040-01-31T08:20:00Z\", \"request\": {\"context\": {\"asset\": \"BP-84\", \"run\": \"charge-Q3\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 4, \"value\": 9}], \"max_gap\": 4, \"mode\": \"counterexample\", \"property\": {\"operator\": \"lt\", \"value\": 8}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"temperature_difference\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"charge-Q3\", \"subject\": \"BP-84\", \"unit\": \"delta_degC\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "6a7f75a84f44591dc559ac4f",
+      "packet_ordinal": 17,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"unsupported\"\n  },\n  \"explanation\": \"All test routes support the temperature rise below 8\u00b0C, but the violating sample challenges this, and the qualified absence claim remains unsupported due to the partial crossing.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "unsupported",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "All test routes support the temperature rise below 8\u00b0C, but the violating sample challenges this, and the qualified absence claim remains unsupported due to the partial crossing.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "contested",
+        "qualified_absence": "unsupported",
+        "violating_sample": "supported"
+      },
+      "response_sha256": "757390b663970a9433cd2ba722ca19b6f6ee66176cbd7a1e3d731802219f6352",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": true,
+          "R": false
+        },
+        "review_note": "Says all test routes continue supporting the bound after the crossing; omits the invalidated absence-premise route.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": false,
+          "M": false,
+          "N": false,
+          "R": false
+        },
+        "criterion_rationale": "Only the first two provisional tests pass; the distinct third route needs complete non-detection and has none. The in-scope 9 C crossing attacks the two routes and supports the violation.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "R",
+        "N",
+        "B"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two independently justified bearing checks provisionally support vibration velocity below 0.005 m/s for BV-48 in spin test J2. A partial in-scope sample at or above 0.005 m/s challenges the first check only; the second check has an independent warrant and stays applicable. A sampled absence finding requires full endpoint and gap coverage and adequate detector capability. Judge only submitted records.\nFormal eal source:\nlanguage \"EAL/2\";\nenvironment run_scope { require \"asset\" == \"BV-48\"; require \"run\" == \"spin-test-J2\"; }\ntool first_reader { version \"1\"; mode deterministic; }\ntool second_reader { version \"1\"; mode deterministic; }\ntool trace_reader { version \"1\"; mode deterministic; }\nevidence first_record { tool first_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"BV-48\"; require \"scope\" == \"spin-test-J2\"; require \"property.operator\" == \"lt\"; require \"property.value\" == 0.005; }\nevidence second_record { tool second_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"BV-48\"; require \"scope\" == \"spin-test-J2\"; require \"property.operator\" == \"lt\"; require \"property.value\" == 0.005; }\nevidence trace_record { tool trace_reader; kind sampled_negative_trace; environment run_scope; max_age 3600; require \"schema\" == \"EAL/typed-input/1\"; }\nreasoning provisional_test { method \"structured/1\"; rationale \"A submitted matching positive test supports only this sampled run under the authored test warrant.\"; }\nreasoning witnessed_violation { method \"engineering/sampled-negative/1\"; rationale \"One correctly bound violating sample challenges either positive test without establishing values outside the sampled times.\"; }\nreasoning complete_search { method \"engineering/sampled-negative/1\"; rationale \"Qualified non-detection requires all sampled gaps and detector information; physical continuity is not asserted.\"; }\nclaim bounded_property_supported { statement \"The submitted routes provisionally support the sampled bound for BV-48 during spin-test-J2, subject to their declared challenges.\"; environment run_scope; }\nclaim violating_sample { statement \"An in-scope sampled value for BV-48 violates the declared bound.\"; environment run_scope; proposition { subject \"BV-48\"; quantity \"velocity\"; unit \"m/s\"; scope \"spin-test-J2\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"lt\",\"value\":0.005},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.0025,\"minimum_sensitivity\":0.9},\"mode\":\"counterexample\"}; result \"finding\" == true; } }\nclaim qualified_absence { statement \"The complete calibrated sampled search for BV-48 reported no violation within its finite scope.\"; environment run_scope; proposition { subject \"BV-48\"; quantity \"velocity\"; unit \"m/s\"; scope \"spin-test-J2\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"lt\",\"value\":0.005},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.0025,\"minimum_sensitivity\":0.9},\"mode\":\"non_detection\"}; result \"finding\" == true; } }\nargument first_route { conclusion bounded_property_supported; reasoning provisional_test; evidence first_record; }\nargument second_route { conclusion bounded_property_supported; reasoning provisional_test; evidence second_record; }\nargument adverse_route { conclusion violating_sample; reasoning witnessed_violation; evidence trace_record; binding trace_record; }\nargument absence_route { conclusion qualified_absence; reasoning complete_search; evidence trace_record; binding trace_record; }\nobjection challenge_first { target argument first_route; premises violating_sample; }\n\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"BV-48\", \"run\": \"spin-test-J2\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"BV-48\", \"run\": \"spin-test-J2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 0.005}, \"scope\": \"spin-test-J2\", \"subject\": \"BV-48\"}}, \"second_reader\": {\"context\": {\"asset\": \"BV-48\", \"run\": \"spin-test-J2\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"BV-48\", \"run\": \"spin-test-J2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 0.005}, \"scope\": \"spin-test-J2\", \"subject\": \"BV-48\"}}, \"trace_reader\": {\"context\": {\"asset\": \"BV-48\", \"run\": \"spin-test-J2\"}, \"observed_at\": \"2040-01-31T08:20:00Z\", \"request\": {\"context\": {\"asset\": \"BV-48\", \"run\": \"spin-test-J2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"detector_contract\": {\"maximum_detection_limit\": 0.0025, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 4, \"value\": 0.006}], \"max_gap\": 4, \"mode\": \"counterexample\", \"property\": {\"operator\": \"lt\", \"value\": 0.005}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"velocity\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"spin-test-J2\", \"subject\": \"BV-48\", \"unit\": \"m/s\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "e36f4a31e285f660a984280b",
+      "packet_ordinal": 20,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"unsupported\"\n  },\n  \"explanation\": \"The submitted records support the provisional support for the bound, but the sampled violation at 0.006 m/s challenges it, and the absence report does not confirm a violation within the scope.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "unsupported",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "The submitted records support the provisional support for the bound, but the sampled violation at 0.006 m/s challenges it, and the absence report does not confirm a violation within the scope.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "supported",
+        "qualified_absence": "unsupported",
+        "violating_sample": "supported"
+      },
+      "response_sha256": "bf82824640b447f5c27e88174ef16a397b7a9c085edb2a57239fb3a3e97b110f",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": true,
+          "R": true
+        },
+        "review_note": "Mentions the crossing but omits the independently warranted second route that preserves parent support.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": false,
+          "M": false,
+          "N": false,
+          "R": false
+        },
+        "criterion_rationale": "The acquired trace is an in-scope 0.006 m/s counterexample, supporting the violating-sample claim; there is no separate absence report that negates it.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "B"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two conveyor run checks provisionally support housing temperature rise below 15 C on CV-20 in M6. A partial matching threshold crossing challenges both. In the third synthetic state the author stipulates withdrawal of that report and substitutes a complete calibrated no-violation search under the same finite contract. This state substitution restores the bounded record status; it does not authenticate a correction or show the first crossing never happened.\nFormal eal source:\nlanguage \"EAL/2\";\nenvironment run_scope { require \"asset\" == \"CV-20\"; require \"run\" == \"run-M6\"; }\ntool first_reader { version \"1\"; mode deterministic; }\ntool second_reader { version \"1\"; mode deterministic; }\ntool trace_reader { version \"1\"; mode deterministic; }\nevidence first_record { tool first_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"CV-20\"; require \"scope\" == \"run-M6\"; require \"property.operator\" == \"lt\"; require \"property.value\" == 15; }\nevidence second_record { tool second_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"CV-20\"; require \"scope\" == \"run-M6\"; require \"property.operator\" == \"lt\"; require \"property.value\" == 15; }\nevidence trace_record { tool trace_reader; kind sampled_negative_trace; environment run_scope; max_age 3600; require \"schema\" == \"EAL/typed-input/1\"; }\nreasoning provisional_test { method \"structured/1\"; rationale \"A submitted matching positive test supports only this sampled run under the authored test warrant.\"; }\nreasoning witnessed_violation { method \"engineering/sampled-negative/1\"; rationale \"One correctly bound violating sample challenges either positive test without establishing values outside the sampled times.\"; }\nreasoning complete_search { method \"engineering/sampled-negative/1\"; rationale \"Qualified non-detection requires all sampled gaps and detector information; physical continuity is not asserted.\"; }\nclaim bounded_property_supported { statement \"The submitted routes provisionally support the sampled bound for CV-20 during run-M6, subject to their declared challenges.\"; environment run_scope; }\nclaim violating_sample { statement \"An in-scope sampled value for CV-20 violates the declared bound.\"; environment run_scope; proposition { subject \"CV-20\"; quantity \"temperature_difference\"; unit \"delta_degC\"; scope \"run-M6\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"lt\",\"value\":15},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.1,\"minimum_sensitivity\":0.9},\"mode\":\"counterexample\"}; result \"finding\" == true; } }\nclaim qualified_absence { statement \"The complete calibrated sampled search for CV-20 reported no violation within its finite scope.\"; environment run_scope; proposition { subject \"CV-20\"; quantity \"temperature_difference\"; unit \"delta_degC\"; scope \"run-M6\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"lt\",\"value\":15},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.1,\"minimum_sensitivity\":0.9},\"mode\":\"non_detection\"}; result \"finding\" == true; } }\nargument first_route { conclusion bounded_property_supported; reasoning provisional_test; evidence first_record; }\nargument second_route { conclusion bounded_property_supported; reasoning provisional_test; evidence second_record; }\nargument adverse_route { conclusion violating_sample; reasoning witnessed_violation; evidence trace_record; binding trace_record; }\nargument absence_route { conclusion qualified_absence; reasoning complete_search; evidence trace_record; binding trace_record; }\nobjection challenge_first { target argument first_route; premises violating_sample; }\nobjection challenge_second { target argument second_route; premises violating_sample; }\n\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 15}, \"scope\": \"run-M6\", \"subject\": \"CV-20\"}}, \"second_reader\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 15}, \"scope\": \"run-M6\", \"subject\": \"CV-20\"}}, \"trace_reader\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"observed_at\": \"2040-01-31T08:25:00Z\", \"request\": {\"context\": {\"asset\": \"CV-20\", \"run\": \"run-M6\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"synthetic_correction\": {\"asserted_by\": \"fixture_author\", \"sequence\": 2, \"supersedes_sha256\": \"75ab36482c53fd731fff1c5e8f5302f286898cbc03a6df23725bfd566bb5e15f\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"calibration\": {\"detection_limit\": 0.05, \"sensitivity_lower_bound\": 0.95}, \"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 0, \"value\": 10}, {\"time\": 4, \"value\": 12}, {\"time\": 8, \"value\": 14}, {\"time\": 12, \"value\": 13}], \"max_gap\": 4, \"mode\": \"non_detection\", \"property\": {\"operator\": \"lt\", \"value\": 15}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"temperature_difference\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"run-M6\", \"subject\": \"CV-20\", \"unit\": \"delta_degC\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "9cf288c16e8e08e8b274ab83",
+      "packet_ordinal": 25,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"unsupported\"\n  },\n  \"explanation\": \"The synthetic records demonstrate that the support for the bounded property remains provisional, while the violation and qualified absence claims are contested due to the substitution of the no-violation search.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "unsupported",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "The synthetic records demonstrate that the support for the bounded property remains provisional, while the violation and qualified absence claims are contested due to the substitution of the no-violation search.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "supported",
+        "qualified_absence": "supported",
+        "violating_sample": "unsupported"
+      },
+      "response_sha256": "c542750160325f8593d4c0e7de9d84249bad852fec7f9724ee8f8c65fdec858d",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": false,
+          "R": false
+        },
+        "review_note": "Calls the later corrected search contested rather than qualified and omits its finite coverage mechanism.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": false,
+          "M": false,
+          "N": false,
+          "R": false
+        },
+        "criterion_rationale": "The run-M6 record is a complete calibrated no-violation search; it supports qualified absence rather than leaving the absence claim contested or unsupported.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "N"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two storage write checks provisionally support fewer than four errors per sampling bucket for ST-12 during W7. A witnessed bucket with at least four errors challenges the first route; when it arrives the second check reports failure independently, leaving no unaffected positive route. The third record retracts the witness as wrong-run evidence and the first route survives. Complete bounded sampling can separately support only a no-reported-violation conclusion.\nFormal eal source:\nlanguage \"EAL/2\";\nenvironment run_scope { require \"asset\" == \"ST-12\"; require \"run\" == \"write-window-W7\"; }\ntool first_reader { version \"1\"; mode deterministic; }\ntool second_reader { version \"1\"; mode deterministic; }\ntool trace_reader { version \"1\"; mode deterministic; }\nevidence first_record { tool first_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"ST-12\"; require \"scope\" == \"write-window-W7\"; require \"property.operator\" == \"lt\"; require \"property.value\" == 4; }\nevidence second_record { tool second_reader; kind test; environment run_scope; max_age 3600; require \"passed\" == true; require \"subject\" == \"ST-12\"; require \"scope\" == \"write-window-W7\"; require \"property.operator\" == \"lt\"; require \"property.value\" == 4; }\nevidence trace_record { tool trace_reader; kind sampled_negative_trace; environment run_scope; max_age 3600; require \"schema\" == \"EAL/typed-input/1\"; }\nreasoning provisional_test { method \"structured/1\"; rationale \"A submitted matching positive test supports only this sampled run under the authored test warrant.\"; }\nreasoning witnessed_violation { method \"engineering/sampled-negative/1\"; rationale \"One correctly bound violating sample challenges either positive test without establishing values outside the sampled times.\"; }\nreasoning complete_search { method \"engineering/sampled-negative/1\"; rationale \"Qualified non-detection requires all sampled gaps and detector information; physical continuity is not asserted.\"; }\nclaim bounded_property_supported { statement \"The submitted routes provisionally support the sampled bound for ST-12 during write-window-W7, subject to their declared challenges.\"; environment run_scope; }\nclaim violating_sample { statement \"An in-scope sampled value for ST-12 violates the declared bound.\"; environment run_scope; proposition { subject \"ST-12\"; quantity \"dimensionless\"; unit \"1\"; scope \"write-window-W7\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"lt\",\"value\":4},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.1,\"minimum_sensitivity\":0.9},\"mode\":\"counterexample\"}; result \"finding\" == true; } }\nclaim qualified_absence { statement \"The complete calibrated sampled search for ST-12 reported no violation within its finite scope.\"; environment run_scope; proposition { subject \"ST-12\"; quantity \"dimensionless\"; unit \"1\"; scope \"write-window-W7\"; valid_from \"2040-01-31T08:00:00Z\"; valid_until \"2040-01-31T09:00:00Z\"; query {\"start\":0,\"end\":12,\"max_gap\":4,\"property\":{\"operator\":\"lt\",\"value\":4},\"semantics\":\"sampled\",\"detector_contract\":{\"maximum_detection_limit\":0.1,\"minimum_sensitivity\":0.9},\"mode\":\"non_detection\"}; result \"finding\" == true; } }\nargument first_route { conclusion bounded_property_supported; reasoning provisional_test; evidence first_record; }\nargument second_route { conclusion bounded_property_supported; reasoning provisional_test; evidence second_record; }\nargument adverse_route { conclusion violating_sample; reasoning witnessed_violation; evidence trace_record; binding trace_record; }\nargument absence_route { conclusion qualified_absence; reasoning complete_search; evidence trace_record; binding trace_record; }\nobjection challenge_first { target argument first_route; premises violating_sample; }\n\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"ST-12\", \"run\": \"write-window-W7\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"ST-12\", \"run\": \"write-window-W7\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 4}, \"scope\": \"write-window-W7\", \"subject\": \"ST-12\"}}, \"second_reader\": {\"context\": {\"asset\": \"ST-12\", \"run\": \"write-window-W7\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"ST-12\", \"run\": \"write-window-W7\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"lt\", \"value\": 4}, \"scope\": \"write-window-W7\", \"subject\": \"ST-12\"}}, \"trace_reader\": {\"context\": {\"asset\": \"ST-12\", \"run\": \"write-window-W7\"}, \"observed_at\": \"2040-01-31T08:20:00Z\", \"request\": {\"context\": {\"asset\": \"ST-12\", \"run\": \"write-window-W7\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"calibration\": {\"detection_limit\": 0.05, \"sensitivity_lower_bound\": 0.95}, \"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 0, \"value\": 1}, {\"time\": 4, \"value\": 2}, {\"time\": 8, \"value\": 1}, {\"time\": 12, \"value\": 3}], \"max_gap\": 4, \"mode\": \"non_detection\", \"property\": {\"operator\": \"lt\", \"value\": 4}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"dimensionless\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"write-window-W7\", \"subject\": \"ST-12\", \"unit\": \"1\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "201026348b48e675caa4c131",
+      "packet_ordinal": 34,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"supported\"\n  },\n  \"explanation\": \"All submitted evidence supports the bounded property without establishing a violation, and the violation claim is unsupported due to the sampled negative trace indicating no violation.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "supported",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "All submitted evidence supports the bounded property without establishing a violation, and the violation claim is unsupported due to the sampled negative trace indicating no violation.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "supported",
+        "qualified_absence": "supported",
+        "violating_sample": "unsupported"
+      },
+      "response_sha256": "c3493197837024590a46f40e444c1c2176027ee61ebe45f5bedc29b8e84b3220",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": true,
+          "R": true
+        },
+        "review_note": "Gets parent and no-witness relation but never explains complete calibrated sampled absence.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": false,
+          "R": true
+        },
+        "criterion_rationale": "Both positive tests pass and the complete trace has no counterexample, as stated; the explanation omits the calibrated endpoint/gap basis and named supported qualified-absence claim.",
+        "text_faithful": false
+      }
+    },
+    {
+      "disagreement_codes": [
+        "N"
+      ],
+      "exact_exposed_prompt": [
+        {
+          "content": "Return one JSON object with exactly 'claims' mapping bounded_property_supported, violating_sample, qualified_absence to supported, contested or unsupported, and 'explanation' as one sentence. Judge only the submitted records. Do not assert continuous truth.",
+          "role": "system"
+        },
+        {
+          "content": "Brief: Two chiller checks provisionally support pressure at most 1000 kPa for CH-75 during R2. An in-scope reading of 1100 kPa challenges both; exactly 1000 is within the inclusive bound. A complete calibrated search can support qualified sampled non-detection. The invalidated variant's crossing refers to another run and cannot challenge R2.\nFormal generic source:\n{\"absence_claim\": \"qualified_absence\", \"absence_positive_route\": false, \"bound\": 1000, \"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"defences\": [], \"explanation\": \"Submitted test routes are provisional. An eligible violating sample challenges both; complete calibrated non-detection is a separate, limited claim.\", \"id\": \"chiller_pressure\", \"negative_claim\": \"violating_sample\", \"objections\": [{\"premise\": \"violating_sample\", \"target\": \"first_reader\"}, {\"premise\": \"violating_sample\", \"target\": \"second_reader\"}], \"positive_routes\": [\"first_reader\", \"second_reader\"], \"quantity\": \"pressure\", \"query\": {\"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"max_gap\": 4, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"semantics\": \"sampled\", \"start\": 0}, \"schema\": \"negative-revision-equal-graph/1\", \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\", \"unit\": \"kPa\"}\nAcquired synthetic records:\n{\"first_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:18:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"first_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\"}}, \"second_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:19:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"second_reader\", \"tool_version\": \"1\"}, \"value\": {\"passed\": true, \"property\": {\"operator\": \"le\", \"value\": 1000}, \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\"}}, \"trace_reader\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"observed_at\": \"2040-01-31T08:20:00Z\", \"request\": {\"context\": {\"asset\": \"CH-75\", \"run\": \"cooling-run-R2\"}, \"input\": {}, \"mode\": \"deterministic\", \"tool\": \"trace_reader\", \"tool_version\": \"1\"}, \"value\": {\"method\": \"engineering/sampled-negative/1\", \"payload\": {\"calibration\": {\"detection_limit\": 0.05, \"sensitivity_lower_bound\": 0.95}, \"detector_contract\": {\"maximum_detection_limit\": 0.1, \"minimum_sensitivity\": 0.9}, \"end\": 12, \"events\": [{\"time\": 0, \"value\": 500}, {\"time\": 4, \"value\": 600}, {\"time\": 8, \"value\": 700}, {\"time\": 12, \"value\": 600}], \"max_gap\": 4, \"mode\": \"non_detection\", \"property\": {\"operator\": \"le\", \"value\": 1000}, \"semantics\": \"sampled\", \"start\": 0}, \"quantity\": \"pressure\", \"schema\": \"EAL/typed-input/1\", \"scope\": \"cooling-run-R2\", \"subject\": \"CH-75\", \"unit\": \"kPa\", \"valid_from\": \"2040-01-31T08:00:00Z\", \"valid_until\": \"2040-01-31T09:00:00Z\"}}}",
+          "role": "user"
+        }
+      ],
+      "item_id": "448211c8a90a96b05113595f",
+      "packet_ordinal": 40,
+      "raw_response_text": "{\n  \"claims\": {\n    \"bounded_property_supported\": \"supported\",\n    \"violating_sample\": \"unsupported\",\n    \"qualified_absence\": \"supported\"\n  },\n  \"explanation\": \"All submitted records support the claim that the pressure is at most 1000 kPa for CH-75 during R2, with no evidence of violation.\"\n}",
+      "recipient_parse": {
+        "claims": {
+          "bounded_property_supported": "supported",
+          "qualified_absence": "supported",
+          "violating_sample": "unsupported"
+        },
+        "explanation": "All submitted records support the claim that the pressure is at most 1000 kPa for CH-75 during R2, with no evidence of violation.",
+        "valid": true
+      },
+      "reference_statuses": {
+        "bounded_property_supported": "supported",
+        "qualified_absence": "supported",
+        "violating_sample": "unsupported"
+      },
+      "response_sha256": "fd8ae409779dc2dba983fbe173c8532f6693f23ea419454751ad97dbb88f70dd",
+      "review_1": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": true,
+          "R": true
+        },
+        "review_note": "Reports finite primary support but omits the coverage/calibration basis for qualified absence.",
+        "text_faithful": false
+      },
+      "review_2": {
+        "criteria_pass": {
+          "B": true,
+          "M": false,
+          "N": false,
+          "R": true
+        },
+        "criterion_rationale": "The positive readers and no-violation observation are consistent with the labels, but the sentence omits the complete calibrated finite search that qualifies absence.",
+        "text_faithful": false
+      }
+    }
+  ],
+  "frozen_review_file_sha256": {
+    "review_1": "ac6a8949d1d3343719967cd9137d13eb8ffc7e9ce5a72a0403779481496efce0",
+    "review_2": "2b05c0912b74f64abc6f21e3dc4ca62a2199407dedc4c99ecfdae05ace471490"
+  },
+  "masking": "Reviewers are referred to as review_1 and review_2; reviewer identities and prior arm/root linkage are omitted. The prompt itself exposes formal view and engineering brief.",
+  "packet_canonical_sha256": "c82633deb4fb52032e9419d15bcfdde96207592693fb1e33fd699074c85277a2",
+  "purpose": "Post-call third-pass review of subcriterion disagreements without overwriting either frozen assessment.",
+  "rubric_sha256": "e8e59d827d2bdfac50921f51b2bd8cf865e794637dcfd2e1adcb58379f67f7cc",
+  "schema": "eal2-negative-96-stage-a-criteria-disagreement-packet/1",
+  "summary": {
+    "assigned": 48,
+    "binary_endpoint_disagreements": {},
+    "cases_with_any_subcriterion_disagreement": 10,
+    "shared_text_faithful_case_id": "be93031c4a284a69c93c855e",
+    "subcriterion_disagreements": {
+      "B": 6,
+      "M": 1,
+      "N": 8,
+      "R": 2
+    }
+  }
+}
