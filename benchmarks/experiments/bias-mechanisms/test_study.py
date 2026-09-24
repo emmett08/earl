@@ -137,7 +137,10 @@ class StudyTests(unittest.TestCase):
             full = run.freeze(full_path, families=12, model_names=list(run.MODELS),
                               seed=240924, max_usd=25, max_output_tokens=1200)
             self.assertEqual((len(pilot["calls"]), len(full["calls"])), (72, 432))
-            for material_name in ("analyse.py", "PROTOCOL.md", "AMENDMENT-0.1.1.md"):
+            self.assertEqual(pilot["protocol_version"], "0.1.2")
+            self.assertEqual(full["protocol_version"], "0.1.2")
+            for material_name in ("analyse.py", "PROTOCOL.md", "AMENDMENT-0.1.1.md",
+                                  "AMENDMENT-0.1.2.md"):
                 self.assertEqual(pilot["materials"][material_name],
                                  run.digest((run.HERE / material_name).read_bytes()))
             full_index = {call["id"]: call for call in full["calls"]}
@@ -157,6 +160,14 @@ class StudyTests(unittest.TestCase):
                                                      if k != "freeze_sha256"})
             pilot_path.write_text(json.dumps(tampered), encoding="utf-8")
             with self.assertRaisesRegex(ValueError, "materials changed"):
+                run.load_freeze(pilot_path)
+            versioned = run.read_json(pilot_path)
+            versioned["materials"]["analyse.py"] = run.digest((run.HERE / "analyse.py").read_bytes())
+            versioned["protocol_version"] = "0.1.1"
+            versioned["freeze_sha256"] = run.digest({k: v for k, v in versioned.items()
+                                                      if k != "freeze_sha256"})
+            pilot_path.write_text(json.dumps(versioned), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "Invalid or modified freeze"):
                 run.load_freeze(pilot_path)
 
     def test_response_refusal_incomplete_and_duplicate_keys(self):

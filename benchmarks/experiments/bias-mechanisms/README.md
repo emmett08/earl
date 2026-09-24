@@ -1,10 +1,12 @@
 # Synthetic EAL/2 bias-mechanism study harness
 
 `cases.json` describes twelve author-created engineering episodes. Read
-`AMENDMENT-0.1.1.md` with the original `PROTOCOL.md` before using this runner.
-The amendment was fixed before any paid call and removes public class labels,
+`AMENDMENT-0.1.1.md` and `AMENDMENT-0.1.2.md` with the original `PROTOCOL.md`
+before using this runner. These amendments were fixed before any paid call.
+The first removes public class labels,
 aligns the EAL candidate-objection scaffold, and makes raw agent accuracy the
-primary outcome. `run.py`
+primary outcome. The second pins the current EAL/2 parser and source modules
+after PR #9. `run.py`
 expands each into a process-supported candidate, a stronger technical rival, a
 missing-link case, and an insufficient-record case (48 total). Each API input
 contains a statically checked EAL/2 engineering decision argument, a separate
@@ -39,19 +41,20 @@ response. A timeout or blocked endpoint stops the paid runner before billing.
 
 ## Freeze, execute and analyse
 
-The executable amendment 0.1.1 pilot and full freezes are archived as
-`pilot-freeze-0.1.1.json.gz` and `full-freeze-0.1.1.json.gz` under
-`benchmarks/results/2026-09-24-bias-agent-zero-call/`. Decompress those exact
+The executable amendment 0.1.2 pilot and full freezes are archived as
+`pilot-freeze-0.1.2.json.gz` and `full-freeze-0.1.2.json.gz` under
+`benchmarks/results/2026-09-24-bias-agent-zero-call-0.1.2/`. Decompress those exact
 members to `pilot.json` and `full.json` in a protected working directory.
-The original `pilot-freeze.json.gz` and `full-freeze.json.gz` remain historical
-zero-call inputs with known class leakage; current `load_freeze` rejects them.
+The original 0.1.0 and amended 0.1.1 plans remain historical zero-call inputs
+in `benchmarks/results/2026-09-24-bias-agent-zero-call/`. The 0.1.0 plans had
+known class leakage; all earlier plans fail the current material/version check.
 Regenerate only after another versioned amendment.
 
 ```sh
 umask 077
 mkdir -p /tmp/eal2-bias-run
-gzip -dc benchmarks/results/2026-09-24-bias-agent-zero-call/pilot-freeze-0.1.1.json.gz > /tmp/eal2-bias-run/pilot.json
-gzip -dc benchmarks/results/2026-09-24-bias-agent-zero-call/full-freeze-0.1.1.json.gz > /tmp/eal2-bias-run/full.json
+gzip -dc benchmarks/results/2026-09-24-bias-agent-zero-call-0.1.2/pilot-freeze-0.1.2.json.gz > /tmp/eal2-bias-run/pilot.json
+gzip -dc benchmarks/results/2026-09-24-bias-agent-zero-call-0.1.2/full-freeze-0.1.2.json.gz > /tmp/eal2-bias-run/full.json
 python benchmarks/experiments/bias-mechanisms/run.py execute /tmp/eal2-bias-run/pilot.json /tmp/eal2-bias-run/pilot.jsonl
 python benchmarks/experiments/bias-mechanisms/analyse.py /tmp/eal2-bias-run/pilot.json /tmp/eal2-bias-run/pilot.jsonl /tmp/eal2-bias-run/pilot-report.json
 python benchmarks/experiments/bias-mechanisms/run.py execute /tmp/eal2-bias-run/full.json /tmp/eal2-bias-run/full.jsonl --prior-ledger /tmp/eal2-bias-run/pilot.jsonl

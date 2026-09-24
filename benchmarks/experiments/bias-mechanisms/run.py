@@ -27,6 +27,7 @@ HERE = Path(__file__).resolve().parent
 CASES = HERE / "cases.json"
 SCHEMA = "eal2-bias-freeze/1"
 LEDGER_SCHEMA = "eal2-bias-ledger/1"
+PROTOCOL_VERSION = "0.1.2"
 API_URL = "https://api.openai.com/v1/responses"
 STATUSES = ("NOT-APPLICABLE", "HYPOTHESISED", "COMPATIBLE", "EPISODE-SUPPORTED",
             "COMPARATIVELY-SUPPORTED", "CAUSALLY-SUPPORTED", "REJECTED", "UNDECIDED")
@@ -394,8 +395,10 @@ def freeze(path: Path, *, families: int, model_names: list[str], seed: int,
                 "analyse.py": digest((HERE / "analyse.py").read_bytes()),
                 "PROTOCOL.md": digest((HERE / "PROTOCOL.md").read_bytes()),
                 "AMENDMENT-0.1.1.md": digest((HERE / "AMENDMENT-0.1.1.md").read_bytes()),
+                "AMENDMENT-0.1.2.md": digest((HERE / "AMENDMENT-0.1.2.md").read_bytes()),
                 **parser_materials}
-    result = {"schema": SCHEMA, "synthetic": True, "created_utc": utc_now(),
+    result = {"schema": SCHEMA, "protocol_version": PROTOCOL_VERSION,
+              "synthetic": True, "created_utc": utc_now(),
               "materials": material, "seed": seed, "models": {name: MODELS[name]
               for name in model_names}, "max_usd": max_usd, "max_output_tokens": max_output_tokens,
               "families": families, "case_count": len(selected), "calls": calls}
@@ -418,7 +421,7 @@ def freeze(path: Path, *, families: int, model_names: list[str], seed: int,
 
 def load_freeze(path: Path, *, verify_materials: bool = True) -> dict:
     result = read_json(path)
-    if result.get("schema") != SCHEMA or result.get("freeze_sha256") != digest(
+    if result.get("schema") != SCHEMA or result.get("protocol_version") != PROTOCOL_VERSION or result.get("freeze_sha256") != digest(
             {key: val for key, val in result.items() if key != "freeze_sha256"}):
         raise ValueError("Invalid or modified freeze")
     if verify_materials:
@@ -427,7 +430,8 @@ def load_freeze(path: Path, *, verify_materials: bool = True) -> dict:
                    "run.py": digest(Path(__file__).read_bytes()),
                    "analyse.py": digest((HERE / "analyse.py").read_bytes()),
                    "PROTOCOL.md": digest((HERE / "PROTOCOL.md").read_bytes()),
-                   "AMENDMENT-0.1.1.md": digest((HERE / "AMENDMENT-0.1.1.md").read_bytes())}
+                   "AMENDMENT-0.1.1.md": digest((HERE / "AMENDMENT-0.1.1.md").read_bytes()),
+                   "AMENDMENT-0.1.2.md": digest((HERE / "AMENDMENT-0.1.2.md").read_bytes())}
         files = [root / "grammar/EAL.g4", *(root / "src/eal").rglob("*.py")]
         current.update({file.relative_to(root).as_posix(): digest(file.read_bytes())
                         for file in files})

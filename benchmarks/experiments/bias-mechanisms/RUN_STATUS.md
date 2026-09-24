@@ -29,9 +29,11 @@ and a conservative USD 1.5201 reservation under its USD 5 cap. The amended
 `28d1610056b3c68f12d2d4f73445096211cc505b60a11169288552e45163690e`,
 and a USD 9.1531 reservation under its USD 25 cumulative cap. The archive
 README records exact compressed and uncompressed file hashes. Both amended
-plans decompress and pass `run.load_freeze` against the current source and
-parser, including 48/48 EAL/2 parse and static semantic checks with zero
-diagnostics. This establishes source structure only; no host acquired the
+plans decompressed and passed `run.load_freeze` against the 0.1.1 source and
+parser at that revision, including 48/48 EAL/2 parse and static semantic
+checks with zero diagnostics. PR #9 subsequently changed `src/eal`, so the
+old material closure fails against current main. This establishes source
+structure only; no host acquired the
 synthetic process records or evaluated a person's cognition.
 
 Thirteen offline tests pass. They exercise the amended request boundary,
@@ -41,3 +43,29 @@ completion, and concurrent ledger locks. The 48-case matrix still lacks paired
 irrelevant-cue, fluency, material-evidence, valid-argument and prompt-boundary
 controls. Stage B/C and independently adjudicated human cases are specified
 future work, not findings from these zero-call plans.
+
+## Pre-call amendment 0.1.2 on main `3b497d`
+
+`AMENDMENT-0.1.2.md` records the source-code provenance change before any
+paid call. It retains the 0.1.1 prompts, cases, response contract, scoring,
+models, arms, seed and caps, while pinning the current grammar, every
+`src/eal` Python module and both amendments. The new freeze declares
+`protocol_version: "0.1.2"`; 0.1.0 and 0.1.1 archives retain their original
+bytes and remain historical. The 48/48 generated EAL/2 sources again parsed
+and passed static semantic validation with zero diagnostics against the
+reconstructed current main. Thirteen offline tests passed. No EAL host
+acquisition or paid OpenAI call occurred; model outcomes remain absent. The
+unauthenticated four-second endpoint preflight again timed out before key
+lookup, so the 0.1.2 schedule did not begin.
+
+The new archive is
+`benchmarks/results/2026-09-24-bias-agent-zero-call-0.1.2/`. Its
+`pilot-freeze-0.1.2.json.gz` holds eight cases and 72 planned calls, internal
+SHA-256 `67e651ecd2bc3a053689d3f32078267294f15b80ef3e9b5c7f699856232fa9e5`,
+with a conservative USD 1.5201 reserve under the USD 5 cap. The
+`full-freeze-0.1.2.json.gz` holds 48 cases and 432 planned calls, internal
+SHA-256 `5109b7b7c6704723cd42b50aff2622d3e764c595f0b365b0d810ae647fcbb752`,
+with a USD 9.1531 reserve under the USD 25 cumulative cap. Both compressed
+members were decompressed and verified with `run.load_freeze` against current
+materials; the archive README records their exact JSON and gzip hashes. The
+72-call pilot is part of the full schedule only if it completes unchanged.
