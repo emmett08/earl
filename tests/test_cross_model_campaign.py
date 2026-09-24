@@ -45,8 +45,11 @@ class FakeProvider:
                                      "bounded_dosing_error", "continuation_preconditions")
                          if c in content)
             answer = {"claims": {claim: "supported"}, "explanation": "A plausible but unreviewed explanation."}
+        # The frozen live plan permits the dated identity returned for nano,
+        # while provider.identity() remains the configured model alias.
+        response_model = "gpt-4.1-nano-2025-04-14" if self.model == "gpt-4.1-nano" else self.model
         return ModelResponse(json.dumps(answer), None if self.no_usage else 100,
-                             None if self.no_usage else 10, self.model)
+                             None if self.no_usage else 10, response_model)
 
 
 def providers():
