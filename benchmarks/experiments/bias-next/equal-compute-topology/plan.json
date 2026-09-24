@@ -1,0 +1,41 @@
+{
+  "schema": "eal2-next-experiment/1",
+  "investigation_id": "INV-EAL-BIAS-TOPOLOGY-003",
+  "title": "Equal-compute direct repetition and independent challenge topology trial",
+  "status": "specified_not_ready",
+  "source_language": "EAL/2",
+  "observation_schema": "bias-disposition/1",
+  "claim": "With the represented information and model-call budget fixed, independent role separation changes fully warranted synthetic dispositions relative to repeated direct analysis.",
+  "unit": "fresh independently authored engineering-decision family",
+  "family_namespace": "bias_topology_003",
+  "excluded_family_namespaces": ["bias_mechanisms_001", "bias_representation_002", "bias_human_004"],
+  "arms": ["repeated_direct", "independent_roles"],
+  "compute_contract": {
+    "calls_per_case": 2,
+    "fresh_contexts_per_call": true,
+    "same_requested_model": true,
+    "same_returned_model_required": true,
+    "max_output_tokens_per_call": 2048,
+    "reasoning_effort": "identical",
+    "tool_permissions": "identical and none",
+    "synthesis": "the same deterministic agreement-only function consumes both arm outputs",
+    "repeated_direct_roles": ["full_critic_1", "full_critic_2"],
+    "independent_roles": ["process_evidence_verifier", "bias_and_rival_analyst"]
+  },
+  "information_contract": "Both arms receive byte-identical EAL/2 source, process record, options, system instruction and response schema; role instruction is the sole intended manipulation.",
+  "assignment": "Randomise arm call order within family and execute every assigned call once in a fresh context.",
+  "primary_estimand": "family-average paired difference in fully warranted disposition, independent roles minus repeated direct",
+  "safety_estimand": "paired difference in strong false attribution, introduced error, supported-case recall and decisive coverage",
+  "analysis": "Family-level paired randomisation interval, plus token and latency parity audit before interpreting topology; failures remain in the assigned denominator.",
+  "credential_env": "OPENAI_API_TOKEN",
+  "live_api_during_observation": true,
+  "required_receipts": {
+    "fresh_family_manifest_sha256": null,
+    "independent_gold_review_sha256": null,
+    "byte_identity_audit_sha256": null,
+    "compute_parity_audit_sha256": null,
+    "frozen_schedule_sha256": null
+  },
+  "stop_conditions": ["credential absent", "receipt missing", "information mismatch", "model identity drift", "unresolved pending call", "cost cap reached"],
+  "outcomes": null
+}
