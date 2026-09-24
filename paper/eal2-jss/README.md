@@ -5,7 +5,9 @@ Software* (JSS). It is an author-review draft, not a submitted or accepted
 manuscript. The historical relay and notation records remain pinned to
 `2b0815f111f831bf237f600cf9e65f28eca0403e`. The later host, family,
 checker and offline records are described at
-`d78836b8fd769c236c646f263246e7728a488922`.
+`d78836b8fd769c236c646f263246e7728a488922`. The amended 96-, 960- and
+800-call records were merged in [PR #8](https://github.com/emmett08/earl/pull/8)
+at `b9177df`. The new bias-agent study is a separate prospective protocol.
 
 ## Why this journal
 
@@ -65,6 +67,7 @@ complete listing reproduces `examples/rms.eal` byte for byte.
 | Mechanism developmental schedule and result | `benchmarks/experiments/mechanisms-960/` and `benchmarks/results/eal2-960-campaign-20260924.tar.gz`; 960 assigned/attempted, 942 strict completions, four malformed, fourteen provider failures, 460 exact available-information statuses and 130 admitted false supports on selected synthetic roots; 11 response-less requests have unknown charges |
 | Deployment developmental schedule and result | `benchmarks/experiments/deployment-800/`, `benchmarks/results/2026-09-24-deployment-800-a3-developmental/a3-terminal.tar.gz`, `docs/eal2-study-amendment-20260924.md` and `docs/eal2-grammar-decision-20260924.md`; 800 completed assigned slots in 804 actual requests, 290/384 fixed-source exact statuses, 0/32 valid final authored products and 320 unavailable recipient packets. A1/A2/C1 stopped diagnostic attempts are separate and not pooled |
 | Deployment exploratory explanation reviews | `docs/reviews/deployment-800-a3-*` and the archived postcall review frame; two isolated AI reviewers agreed 4/48 preselected actual-prompt responses faithful, all in raw-source cases. All 16 checked-host statuses in this subset matched their synthetic reference, but none of the sixteen recipient explanations was rated faithful; not a human quality estimate |
+| Prospective bias attribution and agent comparison | `benchmarks/experiments/bias-mechanisms/PROTOCOL.md` and `RUN_STATUS.md`; 12 synthetic families with four dependent variants, three model classes, two Stage A topologies, 288 assigned model--case--route cells and 432 planned API calls. Static source validation passed 48/48 with zero diagnostics and eight offline tests passed. A no-key connectivity preflight timed out before any paid call. The archived 72-call pilot and 432-call full zero-call freezes have internal SHA-256 values `4623418bc80a5e9bdc4bce5154e4cb2656a3fdc88e945bcf553cbcf1158d75cd` and `1684c165caa7306456c49efd919756df90425b85261916275571fbbf8f6e4df0`; their material checks pin `analyse.py` and `PROTOCOL.md`. The archive is under `benchmarks/results/2026-09-24-bias-agent-zero-call/`; no paid-call response ledger or model result exists. Human causal benefit requires a separate randomised engineer study |
 
 The amendment document is a pre-run design record at its stated audit cut. The
 later terminal result archives and this manuscript report the amended runs;
@@ -86,7 +89,18 @@ is unavailable.
 
 ## Argument and visual decisions
 
-The preferred root claim is that EAL/2 supplies a bounded, inspectable
+EAL/2 began as a way to help a person question a fluent AI answer by exposing
+the claim, grounds, inference, assumptions and objections. The paper now
+separates that human-facing purpose from the demonstrated host checks and from
+the prospective experiment. An inaccurate or unjustified argument is not, by
+itself, evidence of a particular human cognitive bias. The study therefore
+requires cue exposure, an opportunity, evidence of uptake, a predicted
+directional signature, a discriminating contrast and serious rival accounts;
+it scores false bias attribution and agent-induced engineering errors alongside
+correct detection. Model cue sensitivity tests concern the model system. A
+randomised human study would be needed to show improved human decisions.
+
+The preferred current result claim is that EAL/2 supplies a bounded, inspectable
 calculation over authored engineering arguments, and that a host can keep the
 checked status authoritative when model prose is inconsistent. The historical
 diagnostic separates computed-result transfer from raw-record interpretation.
