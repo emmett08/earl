@@ -128,7 +128,7 @@ class ConfigurableEPolicy(MockEPolicy):
 
 
 def signed_pilot_bundle(root: Path, plan: bytes, case: Case, grant: Grant,
-                        provider_identity: dict, policies=None):
+                        provider_identity: dict, policies=None, review_entries=None):
     secrets = {role: [Ed25519PrivateKey.generate() for _ in range(count)]
                for role, count in (("domain_reviewer", 2), ("security_owner", 1),
                                    ("method_reviewer", 1))}
@@ -141,7 +141,11 @@ def signed_pilot_bundle(root: Path, plan: bytes, case: Case, grant: Grant,
         "independent_case_manifest_sha256": ({"schema": "eal2-real-case-manifest/1",
                                               "stage": "feasibility_pilot", "cases": [case.as_dict()]},
                                              ("domain_reviewer", 2)),
-        "reference_review_sha256": ({"case_id": case.id, "synthetic_review": True},
+        "reference_review_sha256": ({"schema": "eal2-real-reference-review/1",
+                                     "entries": review_entries if review_entries is not None else
+                                     [{"case_id": case.id, "reference_id": case.reference_id,
+                                       "case_sha256": digest(case.as_dict()),
+                                       "synthetic_review": True}]},
                                     ("domain_reviewer", 2)),
         "tool_allowlist_and_isolation_sha256": ({"schema": "eal2-real-tool-allowlist/1",
                                                 "grants": [grant.signed_spec()],
@@ -371,6 +375,36 @@ class GatewayAndLedgerTests(unittest.TestCase):
                             gateway=self.gateway, actual_policies=unreviewed,
                             receipt_bundle=bundle, receipt_root=self.root,
                             trust_roster=roster, plan_path=plan_path)
+        unrelated, unrelated_roster = signed_pilot_bundle(
+            self.root, plan_path.read_bytes(), self.case, self.grant, identity,
+            review_entries=[{"case_id": "different_case", "reference_id": self.case.reference_id,
+                             "case_sha256": digest(self.case.as_dict())}])
+        with self.assertRaisesRegex(AttemptError, "does not bind this exact case"):
+            authorise_stage(stage="feasibility_pilot", case=self.case,
+                            model_id="fixture-v1", gateway=self.gateway,
+                            actual_policies=default_policies(), receipt_bundle=unrelated,
+                            receipt_root=self.root, trust_roster=unrelated_roster,
+                            plan_path=plan_path)
+        wrong_digest, wrong_roster = signed_pilot_bundle(
+            self.root, plan_path.read_bytes(), self.case, self.grant, identity,
+            review_entries=[{"case_id": self.case.id, "reference_id": self.case.reference_id,
+                             "case_sha256": "0" * 64}])
+        with self.assertRaisesRegex(AttemptError, "does not bind this exact case"):
+            authorise_stage(stage="feasibility_pilot", case=self.case,
+                            model_id="fixture-v1", gateway=self.gateway,
+                            actual_policies=default_policies(), receipt_bundle=wrong_digest,
+                            receipt_root=self.root, trust_roster=wrong_roster,
+                            plan_path=plan_path)
+        duplicate, duplicate_roster = signed_pilot_bundle(
+            self.root, plan_path.read_bytes(), self.case, self.grant, identity,
+            review_entries=[{"case_id": self.case.id, "reference_id": self.case.reference_id,
+                             "case_sha256": digest(self.case.as_dict())}] * 2)
+        with self.assertRaisesRegex(AttemptError, "does not bind this exact case"):
+            authorise_stage(stage="feasibility_pilot", case=self.case,
+                            model_id="fixture-v1", gateway=self.gateway,
+                            actual_policies=default_policies(), receipt_bundle=duplicate,
+                            receipt_root=self.root, trust_roster=duplicate_roster,
+                            plan_path=plan_path)
         original_plan = plan_path.read_bytes()
         plan_path.write_bytes(canonical({"schema": "eal2-real-workflow-execution-plan/1",
                                          "investigation_id": "INV-EAL-REAL-001",

@@ -358,6 +358,16 @@ def authorise_stage(*, stage: str, case: Case, model_id: str, gateway: ReadOnlyG
         raise AttemptError("Signed case manifest has an unknown schema")
     if (cases.get("stage") != stage or sum(entry == case.as_dict() for entry in cases.get("cases", [])) != 1):
         raise AttemptError("Case is absent or duplicated in signed independent manifest")
+    reference = receipt_bundle["artifacts"]["reference_review_sha256"]
+    review = strict_json((receipt_root / reference["path"]).read_text(encoding="utf-8"))
+    if (not isinstance(review, dict) or review.get("schema") != "eal2-real-reference-review/1"
+            or not isinstance(review.get("entries"), list)):
+        raise AttemptError("Signed reference review has an unknown schema")
+    matches = [entry for entry in review["entries"] if isinstance(entry, dict)
+               and entry.get("case_id") == case.id]
+    if (len(matches) != 1 or matches[0].get("reference_id") != case.reference_id
+            or matches[0].get("case_sha256") != digest(case.as_dict())):
+        raise AttemptError("Signed reference review does not bind this exact case and reference")
     allowlist = receipt_bundle["artifacts"]["tool_allowlist_and_isolation_sha256"]
     signed_tools = strict_json((receipt_root / allowlist["path"]).read_text(encoding="utf-8"))
     if not isinstance(signed_tools, dict) or signed_tools.get("schema") != "eal2-real-tool-allowlist/1":
