@@ -1,5 +1,0 @@
-# T: Toulmin prose
-
-Assess the engineering decision in the supplied case at its stated decision cut. Use the permitted read-only catalogue to identify the exact repository commit, the effective workflow and release rule, the relevant CI run and attempt, and all required job outcomes. Check source identity, observation time, scope and contrary records.
-
-In the first phase, select evidence. Return only `{"calls":[{"tool_id":"...","arguments":{...}}]}` with permitted exact inputs, within the supplied tool-call limit; make no decision yet. The host executes these calls and supplies the retained results or errors. In the second phase, give one concise **single-line** string for each of `claim`, `grounds`, `warrant`, `backing`, `qualifier` and `rebuttal`; keep unsupported premises visible. Recommend proceed, wait or investigate as the evidence warrants. Return one JSON object with those six fields plus `status`, `recommendation`, `explanation` and `cited_record_ids`. Choose `status` from `supported`, `contested`, `unsupported`, `out_of_scope` or `indeterminate`.

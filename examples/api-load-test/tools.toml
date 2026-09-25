@@ -1,0 +1,7 @@
+[tools.load_test_report]
+kind = "command"
+argv = ["python3", "examples/api-load-test/collect_results.py"]
+version = "1"
+mode = "deterministic"
+timeout_seconds = 10
+max_output_bytes = 16384

@@ -1,0 +1,79 @@
+# Review an API load-test result
+
+**Engineering question:** Does this build's load-test report meet the agreed latency and error-rate criteria?
+
+An engineer is reviewing `orders-api` build `demo-build-42`. The example checks one report for a workload labelled with 10 concurrent clients. Its acceptance criteria are at least 100 recorded requests, sample 95th-percentile latency no greater than 200 ms, and at most 1% failed requests. These are illustrative requirements chosen for this example.
+
+The bundled [report](report.json) contains **synthetic teaching data**. The checked claim concerns these supplied records. A real release decision needs genuine measurements, a complete report and a workload representative of the intended use; this example supplies no evidence about production performance.
+
+## Run it
+
+From the repository root, with Python 3.11 or later:
+
+```sh
+python3 -m pip install -e '.[dev]'
+make example
+```
+
+This validates the [EAL source](source.eal), collects the report, assesses the claim and retrieves its explanation through both the CLI and the actual MCP stdio server. It needs no credentials, model provider or network connection after installation. Assessment records are written to a temporary database and removed when the demonstration ends.
+
+The expected output contains:
+
+```json
+{
+  "dataset": "synthetic",
+  "assessed_at": "2026-09-25T10:00:00Z",
+  "metrics": {
+    "request_count": 100,
+    "p95_ms": 180,
+    "failed_requests": 1,
+    "error_rate_percent": 1.0
+  },
+  "cli_claim_status": "supported",
+  "mcp_claim_status": "supported"
+}
+```
+
+## Follow the argument
+
+The source names the service, build, run, client count and report digest. Its evidence declaration sets the three acceptance thresholds and a 24-hour evidence age limit. The `structured/1` method records the author's justification for using these computed fields to support `performance_criteria_met`.
+
+The host's [tool registry](tools.toml) binds `load_test_report/1` to [collect_results.py](collect_results.py). The collector reads the selected report, checks its SHA-256 digest and identity, then computes the statistics. The EAL source supplies expected identity and thresholds; the trusted host selects the executable and report file.
+
+For n recorded requests, the nearest-rank p95 is the sorted latency at one-based position ceil(0.95 × n). In this report, position 95 is 180 ms. All requests contribute to latency, including errors. Any non-2xx HTTP status counts as a failed request; status code 0 represents a transport failure or timeout, whose elapsed time must also be recorded. One failed request out of 100 gives 1%, which meets the inclusive limit. This is a sample statistic with no population confidence bound.
+
+The collector returns the report's original `observed_at`. Reading the file again does not make its measurements newer. The demonstration deliberately assesses the report at its stated time, `2026-09-25T10:00:00Z`; a current-time assessment beyond the 24-hour limit returns `unsupported`.
+
+## Inspect each operation
+
+The following commands retain records in the default `.eal/runs.sqlite3` database:
+
+```sh
+eal --workspace . --registry examples/api-load-test/tools.toml validate examples/api-load-test/source.eal
+
+eal --workspace . --registry examples/api-load-test/tools.toml collect examples/api-load-test/source.eal \
+  --context '{"service":"orders-api","build_id":"demo-build-42","dataset":"synthetic"}'
+```
+
+Copy the returned `collection_id` into the next command:
+
+```sh
+eal --workspace . --registry examples/api-load-test/tools.toml reason examples/api-load-test/source.eal \
+  --context '{"service":"orders-api","build_id":"demo-build-42","dataset":"synthetic"}' \
+  --collection COLLECTION_ID --now 2026-09-25T10:00:00Z
+
+eal --workspace . --registry examples/api-load-test/tools.toml explain ASSESSMENT_ID \
+  --claim performance_criteria_met
+```
+
+Replace `ASSESSMENT_ID` with the assessment's identifier. Check `claims.performance_criteria_met.status` in the assessment and the evidence predicates in the explanation. A failed predicate gives `unsupported`; it does not itself assert an independently modelled opposite claim.
+
+To use MCP directly, launch `eal-mcp --workspace . --registry examples/api-load-test/tools.toml`. Supply the source text and the same context to `eal_validate` and `eal_collect`, then the returned collection ID and the recorded assessment time to `eal_reason`. Call `eal_explain` with its assessment ID and claim. [run.py](run.py) is a complete Python MCP client for this sequence.
+
+## Try your own report
+
+Keep the report schema and include every attempted request, including timeouts. Set the actual service, immutable build identity, run ID, client count and observation time; use `"dataset": "measured"` for genuine measurements. The host can select a different report with `--report PATH` in the collector's configured argument vector.
+
+Review the claim and thresholds for that workload. Update the EAL input, environment and assessment context to match, and pin the selected bytes using `sha256sum PATH`. Then collect a new observation and assess at the intended decision time. A digest detects changed bytes; the collector cannot authenticate measurements, discover omitted requests or determine whether the workload is representative.
+
+The regression tests exercise limits that this example must respect: exactly 1% passes; 2% fails; excessive p95 latency, too few requests, stale evidence and mismatched build identities cannot support the claim.

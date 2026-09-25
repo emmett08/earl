@@ -27,7 +27,7 @@ reasoning estimate_reliability {
 }
 ```
 
-The predicate refers to a scalar field in `details`, without a `details.` prefix. Consult the [language reference](language.md) for full declaration syntax and the [GitHub workflow example](../examples/workflow-gate/README.md) for one complete programme using `structured/1`.
+The predicate refers to a scalar field in `details`, without a `details.` prefix. Consult the [language reference](language.md) for full declaration syntax and the [API load-test example](../examples/api-load-test/README.md) for one complete programme using `structured/1`.
 
 A successful method calculation establishes its documented computational result. The argument's result predicates specify the threshold needed for the conclusion. The relevance of that threshold to an authored natural-language claim remains an explicit part of the reasoning rationale. In particular, propositional atoms are supplied symbols: this version does not automatically translate claim prose into logical formulas or prove that a supplied formula expresses that prose.
 

@@ -1,7 +1,0 @@
-[tools.github_workflow]
-kind = "command"
-argv = ["python3", "examples/workflow-gate/collect_workflow.py"]
-version = "1"
-mode = "nondeterministic"
-timeout_seconds = 30
-max_output_bytes = 32768

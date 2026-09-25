@@ -14,7 +14,7 @@ check-generated:
 	$(PYTHON) scripts/generate_parser.py --check
 
 example:
-	$(PYTHON) examples/workflow-gate/run.py --offline
+	$(PYTHON) examples/api-load-test/run.py
 
 build:
 	$(PYTHON) -m build

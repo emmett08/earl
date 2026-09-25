@@ -1,6 +1,6 @@
 # EAL/2 source language
 
-This is the reference for authored syntax, static checks and typed proposition binding in the current [grammar](../grammar/EAL.g4). [Vocabulary](vocabulary.md) distinguishes terms; the [argument model](argument-model.md) defines support and attack; [reasoning methods](reasoning-modes.md) define computations; [MCP and tools](mcp-and-tools.md) defines acquisition. The [GitHub workflow case](../examples/workflow-gate/README.md) is the maintained end-to-end example.
+This is the reference for authored syntax, static checks and typed proposition binding in the current [grammar](../grammar/EAL.g4). [Vocabulary](vocabulary.md) distinguishes terms; the [argument model](argument-model.md) defines support and attack; [reasoning methods](reasoning-modes.md) define computations; [MCP and tools](mcp-and-tools.md) defines acquisition. The [API load-test case](../examples/api-load-test/README.md) is the maintained end-to-end example.
 
 ## Contents
 
@@ -131,4 +131,4 @@ Recognition produces typed intermediate representation. Independent passes check
 
 ## Historical examples
 
-The reset replaced the old example directory. The exact pre-reset commit retains the [temporal assumption case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/latency.eal), [synthetic mixed-method case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/mixed-reasoning.eal) and [local tool execution case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/live.eal) for provenance. They document prior demonstrations, not the maintained case or the prospective comparison.
+The reset replaced the old example directory. The exact pre-reset commit retains the [temporal assumption case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/latency.eal), [synthetic mixed-method case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/mixed-reasoning.eal) and [local tool execution case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/live.eal) for provenance. They document prior demonstrations, not the maintained case.
