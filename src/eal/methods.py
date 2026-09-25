@@ -273,9 +273,12 @@ class MethodRegistry:
         if '<locals>' in contract.implementation.__qualname__ or '<lambda>' in contract.implementation.__qualname__ or contract.implementation.__module__ == '__main__':
             raise ValueError('Method implementation must be an importable module-level function')
         if contract.builtin_mode is not None:
+            from .builtin_methods import BUILTIN_SPECS
             from .modes import _COMPUTATIONS
-            expected = _structured_marker if contract.builtin_mode == 'structured' else _COMPUTATIONS.get(contract.builtin_mode)
-            if contract.identifier != f'{contract.builtin_mode}/1' or contract.implementation is not expected:
+            spec = BUILTIN_SPECS.get(contract.builtin_mode)
+            expected = (_structured_marker if contract.builtin_mode == 'structured'
+                        else _COMPUTATIONS.get(contract.builtin_mode))
+            if spec is None or contract.identifier != spec.identifier or contract.implementation is not expected:
                 raise ValueError('Built-in method identities are reserved')
         elif contract.evidence_kind is None:
             raise ValueError('Custom methods require a computational evidence kind')
@@ -422,11 +425,6 @@ def execute_extension(contract, payload):
         return {'status': 'unsupported', 'reasons': [str(exc) or f'Method worker failed ({type(exc).__name__})'], 'details': {}, 'method_contract': contract.describe()}
 
 
-def _object(properties, required=None, additional=False):
-    return {'type': 'object', 'properties': properties, 'required': list(properties) if required is None else required,
-            'additionalProperties': additional}
-
-
 def _structured_marker(payload):
     return {'authored': True, 'mechanically_proved': False}
 
@@ -434,41 +432,25 @@ def _structured_marker(payload):
 @lru_cache(maxsize=1)
 def default_registry():
     """Built-in methods use the same exact versioned references as extensions."""
-    from .modes import _COMPUTATIONS, MODE_KINDS
-    from .propositions import OUTPUTS, QUERY_FIELDS, QUANTITIES
-    number = {'type': 'number', 'minimum': -1e100, 'maximum': 1e100}
-    integer = {'type': 'integer', 'minimum': 0, 'maximum': 1_000_000_000}
-    text = {'type': 'string', 'minLength': 1, 'maxLength': 4096}
-    boolean = {'type': 'boolean'}
-    anything = {'type': 'json'}
-    array = lambda item=number, low=1, high=10_000: {'type': 'array', 'items': item, 'minItems': low, 'maxItems': high}
-    inputs = {
-        'deductive': _object({'premises': array(anything, 0, 128), 'conclusion': anything}),
-        'inductive': _object({'successes': integer, 'trials': {**integer, 'minimum': 1}, 'confidence': {'type': 'number', 'minimum': .001, 'maximum': .999999}}),
-        'abductive': _object({'observed': text, 'candidates': array(_object({'name': text, 'prior': number, 'likelihood': number}), 2, 128)}),
-        'causal': _object({'assignment': {'type': 'string', 'enum': ['randomised']}, 'treatment': array(number, 2), 'control': array(number, 2)}),
-        'counterfactual': _object({'variables': {'type': 'object', 'additionalProperties': _object({'intercept': number, 'coefficients': {'type': 'object', 'additionalProperties': number}, 'noise': number})},
-                                   'intervention': _object({'variable': text, 'value': number}), 'outcome': text}),
-        'analogical': _object({'relevant_features': array(text, 1, 256), 'source': {'type': 'object', 'additionalProperties': anything}, 'target': {'type': 'object', 'additionalProperties': anything}}),
-        'temporal': _object({'start': number, 'end': number, 'max_gap': number, 'events': array(_object({'time': number, 'value': number})),
-                            'property': _object({'operator': {'type': 'string', 'enum': ['lt', 'le', 'eq', 'ne', 'ge', 'gt']}, 'value': number}),
-                            'semantics': {'type': 'string', 'enum': ['sampled']}}),
-    }
+    from .builtin_methods import BUILTIN_SPECS
+    from .modes import _COMPUTATIONS
+    from .propositions import QUANTITIES
+    if set(_COMPUTATIONS) != set(BUILTIN_SPECS) - {'structured'}:
+        raise ValueError('Each built-in computation requires one versioned specification')
     contracts = []
     for mode, function in _COMPUTATIONS.items():
-        properties = {}
-        for path, kind in OUTPUTS[mode].items():
-            if path.endswith('.*'):
-                properties[path[:-2]] = {'type': 'object', 'additionalProperties': number}
-            else:
-                properties[path] = boolean if kind == 'boolean' else number
-        quantity = {'deductive': ('proposition',), 'inductive': ('probability',),
-                    'abductive': ('probability',), 'analogical': ('dimensionless',)}.get(mode, tuple(q for q in QUANTITIES if q != 'proposition'))
-        contracts.append(MethodContract(mode + '/1', MODE_KINDS[mode], inputs[mode],
-                         _object({key: inputs[mode]['properties'][key] for key in QUERY_FIELDS[mode]}),
-                         _object(properties, additional=anything), OUTPUTS[mode], quantity,
-                         mode in ('counterfactual', 'temporal'), function, 'eal-builtin-2.1.0', builtin_mode=mode))
-    contracts.append(MethodContract('structured/1', None, _object({}), _object({}),
-                     _object({'authored': boolean, 'mechanically_proved': boolean}), {}, (), False,
-                     _structured_marker, 'eal-builtin-2.1.0', builtin_mode='structured'))
+        spec = BUILTIN_SPECS[mode]
+        query_schema, output_schema = spec.contract_schemas()
+        quantities = (spec.quantities if spec.quantities is not None else
+                      tuple(q for q in QUANTITIES if q != 'proposition'))
+        contracts.append(MethodContract(spec.identifier, spec.evidence_kind, spec.input_schema,
+                         query_schema, output_schema, spec.outputs, quantities,
+                         spec.exact_unit, function, spec.implementation_version,
+                         builtin_mode=mode))
+    spec = BUILTIN_SPECS['structured']
+    query_schema, output_schema = spec.contract_schemas()
+    contracts.append(MethodContract(spec.identifier, spec.evidence_kind, spec.input_schema,
+                     query_schema, output_schema, spec.outputs, spec.quantities,
+                     spec.exact_unit, _structured_marker, spec.implementation_version,
+                     builtin_mode=spec.mode))
     return MethodRegistry(contracts)

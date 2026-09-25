@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 import pytest
 
 from eal.evaluator import canonical_digest
-from eal.runtime import ReasoningService, ToolRegistry, acquisition_request, bounded_path
+from eal.runtime import ReasoningService, ToolBinding, ToolRegistry, acquisition_request, bounded_path
 
 
 SOURCE = '''language "EAL/2";
@@ -151,3 +151,41 @@ def test_source_input_never_becomes_shell_code(tmp_path):
     collected = service.collect(source, CONTEXT)
     assert collected["records"]["measured"]["details"] == {"value": payload}
     assert not (tmp_path / "injected").exists()
+
+
+def test_command_observation_cannot_override_requested_acquisition(tmp_path):
+    script = ("import json,sys\n"
+              "r=json.load(sys.stdin)\n"
+              "print(json.dumps({'value':{'passed':True}, 'request':"
+              "{'tool':r['tool'], 'tool_version':r['tool_version'], 'mode':r['mode'], "
+              "'input':{'value':99}, 'context':r['context']}}))\n")
+    service = service_for_command(tmp_path, script)
+    record = service.collect(SOURCE, CONTEXT)["records"]["measured"]
+    assert record["status"] == "error"
+    assert "Observation request differs" in record["error"]["message"]
+    assert record["stdout_bytes"] > 0
+    assert service.store.get(record["run_id"], kind="observation") == record
+
+
+def test_file_output_limit_retains_bounded_bytes_and_file_identity(tmp_path):
+    (tmp_path / "observation.json").write_text("x" * 4096)
+    registry = tmp_path / "tools.toml"
+    registry.write_text('[tools.runner]\nkind="json_file"\nmode="deterministic"\n'
+                        'version="1.0"\npath="observation.json"\nmax_output_bytes=128\n')
+    service = ReasoningService(tmp_path, registry)
+    record = service.collect(SOURCE, CONTEXT)["records"]["measured"]
+    assert record["status"] == "error"
+    assert record["error"]["message"] == "output_limit"
+    assert record["file"] == "observation.json" and record["output_truncated"] is True
+    assert record["stdout_bytes"] == 128
+    assert service.store.get(record["run_id"], kind="observation") == record
+
+
+def test_unknown_operator_adapter_fails_closed_and_stores_error(tmp_path):
+    registry = ToolRegistry({"runner": ToolBinding("runner", "unknown", "deterministic", "1.0")})
+    service = ReasoningService(tmp_path)
+    service.runtime.registry = registry
+    record = service.collect(SOURCE, CONTEXT)["records"]["measured"]
+    assert record["status"] == "error"
+    assert "Unsupported operator tool kind" in record["error"]["message"]
+    assert service.store.get(record["run_id"], kind="observation") == record

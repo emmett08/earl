@@ -19,8 +19,9 @@ from jsonschema import Draft202012Validator
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-from .model_attempts import summarise_usage
-from .providers import ModelResponse, ProviderError, TextProvider, response_cost
+from .model_attempts import (invoke_provider, new_attempt, post_attempt_limit,
+                             pre_attempt_limit, record_response, summarise_usage)
+from .providers import ModelResponse, ProviderError, TextProvider
 from .runtime import strict_json
 
 
@@ -235,40 +236,30 @@ async def run_reviewed_recipient(question: str, provider: TextProvider,
                     model_reason = "model_turn_budget_exhausted"
                     for turn in range(budget.max_model_turns):
                         usage = summarise_usage(report["attempts"], include_tool_completeness=False)
-                        if report["attempts"] and not usage["token_usage_complete"]:
-                            model_reason = "token_usage_unavailable"
+                        limit_reason = pre_attempt_limit(
+                            usage, attempted=bool(report["attempts"]),
+                            max_total_tokens=budget.max_total_tokens,
+                            max_model_cost_usd=budget.max_model_cost_usd)
+                        if limit_reason is not None:
+                            model_reason = limit_reason
                             break
-                        if usage["known_input_tokens"] + usage["known_output_tokens"] >= budget.max_total_tokens:
-                            model_reason = "token_budget_exhausted"
-                            break
-                        if budget.max_model_cost_usd is not None:
-                            if not usage["model_cost_complete"]:
-                                model_reason = "cost_budget_unverifiable"
-                                break
-                            if usage["known_model_cost_usd"] >= budget.max_model_cost_usd:
-                                model_reason = "model_cost_budget_exhausted"
-                                break
                         prompt = _json(messages)
                         if len(prompt.encode("utf-8")) > budget.max_prompt_bytes:
                             model_reason = "prompt_byte_budget_exhausted"
                             break
                         output_limit = min(budget.max_output_tokens,
                                            budget.max_total_tokens - usage["known_input_tokens"] - usage["known_output_tokens"])
-                        attempt = {"index": turn + 1, "prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
-                                   "prompt_bytes": len(prompt.encode("utf-8")), "max_output_tokens": output_limit,
-                                   "status": "pending", "input_tokens": None, "output_tokens": None,
-                                   "model_cost_usd": None}
+                        attempt = new_attempt(index=turn + 1, prompt=prompt,
+                                              max_output_tokens=output_limit,
+                                              prompt_digest_field="prompt_sha256")
                         report["attempts"].append(attempt)
                         began = time.monotonic()
                         response: ModelResponse | None = None
                         try:
-                            if callable(getattr(provider, "complete_request", None)):
-                                response = await provider.complete_request(messages.copy(), output_limit,
-                                                                           operations=_OPERATIONS, native_tools=native)
-                            else:
-                                response = await provider.complete(messages.copy(), output_limit)
-                            if not isinstance(response, ModelResponse):
-                                raise ProviderError("Provider returned no model response")
+                            response = await invoke_provider(
+                                provider, messages, output_limit,
+                                operations=_OPERATIONS, native_tools=native,
+                                invalid_response_message="Provider returned no model response")
                             attempt["status"] = "received"
                         except ProviderError as exc:
                             response = exc.response
@@ -284,15 +275,10 @@ async def run_reviewed_recipient(question: str, provider: TextProvider,
                                 replay_handle = response.metadata.get("responses_replay_handle")
                                 if isinstance(replay_handle, str):
                                     replay_handles.append(replay_handle)
-                                attempt.update(input_tokens=response.input_tokens,
-                                               output_tokens=response.output_tokens,
-                                               response_model=response.model,
-                                               model_cost_usd=response_cost(response, identity),
-                                               metadata={key: value for key, value in response.metadata.items()
-                                                         if key != "responses_replay_handle"})
-                                data = response.text.encode("utf-8")
-                                attempt.update(response_sha256=hashlib.sha256(data).hexdigest(),
-                                               response_bytes=len(data))
+                                data = record_response(
+                                    attempt, response, identity, response_digest_field="response_sha256",
+                                    metadata={key: value for key, value in response.metadata.items()
+                                              if key != "responses_replay_handle"})
                                 if len(data) <= budget.max_response_bytes:
                                     attempt["text"] = response.text
                                 else:
@@ -301,14 +287,12 @@ async def run_reviewed_recipient(question: str, provider: TextProvider,
                             model_reason = attempt["status"]
                             break
                         usage = summarise_usage(report["attempts"], include_tool_completeness=False)
-                        if usage["total_tokens"] is not None and usage["total_tokens"] > budget.max_total_tokens:
-                            model_reason = "token_budget_exhausted"
-                            break
-                        if budget.max_model_cost_usd is not None and (
-                                not usage["model_cost_complete"] or
-                                usage["known_model_cost_usd"] > budget.max_model_cost_usd):
-                            model_reason = ("cost_budget_unverifiable" if not usage["model_cost_complete"]
-                                            else "model_cost_budget_exhausted")
+                        limit_reason = post_attempt_limit(
+                            usage, max_total_tokens=budget.max_total_tokens,
+                            max_model_cost_usd=budget.max_model_cost_usd,
+                            require_token_usage=False)
+                        if limit_reason is not None:
+                            model_reason = limit_reason
                             break
                         native_call = response.metadata.get("native_tool_call") if native else None
                         if native and not isinstance(native_call, dict):

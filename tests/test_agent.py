@@ -1,5 +1,6 @@
 """Scripted clients test the interaction boundary, not language-model capability."""
 import asyncio
+import hashlib
 import json
 import os
 import sys
@@ -188,6 +189,27 @@ def test_unknown_provider_usage_is_not_zero_and_blocks_unbounded_retries(tmp_pat
         "tool_cost_complete": False, "total_cost_usd": None,
     }
     assert report["attempts"][0]["status"] == "provider_error"
+    assert set(report["attempts"][0]) == {
+        "index", "prompt_digest", "prompt_bytes", "max_output_tokens",
+        "input_tokens", "output_tokens", "model_cost_usd",
+        "status", "error", "latency_seconds"}
+
+
+def test_large_unaided_response_retains_agent_prefix_and_digest():
+    report = asyncio.run(run_unaided(
+        "Check works", ScriptedProvider(["bad"]),
+        budget=AgentBudget(max_response_bytes=2, max_repairs=0)))
+    assert report["stop_reason"] == "repair_budget_exhausted"
+    attempt = report["attempts"][0]
+    assert attempt["status"] == "response_too_large"
+    assert attempt["error"] == "Model response exceeded its byte limit"
+    assert attempt["response_digest"] == hashlib.sha256(b"bad").hexdigest()
+    assert attempt["text_prefix"] == "bad" and "text" not in attempt
+    assert set(attempt) == {
+        "index", "prompt_digest", "prompt_bytes", "max_output_tokens",
+        "input_tokens", "output_tokens", "model_cost_usd",
+        "status", "error", "latency_seconds", "response_model", "metadata",
+        "response_digest", "response_bytes", "text_prefix"}
 
 
 @pytest.mark.parametrize("budget,replies,expected", [
