@@ -44,4 +44,18 @@ The [prospective runner](benchmarks/prospective-v1/README.md) tests the P/T/J/E 
 
 The implementation provides finite, explicit support and attack reasoning with versioned reasoning methods. It does not infer the correct argument family from a task, authenticate GitHub beyond the configured acquisition path, prove informal warrants, or demonstrate cross-model superiority without a completed comparison.
 
-For the detailed contracts, see the [language reference](docs/language.md), [reasoning methods](docs/reasoning-modes.md), [MCP and tools](docs/mcp-and-tools.md), [typed propositions](docs/typed-propositions.md), [implementation](docs/implementation.md) and [`CONTRACT.md`](CONTRACT.md). The [paper workspace](paper/README.md) records the Journal of Systems and Software submission requirements and relevant project skills. Repository contributors should also read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).
+## Documentation
+
+| Document | Scope |
+| --- | --- |
+| [Design aim](docs/design-aim.md) | Intended task coverage and limits of current evidence |
+| [EAL/2 design](docs/eal2-design.md) | Language decisions and alternatives |
+| [Language](docs/language.md) | Grammar, declarations and typed proposition correspondence |
+| [Vocabulary](docs/vocabulary.md) | Meanings of adjacent engineering terms |
+| [Argument model](docs/argument-model.md) | Composed support, objections and propagation |
+| [Grounded reasoning](docs/grounded-reasoning.md) | Explicit Dung graph solver |
+| [Reasoning modes](docs/reasoning-modes.md) | Computational method inputs, outputs and bounds |
+| [MCP and tools](docs/mcp-and-tools.md) | Tool acquisition, persistence and model hosts |
+| [Sources](docs/sources.md) | Primary research and retained references |
+
+[`CONTRACT.md`](CONTRACT.md) records implementation interfaces. The [paper workspace](paper/README.md) links the Journal of Systems and Software author guide and relevant skills. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).

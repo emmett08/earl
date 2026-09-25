@@ -1,6 +1,18 @@
-# Sources and design decisions
+# Sources and retained references
 
-Primary sources checked on 23 September 2026. These references explain the concepts used in EAL and the alternatives considered. The executable semantics are defined by the implementation and [argument model](argument-model.md); citing a formal framework does not establish that EAL implements that framework.
+The established language and reasoning references below were checked for the earlier design on 23 September 2026. Selected publisher and author records for current model-assisted research were checked on 25 September 2026; the full set of archived links was extracted for preservation, **not** freshly reviewed as a body of evidence. The implementation and [argument model](argument-model.md) define executable EAL/2 semantics. A citation to another calculus, model or benchmark does not establish that EAL implements it or has its measured performance.
+
+## Contents
+
+- [Argument and reasoning models](#argument-and-reasoning-models)
+- [Reasoning methods](#reasoning-methods)
+- [Core language design](#core-language-design)
+- [Language implementation](#language-implementation)
+- [MCP integration](#mcp-integration)
+- [Project-specific decisions](#project-specific-decisions)
+- [Model-assisted reasoning and study design](#model-assisted-reasoning-and-study-design)
+- [Model host and provider interfaces](#model-host-and-provider-interfaces)
+- [Retired repository artefacts](#retired-repository-artefacts)
 
 ## Argument and reasoning models
 
@@ -44,11 +56,11 @@ The paper explains why partial observations require care when evaluating tempora
 
 ## Core language design
 
-The primary language-design sources and the precise EAL adaptations are recorded in [EAL/2 design decisions](eal2-design.md#expert-recommendations-and-eal-adaptations): Hoare on simplicity, readability and error detection; Wirth on notation and checked extension boundaries; Steele on composable language growth; Felleisen on constrained translations and eliminability; and Parr on independent implementation passes. The source recommendations do not establish expert endorsement, a formal expressiveness theorem or measured model gains for EAL/2.
+The primary language-design sources and the precise EAL adaptations are recorded in [EAL/2 design decisions](eal2-design.md#primary-recommendations-and-adaptations): Hoare on simplicity, readability and error detection; Wirth on notation and checked extension boundaries; Steele on composable language growth; Felleisen on constrained translations and eliminability; and Parr on independent implementation passes. The source recommendations do not establish expert endorsement, a formal expressiveness theorem or measured model gains for EAL/2.
 
 ## Language implementation
 
-**Terence Parr, _Language Implementation Patterns: Create Your Own Domain-Specific and General Programming Languages_, Pragmatic Bookshelf, 2009.** ISBN 9781934356456. [Publisher](https://pragprog.com/titles/tpdsl/language-implementation-patterns/), [publisher-provided AST-pattern extract](https://media.pragprog.com/titles/tpdsl/patterns.pdf).
+**Terence Parr, _Language Implementation Patterns: Create Your Own Domain-Specific and General Programming Languages_, Pragmatic Bookshelf, 2009.** ISBN 9781934356456. [Publisher](https://pragprog.com/titles/tpdsl/language-implementation-patterns/), [publisher-provided AST-pattern extract](https://media.pragprog.com/titles/tpdsl/patterns.pdf), [contents](https://media.pragprog.com/titles/tpdsl/toc.pdf) and [typing extract](https://media.pragprog.com/titles/tpdsl/static.pdf).
 
 The design separates parsing, typed internal representations, name resolution and evaluation. The published extract describes heterogeneous abstract syntax trees, including nodes with named fields; it informs the representation choice without dictating the domain semantics. The book predates ANTLR4, so current ANTLR4 APIs are taken from the later reference and official documentation.
 
@@ -69,3 +81,165 @@ MCP connects application hosts and clients to server capabilities. A text-only m
 ## Project-specific decisions
 
 Evidence freshness, environment identity, assumption intervals, deterministic versus nondeterministic tool declarations, and the exact result vocabulary are EAL design decisions. Their suitability depends on the intended engineering question. They should be assessed through executable examples and counterexamples, rather than attributed to Toulmin, ASPIC+, Dung or ANTLR.
+
+## Model-assisted reasoning and study design
+
+The studies below motivate testable comparisons: interpreter delegation, solver feedback, formal argumentation, completeness-sensitive negative answers, adaptive evaluation, routing and representation effects. Each result belongs to its own task, model and evaluation setting. None supplies an estimate of EAL/2's advantage over prose or meaning-equivalent JSON. Historical papers and prior versions are retained as source links; the selected publisher/author records reviewed on 25 September 2026 do not constitute full-paper replication.
+
+### Scholarly references from retired studies
+
+- [Logic-LM: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning](https://aclanthology.org/2023.findings-emnlp.248/)
+- [Grammar-Constrained Decoding Makes Large Language Models Better Logical Parsers](https://aclanthology.org/2025.acl-industry.34/)
+- [The Hidden Cost of Structure](https://aclanthology.org/2025.ranlp-1.124/)
+- [Gao et al., PAL](https://arxiv.org/abs/2211.10435)
+- [Zhou et al.](https://arxiv.org/abs/2303.11315)
+- [Turpin et al.](https://arxiv.org/abs/2305.04388)
+- [Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design](https://arxiv.org/abs/2310.11324v2)
+- [Tyen et al.](https://arxiv.org/abs/2311.08516)
+- [The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions](https://arxiv.org/abs/2404.13208)
+- [When Absence Is Evidence: Evaluating Completeness-Sensitive Negative Reasoning in Large Language Models](https://arxiv.org/abs/2608.04591)
+- [Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses](https://doi.org/10.1177/1948550617697177)
+- [Argumentative Large Language Models for Explainable and Contestable Claim Verification](https://doi.org/10.1609/aaai.v39i14.33637)
+- [A Knowledge Compilation Map](https://doi.org/10.1613/jair.989)
+- [Efficient Computation of Extensions for Dynamic Abstract Argumentation Frameworks: An Incremental Approach](https://doi.org/10.24963/ijcai.2017/8)
+- [LLM-ASPIC+: A Neuro-Symbolic Framework for Defeasible Reasoning](https://doi.org/10.3233/FAIA250981)
+- [Causal Inference: What If](https://miguelhernan.org/whatifbook)
+- [Generalization in Adaptive Data Analysis and Holdout Reuse](https://papers.neurips.cc/paper_files/paper/2015/hash/bad5f33780c42f2588878a9d07405083-Abstract.html)
+- [RouteLLM: Learning to Route LLMs from Preference Data](https://proceedings.iclr.cc/paper_files/paper/2025/hash/5503a7c69d48a2f86fc00b3dc09de686-Abstract-Conference.html)
+- [PAL: Program-aided Language Models](https://proceedings.mlr.press/v202/gao23f.html)
+- [Completeness of Queries over Incomplete Databases](https://www.vldb.org/pvldb/vol4/p749-razniewski.pdf)
+
+## Model host and provider interfaces
+
+These are version- and service-dependent interface pointers retained from earlier studies. Check their current contracts and the selected model snapshots before reuse; the list asserts no current availability, price or capability.
+
+- [OpenAI function calling](https://developers.openai.com/api/docs/guides/function-calling)
+- [Latency optimization](https://developers.openai.com/api/docs/guides/latency-optimization)
+- [Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
+- [structured output](https://developers.openai.com/api/docs/guides/structured-outputs)
+- [OpenAI token counting](https://developers.openai.com/api/docs/guides/token-counting)
+- [GPT-4.1](https://developers.openai.com/api/docs/models/gpt-4.1)
+- [mini / GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini)
+- [nano / GPT-4.1 nano / OpenAI GPT-4.1 nano model page / OpenAI model page](https://developers.openai.com/api/docs/models/gpt-4.1-nano)
+- [GPT-5](https://developers.openai.com/api/docs/models/gpt-5)
+- [mini / GPT-5 mini](https://developers.openai.com/api/docs/models/gpt-5-mini)
+- [nano](https://developers.openai.com/api/docs/models/gpt-5-nano)
+- [OpenAI Chat Completions reference](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create)
+- [`POST /v1/embeddings` contract](https://developers.openai.com/api/reference/resources/embeddings/methods/create)
+- [Official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+
+## Retired repository artefacts
+
+These commit-pinned links identify the original artefacts cited by removed documents. They refer to the **pre-reset** repository state. Earlier experiments, exposed cases and developmental fixtures are not the new prospective study; a historical artefact link establishes location and version, not a new research finding.
+
+### Historical sources and result archives
+
+- [arguments/evidence-mechanisms/argument.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/evidence-mechanisms/argument.eal)
+- [arguments/finite-model-checker/argument.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/finite-model-checker/argument.eal)
+- [arguments/negative-revision/closure.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/negative-revision/closure.eal)
+- [arguments/negative-revision/counterexample.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/negative-revision/counterexample.eal)
+- [arguments/reasoning-advantage/argument.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/reasoning-advantage/argument.eal)
+- [benchmarks/experiments/eal2-development-ablation.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-development-ablation.json)
+- [benchmarks/experiments/eal2-finite-model-checker.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-finite-model-checker.json)
+- [benchmarks/experiments/eal2-model-relays-completion-numerical.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-model-relays-completion-numerical.json)
+- [benchmarks/experiments/eal2-model-relays-completion-repair.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-model-relays-completion-repair.json)
+- [benchmarks/experiments/eal2-model-relays-recovery-blocks.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-model-relays-recovery-blocks.json)
+- [benchmarks/experiments/eal2-model-relays-remaining.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-model-relays-remaining.json)
+- [benchmarks/experiments/eal2-model-relays.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-model-relays.json)
+- [benchmarks/experiments/eal2-notation-transfer-diagnostic.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-notation-transfer-diagnostic.json)
+- [benchmarks/experiments/eal2-regression-matrix.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-regression-matrix.json)
+- [benchmarks/protocols/INV-EAL-DEPLOYMENT-001.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/INV-EAL-DEPLOYMENT-001.json)
+- [benchmarks/protocols/INV-EAL-MECHANISMS-001.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/INV-EAL-MECHANISMS-001.json)
+- [benchmarks/protocols/INV-EAL-NEGATIVE-REVISION-001.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/INV-EAL-NEGATIVE-REVISION-001.json)
+- [benchmarks/protocols/INV-EAL-REASONING-001.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/INV-EAL-REASONING-001.json)
+- [benchmarks/protocols/INV-EAL-RELAY-001.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/INV-EAL-RELAY-001.json)
+- [benchmarks/protocols/reasoning-precision-sensitivity.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/reasoning-precision-sensitivity.json)
+- [benchmarks/protocols/relay-precision-simulation.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/relay-precision-simulation.json)
+- [benchmarks/results/2026-09-23-argument-audit/relay-transitions.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-argument-audit/relay-transitions.json)
+- [benchmarks/results/2026-09-23-eal-amortisation/offline.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-eal-amortisation/offline.json)
+- [benchmarks/results/2026-09-23-eal03/index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-eal03/index.json)
+- [benchmarks/results/2026-09-23-eal2/ablation.json.gz](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-eal2/ablation.json.gz)
+- [benchmarks/results/2026-09-23-eal2/execution-metadata.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-eal2/execution-metadata.json)
+- [benchmarks/results/2026-09-23-eal2/failure-summary.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-eal2/failure-summary.json)
+- [benchmarks/results/2026-09-23-eal2/index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-eal2/index.json)
+- [benchmarks/results/2026-09-23-eal2/matrix.json.gz](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-eal2/matrix.json.gz)
+- [benchmarks/results/2026-09-23-eal2/provider-probes.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-eal2/provider-probes.json)
+- [benchmarks/results/2026-09-23-evidence-mechanisms/analysis.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-evidence-mechanisms/analysis.json)
+- [benchmarks/results/2026-09-23-evidence-mechanisms/switches.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-evidence-mechanisms/switches.json)
+- [benchmarks/results/2026-09-23-finite-model-checker-v101/result.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-finite-model-checker-v101/result.json)
+- [benchmarks/results/2026-09-23-negative-revisions/lifecycle.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-negative-revisions/lifecycle.json)
+- [benchmarks/results/2026-09-23-notation-transfer-live/execution-notes.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-notation-transfer-live/execution-notes.md)
+- [benchmarks/results/2026-09-23-relays-authorised/index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-authorised/index.json)
+- [benchmarks/results/2026-09-23-relays-completion/index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-completion/index.json)
+- [benchmarks/results/2026-09-23-relays-continuation/block-analysis.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-continuation/block-analysis.json)
+- [benchmarks/results/2026-09-23-relays-continuation/numerical-interrupted-index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-continuation/numerical-interrupted-index.json)
+- [benchmarks/results/2026-09-23-relays-continuation/provider-diagnostic.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-continuation/provider-diagnostic.json)
+- [benchmarks/results/2026-09-23-relays-explicit/block-analysis.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-explicit/block-analysis.json)
+- [benchmarks/results/2026-09-23-relays-explicit/failure-summary.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-explicit/failure-summary.json)
+- [benchmarks/results/2026-09-23-relays-explicit/index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-explicit/index.json)
+- [benchmarks/results/2026-09-23-relays-funded/block-analysis.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-funded/block-analysis.json)
+- [benchmarks/results/2026-09-23-relays-funded/execution-metadata.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-funded/execution-metadata.json)
+- [benchmarks/results/2026-09-23-relays-funded/interrupted-index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-funded/interrupted-index.json)
+- [benchmarks/results/2026-09-23-relays-funded/recovery-probe.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-funded/recovery-probe.json)
+- [benchmarks/results/2026-09-23-relays-recovery/block-analysis.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-recovery/block-analysis.json)
+- [benchmarks/results/2026-09-23-relays-recovery/budget-reconciliation.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-recovery/budget-reconciliation.json)
+- [benchmarks/results/2026-09-23-relays-recovery/campaign-index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-recovery/campaign-index.json)
+- [benchmarks/results/2026-09-23-relays-recovery/complete-aggregate.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-recovery/complete-aggregate.json)
+- [benchmarks/results/2026-09-23-relays-recovery/complete-block-endpoints.csv](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-recovery/complete-block-endpoints.csv)
+- [benchmarks/results/2026-09-23-relays-recovery/complete-block-stages.csv](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-recovery/complete-block-stages.csv)
+- [benchmarks/results/2026-09-23-relays-serial/index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays-serial/index.json)
+- [benchmarks/results/2026-09-23-relays/index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays/index.json)
+- [benchmarks/results/2026-09-23-relays/provider-probes.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-relays/provider-probes.json)
+- [benchmarks/results/2026-09-23/adjudications.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23/adjudications.json)
+- [benchmarks/results/2026-09-23/index.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23/index.json)
+- [benchmarks/results/2026-09-23/mini-development.json.gz](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23/mini-development.json.gz)
+- [benchmarks/results/2026-09-23/mini-held-out.json.gz](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23/mini-held-out.json.gz)
+- [benchmarks/results/2026-09-23/nano-development-initial.json.gz](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23/nano-development-initial.json.gz)
+- [benchmarks/results/2026-09-23/nano-development-revised.json.gz](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23/nano-development-revised.json.gz)
+- [docs/eal03-model-results.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal03-model-results.md)
+- [docs/eal2-artifact-live-results.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-artifact-live-results.md)
+- [docs/eal2-companion-investigation.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-companion-investigation.md)
+- [docs/eal2-evidence-failure-analysis.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-evidence-failure-analysis.md)
+- [docs/eal2-grammar-decision-20260924.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-grammar-decision-20260924.md)
+- [docs/eal2-host-completeness-audit.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-host-completeness-audit.md)
+- [docs/eal2-mechanism-experiment.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-mechanism-experiment.md)
+- [docs/eal2-model-results.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-model-results.md)
+- [docs/eal2-negative-evidence-research.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-negative-evidence-research.md)
+- [docs/eal2-negative-revision-results.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-negative-revision-results.md)
+- [docs/eal2-rag.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-rag.md)
+- [docs/eal2-relay-results.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-relay-results.md)
+- [docs/eal2-task-applicability.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-task-applicability.md)
+- [docs/engineering-tasks.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/engineering-tasks.md)
+- [docs/history/eal03/README.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/history/eal03/README.md)
+- [docs/history/eal03/eal03-development-ablation.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/history/eal03/eal03-development-ablation.json)
+- [docs/history/eal03/eal03-matrix.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/history/eal03/eal03-matrix.json)
+- [docs/history/finite-model-checker-v1/README.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/history/finite-model-checker-v1/README.md)
+- [docs/live-model-results.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/live-model-results.md)
+- [docs/method-extensions.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/method-extensions.md)
+- [docs/model-evaluation.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/model-evaluation.md)
+- [docs/model-loop.md#reviewed-recipient-route](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/model-loop.md#reviewed-recipient-route)
+- [docs/model-relay-experiments.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/model-relay-experiments.md)
+- [docs/notation-transfer-live-results.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/notation-transfer-live-results.md)
+- [docs/reviews/eal2-negative-96-stage-a-explanation-rubric-20260924.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/reviews/eal2-negative-96-stage-a-explanation-rubric-20260924.md)
+- [docs/reviews/eal2-negative-96-stage-a-explanations-reviewer-fixture24.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/reviews/eal2-negative-96-stage-a-explanations-reviewer-fixture24.json)
+- [docs/reviews/negative-96-stage-a-criteria-disagreement-packet.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/reviews/negative-96-stage-a-criteria-disagreement-packet.json)
+- [docs/reviews/negative-96-stage-a-explanation-ai-review.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/reviews/negative-96-stage-a-explanation-ai-review.json)
+- [docs/reviews/negative-96-stage-a-explanation-rubric-20260924.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/reviews/negative-96-stage-a-explanation-rubric-20260924.md)
+- [docs/reviews/negative-96-stage-a-explanation-second-criteria-review.json](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/reviews/negative-96-stage-a-explanation-second-criteria-review.json)
+- [docs/task-families.md#reviewed-recipient-route](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/task-families.md#reviewed-recipient-route)
+- [docs/typed-propositions.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/typed-propositions.md)
+- [examples/finite-reachability.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/finite-reachability.eal)
+- [examples/kubernetes-resource-revision/README.md](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/kubernetes-resource-revision/README.md)
+- [examples/rms.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/rms.eal)
+- [scripts/check_finite_model_checker_argument.py](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/scripts/check_finite_model_checker_argument.py)
+- [scripts/experiment_eal_amortisation.py](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/scripts/experiment_eal_amortisation.py)
+- [scripts/experiment_evidence_switches.py](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/scripts/experiment_evidence_switches.py)
+- [scripts/experiment_negative_revisions.py](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/scripts/experiment_negative_revisions.py)
+- [scripts/notation_transfer_experiment.py](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/scripts/notation_transfer_experiment.py)
+- [arguments/negative-revision](https://github.com/emmett08/earl/tree/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/negative-revision)
+- [benchmarks/results/2026-09-23-notation-transfer-live](https://github.com/emmett08/earl/tree/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-notation-transfer-live)
+- [docs/history/notation-transfer-v1](https://github.com/emmett08/earl/tree/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/history/notation-transfer-v1)
+
+### Other repository references
+
+- [PR #3](https://github.com/emmett08/earl/pull/3)

@@ -1,3 +1,0 @@
-# First finite-model-checker protocol and run
-
-`protocol.json`, `runner.py` and `result.json` retain the original 1.0.0 bytes. Its 48 graph cases completed. Review after execution found that prediction P-003 was linked to H-003, although a coherently false accepted graph contradicts H-003. The stale-record result was also common to both routes, not a discriminator, and the authored wrong-scope outcome had not been measured. The current [1.0.1 protocol](../../../benchmarks/experiments/eal2-finite-model-checker.json) corrects the hypothesis mapping and adds that measurement. It was run anew; neither set of outcomes is presented as a protected confirmatory sample.
