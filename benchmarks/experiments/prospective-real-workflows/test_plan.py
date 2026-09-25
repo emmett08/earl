@@ -59,7 +59,7 @@ class ProspectivePlanTests(unittest.TestCase):
         })
         errors, blockers = validate(changed)
         self.assertEqual(errors, [])
-        self.assertIn("external_receipt_and_execution_validation_not_implemented", blockers)
+        self.assertIn("external_reviewed_receipts_and_ready_execution_plan_absent", blockers)
 
     def test_boolean_or_zero_coverage_cannot_replace_approved_threshold(self) -> None:
         changed = copy.deepcopy(self.plan)

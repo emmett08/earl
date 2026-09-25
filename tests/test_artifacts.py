@@ -12,9 +12,10 @@ import pytest
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-from eal.artifacts import ArtifactRegistry
+from eal.artifacts import ArtifactRegistry, _require_complete_collection
 from eal.agent import run_unaided
 from eal.providers import ModelResponse
+from eal.parser import parse
 from eal.runtime import ReasoningService
 from eal.sampled_negative import sampled_negative_registry
 
@@ -65,6 +66,33 @@ def test_registered_artifact_returns_only_configured_statuses_and_trace(tmp_path
     assert service.explain(result["assessment_id"], "works")["result"]["status"] == "supported"
     assert service.explain(result["assessment_id"], "other")["result"]["status"] == "unsupported"
     assert registry.finish("test", result["assessment_id"])["claims"] == {"works": "supported"}
+
+
+def test_claim_gate_uses_structural_verdict_and_rechecks_saved_evidence(tmp_path):
+    service, manifest, _ = setup_artifact(tmp_path)
+    (tmp_path / "collector.py").write_text(
+        "import json,sys\njson.load(sys.stdin)\nprint(json.dumps({'value': {'passed': False}}))\n")
+    registry = ArtifactRegistry.load(service, manifest)
+    packet = registry.assess_claim("test", "works")
+    assert packet["status"] == "unsupported"
+    assert registry.finish_claim("test", packet["assessment_id"], "works") == packet
+
+    assessment = service.store.get(packet["assessment_id"], kind="assessment")
+    collection = service.store.get(packet["collection_id"], kind="collection")
+    assessment["evidence"]["measured"]["reasons"] = ["a plausible but unverified explanation"]
+    with pytest.raises(ValueError, match="predicate contract"):
+        _require_complete_collection(parse(SOURCE), {"measured"}, collection, assessment)
+
+
+@pytest.mark.parametrize("value", [{}, {"passed": 1}])
+def test_claim_gate_rejects_uncheckable_observation(tmp_path, value):
+    service, manifest, _ = setup_artifact(tmp_path)
+    (tmp_path / "collector.py").write_text(
+        "import json,sys\njson.load(sys.stdin)\n"
+        + "print(json.dumps({'value': " + repr(value) + "}))\n")
+    registry = ArtifactRegistry.load(service, manifest)
+    with pytest.raises(ValueError, match="predicate contract"):
+        registry.assess_claim("test", "works")
 
 
 def test_artifact_rejects_unregistered_claims_changed_source_and_methods(tmp_path):

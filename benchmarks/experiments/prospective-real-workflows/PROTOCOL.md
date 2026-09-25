@@ -5,6 +5,8 @@
 **Scope:** engineering decisions about a named claim at a particular assessment time, with access to actual read-only repository, CI, monitoring or infrastructure tools.  
 **Relationship to earlier studies:** this is a separate study. The exposed synthetic cohorts, including `cross-model-confirmatory.json` and its `developmental_unreviewed` manifest, are development material and cannot enter the confirmatory holdout. The historical EAL/2 studies do not supply independent field references, complete effort accounting or prospective operational outcomes for this study.
 
+**Implementation note:** [`runner_v1.py`](runner_v1.py) implements the four-arm orchestration and [`gateway_v1.py`](gateway_v1.py) executes pinned local Git object reads and allowlisted HTTPS JSON GETs. Signed case, tool, parity and model manifests plus a new ready execution plan are mandatory before real stages. This repository contains none of those externally reviewed materials or study outcomes. The gateway records decision-time and response identity but does not by itself prove historical snapshot immutability, network isolation, source authenticity or semantic parity between the EAL/2 and generic checkers; these need operator isolation, external review and retained receipts.
+
 ## 1. Question and competing explanations
 
 For eligible engineering decisions, does assigning an agent the complete EAL/2 workflow improve the probability of a correct, evidence-supported, bounded and faithfully communicated recommendation, compared with a strong plain-prose workflow given the same question, evidence access and resource limits?

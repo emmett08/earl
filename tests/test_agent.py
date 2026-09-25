@@ -1,5 +1,6 @@
 """Scripted clients test the interaction boundary, not language-model capability."""
 import asyncio
+import hashlib
 import json
 import os
 import sys
@@ -90,6 +91,14 @@ def test_real_persistent_mcp_loop_repairs_collects_reasons_explains_and_finishes
     assert report["usage"]["total_tokens"] == 770
     assert report["usage"]["model_cost_usd"] == pytest.approx(0.00084)
     assert report["usage"]["total_cost_usd"] is None
+    assert report["usage"] == {
+        "input_tokens": 700, "output_tokens": 70, "total_tokens": 770,
+        "known_input_tokens": 700, "known_output_tokens": 70,
+        "token_usage_complete": True, "model_cost_usd": pytest.approx(0.00084),
+        "known_model_cost_usd": pytest.approx(0.00084), "model_cost_complete": True,
+        "cost_basis": "configured_token_rates", "tool_cost_usd": None,
+        "tool_cost_complete": False, "total_cost_usd": None,
+    }
     tools = [event["tool"] for event in report["tool_calls"]]
     assert tools.count("eal_collect") == 1 and tools.count("eal_reason") == 1 and tools.count("eal_explain") == 1
     assert report["protocol_version"] == "2025-11-25"
@@ -171,7 +180,36 @@ def test_unknown_provider_usage_is_not_zero_and_blocks_unbounded_retries(tmp_pat
     assert report["stop_reason"] == "token_usage_unavailable", report
     assert report["usage"]["total_tokens"] is None
     assert report["usage"]["model_cost_usd"] is None
+    assert report["usage"] == {
+        "input_tokens": None, "output_tokens": None, "total_tokens": None,
+        "known_input_tokens": 0, "known_output_tokens": 0,
+        "token_usage_complete": False, "model_cost_usd": None,
+        "known_model_cost_usd": 0, "model_cost_complete": False,
+        "cost_basis": "configured_token_rates", "tool_cost_usd": None,
+        "tool_cost_complete": False, "total_cost_usd": None,
+    }
     assert report["attempts"][0]["status"] == "provider_error"
+    assert set(report["attempts"][0]) == {
+        "index", "prompt_digest", "prompt_bytes", "max_output_tokens",
+        "input_tokens", "output_tokens", "model_cost_usd",
+        "status", "error", "latency_seconds"}
+
+
+def test_large_unaided_response_retains_agent_prefix_and_digest():
+    report = asyncio.run(run_unaided(
+        "Check works", ScriptedProvider(["bad"]),
+        budget=AgentBudget(max_response_bytes=2, max_repairs=0)))
+    assert report["stop_reason"] == "repair_budget_exhausted"
+    attempt = report["attempts"][0]
+    assert attempt["status"] == "response_too_large"
+    assert attempt["error"] == "Model response exceeded its byte limit"
+    assert attempt["response_digest"] == hashlib.sha256(b"bad").hexdigest()
+    assert attempt["text_prefix"] == "bad" and "text" not in attempt
+    assert set(attempt) == {
+        "index", "prompt_digest", "prompt_bytes", "max_output_tokens",
+        "input_tokens", "output_tokens", "model_cost_usd",
+        "status", "error", "latency_seconds", "response_model", "metadata",
+        "response_digest", "response_bytes", "text_prefix"}
 
 
 @pytest.mark.parametrize("budget,replies,expected", [

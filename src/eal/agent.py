@@ -24,7 +24,9 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 from .host import OPERATIONS, parse_request
-from .providers import ModelResponse, ProviderError, TextProvider, load_provider, response_cost
+from .model_attempts import (invoke_provider, new_attempt, post_attempt_limit,
+                             pre_attempt_limit, record_response, summarise_usage)
+from .providers import ProviderError, TextProvider, load_provider
 from .runtime import strict_json
 
 
@@ -119,35 +121,19 @@ class _Run:
             raise _Stop("repair_budget_exhausted")
 
     def usage(self) -> dict:
-        attempts = self.report["attempts"]
-        known_input = sum(a["input_tokens"] or 0 for a in attempts)
-        known_output = sum(a["output_tokens"] or 0 for a in attempts)
-        complete = all(a["input_tokens"] is not None and a["output_tokens"] is not None for a in attempts)
-        cost_complete = all(a["model_cost_usd"] is not None for a in attempts)
-        known_cost = sum(a["model_cost_usd"] or 0 for a in attempts)
-        return {"input_tokens": known_input if complete else None,
-                "output_tokens": known_output if complete else None,
-                "total_tokens": known_input + known_output if complete else None,
-                "known_input_tokens": known_input, "known_output_tokens": known_output,
-                "token_usage_complete": complete,
-                "model_cost_usd": known_cost if cost_complete else None,
-                "known_model_cost_usd": known_cost, "model_cost_complete": cost_complete,
-                "cost_basis": "configured_token_rates",
-                "tool_cost_usd": None, "tool_cost_complete": False,
-                "total_cost_usd": None}
+        return summarise_usage(self.report["attempts"], include_tool_completeness=True)
 
     async def generate(self) -> str | None:
         usage = self.usage()
-        if self.report["attempts"] and not usage["token_usage_complete"]:
-            raise _Stop("token_usage_unavailable")
-        if usage["known_input_tokens"] + usage["known_output_tokens"] >= self.budget.max_total_tokens:
-            raise _Stop("token_budget_exhausted")
-        if self.budget.max_model_cost_usd is not None:
-            prices = self.report["provider"].get("pricing", {})
-            if not {"input_usd_per_million", "output_usd_per_million"} <= prices.keys() or not usage["model_cost_complete"]:
-                raise _Stop("cost_budget_unverifiable")
-            if usage["known_model_cost_usd"] >= self.budget.max_model_cost_usd:
-                raise _Stop("model_cost_budget_exhausted")
+        prices = self.report["provider"].get("pricing", {})
+        reason = pre_attempt_limit(
+            usage, attempted=bool(self.report["attempts"]),
+            max_total_tokens=self.budget.max_total_tokens,
+            max_model_cost_usd=self.budget.max_model_cost_usd,
+            pricing_available={"input_usd_per_million", "output_usd_per_million"} <= prices.keys(),
+        )
+        if reason is not None:
+            raise _Stop(reason)
         prompt = _json(self.messages)
         prompt_bytes = len(prompt.encode("utf-8"))
         if prompt_bytes > self.budget.max_prompt_bytes:
@@ -155,22 +141,17 @@ class _Run:
         if len(self.report["attempts"]) >= self.budget.max_iterations:
             raise _Stop("iteration_budget_exhausted")
         remaining = self.budget.max_total_tokens - usage["known_input_tokens"] - usage["known_output_tokens"]
-        attempt = {"index": len(self.report["attempts"]) + 1,
-                   "prompt_digest": _digest(prompt), "prompt_bytes": prompt_bytes,
-                   "max_output_tokens": min(self.budget.max_output_tokens, remaining),
-                   "input_tokens": None, "output_tokens": None, "model_cost_usd": None,
-                   "status": "pending"}
+        attempt = new_attempt(index=len(self.report["attempts"]) + 1, prompt=prompt,
+                              max_output_tokens=min(self.budget.max_output_tokens, remaining),
+                              prompt_digest_field="prompt_digest")
         self.report["attempts"].append(attempt)
         start = time.monotonic()
         response = None
         try:
-            if self.operations is not None and callable(getattr(self.provider, "complete_request", None)):
-                response = await self.provider.complete_request(self.messages.copy(), attempt["max_output_tokens"],
-                                                               operations=self.operations, native_tools=self.native_tools)
-            else:
-                response = await self.provider.complete(self.messages.copy(), attempt["max_output_tokens"])
-            if not isinstance(response, ModelResponse):
-                raise ProviderError("Provider did not return a ModelResponse")
+            response = await invoke_provider(
+                self.provider, self.messages, attempt["max_output_tokens"],
+                operations=self.operations, native_tools=self.native_tools,
+                invalid_response_message="Provider did not return a ModelResponse")
             attempt["status"] = "received"
         except ProviderError as exc:
             response = exc.response
@@ -184,11 +165,9 @@ class _Run:
         finally:
             attempt["latency_seconds"] = time.monotonic() - start
             if response is not None:
-                attempt.update(input_tokens=response.input_tokens, output_tokens=response.output_tokens,
-                               model_cost_usd=response_cost(response, self.report["provider"]),
-                               response_model=response.model, metadata=response.metadata)
-                text_bytes = response.text.encode("utf-8")
-                attempt.update(response_digest=hashlib.sha256(text_bytes).hexdigest(), response_bytes=len(text_bytes))
+                text_bytes = record_response(
+                    attempt, response, self.report["provider"],
+                    response_digest_field="response_digest", metadata=response.metadata)
                 if len(text_bytes) <= self.budget.max_response_bytes:
                     attempt["text"] = response.text
                 else:
@@ -204,15 +183,11 @@ class _Run:
         else:
             self.messages.append({"role": "assistant", "content": response.text})
         measured = self.usage()
-        if not measured["token_usage_complete"]:
-            raise _Stop("token_usage_unavailable")
-        if measured["total_tokens"] > self.budget.max_total_tokens:
-            raise _Stop("token_budget_exhausted")
-        if self.budget.max_model_cost_usd is not None:
-            if not measured["model_cost_complete"]:
-                raise _Stop("cost_budget_unverifiable")
-            if measured["model_cost_usd"] > self.budget.max_model_cost_usd:
-                raise _Stop("model_cost_budget_exhausted")
+        reason = post_attempt_limit(measured, max_total_tokens=self.budget.max_total_tokens,
+                                    max_model_cost_usd=self.budget.max_model_cost_usd,
+                                    require_token_usage=True)
+        if reason is not None:
+            raise _Stop(reason)
         return response.text
 
     def finish_report(self, stop_reason: str | None = None) -> dict:

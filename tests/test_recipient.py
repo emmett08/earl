@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import os
 import sys
@@ -91,6 +92,19 @@ def test_real_subprocess_binds_question_and_final_status_despite_false_model_pro
     assert report["assessment"] == report["checked_answer"]
     assert report["usage"]["total_tokens"] == 72
     assert report["usage"]["model_cost_usd"] == 0.000084
+    assert report["usage"] == {
+        "input_tokens": 60, "output_tokens": 12, "total_tokens": 72,
+        "known_input_tokens": 60, "known_output_tokens": 12,
+        "token_usage_complete": True, "model_cost_usd": 0.000084,
+        "known_model_cost_usd": 0.000084, "model_cost_complete": True,
+        "cost_basis": "configured_token_rates", "tool_cost_usd": None,
+        "total_cost_usd": None,
+    }
+    assert set(report["attempts"][0]) == {
+        "index", "prompt_sha256", "prompt_bytes", "max_output_tokens",
+        "input_tokens", "output_tokens", "model_cost_usd", "status",
+        "latency_seconds", "response_model", "metadata", "response_sha256",
+        "response_bytes", "text"}
     assert report["discovered_tools"] == sorted({
         "eal_bound_task", "eal_task_candidates", "eal_assess_bound_task",
         "eal_explain_bound_task", "eal_finish_bound_task"})
@@ -226,6 +240,32 @@ def test_model_token_budget_stops_after_explanation_and_still_finalises(tmp_path
     assert len(provider.calls) == 1
 
 
+def test_model_turn_limit_after_explanation_still_finalises(tmp_path):
+    provider = ScriptedProvider([{"operation": "explain"}])
+    report = run(QUESTION, provider, bound_server(tmp_path),
+                 budget=RecipientBudget(max_model_turns=1))
+    assert report["status"] == "incomplete"
+    assert report["stop_reason"] == "model_turn_budget_exhausted"
+    assert report["checked_answer"]["status"] == "supported"
+    assert report["explanation"]["packet"] == report["checked_answer"]
+    assert len(report["attempts"]) == 1
+    assert sum(call["tool"] == "eal_finish_bound_task" for call in report["tool_calls"]) == 1
+
+
+def test_large_model_response_preserves_digest_and_checked_result(tmp_path):
+    provider = ScriptedProvider([{"operation": "answer", "text": "Large response"}])
+    report = run(QUESTION, provider, bound_server(tmp_path),
+                 budget=RecipientBudget(max_response_bytes=8))
+    assert report["status"] == "incomplete"
+    assert report["stop_reason"] == "response_too_large"
+    assert report["checked_answer"]["status"] == "supported"
+    attempt = report["attempts"][0]
+    assert attempt["error_type"] == "ResponseLimit"
+    assert attempt["response_sha256"] == hashlib.sha256(
+        '{"operation": "answer", "text": "Large response"}'.encode()).hexdigest()
+    assert "text" not in attempt and "text_prefix" not in attempt
+
+
 def test_provider_failure_retains_checked_status_and_unknown_usage(tmp_path):
     provider = ScriptedProvider([ProviderError("provider failed")])
     report = run(QUESTION, provider, bound_server(tmp_path))
@@ -234,6 +274,18 @@ def test_provider_failure_retains_checked_status_and_unknown_usage(tmp_path):
     assert report["checked_answer"]["status"] == "supported"
     assert report["usage"]["total_tokens"] is None
     assert report["usage"]["model_cost_usd"] is None
+    assert report["usage"] == {
+        "input_tokens": None, "output_tokens": None, "total_tokens": None,
+        "known_input_tokens": 0, "known_output_tokens": 0,
+        "token_usage_complete": False, "model_cost_usd": None,
+        "known_model_cost_usd": 0, "model_cost_complete": False,
+        "cost_basis": "configured_token_rates", "tool_cost_usd": None,
+        "total_cost_usd": None,
+    }
+    assert set(report["attempts"][0]) == {
+        "index", "prompt_sha256", "prompt_bytes", "max_output_tokens",
+        "input_tokens", "output_tokens", "model_cost_usd", "status",
+        "error_type", "latency_seconds"}
 
 
 def test_shared_or_legacy_endpoint_is_rejected_before_assessment(tmp_path):

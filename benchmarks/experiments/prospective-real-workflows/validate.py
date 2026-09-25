@@ -138,10 +138,10 @@ def validate(plan: dict[str, Any]) -> tuple[list[str], list[str]]:
     if set(ledgers) != {"retrospective_ledger_sha256", "shadow_ledger_sha256"} or any(value is not None for value in ledgers.values()):
         errors.append("Post-run ledgers must remain separate and empty in this specification")
 
-    # A syntactically plausible digest is not an independently authenticated
-    # receipt. This version has no real-tool runner or ledger verification and
-    # must never authorise pilot or confirmatory execution by itself.
-    blockers.append("external_receipt_and_execution_validation_not_implemented")
+    # This specification linter does not call the separately versioned runner
+    # or verify signatures, case reviews, tool execution or ledgers. SHA-shaped
+    # fields alone can never authorise a pilot or confirmatory execution.
+    blockers.append("external_reviewed_receipts_and_ready_execution_plan_absent")
 
     return errors, blockers
 

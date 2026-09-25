@@ -3,8 +3,9 @@ from copy import deepcopy
 
 import pytest
 
-from eal.evaluator import canonical_digest, environment_fingerprint, evaluate
+from eal.evaluator import assess_evidence_record, canonical_digest, environment_fingerprint, evaluate
 from eal.parser import parse
+from eal.semantics import parse_time
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
@@ -78,6 +79,32 @@ def test_record_mismatch_missing_or_stale_fails_closed(key, value):
     assert result['claims']['downstream']['status'] == 'unsupported'
 
 
+def test_record_diagnostic_entry_and_order_are_preserved():
+    program = parse(SOURCE)
+    missing = evaluate(program, {}, now=NOW, context=CONTEXT)
+    assert missing['evidence']['observed'] == {
+        'status': 'unavailable', 'reasons': ['No evidence record is available']}
+
+    item = record(program, 'observed', {'passed': True})
+    item.update(source_digest='other', status='error', run_id='',
+                collected_at='2026-09-23T12:00:00', data_digest='other')
+    entry = evaluate(program, {'observed': item}, now=NOW, context=CONTEXT)['evidence']['observed']
+    assert entry == {
+        'status': 'unavailable', 'tool': 'runner', 'mode': 'nondeterministic', 'run_id': '',
+        'reasons': [
+            'Record source_digest does not match the declared evidence request',
+            'Tool execution did not produce an ok observation',
+            'Record requires a nonempty run_id',
+            'Record collected_at must be an ISO-8601 timestamp with timezone',
+            'Record data_digest does not match its JSON value',
+        ],
+    }
+    missing_field = run(values={'observed': {}})['evidence']['observed']
+    assert missing_field['reasons'] == ["Field 'passed' is missing"]
+    false_value = run(values={'observed': {'passed': False}})['evidence']['observed']
+    assert false_value['reasons'] == ["Field 'passed' == True does not hold (observed False)"]
+
+
 def test_evidence_age_boundary_and_assumption_half_open_interval():
     program = parse(SOURCE)
     item = record(program, 'observed', {'passed': True}, '2026-09-23T11:59:00Z')
@@ -98,6 +125,30 @@ def test_runtime_environment_conditions_and_fingerprints_are_enforced():
 def test_boolean_and_numeric_values_are_not_interchangeable():
     result = run(values={'observed': {'passed': 1}})
     assert result['evidence']['observed']['status'] == 'unavailable'
+
+
+def test_structural_evidence_verdict_distinguishes_false_from_invalid():
+    program = parse(SOURCE)
+
+    def check(item, *, in_scope=True):
+        return assess_evidence_record(program, 'observed', item, instant=parse_time(NOW),
+                                      context=CONTEXT, environment_matched=in_scope)
+
+    false = check(record(program, 'observed', {'passed': False}))
+    assert false.complete and false.entry['status'] == 'unavailable'
+    assert false.entry == run(values={'observed': {'passed': False}})['evidence']['observed']
+    true = check(record(program, 'observed', {'passed': True}))
+    assert true.complete and true.entry['status'] == 'available'
+    for value in ({}, {'passed': 1}):
+        invalid = check(record(program, 'observed', value))
+        assert not invalid.complete and invalid.entry['status'] == 'unavailable'
+    stale = check(record(program, 'observed', {'passed': True}, '2026-09-23T11:58:59Z'))
+    assert not stale.complete
+    out_of_scope = check(record(program, 'observed', {'passed': True}), in_scope=False)
+    assert not out_of_scope.complete
+    mismatched = record(program, 'observed', {'passed': True})
+    mismatched['input_digest'] = 'other'
+    assert not check(mismatched).complete
 
 
 def test_active_claim_objection_propagates_through_nested_subarguments():

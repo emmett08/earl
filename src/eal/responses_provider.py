@@ -8,15 +8,15 @@ Credentials remain environment references and never enter report metadata.
 
 from __future__ import annotations
 
-import asyncio
 import json
-import os
 import secrets
 from typing import Any
-from urllib.parse import urlsplit
 
 import httpx
 
+from .http_provider import (bearer_headers, native_operation_schema, post_json,
+                            validate_api_key_env, validate_endpoint,
+                            validate_max_response_bytes, validate_model)
 from .providers import (ModelResponse, ProviderError, _capabilities, _positive,
                         _pricing, _sampling)
 from .runtime import strict_json
@@ -31,17 +31,10 @@ class ResponsesProvider:
                  max_response_bytes: int = 1_048_576, label: str = "responses",
                  capabilities: dict | None = None,
                  transport: httpx.AsyncBaseTransport | None = None):
-        url = urlsplit(endpoint)
-        if (url.scheme not in {"https", "http"} or not url.hostname or url.username or url.password
-                or url.query or url.fragment
-                or (url.scheme == "http" and url.hostname not in {"localhost", "127.0.0.1", "::1"})):
-            raise ValueError("endpoint must be an HTTPS URL or local HTTP URL without credentials or query")
-        if api_key_env is not None and (not isinstance(api_key_env, str) or not api_key_env.isidentifier()):
-            raise ValueError("api_key_env must name an environment variable or be null")
-        if not isinstance(model, str) or not model:
-            raise ValueError("model must be an explicit nonempty identity")
-        if type(max_response_bytes) is not int or not 1 <= max_response_bytes <= 16 * 1024 * 1024:
-            raise ValueError("max_response_bytes must be between 1 and 16 MiB")
+        validate_endpoint(endpoint, invalid="endpoint must be an HTTPS URL or local HTTP URL without credentials or query")
+        validate_api_key_env(api_key_env, invalid="api_key_env must name an environment variable or be null")
+        validate_model(model, invalid="model must be an explicit nonempty identity")
+        validate_max_response_bytes(max_response_bytes)
         self.model, self.endpoint, self.api_key_env = model, endpoint, api_key_env
         self.sampling, self.pricing = _sampling(sampling or {}), _pricing(pricing or {})
         if "seed" in self.sampling:
@@ -130,12 +123,7 @@ class ResponsesProvider:
             raise ValueError("max_output_tokens must be positive")
         if native_tools and (not self.capabilities["native_tools"] or not operations):
             raise ProviderError("Native functions require enabled capability and operation schemas")
-        headers = {"Content-Type": "application/json"}
-        if self.api_key_env is not None:
-            credential = os.environ.get(self.api_key_env)
-            if not credential:
-                raise ProviderError(f"Configured credential variable {self.api_key_env} is absent")
-            headers["Authorization"] = "Bearer " + credential
+        headers = bearer_headers(self.api_key_env, ProviderError)
         payload: dict[str, Any] = {"model": self.model, "input": self._input(messages),
                                    "store": False, "include": ["reasoning.encrypted_content"],
                                    "max_output_tokens": max_output_tokens,
@@ -145,9 +133,7 @@ class ResponsesProvider:
         if native_tools:
             tools = []
             for entry in operations or []:
-                schema = strict_json(json.dumps(entry["input_schema"], allow_nan=False))
-                schema.get("properties", {}).pop("operation", None)
-                schema["required"] = [key for key in schema.get("required", []) if key != "operation"]
+                schema = native_operation_schema(entry)
                 tools.append({"type": "function", "name": entry["operation"],
                               "description": entry.get("description") or entry["operation"],
                               "parameters": schema, "strict": False})
@@ -160,26 +146,10 @@ class ResponsesProvider:
                 "required": ["request"], "additionalProperties": False}
             payload["text"] = {"format": {"type": "json_schema", "name": "eal_reply",
                                          "schema": schema, "strict": False}}
-        try:
-            async with asyncio.timeout(self.timeout_seconds), httpx.AsyncClient(
-                    timeout=self.timeout_seconds, follow_redirects=False,
-                    transport=self.transport) as client:
-                async with client.stream("POST", self.endpoint, headers=headers, json=payload) as response:
-                    if response.status_code != 200:
-                        raise ProviderError(f"Model endpoint returned HTTP {response.status_code}")
-                    chunks, size = [], 0
-                    async for chunk in response.aiter_bytes():
-                        size += len(chunk)
-                        if size > self.max_response_bytes:
-                            raise ProviderError("Model endpoint response exceeded its byte limit")
-                        chunks.append(chunk)
-            data = strict_json(b"".join(chunks).decode("utf-8"))
-        except httpx.HTTPError as exc:
-            raise ProviderError("Model endpoint transport failed") from exc
-        except TimeoutError as exc:
-            raise ProviderError("Model endpoint timed out") from exc
-        except (UnicodeError, ValueError) as exc:
-            raise ProviderError("Model endpoint returned malformed UTF-8 JSON") from exc
+        data = await post_json(self.endpoint, headers, payload,
+                               timeout_seconds=self.timeout_seconds,
+                               max_response_bytes=self.max_response_bytes,
+                               transport=self.transport, error_type=ProviderError)
         if not isinstance(data, dict) or not isinstance(data.get("output"), list):
             raise ProviderError("Responses endpoint returned malformed output")
         usage = data.get("usage")
