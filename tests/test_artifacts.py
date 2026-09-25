@@ -17,7 +17,6 @@ from eal.agent import run_unaided
 from eal.providers import ModelResponse
 from eal.parser import parse
 from eal.runtime import ReasoningService
-from eal.sampled_negative import sampled_negative_registry
 
 
 SOURCE = '''language "EAL/2";
@@ -295,33 +294,6 @@ def test_recipient_mcp_assessment_cannot_be_replayed_across_principals(tmp_path)
     asyncio.run(exercise())
 
 
-def test_compact_packet_follows_failed_premise_and_active_objection_predicates():
-    from scripts.run_cross_model_campaign import _host_assessment
-
-    cohort = Path(__file__).resolve().parents[1] / "benchmarks/experiments/cross-model-delivery"
-    manifest = json.loads((cohort / "manifest.json").read_text())
-
-    def packet_for(root_id, state_id):
-        root = next(root for root in manifest["roots"] if root["id"] == root_id)
-        state = next(state for state in root["states"] if state["id"] == state_id)
-        return _host_assessment(root, state, cohort)[0]
-
-    mismatch = packet_for("release_provenance", "digest_mismatch")
-    assert mismatch["schema"] == "eal2-claim-packet/2"
-    assert mismatch["status"] == "unsupported"
-    reason = mismatch["decisive"]["arguments"][0]["reason"]
-    assert "stage_qualifies" in reason and "sha256:8c4a" in reason and "sha256:fb90" in reason
-    challenge = packet_for("network_failover", "buffer_challenge")
-    assert challenge["status"] == "contested"
-    objection = challenge["decisive"]["objections"][0]
-    assert objection["status"] == "active" and "switch_buffer_overrun" in objection["reason"]
-    for packet in (mismatch, challenge):
-        assert packet["decisive"]["argument_count"] >= len(packet["decisive"]["arguments"])
-        assert packet["decisive"]["objection_count"] >= len(packet["decisive"]["objections"])
-        assert "details_truncated" in packet["decisive"]
-        assert len(json.dumps(packet, ensure_ascii=False).encode("utf-8")) <= 3072
-
-
 def test_operator_cli_assesses_artifact_before_any_model_call(tmp_path):
     _, manifest, tools = setup_artifact(tmp_path)
     result = subprocess.run(
@@ -335,47 +307,3 @@ def test_operator_cli_assesses_artifact_before_any_model_call(tmp_path):
     assert "source" not in packet and packet["verification"] == "server_assessment"
 
 
-def test_pinned_negative_argument_retracts_and_restores_on_changed_observations(tmp_path):
-    """The compact route uses the actual registered method and objection graph."""
-    from scripts.experiment_negative_revisions import PARTIAL_WITNESS, trace
-
-    source = (Path(__file__).resolve().parents[1] / "arguments/negative-revision/counterexample.eal").read_text()
-    (tmp_path / "negative.eal").write_text(source)
-    trace_path = tmp_path / "current-trace.json"
-    collector = tmp_path / "collector.py"
-    collector.write_text(
-        "import json,sys\nfrom pathlib import Path\n"
-        "request=json.load(sys.stdin)\n"
-        "if request['tool']=='trace_reader': value=json.loads(Path(" + json.dumps(str(trace_path)) + ").read_text())\n"
-        "elif request['tool'] in ('first_test','second_test'): value={'passed':True,'subject':'rig-9','scope':'vibration-interval-9','property':{'operator':'lt','value':1}}\n"
-        "else: value={'independently_explained':False}\n"
-        "print(json.dumps({'value':value,'observed_at':'2040-01-31T08:20:00Z'}))\n"
-    )
-    tools_path = tmp_path / "tools.toml"
-    tools_path.write_text("".join(
-        f'[tools.{name}]\nkind="command"\nmode="deterministic"\nversion="1"\n'
-        f'argv={json.dumps([sys.executable, str(collector)])}\n'
-        for name in ("first_test", "second_test", "trace_reader", "independent_check")))
-    service = ReasoningService(tmp_path, tools_path, method_registry=sampled_negative_registry())
-    manifest = tmp_path / "artifacts.toml"
-    manifest.write_text(
-        '[artifacts.negative]\npath="negative.eal"\n'
-        f'sha256="{hashlib.sha256(source.encode()).hexdigest()}"\n'
-        f'method_registry_fingerprint="{service.method_registry.fingerprint}"\n'
-        'claims=["property_supported","violating_sample"]\n'
-        'now="2040-01-31T08:30:00Z"\n'
-        '[artifacts.negative.context]\nsite="test-rig-9"\n')
-    artifacts = ArtifactRegistry.load(service, manifest)
-
-    def assess(events, scope="vibration-interval-9"):
-        trace_path.write_text(json.dumps(trace("counterexample", events, scope=scope)))
-        return artifacts.assess("negative")
-
-    before = assess([{"time": 4, "value": 0.8}])
-    challenged = assess(PARTIAL_WITNESS)
-    restored = assess(PARTIAL_WITNESS, scope="other-interval")
-    assert before["claims"] == {"property_supported": "supported", "violating_sample": "unsupported"}
-    assert challenged["claims"] == {"property_supported": "contested", "violating_sample": "supported"}
-    assert restored["claims"] == before["claims"]
-    assert artifacts.finish("negative", challenged["assessment_id"])["claims"] == challenged["claims"]
-    assert artifacts.finish("negative", restored["assessment_id"])["claims"] == restored["claims"]

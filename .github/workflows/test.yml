@@ -1,5 +1,8 @@
 name: EAL tests
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
 permissions:
   contents: read
 jobs:

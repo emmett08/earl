@@ -39,7 +39,7 @@ This fragment assumes the three global declarations already exist. Parameter kin
 
 An application expands to one argument named by its `apply` declaration. That name can be an objection target. Expansion substitutes declaration identities; it does not copy observations, discharge assumptions or broaden an environment or time interval. The expanded argument undergoes the same checks as a directly written argument, including typed proposition binding. Multiple applications using the same evidence still use one identified observation.
 
-Patterns cannot contain declarations or other applications. Applications are flat and nonrecursive, with at most 1,000 applications and 100,000 total expanded references per source. Forward references are allowed. [The reusable measurement example](../examples/reusable-measurements.eal) shows shared evidence in complete source. [The design record](eal2-design.md) explains why this bounded derived form was selected.
+Patterns cannot contain declarations or other applications. Applications are flat and nonrecursive, with at most 1,000 applications and 100,000 total expanded references per source. Forward references are allowed. [The reusable measurement example](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/reusable-measurements.eal) shows shared evidence in complete source. [The design record](eal2-design.md) explains why this bounded derived form was selected.
 
 ## Predicates and numbers
 
@@ -116,7 +116,7 @@ The result’s `valid` field reports static language validity. Each argument inc
 
 ## Worked sources
 
-[latency.eal](../examples/latency.eal) demonstrates temporal assumption expiry and a subordinate claim. [mixed-reasoning.eal](../examples/mixed-reasoning.eal) composes all seven computational methods under a diagnosis using distinct input schemas and declared modelling assumptions. Its observations and likelihoods are synthetic. [live.eal](../examples/live.eal) executes real local deterministic and nondeterministic commands.
+[latency.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/latency.eal) demonstrates temporal assumption expiry and a subordinate claim. [mixed-reasoning.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/mixed-reasoning.eal) composes all seven computational methods under a diagnosis using distinct input schemas and declared modelling assumptions. Its observations and likelihoods are synthetic. [live.eal](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/live.eal) executes real local deterministic and nondeterministic commands.
 
 No arguments are automatically generated from natural-language claims. The examples show how an engineer or model can supply a precise graph that the interpreter can compute and explain.
 

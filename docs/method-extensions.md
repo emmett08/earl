@@ -13,7 +13,7 @@ Built-in and installed methods use the same exact versioned selector, for exampl
 
 ## Runnable engineering example
 
-The optional `engineering/rms/1` method computes root-mean-square deviation from a declared origin. It has a different algorithm and evidence shape from the existing methods. The source in [`examples/rms.eal`](../examples/rms.eal) uses a typed pressure proposition, `query {"origin":0};`, and `result "rms" <= 5;`. Its observation contains `{ "origin": 0, "samples": [3, 4] }` in kPa. The result is approximately 3.535534 kPa.
+The optional `engineering/rms/1` method computes root-mean-square deviation from a declared origin. It has a different algorithm and evidence shape from the existing methods. The source in [`examples/rms.eal`](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/rms.eal) uses a typed pressure proposition, `query {"origin":0};`, and `result "rms" <= 5;`. Its observation contains `{ "origin": 0, "samples": [3, 4] }` in kPa. The result is approximately 3.535534 kPa.
 
 Enable the example explicitly in the operator's command:
 

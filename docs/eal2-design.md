@@ -41,7 +41,7 @@ Adding a keyword per algorithm was rejected: it changes the parser while duplica
 
 ## Closed, reusable argument patterns
 
-The complete [reusable measurement example](../examples/reusable-measurements.eal) applies one causal observation to two typed claims. Both claims preserve their own output criteria and refer to the same measured trial.
+The complete [reusable measurement example](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/reusable-measurements.eal) applies one causal observation to two typed claims. Both claims preserve their own output criteria and refer to the same measured trial.
 
 ```eal
 pattern estimate_from_trial(c: claim, r: reasoning, e: evidence) {

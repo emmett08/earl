@@ -16,7 +16,7 @@ demonstrates preservation of already correct answers. The completed diagnostic b
 separates these outcomes; it supplies some recovery from injected wrong
 proposals but does not establish the stronger requested claims.
 
-The [executable argument](../arguments/reasoning-advantage/argument.eal) uses the
+The [executable argument](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/reasoning-advantage/argument.eal) uses the
 existing EAL/2 grammar and `structured/1` method. Its empirical targets remain
 unsupported until their evidence requirements are met. Executing this argument
 checks recorded dependencies and predicates; it does not prove its authored
@@ -49,7 +49,7 @@ proposed answer therefore need separate experimental conditions.
 
 ## What the existing records add
 
-The [transition analysis](../benchmarks/results/2026-09-23-argument-audit/relay-transitions.json)
+The [transition analysis](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/results/2026-09-23-argument-audit/relay-transitions.json)
 recomputes the transitions from the retained 324 endpoint rows, joins their
 stages by cohort and stage identity, and checks that paired comparisons reuse
 the same saved producer. Its denominators are twelve task/repetition blocks
@@ -133,7 +133,7 @@ alternatives because each implies a different engineering recommendation.
 
 ## The runnable diagnostic
 
-[The plan](../benchmarks/experiments/eal2-notation-transfer-diagnostic.json)
+[The plan](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/experiments/eal2-notation-transfer-diagnostic.json)
 and [runner](../scripts/notation_transfer_experiment.py) implement a controlled
 diagnostic on five existing, well-formed synthetic tasks. The source-repair task
 is excluded because a matched repair interface needs a separate design. This
@@ -301,7 +301,7 @@ asserts support must fail on the adverse cases. Measure total calls, failed
 attempts, tokens, latency and cost per correctly resolved task. Reviewers must
 not infer reasoning quality from eloquence or agreement with another model.
 
-The [investigation protocol](../benchmarks/protocols/INV-EAL-REASONING-001.json)
+The [investigation protocol](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/INV-EAL-REASONING-001.json)
 records this as **specified**, with task construction, measurement validation,
 precision planning still outstanding. The live diagnostic has authorised access;
 its execution and findings are reported separately. A generic minimum number
@@ -312,7 +312,7 @@ over plausible task heterogeneity before fixing the confirmatory sample size.
 Declare multiplicity across model-specific primary claims and any sequential
 stopping rule before looking at those outcomes.
 
-The [synthetic precision sensitivity](../benchmarks/protocols/reasoning-precision-sensitivity.json)
+The [synthetic precision sensitivity](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/benchmarks/protocols/reasoning-precision-sensitivity.json)
 uses 10,000 simulated datasets per scenario. With a true ten-percentage-point
 gain and 480 independent templates, a one-sided 97.5% lower bound exceeds five
 percentage points in approximately 72% of simulated datasets when 20% of pairs

@@ -1,0 +1,3 @@
+# Scripts after the study reset
+
+`generate_parser.py` is the maintained build script (`make generate` and `make check-generated`). Other scripts are historical analysis and campaign entry points. They refer to data removed from `arguments/`, `benchmarks/` or `examples/` and are not part of the new runnable study; use the [pre-reset commit](https://github.com/emmett08/earl/tree/a9cdabee643118ff3ae28b3ec5c346427cca8cad) if reproducing that work. The new worked case is under [`examples/workflow-gate/`](../examples/workflow-gate/), and the prospective protocol is under [`benchmarks/study-v1/`](../benchmarks/study-v1/).
