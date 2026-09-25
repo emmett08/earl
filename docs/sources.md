@@ -130,7 +130,7 @@ These are version- and service-dependent interface pointers retained from earlie
 
 ## Retired repository artefacts
 
-The repository reset removed earlier experiments, fixtures and notes from the current tree. Their prior state remains in the [pre-reset commit](https://github.com/emmett08/earl/tree/a9cdabee643118ff3ae28b3ec5c346427cca8cad). Those exposed development tasks do not establish a result for the new prospective study.
+The repository reset removed earlier experiments, fixtures and notes from the current tree. Their prior state remains in the [pre-reset commit](https://github.com/emmett08/earl/tree/a9cdabee643118ff3ae28b3ec5c346427cca8cad). Those exposed development tasks do not establish comparative benefits for the current implementation. The subsequently removed workflow example and benchmark plans remain at [commit 0fddb9f](https://github.com/emmett08/earl/tree/0fddb9f5280711d9e10efa85b51bad2efcf89e2b).
 
 ### Other repository references
 

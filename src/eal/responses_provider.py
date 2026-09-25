@@ -15,11 +15,61 @@ from typing import Any
 import httpx
 
 from .http_provider import (bearer_headers, native_operation_schema, post_json,
+                            safe_error_details,
                             validate_api_key_env, validate_endpoint,
                             validate_max_response_bytes, validate_model)
 from .providers import (ModelResponse, ProviderError, _capabilities, _positive,
                         _pricing, _sampling)
 from .runtime import strict_json
+
+
+def _visible_output(output: Any) -> list[dict[str, Any]]:
+    """Preserve message/part boundaries while omitting every reasoning item."""
+    if not isinstance(output, list):
+        return []
+    visible = []
+    for index, item in enumerate(output):
+        if not isinstance(item, dict) or item.get("type") == "reasoning":
+            continue
+        if item.get("type") == "function_call":
+            visible.append({"output_index": index, "type": "function_call", **{
+                key: item[key] for key in ("id", "call_id", "name", "arguments", "status")
+                if isinstance(item.get(key), str)}})
+        elif item.get("type") == "message":
+            message: dict[str, Any] = {"output_index": index, "type": "message", **{
+                key: item[key] for key in ("id", "role", "status") if isinstance(item.get(key), str)}}
+            if "phase" in item:
+                phase = item["phase"]
+                message["phase"] = phase if phase in ("commentary", "final_answer") else "unrecognised"
+            message["content"] = []
+            if isinstance(item.get("content"), list):
+                for part_index, part in enumerate(item["content"]):
+                    content: dict[str, Any] = {"content_index": part_index, "type": "unrecognised"}
+                    if isinstance(part, dict) and part.get("type") in ("output_text", "refusal"):
+                        kind = part["type"]
+                        content["type"] = kind
+                        key = "text" if kind == "output_text" else "refusal"
+                        if isinstance(part.get(key), str):
+                            content[key] = part[key]
+                    message["content"].append(content)
+            visible.append(message)
+    return visible
+
+
+def _response_metadata(data: dict) -> dict[str, Any]:
+    metadata = {key: data[key] for key in ("id", "service_tier") if isinstance(data.get(key), str)}
+    status = data.get("status")
+    metadata["status"] = status if isinstance(status, str) and status in {
+        "completed", "failed", "in_progress", "cancelled", "queued", "incomplete"} else "unrecognised"
+    if isinstance(data.get("incomplete_details"), dict):
+        reason = data["incomplete_details"].get("reason")
+        metadata["incomplete_details"] = {
+            "reason": reason if isinstance(reason, str) and reason in {
+                "max_output_tokens", "content_filter"} else "unrecognised"}
+    if data.get("error"):
+        metadata["error"] = safe_error_details(data["error"])
+    metadata["visible_output"] = _visible_output(data.get("output"))
+    return metadata
 
 
 class ResponsesProvider:
@@ -122,7 +172,8 @@ class ResponsesProvider:
         if type(max_output_tokens) is not int or max_output_tokens < 1:
             raise ValueError("max_output_tokens must be positive")
         if native_tools and (not self.capabilities["native_tools"] or not operations):
-            raise ProviderError("Native functions require enabled capability and operation schemas")
+            raise ProviderError("Native functions require enabled capability and operation schemas",
+                                category="configuration")
         headers = bearer_headers(self.api_key_env, ProviderError)
         payload: dict[str, Any] = {"model": self.model, "input": self._input(messages),
                                    "store": False, "include": ["reasoning.encrypted_content"],
@@ -150,12 +201,13 @@ class ResponsesProvider:
                                timeout_seconds=self.timeout_seconds,
                                max_response_bytes=self.max_response_bytes,
                                transport=self.transport, error_type=ProviderError)
-        if not isinstance(data, dict) or not isinstance(data.get("output"), list):
-            raise ProviderError("Responses endpoint returned malformed output")
+        if not isinstance(data, dict):
+            raise ProviderError("Responses endpoint returned malformed output", category="invalid_response")
+        metadata = _response_metadata(data)
         usage = data.get("usage")
         if not isinstance(usage, dict):
-            raise ProviderError("Responses endpoint returned malformed usage")
-        metadata = {key: data[key] for key in ("id", "service_tier") if key in data}
+            raise ProviderError("Responses endpoint returned malformed usage", category="invalid_usage",
+                                diagnostics=metadata)
         cached = usage.get("input_tokens_details", {})
         if isinstance(cached, dict) and "cached_tokens" in cached:
             metadata["cached_input_tokens"] = cached["cached_tokens"]
@@ -166,47 +218,66 @@ class ResponsesProvider:
             measured = ModelResponse("", usage.get("input_tokens"), usage.get("output_tokens"),
                                      data.get("model"), metadata)
         except (ValueError, TypeError) as exc:
-            raise ProviderError("Responses endpoint returned invalid usage", response=None) from exc
+            raise ProviderError("Responses endpoint returned invalid usage", category="invalid_usage",
+                                diagnostics=metadata) from exc
+
+        def failure(message: str, category: str = "invalid_response") -> ProviderError:
+            return ProviderError(message, response=measured, category=category, diagnostics=metadata)
+
         if data.get("status") != "completed" or data.get("error") or data.get("incomplete_details"):
-            raise ProviderError("Model response was incomplete", response=measured)
+            reason = metadata.get("incomplete_details", {}).get("reason")
+            category = {"max_output_tokens": "output_truncated", "content_filter": "output_filtered"}.get(
+                reason, "output_incomplete")
+            raise failure("Model response was incomplete", category)
+        if not isinstance(data.get("output"), list):
+            raise failure("Responses endpoint returned malformed output")
         output = data["output"]
         if native_tools:
             calls = [item for item in output if isinstance(item, dict) and item.get("type") == "function_call"]
             if len(calls) != 1 or any(not isinstance(item, dict) or item.get("type") not in
-                                      {"function_call", "reasoning"} for item in output):
-                raise ProviderError("Native response must contain one function call and optional reasoning", response=measured)
+                                      ("function_call", "reasoning") for item in output):
+                raise failure("Native response must contain one function call and optional reasoning", "invalid_operation")
             call = calls[0]
+            if call.get("status") not in (None, "completed"):
+                raise failure("Native response contained an incomplete function call", "output_incomplete")
             if (not isinstance(call.get("call_id"), str) or not call["call_id"]
-                    or call.get("name") not in {entry["operation"] for entry in operations or []}
+                    or not isinstance(call.get("name"), str)
+                    or call["name"] not in {entry["operation"] for entry in operations or []}
                     or not isinstance(call.get("arguments"), str)):
-                raise ProviderError("Native response has an invalid function call", response=measured)
+                raise failure("Native response has an invalid function call", "invalid_operation")
             try:
                 arguments = strict_json(call["arguments"])
                 if not isinstance(arguments, dict) or "operation" in arguments:
                     raise ValueError("Expected object arguments without an operation field")
                 flat = json.dumps({"operation": call["name"], **arguments}, ensure_ascii=False, allow_nan=False)
             except (ValueError, TypeError) as exc:
-                raise ProviderError("Native function arguments are invalid", response=measured) from exc
+                raise failure("Native function arguments are invalid", "invalid_operation") from exc
             handle = secrets.token_urlsafe(24)
             self._replay_items[handle] = (flat, call["call_id"], output)
             metadata["responses_replay_handle"] = handle
             metadata["native_tool_call"] = {"id": call["call_id"], "type": "function",
                                             "function": {"name": call["name"], "arguments": call["arguments"]}}
             return ModelResponse(flat, measured.input_tokens, measured.output_tokens, measured.model, metadata)
-        if any(not isinstance(item, dict) or item.get("type") not in {"message", "reasoning"} for item in output):
-            raise ProviderError("Text response contained a tool or non-message item", response=measured)
+        if any(not isinstance(item, dict) or item.get("type") not in ("message", "reasoning") for item in output):
+            raise failure("Text response contained a tool or non-message item")
+        messages_returned = [item for item in output if item["type"] == "message"]
+        if operations is not None and len(messages_returned) != 1:
+            raise failure("Operation response must contain exactly one assistant message",
+                          "multiple_messages" if len(messages_returned) > 1 else "missing_message")
         pieces = []
         for item in output:
             if item["type"] == "reasoning":
                 continue
+            if item.get("role") not in (None, "assistant") or (operations is not None and item.get("role") != "assistant"):
+                raise failure("Text response contained a non-assistant message")
             if item.get("status") not in (None, "completed") or not isinstance(item.get("content"), list):
-                raise ProviderError("Text response contained an incomplete message", response=measured)
+                raise failure("Text response contained an incomplete message", "output_incomplete")
             for content in item["content"]:
                 if not isinstance(content, dict) or content.get("type") != "output_text" or not isinstance(content.get("text"), str):
-                    raise ProviderError("Text response contained non-text content", response=measured)
+                    raise failure("Text response contained non-text content")
                 pieces.append(content["text"])
         if not pieces:
-            raise ProviderError("Text response contained no text", response=measured)
+            raise failure("Text response contained no text", "missing_message")
         result = "".join(pieces)
         if self.capabilities["structured_output"] == "json_schema" and operations:
             try:
@@ -216,7 +287,7 @@ class ResponsesProvider:
                 metadata["structured_response_text"] = result
                 result = json.dumps(wrapper["request"], ensure_ascii=False, allow_nan=False)
             except (ValueError, TypeError) as exc:
-                raise ProviderError("Structured response did not contain one request", response=measured) from exc
+                raise failure("Structured response did not contain one request", "invalid_operation") from exc
         handle = secrets.token_urlsafe(24)
         self._replay_items[handle] = (result, None, output)
         metadata["responses_replay_handle"] = handle

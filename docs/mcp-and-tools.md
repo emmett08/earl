@@ -1,6 +1,6 @@
 # MCP, tools and model hosts
 
-The MCP server exposes the EAL/2 interpreter through a local stdio service. It uses the official Python SDK pinned to 1.30.0; its subprocess test negotiates the 2025-11-25 protocol profile. The newer SDK v2 and 2026 protocol have not been integrated or verified here. The package also provides a CLI, a strict JSON host for text-only models, an interactive model host and optional operator-reviewed artefact and question routes. These host interfaces do not alter the [source grammar](../grammar/EAL.g4) or the `EAL/typed-input/1` observation schema. The [GitHub workflow example](../examples/workflow-gate/README.md) exercises CLI and MCP paths over one recorded run; it reports no model-comparison result.
+The MCP server exposes the EAL/2 interpreter through a local stdio service. It uses the official Python SDK pinned to 1.30.0; its subprocess test negotiates the 2025-11-25 protocol profile. The newer SDK v2 and 2026 protocol have not been integrated or verified here. The package also provides a CLI, a strict JSON host for text-only models, an interactive model host and optional operator-reviewed artefact and question routes. These host interfaces do not alter the [source grammar](../grammar/EAL.g4) or the `EAL/typed-input/1` observation schema. The [API load-test example](../examples/api-load-test/README.md) exercises CLI and MCP paths over one synthetic request report; it reports no model-comparison result. The [live API experiment](../experiments/api_load_test/README.md) separately executes the configured collector against a real local HTTP service and compares model decisions, with JSON and prose using direct collection without MCP.
 
 ## Contents
 
@@ -32,20 +32,20 @@ The MCP server exposes the EAL/2 interpreter through a local stdio service. It u
 | `eal_explain_bound_task` | `assessment_id` | Retrieve that principal's bounded dependency trace |
 | `eal_finish_bound_task` | `assessment_id` | Recover the checked historical packet under the same question and grant |
 
-Run `eal-mcp --workspace /absolute/path/to/earl --registry /absolute/path/to/earl/examples/workflow-gate/tools.toml`. The default database is `.eal/runs.sqlite3` under that workspace; `--database` overrides it. Keep stdout for MCP protocol messages. The server checks advertised JSON schemas before SDK conversion, rejecting extra fields and incorrect types. The CLI uses the same service and accepts `--workspace`, `--registry`, `--database` and an optional host-registered `--methods` factory before its subcommand. The server uses stdio; HTTP MCP deployment is not included.
+Run `eal-mcp --workspace /absolute/path/to/earl --registry /absolute/path/to/earl/examples/api-load-test/tools.toml`. The default database is `.eal/runs.sqlite3` under that workspace; `--database` overrides it. Keep stdout for MCP protocol messages. The server checks advertised JSON schemas before SDK conversion, rejecting extra fields and incorrect types. The CLI uses the same service and accepts `--workspace`, `--registry`, `--database` and an optional host-registered `--methods` factory before its subcommand. The server uses stdio; HTTP MCP deployment is not included.
 
 ## Tool registry and observation identity
 
 Argument source names tools and supplies typed input. A host TOML file binds names to executable argument vectors or imported files:
 
 ```toml
-[tools.github_workflow]
+[tools.load_test_report]
 kind = "command"
-argv = ["python3", "examples/workflow-gate/collect_workflow.py"]
+argv = ["python3", "examples/api-load-test/collect_results.py"]
 version = "1"
-mode = "nondeterministic"
-timeout_seconds = 30
-max_output_bytes = 32768
+mode = "deterministic"
+timeout_seconds = 10
+max_output_bytes = 16384
 ```
 
 The executable receives one JSON object on stdin containing `evidence_id`, `environment`, `tool`, `tool_version`, `mode`, `input` and `context`. It emits one JSON object containing `value`, with optional `observed_at`, `context`, `request` and `details`. A returned `request` must match the acquisition identity described below. A nonzero exit, invalid JSON, unknown output fields, a mismatched request or context, timeout or excessive output produces a stored error observation. Configured commands run as trusted host programs with the host's access; the command adapter is not a sandbox and currently requires POSIX. Source cannot supply executable paths, shell syntax or provider credentials.
@@ -76,7 +76,7 @@ printf '%s\n' '{"operation":"grounded","arguments":["a","b","c"],"attacks":[["a"
 
 `eal-agent` starts one MCP session, discovers the tools and language description, gives the operation schemas to a configured model, validates each request, and returns diagnostics for bounded repairs. Its default stateful mode retains exact source bytes, context, collection and assessment identifiers. Once the caller supplies `initial_data.source` (immutable) or `draft_source` (revisable) with context, `{"operation":"assess"}` validates, collects, reasons and retrieves an explanation; `{"operation":"finish"}` returns the latest checked assessment. An invalid source stops before acquisition, and a source/context revision invalidates prior collection and assessment defaults. `--host-mode stateless` requires explicit source and identifiers on successive requests. `--interaction-mode native` uses a configured provider's native function calls, but all calls pass through the same host checks; model size or native calling does not imply reasoning quality.
 
-For a configured command or HTTP text provider, run `eal-agent --provider PROVIDER.toml --task TASK.txt --initial-data INPUTS.json --claim workflow_passed --workspace . --registry examples/workflow-gate/tools.toml --output REPORT.json`. Provider identity, sampling and model capabilities must be explicit; credentials stay in the host environment. `--unaided` invokes the same provider without MCP and labels the answer unverified. `AgentBudget` bounds attempts, repairs, tool calls, time and reported token/cost use. A provider may exceed a requested token or cost allowance before reporting it; unknown use is retained as unknown, and exceeding or unknown use prevents a budget-verified completion. A command adapter runs a trusted operator-selected argv, without a shell, using the host's access. The HTTP adapter implements configured Chat Completions style text, native calls and optional JSON output; only explicitly configured model capabilities are used. A caller must check the actual provider endpoint's parameter support.
+For a configured command or HTTP text provider, run `eal-agent --provider PROVIDER.toml --task TASK.txt --initial-data INPUTS.json --claim performance_criteria_met --workspace . --registry examples/api-load-test/tools.toml --output REPORT.json`. Provider identity, sampling and model capabilities must be explicit; credentials stay in the host environment. `--unaided` invokes the same provider without MCP and labels the answer unverified. `AgentBudget` bounds attempts, repairs, tool calls, time and reported token/cost use. A provider may exceed a requested token or cost allowance before reporting it; unknown use is retained as unknown, and exceeding or unknown use prevents a budget-verified completion. A command adapter runs a trusted operator-selected argv, without a shell, using the host's access. The HTTP adapter implements configured Chat Completions style text, native calls and optional JSON output; only explicitly configured model capabilities are used. A caller must check the actual provider endpoint's parameter support.
 
 Source text and result strings are data. The host accepts one schema-conforming request; it does not execute explanatory prose, accept invented operation names or reinterpret multiple concatenated requests.
 
@@ -87,24 +87,26 @@ The service records the selected `collection_id` on each assessment. The agent c
 An operator places a reviewed `.eal` source under the workspace and creates a separate TOML catalogue. Each entry pins exact source bytes, a method-registry fingerprint, the claims the recipient may request and the assessment context. It answers repeated instances of that registered question as collector observations change. Another claim or context requires an operator-reviewed catalogue entry. The optional `now` pins assessment time; otherwise the host captures current UTC time after collection. For example:
 
 ```toml
-[artifacts.workflow_check]
-path = "examples/workflow-gate/source.eal"
+[artifacts.performance_check]
+path = "examples/api-load-test/source.eal"
 sha256 = "<64 lowercase hex digits for exact UTF-8 source bytes>"
 method_registry_fingerprint = "<64 lowercase hex digits for installed methods>"
-claims = ["workflow_passed"]
+claims = ["performance_criteria_met"]
+now = "2026-09-25T10:00:00Z"
 
-[artifacts.workflow_check.context]
-repository = "emmett08/earl"
-decision = "workflow-result"
+[artifacts.performance_check.context]
+service = "orders-api"
+build_id = "demo-build-42"
+dataset = "synthetic"
 ```
 
-Use `sha256sum examples/workflow-gate/source.eal` for the source and read the method-registry fingerprint from `eal describe` with the same installed methods as the server. Replace both placeholders with actual values; this block is a configuration template, not an installed reviewed catalogue. The catalogue is trusted operator configuration, separate from EAL source. Its paths must resolve within the workspace. Edited source or changed method registry invalidates the entry until reviewed and repinned. Each call reads source once, checks its digest and declarations, collects fresh records, checks collection and assessment identities, and selects only the catalogue's claims. The result contains `claims`, `source_digest`, `method_registry_fingerprint`, `collection_id`, `assessment_id` and `assessed_at`; `eal_explain(assessment_id, claim)` retrieves the full dependency trace.
+Use `sha256sum examples/api-load-test/source.eal` for the source and read the method-registry fingerprint from `eal describe` with the same installed methods as the server. The pinned time reproduces the synthetic example; a current decision should assess genuine measurements at its actual time. Replace both digest placeholders with actual values; this block is a configuration template, not an installed reviewed catalogue. The catalogue is trusted operator configuration, separate from EAL source. Its paths must resolve within the workspace. Edited source or changed method registry invalidates the entry until reviewed and repinned. Each call reads source once, checks its digest and declarations, collects fresh records, checks collection and assessment identities, and selects only the catalogue's claims. The result contains `claims`, `source_digest`, `method_registry_fingerprint`, `collection_id`, `assessment_id` and `assessed_at`; `eal_explain(assessment_id, claim)` retrieves the full dependency trace.
 
-Start MCP with `eal-mcp --workspace . --registry examples/workflow-gate/tools.toml --artifacts ARTIFACTS.toml`. A client calls `eal_assess_artifact` with `{"artifact_id":"workflow_check"}`. The advertised schema rejects a client-supplied `source`, `context`, `now` or claim substitute. An operator can assess before any model call:
+Start MCP with `eal-mcp --workspace . --registry examples/api-load-test/tools.toml --artifacts ARTIFACTS.toml`. A client calls `eal_assess_artifact` with `{"artifact_id":"performance_check"}`. The advertised schema rejects a client-supplied `source`, `context`, `now` or claim substitute. An operator can assess before any model call:
 
 ```bash
-python -m eal.artifacts --workspace . --registry examples/workflow-gate/tools.toml \
-  --artifacts ARTIFACTS.toml --id workflow_check
+python -m eal.artifacts --workspace . --registry examples/api-load-test/tools.toml \
+  --artifacts ARTIFACTS.toml --id performance_check
 ```
 
 A Python host can pass this compact packet to a text-only recipient for an explanation while retaining authority over the status:
@@ -113,17 +115,17 @@ A Python host can pass this compact packet to a text-only recipient for an expla
 from eal.artifacts import ArtifactRegistry
 from eal.runtime import ReasoningService
 
-artifacts = ArtifactRegistry.load(ReasoningService(".", "examples/workflow-gate/tools.toml"), "ARTIFACTS.toml")
-packet = artifacts.assess("workflow_check")
+artifacts = ArtifactRegistry.load(ReasoningService(".", "examples/api-load-test/tools.toml"), "ARTIFACTS.toml")
+packet = artifacts.assess("performance_check")
 # Give packet to an optional text-only model for prose; its status labels are untrusted.
-final = artifacts.finish("workflow_check", packet["assessment_id"])
+final = artifacts.finish("performance_check", packet["assessment_id"])
 ```
 
-`finish` refuses an unrelated assessment ID or changed source/contract. `await artifacts.assist_text_only("workflow_check", task, recipient)` passes `{"task": task, "checked_assessment": packet}` to an application callback and returns a checked answer separately from `recipient_output_unverified`. The application presents the checked claim status. The status is historical at its assessment time; another decision collects again. The recipient-only endpoint requires a principal authenticated by the launcher and explicit artefact/claim grants. It stores issuance for that principal, assessment and claim, so another principal cannot explain or finalise the packet merely by sharing a claim grant. `eal2-claim-packet/2` bounds the decisive reasons and marks omitted detail with counts and truncation flags. Full explanation may expose observations and dependencies. The compact status packet's cost and disclosure properties must be evaluated for the intended deployment. A native-tool model may call the endpoint directly; a text-only model needs its host. The source review, evidence acquisition and adequacy of the authored warrant remain separate obligations.
+`finish` refuses an unrelated assessment ID or changed source/contract. `await artifacts.assist_text_only("performance_check", task, recipient)` passes `{"task": task, "checked_assessment": packet}` to an application callback and returns a checked answer separately from `recipient_output_unverified`. The application presents the checked claim status. The status is historical at its assessment time; another decision collects again. The recipient-only endpoint requires a principal authenticated by the launcher and explicit artefact/claim grants. It stores issuance for that principal, assessment and claim, so another principal cannot explain or finalise the packet merely by sharing a claim grant. `eal2-claim-packet/2` bounds the decisive reasons and marks omitted detail with counts and truncation flags. Full explanation may expose observations and dependencies. The compact status packet's cost and disclosure properties must be evaluated for the intended deployment. A native-tool model may call the endpoint directly; a text-only model needs its host. The source review, evidence acquisition and adequacy of the authored warrant remain separate obligations.
 
 ## Reviewed question and retrieval
 
-This optional route requires operator-created artefact, family (`eal2-task-families/1`) and exact-question (`eal2-task-applicability/1`) catalogues. Each reviewed question binds its exact text, family, complete typed parameters, pinned source and one claim under a digest generated by `review_applicability_digest`. Duplicate questions and changed case contracts are rejected. The authenticated launcher supplies the original question in `TASK.txt` and grants for task, family and artefact/claim. No reviewed task catalogue ships with the reset example; the following is a deployment template:
+This optional route requires operator-created artefact, family (`eal2-task-families/1`) and exact-question (`eal2-task-applicability/1`) catalogues. Each reviewed question binds its exact text, family, complete typed parameters, pinned source and one claim under a digest generated by `review_applicability_digest`. Duplicate questions and changed case contracts are rejected. The authenticated launcher supplies the original question in `TASK.txt` and grants for task, family and artefact/claim. No reviewed task catalogue ships with the load-test example; the following is a deployment template:
 
 ```sh
 eal-mcp --workspace . --registry TOOLS.toml --artifacts ARTIFACTS.toml \
@@ -142,7 +144,7 @@ packet. The model cannot submit a task ID, family bindings, source, context or q
 
 Candidate retrieval is advisory. `--aliases` loads reviewed synonyms tied by `alias_review_digest` to a family contract. Alternatively, `--rag-catalogue RAG.toml` loads `eal2-rag-candidates/1` snippets tied to local UTF-8 source bytes, family case, claim and review digest. The two CLI options are mutually exclusive. The RAG catalogue limits each source to 64 KiB, each snippet to 2 KiB/256 searchable words and the corpus to 128 documents; it verifies local file identity and ranks with BM25. A Python host may inject compatible, reviewed document/query vectors and an explicit query embedder; positive cosine signal is fused with lexical ranks, not interpreted as probability. The optional `OpenAIEmbeddingAdapter` implements the [embedding request contract](https://developers.openai.com/api/reference/resources/embeddings/methods/create) and records attempts and provider usage if configured; the CLI invokes no embedding API. Retrieval never supplies a binding or authorises collection. New wording, even a close paraphrase, needs its own reviewed question entry. Neither a matching digest nor a high retrieval score establishes evidence truth or the relevance of an omitted family.
 
-The host checks input identity and local consistency; it does not authenticate a physical evidence producer, prove the author included every required observation, or validate the causal warrant. A live deployment needs trusted collection, coherent object identities and reassessment at the decision time. For the sole current executable case, see the [workflow example's live and captured paths](../examples/workflow-gate/README.md). The [prospective v1 runner](../benchmarks/prospective-v1/README.md) implements four-arm selected acquisition and a one-attempt ledger, but its real stages reject execution until reviewed cases, pinned model snapshots and signed receipts are supplied. The [study plan](../benchmarks/study-v1/README.md) reports no comparative results; superiority over a comparable JSON checker remains a hypothesis.
+The host checks input identity and local consistency; it does not authenticate a physical evidence producer, prove the author included every required observation, or validate the causal warrant. A live deployment needs trusted collection, coherent object identities and reassessment at the decision time. The [API load-test example](../examples/api-load-test/README.md) shows the current executable path with synthetic data and explains how to substitute an identified measurement report. Comparative benefits over a similarly capable JSON checker remain a hypothesis.
 
 ## Verification and sources
 

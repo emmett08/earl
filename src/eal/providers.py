@@ -51,9 +51,20 @@ class ModelResponse:
 
 
 class ProviderError(RuntimeError):
-    def __init__(self, message: str, *, response: ModelResponse | None = None):
+    """A failed attempt with measured usage and sanitised boundary diagnostics.
+
+    ``retryable`` describes the error class; adapters never retry themselves.
+    Hosts retain each failed attempt and decide whether to schedule later work.
+    """
+
+    def __init__(self, message: str, *, response: ModelResponse | None = None,
+                 category: str = "provider_error", retryable: bool = False,
+                 diagnostics: dict[str, Any] | None = None):
         super().__init__(message)
         self.response = response
+        self.category = category
+        self.retryable = retryable
+        self.diagnostics = diagnostics or {}
 
 
 class TextProvider(Protocol):

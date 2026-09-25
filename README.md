@@ -15,25 +15,21 @@ make test
 
 The generated ANTLR parser is included. Regenerating it requires Java; `make check-generated` checks that the committed output matches the grammar.
 
-## One end-to-end case
+## One engineering example
 
-[The GitHub Actions workflow example](examples/workflow-gate/README.md) starts with an ordinary question about a specific workflow run. Its EAL/2 source declares the claim and evidence needed to answer it, while a host-configured collector fetches GitHub's run and job records. The example includes the source, tool registry, collector, context and commands to validate, collect, reason and inspect the checked result. It demonstrates a complete path for **one bounded workflow decision**, not a measured advantage over another representation or over models.
-
-`make example` exercises the CLI and actual MCP stdio server against a digest-pinned projection of GitHub API responses. The historical-capture claim is supported at its recorded time; the live-only claim rejects the replay. A live reassessment uses the read-only HTTPS collector on a host that can reach GitHub.
-
-The source and tool registry have different authority. A `.eal` file names evidence and its typed inputs; the example's `tools.toml` is trusted host configuration that binds the tool name to the collector command. The source cannot choose an arbitrary executable. Collection records source, context, tool version and observation identity. The host can refuse missing, malformed or mismatched observations. These checks do not establish provenance beyond the GitHub API response.
+[Review an API load-test result](examples/api-load-test/README.md) checks a familiar engineering question: does a particular build meet agreed latency and error-rate criteria in the supplied report? The example includes one EAL/2 source, a labelled synthetic report, a collector that computes statistics from individual request results, a trusted tool registry and a CLI/MCP walkthrough.
 
 ```bash
 make example
 ```
 
-The MCP server exposes `eal_describe`, `eal_validate`, `eal_collect`, `eal_reason` and `eal_explain`, among other operator tools. A client sends source and context to the server; the server runs configured collection and keeps the assessment status and evidence trace. The model's subsequent prose is a separate output whose accuracy must be checked against that status. The [example instructions](examples/workflow-gate/README.md) give the offline demonstration, live collection context and direct CLI/MCP commands for its specific case.
+The report contains 100 requests, a nearest-rank sample p95 of 180 ms and one failed request. It meets the example's limits of 200 ms and 1% at its recorded assessment time. `make example` validates, collects, reasons and explains through both the CLI and the actual MCP stdio server. It runs locally with no credentials or model provider, using a temporary database.
 
-## Prospective comparison
+The source pins the report's build, run and digest. The collector preserves its original observation time; EAL checks the declared scope, age and acceptance predicates. The [walkthrough](examples/api-load-test/README.md) explains those checks, the expected output and how to substitute a real report. The synthetic records illustrate assessment behaviour; release decisions need genuine measurements and a representative workload.
 
-The [new benchmark protocol](benchmarks/README.md) treats the assertion that **EAL/2 with the MCP host outperforms alternatives across small and large language model classes** as a hypothesis to test, not an established result. It specifies four arms: the actual task in plain prose (P), a Toulmin prose argument (T), a structurally equivalent JSON argument (J), and EAL/2 with its MCP host (E). The comparison must account for the checker and evidence access available to each arm. It calls for real tool calls on independently selected workflow cases, named frozen model snapshots, retained attempted results and effects within each predeclared class. The study is **specified, not run**; reviewed cases and outcome records are still needed. The single worked example checks the procedure and cannot justify a universal claim. See the protocol for the arms, randomisation, grading, costs and decision rule.
+The benchmark plans and previous examples have been removed from the current tree. Their prior versions remain in Git history. Comparative benefits over prose or JSON remain empirical questions.
 
-The [prospective runner](benchmarks/prospective-v1/README.md) tests the P/T/J/E execution and ledger contracts locally, but its real stages reject the current unready plan. Its `selected_acquisition` mode lets each arm select authorised calls; the separately planned `fixed_capture` diagnostic has no runner yet.
+A single [live API experiment](experiments/api_load_test/README.md) extends this task: six pinned nano/mini/full reasoning and non-reasoning models compare EAL/2+MCP, equivalent JSON prompt text, three developer prompts and explicit prose with an ordinary deterministic validator. It implements a real HTTP service, collectors and independent scoring. The workflow starts only by manual dispatch and runs inside its Docker image, using repository secret `OPENAI_API_TOKEN` for the selected comparison. Dispatch defaults to a 54-trial calibration across all six models, or nine trials for one selected snapshot, with a $0.50 admission allowance per model. The full development pilot has 40 distinct cases and 1,440 assigned trials. All arms share immutable measurements, and the default text-mediated tool adapter requires no native function calling. Version 3 repairs ambiguity and reporting exposed by the earlier pilot; live calibration is pending. Earlier evidence establishes neither a notation-specific accuracy advantage nor equivalence.
 
 ## Interfaces and boundaries
 
@@ -42,7 +38,7 @@ The [prospective runner](benchmarks/prospective-v1/README.md) tests the P/T/J/E 
 - `eal-mcp` serves the same operations over local stdio using the MCP SDK. `eal-host` accepts one strict JSON operation for text-only clients; `eal-agent` can run a bounded model feedback loop when a provider is configured.
 - The optional reviewed artifact and exact-question recipient routes bind a pinned source, context, question and claim on the host. They can keep a checked status authoritative when a recipient explanation differs.
 
-The implementation provides finite, explicit support and attack reasoning with versioned reasoning methods. It does not infer the correct argument family from a task, authenticate GitHub beyond the configured acquisition path, prove informal warrants, or demonstrate cross-model superiority without a completed comparison.
+The implementation provides finite, explicit support and attack reasoning with versioned reasoning methods. It does not infer the correct argument family from a task, authenticate measurements beyond the configured acquisition path, prove informal warrants, or demonstrate cross-model superiority without a completed comparison.
 
 ## Documentation
 

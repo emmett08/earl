@@ -1,4 +1,4 @@
-.PHONY: install test generate check-generated example build check
+.PHONY: install test generate check-generated example build check experiment-check
 PYTHON ?= python3
 
 install:
@@ -14,9 +14,12 @@ check-generated:
 	$(PYTHON) scripts/generate_parser.py --check
 
 example:
-	$(PYTHON) examples/workflow-gate/run.py --offline
+	$(PYTHON) examples/api-load-test/run.py
 
 build:
 	$(PYTHON) -m build
 
 check: check-generated test example
+
+experiment-check:
+	$(PYTHON) -m experiments.api_load_test self-check --output experiment-results/self-check

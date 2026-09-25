@@ -2,7 +2,7 @@
 
 This directory is a fresh starting point for a prospective empirical paper. No manuscript or experimental result is implied by this README. The proposed comparison asks whether EAL/2 with an EAL MCP host improves **correct, evidence-grounded engineering decisions** over equally resourced prose and machine-readable alternatives on sampled real tasks and model classes. An experiment can estimate effects in the sampled conditions; it cannot establish superiority for every language model.
 
-The [versioned GitHub Actions study](../benchmarks/study-v1/README.md) specifies the comparison. The [worked case](../examples/workflow-gate/README.md) demonstrates one checked argument and its evidence path; it is excluded from confirmatory cases.
+The previous benchmark plans and runner have been removed. The [API load-test example](../examples/api-load-test/README.md) demonstrates one checked argument using synthetic records. The single [live API experiment](../experiments/api_load_test/README.md) supplies a versioned protocol, real HTTP tooling, four pinned models and a Docker workflow. It compares combined systems on one controlled task; implementation and smoke execution alone provide no comparative advantage claim.
 
 ## Journal requirements
 
