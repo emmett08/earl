@@ -80,4 +80,4 @@ The regression tests exercise limits that this example must respect: exactly 1% 
 
 ## Live model comparison
 
-The single [API experiment](../../experiments/api_load_test/README.md) extends this same task with actual HTTP traffic and four model snapshots. It compares EAL/2+MCP, equivalent JSON prompt text and three developer prompts in Docker. The synthetic report here remains a reproducible teaching fixture and is not used as experimental measurement data.
+The single [API experiment](../../experiments/api_load_test/README.md) extends this same task with actual HTTP traffic and six nano/mini/full model snapshots. It compares EAL/2+MCP, equivalent JSON prompt text and three developer prompts in Docker. The synthetic report here remains a reproducible teaching fixture and is not used as experimental measurement data.

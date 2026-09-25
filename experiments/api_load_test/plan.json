@@ -1,24 +1,33 @@
 {
-  "schema": "eal-api-experiment/1",
+  "schema": "eal-api-experiment/2",
   "id": "INV-EAL-API-001",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "seed": 20260925,
-  "arms": ["eal_mcp", "json_prompt", "plain_brief", "plain_explicit", "plain_review"],
-  "profiles": ["healthy", "slow", "errors", "short_run"],
-  "smoke_repetitions": 1,
-  "study_repetitions": 10,
-  "max_model_calls_per_trial": 4,
+  "arms": [
+    "eal_mcp",
+    "json_prompt",
+    "plain_brief",
+    "plain_explicit",
+    "plain_review"
+  ],
+  "max_model_calls_per_trial": 6,
   "max_output_tokens_per_call": 4096,
   "provider_timeout_seconds": 120,
   "max_transcript_bytes": 200000,
-  "minimum_call_interval_seconds": 2,
+  "minimum_call_interval_seconds": 1,
   "smoke_max_usd_per_model": 5,
-  "study_max_usd_per_model": 50,
-  "primary_outcome": "A collected run followed by the correct status and three numeric measurements within 0.01 units (request count exact).",
-  "primary_contrasts": ["eal_mcp - json_prompt", "eal_mcp - plain_brief"],
-  "secondary_contrasts": ["eal_mcp - plain_explicit", "eal_mcp - plain_review"],
-  "bootstrap_replicates": 10000,
-  "practical_difference": 0.05,
+  "primary_outcome": "Correct collected report selection, bounded scope, availability or performance verdict, complete failed-check set, and numeric measurements.",
   "failure_rule": "Retain all assignments; missing, malformed, uncollected and provider-failed trials score zero. Stop further paid calls for a model after provider failure or exhausted cost accounting; retain unattempted assignments separately.",
-  "scope": "One controlled HTTP service, four workload profiles and four pinned model snapshots. The EAL contrast includes executable checking and MCP orchestration; JSON has direct measurement tools but no MCP or EAL evaluator."
+  "scope": "Development pilot on forty distinct reviewed case instances of one API service, six fixed model snapshots and one common text-mediated transport. EAL includes executable checking and MCP; JSON and prose use direct tools without EAL evaluation or MCP. No confirmatory efficacy claim or population inference.",
+  "transport": "text",
+  "pilot_cases": 40,
+  "smoke_cases": 4,
+  "max_concurrent_model_calls": 6,
+  "pilot_max_usd_per_model": 20,
+  "contrasts": [
+    "eal_mcp - json_prompt",
+    "eal_mcp - plain_brief",
+    "eal_mcp - plain_explicit",
+    "eal_mcp - plain_review"
+  ]
 }

@@ -103,6 +103,7 @@ def measure(config: dict) -> dict:
         connection = http.client.HTTPConnection("127.0.0.1", config["port"], timeout=timeout)
         started = time.perf_counter_ns()
         status, matches, error = 0, False, None
+        response_identity = None
         try:
             connection.request("GET", f"/orders/quote?request_id={index}")
             response = connection.getresponse()
@@ -111,6 +112,10 @@ def measure(config: dict) -> dict:
                 raise ValueError("Response exceeded the body limit")
             payload = json.loads(body)
             status = response.status
+            response_identity = {"header_build_id": response.getheader("X-Build-ID"),
+                                 "header_run_id": response.getheader("X-Run-ID"),
+                                 "body_build_id": payload.get("build_id"), "body_run_id": payload.get("run_id"),
+                                 "body_request_id": payload.get("request_id"), "total_pence": payload.get("total_pence")}
             matches = (response.getheader("X-Build-ID") == workload["build_id"]
                        and response.getheader("X-Run-ID") == workload["run_id"]
                        and payload.get("build_id") == workload["build_id"]
@@ -123,11 +128,11 @@ def measure(config: dict) -> dict:
             elapsed_ms = (time.perf_counter_ns() - started) / 1_000_000
             connection.close()
         return {"request_id": index, "status_code": status, "elapsed_ms": elapsed_ms,
-                "identity_matches": matches, "error": error}
+                "identity_matches": matches, "response_identity": response_identity, "error": error}
 
     started_at = utc_now()
     with ThreadPoolExecutor(max_workers=clients) as pool:
         rows = list(pool.map(one, range(count)))
-    return {"schema": "eal-live-api-report/1", "dataset": "measured_controlled_api",
+    return {"schema": "eal-live-api-report/2", "dataset": "measured_controlled_api",
             "started_at": started_at, "observed_at": utc_now(),
             "input": workload, "context": config["context"], "requests": rows}

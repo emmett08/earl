@@ -1,119 +1,152 @@
-"""Prespecified paired summaries; missing attempts remain in denominators."""
+"""Descriptive paired outcomes for a fixed, reviewed development case suite.
 
+Cases are selected rather than probability-sampled. These observed differences
+are finite-suite quantities, with no superiority or equivalence inference.
+"""
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import Counter, defaultdict
 import json
-import math
 from pathlib import Path
-import random
 import statistics
 
-from .materials import ARMS, PROFILES
+OUTCOMES = ("correct", "status_correct", "metrics_correct", "evidence_selection_correct",
+            "scope_correct", "failed_checks_correct", "false_support", "false_rejection",
+            "false_unavailable", "correct_unavailable", "unsupported_assertion_without_collection")
 
 
-def paired_interval(pairs: list[dict], *, alpha: float, seed: int, draws: int):
-    if len(pairs) < 20 or any(sum(row["profile"] == name for row in pairs) < 5 for name in PROFILES):
-        return None
-    groups = [[row["difference"] for row in pairs if row["profile"] == name] for name in PROFILES]
-    rng = random.Random(seed)
-    estimates = sorted(statistics.mean(statistics.mean(rng.choices(group, k=len(group))) for group in groups)
-                       for _ in range(draws))
-    return [estimates[max(0, math.floor(draws * alpha / 2))],
-            estimates[min(draws - 1, math.ceil(draws * (1 - alpha / 2)) - 1)]]
+def _correct(row):
+    return row["state"] == "complete" and bool(row.get("outcome", {}).get("correct"))
 
 
-def decision_interval(pairs: list[dict], *, alpha: float):
-    """Hoeffding bound for independent paired differences in [-1, 1]."""
-    if len(pairs) < 20 or any(sum(row["profile"] == name for row in pairs) < 5 for name in PROFILES):
-        return None
-    mean = statistics.mean(row["difference"] for row in pairs)
-    radius = math.sqrt(2 * math.log(2 / alpha) / len(pairs))
-    return [max(-1, mean - radius), min(1, mean + radius)]
+def _table(pairs):
+    counts = Counter((_correct(a), _correct(b)) for a, b in pairs)
+    return {"both_correct": counts[True, True], "eal_only_correct": counts[True, False],
+            "comparator_only_correct": counts[False, True], "both_incorrect": counts[False, False]}
 
 
 def summarise(output: Path) -> dict:
     manifest = json.loads((output / "manifest.json").read_text())
-    plan = manifest["plan"]
-    rows = []
+    if manifest["schema"] != "eal-api-experiment-run/2":
+        raise ValueError("Earlier runs retain their v1 reports; this analysis requires a v2 manifest")
+    rows, identities = [], set()
     for assignment in manifest["assignments"]:
+        if assignment["id"] in identities:
+            raise ValueError("Duplicate assignment ID")
+        identities.add(assignment["id"])
         path = output / "trials" / assignment["id"] / "trial.json"
         row = json.loads(path.read_text()) if path.exists() else {**assignment, "state": "not_attempted"}
+        if any(row.get(key) != value for key, value in assignment.items()):
+            raise ValueError("Trial identity differs from the frozen assignment")
+        row = {**row, "transport": row.get("transport", manifest["transport"])}
         rows.append(row)
+    if not rows:
+        raise ValueError("No assigned development cases")
     by_cell = defaultdict(list)
     for row in rows:
-        by_cell[row["model"], row["arm"]].append(row)
+        by_cell[row["model"], row["transport"], row["arm"]].append(row)
     cells = []
-    for (model, arm), values in sorted(by_cell.items()):
+    for (model, transport, arm), values in sorted(by_cell.items()):
         calls = [call for row in values for call in row.get("model_calls", [])]
         responses = [call["response"] for call in calls if call.get("response")]
-        known_costs = [call["estimated_usd"] for call in calls if call.get("estimated_usd") is not None]
-        outcome = lambda name: sum(bool(row.get("outcome", {}).get(name)) for row in values)
-        cells.append({"model": model, "arm": arm, "assigned": len(values),
+        costs = [call["estimated_usd"] for call in calls if call.get("estimated_usd") is not None]
+        outcomes = {key: sum(bool(row.get("outcome", {}).get(key)) for row in values) for key in OUTCOMES}
+        outcomes["correct"] = sum(_correct(row) for row in values)
+        cells.append({"model": model, "transport": transport, "arm": arm,
+                      "assigned": len(values), "distinct_cases": len({row["case_id"] for row in values}),
                       "completed": sum(row.get("state") == "complete" for row in values),
-                      "correct": outcome("correct"), "accuracy": outcome("correct") / len(values),
-                      "false_support": outcome("false_support"),
-                      "unsupported_assertion_without_collection": outcome("unsupported_assertion_without_collection"),
+                      "states": dict(Counter(row["state"] for row in values)), **outcomes,
+                      "accuracy": outcomes["correct"] / len(values),
                       "model_calls": len(calls),
                       "input_tokens_known": sum(item.get("input_tokens") or 0 for item in responses),
                       "output_tokens_known": sum(item.get("output_tokens") or 0 for item in responses),
                       "reasoning_tokens_known": sum(item.get("metadata", {}).get("reasoning_tokens", 0) for item in responses),
-                      "estimated_usd_known": sum(known_costs), "unknown_cost_calls": len(calls) - len(known_costs),
-                      "median_seconds_attempted": statistics.median([row["seconds"] for row in values if "seconds" in row])
-                          if any("seconds" in row for row in values) else None})
+                      "estimated_usd_known": sum(costs), "unknown_cost_calls": len(calls) - len(costs),
+                      "median_seconds_attempted": (statistics.median(row["seconds"] for row in values if "seconds" in row)
+                                                    if any("seconds" in row for row in values) else None)})
     contrasts = []
-    for spec in manifest["models"]:
-        lookup = {(row["block"], row["arm"]): row for row in rows if row["model"] == spec["id"]}
-        for comparator in ARMS[1:]:
+    for model, transport in sorted({(row["model"], row["transport"]) for row in rows}):
+        values = [row for row in rows if row["model"] == model and row["transport"] == transport]
+        lookup = {}
+        for row in values:
+            key = (row["block"], row["arm"])
+            if key in lookup:
+                raise ValueError("Duplicate paired block and arm")
+            lookup[key] = row
+        for comparator in manifest["plan"]["arms"]:
+            if comparator == "eal_mcp":
+                continue
             pairs = []
             for (block, arm), eal in lookup.items():
                 if arm != "eal_mcp":
                     continue
+                if (block, comparator) not in lookup:
+                    raise ValueError("A planned comparison is missing its paired assignment")
                 baseline = lookup[block, comparator]
-                pairs.append({"profile": eal["profile"], "difference": int(bool(eal.get("outcome", {}).get("correct")))
-                              - int(bool(baseline.get("outcome", {}).get("correct")))})
-            primary = comparator in {"json_prompt", "plain_brief"}
-            # Eight planned primary contrasts across all four snapshots even
-            # when this invocation executes a selected subset of models.
-            alpha = 0.05 / 8 if primary else 0.05
-            interval = decision_interval(pairs, alpha=alpha)
-            complete = all(row.get("state") == "complete" for row in lookup.values())
-            contrast = {"model": spec["id"], "class": spec["class"], "size": spec["size"],
-                        "comparator": comparator, "primary": primary, "paired_blocks": len(pairs),
-                        "accuracy_difference": statistics.mean(row["difference"] for row in pairs),
-                        "interval": interval, "interval_level": 1 - alpha,
-                        "exploratory_bootstrap_interval": paired_interval(
-                            pairs, alpha=alpha, seed=plan["seed"], draws=plan["bootstrap_replicates"]),
-                        "interpretation": "descriptive_only"}
-            if manifest["mode"] == "study" and complete and interval is not None:
-                contrast["interpretation"] = ("bounded_advantage" if interval[0] > plan["practical_difference"] else
-                                              "bounded_disadvantage" if interval[1] < -plan["practical_difference"] else
-                                              "inconclusive")
-            contrasts.append(contrast)
-    return {"schema": "eal-api-experiment-summary/1", "mode": manifest["mode"],
-            "assigned": len(rows), "complete": all(row.get("state") == "complete" for row in rows),
-            "cells": cells, "contrasts": contrasts,
-            "scope": plan["scope"],
-            "interval_method": "Hoeffding bounds for independent paired differences; eight primary contrasts use Bonferroni levels. Profile-stratified paired bootstrap is exploratory only. Secondary bounds are unadjusted.",
-            "limitations": ["One controlled API; no production or universal model-class claim.",
-                            "Small/large are product tiers, not known parameter counts.",
-                            "Fresh HTTP measurements differ across arms; the reference is specific to each trial.",
-                            "EAL combines notation, MCP execution and checking; this is not a notation-only effect.",
-                            "Smoke runs establish execution only; incomplete runs remain descriptive."]}
+                if eal["case_id"] != baseline["case_id"]:
+                    raise ValueError("Paired assignments address different cases")
+                pairs.append((eal, baseline))
+            if not pairs:
+                raise ValueError("No EAL assignments in paired comparison")
+            table = _table(pairs)
+            completed_pairs = [(a, b) for a, b in pairs if a["state"] == b["state"] == "complete"]
+            cases = Counter(a["case_id"] for a, _ in pairs)
+            contrasts.append({"model": model, "transport": transport, "comparator": comparator,
+                              "paired_blocks": len(pairs), "paired_cases": len(cases),
+                              "paired_completed": len(completed_pairs),
+                              "case_repetitions": dict(sorted(cases.items())),
+                              **table, "completed_pair_table": _table(completed_pairs),
+                              "accuracy_difference": (table["eal_only_correct"] - table["comparator_only_correct"]) / len(pairs),
+                              "interpretation": "development_suite_descriptive"})
+    return {"schema": "eal-api-experiment-summary/2", "mode": manifest["mode"],
+            "assigned": len(rows), "distinct_cases": len({row["case_id"] for row in rows}),
+            "complete": all(row["state"] == "complete" for row in rows),
+            "cells": cells, "contrasts": contrasts, "scope": manifest["plan"]["scope"],
+            "inference": "Reviewed development cases; no confirmatory inference authorised.",
+            "limitations": ["Observed differences describe this finite suite, not a sampled task population.",
+                            "Repeated sessions on one case are repetitions, not additional distinct cases.",
+                            "Native and text-mediated transports are reported separately.",
+                            "EAL combines notation, MCP execution and checking; the contrast does not isolate notation.",
+                            "Missing, malformed and failed assignments remain in the denominator.",
+                            "An efficacy study needs new held-out cases and a frozen, simulation-checked information plan."]}
 
 
 def markdown(summary: dict) -> str:
-    lines = ["# API load-test experiment", "", f"Mode: **{summary['mode']}**. Complete: **{summary['complete']}**.", "",
-             "| Model | Arm | Correct / assigned | False support | Calls | Known cost (USD) |",
-             "| --- | --- | ---: | ---: | ---: | ---: |"]
+    lines = ["# API load-test development pilot", "",
+             f"Mode: **{summary['mode']}**. Complete: **{summary['complete']}**. "
+             f"Distinct reviewed cases: **{summary['distinct_cases']}**.", "", summary["inference"], "",
+             "| Model | Transport | Arm | Correct / assigned | False support | False rejection | Calls | Known USD |",
+             "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |"]
     for cell in summary["cells"]:
-        lines.append(f"| {cell['model']} | {cell['arm']} | {cell['correct']}/{cell['assigned']} | "
-                     f"{cell['false_support']} | {cell['model_calls']} | {cell['estimated_usd_known']:.4f} |")
-    lines += ["", "Costs use the frozen standard token rates. Missing usage remains unknown; the report is not a provider invoice.",
-              "", "## Paired contrasts", "", "| Model | EAL minus comparator | Difference | Interval | Interpretation |",
-              "| --- | --- | ---: | --- | --- |"]
+        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['arm']} | "
+                     f"{cell['correct']}/{cell['assigned']} | {cell['false_support']} | {cell['false_rejection']} | "
+                     f"{cell['model_calls']} | {cell['estimated_usd_known']:.4f} |")
+    lines += ["", "Costs use frozen token rates; unknown usage remains unknown. HTTP requests and model calls are not independent cases.",
+              "", "## Paired case outcomes", "",
+              "| Model | Transport | Comparator | Cases / blocks | Both correct | EAL only | Comparator only | Both incorrect | Difference |",
+              "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
     for row in summary["contrasts"]:
-        interval = "Insufficient blocks" if row["interval"] is None else f"[{row['interval'][0]:.3f}, {row['interval'][1]:.3f}]"
-        lines.append(f"| {row['model']} | {row['comparator']} | {row['accuracy_difference']:.3f} | {interval} | {row['interpretation']} |")
-    lines += ["", summary["scope"], ""]
+        lines.append(f"| {row['model']} | {row['transport']} | {row['comparator']} | "
+                     f"{row['paired_cases']}/{row['paired_blocks']} | {row['both_correct']} | {row['eal_only_correct']} | "
+                     f"{row['comparator_only_correct']} | {row['both_incorrect']} | {row['accuracy_difference']:+.3f} |")
+    lines += ["", "Differences are EAL minus comparator accuracy on the assigned development cases. "
+              "A zero difference establishes an observed tie on this suite; it does not establish equivalence.",
+              "", "## Decision disagreements among completed pairs", "",
+              "| Model | Transport | Comparator | Completed pairs | EAL only correct | Comparator only correct |",
+              "| --- | --- | --- | ---: | ---: | ---: |"]
+    for row in summary["contrasts"]:
+        table = row["completed_pair_table"]
+        lines.append(f"| {row['model']} | {row['transport']} | {row['comparator']} | {row['paired_completed']} | "
+                     f"{table['eal_only_correct']} | {table['comparator_only_correct']} |")
+    lines += ["", "This diagnostic separates completed-answer disagreements from execution failures. "
+              "Completion selects a subset; it does not replace the assigned denominator or establish an efficacy effect.",
+              "", "## Decision components", "",
+              "| Model | Transport | Arm | Evidence selection | Scope | Failed criteria | Status | Metrics | Assigned |",
+              "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
+    for cell in summary["cells"]:
+        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['arm']} | {cell['evidence_selection_correct']} | "
+                     f"{cell['scope_correct']} | {cell['failed_checks_correct']} | {cell['status_correct']} | "
+                     f"{cell['metrics_correct']} | {cell['assigned']} |")
+    lines += ["", summary["scope"], "", "An efficacy study requires new held-out cases, an explicit effect margin "
+              "and multiplicity family, and sample planning calibrated for paired discordance and dependence.", ""]
     return "\n".join(lines)

@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'experiments/api_load_test/**'
-      - 'tests/test_api_experiment.py'
+      - 'tests/test_api*.py'
       - '.github/workflows/api-experiment.yml'
       - '.dockerignore'
       - 'src/**'
@@ -17,25 +17,25 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Smoke: 80 assigned trials; study: 800 assigned trials, with larger cost allowance'
+        description: 'Pilot: 40 cases x 6 models x 5 arms; smoke: 4 cases x 6 models x 5 arms'
         required: true
-        default: smoke
+        default: pilot
         type: choice
-        options: [smoke, study]
+        options: [smoke, pilot]
 
 permissions:
   contents: read
 
 concurrency:
   group: api-experiment-${{ github.event.pull_request.number || github.ref }}
-  # Superseded PR smoke runs must not block the current revision.
-  # Manually dispatched studies keep their fixed sample uninterrupted.
+  # Superseded PR pilot runs must not block the current revision.
+  # Manually dispatched pilots keep their fixed sample uninterrupted.
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   experiment:
-    # A same-repository owner PR may run the paid smoke test. Forks never run
-    # this paid experiment or receive the token. Manual runs can select study.
+    # A same-repository owner PR may run the paid development pilot. Forks never run
+    # this paid experiment or receive the token. Manual runs can select smoke or pilot.
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.pull_request.head.repo.full_name == github.repository &&
@@ -43,7 +43,7 @@ jobs:
     runs-on: ${{ vars.EAL_RUNNER_LABEL || 'ubuntu-24.04' }}
     timeout-minutes: 240
     env:
-      EXPERIMENT_MODE: ${{ inputs.mode || 'smoke' }}
+      EXPERIMENT_MODE: ${{ inputs.mode || 'pilot' }}
       EXPERIMENT_IMAGE: eal-api-experiment:${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4

@@ -1,28 +1,28 @@
-"""Experiment controls: real loopback HTTP/MCP, with mocked paid provider calls."""
-
+"""Paid adapter contracts with real HTTP/MCP and mocked provider responses."""
 from __future__ import annotations
 
 import asyncio
 import json
-from pathlib import Path
 
 import httpx
 import pytest
 
-from eal.formatter import semantic_ir
-from eal.parser import parse
 from eal.responses_provider import ResponsesProvider
-
-from experiments.api_load_test.analysis import decision_interval, paired_interval, summarise
-from experiments.api_load_test.api import serve
-from experiments.api_load_test.materials import ARMS, PROFILES, prompt_for, source_for
-from experiments.api_load_test.oracle import grade, reference
-from experiments.api_load_test.routes import TrialTools, child_environment
+from experiments.api_load_test.analysis import summarise
+from experiments.api_load_test.cases import build_cases, case_specs
+from experiments.api_load_test.materials import ARMS
+from experiments.api_load_test.oracle import reference
+from experiments.api_load_test.routes import child_environment
 from experiments.api_load_test.runner import Budget, HERE, event, run, schedule, trial
-
 
 PLAN = json.loads((HERE / "plan.json").read_text())
 SPEC = json.loads((HERE / "models.json").read_text())["models"][0]
+
+
+@pytest.fixture(scope="module")
+def measured_case(tmp_path_factory):
+    selected = next(item for item in case_specs("pilot") if item["family"] == "errors")
+    return build_cases(tmp_path_factory.mktemp("measured-cases") / "cases", [selected], PLAN["seed"])[0]
 
 
 def test_live_progress_shows_usage_without_printing_response_content(tmp_path, capsys):
@@ -38,75 +38,16 @@ def test_live_progress_shows_usage_without_printing_response_content(tmp_path, c
     assert "private-response-body" not in line and "hidden" not in line
 
 
-def arguments(api, run_id="unit-test", count=100):
-    workload = {"service": "orders-api", "build_id": api["build_id"], "run_id": run_id,
-                "concurrent_clients": 10, "request_count": count, "timeout_seconds": 3}
-    context = {key: workload[key] for key in ("service", "build_id", "run_id")}
-    context["dataset"] = "measured_controlled_api"
-    return workload, context
-
-
-def test_json_represents_the_exact_eal_argument_without_executing_it():
-    workload, context = arguments({"build_id": "abc"})
-    source = source_for(workload, context)
-    prompt = prompt_for("json_prompt", source, workload)
-    assert json.loads(prompt.split("\n\n", 1)[1]) == json.loads(json.dumps(semantic_ir(parse(source))))
-    assert len({prompt_for(arm, source, workload) for arm in ARMS}) == 5
-
-
-def test_every_assignment_is_preserved_and_arm_order_is_block_randomised():
-    assigned = schedule(SPEC["id"], 3, 42)
-    assert assigned == schedule(SPEC["id"], 3, 42)
-    assert len(assigned) == 60 == len({row["id"] for row in assigned})
+def test_every_assignment_is_preserved_and_case_order_is_randomised():
+    cases = case_specs("pilot")
+    assigned = schedule(SPEC["id"], cases, 42)
+    assert assigned == schedule(SPEC["id"], cases, 42)
+    assert len(assigned) == 200 == len({row["id"] for row in assigned})
+    assert len({row["case_id"] for row in assigned}) == 40
     for block in {row["block"] for row in assigned}:
         assert {row["arm"] for row in assigned if row["block"] == block} == set(ARMS)
-    assert assigned != schedule(SPEC["id"], 3, 43)
-
-
-@pytest.mark.parametrize("arm", ["json_prompt", "eal_mcp"])
-def test_real_http_routes_agree_with_independent_reference(tmp_path, arm, monkeypatch):
-    with serve(PROFILES["errors"], "unit-test") as api:
-        workload, context = arguments(api)
-        tools = TrialTools(tmp_path, source_for(workload, context),
-                           {"port": api["port"], "input": workload, "context": context})
-        if arm == "json_prompt":
-            async def forbidden():
-                raise AssertionError("JSON must never use MCP")
-            monkeypatch.setattr(tools, "_mcp", forbidden)
-        packet = asyncio.run(tools.execute(arm))
-        report = json.loads(tools.report_path.read_text())
-        truth = reference(report, workload, context, tools.assessed_at)
-        assert packet["metrics"] == truth["metrics"]
-        assert truth["status"] == "unsupported"
-        assert packet["metrics"]["error_rate_percent"] == 10
-        assert len(api["events"]) == 100
-        assert asyncio.run(tools.execute(arm)) == packet
-        assert len(api["events"]) == 100  # no favourable rerun
-        if arm == "json_prompt":
-            assert "status" not in packet and tools.host_status is None
-            assert all(row.get("route") != "mcp_stdio" for row in tools.trace)
-        else:
-            assert tools.host_status == "unsupported"
-            assert [row["tool"] for row in tools.trace if "tool" in row] == [
-                "eal_validate", "eal_collect", "eal_reason", "eal_explain"]
-
-
-def test_reference_thresholds_identity_and_freshness():
-    workload, context = arguments({"build_id": "abc"})
-    rows = [{"request_id": i, "elapsed_ms": 200, "status_code": 500 if i == 99 else 200,
-             "identity_matches": True} for i in range(100)]
-    report = {"input": workload, "context": context, "requests": rows, "observed_at": "2026-09-25T12:00:00Z"}
-    result = reference(report, workload, context, "2026-09-25T12:05:00Z")
-    assert result["status"] == "supported"
-    assert reference(report, workload, context, "2026-09-25T12:05:01Z")["status"] == "unsupported"
-    rows[0]["status_code"] = 0
-    assert reference(report, workload, context, report["observed_at"])["status"] == "unsupported"
-    rows[0]["status_code"] = 200
-    for row in rows[:6]:
-        row["elapsed_ms"] = 200.001
-    assert reference(report, workload, context, report["observed_at"])["checks"]["latency"] is False
-    report["input"] = {**workload, "build_id": "another-build"}
-    assert reference(report, workload, context, report["observed_at"])["checks"]["identity"] is False
+    assert assigned != schedule(SPEC["id"], cases, 43)
+    assert {row["id"] for row in assigned}.isdisjoint(row["id"] for row in schedule(SPEC["id"], cases, 42, "native"))
 
 
 def test_credentials_do_not_enter_collector_or_mcp_environments(monkeypatch):
@@ -116,42 +57,60 @@ def test_credentials_do_not_enter_collector_or_mcp_environments(monkeypatch):
 
 
 @pytest.mark.parametrize("arm", ["eal_mcp", "json_prompt", "plain_brief"])
-def test_native_provider_to_real_tool_to_scored_answer(tmp_path, monkeypatch, arm):
+@pytest.mark.parametrize("transport", ["text", "native"])
+def test_provider_to_real_tool_to_scored_answer(tmp_path, monkeypatch, arm, transport, measured_case):
     monkeypatch.setenv("OPENAI_API_TOKEN", "unit-test-secret")
     requests = []
+    truth = reference(measured_case)
+    report_id = truth["report_id"]
 
-    def response(request):
+    def respond(request):
         payload = json.loads(request.content)
         requests.append(payload)
         assert payload["store"] is False
-        assert "mcp" not in {tool["type"] for tool in payload["tools"]}
+        assert ("tools" in payload) == (transport == "native")
+        assert "text" not in payload  # text route needs no provider JSON mode
         if len(requests) == 1:
-            name = "assess_load_test" if arm == "eal_mcp" else "run_load_test"
-            arguments = {}
+            name = "assess_load_test" if arm == "eal_mcp" else "inspect_report"
+            arguments = {"report_id": report_id}
         else:
-            packet = json.loads(payload["input"][-1]["output"])
-            assert ("status" in packet) == (arm == "eal_mcp")
+            if transport == "native":
+                packet = json.loads(payload["input"][-1]["output"])
+            else:
+                packet = json.loads(payload["input"][-1]["content"].split("\n", 1)[1])
+            assert "error" not in packet
+            assert packet["report_id"] == report_id
             name = "finish"
-            arguments = {"status": "unsupported", "request_count": packet["metrics"]["request_count"],
-                         "p95_ms": packet["metrics"]["p95_ms"],
-                         "error_rate_percent": packet["metrics"]["error_rate_percent"],
-                         "explanation": "The measured run has too few requests."}
-        return httpx.Response(200, json={"id": f"response-{len(requests)}", "model": SPEC["id"], "status": "completed",
-            "output": [{"type": "function_call", "call_id": f"call-{len(requests)}", "name": name,
-                        "arguments": json.dumps(arguments)}],
+            arguments = {key: truth[key] for key in ("status", "report_id", "scope", "failed_checks", "metrics")}
+            arguments["explanation"] = "The selected run has measured errors beyond the inclusive limit."
+        if transport == "native":
+            output = [{"type": "function_call", "call_id": f"call-{len(requests)}", "name": name,
+                       "arguments": json.dumps(arguments)}]
+        else:
+            output = [{"type": "message", "role": "assistant", "status": "completed", "content": [
+                {"type": "output_text", "text": json.dumps({"operation": name, **arguments})}]}]
+        # Exercise continuation replay for reasoning-capable text models too.
+        output.insert(0, {"type": "reasoning", "id": f"reasoning-{len(requests)}",
+                          "encrypted_content": "opaque-test-content", "summary": []})
+        if len(requests) > 1:
+            assert any(item.get("type") == "reasoning" for item in payload["input"])
+        return httpx.Response(200, json={"id": f"response-{len(requests)}", "model": SPEC["id"],
+            "status": "completed", "output": output,
             "usage": {"input_tokens": 300, "output_tokens": 60, "input_tokens_details": {"cached_tokens": 0}}})
 
     provider = ResponsesProvider(model=SPEC["id"], api_key_env="OPENAI_API_TOKEN",
-                                 capabilities={"native_tools": True}, pricing=SPEC["pricing"],
-                                 transport=httpx.MockTransport(response))
-    plan = {**PLAN, "minimum_call_interval_seconds": 0}
-    assignment = {"id": "unit-trial", "model": SPEC["id"], "repeat": 0,
-                  "profile": "short_run", "block": "0:short_run", "arm": arm}
-    result = asyncio.run(trial(assignment, SPEC, plan, tmp_path, provider, Budget(5)))
-    assert result["state"] == "complete"
-    assert result["outcome"]["correct"] is True
+                                 capabilities={"native_tools": transport == "native"}, pricing=SPEC["pricing"],
+                                 transport=httpx.MockTransport(respond))
+    plan = {**PLAN, "minimum_call_interval_seconds": 0, "transport": transport}
+    assignment = {"id": "unit-trial", "model": SPEC["id"], "repeat": 0, "transport": transport,
+                  "case_id": measured_case["id"], "case_family": measured_case["family"],
+                  "block": measured_case["id"], "arm": arm}
+    result = asyncio.run(trial(assignment, SPEC, plan, tmp_path, provider, Budget(5), measured_case))
+    assert result["state"] == "complete", result
+    assert result["outcome"]["correct"] is True, result
     assert len(result["model_calls"]) == 2
     assert "unit-test-secret" not in (tmp_path / "trial.json").read_text()
+    assert not provider._replay_items
 
 
 def test_missing_key_keeps_all_assignments_and_has_no_fake_results(tmp_path, monkeypatch):
@@ -164,32 +123,17 @@ def test_missing_key_keeps_all_assignments_and_has_no_fake_results(tmp_path, mon
     assert all(cell["completed"] == cell["correct"] == cell["model_calls"] == 0 for cell in summary["cells"])
 
 
-def test_no_collection_or_numeric_fabrication_cannot_pass():
-    truth = {"status": "supported", "metrics": {"request_count": 100, "p95_ms": 50, "error_rate_percent": 0}}
-    answer = {"status": "supported", **truth["metrics"]}
-    assert grade(answer, truth, collected=False)["correct"] is False
-    assert grade({**answer, "p95_ms": 0}, truth, collected=True)["correct"] is False
-    assert grade(answer, truth, collected=True)["correct"] is True
-
-
-def test_budget_and_small_sample_analysis_do_not_claim_success():
-    budget = Budget(0.000001)
+def test_budget_cannot_spend_past_allowance():
     with pytest.raises(ValueError, match="allowance"):
-        budget.reserve([], [], 4096, SPEC["pricing"])
-    assert paired_interval([{"profile": key, "difference": 1} for key in PROFILES],
-                           alpha=0.05, seed=1, draws=100) is None
+        Budget(0.000001).reserve([], [], 4096, SPEC["pricing"])
 
 
-def test_decision_bound_preserves_uncertainty_at_ceiling():
-    pairs = [{"profile": name, "difference": 0} for name in PROFILES for _ in range(10)]
-    bound = decision_interval(pairs, alpha=0.05 / 8)
-    assert bound[0] < -0.53 and bound[1] > 0.53
-    assert decision_interval(pairs[:4], alpha=0.05) is None
-
-
-def test_provider_failure_retains_unattempted_assignments(tmp_path, monkeypatch):
+def test_provider_failure_retains_unattempted_assignments(tmp_path, monkeypatch, measured_case):
     from eal.providers import ProviderError
+    import experiments.api_load_test.runner as runner
     monkeypatch.setenv("OPENAI_API_TOKEN", "unit-test-secret")
+    monkeypatch.setattr(runner, "case_specs", lambda mode: [measured_case])
+    monkeypatch.setattr(runner, "build_cases", lambda *_: [measured_case])
 
     class FailingProvider:
         async def complete_request(self, *args, **kwargs):
@@ -202,8 +146,37 @@ def test_provider_failure_retains_unattempted_assignments(tmp_path, monkeypatch)
     assert asyncio.run(run(output, [SPEC], PLAN, mode="smoke",
                            provider_factory=lambda *_: FailingProvider())) is False
     records = [json.loads(path.read_text()) for path in output.glob("trials/*/trial.json")]
-    assert len(records) == 20
+    assert len(records) == 5
     assert sum(row["state"] == "failed" for row in records) == 1
-    assert sum(row["state"] == "not_attempted" for row in records) == 19
+    assert sum(row["state"] == "not_attempted" for row in records) == 4
     assert all(not row["outcome"]["correct"] for row in records)
     assert summarise(output)["complete"] is False
+
+
+def test_provider_setup_failure_does_not_cancel_other_model_ledger(tmp_path, monkeypatch, measured_case):
+    import experiments.api_load_test.runner as runner
+    from eal.providers import ProviderError
+    monkeypatch.setenv("OPENAI_API_TOKEN", "unit-test-secret")
+    monkeypatch.setattr(runner, "case_specs", lambda mode: [measured_case])
+    monkeypatch.setattr(runner, "build_cases", lambda *_: [measured_case])
+    second = {**SPEC, "id": "second-pinned-test-model"}
+
+    class Outage:
+        async def complete_request(self, *args, **kwargs):
+            raise ProviderError("Test provider outage")
+
+        def discard_replay_handles(self, handles):
+            pass
+
+    def factory(spec, plan):
+        if spec["id"] == SPEC["id"]:
+            raise ValueError("Test setup failure")
+        return Outage()
+
+    output = tmp_path / "setup-failure"
+    assert asyncio.run(run(output, [SPEC, second], PLAN, mode="smoke", provider_factory=factory)) is False
+    records = [json.loads(path.read_text()) for path in output.glob("trials/*/trial.json")]
+    assert len(records) == 10
+    assert {row["model"] for row in records if row["state"] == "failed"} == {SPEC["id"], second["id"]}
+    assert sum(row["state"] == "not_attempted" for row in records) == 8
+    assert json.loads((output / "completion.json").read_text())["trials"] == 10

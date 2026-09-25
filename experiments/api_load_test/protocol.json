@@ -1,59 +1,70 @@
 {
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-API-001",
-  "title": "Evidence-grounded API load-test decisions across prompt and tool systems",
-  "version": "1.0.0",
+  "title": "Development pilot of evidence-grounded API decisions across six model tiers",
+  "version": "2.0.0",
   "status": "specified",
-  "question": "For the four pinned models and controlled workloads, does EAL/2 with MCP increase correct measured-run decisions over JSON prompts and ordinary developer prompts?",
+  "question": "Does a richer fixed suite expose interpretable paired decision errors, and where do EAL/2 plus MCP and four developer-prompt comparators differ for each pinned model?",
   "primary_claim_id": "CLM-001",
   "scope": {
-    "system_or_population": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference.",
-    "conditions": "Docker on one runner; fixed token, call and cost limits; live Responses API calls; fresh loopback HTTP measurements.",
+    "system_or_population": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only.",
+    "conditions": "Docker on one runner; real loopback HTTP evidence acquired once per case and frozen for every arm and model; live Responses API conversations; common text-mediated operation transport by default.",
     "spatial_scope": "One container and its loopback network.",
-    "temporal_scope": "Each invocation and its recorded model snapshots; no timeless generalisation.",
+    "temporal_scope": "Each recorded invocation and model snapshot. Claims about freshness refer to the frozen case assessment time, not the later replay wall clock.",
     "exclusions": [
       "Source authoring skill",
       "Notation-only effects",
       "Production capacity",
-      "Unknown model parameter counts"
+      "Unknown model parameter counts",
+      "Population efficacy or equivalence inference from development cases",
+      "A model being intrinsically unable to call tools merely because native function calling is disabled",
+      "Private chain-of-thought quality"
     ],
     "knowledge_cut": "2026-09-25"
   },
   "claims": [
     {
       "id": "CLM-001",
-      "statement": "The combined EAL/MCP system improves measured-run decision accuracy by more than five percentage points for a specified model and comparator under this protocol.",
-      "claim_type": "difference",
+      "statement": "The revised development suite exposes interpretable paired decision discordances between the combined EAL/MCP system and at least one direct-tool comparator, permitting a bounded description of failure modes and informing a later held-out study.",
+      "claim_type": "measurement",
       "role": "primary",
-      "scope_limit": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference.",
-      "success_consequence": "Report only the individually supported model/comparator contrast.",
-      "failure_consequence": "Report inconclusive or disadvantage; do not claim a general EAL benefit."
+      "scope_limit": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only.",
+      "success_consequence": "Report finite-suite paired outcomes and use their discordance structure to design a new held-out investigation; do not declare superiority.",
+      "failure_consequence": "Report continued ceiling, concordance or invalid measurement; revise the task or instrument before an efficacy study."
     }
   ],
   "assumptions": [
     {
       "id": "ASM-001",
-      "statement": "Separate paired blocks are independent enough for the stated uncertainty bounds, with stable model behaviour during an invocation.",
-      "role": "analysis",
+      "statement": "A fresh model session receives only its assigned prompt, case catalogue and tool results; shared evidence is immutable and no outcome leaks between arms.",
+      "role": "operational",
       "status": "untested",
-      "test_or_justification": "Fresh sessions, randomised arm order, recorded timestamps and snapshot identities; temporal drift remains a limitation.",
-      "failure_consequence": "Retain descriptive results only."
+      "test_or_justification": "Freeze assignments and evidence digests before paid calls; verify bundle hashes and keep separate transcripts. Record temporal ordering and provider identities.",
+      "failure_consequence": "Suspend affected comparisons and retain all assignments as an invalid or incomplete invocation."
     },
     {
       "id": "ASM-002",
-      "statement": "The independent reference and collector correctly implement the finite measurement criteria.",
+      "statement": "The independent reference correctly distinguishes unavailable evidence from an adequately measured failed criterion, and grades finite scope, evidence selection, metrics and failed checks.",
       "role": "measurement",
       "status": "tested",
-      "test_or_justification": "Real HTTP/MCP controls plus inclusive-boundary, identity, freshness and fabrication tests.",
-      "failure_consequence": "Suspend affected outcome interpretation; fix and version materials before a new invocation."
+      "test_or_justification": "Real HTTP/MCP controls; independent calculations from raw request rows; boundary, stale, identity, incomplete and malformed-evidence tests.",
+      "failure_consequence": "Suspend affected scores; version the correction and use a new invocation without replacing earlier outcomes."
+    },
+    {
+      "id": "ASM-003",
+      "statement": "Purposive development cases cover useful engineering failure mechanisms but are not independent draws from a declared population of engineering tasks.",
+      "role": "sampling",
+      "status": "supported",
+      "test_or_justification": "The case catalogue intentionally includes selected positive controls, performance failures, provenance failures and distractors.",
+      "failure_consequence": "No population confidence interval or efficacy decision is permitted under this protocol."
     }
   ],
   "hypotheses": [
     {
       "id": "H-001",
-      "label": "Executable assessment advantage",
+      "label": "Discriminating evidence-handling cases",
       "kind": "substantive",
-      "statement": "Checked scope, evidence and criteria reduce erroneous decisions enough to exceed five percentage points for at least one prespecified contrast.",
+      "statement": "After richer evidence selection and scope checks are introduced, at least one valid model/comparator cell contains a paired discordance attributable to a scored decision or evidence-handling error.",
       "claim_ids": [
         "CLM-001"
       ],
@@ -61,13 +72,13 @@
         "ASM-001",
         "ASM-002"
       ],
-      "scope": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference."
+      "scope": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only."
     },
     {
       "id": "H-002",
-      "label": "Easy-task ceiling or added complexity",
+      "label": "Continued ceiling or complete concordance",
       "kind": "rival",
-      "statement": "Direct measurements already suffice, or EAL complexity offsets its checks, so no prespecified contrast exceeds five percentage points.",
+      "statement": "All completed valid paired cases remain concordant across every model/comparator cell, leaving no observed comparative error pattern for planning an efficacy study.",
       "claim_ids": [
         "CLM-001"
       ],
@@ -75,20 +86,20 @@
         "ASM-001",
         "ASM-002"
       ],
-      "scope": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference."
+      "scope": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only."
     },
     {
-      "id": "H-003",
-      "label": "Per-contrast null",
-      "kind": "statistical-null",
-      "statement": "EAL accuracy minus comparator accuracy is at most 0.05.",
+      "id": "H-004",
+      "label": "Apparatus failure explains apparent discrimination",
+      "kind": "rival",
+      "statement": "Apparent paired differences arise only from invalid measurements, failed model calls, malformed operation transport or incomplete assignments rather than interpretable task decisions.",
       "claim_ids": [
         "CLM-001"
       ],
       "auxiliary_assumption_ids": [
-        "ASM-001"
+        "ASM-002"
       ],
-      "scope": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference."
+      "scope": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only."
     }
   ],
   "predictions": [
@@ -106,39 +117,67 @@
       "measurement_ids": [
         "M-001"
       ],
-      "expected_pattern": "At least one prespecified model/comparator difference has a multiplicity-adjusted lower bound above 0.05.",
-      "direction": "increase",
-      "magnitude_or_range": "Difference greater than 0.05 on the binary accuracy scale.",
-      "time_window": "Complete study invocation.",
-      "tolerance": "Metrics within 0.01 units and exact count; uncertainty from bounded paired differences.",
+      "expected_pattern": "At least one valid completed pair has exactly one fully correct arm, with component scores identifying the error; paired discordance counts are nonzero.",
+      "direction": "difference",
+      "magnitude_or_range": "One or more interpretable discordant case pairs; no minimum efficacy effect or statistical rejection threshold.",
+      "time_window": "One fixed development-pilot invocation.",
+      "tolerance": "Exact count, status, selected evidence, scope and failed-check set; reported p95 and error percentage within 0.01 units where evidence is adequate.",
       "auxiliary_assumption_ids": [
         "ASM-001",
         "ASM-002"
       ],
       "discriminates_from_hypothesis_ids": [
-        "H-002"
+        "H-002",
+        "H-004"
       ],
       "shared_prediction": false
+    },
+    {
+      "id": "P-002",
+      "hypothesis_ids": [
+        "H-001",
+        "H-002"
+      ],
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "estimand_ids": [
+        "EST-001"
+      ],
+      "measurement_ids": [
+        "M-001"
+      ],
+      "expected_pattern": "Both routes pass mechanical positive and negative controls before live model calls.",
+      "direction": "agreement",
+      "magnitude_or_range": "All required controls pass; control success alone cannot establish comparative model benefit.",
+      "time_window": "Before the first paid call.",
+      "tolerance": "Exact reference agreement.",
+      "auxiliary_assumption_ids": [
+        "ASM-002"
+      ],
+      "discriminates_from_hypothesis_ids": [],
+      "shared_prediction": true
     }
   ],
   "constructs": [
     {
       "id": "CON-001",
-      "name": "Evidence-grounded measured-run accuracy",
-      "definition": "The model collects its assigned run and reports the independently correct status and numeric measurements.",
+      "name": "Evidence-grounded finite-run decision",
+      "definition": "The model inspects candidate reports, selects adequate evidence or correctly reports its absence, and gives the correct finite-run status, scope, metrics and failed conditions.",
       "role": "outcome",
-      "scope": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference.",
+      "scope": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only.",
       "proxy_for_claim_ids": [
         "CLM-001"
       ],
       "validity_evidence": [
-        "Independent raw-row reference",
-        "Positive and negative real HTTP controls"
+        "Independent reference over raw request rows and case provenance",
+        "Real HTTP/MCP controls and separate scored decision components"
       ],
       "validity_threats": [
-        "No evaluation of source authoring",
-        "A simple task may produce ceiling accuracy",
-        "Narrative explanation quality is retained but not automatically graded"
+        "No assessment of argument source authoring",
+        "Purposive adversarial cases may favour executable checking",
+        "The host checker is part of the treatment",
+        "Narrative quality and private model reasoning are not graded"
       ]
     }
   ],
@@ -148,68 +187,72 @@
       "construct_ids": [
         "CON-001"
       ],
-      "observable": "Binary correctness; false support; raw request durations/statuses/identities; model calls, tokens, known cost and latency.",
-      "instrument_or_procedure": "perf_counter_ns HTTP client; collector.py; independent oracle.py; native Responses API usage.",
+      "observable": "Binary full correctness and its status, metric, evidence-selection, finite-scope and failed-check components; false support, false rejection, correct unavailability, unsupported assertions without collection; calls, tokens, known costs and latency.",
+      "instrument_or_procedure": "Real perf_counter_ns HTTP acquisition; immutable evidence bundles; collector and independent raw-row reference; actual Responses API usage.",
       "scale_or_units": "Binary correctness; milliseconds; error percentage; count; USD estimates.",
-      "timing": "One collection per assigned trial; assessment immediately after collection; final answer within four model calls.",
-      "preprocessing": "Nearest-rank p95 over every attempt; non-2xx and transport failures count as errors; no retries or outlier removal.",
-      "calibration": "Tests at inclusive 200 ms, 1 percent and 100-request boundaries; eight real HTTP route controls before paid calls.",
-      "reliability": "Request timings vary by host; reference uses the actual report for that trial, not the intended profile label.",
-      "validity": "Finite criteria for the identified measured run only; structured/1 preserves authored rationale and checks declared dependencies.",
-      "measurement_invariance": "Identical collector, thresholds and grader across arms/models; EAL additionally receives host assessment.",
-      "reactivity": "The load test consumes runner CPU and sockets; sequential trials and shuffled arm order limit order bias.",
-      "error_model": "Timing variability is measured; failed collections and malformed or absent answers score zero, separately labelled.",
-      "blinding": "Deterministic grader sees raw records and answer, not model class or arm; investigators are unblinded."
+      "timing": "Acquire and freeze each case before paid calls. Assess freshness at its recorded reference time. Fresh model conversations select and inspect evidence within fixed call limits.",
+      "preprocessing": "Nearest-rank sample p95 over every attempted request; non-2xx and transport errors count as errors. Preserve raw durations. Provenance, stale, truncation and misleading-summary perturbations are explicit fault injections with retained originals.",
+      "calibration": "Real HTTP and MCP route controls plus inclusive 200 ms, 1 percent and 100-request boundaries and evidence-validity controls; no simulated provider response counts as experimental evidence.",
+      "reliability": "All arms and models use the same immutable case report bundle; reference grades actual raw timings, never the intended latency-profile label.",
+      "validity": "Supported means adequate evidence meets every finite criterion. Unsupported means adequate evidence demonstrates at least one performance or sample-size criterion failure. Unavailable means provenance, freshness, completeness, integrity or consistency prevents that assessment.",
+      "measurement_invariance": "Same case bundles, selection surface, final schema and independent grader for every model and arm; only EAL receives executable host assessment through MCP.",
+      "reactivity": "HTTP acquisition consumes local resources before model trials; replay prevents arm-dependent timing noise.",
+      "error_model": "Collector and oracle implementation error remain possible. Missing/malformed replies, failed calls and unattempted assignments score zero in the planned denominator and are separately counted.",
+      "blinding": "Arm-independent deterministic grader uses frozen case evidence and answer fields; investigators and model prompts are unblinded."
     }
   ],
   "design": {
     "design_type": "controlled-experiment",
-    "rationale": "Paired workload blocks compare the combined systems under equal measurement access.",
+    "rationale": "A development comparison of complete prompt/tool systems, paired on identical evidence, diagnoses task ceiling, evidence-selection failures and operation-transport feasibility.",
     "setting": "Controlled local HTTP service in Docker, with live remote model inference.",
-    "temporal_structure": "Fresh sequential trials grouped by model, repeat and profile.",
-    "assignment_method": "Freeze seeded shuffled profile blocks and arm order before first paid call.",
-    "allocation_concealment": "Models receive only their current prompt and tool results, without profile names or other arms.",
+    "temporal_structure": "Acquire case evidence once; freeze it and the assignment ledger before paid calls. Up to six concurrent model workers each follow a seeded case and arm order with fresh sessions.",
+    "assignment_method": "Freeze seeded case and arm orders before the first paid call; concurrent model workers avoid a single model-major wall-clock sequence. No response-dependent assignment or favourable rerun.",
+    "allocation_concealment": "Models see their current prompt and candidate report catalogue without case family labels, oracle results or other model answers.",
     "masking": "Automated arm-independent reference; operators unblinded.",
-    "comparator": "Meaning-equivalent JSON prompt plus three ordinary developer prompts, each with direct collector and no MCP/checker.",
+    "comparator": "Equivalent JSON semantic representation plus three ordinary developer prompts, using direct evidence tools without MCP or EAL evaluation.",
     "control_ids": [
       "CTRL-001",
-      "CTRL-002"
+      "CTRL-002",
+      "CTRL-003"
     ]
   },
   "units": {
-    "target_population_or_system": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference.",
-    "sampling_frame": "Four selected model snapshots crossed with four selected profiles.",
-    "experimental_unit": "One fresh model session and actual HTTP run.",
-    "observational_unit": "One final model decision; HTTP requests are nested measurements, not independent model trials.",
-    "assignment_unit": "Prompt/tool arm within model-repeat-profile block.",
-    "analysis_unit": "Paired accuracy difference within block; report models separately.",
+    "target_population_or_system": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only.",
+    "sampling_frame": "Forty purposefully reviewed development cases from one API task, crossed with six selected model snapshots and five arms.",
+    "experimental_unit": "One fresh model conversation assigned to one arm and one immutable case bundle.",
+    "observational_unit": "One final decision; HTTP requests, tool operations and model calls are nested measurements.",
+    "assignment_unit": "Prompt/tool arm within model, transport and case block.",
+    "analysis_unit": "Matched case pair for a fixed model, transport and comparator; never pool model tiers or native/text transports.",
     "inclusion_criteria": [
       "Every assignment frozen in manifest"
     ],
     "exclusion_criteria": [
       "No post-assignment exclusions"
     ],
-    "recruitment_or_selection": "Purposive snapshot and profile selection, not random population sampling."
+    "recruitment_or_selection": "Purposive case-family and snapshot selection, with development data reserved for diagnosis and planning rather than confirmation."
   },
   "interventions_or_exposures": [
     {
       "id": "INT-001",
       "kind": "intervention",
-      "description": "Five frozen prompt/tool arms in materials.py.",
-      "target": "Acquisition and correct interpretation of run-specific evidence.",
-      "implementation": "Native tool bridge to actual stdio MCP for EAL; direct subprocess collector for JSON/plain text.",
-      "dose_or_intensity": "Maximum four calls, 4096 output tokens per call, one load test; frozen model-specific reasoning settings.",
-      "timing": "Randomised arm order within each block.",
+      "description": "Five frozen prompt/tool arms: EAL/MCP, equivalent JSON, brief prose, explicit prose and review prose.",
+      "target": "Candidate evidence selection and correct bounded interpretation of its provenance and measured criteria.",
+      "implementation": "Default text-mediated operations: the model emits a validated operation request, the host executes it, then returns the result. EAL requests invoke the real stdio MCP server; JSON/prose requests invoke only direct collector tools. Native function calling is an optional separately labelled transport diagnostic.",
+      "dose_or_intensity": "At most six model calls per trial, 4096 output tokens per call, 120 seconds per request, one-second minimum call spacing and six concurrent model workers; USD20/model pilot or USD5/model smoke admission allowance. Same operational limits across arms and fixed model-specific reasoning settings.",
+      "timing": "All evidence is acquired before model calls; arm order is seeded within each case block.",
       "admissibility": "admissible",
       "manipulation_checks": [
-        "Retain prompt, tool catalogue and actual MCP trace",
-        "Verify JSON semantic IR equivalence"
+        "Retain every prompt, operation schema, report selection and tool trace",
+        "Verify JSON semantic equivalence with the reviewed EAL source for the same selected report",
+        "Native-disabled text transport must omit native tools from the provider request"
       ],
       "off_target_checks": [
-        "Record tokens and latency because prompt size and checker access differ"
+        "Record tokens, calls, latency and component errors because prompt length and checking authority differ",
+        "Separate native/text diagnostic results; do not call a capable model inherently non-tooling"
       ],
       "recovery_checks": [
-        "New service and model session for each assignment"
+        "New provider conversation and isolated trial directory for every assignment",
+        "Read-only shared case bundles and verified digests"
       ]
     }
   ],
@@ -217,18 +260,26 @@
     {
       "id": "CTRL-001",
       "control_type": "positive",
-      "description": "Healthy service, 100 requests, low delays and no intentional failures.",
-      "failure_mode_addressed": "Nonfunctional HTTP collection or overly slow host.",
-      "implementation": "Both direct and MCP self-checks before paid runs.",
-      "diagnostic_consequence": "Do not start paid workflow if healthy control fails."
+      "description": "Adequate matching reports from real healthy HTTP workloads can support the finite claim.",
+      "failure_mode_addressed": "Nonfunctional measurement, blocked tool route or checker that always refuses support.",
+      "implementation": "Run direct and actual MCP route controls before paid calls; retain supported positive cases in the development suite.",
+      "diagnostic_consequence": "Do not start paid calls if a required mechanical positive control fails."
     },
     {
       "id": "CTRL-002",
       "control_type": "negative",
-      "description": "Slow service, 10-percent errors and 80-request short run.",
-      "failure_mode_addressed": "Always-support checker or incomplete measurement acceptance.",
-      "implementation": "Three profiles on both routes plus reference tests for stale and wrong-identity reports.",
-      "diagnostic_consequence": "Do not start paid workflow on control disagreement."
+      "description": "Adequate real reports with latency/error/sample-size failures must be unsupported; stale, mismatched, incomplete or corrupt evidence must be unavailable.",
+      "failure_mode_addressed": "Always-support behaviour, invalid evidence acceptance and conflation of absent evidence with a failed measured criterion.",
+      "implementation": "Real HTTP route controls and independent oracle tests, plus reviewed negative cases with explicit perturbation provenance.",
+      "diagnostic_consequence": "Stop before paid calls on mechanical disagreement; during model trials retain erroneous decisions as outcomes."
+    },
+    {
+      "id": "CTRL-003",
+      "control_type": "procedural",
+      "description": "Native function calling disabled while a model uses an allowlisted text operation envelope through the host.",
+      "failure_mode_addressed": "Assuming MCP requires provider-native function calling or allowing arbitrary model-generated commands.",
+      "implementation": "Validate operation names and JSON schemas; execute only configured host tools; exercise real MCP through the text route.",
+      "diagnostic_consequence": "A text adapter failure is an apparatus or transport result, not proof of model evidence-handling inability."
     }
   ],
   "confounds": [
@@ -242,11 +293,11 @@
     },
     {
       "id": "CF-002",
-      "description": "Runner or provider drift during sequential trials.",
-      "causal_or_measurement_path": "Time may alter latency, availability or model performance.",
-      "control_or_adjustment": "Seeded shuffled arms within paired blocks; actual report-specific scoring.",
-      "diagnostic": "Timestamps, real raw durations and provider errors retained.",
-      "residual_risk": "Correlated blocks invalidate inferential bounds; descriptive scope then applies."
+      "description": "Provider drift and case-family dependence remain despite pairing.",
+      "causal_or_measurement_path": "Time-dependent provider behaviour or repeated variants can create shared errors; a finite hand-selected suite is not a probability sample.",
+      "control_or_adjustment": "Interleave model assignments, seed arm order, share exact evidence and report per model, transport and family.",
+      "diagnostic": "Retain timing, bundle hashes, family outcomes and provider failures.",
+      "residual_risk": "Development-suite differences do not identify a population effect or class-wide ranking."
     }
   ],
   "estimands": [
@@ -256,67 +307,72 @@
         "CLM-001"
       ],
       "estimand_type": "descriptive",
-      "population_or_system": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference.",
+      "population_or_system": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only.",
       "intervention_or_exposure": "EAL/2 plus MCP and executable dependency checks.",
-      "comparator": "JSON prompt and plain_brief, separately for each model; other plain variants secondary.",
+      "comparator": "Each of JSON, plain_brief, plain_explicit and plain_review separately within one model snapshot and transport.",
       "outcome_measurement_ids": [
         "M-001"
       ],
       "time": "The invocation and its fixed snapshots.",
-      "summary_measure": "Mean within-block binary accuracy difference, equally weighted over four profiles.",
-      "interpretation": "Combined-system performance difference under assigned conditions."
+      "summary_measure": "Finite-suite assigned-trial accuracy difference: (EAL-only-correct minus comparator-only-correct) divided by all assigned paired cases; also report both-correct and both-incorrect counts.",
+      "interpretation": "Describes the realised combined-system contrast and error pattern for the fixed suite, not expected future accuracy or a notation effect."
     }
   ],
   "identification": {
     "target_estimand_ids": [
       "EST-001"
     ],
-    "status": "partially-identified",
-    "causal_and_measurement_structure": "Arm determines prompt and assessment access; workload and model define blocks; raw requests determine independent reference; answer determines score.",
+    "status": "identified",
+    "causal_and_measurement_structure": "Shared case evidence and target scope determine independent reference; assigned prompt/tool system plus model and transport produces a decision; component scores determine finite-suite outcome. No sampling bridge to a wider population is asserted.",
     "assumption_ids": [
       "ASM-001",
-      "ASM-002"
+      "ASM-002",
+      "ASM-003"
     ],
     "identified_parameters": [
-      "Assigned-run accuracy difference for these snapshots and profiles"
+      "Realised assigned-suite paired accuracy differences and component counts"
     ],
     "nonidentified_alternatives": [
-      "Notation-only effect",
-      "General model-class effect",
-      "Production readiness"
+      "Population efficacy",
+      "Notation-only benefit",
+      "General small/large or reasoning-class effects",
+      "Production readiness",
+      "Private reasoning quality"
     ],
     "threats": [
-      "Correlated provider or runner drift",
-      "Undetected common measurement bug"
+      "Measurement or grading defects",
+      "Outcome leakage across assignments",
+      "Provider outages and model drift"
     ],
     "diagnostics": [
-      "Independent oracle",
-      "Control routes",
-      "Retained assignment and call ledger"
+      "Independent oracle and real route controls",
+      "Immutable bundle and manifest hashes",
+      "Assigned, attempted, completed and failed counts retained separately"
     ],
     "rescue_actions": [
-      "Restrict to descriptive results if assumptions fail",
-      "Version corrected protocol and rerun as new evidence"
+      "Separate apparatus failures from completed-case error patterns",
+      "Suspend affected scores on invalid measurement",
+      "Freeze a new held-out protocol before broader inference"
     ]
   },
   "sampling": {
-    "method": "Fixed purposive factorial design with seeded within-block order.",
-    "sample_size_or_information_target": "Smoke: one repeat, 80 trials; study: ten repeats, 800 trials and 40 paired blocks per model.",
+    "method": "Fixed purposive development suite, with seeded model/case/arm ordering.",
+    "sample_size_or_information_target": "Pilot: 40 distinct reviewed case instances times six pinned models times five arms = 1200 assigned trials for one transport. Smoke: four selected cases times six models times five arms = 120 assigned feasibility trials.",
     "inputs": [
-      "Paired differences in [-1,1]",
-      "Eight primary contrasts",
-      "Family error bound 0.05",
-      "Practical difference 0.05"
+      "Prior four-profile pilot completed 80/80 correct trials and exposed a ceiling",
+      "Families healthy, near_limit, slow, errors, incomplete, wrong_identity, stale, corrupt, conflicting and distractor; four variants each.",
+      "Six model snapshots spanning nano, mini and full product tiers in two model families",
+      "Five prompt/tool arms; default common text transport"
     ],
-    "dependence_structure": "Pair five arms within each model-repeat-profile block; requests and model calls are not replication units.",
-    "multiplicity": "Bonferroni alpha 0.05/8 for primary contrasts even when a model subset is selected.",
-    "attrition_or_loss": "Retain all planned assignments; incomplete trials score zero and inference is disabled.",
-    "result": "At n=40 the primary Hoeffding half-width is about 0.537. This economical study can establish only large differences; it is not powered to distinguish a five-point effect.",
-    "sensitivity_analysis": "Report profile-stratified paired bootstrap as exploratory; it cannot trigger conclusions. About 4615 independent blocks would be needed for a 0.05 Hoeffding half-width at this alpha.",
-    "stopping_implications": "Fixed sample; provider failure, unknown usage, identity mismatch or cost admission failure stops that model and labels remaining assignments unattempted."
+    "dependence_structure": "Pair arms within model, transport and case; variants share case-family mechanisms and raw acquisition lineage. Calls and HTTP requests are not extra case replications.",
+    "multiplicity": "Twenty-four descriptive EAL/comparator contrasts for six models and four comparators; no hypothesis rejection, confidence declaration or multiplicity-adjusted efficacy decision.",
+    "attrition_or_loss": "Retain every assigned trial; failures and unattempted assignments contribute zero correctness in the planned denominator. Report completed-pair counts separately.",
+    "result": "Forty reviewed cases are an engineering development target, not a power calculation. No population interval, superiority or equivalence claim follows, regardless of observed magnitude.",
+    "sensitivity_analysis": "Report case-family and component outcomes, complete-pair counts and operational failures. Use observed discordance only to inform simulations for a separately frozen held-out design.",
+    "stopping_implications": "Fixed ledger; no effect-based stopping. Stop the affected model on provider or usage/identity uncertainty, or failed cost admission; preserve remaining assignments as unattempted."
   },
   "analysis": {
-    "preprocessing_lock": "Frozen materials.py and oracle.py hashed in manifest before paid calls.",
+    "preprocessing_lock": "Freeze case catalogue, raw evidence, explicit perturbations, target scopes, assessment times, prompt material, schemas, independent reference and model settings before paid calls.",
     "exclusion_lock": "No removal, favourable reruns or response repair after grading.",
     "models": [
       {
@@ -324,55 +380,72 @@
         "estimand_ids": [
           "EST-001"
         ],
-        "model_or_procedure": "Paired differences with bounded-difference Hoeffding intervals; exploratory stratified paired bootstrap.",
+        "model_or_procedure": "Descriptive paired 2x2 correctness counts and exact finite-suite difference, with scored failure components and operational counts.",
         "assumptions": [
-          "Independent blocks",
-          "Stable bounded conditions",
-          "Correct reference"
+          "No leaked answers between arms",
+          "Correct independent reference",
+          "Explicit planned denominator"
         ],
         "diagnostics": [
-          "Completion and control gates",
-          "Inspect timing and failure distributions"
+          "Control gates and bundle checks",
+          "Count paired completion separately from assignment",
+          "Inspect evidence selection, scope, failed-check and transport errors",
+          "Compare assigned and completed-pair 2x2 tables; completed-only cases may be selected by provider or transport failures and are diagnostic only."
         ],
         "outputs": [
+          "paired_cases",
+          "paired_blocks",
+          "paired_completed",
+          "both_correct",
+          "eal_only_correct",
+          "comparator_only_correct",
+          "both_incorrect",
           "accuracy_difference",
-          "interval",
           "interpretation",
-          "exploratory_bootstrap_interval"
+          "completed_pair_table"
         ]
       }
     ],
     "contrasts": [
-      "Primary: EAL minus JSON and plain_brief for each of four models",
-      "Secondary: EAL minus plain_explicit and plain_review"
+      "EAL minus JSON",
+      "EAL minus plain_brief",
+      "EAL minus plain_explicit",
+      "EAL minus plain_review",
+      "Each contrast reported separately for each model and transport; no pooled model-class estimate"
     ],
-    "uncertainty": "Hoeffding radius sqrt(2 log(2/alpha)/n); clip to [-1,1]; at least 20 blocks and five per profile. Bootstrap uses 10000 seeded resamples.",
-    "multiplicity": "Eight primary contrasts use 99.375-percent bounds; secondary 95-percent bounds are exploratory.",
-    "missing_data": "Zero in planned denominator; separately report incomplete/unattempted and unknown costs. No imputation of model responses.",
+    "uncertainty": "No population confidence intervals are reported for this purposively selected development suite. The observed finite-suite difference is exact for the recorded assignments; unobserved model stochasticity, future cases and provider drift remain unresolved.",
+    "multiplicity": "All four prespecified contrasts are reported for every selected model; no confirmatory family or efficacy test is performed.",
+    "missing_data": "Failed, absent, malformed and unattempted assignments score zero; separate attempted/completed counts and unknown costs expose the operational component. No imputed model answers. Retain a completed-pair 2x2 table to distinguish decision discordance from operational failure, with an explicit selection caveat; do not replace the assigned denominator with that subset.",
     "stopping_rule": "Fixed assigned sample and safety/cost stops; no effect-based stopping.",
     "robustness_checks": [
-      "Profile-specific raw outcomes retained",
-      "Exploratory bootstrap compared to conservative decision bounds"
+      "Report family-specific and component errors without selecting favourable subsets",
+      "Distinguish decision discordance among completed valid pairs from provider/transport failures",
+      "Keep optional transport diagnostics separate"
     ],
     "software_and_versions": [
       "requirements.lock",
       "Pinned model snapshots in models.json",
       "Docker image inspection and source SHA retained"
     ],
-    "inconclusive_handling": "Smoke, incomplete runs, assumption failures, small samples and intervals overlapping the practical region cannot establish benefit."
+    "inconclusive_handling": "Continued ceiling, complete concordance, missing assignments or invalid measurements cannot establish efficacy or equivalence. A new independent case distribution and simulation-calibrated analysis must precede a confirmatory evaluation."
   },
   "decision_matrix": [
     {
       "id": "DM-001",
       "prediction_ids": [
-        "P-001"
+        "P-001",
+        "P-002"
       ],
-      "observation_region": "Complete study and lower bound above 0.05",
+      "observation_region": "Controls valid; complete planned invocation; at least one interpretable completed-pair discordance.",
       "analysis_outputs": [
-        "MOD-001.interval",
-        "MOD-001.interpretation"
+        "MOD-001.paired_completed",
+        "MOD-001.eal_only_correct",
+        "MOD-001.comparator_only_correct",
+        "MOD-001.accuracy_difference",
+        "MOD-001.interpretation",
+        "MOD-001.completed_pair_table"
       ],
-      "decision_rule": "Bounded advantage for this contrast",
+      "decision_rule": "Report the finite-suite direction, paired 2x2 table and specific failed components; no efficacy decision.",
       "discrimination_result": "favours-hypothesis",
       "claim_effects": [
         {
@@ -380,55 +453,98 @@
             "CLM-001"
           ],
           "disposition": "strengthen",
-          "rationale": "Bounded advantage for this contrast",
-          "scope_limit": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference."
+          "rationale": "H-001 is supported as a development-suite discrimination claim; effect generalisation remains untested.",
+          "scope_limit": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only."
         }
       ],
       "hypothesis_effects": [
-        "H-001 strengthened for this contrast; H-002 weakened"
+        "H-001 is supported as a development-suite discrimination claim; effect generalisation remains untested."
       ],
-      "assumption_failure_response": "Any failed calibration, dependence or completeness assumption overrides inference to descriptive-only.",
-      "next_action": "Report all assignments; independently replicate before extending scope."
+      "assumption_failure_response": "Invalid measurement or leakage overrides all descriptive comparisons; provider and transport failures remain separately labelled.",
+      "next_action": "Use discordance ranges to simulate operating characteristics; freeze an independent held-out case distribution, effect margin and comparison family before confirmation."
     },
     {
       "id": "DM-002",
       "prediction_ids": [
-        "P-001"
+        "P-001",
+        "P-002"
       ],
-      "observation_region": "Complete study and upper bound below -0.05",
+      "observation_region": "Controls valid; complete planned invocation; every valid pair concordant.",
       "analysis_outputs": [
-        "MOD-001.interval",
-        "MOD-001.interpretation"
+        "MOD-001.paired_completed",
+        "MOD-001.eal_only_correct",
+        "MOD-001.comparator_only_correct",
+        "MOD-001.accuracy_difference",
+        "MOD-001.interpretation",
+        "MOD-001.completed_pair_table"
       ],
-      "decision_rule": "Bounded disadvantage for this contrast",
-      "discrimination_result": "contradicts-hypothesis",
+      "decision_rule": "Report ceiling if all correct, or shared failure patterns otherwise.",
+      "discrimination_result": "fails-to-discriminate",
       "claim_effects": [
         {
           "claim_ids": [
             "CLM-001"
           ],
           "disposition": "weaken",
-          "rationale": "Bounded disadvantage for this contrast",
-          "scope_limit": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference."
+          "rationale": "H-002 remains compatible; no observed paired error contrast distinguishes prompt/tool systems.",
+          "scope_limit": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only."
         }
       ],
       "hypothesis_effects": [
-        "H-001 weakened for this contrast"
+        "H-002 remains compatible; no observed paired error contrast distinguishes prompt/tool systems."
       ],
-      "assumption_failure_response": "Any failed calibration, dependence or completeness assumption overrides inference to descriptive-only.",
-      "next_action": "Report all assignments; independently replicate before extending scope."
+      "assumption_failure_response": "Invalid measurement or leakage overrides all descriptive comparisons; provider and transport failures remain separately labelled.",
+      "next_action": "Improve task discrimination or revise the target question; do not add repetitions and describe them as new case coverage."
     },
     {
       "id": "DM-003",
       "prediction_ids": [
-        "P-001"
+        "P-001",
+        "P-002"
       ],
-      "observation_region": "Other results, smoke, insufficient blocks or unexpected outcomes",
+      "observation_region": "Invalid raw evidence, oracle defect, control failure or answer leakage.",
       "analysis_outputs": [
-        "MOD-001.interval",
-        "MOD-001.interpretation"
+        "MOD-001.paired_completed",
+        "MOD-001.eal_only_correct",
+        "MOD-001.comparator_only_correct",
+        "MOD-001.accuracy_difference",
+        "MOD-001.interpretation",
+        "MOD-001.completed_pair_table"
       ],
-      "decision_rule": "Inconclusive or descriptive only",
+      "decision_rule": "Suspend affected score interpretation and retain evidence of the defect.",
+      "discrimination_result": "invalid-measurement",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "suspend",
+          "rationale": "H-004 or measurement failure prevents interpreting apparent decision differences.",
+          "scope_limit": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-004 or measurement failure prevents interpreting apparent decision differences."
+      ],
+      "assumption_failure_response": "Invalid measurement or leakage overrides all descriptive comparisons; provider and transport failures remain separately labelled.",
+      "next_action": "Repair and version the instrument; run a fresh invocation without replacing earlier results."
+    },
+    {
+      "id": "DM-004",
+      "prediction_ids": [
+        "P-001",
+        "P-002"
+      ],
+      "observation_region": "Incomplete invocation, provider/transport failures, exhausted allowance or any other unanticipated outcome, with no invalid-measurement override.",
+      "analysis_outputs": [
+        "MOD-001.paired_completed",
+        "MOD-001.eal_only_correct",
+        "MOD-001.comparator_only_correct",
+        "MOD-001.accuracy_difference",
+        "MOD-001.interpretation",
+        "MOD-001.completed_pair_table"
+      ],
+      "decision_rule": "Report assigned-denominator outcomes and all operational counts; make no completed-suite discrimination claim.",
       "discrimination_result": "inconclusive",
       "claim_effects": [
         {
@@ -436,15 +552,15 @@
             "CLM-001"
           ],
           "disposition": "no-change",
-          "rationale": "Inconclusive or descriptive only",
-          "scope_limit": "One controlled orders API, four workload profiles, five prompt/tool arms and four pinned OpenAI model snapshots; no production or model-class-wide inference."
+          "rationale": "Observed operational failure is retained; neither comparative efficacy nor complete-suite concordance is established.",
+          "scope_limit": "One orders API, 40 purposively reviewed development cases, five prompt/tool arms and six pinned OpenAI model snapshots; conclusions describe this finite suite and invocation only."
         }
       ],
       "hypothesis_effects": [
-        "Neither scientific hypothesis selected"
+        "Observed operational failure is retained; neither comparative efficacy nor complete-suite concordance is established."
       ],
-      "assumption_failure_response": "Any failed calibration, dependence or completeness assumption overrides inference to descriptive-only.",
-      "next_action": "Report all assignments; independently replicate before extending scope."
+      "assumption_failure_response": "Invalid measurement or leakage overrides all descriptive comparisons; provider and transport failures remain separately labelled.",
+      "next_action": "Diagnose the actual failure; any revised run receives a new manifest and retains the prior artefact."
     }
   ],
   "bias_assessment": {
@@ -452,15 +568,25 @@
       {
         "id": "BIAS-001",
         "risk_type": "selection",
-        "mechanism": "Hand-selected easy task may favour either system or produce a ceiling.",
-        "prevention": "Freeze task, prompts, snapshots and outcomes before paid calls.",
-        "detection": "Report all model/profile cells and controls.",
-        "sensitivity_or_correction": "No population inference; future tasks require a new protocol.",
-        "residual_risk": "Single-task external validity remains limited."
+        "mechanism": "Cases are deliberately made more discriminating after observing a ceiling in v1; this is development on observed outcomes.",
+        "prevention": "Label v2 as a development pilot, freeze each invocation and preserve v1 as feasibility evidence.",
+        "detection": "Report all case families, arms, models and component outcomes.",
+        "sensitivity_or_correction": "Do not perform efficacy inference on tuned cases; select independent held-out cases under a new frozen protocol.",
+        "residual_risk": "One selected API task and hand-picked failures limit external validity."
+      },
+      {
+        "id": "BIAS-002",
+        "risk_type": "measurement",
+        "mechanism": "EAL host assessment might leak into the reference or a common collector defect might favour the checked arm.",
+        "prevention": "Independent raw-row reference, identical frozen bundles and arm-independent final schema.",
+        "detection": "Real control agreement and component tests; retain source, traces and selected reports.",
+        "sensitivity_or_correction": "Suspend scores affected by a reference defect and rerun only as new versioned evidence.",
+        "residual_risk": "Executable checking remains part of the EAL treatment and cannot be separated from notation."
       }
     ],
     "researcher_degrees_of_freedom": [
-      "Version all amendments; no prompt tuning within an invocation"
+      "No within-invocation tuning, case replacement or favourable reruns",
+      "Record future case, prompt, threshold or model changes as versioned amendments"
     ],
     "negative_controls": [
       "CTRL-002"
@@ -478,9 +604,10 @@
     ],
     "residual_limitations": [
       "Combined-system contrast",
-      "Four purposive snapshots",
-      "Conservative low-precision study",
-      "Explanation prose is not independently assessed"
+      "Six purposively chosen snapshots, not disclosed parameter counts or entire model classes",
+      "Forty hand-selected development cases; no powered population inference",
+      "Text transport demonstrates host-mediated MCP access but does not identify an intrinsically non-tooling model",
+      "Narrative explanations and private reasoning are not independently scored"
     ]
   },
   "ethics_and_safety": {
@@ -492,10 +619,10 @@
       "Runner resource contention"
     ],
     "mitigations": [
-      "Token passed at container runtime only",
-      "No secret in collector/MCP subprocess environments",
-      "Loopback target and at most ten clients",
-      "Cost admission allowance and output/call caps"
+      "Runtime-only secret environment, excluded from child collector/MCP environments",
+      "Only allowlisted schema-validated operation requests; no arbitrary model-generated shell commands",
+      "Loopback API acquisition with at most 20 concurrent clients; cases acquired before paid model calls.",
+      "Frozen cost admission, call, timeout and output caps"
     ],
     "monitoring": [
       "Usage and unknown reserves retained",
@@ -514,9 +641,10 @@
   "feasibility": {
     "current_status": "partially-feasible",
     "apparatus_or_data": [
-      "Implemented HTTP API and collectors",
-      "Real stdio MCP server",
-      "Native Responses API adapter"
+      "Implemented real HTTP API and collector",
+      "Actual stdio MCP server and independent oracle",
+      "Responses adapter with native function calling or validated text operation transport",
+      "Prior Docker/live feasibility run retained separately"
     ],
     "access": "Repository OPENAI_API_TOKEN secret supplied by operator; exact snapshot access checked by actual calls.",
     "skills": [
@@ -525,8 +653,8 @@
       "Paired experimental analysis"
     ],
     "resources": [
-      "GitHub-hosted Ubuntu runner (or explicit custom runner override) with Docker, outbound package and OpenAI access",
-      "Smoke admission allowance USD20 total; study USD200 total; estimates are not billing guarantees"
+      "GitHub-hosted Ubuntu runner or explicit registered custom runner, with Docker and outbound package/OpenAI access",
+      "Pilot admission allowance USD120 total (USD20/model); smoke USD30 (USD5/model); these are local conservative limits, not billing guarantees or expected costs."
     ],
     "dependencies": [
       "models.json",
@@ -534,25 +662,26 @@
       "ANTLR jar verified by SHA256"
     ],
     "blockers": [
-      "Docker unavailable in the editing environment; image execution and live paid calls await GitHub runner"
+      "Revised 40-case pilot and newly added snapshot/transport combinations require actual Docker and live-call validation in their own retained invocation"
     ],
-    "fallback": "Retain actual failure or unattempted records; never substitute mock responses for empirical results."
+    "fallback": "Retain actual failed or unattempted assignments; never substitute mock provider responses for empirical outcomes."
   },
   "reproducibility": {
     "preregistration_status": "not-planned",
-    "registration": "Versioned protocol committed before workflow trials; no independent registry registration claimed.",
+    "registration": "Versioned development protocol committed before its workflow invocation; no independent preregistration or confirmatory status claimed.",
     "immutable_materials": [
-      "Git commit",
-      "Manifest hashes",
-      "Model snapshots",
-      "Frozen schedules"
+      "Source revision and Docker image inspection",
+      "Prompt, schema and independent-oracle hashes",
+      "Frozen raw case bundles, injection records and assessment times",
+      "Pinned model snapshots, reasoning settings and prices",
+      "Complete assignment ledger and seeded order"
     ],
-    "data_plan": "Upload per-trial raw measurements, source, prompts, traces, model response metadata, ledger and summaries; no credentials.",
+    "data_plan": "Retain shared raw measurements, case/provenance digests, explicit fault injections, prompts, EAL/JSON source, model responses, selected evidence, operation traces, component scores, failures and summaries; exclude secrets and private reasoning replay payloads.",
     "code_plan": "All implementation and tests committed in this PR.",
-    "randomisation_or_seed_plan": "Seed 20260925 with model-specific deterministic schedules.",
+    "randomisation_or_seed_plan": "Seed 20260925; seeded case/arm order within each concurrent model worker; entire assignment ledger frozen before paid calls.",
     "provenance_plan": "Retain source SHA, dependency versions, Docker image inspection, workflow ID and attempt, provider response IDs and usage.",
     "deviation_and_amendment_plan": "Increment protocol version for planned changes; keep previous invocation artefacts and label reruns.",
-    "replication_plan": "Run a fresh output directory and workflow invocation without overwriting earlier results; replication shares this task scope."
+    "replication_plan": "Use a fresh output directory and immutable manifest per invocation. Repeating development cases measures repeatability; it does not create independent task coverage. A held-out efficacy study requires a new separately frozen protocol."
   },
   "execution": {
     "protocol_version_used": null,
@@ -574,11 +703,38 @@
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
       "https://developers.openai.com/api/docs/models/gpt-4.1",
       "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
-      "https://developers.openai.com/api/docs/models/gpt-5.4"
+      "https://developers.openai.com/api/docs/models/gpt-5.4",
+      "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+      "https://developers.openai.com/api/docs/models/gpt-5.4-nano",
+      "https://developers.openai.com/api/docs/deprecations"
     ],
     "knowledge_cut": "2026-09-25",
     "change_log": [
-      "1.0.0: initial specified protocol; live model outcomes not yet observed."
+      "1.0.0: initial specified protocol; live model outcomes not yet observed.",
+      "2.0.0: richer fixed development cases, immutable matched evidence, explicit evidence-validity outcomes, six model tiers and common text-mediated tool operations; replace uninformative v1 decision bounds with descriptive paired tables. Historical v1 feasibility outcomes remain separate. Protocol schema remains 1.0; experiment manifest and raw report become version 2 contracts. EAL/2 syntax and structured/1 semantics are unchanged."
     ]
+  },
+  "prior_evidence": [
+    {
+      "protocol_version": "1.0.0",
+      "role": "feasibility-only; not a result of version 2.0.0",
+      "source_commit": "6fd9623a09d08da99333c3a5a74dedb47dec72eb",
+      "workflow_run_id": 36158948994,
+      "workflow_url": "https://github.com/emmett08/earl/actions/runs/36158948994",
+      "artifact_id": 10875053357,
+      "artifact_sha256": "2de6bbf2ccddb335d6622ffb8428594e5267f3da3756ec5f3f5d62c16bf7537e",
+      "assigned_trials": 80,
+      "completed_trials": 80,
+      "fully_correct_trials": 80,
+      "successful_model_calls": 160,
+      "estimated_standard_token_cost_usd": 0.34201775,
+      "interpretation": "Verified live feasibility and task ceiling across four profiles, four snapshots and five arms. No comparative accuracy advantage or equivalence established."
+    }
+  ],
+  "next_investigation_gate": {
+    "required_before_efficacy": "Freeze a new independently selected case distribution after development; do not reuse tuned cases as a confirmatory hold-out.",
+    "sample_planning": "Simulate paired-difference coverage and power across plausible discordance rates, case-family correlation, model stochasticity, provider drift and missingness; choose an interval/test whose operating characteristics match the declared sampling design.",
+    "decision_contract": "Declare practical effect margin, estimand, model/comparator family, multiplicity procedure and fixed or sequential stopping rule before observing held-out outcomes.",
+    "scope": "A snapshot-specific effect on the declared case population; model-class and notation-only claims need additional designs."
   }
 }

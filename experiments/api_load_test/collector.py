@@ -1,41 +1,106 @@
-"""Trusted command collector used by both experimental routes."""
-
+"""Inspect immutable measured evidence; shared by direct and MCP routes."""
 from __future__ import annotations
-
 import argparse
+from datetime import datetime
 import hashlib
 import json
-import sys
+import math
 from pathlib import Path
-
+import sys
 from eal.tool_acquisition import strict_json
+from .cases import canonical_bytes, digest
 
-from .api import measure
+
+def inspect(report: dict, target: dict, assessment_time: str) -> dict:
+    """Compute measurement facts, never a direct-arm acceptance verdict."""
+    rows = report.get("requests")
+    valid = (report.get("schema") == "eal-live-api-report/2" and isinstance(rows, list)
+             and isinstance(report.get("input"), dict) and isinstance(report.get("context"), dict))
+    if valid:
+        valid = all(isinstance(row, dict)
+                    and type(row.get("request_id")) is int and row["request_id"] >= 0
+                    and type(row.get("elapsed_ms")) in (int, float)
+                    and math.isfinite(row["elapsed_ms"]) and row["elapsed_ms"] >= 0
+                    and type(row.get("status_code")) is int and (row["status_code"] == 0 or 100 <= row["status_code"] <= 599)
+                    and type(row.get("identity_matches")) is bool for row in rows)
+    workload = target["input"]
+    ids = [row.get("request_id") for row in rows if isinstance(row, dict)] if isinstance(rows, list) else []
+    complete = (len(ids) == workload["request_count"] and all(type(value) is int for value in ids)
+                and sorted(ids) == list(range(workload["request_count"])))
+    identities = report.get("input") == workload and report.get("context") == target["context"]
+    if valid:
+        for row in rows:
+            response = row.get("response_identity")
+            if not isinstance(response, dict):
+                identities = False
+                continue
+            identities = identities and (
+                response.get("header_build_id") == workload["build_id"]
+                and response.get("header_run_id") == workload["run_id"]
+                and response.get("body_build_id") == workload["build_id"]
+                and response.get("body_run_id") == workload["run_id"]
+                and response.get("body_request_id") == row["request_id"]
+                and response.get("total_pence") == 748)
+    else:
+        identities = False
+    seen, consistent = {}, True
+    if isinstance(rows, list):
+        for row in rows:
+            if not isinstance(row, dict) or type(row.get("request_id")) is not int:
+                continue
+            key = row["request_id"]
+            if key in seen and seen[key] != row:
+                consistent = False
+            seen[key] = row
+    try:
+        assessed = datetime.fromisoformat(assessment_time.replace("Z", "+00:00"))
+        observed = datetime.fromisoformat(report["observed_at"].replace("Z", "+00:00"))
+        if assessed.utcoffset() is None or observed.utcoffset() is None:
+            raise ValueError("Timestamp requires timezone")
+        age = (assessed - observed).total_seconds()
+    except (ValueError, KeyError, TypeError, AttributeError):
+        age, valid = None, False
+    if valid:
+        count = len(rows)
+        ordered = sorted(row["elapsed_ms"] for row in rows)
+        failed = sum(not 200 <= row["status_code"] < 300 for row in rows)
+        metrics = {"request_count": count, "p95_ms": ordered[(95 * count + 99) // 100 - 1] if count else None,
+                   "error_rate_percent": failed * 100 / count if count else None}
+    else:
+        metrics = {"request_count": None, "p95_ms": None, "error_rate_percent": None}
+    return {"metrics": metrics, "facts": {"report_valid": bool(valid), "identity_matches": bool(identities) if valid else None,
+            "complete_records": bool(complete) if valid else None, "consistent_records": bool(consistent) if valid else None,
+            "age_seconds": age if valid else None}}
 
 
 def collect(request: dict, config: dict, report_path: Path) -> dict:
-    expected = {"tool": "api_load_test", "tool_version": "1", "mode": "nondeterministic",
-                "input": config["input"], "context": config["context"]}
+    case = config["case"]
+    report_id = request.get("input", {}).get("report_id")
+    if report_id not in case["reports"]:
+        raise ValueError("Choose a report_id from the provided catalogue")
+    expected = {"tool": "api_load_test", "tool_version": "2", "mode": "deterministic",
+                "input": {**case["target"]["input"], "report_id": report_id}, "context": case["target"]["context"]}
     if {key: request.get(key) for key in expected} != expected:
-        raise ValueError("Collection request differs from the host-selected workload")
+        raise ValueError("Collection request differs from the fixed target and selected report")
+    report = case["reports"][report_id]
+    if digest(report) != case["audit"]["report_sha256"][report_id]:
+        raise ValueError("Immutable report digest mismatch")
+    raw = canonical_bytes(report)
     if report_path.exists():
-        raise ValueError("A trial may collect only once; existing report is immutable")
-    report = measure(config)
-    raw = (json.dumps(report, sort_keys=True, allow_nan=False) + "\n").encode()
-    with report_path.open("xb") as stream:
-        stream.write(raw)
-    rows = report["requests"]
-    count = len(rows)
-    ordered = sorted(row["elapsed_ms"] for row in rows)
-    failed = sum(not 200 <= row["status_code"] < 300 for row in rows)
-    return {
-        "value": {"request_count": count, "p95_ms": ordered[(95 * count + 99) // 100 - 1],
-                  "failed_requests": failed, "error_rate_percent": failed * 100 / count,
-                  "identity_matches": all(row["identity_matches"] for row in rows)},
-        "observed_at": report["observed_at"], "context": report["context"], "request": expected,
-        "details": {"dataset": report["dataset"], "report_sha256": hashlib.sha256(raw).hexdigest(),
-                    "percentile": "nearest-rank over all attempted requests"},
-    }
+        if report_path.read_bytes() != raw:
+            raise ValueError("Existing selected-report artifact differs")
+    else:
+        with report_path.open("xb") as stream:
+            stream.write(raw)
+    measured = inspect(report, case["target"], case["assessment_time"])
+    return {"value": {**measured["metrics"], **measured["facts"]},
+            "observed_at": report["observed_at"], "context": expected["context"], "request": expected,
+            "details": {"dataset": report["dataset"], "report_id": report_id,
+                        "report_sha256": hashlib.sha256(raw).hexdigest(),
+                        "reported_input": report["input"], "reported_context": report["context"],
+                        "claimed_summary": report.get("claimed_summary"),
+                        "assessment_time": case["assessment_time"],
+                        "percentile": "nearest-rank over every recorded request"}}
 
 
 def main():
