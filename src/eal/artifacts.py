@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Awaitable, Callable
 
-from .evaluator import _predicate, canonical_digest
+from .evaluator import assess_environment, assess_evidence_record, canonical_digest
 from .parser import MAX_SOURCE_BYTES
 from .runtime import ReasoningService, bounded_path
 from .semantics import objection_scopes, parse_time
@@ -126,22 +126,19 @@ def _require_complete_collection(program, evidence_ids: set[str] | frozenset[str
         raise ValueError("Claim assessment unresolved: required evidence collection is incomplete")
     for evidence_id in sorted(evidence_ids):
         record = records[evidence_id]
-        if record.get("status") != "ok":
+        if not isinstance(record, dict) or record.get("status") != "ok":
             raise ValueError(f"Claim assessment unresolved: required evidence {evidence_id!r} "
                              "collection failed; see the retained collection record")
         if assessment is None:
             continue
-        result = assessment["evidence"][evidence_id]
-        if result["status"] == "available":
-            continue
         declaration = program.evidence[evidence_id]
-        predicates = [_predicate(item, record.get("value")) for item in declaration.predicates]
-        complete = bool(predicates) and result["reasons"] == [reason for _, reason in predicates]
-        for predicate, (_, reason) in zip(declaration.predicates, predicates):
-            prefix = f"Field {predicate.path!r} {predicate.operator} {predicate.expected!r} "
-            complete &= reason.startswith(prefix) and reason[len(prefix):].startswith(
-                ("holds (observed ", "does not hold (observed "))
-        if not complete:
+        in_scope = (assess_environment(program.environments[declaration.environment],
+                                       collection["context"])["status"] == "matched")
+        verdict = assess_evidence_record(
+            program, evidence_id, record, instant=parse_time(assessment["assessed_at"]),
+            context=collection["context"], environment_matched=in_scope)
+        if (assessment["evidence"].get(evidence_id) != verdict.entry
+                or not verdict.complete):
             raise ValueError(f"Claim assessment unresolved: required evidence {evidence_id!r} "
                              "failed its identity, scope, freshness or predicate contract")
 

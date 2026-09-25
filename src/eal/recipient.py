@@ -19,6 +19,7 @@ from jsonschema import Draft202012Validator
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
+from .model_attempts import summarise_usage
 from .providers import ModelResponse, ProviderError, TextProvider, response_cost
 from .runtime import strict_json
 
@@ -81,24 +82,6 @@ def _json(value: Any) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
 
 
-def _usage(attempts: list[dict], identity: dict) -> dict:
-    complete = all(a["input_tokens"] is not None and a["output_tokens"] is not None for a in attempts)
-    prices = all(a["model_cost_usd"] is not None for a in attempts)
-    input_tokens = sum(a["input_tokens"] or 0 for a in attempts)
-    output_tokens = sum(a["output_tokens"] or 0 for a in attempts)
-    known_cost = sum(a["model_cost_usd"] or 0 for a in attempts)
-    return {"input_tokens": input_tokens if complete else None,
-            "output_tokens": output_tokens if complete else None,
-            "total_tokens": input_tokens + output_tokens if complete else None,
-            "token_usage_complete": complete, "known_input_tokens": input_tokens,
-            "known_output_tokens": output_tokens,
-            "model_cost_usd": known_cost if prices else None,
-            "known_model_cost_usd": known_cost,
-            "model_cost_complete": prices,
-            "cost_basis": "configured_token_rates",
-            "tool_cost_usd": None, "total_cost_usd": None}
-
-
 def _request(text: str) -> dict:
     value = strict_json(text)
     if not isinstance(value, dict) or not isinstance(value.get("operation"), str):
@@ -146,7 +129,7 @@ async def run_reviewed_recipient(question: str, provider: TextProvider,
 
     def finish(reason: str) -> dict[str, Any]:
         report["stop_reason"] = reason
-        report["usage"] = _usage(report["attempts"], identity)
+        report["usage"] = summarise_usage(report["attempts"], include_tool_completeness=False)
         report["latency_seconds"] = time.monotonic() - started
         if "conversation" in report:
             report["conversation"] = [
@@ -251,7 +234,7 @@ async def run_reviewed_recipient(question: str, provider: TextProvider,
                     explained = False
                     model_reason = "model_turn_budget_exhausted"
                     for turn in range(budget.max_model_turns):
-                        usage = _usage(report["attempts"], identity)
+                        usage = summarise_usage(report["attempts"], include_tool_completeness=False)
                         if report["attempts"] and not usage["token_usage_complete"]:
                             model_reason = "token_usage_unavailable"
                             break
@@ -317,7 +300,7 @@ async def run_reviewed_recipient(question: str, provider: TextProvider,
                         if attempt["status"] != "received":
                             model_reason = attempt["status"]
                             break
-                        usage = _usage(report["attempts"], identity)
+                        usage = summarise_usage(report["attempts"], include_tool_completeness=False)
                         if usage["total_tokens"] is not None and usage["total_tokens"] > budget.max_total_tokens:
                             model_reason = "token_budget_exhausted"
                             break

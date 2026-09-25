@@ -24,6 +24,7 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 from .host import OPERATIONS, parse_request
+from .model_attempts import summarise_usage
 from .providers import ModelResponse, ProviderError, TextProvider, load_provider, response_cost
 from .runtime import strict_json
 
@@ -119,22 +120,7 @@ class _Run:
             raise _Stop("repair_budget_exhausted")
 
     def usage(self) -> dict:
-        attempts = self.report["attempts"]
-        known_input = sum(a["input_tokens"] or 0 for a in attempts)
-        known_output = sum(a["output_tokens"] or 0 for a in attempts)
-        complete = all(a["input_tokens"] is not None and a["output_tokens"] is not None for a in attempts)
-        cost_complete = all(a["model_cost_usd"] is not None for a in attempts)
-        known_cost = sum(a["model_cost_usd"] or 0 for a in attempts)
-        return {"input_tokens": known_input if complete else None,
-                "output_tokens": known_output if complete else None,
-                "total_tokens": known_input + known_output if complete else None,
-                "known_input_tokens": known_input, "known_output_tokens": known_output,
-                "token_usage_complete": complete,
-                "model_cost_usd": known_cost if cost_complete else None,
-                "known_model_cost_usd": known_cost, "model_cost_complete": cost_complete,
-                "cost_basis": "configured_token_rates",
-                "tool_cost_usd": None, "tool_cost_complete": False,
-                "total_cost_usd": None}
+        return summarise_usage(self.report["attempts"], include_tool_completeness=True)
 
     async def generate(self) -> str | None:
         usage = self.usage()

@@ -91,6 +91,14 @@ def test_real_subprocess_binds_question_and_final_status_despite_false_model_pro
     assert report["assessment"] == report["checked_answer"]
     assert report["usage"]["total_tokens"] == 72
     assert report["usage"]["model_cost_usd"] == 0.000084
+    assert report["usage"] == {
+        "input_tokens": 60, "output_tokens": 12, "total_tokens": 72,
+        "known_input_tokens": 60, "known_output_tokens": 12,
+        "token_usage_complete": True, "model_cost_usd": 0.000084,
+        "known_model_cost_usd": 0.000084, "model_cost_complete": True,
+        "cost_basis": "configured_token_rates", "tool_cost_usd": None,
+        "total_cost_usd": None,
+    }
     assert report["discovered_tools"] == sorted({
         "eal_bound_task", "eal_task_candidates", "eal_assess_bound_task",
         "eal_explain_bound_task", "eal_finish_bound_task"})
@@ -234,6 +242,14 @@ def test_provider_failure_retains_checked_status_and_unknown_usage(tmp_path):
     assert report["checked_answer"]["status"] == "supported"
     assert report["usage"]["total_tokens"] is None
     assert report["usage"]["model_cost_usd"] is None
+    assert report["usage"] == {
+        "input_tokens": None, "output_tokens": None, "total_tokens": None,
+        "known_input_tokens": 0, "known_output_tokens": 0,
+        "token_usage_complete": False, "model_cost_usd": None,
+        "known_model_cost_usd": 0, "model_cost_complete": False,
+        "cost_basis": "configured_token_rates", "tool_cost_usd": None,
+        "total_cost_usd": None,
+    }
 
 
 def test_shared_or_legacy_endpoint_is_rejected_before_assessment(tmp_path):

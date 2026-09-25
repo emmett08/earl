@@ -3,10 +3,12 @@
 import hashlib
 import json
 import sys
+from dataclasses import replace
 
 import pytest
 
 from eal.artifacts import ArtifactRegistry
+from eal import evaluator
 from eal.runtime import ReasoningService
 
 
@@ -94,6 +96,23 @@ def test_claim_collection_and_explanation_cover_premises_attacks_and_defences(tm
     assert explanation["objections"]["alternative_attack"]["status"] == "defeated"
     assert "irrelevant" not in json.dumps(explanation)
     assert "foreign" not in json.dumps(explanation)
+    assert registry.finish_claim("reviewed", packet["assessment_id"], "decision") == packet
+
+
+def test_false_adverse_monitor_remains_checkable_after_diagnostic_wording_changes(tmp_path, monkeypatch):
+    original = evaluator._check_predicate
+
+    def differently_worded(predicate, value):
+        checked = original(predicate, value)
+        return replace(checked, reason=f"Measured {predicate.path}: {checked.holds}")
+
+    monkeypatch.setattr(evaluator, "_check_predicate", differently_worded)
+    service, registry = setup_registry(tmp_path)
+    packet = registry.assess_claim("reviewed", "decision")
+    assert packet["status"] == "supported"
+    assessment = service.store.get(packet["assessment_id"], kind="assessment")
+    assert assessment["evidence"]["challenge_record"]["status"] == "unavailable"
+    assert assessment["evidence"]["challenge_record"]["reasons"] == ["Measured finding: False"]
     assert registry.finish_claim("reviewed", packet["assessment_id"], "decision") == packet
 
 

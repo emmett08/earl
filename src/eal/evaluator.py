@@ -6,7 +6,7 @@ language rationale is true, deductively valid, or sufficient for its conclusion.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import asdict
+from dataclasses import asdict, dataclass
 from datetime import datetime
 import hashlib
 import json
@@ -14,7 +14,7 @@ import math
 import operator
 from typing import Any
 
-from .model import Diagnostic, Predicate, Program
+from .model import Diagnostic, Environment, Predicate, Program
 from .modes import assess_mode
 from .semantics import parse_time, validate, objection_scopes
 from .propositions import prepare_binding, check_result
@@ -63,27 +63,116 @@ def _entry(status, reasons, **details):
     return {"status": status, "reasons": reasons, **details}
 
 
-def _predicate(predicate: Predicate, value) -> tuple[bool, str]:
+@dataclass(frozen=True)
+class _PredicateCheck:
+    holds: bool
+    comparable: bool
+    reason: str
+
+
+@dataclass(frozen=True)
+class EvidenceVerdict:
+    """Private structural decision alongside the unchanged public evidence entry.
+
+    ``complete`` means identity, scope, freshness, payload and every declared
+    predicate could be checked. A complete predicate may still evaluate false.
+    """
+
+    entry: dict[str, Any]
+    complete: bool
+
+
+def _check_predicate(predicate: Predicate, value) -> _PredicateCheck:
     actual = value
     for field in predicate.path.split("."):
         if not isinstance(actual, Mapping) or field not in actual:
-            return False, f"Field {predicate.path!r} is missing"
+            return _PredicateCheck(False, False, f"Field {predicate.path!r} is missing")
         actual = actual[field]
     expected = predicate.expected
     numeric = lambda x: isinstance(x, (int, float)) and not isinstance(x, bool)
     same_type = type(actual) is type(expected) or (numeric(actual) and numeric(expected))
     if not same_type or isinstance(actual, (dict, list)):
-        return False, f"Field {predicate.path!r} has an incompatible type"
+        return _PredicateCheck(False, False, f"Field {predicate.path!r} has an incompatible type")
     if isinstance(actual, float) and not math.isfinite(actual):
-        return False, f"Field {predicate.path!r} is not finite"
+        return _PredicateCheck(False, False, f"Field {predicate.path!r} is not finite")
     comparison = {"==": operator.eq, "!=": operator.ne, "<": operator.lt,
                   "<=": operator.le, ">": operator.gt, ">=": operator.ge}[predicate.operator]
     try:
         satisfied = comparison(actual, expected)
     except TypeError:
-        return False, f"Field {predicate.path!r} cannot use {predicate.operator}"
-    return satisfied, (f"Field {predicate.path!r} {predicate.operator} {expected!r} "
-                       f"{'holds' if satisfied else 'does not hold'} (observed {actual!r})")
+        return _PredicateCheck(False, False, f"Field {predicate.path!r} cannot use {predicate.operator}")
+    return _PredicateCheck(satisfied, True,
+                           f"Field {predicate.path!r} {predicate.operator} {expected!r} "
+                           f"{'holds' if satisfied else 'does not hold'} (observed {actual!r})")
+
+
+def _predicate(predicate: Predicate, value) -> tuple[bool, str]:
+    """Retain the public diagnostic and ordering contract for existing callers."""
+    check = _check_predicate(predicate, value)
+    return check.holds, check.reason
+
+
+def assess_environment(environment: Environment, context: Mapping[str, Any]) -> dict:
+    """Produce the same public scope entry for evaluation and packet checks."""
+    outcomes = [_predicate(predicate, context) for predicate in environment.predicates]
+    return _entry("matched" if all(ok for ok, _ in outcomes) else "out_of_scope",
+                  [reason for _, reason in outcomes])
+
+
+def assess_evidence_record(program: Program, name: str, record: Mapping | None, *,
+                           instant: datetime, context: Mapping[str, Any],
+                           environment_matched: bool) -> EvidenceVerdict:
+    """Check a record once, independently of explanation wording."""
+    evidence = program.evidence[name]
+    reasons = []
+    if not environment_matched:
+        reasons.append(f"Environment {evidence.environment!r} does not match supplied context")
+    if not isinstance(record, Mapping):
+        reasons.append("No evidence record is available")
+        return EvidenceVerdict(_entry("unavailable", reasons), False)
+    tool = program.tools[evidence.tool]
+    expected = {"evidence_id": name, "source_digest": program.source_digest,
+                "tool": tool.name, "tool_version": tool.version, "mode": tool.mode,
+                "evidence_kind": evidence.kind,
+                "environment": evidence.environment,
+                "environment_fingerprint": environment_fingerprint(evidence.environment, context),
+                "input_digest": canonical_digest(evidence.input)}
+    for key, wanted in expected.items():
+        if record.get(key) != wanted:
+            reasons.append(f"Record {key} does not match the declared evidence request")
+    if record.get("status") != "ok":
+        reasons.append("Tool execution did not produce an ok observation")
+    if not isinstance(record.get("run_id"), str) or not record["run_id"].strip():
+        reasons.append("Record requires a nonempty run_id")
+    try:
+        collected = parse_time(record.get("collected_at"))
+        age = (instant - collected).total_seconds()
+        if age < 0:
+            reasons.append("Observation is dated after the assessment time")
+        elif age > evidence.max_age:
+            reasons.append(f"Observation age {age:g}s exceeds max_age {evidence.max_age:g}s")
+    except (ValueError, TypeError, OverflowError):
+        reasons.append("Record collected_at must be an ISO-8601 timestamp with timezone")
+    try:
+        if "value" not in record:
+            raise ValueError("Record has no JSON value")
+        encoded = _canonical_bytes(record["value"])
+        if len(encoded) > MAX_RECORD_BYTES:
+            raise ValueError("Record value exceeds byte limit")
+        if hashlib.sha256(encoded).hexdigest() != record.get("data_digest"):
+            reasons.append("Record data_digest does not match its JSON value")
+    except (ValueError, TypeError, RecursionError, UnicodeError) as exc:
+        reasons.append(f"Invalid observation value: {exc}")
+    complete = not reasons
+    if complete:
+        outcomes = [_check_predicate(p, record["value"]) for p in evidence.predicates]
+        reasons = [outcome.reason for outcome in outcomes]
+        complete = all(outcome.comparable for outcome in outcomes)
+        available = all(outcome.holds for outcome in outcomes)
+    else:
+        available = False
+    return EvidenceVerdict(_entry("available" if available else "unavailable", reasons,
+                                  tool=tool.name, mode=tool.mode, run_id=record.get("run_id")), complete)
 
 
 def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime | str,
@@ -111,60 +200,12 @@ def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime 
     if diagnostics:
         return result
     for name, environment in program.environments.items():
-        outcomes = [_predicate(p, context) for p in environment.predicates]
-        result["environments"][name] = _entry(
-            "matched" if all(ok for ok, _ in outcomes) else "out_of_scope",
-            [reason for _, reason in outcomes])
+        result["environments"][name] = assess_environment(environment, context)
     for name, evidence in program.evidence.items():
-        record = records.get(name)
-        reasons = []
-        if result["environments"][evidence.environment]["status"] != "matched":
-            reasons.append(f"Environment {evidence.environment!r} does not match supplied context")
-        if not isinstance(record, Mapping):
-            reasons.append("No evidence record is available")
-            result["evidence"][name] = _entry("unavailable", reasons)
-            continue
-        tool = program.tools[evidence.tool]
-        expected = {"evidence_id": name, "source_digest": program.source_digest,
-                    "tool": tool.name, "tool_version": tool.version, "mode": tool.mode,
-                    "evidence_kind": evidence.kind,
-                    "environment": evidence.environment,
-                    "environment_fingerprint": environment_fingerprint(evidence.environment, context),
-                    "input_digest": canonical_digest(evidence.input)}
-        for key, wanted in expected.items():
-            if record.get(key) != wanted:
-                reasons.append(f"Record {key} does not match the declared evidence request")
-        if record.get("status") != "ok":
-            reasons.append("Tool execution did not produce an ok observation")
-        if not isinstance(record.get("run_id"), str) or not record["run_id"].strip():
-            reasons.append("Record requires a nonempty run_id")
-        try:
-            collected = parse_time(record.get("collected_at"))
-            age = (instant - collected).total_seconds()
-            if age < 0:
-                reasons.append("Observation is dated after the assessment time")
-            elif age > evidence.max_age:
-                reasons.append(f"Observation age {age:g}s exceeds max_age {evidence.max_age:g}s")
-        except (ValueError, TypeError, OverflowError):
-            reasons.append("Record collected_at must be an ISO-8601 timestamp with timezone")
-        try:
-            if "value" not in record:
-                raise ValueError("Record has no JSON value")
-            encoded = _canonical_bytes(record["value"])
-            if len(encoded) > MAX_RECORD_BYTES:
-                raise ValueError("Record value exceeds byte limit")
-            if hashlib.sha256(encoded).hexdigest() != record.get("data_digest"):
-                reasons.append("Record data_digest does not match its JSON value")
-        except (ValueError, TypeError, RecursionError, UnicodeError) as exc:
-            reasons.append(f"Invalid observation value: {exc}")
-        if not reasons:
-            outcomes = [_predicate(p, record["value"]) for p in evidence.predicates]
-            reasons = [reason for _, reason in outcomes]
-            available = all(ok for ok, _ in outcomes)
-        else:
-            available = False
-        result["evidence"][name] = _entry("available" if available else "unavailable", reasons,
-                                           tool=tool.name, mode=tool.mode, run_id=record.get("run_id"))
+        result["evidence"][name] = assess_evidence_record(
+            program, name, records.get(name), instant=instant, context=context,
+            environment_matched=result["environments"][evidence.environment]["status"] == "matched"
+        ).entry
 
     return _evaluate_arguments(program, records, instant, result, registry)
 
