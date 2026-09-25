@@ -11,6 +11,7 @@ research-tests:
 	$(PYTHON) -m unittest discover -s benchmarks/experiments/bias-mechanisms -p 'test_*.py'
 	$(PYTHON) -m unittest discover -s benchmarks/experiments/bias-followups -p 'test_*.py'
 	$(PYTHON) -m unittest discover -s benchmarks/experiments/bias-human-trial -p 'test_*.py'
+	$(PYTHON) -m unittest discover -s benchmarks/experiments/prospective-real-workflows -p 'test_*.py'
 
 generate:
 	$(PYTHON) scripts/generate_parser.py

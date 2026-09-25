@@ -1,0 +1,32 @@
+# Prospective runner contract, version 1
+
+The shipped study [plan](plan.json) remains `specified_not_ready`; every required receipt is null and every stage is pending. The runner library is executable for local `smoke` fixtures, which mark every outcome `simulated_fixture: true` and permit only pinned local Git reads. Those outcomes are ineligible for the pilot, retrospective or shadow estimands.
+
+## Execution interface
+
+Install the `study` extra (`python -m pip install -e '.[study]'`). Use `ProspectiveRunner.run_case(case=..., model_id=..., stage=..., acquisition=..., receipt_bundle=..., receipt_root=..., trust_roster=..., plan_path=...)` from `runner_v1.py`. Inject a fresh provider factory, a four-arm policy mapping, `ReadOnlyGateway`, `Limits` and a private `AttemptLedger`. The provider factory is called once per assigned arm after four durable starts. A model can select only case-specific grants; `fixed_capture` executes the specified calls once and gives all four arms identical copies, while `selected_acquisition` asks each arm to select calls from the same bounded catalogue. Never pool their outcomes under one estimand.
+
+The default arms are strong prose P, six-field Toulmin prose T, EAL/2 E using `ReasoningService`, and JSON graph J using `benchmarks.equal_checker.evaluate`. Host statuses are returned separately from model explanation and cannot be replaced by it. Checked agreement with the case's formal query and the fidelity of explanations still need independent masked scoring. Failed source authoring, model calls and tool acquisitions stay in the assignment ledger. There is no provider or tool retry in version 1.
+
+`gateway_v1.py` executes a pinned Git blob read with a minimal process environment or an exact HTTPS GET with redirects and environment proxies disabled. The HTTPS response must identify its historical snapshot and observation time. For retrospective HTTP queries, the operator must pin a snapshot ID. The gateway is not an operating-system sandbox, historical-data verifier, source authenticator or proof of the remote GET service's semantics. Isolated replicas and read-only credentials are operator obligations. CI, monitoring and infrastructure can use the HTTPS JSON contract only after their actual endpoints, scopes and snapshot behaviour are independently reviewed; none is configured here.
+
+## Stage authorisation
+
+A real stage accepts only a separate execution plan with schema `eal2-real-workflow-execution-plan/1`, the study ID, the exact stage and its matching `pilot_ready`, `retrospective_ready` or `shadow_ready` status. Its `supersedes_spec_sha256` must equal the SHA-256 of this directory's pending `plan.json`. Its exact `limits` and `schedule` must match every requested case/model/acquisition/repetition/seed assignment; retrospective and shadow schedules must also match the signed frozen-schedule artifact. The retrospective and shadow plans additionally contain frozen family count, practical gain margin, false-support margin and minimum coverage. The ready plan is itself bound by the signature bundle. Signing a document attests the holder of a trusted key; the runner cannot establish that a human actually completed a competent domain review.
+
+The operator supplies a trust roster held outside the case data and a `eal2-real-workflow-receipts/1` bundle. Every required artifact's bytes must match its digest and Ed25519 signatures from the required distinct domain, security or method reviewers. The signed case manifest has schema `eal2-real-case-manifest/1`, exact stage and exact version 1 `Case` objects. The signed tool allowlist has schema `eal2-real-tool-allowlist/1`, exact runtime grants and an operator isolation declaration. The signed parity artifact must equal `policy_manifest(actual_policies)`, which pins injected policy and checker classes, implementation files and configurations, prompts, the full EAL Python source tree, generic checker, runner stack, method registry fingerprint and dependency versions. The signed model matrix has schema `eal2-real-model-matrix/1`; each selected model has an exact provider identity digest and resolved model name. A changed grant, provider, policy or source invalidates its gate. Only built-in read-only reader classes are permitted for real stages in this version.
+
+The approved external artifacts must also record adjudicator disagreements, reviewer independence, case genealogy, actual isolation, equal checker coverage, frozen schedule, eligible/excluded cases and shadow stop authority as specified by [PROTOCOL.md](PROTOCOL.md). A signature and digest validate the submitted bytes and named signers, rather than these substantive properties. Signed smoke fixtures in the tests are deliberately synthetic and do not meet the study protocol.
+
+## Ledger and remaining measurements
+
+`ledger_v1.py` reserves all four arm starts under one exclusive lock and fsyncs them before any tool or model call, then appends one final outcome for each assigned arm. It records exact prompts, raw bounded model response, usage and token-rate cost estimate, resolved model, tool request/result/error/timing/digests, host packet and authoritative status. The hash chain and `verify(require_complete=True)` reject corruption, duplicate IDs, repeated outcomes and unfinished assignments. A process crash leaves interrupted assignments that remain in the denominator and cannot be reused; a partial physical write fails closed during verification. This local chain requires an external signed post-run digest for provenance. The estimated provider cost is not an invoice: actual charges, HTTPS/API or Git operator cost, human review minutes and the reference/scoring records must be attached through independently retained post-run records before any cost or efficacy analysis. The runner sets unknown tool cost and human minutes to `null` rather than zero. Version 1 verifies the whole JSONL on every append, with quadratic total I/O; benchmark and partition by frozen case/model block before a large confirmatory campaign, retaining a signed cross-partition index.
+
+Run local regression checks with:
+
+```sh
+python -m unittest discover -s benchmarks/experiments/prospective-real-workflows -p 'test_*.py' -v
+python benchmarks/experiments/prospective-real-workflows/validate.py --require-ready
+```
+
+The second command must exit nonzero for the shipped unrun specification.
