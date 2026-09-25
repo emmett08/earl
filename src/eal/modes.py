@@ -13,11 +13,9 @@ import re
 from fractions import Fraction
 from statistics import NormalDist, stdev
 
-MODE_KINDS = {
-    "structured": None, "deductive": "logical_case", "inductive": "sample",
-    "abductive": "hypotheses", "causal": "experiment",
-    "counterfactual": "causal_model", "analogical": "analogy", "temporal": "trace",
-}
+from .builtin_methods import BUILTIN_SPECS
+
+MODE_KINDS = {mode: spec.evidence_kind for mode, spec in BUILTIN_SPECS.items()}
 MAX_ITEMS = 10_000
 MAX_ATOMS = 12
 MAX_FORMULA_NODES = 512

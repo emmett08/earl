@@ -149,11 +149,11 @@ def _output_scalar_types(schema, path):
 
 
 def validate(program: Program, *, registry=None) -> list[Diagnostic]:
-    """Resolve names, verify types/scopes, reject cycles and resource excess."""
+    """Run ordered typed-IR, identity, declaration, binding and graph passes."""
     shape_errors = _ir_shape_errors(program)
     if shape_errors:
         return shape_errors
-    from .methods import default_registry, is_method_identifier
+    from .methods import default_registry
     registry = registry or default_registry()
     problems: list[Diagnostic] = [
         diagnostic if diagnostic.span is not None else replace(
@@ -181,6 +181,20 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
         if not _IDENTIFIER.fullmatch(name) or name in _RESERVED_NAMES:
             error("invalid_identifier", f"{name!r} cannot be represented as an EAL identifier", owner)
 
+    if not _validate_declarations(program, error, identifier):
+        return problems
+    _validate_predicates(program, error)
+    _validate_tools_and_evidence(program, error, reference, identifier)
+    _validate_assumptions(program, error, reference, scope)
+    _validate_reasoning_and_claims(program, registry, error, reference)
+    _validate_arguments(program, registry, error, reference, scope)
+    _validate_objections(program, error, reference, scope)
+    _validate_dependencies(program, error)
+    return problems
+
+
+def _validate_declarations(program, error, identifier):
+    """Check resource bounds, identity and expanded authoring consistency."""
     collections = (program.environments, program.tools, program.evidence,
                    program.assumptions, program.reasoning, program.claims,
                    program.arguments, program.objections, program.patterns,
@@ -188,7 +202,7 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     actual_count = sum(len(table) for table in collections) + len(program.patterns)
     if max(actual_count, program.declaration_count) > MAX_DECLARATIONS:
         error("resource_limit", f"At most {MAX_DECLARATIONS} declaration/body records after pattern expansion are supported")
-        return problems
+        return False
     # A mapping key and its declaration name are one identity, including for
     # callers using the Python IR API instead of the source recogniser.
     seen = set()
@@ -229,6 +243,11 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     if program.language != "EAL/2":
         error("unsupported_language", f"Expected EAL/2, found {program.language!r}",
               expected="EAL/2", actual=program.language)
+    return True
+
+
+def _validate_predicates(program, error):
+    """Check predicate paths, operands and operators in source order."""
     for collection in (program.environments, program.evidence, program.reasoning):
         for value in collection.values():
             if collection is not program.reasoning and not value.predicates:
@@ -250,6 +269,10 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                     error("invalid_number", "Predicate numbers must be finite", value.name)
                 if predicate.operator in ("<", "<=", ">", ">=") and (expected is None or isinstance(expected, bool)):
                     error("invalid_comparison", "Ordered comparisons require a number or string", value.name)
+
+
+def _validate_tools_and_evidence(program, error, reference, identifier):
+    """Check tool contracts and evidence requests."""
     for value in program.tools.values():
         if not value.version.strip():
             error("empty_version", "A tool requires an explicit nonempty version", value.name)
@@ -270,6 +293,10 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
             json.dumps(value.input, allow_nan=False, ensure_ascii=False).encode("utf-8")
         except (ValueError, TypeError, RecursionError):
             error("invalid_input", "Tool input must be finite JSON data", value.name)
+
+
+def _validate_assumptions(program, error, reference, scope):
+    """Check assumption bindings, scope and declared interval."""
     for value in program.assumptions.values():
         if not value.statement.strip():
             error("empty_statement", "An assumption requires a statement", value.name)
@@ -285,6 +312,11 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                     error("invalid_timestamp", f"{label} requires an ISO-8601 timestamp with timezone", value.name)
         if len(dates) == 2 and dates[0] >= dates[1]:
             error("invalid_interval", "valid_from must precede valid_until", value.name)
+
+
+def _validate_reasoning_and_claims(program, registry, error, reference):
+    """Check method output predicates and claim propositions."""
+    from .methods import is_method_identifier
     for value in program.reasoning.values():
         contract = registry.get(value.method)
         if not is_method_identifier(value.method):
@@ -324,6 +356,10 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                 error("invalid_comparison", "Proposition operator must be ==, !=, <, <=, > or >=", value.name)
             for message in proposition_errors(value.proposition, registry=registry):
                 error("invalid_proposition", message, value.name)
+
+
+def _validate_arguments(program, registry, error, reference, scope):
+    """Check argument dependencies and typed evidence bindings."""
     for value in program.arguments.values():
         conclusion_exists = reference(value.conclusion, program.claims, "conclusion claim", value.name)
         reasoning_exists = reference(value.reasoning, program.reasoning, "reasoning", value.name)
@@ -365,6 +401,10 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                 for item in method.backing:
                     if item in program.evidence:
                         scope(program.evidence[item].environment, expected, value.name, item)
+
+
+def _validate_objections(program, error, reference, scope):
+    """Check attack targets, source scopes and references."""
     target_tables = {"claim": program.claims, "reasoning": program.reasoning,
                      "assumption": program.assumptions, "argument": program.arguments,
                      "objection": program.objections}
@@ -396,6 +436,10 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                 if reference(item, sources, kind, value.name):
                     for environment in sorted(expected):
                         scope(sources[item].environment, environment, value.name, item)
+
+
+def _validate_dependencies(program, error):
+    """Bound the acyclic premise graph without recursive traversal."""
     # Edges point from a conclusion to its premises. Remove leaves iteratively,
     # computing longest paths without depending on Python recursion limits.
     graph = {name: set() for name in program.claims}
@@ -424,7 +468,6 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     if depth and max(depth.values()) > MAX_PREMISE_DEPTH:
         error("resource_limit", f"Premise chains may contain at most {MAX_PREMISE_DEPTH} edges",
               max(depth, key=depth.get))
-    return problems
 
 
 def objection_scopes(program: Program) -> dict[str, set[str]]:

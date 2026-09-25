@@ -16,10 +16,12 @@ from pathlib import Path
 import signal
 import tomllib
 from typing import Any, Protocol
-from urllib.parse import urlsplit
 
 import httpx
 
+from .http_provider import (bearer_headers, native_operation_schema, post_json,
+                            validate_api_key_env, validate_endpoint,
+                            validate_max_response_bytes, validate_model)
 from .runtime import strict_json
 
 
@@ -150,8 +152,7 @@ class CommandProvider:
             raise ValueError("argv must be a non-empty list of literal strings")
         if not isinstance(model, str) or not model:
             raise ValueError("model must be an explicit non-empty identity")
-        if type(max_response_bytes) is not int or not 1 <= max_response_bytes <= 16 * 1024 * 1024:
-            raise ValueError("max_response_bytes must be between 1 and 16 MiB")
+        validate_max_response_bytes(max_response_bytes)
         if measurement_kind not in {"model", "interface_only"}:
             raise ValueError("measurement_kind must be model or interface_only")
         self.argv, self.model = list(argv), model
@@ -250,19 +251,13 @@ class ChatCompletionsProvider:
                  max_response_bytes: int = 1_048_576, max_tokens_field: str = "max_completion_tokens",
                  label: str = "chat_completions", capabilities: dict | None = None,
                  transport: httpx.AsyncBaseTransport | None = None):
-        url = urlsplit(endpoint)
-        if url.scheme not in {"https", "http"} or not url.hostname or url.username or url.password or url.query or url.fragment:
-            raise ValueError("endpoint must be an HTTP(S) URL without credentials, query or fragment")
-        if url.scheme == "http" and url.hostname not in {"localhost", "127.0.0.1", "::1"}:
-            raise ValueError("Non-local HTTP endpoints must use HTTPS")
-        if api_key_env is not None and (not isinstance(api_key_env, str) or not api_key_env.isidentifier()):
-            raise ValueError("api_key_env must be an environment variable name or null")
-        if not isinstance(model, str) or not model:
-            raise ValueError("model must be an explicit non-empty identity")
+        validate_endpoint(endpoint, invalid="endpoint must be an HTTP(S) URL without credentials, query or fragment",
+                          insecure="Non-local HTTP endpoints must use HTTPS")
+        validate_api_key_env(api_key_env, invalid="api_key_env must be an environment variable name or null")
+        validate_model(model, invalid="model must be an explicit non-empty identity")
         if max_tokens_field not in {"max_tokens", "max_completion_tokens"}:
             raise ValueError("max_tokens_field must be max_tokens or max_completion_tokens")
-        if type(max_response_bytes) is not int or not 1 <= max_response_bytes <= 16 * 1024 * 1024:
-            raise ValueError("max_response_bytes must be between 1 and 16 MiB")
+        validate_max_response_bytes(max_response_bytes)
         self.model, self.endpoint, self.api_key_env = model, endpoint, api_key_env
         self.sampling, self.pricing = _sampling(sampling or {}), _pricing(pricing or {})
         self.timeout_seconds = _positive(timeout_seconds, "timeout_seconds")
@@ -290,12 +285,7 @@ class ChatCompletionsProvider:
             raise ProviderError("Native tools with reasoning effort require an explicitly compatible model/endpoint configuration")
         if native_tools and not operations:
             raise ProviderError("Native tool requests require operation schemas")
-        headers = {"Content-Type": "application/json"}
-        if self.api_key_env:
-            credential = os.environ.get(self.api_key_env)
-            if not credential:
-                raise ProviderError(f"Configured credential variable {self.api_key_env} is absent")
-            headers["Authorization"] = "Bearer " + credential
+        headers = bearer_headers(self.api_key_env, ProviderError)
         payload = {"model": self.model, "messages": messages, "stream": False, "n": 1,
                    self.max_tokens_field: max_output_tokens, **self.sampling}
         if "reasoning_effort" in self.capabilities:
@@ -304,9 +294,7 @@ class ChatCompletionsProvider:
         if native_tools:
             functions = []
             for entry in operations:
-                parameters = strict_json(json.dumps(entry["input_schema"], allow_nan=False))
-                parameters.get("properties", {}).pop("operation", None)
-                parameters["required"] = [key for key in parameters.get("required", []) if key != "operation"]
+                parameters = native_operation_schema(entry)
                 functions.append({"type": "function", "function": {"name": entry["operation"],
                     "description": entry.get("description") or entry["operation"], "parameters": parameters,
                     "strict": False}})
@@ -321,26 +309,10 @@ class ChatCompletionsProvider:
                 payload["messages"] = [*messages, {"role": "system", "content":
                     "For this response wrap the single flat operation request in a JSON object with exactly one field: request. Example: {\"request\":{\"operation\":\"validate\"}}. The host will unwrap it before execution."}]
             payload["response_format"] = {"type": "json_schema", "json_schema": {"name": "eal_reply", "schema": schema, "strict": False}}
-        try:
-            async with asyncio.timeout(self.timeout_seconds), httpx.AsyncClient(timeout=self.timeout_seconds, follow_redirects=False, transport=self.transport) as client:
-                async with client.stream("POST", self.endpoint, headers=headers, json=payload) as response:
-                    if response.status_code != 200:
-                        # Never echo a remote body or authenticated request URL.
-                        raise ProviderError(f"Model endpoint returned HTTP {response.status_code}")
-                    chunks, size = [], 0
-                    async for chunk in response.aiter_bytes():
-                        size += len(chunk)
-                        if size > self.max_response_bytes:
-                            raise ProviderError("Model endpoint response exceeded its byte limit")
-                        chunks.append(chunk)
-                    try:
-                        data = strict_json(b"".join(chunks).decode("utf-8"))
-                    except (ValueError, UnicodeError) as exc:
-                        raise ProviderError("Model endpoint returned malformed UTF-8 JSON") from exc
-        except httpx.HTTPError as exc:
-            raise ProviderError("Model endpoint transport failed") from exc
-        except TimeoutError as exc:
-            raise ProviderError("Model endpoint timed out") from exc
+        data = await post_json(self.endpoint, headers, payload,
+                               timeout_seconds=self.timeout_seconds,
+                               max_response_bytes=self.max_response_bytes,
+                               transport=self.transport, error_type=ProviderError)
         if not isinstance(data, dict):
             raise ProviderError("Model endpoint returned a non-object response")
         usage = data.get("usage") or {}

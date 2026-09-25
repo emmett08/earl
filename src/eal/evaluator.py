@@ -249,10 +249,43 @@ def _compute_argument(program, argument, claim, records, premises, registry):
     return computation, usable
 
 
-def _evaluate_arguments(program, records, instant, result, registry):
-    """EAL/2 finite least-information AND/OR support and attack semantics."""
-    from .dialectic import ArgumentationError, MAX_COMPOSED_EDGES, solve_composed
+@dataclass(frozen=True)
+class _SourceAssessment:
+    by_conclusion: dict
+    source_claims: dict
+    source_arguments: dict
+    local_arguments: dict
 
+
+@dataclass(frozen=True)
+class _ComposedGraph:
+    nodes: dict
+    claims: dict
+    attacks: set[tuple[str, str]]
+    objection_sources: dict
+
+
+def _evaluate_arguments(program, records, instant, result, registry):
+    """Evaluate local sources, construct the graph, solve and project labels."""
+    from .dialectic import ArgumentationError
+
+    _assess_local_declarations(program, instant, result)
+    sources = _assess_source_claims(program, records, result, registry)
+    try:
+        graph = _construct_composed_graph(program, result, sources)
+        grounded = _solve_composed_graph(graph)
+    except ArgumentationError as exc:
+        result["valid"] = False
+        result["diagnostics"].append(asdict(Diagnostic("resource_limit", str(exc))))
+        for group in ("arguments", "claims", "objections"):
+            result[group] = {}
+        return result
+    _project_grounded_result(program, result, sources, graph, grounded)
+    return result
+
+
+def _assess_local_declarations(program, instant, result):
+    """Assess assumptions and method backing before arguments use them."""
     # Source availability is independent of whether a derivation is accepted.
     # In particular, an attack cycle never makes a source available by itself.
     for name, assumption in program.assumptions.items():
@@ -279,6 +312,10 @@ def _evaluate_arguments(program, records, instant, result, registry):
             reasons or [f"Method {reasoning.method} and backing are locally available; acceptance is assessed per application"],
             rationale=reasoning.rationale, backing=list(reasoning.backing),
             method=reasoning.method)
+
+
+def _assess_source_claims(program, records, result, registry) -> _SourceAssessment:
+    """Assess source usability without dialectical acceptance."""
     by_conclusion = {name: [] for name in program.claims}
     for argument in program.arguments.values():
         by_conclusion[argument.conclusion].append(argument.name)
@@ -347,6 +384,16 @@ def _evaluate_arguments(program, records, instant, result, registry):
 
     for name in program.claims:
         source_claim(name)
+    return _SourceAssessment(by_conclusion, source_claims, source_arguments, local_arguments)
+
+
+def _construct_composed_graph(program, result, sources: _SourceAssessment) -> _ComposedGraph:
+    """Construct scoped support and attack edges within the edge limit."""
+    from .dialectic import ArgumentationError, MAX_COMPOSED_EDGES
+
+    by_conclusion = sources.by_conclusion
+    source_claims = sources.source_claims
+    local_arguments = sources.local_arguments
     scopes = objection_scopes(program)
     nodes = {f"argument:{name}": {"usable": local_arguments[name],
                                   "premises": list(dict.fromkeys(argument.premises))}
@@ -368,34 +415,42 @@ def _evaluate_arguments(program, records, instant, result, registry):
 
     attacks = set()
     dependency_edges = sum(len(node["premises"]) for node in nodes.values()) + sum(map(len, claims.values()))
-    try:
-        for name, objection in program.objections.items():
-            source = f"objection:{name}"
-            scope = next(iter(scopes[name]))
-            if objection.target_kind == "objection":
-                targets = [f"objection:{objection.target}"]
-            else:
-                targets = []
-                for argument_name, argument in program.arguments.items():
-                    if program.claims[argument.conclusion].environment != scope:
-                        continue
-                    applies = ((objection.target_kind == "claim" and argument.conclusion == objection.target)
-                               or (objection.target_kind == "reasoning" and argument.reasoning == objection.target)
-                               or (objection.target_kind == "assumption" and objection.target in argument.assumptions)
-                               or (objection.target_kind == "argument" and argument_name == objection.target))
-                    if applies:
-                        targets.append(f"argument:{argument_name}")
-            for target in targets:
-                attacks.add((source, target))
-                if len(attacks) + dependency_edges > MAX_COMPOSED_EDGES:
-                    raise ArgumentationError("Composed attack and support graph exceeds the edge limit")
-        grounded = solve_composed(nodes, claims, [list(edge) for edge in sorted(attacks)])
-    except ArgumentationError as exc:
-        result["valid"] = False
-        result["diagnostics"].append(asdict(Diagnostic("resource_limit", str(exc))))
-        for group in ("arguments", "claims", "objections"):
-            result[group] = {}
-        return result
+    for name, objection in program.objections.items():
+        source = f"objection:{name}"
+        scope = next(iter(scopes[name]))
+        if objection.target_kind == "objection":
+            targets = [f"objection:{objection.target}"]
+        else:
+            targets = []
+            for argument_name, argument in program.arguments.items():
+                if program.claims[argument.conclusion].environment != scope:
+                    continue
+                applies = ((objection.target_kind == "claim" and argument.conclusion == objection.target)
+                           or (objection.target_kind == "reasoning" and argument.reasoning == objection.target)
+                           or (objection.target_kind == "assumption" and objection.target in argument.assumptions)
+                           or (objection.target_kind == "argument" and argument_name == objection.target))
+                if applies:
+                    targets.append(f"argument:{argument_name}")
+        for target in targets:
+            attacks.add((source, target))
+            if len(attacks) + dependency_edges > MAX_COMPOSED_EDGES:
+                raise ArgumentationError("Composed attack and support graph exceeds the edge limit")
+    return _ComposedGraph(nodes, claims, attacks, objection_sources)
+
+
+def _solve_composed_graph(graph: _ComposedGraph) -> dict:
+    """Solve the already bounded AND/OR graph."""
+    from .dialectic import solve_composed
+
+    return solve_composed(graph.nodes, graph.claims, [list(edge) for edge in sorted(graph.attacks)])
+
+
+def _project_grounded_result(program, result, sources: _SourceAssessment,
+                             graph: _ComposedGraph, grounded):
+    """Attach labels, final statuses and explanations to the public result."""
+    nodes, attacks = graph.nodes, graph.attacks
+    source_claims, source_arguments = sources.source_claims, sources.source_arguments
+    by_conclusion, objection_sources = sources.by_conclusion, graph.objection_sources
     attackers = {name: [] for name in nodes}
     for source, target in sorted(attacks):
         attackers[target].append(source)
@@ -455,4 +510,3 @@ def _evaluate_arguments(program, records, instant, result, registry):
             if kind == "assumption" and entries[name]["status"] == "supported" and any(
                     status in ("active", "undecided") for status in applicable.values()):
                 entries[name]["status"] = "contested"
-    return result

@@ -14,6 +14,7 @@ import operator
 import re
 
 from .model import Proposition
+from .builtin_methods import BUILTIN_SPECS
 
 SCHEMA = 'EAL/typed-input/1'
 # Unit scales are exact rational multiples of the declared base unit. Absolute
@@ -34,24 +35,10 @@ QUANTITIES = {name: name for name in ('pressure', 'time', 'length', 'mass',
 QUANTITIES.update(probability='dimensionless', proposition='dimensionless')
 # Each path denotes a specified statistic, not an arbitrary result field. basis
 # means the unit of the measured quantity; boolean results have no numeric unit.
-OUTPUTS = {
-    'deductive': {'entailed': 'boolean', 'consistent_premises': 'boolean'},
-    'inductive': {'estimate': 'dimensionless', 'lower': 'dimensionless', 'upper': 'dimensionless'},
-    'abductive': {'best_posterior': 'dimensionless', 'posterior.*': 'dimensionless'},
-    'causal': {'estimate': 'basis', 'standard_error': 'basis', 'treatment_mean': 'basis', 'control_mean': 'basis'},
-    'counterfactual': {'factual': 'basis', 'counterfactual': 'basis', 'difference': 'basis'},
-    'analogical': {'match_fraction': 'dimensionless', 'complete': 'boolean'},
-    'temporal': {'holds': 'boolean', 'coverage': 'boolean'},
-}
-QUERY_FIELDS = {
-    'deductive': ('premises', 'conclusion'),
-    'inductive': ('confidence',),
-    'abductive': ('observed', 'candidates'),
-    'causal': ('assignment',),
-    'counterfactual': ('variables', 'intervention', 'outcome'),
-    'analogical': ('relevant_features', 'source', 'target'),
-    'temporal': ('start', 'end', 'max_gap', 'property', 'semantics'),
-}
+# These read-only discovery views derive from the same versioned specifications
+# used to construct the registered MethodContracts.
+OUTPUTS = {mode: dict(spec.outputs) for mode, spec in BUILTIN_SPECS.items() if spec.outputs}
+QUERY_FIELDS = {mode: spec.query_fields for mode, spec in BUILTIN_SPECS.items() if spec.outputs}
 _COMPARISONS = {'==': operator.eq, '!=': operator.ne, '<': operator.lt,
                 '<=': operator.le, '>': operator.gt, '>=': operator.ge}
 
