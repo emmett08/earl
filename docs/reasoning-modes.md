@@ -151,7 +151,7 @@ The standard error is an independent-group estimator. It is not a paired, repeat
 Every variable has the affine structural equation
 
 \[
-X_i=b_i+\sum_{j\in\operatorname{pa}(i)}a_{ij}X_j+u_i.
+X_i=b_i+\sum_{j\in\mathrm{pa}(i)}a_{ij}X_j+u_i.
 \]
 
 `intercept` supplies \(b_i\), `coefficients` supplies the parent coefficients and `noise` supplies the realised exogenous value \(u_i\). Every parent must be a declared variable. The graph must be acyclic, including explicitly listed zero-coefficient dependencies. The interpreter evaluates the factual model in topological order, replaces the intervention variable's equation by its supplied value, and evaluates the modified model with the **same** exogenous values.

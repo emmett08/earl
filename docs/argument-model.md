@@ -56,16 +56,16 @@ The solver constructs one node for each argument application and objection, plus
 
 $$
 \begin{aligned}
-\operatorname{Accepted}(n) &\Leftarrow U(n)\land
- \bigwedge_{c\in P(n)}\operatorname{Accepted}(c)\land
- \bigwedge_{a\in A(n)}\operatorname{Rejected}(a),\\
-\operatorname{Rejected}(n) &\Leftarrow \neg U(n)\lor
- \bigvee_{c\in P(n)}\operatorname{Rejected}(c)\lor
- \bigvee_{a\in A(n)}\operatorname{Accepted}(a),\\
-\operatorname{Accepted}(c) &\Leftarrow
- \bigvee_{n\in D(c)}\operatorname{Accepted}(n),\\
-\operatorname{Rejected}(c) &\Leftarrow
- \bigwedge_{n\in D(c)}\operatorname{Rejected}(n).
+\mathrm{Accepted}(n) &\Leftarrow U(n)\land
+ \bigwedge_{c\in P(n)}\mathrm{Accepted}(c)\land
+ \bigwedge_{a\in A(n)}\mathrm{Rejected}(a),\\
+\mathrm{Rejected}(n) &\Leftarrow \neg U(n)\lor
+ \bigvee_{c\in P(n)}\mathrm{Rejected}(c)\lor
+ \bigvee_{a\in A(n)}\mathrm{Accepted}(a),\\
+\mathrm{Accepted}(c) &\Leftarrow
+ \bigvee_{n\in D(c)}\mathrm{Accepted}(n),\\
+\mathrm{Rejected}(c) &\Leftarrow
+ \bigwedge_{n\in D(c)}\mathrm{Rejected}(n).
 \end{aligned}
 $$
 
