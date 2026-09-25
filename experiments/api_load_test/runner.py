@@ -36,10 +36,22 @@ def write_json(path: Path, value):
 
 
 def event(path: Path, value):
+    record = {"at": utc_now(), **value}
     with path.open("a") as stream:
-        stream.write(json.dumps({"at": utc_now(), **value}, allow_nan=False) + "\n")
+        stream.write(json.dumps(record, allow_nan=False) + "\n")
         stream.flush()
         os.fsync(stream.fileno())
+    # Live CI progress is deliberately limited to operational facts. Prompts,
+    # answers, credentials and private reasoning never enter this console line.
+    fields = ("at", "type", "id", "model", "arm", "turn", "state", "correct",
+              "error", "category", "seconds", "estimated_usd", "reserved_usd")
+    progress = {key: record[key] for key in fields if key in record}
+    response = record.get("response")
+    if response:
+        progress.update(model=response.get("model"), input_tokens=response.get("input_tokens"),
+                        output_tokens=response.get("output_tokens"),
+                        response_id=response.get("metadata", {}).get("id"))
+    print(json.dumps(progress, allow_nan=False), flush=True)
 
 
 def schedule(model: str, repetitions: int, seed: int):
@@ -119,6 +131,7 @@ async def trial(assignment, spec, plan, workspace, provider, budget):
                     failure, stop_model = "cost_allowance_exhausted", True
                     break
                 event(workspace / "events.jsonl", {"type": "model_call_started", "turn": turn,
+                                                    "id": assignment["id"], "model": spec["id"], "arm": arm,
                                                     "reserved_usd": reserved})
                 call_started = time.monotonic()
                 try:
@@ -129,13 +142,15 @@ async def trial(assignment, spec, plan, workspace, provider, budget):
                     calls.append({"turn": turn, "error": str(exc), "estimated_usd": cost,
                                   "response": dataclasses.asdict(exc.response) if exc.response else None,
                                   "seconds": time.monotonic() - call_started})
-                    event(workspace / "events.jsonl", {"type": "model_call_failed", **calls[-1]})
+                    event(workspace / "events.jsonl", {"type": "model_call_failed", "id": assignment["id"],
+                                                       "model": spec["id"], "arm": arm, **calls[-1]})
                     failure, stop_model = "provider_error", True
                     break
                 cost = budget.settle(reserved, response, provider)
                 calls.append({"turn": turn, "response": dataclasses.asdict(response), "estimated_usd": cost,
                               "seconds": time.monotonic() - call_started})
-                event(workspace / "events.jsonl", {"type": "model_call_completed", **calls[-1]})
+                event(workspace / "events.jsonl", {"type": "model_call_completed", "id": assignment["id"],
+                                                   "model": spec["id"], "arm": arm, **calls[-1]})
                 if response.model != spec["id"] or cost is None:
                     failure, stop_model = "model_identity_or_usage_unverified", True
                     break

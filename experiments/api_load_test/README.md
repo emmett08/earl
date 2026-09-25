@@ -46,6 +46,8 @@ The [workflow](../../.github/workflows/api-experiment.yml) needs a runner with D
 
 The token is passed through the container environment only for paid calls, never through a build argument, command-line value or image layer. Collector and MCP child environments omit it. The workflow records the source revision and image inspection, then uploads the assigned trials, raw measurements, provider outcomes, tool traces, failures and Markdown/JSON summaries. It does not silently substitute a different model if a snapshot is unavailable.
 
+Expand **Run all model classes and prompt arms in Docker** to see live progress. Each request prints a start event, followed by either completion with provider response ID and input/output token counts, or a failure. A start event establishes an attempt; returned usage establishes measured token consumption. Full responses remain in the retained artefacts. Each request has a 120-second timeout; a failed request stops that model and the runner proceeds to the next model.
+
 The default smoke run has **80 assigned trials**: 4 models × 4 profiles × 5 arms. The study has **800 assigned trials**, using ten repeats. Each trial permits four model calls and 4096 output tokens per call. Admission allowances are $5/model for smoke and $50/model for study; these are conservative local estimates, not provider billing guarantees. Missing usage, a provider error, an unexpected model identity or exhausted allowance stops that model and retains its remaining assignments as unattempted.
 
 ## Run the same image locally

@@ -18,11 +18,24 @@ from experiments.api_load_test.api import serve
 from experiments.api_load_test.materials import ARMS, PROFILES, prompt_for, source_for
 from experiments.api_load_test.oracle import grade, reference
 from experiments.api_load_test.routes import TrialTools, child_environment
-from experiments.api_load_test.runner import Budget, HERE, run, schedule, trial
+from experiments.api_load_test.runner import Budget, HERE, event, run, schedule, trial
 
 
 PLAN = json.loads((HERE / "plan.json").read_text())
 SPEC = json.loads((HERE / "models.json").read_text())["models"][0]
+
+
+def test_live_progress_shows_usage_without_printing_response_content(tmp_path, capsys):
+    event(tmp_path / "events.jsonl", {
+        "type": "model_call_completed", "id": "trial-1", "turn": 1,
+        "estimated_usd": 0.001, "response": {
+            "model": SPEC["id"], "input_tokens": 100, "output_tokens": 20,
+            "text": "private-response-body", "metadata": {"id": "resp_123", "private": "hidden"}}})
+    line = capsys.readouterr().out
+    progress = json.loads(line)
+    assert progress["input_tokens"] == 100 and progress["output_tokens"] == 20
+    assert progress["response_id"] == "resp_123"
+    assert "private-response-body" not in line and "hidden" not in line
 
 
 def arguments(api, run_id="unit-test", count=100):
