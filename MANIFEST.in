@@ -7,3 +7,4 @@ include scripts/generate_parser.py
 
 include Makefile CONTRACT.md AGENTS.md
 recursive-include skills *.md *.yaml *.svg
+recursive-include experiments *.py *.json *.md *.lock Dockerfile

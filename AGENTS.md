@@ -2,7 +2,7 @@
 
 EAL/2 is the only supported language. Backwards compatibility is never a requirement for this project. Choose the clearest coherent design for the current language; remove obsolete syntax, version-dependent semantics, aliases and compatibility adapters rather than preserving them. Do not add migration machinery solely to support an earlier EAL version.
 
-Apply each change across affected current documentation, discovery schemas and the single API load-test example. Earlier examples and benchmark plans remain accessible in Git history. Keep the maintained example self-contained and clearly distinguish synthetic data from measurements. A source-language version, package version and observation schema version identify different contracts; declare changes to each affected contract explicitly.
+Apply each change across affected current documentation, discovery schemas and the single API load-test example. Earlier examples and benchmark plans remain accessible in Git history. Keep the maintained example self-contained and clearly distinguish synthetic data from measurements. The single experiment in `experiments/api_load_test/` extends that task: JSON and prose use direct collection, never MCP or EAL evaluation. Preserve its frozen assignment ledger, independent reference and Docker execution path. A source-language version, package version and observation schema version identify different contracts; declare changes to each affected contract explicitly.
 
 Use the repository's `skills/engineer-argumentation-languages/SKILL.md` and its expert language design reference for changes to syntax, abstractions, method contracts or reasoning semantics. Separate primary-source recommendations, EAL design decisions, implemented behaviour and measured results.
 

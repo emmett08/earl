@@ -1,0 +1,90 @@
+name: API load-test model experiment
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'experiments/api_load_test/**'
+      - 'tests/test_api_experiment.py'
+      - '.github/workflows/api-experiment.yml'
+      - '.dockerignore'
+      - 'src/**'
+      - 'grammar/**'
+      - 'examples/api-load-test/**'
+      - 'pyproject.toml'
+      - 'Makefile'
+      - 'MANIFEST.in'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Smoke: 80 assigned trials; study: 800 assigned trials, with larger cost allowance'
+        required: true
+        default: smoke
+        type: choice
+        options: [smoke, study]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: api-experiment-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  experiment:
+    # A same-repository owner PR may run the paid smoke test. Forks never run
+    # on a private runner or receive the token. Manual runs can select study.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.pull_request.head.repo.full_name == github.repository &&
+       github.event.pull_request.user.login == github.repository_owner)
+    runs-on: ${{ vars.EAL_RUNNER_LABEL || 'self-hosted' }}
+    timeout-minutes: 240
+    env:
+      EXPERIMENT_MODE: ${{ inputs.mode || 'smoke' }}
+      EXPERIMENT_IMAGE: eal-api-experiment:${{ github.run_id }}-${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Build the complete experiment image
+        run: docker build --file experiments/api_load_test/Dockerfile --tag "$EXPERIMENT_IMAGE" .
+      - name: Record the tested revision and container
+        run: |
+          mkdir -p experiment-results
+          git rev-parse HEAD > experiment-results/source-commit.txt
+          docker image inspect "$EXPERIMENT_IMAGE" > experiment-results/image-inspect.json
+      - name: Run tests and HTTP/MCP controls in Docker
+        run: docker run --rm --network none "$EXPERIMENT_IMAGE"
+      - name: Run all model classes and prompt arms in Docker
+        env:
+          OPENAI_API_TOKEN: ${{ secrets.OPENAI_API_TOKEN }}
+        run: |
+          # The value is inherited from the environment, not placed in argv or an image layer.
+          docker run --rm --user "$(id -u):$(id -g)" \
+            --env OPENAI_API_TOKEN --env GITHUB_RUN_ID --env GITHUB_RUN_ATTEMPT \
+            --env EAL_SOURCE_COMMIT="$(git rev-parse HEAD)" \
+            --volume "$PWD/experiment-results:/results" \
+            "$EXPERIMENT_IMAGE" \
+            python -m experiments.api_load_test run --mode "$EXPERIMENT_MODE" --output /results/run
+      - name: Publish the measured summary
+        if: always()
+        run: |
+          if [ -f experiment-results/run/summary.md ]; then
+            cat experiment-results/run/summary.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'The experiment did not reach a measured summary. Inspect the retained logs.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Retain assignments, calls, measurements and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: api-experiment-${{ github.run_id }}-${{ github.run_attempt }}
+          path: experiment-results/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Remove this job's image
+        if: always()
+        run: docker image rm "$EXPERIMENT_IMAGE" || true

@@ -77,3 +77,7 @@ Keep the report schema and include every attempted request, including timeouts. 
 Review the claim and thresholds for that workload. Update the EAL input, environment and assessment context to match, and pin the selected bytes using `sha256sum PATH`. Then collect a new observation and assess at the intended decision time. A digest detects changed bytes; the collector cannot authenticate measurements, discover omitted requests or determine whether the workload is representative.
 
 The regression tests exercise limits that this example must respect: exactly 1% passes; 2% fails; excessive p95 latency, too few requests, stale evidence and mismatched build identities cannot support the claim.
+
+## Live model comparison
+
+The single [API experiment](../../experiments/api_load_test/README.md) extends this same task with actual HTTP traffic and four model snapshots. It compares EAL/2+MCP, equivalent JSON prompt text and three developer prompts in Docker. The synthetic report here remains a reproducible teaching fixture and is not used as experimental measurement data.
