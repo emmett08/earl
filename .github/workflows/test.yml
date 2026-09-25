@@ -6,7 +6,7 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ${{ vars.EAL_RUNNER_LABEL || 'self-hosted' }}
+    runs-on: ${{ vars.EAL_RUNNER_LABEL || 'ubuntu-24.04' }}
     timeout-minutes: 30
     env:
       TEST_IMAGE: eal-tests:${{ github.run_id }}-${{ github.run_attempt }}

@@ -35,13 +35,13 @@ The four controlled profiles are healthy, deliberately slow, 10% errors and an i
 
 This estimates the **combined EAL/MCP system difference**, including executable assessment. It cannot isolate a notation effect. Equal measurement access does not imply equal checking authority or prompt length; tokens, calls, cost and elapsed time are retained to expose those differences.
 
-## Run on the custom GitHub runner
+## Run the custom Docker image in GitHub Actions
 
 The [workflow](../../.github/workflows/api-experiment.yml) needs a runner with Docker and outbound access to package registries, GitHub actions, ANTLR and OpenAI. Python, Java, Make, the EAL package, pinned Python dependencies, parser generator, tests, HTTP service and collectors are inside the [Dockerfile](Dockerfile). No host Python installation is needed.
 
 1. Set repository secret **`OPENAI_API_TOKEN`**.
-2. The runner label defaults to **`self-hosted`**. Set repository variable **`EAL_RUNNER_LABEL`** if your custom runner uses another label.
-3. A qualifying change to an owner-authored, same-repository PR runs the complete Docker checks and the 80-trial smoke comparison. Fork PRs do not use the private runner or secret.
+2. The runner defaults to GitHub-hosted **`ubuntu-24.04`**, which executes the custom Docker image. No separately registered machine is required. To use an existing custom runner, set repository variable **`EAL_RUNNER_LABEL`** to its available label.
+3. A qualifying change to an owner-authored, same-repository PR runs the complete Docker checks and the 80-trial smoke comparison. Fork PRs do not run the paid experiment or receive the secret. A new PR revision cancels a superseded smoke run; manual studies retain their fixed sample.
 4. Once the workflow is available on the default branch, **Actions → API load-test model experiment → Run workflow** offers `smoke` or `study`.
 
 The token is passed through the container environment only for paid calls, never through a build argument, command-line value or image layer. Collector and MCP child environments omit it. The workflow records the source revision and image inspection, then uploads the assigned trials, raw measurements, provider outcomes, tool traces, failures and Markdown/JSON summaries. It does not silently substitute a different model if a snapshot is unavailable.

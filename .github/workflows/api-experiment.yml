@@ -28,17 +28,19 @@ permissions:
 
 concurrency:
   group: api-experiment-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: false
+  # Superseded PR smoke runs must not block the current revision.
+  # Manually dispatched studies keep their fixed sample uninterrupted.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   experiment:
     # A same-repository owner PR may run the paid smoke test. Forks never run
-    # on a private runner or receive the token. Manual runs can select study.
+    # this paid experiment or receive the token. Manual runs can select study.
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event.pull_request.head.repo.full_name == github.repository &&
        github.event.pull_request.user.login == github.repository_owner)
-    runs-on: ${{ vars.EAL_RUNNER_LABEL || 'self-hosted' }}
+    runs-on: ${{ vars.EAL_RUNNER_LABEL || 'ubuntu-24.04' }}
     timeout-minutes: 240
     env:
       EXPERIMENT_MODE: ${{ inputs.mode || 'smoke' }}

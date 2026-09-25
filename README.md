@@ -29,7 +29,7 @@ The source pins the report's build, run and digest. The collector preserves its 
 
 The benchmark plans and previous examples have been removed from the current tree. Their prior versions remain in Git history. Comparative benefits over prose or JSON remain empirical questions.
 
-A single [live API experiment](experiments/api_load_test/README.md) now extends this task: four pinned small/large reasoning and non-reasoning models compare EAL/2+MCP, equivalent JSON prompt text and three developer prompts. It implements a real HTTP service, collectors and independent scoring. The Docker workflow runs all tests on a custom runner, then uses repository secret `OPENAI_API_TOKEN` for an 80-trial smoke comparison; a manual study has 800 assigned trials. Comparative benefits remain to be measured.
+A single [live API experiment](experiments/api_load_test/README.md) now extends this task: four pinned small/large reasoning and non-reasoning models compare EAL/2+MCP, equivalent JSON prompt text and three developer prompts. It implements a real HTTP service, collectors and independent scoring. The Docker workflow runs all tests in the custom image on a GitHub-hosted Ubuntu runner, then uses repository secret `OPENAI_API_TOKEN` for an 80-trial smoke comparison; a manual study has 800 assigned trials. Comparative benefits remain to be measured.
 
 ## Interfaces and boundaries
 
