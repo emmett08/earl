@@ -75,14 +75,16 @@ The finite domain is at most 12 atoms, 128 premise formulas, 512 formula nodes i
 {"successes": 20, "trials": 25, "confidence": 0.95}
 ```
 
-For success count \(k\), trial count \(n\), \(\hat p=k/n\), confidence level \(c\) and standard-normal quantile \(z=\Phi^{-1}((1+c)/2)\), the implemented Wilson interval has centre and half-width
+For success count $k$, trial count $n$, $\hat p=k/n$, confidence level $c$ and standard-normal quantile $z=\Phi^{-1}((1+c)/2)$, the implemented Wilson interval has centre and half-width
 
-\[
- m=\frac{\hat p+z^2/(2n)}{1+z^2/n},\qquad
- h=\frac{z\sqrt{\hat p(1-\hat p)/n+z^2/(4n^2)}}{1+z^2/n}.
-\]
+$$
+\begin{aligned}
+m &= \frac{\hat p+z^2/(2n)}{1+z^2/n},\\
+h &= \frac{z\sqrt{\hat p(1-\hat p)/n+z^2/(4n^2)}}{1+z^2/n}.
+\end{aligned}
+$$
 
-The endpoints are \(m-h\) and \(m+h\), clipped to \([0,1]\) for floating-point round-off. Result fields include `estimate`, `lower`, `upper`, `sample_size`, `successes`, `confidence`, `method: "wilson_score"` and `interpretation: "approximate_frequentist"`. The example produces approximately `[0.6086905, 0.9113942]`.
+The endpoints are $m-h$ and $m+h$, clipped to $[0,1]$ for floating-point round-off. Result fields include `estimate`, `lower`, `upper`, `sample_size`, `successes`, `confidence`, `method: "wilson_score"` and `interpretation: "approximate_frequentist"`. The example produces approximately `[0.6086905, 0.9113942]`.
 
 The sampling model assumes independent Bernoulli observations with a common success probability and an appropriate sampling/stopping procedure. The record's counts do not establish those assumptions. The interval has nominal approximate repeated-sampling coverage; its confidence level is not a posterior probability that the fixed parameter lies inside this realised interval. It does not supply an exact guarantee or repair selection bias, dependent sampling, repeated optional inspection or a changing population. Those issues require explicit modelling or a different statistical procedure.
 
@@ -100,11 +102,11 @@ The sampling model assumes independent Bernoulli observations with a common succ
 }
 ```
 
-For supplied candidates \(H_i\) and the described observation \(E\), the calculation uses
+For supplied candidates $H_i$ and the described observation $E$, the calculation uses
 
-\[
+$$
 P(H_i\mid E)=\frac{P(H_i)P(E\mid H_i)}{\sum_jP(H_j)P(E\mid H_j)}.
-\]
+$$
 
 Each `likelihood` is the probability of the **whole supplied observation** under that hypothesis. The implementation never decomposes it into independent products. Priors must sum to one within absolute tolerance `1e-9`; that finite-precision tolerance is normalised. Candidate names must be unique, with 2–128 candidates. Computation uses logarithms to avoid premature underflow of prior–likelihood products.
 
@@ -124,12 +126,12 @@ The interpretation requires the supplied hypotheses to be mutually exclusive and
 
 The implemented calculation is a two-arm difference of means,
 
-\[
+$$
 \widehat\Delta=\bar Y_T-\bar Y_C,\qquad
 \widehat{\mathrm{SE}}=\sqrt{s_T^2/n_T+s_C^2/n_C},
-\]
+$$
 
-where each \(s^2\) is the unbiased sample variance using divisor \(n-1\). Results include `estimate`, `standard_error`, both group means, both group sizes and `sample_size`. Each group requires 2–10,000 observations. The example gives effect estimate 3 and standard error \(\sqrt{5/3}\).
+where each $s^2$ is the unbiased sample variance using divisor $n-1$. Results include `estimate`, `standard_error`, both group means, both group sizes and `sample_size`. Each group requires 2–10,000 observations. The example gives effect estimate 3 and standard error $\sqrt{5/3}$.
 
 The standard error is an independent-group estimator. It is not a paired, repeated-measures, clustered or covariate-adjusted estimator. Under a finite-population completely randomised design, the same Neyman variance form generally estimates an upper bound on randomisation variance when treatment effects vary. Interpretation must therefore state the population, estimand and design.
 
@@ -150,11 +152,11 @@ The standard error is an independent-group estimator. It is not a paired, repeat
 
 Every variable has the affine structural equation
 
-\[
-X_i=b_i+\sum_{j\in\operatorname{pa}(i)}a_{ij}X_j+u_i.
-\]
+$$
+X_i=b_i+\sum_{j\in\mathrm{pa}(i)}a_{ij}X_j+u_i.
+$$
 
-`intercept` supplies \(b_i\), `coefficients` supplies the parent coefficients and `noise` supplies the realised exogenous value \(u_i\). Every parent must be a declared variable. The graph must be acyclic, including explicitly listed zero-coefficient dependencies. The interpreter evaluates the factual model in topological order, replaces the intervention variable's equation by its supplied value, and evaluates the modified model with the **same** exogenous values.
+`intercept` supplies $b_i$, `coefficients` supplies the parent coefficients and `noise` supplies the realised exogenous value $u_i$. Every parent must be a declared variable. The graph must be acyclic, including explicitly listed zero-coefficient dependencies. The interpreter evaluates the factual model in topological order, replaces the intervention variable's equation by its supplied value, and evaluates the modified model with the **same** exogenous values.
 
 Results include `factual`, `counterfactual`, `difference`, `factual_values`, `counterfactual_values`, `outcome` and `evaluation_order`. The example gives factual `y = 11`, counterfactual `y = 15` and difference 4. Setting `x` replaces its whole equation, including its noise term.
 
