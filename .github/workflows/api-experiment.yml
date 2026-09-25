@@ -1,25 +1,12 @@
 name: API load-test model experiment
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - 'experiments/api_load_test/**'
-      - 'tests/test_api*.py'
-      - '.github/workflows/api-experiment.yml'
-      - '.dockerignore'
-      - 'src/**'
-      - 'grammar/**'
-      - 'examples/api-load-test/**'
-      - 'pyproject.toml'
-      - 'Makefile'
-      - 'MANIFEST.in'
   workflow_dispatch:
     inputs:
       mode:
         description: 'Pilot: 40 cases x 6 models x 5 arms; smoke: 4 cases x 6 models x 5 arms'
         required: true
-        default: pilot
+        default: smoke
         type: choice
         options: [smoke, pilot]
 
@@ -27,28 +14,22 @@ permissions:
   contents: read
 
 concurrency:
-  group: api-experiment-${{ github.event.pull_request.number || github.ref }}
-  # Superseded PR pilot runs must not block the current revision.
-  # Manually dispatched pilots keep their fixed sample uninterrupted.
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  group: api-experiment-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   experiment:
-    # A same-repository owner PR may run the paid development pilot. Forks never run
-    # this paid experiment or receive the token. Manual runs can select smoke or pilot.
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.pull_request.head.repo.full_name == github.repository &&
-       github.event.pull_request.user.login == github.repository_owner)
+    # Paid runner and model work starts only after an explicit manual dispatch.
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ${{ vars.EAL_RUNNER_LABEL || 'ubuntu-24.04' }}
     timeout-minutes: 240
     env:
-      EXPERIMENT_MODE: ${{ inputs.mode || 'pilot' }}
+      EXPERIMENT_MODE: ${{ inputs.mode }}
       EXPERIMENT_IMAGE: eal-api-experiment:${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          ref: ${{ github.sha }}
           persist-credentials: false
       - name: Build the complete experiment image
         run: docker build --file experiments/api_load_test/Dockerfile --tag "$EXPERIMENT_IMAGE" .

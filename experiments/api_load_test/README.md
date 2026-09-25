@@ -96,10 +96,10 @@ The [workflow](../../.github/workflows/api-experiment.yml) builds the custom [Do
 
 1. Set repository secret **`OPENAI_API_TOKEN`**.
 2. The runner defaults to GitHub-hosted **`ubuntu-24.04`**. To use a registered custom runner, set repository variable **`EAL_RUNNER_LABEL`** to its available label. A queued job awaiting a runner has not started its container or made model calls.
-3. A qualifying owner-authored, same-repository PR change runs Docker checks and the development pilot. Fork PRs receive no token. A newer PR revision cancels a superseded PR run; retained artefacts show any incomplete assignments.
-4. Once the workflow is on the default branch, manual dispatch offers `pilot` or `smoke`; it uses the common text transport.
+3. The experiment runs **only by manual dispatch**. PR updates and pushes do not start the experiment or its Docker job. Changing the trigger does not cancel a run that has already started.
+4. Once the workflow is on the default branch, open **Actions → API load-test model experiment → Run workflow**, select the branch and choose `smoke` (default) or `pilot`. Both use the common text transport. A new dispatch does not cancel an existing run for that branch.
 
-The default pilot assigns **1,200 trials**: 40 cases × 6 models × 5 arms. Smoke assigns **120 trials** using healthy, errors, stale and distractor cases. Up to six model workers run concurrently, each following its seeded case/arm order. Each trial permits six model calls, 4,096 output tokens per call and a 120-second request timeout. Per-model admission allowances are $20 for pilot and $5 for smoke: $120 or $30 across all six models. These conservative local limits are not provider billing guarantees or predicted costs.
+Selecting `pilot` assigns **1,200 trials**: 40 cases × 6 models × 5 arms. The default `smoke` assigns **120 trials** using healthy, errors, stale and distractor cases. Up to six model workers run concurrently, each following its seeded case/arm order. Each trial permits six model calls, 4,096 output tokens per call and a 120-second request timeout. Per-model admission allowances are $20 for pilot and $5 for smoke: $120 or $30 across all six models. These conservative local limits are not provider billing guarantees or predicted costs.
 
 The secret enters only the paid container's runtime environment, never an image layer, build argument or command-line value. Collector and MCP child environments omit it. Missing usage, provider failure, unexpected model identity or exhausted allowance stops further calls for the affected model; remaining assignments are retained as unattempted. There is no implicit favourable retry or model substitution.
 
