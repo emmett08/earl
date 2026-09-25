@@ -6,6 +6,11 @@ Version 4 addresses failures observed in the version 3.1 nano run: successful ch
 
 ## What is compared?
 
+For mitigation of the recorded completion and status errors, see the
+[optimisation analysis](OPTIMISATION.md). It quantifies calls made after a correct
+checked packet and explains when to choose `--finalisation checked`. Its
+recorded-trace reconstruction is separate from a live performance result.
+
 Each selected model receives the assigned arms on the **same immutable evidence for each case**. The default model-finalisation design has six arms. Checked finalisation assigns only EAL/MCP and `plain_validator`. The fixed argument is supplied; authoring EAL source is outside the experiment.
 
 | Arm | Prompt | Tool available to the model |
