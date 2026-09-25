@@ -27,6 +27,14 @@ def measured_case(tmp_path_factory):
     return build_cases(tmp_path_factory.mktemp("recovery-cases") / "cases", [selected], PLAN["seed"])[0]
 
 
+@pytest.fixture(scope="module", params=["errors", "corrupt"])
+def checked_case(request, tmp_path_factory, measured_case):
+    if request.param == "errors":
+        return measured_case
+    selected = next(row for row in case_specs("pilot") if row["family"] == request.param)
+    return build_cases(tmp_path_factory.mktemp("checked-cases") / "cases", [selected], PLAN["seed"])[0]
+
+
 def assignment(case, arm="plain_validator"):
     return {"id": "recovery", "model": SPEC["id"], "repeat": 0, "transport": "text",
             "case_id": case["id"], "case_family": case["family"], "block": case["id"], "arm": arm}
@@ -174,20 +182,59 @@ def test_fatal_or_unverified_errors_are_never_retried(tmp_path, measured_case, e
 
 
 @pytest.mark.parametrize("arm", ["eal_mcp", "plain_validator"])
-def test_checked_finalisation_retains_tool_decision_without_model_rewrite(tmp_path, measured_case, arm):
+@pytest.mark.parametrize("transport", ["text", "native"])
+def test_checked_finalisation_retains_tool_decision_without_model_rewrite(
+        tmp_path, monkeypatch, checked_case, arm, transport):
+    monkeypatch.setenv("OPENAI_API_TOKEN", "unused-mock-secret")
     operation = "assess_load_test" if arm == "eal_mcp" else "inspect_report"
-    provider = Replies([{"operation": operation, "report_id": measured_case["expected_report_id"]}])
-    result = asyncio.run(runner.trial(assignment(measured_case, arm), SPEC,
-                                     {**PLAN, "finalisation": "checked"}, tmp_path,
-                                     provider, runner.Budget(5), measured_case))
-    truth = reference(measured_case)
-    assert provider.calls == 1 and result["state"] == "complete"
+    requests = []
+
+    def respond(request):
+        payload = json.loads(request.content)
+        requests.append(payload)
+        arguments = {"report_id": checked_case["expected_report_id"]}
+        if transport == "native":
+            assert [tool["name"] for tool in payload["tools"]] == [operation]
+            assert payload["tool_choice"] == "required" and not payload["parallel_tool_calls"]
+            output = [{"type": "function_call", "call_id": "checked-selection",
+                       "name": operation, "arguments": json.dumps(arguments)}]
+        else:
+            assert "tools" not in payload
+            advertised = json.loads(payload["input"][0]["content"].splitlines()[-1])
+            assert [item["operation"] for item in advertised] == [operation]
+            output = [{"type": "message", "role": "assistant", "status": "completed",
+                       "content": [{"type": "output_text", "text": json.dumps(
+                           {"operation": operation, **arguments})}]}]
+        return httpx.Response(200, json={
+            "id": "checked-selection-response", "model": SPEC["id"], "status": "completed",
+            "output": output, "usage": {"input_tokens": 100, "output_tokens": 20}})
+
+    provider = ResponsesProvider(model=SPEC["id"], api_key_env="OPENAI_API_TOKEN",
+                                 pricing=SPEC["pricing"], capabilities={"native_tools": transport == "native"},
+                                 transport=httpx.MockTransport(respond))
+    result = asyncio.run(runner.trial({**assignment(checked_case, arm), "transport": transport}, SPEC,
+                                     {**PLAN, "finalisation": "checked", "transport": transport}, tmp_path,
+                                     provider, runner.Budget(5), checked_case))
+    truth = reference(checked_case)
+    assert truth["status"] == {"errors": "unsupported", "corrupt": "unavailable"}[checked_case["family"]]
+    assert len(requests) == len(result["model_calls"]) == 1 and result["state"] == "complete"
     assert result["outcome"]["correct"] and result["outcome"]["host_agrees_with_reference"]
     assert result["answer_origin"] == "checked_host" and result["answer_complete"]
     assert not result["protocol_complete"] and not result["explanation_present"]
-    assert result["answer"] == {key: truth[key] for key in
-                                 ("status", "report_id", "scope", "failed_checks", "unknown_checks", "metrics")} | {
-                                     "explanation": ""}
+    assert result["answer"] == {
+        **{key: truth[key] for key in ("status", "report_id", "scope", "metrics")},
+        "failed_checks": sorted(truth["failed_checks"]), "unknown_checks": sorted(truth["unknown_checks"]),
+        "explanation": ""}
+    prompt = json.loads((tmp_path / "prompt.json").read_text())
+    assert [item["operation"] for item in prompt["operations"]] == [operation]
+    trace = json.loads((tmp_path / "tool-trace.json").read_text())
+    if arm == "eal_mcp":
+        calls = [item for item in trace if "tool" in item]
+        assert [item["tool"] for item in calls] == ["eal_validate", "eal_collect", "eal_reason", "eal_explain"]
+        assert all(not item["is_error"] for item in calls)
+    else:
+        assert [item["route"] for item in trace] == ["direct_command", "direct_validator"]
+    assert not provider._replay_items
 
 
 def test_model_finalisation_preserves_wrong_status_and_valid_protocol(tmp_path, measured_case):

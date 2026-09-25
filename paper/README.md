@@ -24,7 +24,7 @@ make -C paper
 make -C paper check
 ```
 
-Analysis requires Python 3.11+ and only its standard library. Building requires `make`, `latexmk`, `pdflatex`, BibTeX, and the LaTeX packages listed in `manuscript.tex` and `analysis/render_figures.py`, including TikZ, `standalone`, Latin Modern and `natbib`. PDF checks additionally use Poppler's `pdfinfo` and `pdffonts`. The build uses a fixed `SOURCE_DATE_EPOCH`; generated outputs are committed for readers without TeX. See [validation](review/validation.txt) for the tested environment.
+The two historical score replays require Python 3.11+ and only its standard library. The optional [finalisation optimisation analysis](../experiments/api_load_test/OPTIMISATION.md), run with `python paper/analysis/analyse_finalisation.py` from an installed checkout, also imports the current answer contract and requires the project dependencies. It partitions recorded calls after a checked packet and is separate from a new model-performance experiment. Building requires `make`, `latexmk`, `pdflatex`, BibTeX, and the LaTeX packages listed in `manuscript.tex` and `analysis/render_figures.py`, including TikZ, `standalone`, Latin Modern and `natbib`. PDF checks additionally use Poppler's `pdfinfo` and `pdffonts`. The build uses a fixed `SOURCE_DATE_EPOCH`; generated outputs are committed for readers without TeX. See [validation](review/validation.txt) for the tested environment.
 
 No command above makes network requests or provider calls. To run the separately described software tests, install the repository development dependencies and use `python -m pytest -q`; 846 tests passed for the inspected source snapshot.
 
