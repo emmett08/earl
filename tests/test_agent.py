@@ -361,6 +361,113 @@ def test_native_interaction_requires_configured_capability(tmp_path):
     assert report["attempts"] == []
 
 
+@pytest.mark.parametrize("interaction_mode", ["text", "native"])
+def test_responses_agent_replays_private_items_and_releases_them(tmp_path, interaction_mode):
+    import httpx
+    from eal.responses_provider import ResponsesProvider
+
+    outputs, requests = [], []
+    native = interaction_mode == "native"
+
+    def respond(request):
+        payload = json.loads(request.content)
+        requests.append(payload)
+        operation = "assess" if len(requests) == 1 else "finish"
+        if outputs:
+            assert payload["input"][-3:-1] == outputs[0]
+            assert payload["input"][-1].get("type" if native else "role") == (
+                "function_call_output" if native else "user")
+        output = [{"type": "reasoning", "id": f"rs-{len(requests)}",
+                   "encrypted_content": "private-agent-reasoning"}]
+        if native:
+            output.append({"type": "function_call", "call_id": f"call-{len(requests)}",
+                           "name": operation, "arguments": "{}", "status": "completed"})
+        else:
+            output.append({"type": "message", "role": "assistant", "status": "completed",
+                           "content": [{"type": "output_text", "text": json.dumps({"operation": operation})}]})
+        outputs.append(output)
+        return httpx.Response(200, json={"model": "mock-responses", "status": "completed",
+            "usage": {"input_tokens": 100, "output_tokens": 10}, "output": output})
+
+    provider = ResponsesProvider(model="mock-responses", api_key_env=None,
+                                 capabilities={"native_tools": native}, transport=httpx.MockTransport(respond))
+    report = asyncio.run(run_agent("Check works", provider, server(tmp_path), required_claims=("works",),
+                                   interaction_mode=interaction_mode,
+                                   initial_data={"source": SOURCE, "context": {"site": "bench"}}))
+    assert report["status"] == "completed", report
+    assert report["final"]["claims"]["works"]["status"] == "supported"
+    assert len(requests) == 2
+    assert provider._replay_items == {}
+    assert "private-agent-reasoning" not in json.dumps(report)
+    assert "responses_replay_handle" not in json.dumps(report)
+
+
+@pytest.mark.parametrize("stop_path", ["usage", "response_limit", "provider_error"])
+def test_responses_agent_releases_handles_before_reply_is_accepted(stop_path):
+    import httpx
+    from eal.responses_provider import ResponsesProvider
+
+    class RejectedResponsesProvider(ResponsesProvider):
+        async def complete(self, messages, max_output_tokens):
+            response = await super().complete(messages, max_output_tokens)
+            if stop_path == "provider_error":
+                raise ProviderError("Rejected after generation", response=response)
+            return response
+
+    provider = RejectedResponsesProvider(model="mock-responses", api_key_env=None,
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, json={
+            "model": "mock-responses", "status": "completed",
+            "usage": {"input_tokens": None if stop_path == "usage" else 10, "output_tokens": 10},
+            "output": [{"type": "reasoning", "encrypted_content": "private-agent-reasoning"},
+                       {"type": "message", "role": "assistant", "status": "completed", "content": [
+                           {"type": "output_text", "text": '{"claims":{"works":"supported"}}'}]}]})))
+    report = asyncio.run(run_unaided("Check works", provider, required_claims=("works",),
+        budget=AgentBudget(max_repairs=0, max_response_bytes=1 if stop_path == "response_limit" else 1024)))
+    assert report["status"] == "incomplete"
+    assert report["stop_reason"] == ("token_usage_unavailable" if stop_path == "usage" else "repair_budget_exhausted")
+    assert provider._replay_items == {}
+    assert "responses_replay_handle" not in json.dumps(report)
+
+
+@pytest.mark.parametrize("termination", ["cancel", "timeout"])
+def test_responses_unaided_replay_is_released_on_interrupted_continuation(termination):
+    import httpx
+    from eal.responses_provider import ResponsesProvider
+
+    async def exercise():
+        continuation_started = asyncio.Event()
+        requests = []
+
+        async def respond(request):
+            payload = json.loads(request.content)
+            requests.append(payload)
+            if len(requests) > 1:
+                assert payload["input"][-3]["encrypted_content"] == "private-agent-reasoning"
+                continuation_started.set()
+                await asyncio.Event().wait()
+            return httpx.Response(200, json={"model": "mock-responses", "status": "completed",
+                "usage": {"input_tokens": 10, "output_tokens": 10}, "output": [
+                    {"type": "reasoning", "encrypted_content": "private-agent-reasoning"},
+                    {"type": "message", "role": "assistant", "status": "completed",
+                     "content": [{"type": "output_text", "text": "requires a JSON repair"}]}]})
+
+        provider = ResponsesProvider(model="mock-responses", api_key_env=None,
+                                     transport=httpx.MockTransport(respond))
+        task = asyncio.create_task(run_unaided("Check works", provider,
+            budget=AgentBudget(max_elapsed_seconds=0.1 if termination == "timeout" else 10)))
+        await asyncio.wait_for(continuation_started.wait(), timeout=2)
+        assert len(provider._replay_items) == 1
+        if termination == "cancel":
+            task.cancel()
+            with pytest.raises(asyncio.CancelledError):
+                await task
+        else:
+            assert (await task)["stop_reason"] == "elapsed_time_budget_exhausted"
+        assert provider._replay_items == {}
+
+    asyncio.run(exercise())
+
+
 def test_compact_feedback_preserves_conflict_missing_assumptions_and_bound_results():
     from eal.agent import _compact_feedback
 

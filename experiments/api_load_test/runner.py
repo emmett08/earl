@@ -22,37 +22,12 @@ from eal.tool_acquisition import strict_json
 from .api import utc_now
 from .cases import build_cases, case_specs
 from .materials import ARMS, SYSTEM, operations, prompt_for, source_for
-from .oracle import grade, reference, reference_report
+from .oracle import grade, packet_reference_check, reference
+from .recording import TrialRecord, event, write_json
 from .routes import ROOT, TrialTools
 
 
 HERE = Path(__file__).resolve().parent
-
-
-def write_json(path: Path, value):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n")
-    temporary.replace(path)
-
-
-def event(path: Path, value):
-    record = {"at": utc_now(), **value}
-    with path.open("a") as stream:
-        stream.write(json.dumps(record, allow_nan=False) + "\n")
-        stream.flush()
-        os.fsync(stream.fileno())
-    # Live CI progress is deliberately limited to operational facts. Prompts,
-    # answers, credentials and private reasoning never enter this console line.
-    fields = ("at", "type", "id", "model", "arm", "turn", "state", "correct",
-              "error", "category", "seconds", "estimated_usd", "reserved_usd")
-    progress = {key: record[key] for key in fields if key in record}
-    response = record.get("response")
-    if response:
-        progress.update(model=response.get("model"), input_tokens=response.get("input_tokens"),
-                        output_tokens=response.get("output_tokens"),
-                        response_id=response.get("metadata", {}).get("id"))
-    print(json.dumps(progress, allow_nan=False), flush=True)
 
 
 def schedule(model: str, cases: list[dict], seed: int, transport: str = "text", *, selected_arms=ARMS):
@@ -83,8 +58,16 @@ def make_provider(spec: dict, plan: dict):
 
 
 class Budget:
-    def __init__(self, limit: float):
+    def __init__(self, limit: float, path: Path | None = None):
         self.limit, self.estimated_usd, self.unknown_reserve = limit, 0.0, 0.0
+        self.path = path
+        self.checkpoint()
+
+    def checkpoint(self):
+        if self.path is not None:
+            write_json(self.path, {"estimated_usd": self.estimated_usd,
+                                  "unknown_charge_reserve_usd": self.unknown_reserve,
+                                  "limit_usd": self.limit})
 
     def reserve(self, messages, tools, output_limit, pricing, replay_token_allowance=0):
         # Conservative admission allowance, not a provider billing reservation.
@@ -94,13 +77,17 @@ class Budget:
         if self.estimated_usd + self.unknown_reserve + maximum > self.limit:
             raise ValueError("Configured model cost allowance exhausted")
         self.unknown_reserve += maximum
+        self.checkpoint()
         return maximum
 
-    def settle(self, reserved, response, provider):
-        cost = response_cost(response, provider.identity()) if response else None
+    def settle(self, reserved, response, provider, expected_model):
+        # Usage from an unexpected snapshot cannot be priced at this model's rate.
+        cost = (response_cost(response, provider.identity())
+                if response is not None and response.model == expected_model else None)
         if cost is not None:
             self.unknown_reserve -= reserved
             self.estimated_usd += cost
+        self.checkpoint()
         return cost
 
 
@@ -128,7 +115,7 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
     result = {**assignment, "model_spec": spec, "started_at": utc_now(), "state": "running",
               "case_sha256": hashlib.sha256(json.dumps(case, sort_keys=True).encode()).hexdigest(),
               "source_digest": hashlib.sha256(source.encode()).hexdigest(), "model_calls": calls}
-    write_json(workspace / "trial.json", result)
+    record = TrialRecord(workspace, result)
     write_json(workspace / "prompt.json", {"messages": messages, "operations": advertised})
     tools = TrialTools(workspace, source, {"case": case})
     truth = reference(case)
@@ -137,50 +124,56 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
             if len(json.dumps(messages).encode()) > plan["max_transcript_bytes"]:
                 failure = "transcript_limit"
                 break
-            try:
-                reserved = budget.reserve(messages, advertised, plan["max_output_tokens_per_call"], spec["pricing"],
-                                          replay_token_allowance=2 * sum(call.get("response", {}).get("output_tokens", 0)
-                                                                        for call in calls))
-            except ValueError:
-                failure, stop_model = "cost_allowance_exhausted", True
-                break
-            event(workspace / "events.jsonl", {"type": "model_call_started", "turn": turn,
-                                                "id": assignment["id"], "model": spec["id"], "arm": arm,
-                                                "reserved_usd": reserved})
-            call_started = time.monotonic()
-            try:
-                async with call_slots or asyncio.Semaphore(1):
+            async with call_slots or asyncio.Semaphore(1):
+                try:
+                    reserved = budget.reserve(
+                        messages, advertised, plan["max_output_tokens_per_call"], spec["pricing"],
+                        replay_token_allowance=2 * sum((call.get("response") or {}).get("output_tokens") or 0
+                                                      for call in calls))
+                except ValueError:
+                    failure, stop_model = "cost_allowance_exhausted", True
+                    break
+                call_started = time.monotonic()
+                call = record.start_call(turn, reserved)
+                try:
                     response = await provider.complete_request(messages, plan["max_output_tokens_per_call"],
                                                                operations=advertised, native_tools=native_tools)
-            except ProviderError as exc:
-                cost = budget.settle(reserved, exc.response, provider)
-                calls.append({"turn": turn, "error": str(exc), "category": exc.category,
-                              "retryable": exc.retryable, "diagnostics": exc.diagnostics, "estimated_usd": cost,
-                              "response": dataclasses.asdict(exc.response) if exc.response else None,
-                              "seconds": time.monotonic() - call_started})
-                event(workspace / "events.jsonl", {"type": "model_call_failed", "id": assignment["id"],
-                                                   "model": spec["id"], "arm": arm, **calls[-1]})
-                failure = exc.category
-                # A measured reply failure belongs to this assigned trial. Do
-                # not silently retry it, or abandon unrelated paired cases.
-                reply_failures = {"output_truncated", "output_filtered", "output_incomplete",
-                                  "multiple_messages", "missing_message", "invalid_operation",
-                                  "invalid_response", "operation_protocol"}
-                verified = exc.response is not None and exc.response.model == spec["id"] and cost is not None
-                stop_model = not (verified and exc.category in reply_failures)
-                if exc.response is not None and (exc.response.model != spec["id"] or cost is None):
-                    failure = "model_identity_or_usage_unverified"
-                break
-            cost = budget.settle(reserved, response, provider)
-            calls.append({"turn": turn, "response": dataclasses.asdict(response), "estimated_usd": cost,
-                          "seconds": time.monotonic() - call_started})
-            event(workspace / "events.jsonl", {"type": "model_call_completed", "id": assignment["id"],
-                                               "model": spec["id"], "arm": arm, **calls[-1]})
+                except ProviderError as exc:
+                    if exc.response is not None:
+                        handles.append(exc.response.metadata.get("responses_replay_handle"))
+                    cost = budget.settle(reserved, exc.response, provider, spec["id"])
+                    record.finish_call(call, state="failed", error=str(exc), category=exc.category,
+                                       retryable=exc.retryable, diagnostics=exc.diagnostics, estimated_usd=cost,
+                                       response=dataclasses.asdict(exc.response) if exc.response else None,
+                                       seconds=time.monotonic() - call_started)
+                    failure = exc.category
+                    # A measured reply failure belongs to this assignment; no retry.
+                    reply_failures = {"output_truncated", "output_filtered", "output_incomplete",
+                                      "multiple_messages", "missing_message", "invalid_operation",
+                                      "invalid_response", "operation_protocol"}
+                    verified = exc.response is not None and exc.response.model == spec["id"] and cost is not None
+                    stop_model = not (verified and exc.category in reply_failures)
+                    if exc.response is not None and (exc.response.model != spec["id"] or cost is None):
+                        failure = "model_identity_or_usage_unverified"
+                    break
+                except asyncio.CancelledError:
+                    record.finish_call(call, state="interrupted", error="Model request interrupted",
+                                       category="interrupted", seconds=time.monotonic() - call_started)
+                    raise
+                except Exception as exc:
+                    record.finish_call(call, state="failed", error=f"Host failure: {type(exc).__name__}",
+                                       category="host_error", seconds=time.monotonic() - call_started)
+                    raise
+                # The adapter may already retain private replay state for a reply
+                # whose model or usage fails verification below.
+                handle = response.metadata.get("responses_replay_handle")
+                handles.append(handle)
+                cost = budget.settle(reserved, response, provider, spec["id"])
+                record.finish_call(call, state="complete", response=dataclasses.asdict(response),
+                                   estimated_usd=cost, seconds=time.monotonic() - call_started)
             if response.model != spec["id"] or cost is None:
                 failure, stop_model = "model_identity_or_usage_unverified", True
                 break
-            handle = response.metadata.get("responses_replay_handle")
-            handles.append(handle)
             if native_tools:
                 native = response.metadata["native_tool_call"]
                 messages.append({"role": "assistant", "content": None, "tool_calls": [native],
@@ -212,25 +205,23 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
             await asyncio.sleep(plan["minimum_call_interval_seconds"])
         if answer is None and failure is None:
             failure = "model_call_limit"
+    except asyncio.CancelledError:
+        failure, stop_model = "interrupted", True
+        raise
     except Exception as exc:
         failure, stop_model = f"host_error:{type(exc).__name__}", True
         event(workspace / "events.jsonl", {"type": "host_error", "category": type(exc).__name__})
     finally:
-        provider.discard_replay_handles(handles)
         host_checks = []
-        for report_id, packet in tools.packets.items():
-            if "status" not in packet:
-                continue
-            report_truth = reference_report(case, report_id)
-            assessment = tools.host_assessments.get(report_id)
-            agrees = (packet["status"] == report_truth["status"]
-                      and packet["metrics"] == report_truth["metrics"]
-                      and set(packet["failed_checks"]) == set(report_truth["failed_checks"])
-                      and set(packet["unknown_checks"]) == set(report_truth["unknown_checks"]))
-            if assessment is not None:
-                agrees = agrees and (assessment["host_status"] ==
-                                     ("supported" if report_truth["status"] == "supported" else "unsupported"))
-            host_checks.append({"report_id": report_id, "agrees": agrees})
+        try:
+            provider.discard_replay_handles(handles)
+            host_checks = [packet_reference_check(
+                case, report_id, packet, checked=arm in {"eal_mcp", "plain_validator"},
+                host_status=tools.host_assessments.get(report_id, {}).get("host_status"))
+                for report_id, packet in tools.packets.items()]
+        except Exception as exc:
+            failure, stop_model = f"host_finalization_error:{type(exc).__name__}", True
+            event(workspace / "events.jsonl", {"type": "host_error", "category": type(exc).__name__})
         if any(not item["agrees"] for item in host_checks):
             failure, stop_model = "host_reference_disagreement", True
         outcome = grade(answer, truth, collected=bool(tools.inspected_report_ids),
@@ -247,7 +238,7 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
                       collected=bool(tools.inspected_report_ids), tool_route="mcp" if arm == "eal_mcp" else "direct")
         write_json(workspace / "transcript.json", messages)
         write_json(workspace / "tool-trace.json", tools.trace)
-        write_json(workspace / "trial.json", result)
+        record.checkpoint()
     return result
 
 
@@ -308,13 +299,14 @@ async def run(output: Path, specs: list[dict], plan: dict, *, mode: str, provide
     async def model_worker(spec):
         # Each model's trials are sequential. Concurrent model workers provide
         # temporal overlap without overlapping that model's budget accounting.
-        budget = Budget(plan[f"{mode}_max_usd_per_model"])
-        stopped = False
+        budget = Budget(plan[f"{mode}_max_usd_per_model"], output / f"budget-{spec['id']}.json")
+        stopped = interrupted = False
         results = []
         for assignment in (item for item in assignments if item["model"] == spec["id"]):
             workspace = output / "trials" / assignment["id"]
             if stopped:
-                result = {**assignment, "state": "not_attempted", "failure": "earlier_model_stop", "model_calls": [],
+                result = {**assignment, "state": "not_attempted",
+                          "failure": "run_interrupted" if interrupted else "earlier_model_stop", "model_calls": [],
                           "outcome": grade(None, None, collected=False)}
                 write_json(workspace / "trial.json", result)
             else:
@@ -323,6 +315,9 @@ async def run(output: Path, specs: list[dict], plan: dict, *, mode: str, provide
                     result = await trial(assignment, spec, plan, workspace, provider, budget,
                                          cases[assignment["case_id"]], call_slots=slots)
                     stopped = result["stop_model"]
+                except asyncio.CancelledError:
+                    result = strict_json((workspace / "trial.json").read_text())
+                    stopped = interrupted = True
                 except Exception as exc:
                     # A setup failure must not cancel other workers' paid calls.
                     # Calls already durably recorded remain in this workspace.
@@ -338,11 +333,26 @@ async def run(output: Path, specs: list[dict], plan: dict, *, mode: str, provide
             event(output / "ledger.jsonl", {"type": "trial_terminal", "id": assignment["id"],
                                            "model": spec["id"], "arm": assignment["arm"],
                                            "state": result["state"], "correct": result["outcome"]["correct"]})
-            write_json(output / f"budget-{spec['id']}.json", {"estimated_usd": budget.estimated_usd,
-                       "unknown_charge_reserve_usd": budget.unknown_reserve, "limit_usd": budget.limit})
+            budget.checkpoint()
+        if interrupted:
+            raise asyncio.CancelledError
         return results
 
-    all_results = [item for group in await asyncio.gather(*(model_worker(spec) for spec in specs)) for item in group]
+    workers = [asyncio.create_task(model_worker(spec)) for spec in specs]
+    try:
+        all_results = [item for group in await asyncio.gather(*workers) for item in group]
+    except BaseException:
+        # Finish cancellation checkpoints before the CLI analyses the retained run.
+        for worker in workers:
+            if not worker.done():
+                worker.cancel()
+        await asyncio.gather(*workers, return_exceptions=True)
+        retained = [strict_json(path.read_text()) for path in output.glob("trials/*/trial.json")]
+        write_json(output / "completion.json", {"complete": False, "completed_at": utc_now(),
+                   "trials": len(retained), "planned": len(assignments),
+                   "model_calls": sum(len(row.get("model_calls", [])) for row in retained),
+                   "interrupted": True})
+        raise
     complete = all(item["state"] == "complete" for item in all_results)
     write_json(output / "completion.json", {"complete": complete, "completed_at": utc_now(), "trials": len(all_results),
                                            "planned": len(assignments), "model_calls": sum(len(x["model_calls"]) for x in all_results)})

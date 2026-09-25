@@ -6,6 +6,7 @@ are finite-suite quantities, with no superiority or equivalence inference.
 from __future__ import annotations
 
 from collections import Counter, defaultdict
+import hashlib
 import json
 from pathlib import Path
 import statistics
@@ -25,10 +26,46 @@ def _table(pairs):
             "comparator_only_correct": counts[False, True], "both_incorrect": counts[False, False]}
 
 
+def _instrument_failure(row):
+    failure = row.get("failure") or ""
+    return (failure == "host_reference_disagreement"
+            or failure.startswith(("host_error:", "host_setup_error:", "host_finalization_error:"))
+            or bool(row.get("measurement_integrity_errors"))
+            or any(item.get("agrees") is False for item in row.get("host_checks", [])))
+
+
+def _frozen_cases(output):
+    path = output / "case-manifest.json"
+    if not path.exists():
+        return {}, {"*": "missing_case_freeze"}
+    try:
+        freeze = json.loads(path.read_text())
+    except (OSError, ValueError):
+        return {}, {"*": "invalid_case_freeze"}
+    if (not isinstance(freeze, dict) or freeze.get("schema") != "eal-api-case-freeze/2"
+            or not isinstance(freeze.get("cases"), dict)):
+        return {}, {"*": "invalid_case_freeze"}
+    errors = {}
+    for case_id, expected in freeze["cases"].items():
+        retained = output / "cases" / case_id / "case.json"
+        if not retained.exists():
+            errors[case_id] = "missing_retained_case"
+            continue
+        try:
+            case = json.loads(retained.read_text())
+            actual = hashlib.sha256(json.dumps(case, sort_keys=True).encode()).hexdigest()
+            if actual != expected:
+                errors[case_id] = "retained_case_digest_mismatch"
+        except (OSError, ValueError):
+            errors[case_id] = "invalid_retained_case"
+    return freeze["cases"], errors
+
+
 def summarise(output: Path) -> dict:
     manifest = json.loads((output / "manifest.json").read_text())
     if manifest["schema"] != "eal-api-experiment-run/3":
         raise ValueError("Earlier runs retain their original reports; this analysis requires a v3 manifest")
+    frozen_cases, freeze_errors = _frozen_cases(output)
     rows, identities = [], set()
     for assignment in manifest["assignments"]:
         if assignment["id"] in identities:
@@ -38,12 +75,36 @@ def summarise(output: Path) -> dict:
         row = json.loads(path.read_text()) if path.exists() else {**assignment, "state": "not_attempted"}
         if any(row.get(key) != value for key, value in assignment.items()):
             raise ValueError("Trial identity differs from the frozen assignment")
+        if row.get("state") != "not_attempted" or row.get("model_calls"):
+            # Integrity defects suspend score interpretation, while identifiable
+            # assignments and retained billing evidence remain reportable.
+            errors = [freeze_errors[key] for key in ("*", row["case_id"]) if key in freeze_errors]
+            if row["case_id"] not in frozen_cases:
+                errors.append("case_absent_from_freeze")
+            elif row.get("case_sha256") != frozen_cases[row["case_id"]]:
+                errors.append("trial_case_digest_mismatch")
+            if errors:
+                row = {**row, "measurement_integrity_errors": errors}
+        if row.get("state") == "running":
+            # A terminated process cannot finish its journal. Report the retained
+            # attempt as interrupted without changing the original artefact.
+            row = {**row, "state": "failed", "failure": "interrupted"}
+        calls = row.get("model_calls", [])
+        if any(call.get("state") == "in_flight" for call in calls):
+            row = {**row, "state": "failed", "failure": "interrupted",
+                   "model_calls": [{**call, "state": "interrupted", "estimated_usd": None}
+                                   if call.get("state") == "in_flight" else call for call in calls]}
         if row.get("state") not in {"complete", "failed", "not_attempted"}:
             raise ValueError("Trial state must be complete, failed or not_attempted before analysis")
         row = {**row, "transport": row.get("transport", manifest["transport"])}
         rows.append(row)
     if not rows:
         raise ValueError("No assigned development cases")
+    invalid_measurements = [{key: row[key] for key in ("id", "model", "transport", "arm", "case_id")}
+                            | {"reason": "; ".join(filter(None, [row.get("failure"),
+                                                 *row.get("measurement_integrity_errors", [])]))
+                                          or "host_reference_disagreement"}
+                            for row in rows if _instrument_failure(row)]
     by_cell = defaultdict(list)
     for row in rows:
         by_cell[row["model"], row["transport"], row["arm"]].append(row)
@@ -104,6 +165,9 @@ def summarise(output: Path) -> dict:
             table = _table(pairs)
             completed_pairs = [(a, b) for a, b in pairs if a["state"] == b["state"] == "complete"]
             cases = Counter(a["case_id"] for a, _ in pairs)
+            invalid = [item["id"] for item in invalid_measurements
+                       if item["model"] == model and item["transport"] == transport
+                       and item["arm"] in {reference_arm, comparator}]
             contrasts.append({"model": model, "transport": transport,
                               "reference_arm": reference_arm, "comparator": comparator,
                               "paired_blocks": len(pairs), "paired_cases": len(cases),
@@ -111,13 +175,17 @@ def summarise(output: Path) -> dict:
                               "case_repetitions": dict(sorted(cases.items())),
                               **table, "completed_pair_table": _table(completed_pairs),
                               "accuracy_difference": (table["reference_only_correct"] - table["comparator_only_correct"]) / len(pairs),
-                              "interpretation": "development_suite_descriptive"})
+                              "invalid_measurement_trials": invalid,
+                              "interpretation": ("suspended_invalid_measurement" if invalid else
+                                                 "development_suite_descriptive")})
     return {"schema": "eal-api-experiment-summary/3", "mode": manifest["mode"],
             "assigned": len(rows), "distinct_cases": len({row["case_id"] for row in rows}),
             "completed": sum(row["state"] == "complete" for row in rows),
             "failed": sum(row["state"] == "failed" for row in rows),
             "not_attempted": sum(row["state"] == "not_attempted" for row in rows),
             "complete": all(row["state"] == "complete" for row in rows),
+            "measurement_valid": not invalid_measurements,
+            "invalid_measurements": invalid_measurements,
             "cells": cells, "contrasts": contrasts, "scope": manifest["plan"]["scope"],
             "inference": "Reviewed development cases; no confirmatory inference authorised.",
             "limitations": ["Observed differences describe this finite suite, not a sampled task population.",
@@ -132,7 +200,15 @@ def summarise(output: Path) -> dict:
 def markdown(summary: dict) -> str:
     lines = ["# API load-test development pilot", "",
              f"Mode: **{summary['mode']}**. Complete: **{summary['complete']}**. "
-             f"Distinct reviewed cases: **{summary['distinct_cases']}**.", "", summary["inference"], "",
+             f"Distinct reviewed cases: **{summary['distinct_cases']}**.", "", summary["inference"], ""]
+    if not summary["measurement_valid"]:
+        lines += ["**Invalid measurement: interpretation of affected comparisons is suspended.** "
+                  "Their retained counts and score differences are instrument diagnostics, not evidence of task performance.", "",
+                  "| Trial | Model | Arm | Instrument failure |", "| --- | --- | --- | --- |"]
+        for item in summary["invalid_measurements"]:
+            lines.append(f"| {item['id']} | {item['model']} | {item['arm']} | {item['reason']} |")
+        lines.append("")
+    lines += [
              "## Assignment completion", "",
              "| Model | Transport | Arm | Assigned | Completed | Failed | Not attempted | Failure categories |",
              "| --- | --- | --- | ---: | ---: | ---: | ---: | --- |"]
@@ -141,7 +217,8 @@ def markdown(summary: dict) -> str:
         lines.append(f"| {cell['model']} | {cell['transport']} | {cell['arm']} | {cell['assigned']} | "
                      f"{cell['completed']} | {cell['failed']} | {cell['not_attempted']} | {categories} |")
     lines += ["", "Failed conversations and unattempted assignments count as incorrect in the assigned denominator. "
-              "They are reported separately from completed answers with incorrect decisions.", "",
+              "They are reported separately from completed answers with incorrect decisions. "
+              "Retained running trials are reported as interrupted; dispatched calls without a settled cost remain unknown.", "",
               "## Assigned-answer scores and resource use", "",
              "| Model | Transport | Arm | Correct / assigned | False support | False rejection | Calls | Unknown-cost calls | Known USD |",
              "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
@@ -151,21 +228,23 @@ def markdown(summary: dict) -> str:
                      f"{cell['model_calls']} | {cell['unknown_cost_calls']} | {cell['estimated_usd_known']:.4f} |")
     lines += ["", "Costs use frozen token rates; unknown usage remains unknown. HTTP requests and model calls are not independent cases.",
               "", "## Paired case outcomes", "",
-              "| Model | Transport | Reference | Comparator | Cases / blocks | Both correct | Reference only | Comparator only | Both incorrect | Difference |",
-              "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
+              "| Model | Transport | Reference | Comparator | Cases / blocks | Both correct | Reference only | Comparator only | Both incorrect | Difference | Interpretation |",
+              "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |"]
     for row in summary["contrasts"]:
         lines.append(f"| {row['model']} | {row['transport']} | {row['reference_arm']} | {row['comparator']} | "
                      f"{row['paired_cases']}/{row['paired_blocks']} | {row['both_correct']} | {row['reference_only_correct']} | "
-                     f"{row['comparator_only_correct']} | {row['both_incorrect']} | {row['accuracy_difference']:+.3f} |")
+                     f"{row['comparator_only_correct']} | {row['both_incorrect']} | {row['accuracy_difference']:+.3f} | "
+                     f"{row['interpretation']} |")
     lines += ["", "Differences are reference-arm minus comparator accuracy on the assigned development cases. "
-              "A zero difference establishes an observed tie on this suite; it does not establish equivalence.",
+              "For valid measurements, zero is an observed assigned-score tie on this suite; it does not establish equivalence. "
+              "Suspended comparisons cannot support a task-performance interpretation.",
               "", "## Full-answer disagreements among completed pairs", "",
-              "| Model | Transport | Reference | Comparator | Completed pairs | Reference only correct | Comparator only correct |",
-              "| --- | --- | --- | --- | ---: | ---: | ---: |"]
+              "| Model | Transport | Reference | Comparator | Completed pairs | Reference only correct | Comparator only correct | Interpretation |",
+              "| --- | --- | --- | --- | ---: | ---: | ---: | --- |"]
     for row in summary["contrasts"]:
         table = row["completed_pair_table"]
         lines.append(f"| {row['model']} | {row['transport']} | {row['reference_arm']} | {row['comparator']} | {row['paired_completed']} | "
-                     f"{table['reference_only_correct']} | {table['comparator_only_correct']} |")
+                     f"{table['reference_only_correct']} | {table['comparator_only_correct']} | {row['interpretation']} |")
     lines += ["", "This diagnostic separates completed-answer disagreements from execution failures. "
               "Completion selects a subset; it does not replace the assigned denominator or establish an efficacy effect.",
               "", "## Decision components", "",

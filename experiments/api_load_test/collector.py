@@ -83,6 +83,20 @@ def collect(request: dict, config: dict, report_path: Path) -> dict:
     if {key: request.get(key) for key in expected} != expected:
         raise ValueError("Collection request differs from the fixed target and selected report")
     report = case["reports"][report_id]
+    # The controlled catalogue freezes a bound report envelope. Corrupt raw
+    # measurements are scored unavailable, but missing acquisition metadata is
+    # an apparatus failure: never invent an observation time to package it.
+    try:
+        if (not isinstance(report, dict) or report.get("schema") != "eal-live-api-report/2"
+                or not isinstance(report.get("input"), dict) or not isinstance(report.get("context"), dict)
+                or not isinstance(report.get("dataset"), str) or not report["dataset"]
+                or not isinstance(report.get("observed_at"), str)):
+            raise ValueError("Required report binding is absent")
+        observed = datetime.fromisoformat(report["observed_at"].replace("Z", "+00:00"))
+        if observed.utcoffset() is None:
+            raise ValueError("Observation timestamp requires a timezone")
+    except (ValueError, TypeError, OverflowError) as exc:
+        raise ValueError("Invalid report envelope metadata") from exc
     if digest(report) != case["audit"]["report_sha256"][report_id]:
         raise ValueError("Immutable report digest mismatch")
     raw = canonical_bytes(report)

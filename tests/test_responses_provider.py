@@ -129,6 +129,24 @@ def test_multiple_or_unknown_native_calls_are_not_executed():
     assert provider._replay_items == {}
 
 
+@pytest.mark.parametrize("status", ["incomplete", "in_progress"])
+def test_native_incomplete_call_is_rejected_even_when_response_is_completed(status):
+    output = [{"type": "function_call", "call_id": "call-1", "name": "assess_bound_task",
+               "arguments": "{}", "status": status}]
+    provider = ResponsesProvider(model="explicit", api_key_env=None,
+                                 capabilities={"native_tools": True},
+                                 transport=httpx.MockTransport(
+                                     lambda _: httpx.Response(200, json=_response(output))))
+    with pytest.raises(ProviderError, match="incomplete function call") as failure:
+        asyncio.run(provider.complete_request([], 100, operations=[OPERATION], native_tools=True))
+    error = failure.value
+    assert error.category == "output_incomplete"
+    assert error.response.text == ""
+    assert (error.response.input_tokens, error.response.output_tokens) == (120, 30)
+    assert error.diagnostics["visible_output"][0]["status"] == status
+    assert provider._replay_items == {}
+
+
 def test_same_text_in_two_tasks_replays_only_the_selected_output():
     sequence = 0
 

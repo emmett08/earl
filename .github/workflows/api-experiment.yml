@@ -42,11 +42,15 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ${{ vars.EAL_RUNNER_LABEL || 'ubuntu-24.04' }}
     timeout-minutes: 240
+    defaults:
+      run:
+        shell: bash
     env:
       EXPERIMENT_MODE: ${{ inputs.mode }}
       EXPERIMENT_MODEL: ${{ inputs.model }}
       EXPERIMENT_TRANSPORT: ${{ inputs.transport }}
       EXPERIMENT_IMAGE: eal-api-experiment:${{ github.run_id }}-${{ github.run_attempt }}
+      EXPERIMENT_CONTAINER: eal-api-experiment-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -70,13 +74,29 @@ jobs:
             model_args=(--model "$EXPERIMENT_MODEL")
           fi
           # The value is inherited from the environment, not placed in argv or an image layer.
-          docker run --rm --user "$(id -u):$(id -g)" \
+          docker run --rm --name "$EXPERIMENT_CONTAINER" --user "$(id -u):$(id -g)" \
             --env OPENAI_API_TOKEN --env GITHUB_RUN_ID --env GITHUB_RUN_ATTEMPT \
             --env EAL_SOURCE_COMMIT="$(git rev-parse HEAD)" \
             --volume "$PWD/experiment-results:/results" \
             "$EXPERIMENT_IMAGE" \
             python -m experiments.api_load_test run --mode "$EXPERIMENT_MODE" \
               --transport "$EXPERIMENT_TRANSPORT" "${model_args[@]}" --output /results/run
+      - name: Stop this invocation's paid container
+        id: stop_paid
+        if: always()
+        run: |
+          if docker container inspect "$EXPERIMENT_CONTAINER" > /dev/null 2>&1; then
+            docker rm --force "$EXPERIMENT_CONTAINER"
+          fi
+      - name: Recover an interrupted experiment summary without model calls
+        if: always() && steps.stop_paid.outcome == 'success'
+        run: |
+          if [ -f experiment-results/run/manifest.json ] && [ ! -f experiment-results/run/summary.md ]; then
+            docker run --rm --network none --user "$(id -u):$(id -g)" \
+              --volume "$PWD/experiment-results:/results" \
+              "$EXPERIMENT_IMAGE" \
+              python -m experiments.api_load_test analyse --output /results/run
+          fi
       - name: Publish the measured summary
         if: always()
         run: |

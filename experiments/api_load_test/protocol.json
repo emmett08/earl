@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-API-001",
   "title": "Calibration and development of evidence-grounded API decisions after diagnostic repairs",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "status": "specified",
   "question": "Do explicit failed-versus-unknown checks, a single canonical decision and retained provider termination records yield interpretable model outcomes, and what additional diagnostic contrast is supplied by an ordinary validator control?",
   "primary_claim_id": "CLM-001",
@@ -550,7 +550,7 @@
         "P-001",
         "P-002"
       ],
-      "observation_region": "Invalid raw evidence, oracle defect, control failure or answer leakage.",
+      "observation_region": "Collector/reference disagreement, control failure, frozen-evidence integrity failure, invalid acquisition-envelope metadata, oracle defect or answer leakage. Deliberately corrupted request measurements within a valid envelope remain scored unavailability cases.",
       "analysis_outputs": [
         "MOD-001.paired_completed",
         "MOD-001.reference_only_correct",
@@ -559,7 +559,7 @@
         "MOD-001.interpretation",
         "MOD-001.completed_pair_table"
       ],
-      "decision_rule": "Suspend affected score interpretation and retain evidence of the defect.",
+      "decision_rule": "Suspend affected model/transport/arm comparison interpretation and retain counts, costs and evidence of the defect as diagnostics.",
       "discrimination_result": "invalid-measurement",
       "claim_effects": [
         {
@@ -686,7 +686,8 @@
     "stop_authority": "Repository owner or workflow operator.",
     "review_status": "not-required",
     "post_stop_actions": [
-      "Retain incomplete run; inspect cause; corrections require a fresh invocation"
+      "Stop this invocation's named paid container before offline summary recovery; retain dispatched attempts with unknown cost when no verified response is available.",
+      "Retain incomplete run; inspect cause; corrections require a fresh manual invocation, never an implicit retry."
     ]
   },
   "feasibility": {
@@ -728,7 +729,7 @@
       "Pinned model snapshots, reasoning settings and prices",
       "Complete assignment ledger and seeded order"
     ],
-    "data_plan": "Retain shared raw measurements, case/provenance digests, explicit fault injections, prompts, EAL/JSON source, model responses, selected evidence, operation traces, component scores, failures and summaries; exclude secrets and private reasoning replay payloads. Version 3 additionally retains public message boundaries, provider status and incomplete_details; final check lists distinguish false from unknown. Raw EAL support remains audit-only.",
+    "data_plan": "Retain shared raw measurements, case/provenance digests, explicit fault injections, prompts, EAL/JSON source, model responses, selected evidence, operation traces, component scores, failures and summaries; exclude secrets and private reasoning replay payloads. Version 3 additionally retains public message boundaries, provider status and incomplete_details; final check lists distinguish false from unknown. Raw EAL support remains audit-only. Version 3.1 checkpoints one slot per dispatched call, with known usage or an unresolved charge reservation; interruption summaries preserve retained calls without resuming work. Frozen-case integrity and private raw-reference checks apply to every arm. Detected instrument or integrity defects suspend affected comparisons.",
     "code_plan": "All implementation and tests committed in this PR.",
     "randomisation_or_seed_plan": "Seed 20260925; seeded case/arm order within each concurrent model worker; entire assignment ledger frozen before paid calls.",
     "provenance_plan": "Retain source SHA, dependency versions, Docker image inspection, workflow ID and attempt, provider response IDs and usage.",
@@ -764,7 +765,8 @@
     "change_log": [
       "1.0.0: initial specified protocol; live model outcomes not yet observed.",
       "2.0.0: richer fixed development cases, immutable matched evidence, explicit evidence-validity outcomes, six model tiers and common text-mediated tool operations; replace uninformative v1 decision bounds with descriptive paired tables. Historical v1 feasibility outcomes remain separate. Protocol schema remains 1.0; experiment manifest and raw report become version 2 contracts. EAL/2 syntax and structured/1 semantics are unchanged.",
-      "3.0.0: preserve provider termination details and visible message boundaries; make known-cost truncation trial-local; expose one canonical checked status; score false and unknown checks separately; add ordinary direct-validator control and its explicit-prose comparison; default to a 54-assignment manual calibration with USD3 aggregate admission allowance. Historical v1/v2 outcomes and rubrics remain unchanged. Protocol schema stays 1.0, experiment manifest becomes version 3 and raw report remains version 2; EAL/2 syntax and structured/1 semantics are unchanged."
+      "3.0.0: preserve provider termination details and visible message boundaries; make known-cost truncation trial-local; expose one canonical checked status; score false and unknown checks separately; add ordinary direct-validator control and its explicit-prose comparison; default to a 54-assignment manual calibration with USD3 aggregate admission allowance. Historical v1/v2 outcomes and rubrics remain unchanged. Protocol schema stays 1.0, experiment manifest becomes version 3 and raw report remains version 2; EAL/2 syntax and structured/1 semantics are unchanged.",
+      "3.1.0: repair interruption and finalization accounting with durable per-call checkpoints; keep unexpected-model costs unknown; verify measurements privately for every arm and enforce invalid-measurement suspension with frozen-case integrity checks; reject malformed report-envelope metadata as an instrument fault; preserve Responses continuation state in the general agent and reject incomplete native function items. Add named-container cleanup and offline summary recovery. Cases, prompts, rubric, model settings and spending limits are unchanged; manifest/summary schemas remain version 3 with additional diagnostics, raw report remains version 2, and EAL/2 language and structured/1 semantics are unchanged."
     ]
   },
   "prior_evidence": [

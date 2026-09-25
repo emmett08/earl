@@ -285,6 +285,295 @@ def test_reply_failures_are_trial_local_only_with_verified_cost_and_identity(
     assert all(row["model_calls"][0]["category"] == category for row in attempted)
     assert all(row["model_calls"][0]["diagnostics"] == metadata for row in attempted)
     budget = json.loads((output / f"budget-{SPEC['id']}.json").read_text())
-    assert (budget["unknown_charge_reserve_usd"] > 0) is (not usage)
+    assert (budget["unknown_charge_reserve_usd"] > 0) is (not usage or not identity)
     summary = summarise(output)
     assert sum(row["model_calls"] for row in summary["cells"]) == len(calls)
+
+
+def _assignment(case, *, identity="durability-test"):
+    return {"id": identity, "model": SPEC["id"], "repeat": 0, "transport": "text",
+            "case_id": case["id"], "case_family": case["family"],
+            "block": case["id"], "arm": "json_prompt"}
+
+
+@pytest.mark.parametrize("dispatched", [False, True])
+def test_cancellation_retains_only_dispatched_unknown_cost_calls(tmp_path, measured_case, dispatched):
+    class WaitingProvider:
+        def __init__(self):
+            self.entered = asyncio.Event()
+
+        async def complete_request(self, *args, **kwargs):
+            self.entered.set()
+            await asyncio.Event().wait()
+
+        def discard_replay_handles(self, handles):
+            pass
+
+    async def exercise():
+        provider, budget = WaitingProvider(), Budget(5)
+        task = asyncio.create_task(trial(_assignment(measured_case), SPEC, PLAN, tmp_path,
+                                         provider, budget, measured_case,
+                                         call_slots=asyncio.Semaphore(1 if dispatched else 0)))
+        if dispatched:
+            await provider.entered.wait()
+        else:
+            await asyncio.sleep(0)  # reaches semaphore admission without a dispatch
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+        return budget
+
+    budget = asyncio.run(exercise())
+    result = json.loads((tmp_path / "trial.json").read_text())
+    assert result["state"] == "failed" and result["failure"] == "interrupted"
+    assert result["stop_model"] is True
+    assert len(result["model_calls"]) == int(dispatched)
+    assert (budget.unknown_reserve > 0) is dispatched
+    if dispatched:
+        call = result["model_calls"][0]
+        assert call["state"] == "interrupted" and call["estimated_usd"] is None
+        assert call["response"] is None and call["reserved_usd"] == budget.unknown_reserve
+    else:
+        assert not (tmp_path / "events.jsonl").exists()
+
+
+def test_completed_and_pending_calls_are_durable_before_trial_finishes(tmp_path, measured_case):
+    from eal.providers import ModelResponse
+
+    class TwoReplies:
+        def __init__(self):
+            self.calls, self.pending = 0, asyncio.Event()
+
+        def identity(self):
+            return {"pricing": SPEC["pricing"]}
+
+        async def complete_request(self, *args, **kwargs):
+            self.calls += 1
+            if self.calls == 1:
+                return ModelResponse("{}", 100, 20, SPEC["id"])
+            self.pending.set()
+            await asyncio.Event().wait()
+
+        def discard_replay_handles(self, handles):
+            pass
+
+    async def exercise():
+        provider = TwoReplies()
+        task = asyncio.create_task(trial(_assignment(measured_case), SPEC,
+                                         {**PLAN, "minimum_call_interval_seconds": 0}, tmp_path,
+                                         provider, Budget(5), measured_case))
+        await provider.pending.wait()
+        snapshot = json.loads((tmp_path / "trial.json").read_text())
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+        return snapshot
+
+    snapshot = asyncio.run(exercise())
+    assert snapshot["state"] == "running"
+    assert [call["state"] for call in snapshot["model_calls"]] == ["complete", "in_flight"]
+    assert snapshot["model_calls"][0]["estimated_usd"] > 0
+    assert snapshot["model_calls"][1]["estimated_usd"] is None
+
+
+@pytest.mark.parametrize("failure_stage", ["provider", "finalizer"])
+def test_host_failures_preserve_dispatched_call_accounting(tmp_path, measured_case, failure_stage):
+    from eal.providers import ModelResponse
+
+    class BrokenHost:
+        def identity(self):
+            return {"pricing": SPEC["pricing"]}
+
+        async def complete_request(self, *args, **kwargs):
+            if failure_stage == "provider":
+                raise RuntimeError("unexpected adapter failure after dispatch")
+            return ModelResponse("{}", 100, 20, SPEC["id"])
+
+        def discard_replay_handles(self, handles):
+            if failure_stage == "finalizer":
+                raise RuntimeError("cleanup failure")
+
+    result = asyncio.run(trial(_assignment(measured_case), SPEC,
+                               {**PLAN, "max_model_calls_per_trial": 1, "minimum_call_interval_seconds": 0},
+                               tmp_path, BrokenHost(), Budget(5), measured_case))
+    retained = json.loads((tmp_path / "trial.json").read_text())
+    assert result == retained and retained["state"] == "failed" and retained["stop_model"]
+    assert len(retained["model_calls"]) == 1
+    call = retained["model_calls"][0]
+    assert (call["estimated_usd"] is not None) is (failure_stage == "finalizer")
+    assert call["state"] == ("complete" if failure_stage == "finalizer" else "failed")
+
+
+def test_worker_fallback_preserves_checkpoint_after_scoring_exception(tmp_path, monkeypatch, measured_case):
+    import experiments.api_load_test.runner as runner
+    from eal.providers import ModelResponse
+    monkeypatch.setenv("OPENAI_API_TOKEN", "unit-test-secret")
+    monkeypatch.setattr(runner, "case_specs", lambda mode: [measured_case])
+    monkeypatch.setattr(runner, "build_cases", lambda *_: [measured_case])
+    original_grade = runner.grade
+
+    def failed_grading(answer, truth, **kwargs):
+        if truth is not None:
+            raise RuntimeError("synthetic scoring failure after measured response")
+        return original_grade(answer, truth, **kwargs)
+
+    class Reply:
+        def identity(self):
+            return {"pricing": SPEC["pricing"]}
+
+        async def complete_request(self, *args, **kwargs):
+            return ModelResponse("{}", 100, 20, SPEC["id"])
+
+        def discard_replay_handles(self, handles):
+            pass
+
+    monkeypatch.setattr(runner, "grade", failed_grading)
+    output = tmp_path / "scoring-failure"
+    assert not asyncio.run(run(output, [SPEC],
+                               {**PLAN, "calibration_max_model_calls_per_trial": 1,
+                                "minimum_call_interval_seconds": 0},
+                               mode="calibration", provider_factory=lambda *_: Reply()))
+    rows = [json.loads(path.read_text()) for path in output.glob("trials/*/trial.json")]
+    failed = next(row for row in rows if row["state"] == "failed")
+    assert failed["failure"] == "host_setup_error:RuntimeError"
+    assert len(failed["model_calls"]) == 1
+    assert failed["model_calls"][0]["estimated_usd"] > 0
+    assert sum(row["state"] == "not_attempted" for row in rows) == 2
+    summary = summarise(output)
+    assert sum(cell["model_calls"] for cell in summary["cells"]) == 1
+    assert sum(cell["estimated_usd_known"] for cell in summary["cells"]) > 0
+
+
+@pytest.mark.parametrize("verified_identity", [False, True])
+def test_unverified_reply_keeps_unknown_cost_and_discards_private_replay(
+        tmp_path, monkeypatch, measured_case, verified_identity):
+    monkeypatch.setenv("OPENAI_API_TOKEN", "unit-test-secret")
+
+    def respond(request):
+        return httpx.Response(200, json={"id": "reply-unverified", "status": "completed",
+            "model": SPEC["id"] if verified_identity else "unexpected-model",
+            "usage": {"input_tokens": None if verified_identity else 100, "output_tokens": 20},
+            "output": [{"type": "reasoning", "encrypted_content": "private-test-replay"},
+                       {"type": "message", "role": "assistant", "status": "completed",
+                        "content": [{"type": "output_text", "text": "{}"}]}]})
+
+    provider = ResponsesProvider(model=SPEC["id"], api_key_env="OPENAI_API_TOKEN",
+                                 pricing=SPEC["pricing"], transport=httpx.MockTransport(respond))
+    budget = Budget(5)
+    result = asyncio.run(trial(_assignment(measured_case), SPEC, PLAN, tmp_path,
+                               provider, budget, measured_case))
+    assert result["failure"] == "model_identity_or_usage_unverified"
+    assert result["model_calls"][0]["estimated_usd"] is None
+    assert budget.estimated_usd == 0 and budget.unknown_reserve > 0
+    assert not provider._replay_items
+    assert "private-test-replay" not in (tmp_path / "trial.json").read_text()
+
+
+def test_run_cancellation_finalizes_assignment_ledger_and_budget(tmp_path, monkeypatch, measured_case):
+    import experiments.api_load_test.runner as runner
+    monkeypatch.setenv("OPENAI_API_TOKEN", "unit-test-secret")
+    monkeypatch.setattr(runner, "case_specs", lambda mode: [measured_case])
+    monkeypatch.setattr(runner, "build_cases", lambda *_: [measured_case])
+    output = tmp_path / "interrupted-run"
+
+    class WaitingProvider:
+        async def complete_request(self, *args, **kwargs):
+            entered.set()
+            await asyncio.Event().wait()
+
+        def discard_replay_handles(self, handles):
+            pass
+
+    async def exercise():
+        nonlocal entered
+        entered = asyncio.Event()
+        task = asyncio.create_task(run(output, [SPEC], PLAN, mode="calibration",
+                                       provider_factory=lambda *_: WaitingProvider()))
+        await entered.wait()
+        task.cancel()
+        with pytest.raises(asyncio.CancelledError):
+            await task
+
+    entered = None
+    asyncio.run(exercise())
+    rows = [json.loads(path.read_text()) for path in output.glob("trials/*/trial.json")]
+    assert len(rows) == 3
+    assert sum(row["state"] == "failed" and row["failure"] == "interrupted" for row in rows) == 1
+    assert sum(row["state"] == "not_attempted" and row["failure"] == "run_interrupted" for row in rows) == 2
+    budget = json.loads((output / f"budget-{SPEC['id']}.json").read_text())
+    assert budget["estimated_usd"] == 0 and budget["unknown_charge_reserve_usd"] > 0
+    completion = json.loads((output / "completion.json").read_text())
+    assert completion["interrupted"] and not completion["complete"]
+    assert completion["model_calls"] == 1
+    summary = summarise(output)
+    assert sum(cell["model_calls"] for cell in summary["cells"]) == 1
+    assert sum(cell["unknown_cost_calls"] for cell in summary["cells"]) == 1
+
+
+def test_cli_summarises_interrupted_run_without_retry(tmp_path, monkeypatch, measured_case):
+    import experiments.api_load_test.__main__ as cli
+    import experiments.api_load_test.runner as runner
+    monkeypatch.delenv("OPENAI_API_TOKEN", raising=False)
+    monkeypatch.setattr(runner, "case_specs", lambda mode: [measured_case])
+    output = tmp_path / "cli-interrupted"
+    invocations = []
+
+    async def interrupted(output, specs, plan, *, mode):
+        invocations.append(1)
+        await run(output, specs, plan, mode=mode)
+        raise asyncio.CancelledError
+
+    monkeypatch.setattr(cli, "run", interrupted)
+    monkeypatch.setattr("sys.argv", ["api_load_test", "run", "--output", str(output), "--model", SPEC["id"]])
+    with pytest.raises(SystemExit) as exc:
+        cli.main()
+    assert exc.value.code == 1 and invocations == [1]
+    assert json.loads((output / "summary.json").read_text())["complete"] is False
+    assert (output / "summary.md").exists()
+
+
+@pytest.mark.parametrize("arm", ["json_prompt", "plain_validator", "eal_mcp"])
+def test_trial_rejects_incorrect_or_missing_tool_results_privately(tmp_path, monkeypatch, measured_case, arm):
+    from eal.providers import ModelResponse
+    from experiments.api_load_test.routes import TrialTools
+    truth = reference(measured_case)
+    original = TrialTools.execute
+
+    async def corrupted_packet(self, selected_arm, report_id):
+        packet = await original(self, selected_arm, report_id)
+        if selected_arm == "json_prompt":
+            packet["measurement_facts"]["identity_matches"] = False
+            assert "status" not in packet  # the audit supplies no verdict to this arm
+        else:
+            for key in ("status", "failed_checks", "unknown_checks"):
+                packet.pop(key)
+        return packet
+
+    class Replies:
+        calls = 0
+
+        def identity(self):
+            return {"pricing": SPEC["pricing"]}
+
+        async def complete_request(self, *args, **kwargs):
+            self.calls += 1
+            operation = ({"operation": "assess_load_test" if arm == "eal_mcp" else "inspect_report",
+                          "report_id": truth["report_id"]} if self.calls == 1 else
+                         {"operation": "finish", **{key: truth[key] for key in
+                          ("status", "report_id", "scope", "failed_checks", "unknown_checks", "metrics")},
+                          "explanation": "The model's answer is correct independently of the broken tool packet."})
+            return ModelResponse(json.dumps(operation), input_tokens=100, output_tokens=100, model=SPEC["id"])
+
+        def discard_replay_handles(self, handles):
+            pass
+
+    monkeypatch.setattr(TrialTools, "execute", corrupted_packet)
+    assignment = {"id": "packet-integrity", "model": SPEC["id"], "repeat": 0, "transport": "text",
+                  "case_id": measured_case["id"], "case_family": measured_case["family"],
+                  "block": measured_case["id"], "arm": arm}
+    result = asyncio.run(trial(assignment, SPEC, {**PLAN, "minimum_call_interval_seconds": 0},
+                               tmp_path, Replies(), Budget(5), measured_case))
+    assert result["failure"] == "host_reference_disagreement" and result["stop_model"]
+    assert result["outcome"]["status_correct"] and not result["outcome"]["correct"]
+    expected = ["measurement_facts"] if arm == "json_prompt" else ["status", "failed_checks", "unknown_checks"]
+    assert result["host_checks"][0]["mismatches"] == expected

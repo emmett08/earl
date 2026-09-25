@@ -8,7 +8,8 @@ import json
 from pathlib import Path
 
 from .analysis import markdown, summarise
-from .runner import HERE, run, write_json
+from .recording import write_json
+from .runner import HERE, run
 from .self_check import self_check
 
 
@@ -36,7 +37,14 @@ def main():
             if set(args.model) - {spec["id"] for spec in specs} or len(set(args.model)) != len(args.model):
                 parser.error("Select unique, exact model IDs from models.json")
             specs = [spec for spec in specs if spec["id"] in args.model]
-        complete = asyncio.run(run(output, specs, plan, mode=args.mode))
+        try:
+            complete = asyncio.run(run(output, specs, plan, mode=args.mode))
+        except (KeyboardInterrupt, asyncio.CancelledError):
+            # SIGINT cancels active requests. Analyse retained attempts without
+            # resuming, retrying or creating another paid call.
+            if not (output / "manifest.json").exists():
+                raise
+            complete = False
     else:
         complete = True
     summary = summarise(output)

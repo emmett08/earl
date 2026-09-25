@@ -79,6 +79,7 @@ class _Run:
         self.initial_data = strict_json(_json(initial_data or {}))
         self.started = time.monotonic()
         self.messages: list[dict[str, Any]] = []
+        self.replay_handles: list[str] = []
         self.pending_tool_call: str | None = None
         self.operations: list[dict] | None = None
         self.native_tools = False
@@ -165,9 +166,14 @@ class _Run:
         finally:
             attempt["latency_seconds"] = time.monotonic() - start
             if response is not None:
+                replay_handle = response.metadata.get("responses_replay_handle")
+                if isinstance(replay_handle, str):
+                    self.replay_handles.append(replay_handle)
                 text_bytes = record_response(
                     attempt, response, self.report["provider"],
-                    response_digest_field="response_digest", metadata=response.metadata)
+                    response_digest_field="response_digest",
+                    metadata={key: value for key, value in response.metadata.items()
+                              if key != "responses_replay_handle"})
                 if len(text_bytes) <= self.budget.max_response_bytes:
                     attempt["text"] = response.text
                 else:
@@ -179,9 +185,12 @@ class _Run:
         native_call = response.metadata.get("native_tool_call") if self.native_tools else None
         if native_call:
             self.pending_tool_call = native_call["id"]
-            self.messages.append({"role": "assistant", "content": None, "tool_calls": [native_call]})
+            assistant = {"role": "assistant", "content": None, "tool_calls": [native_call]}
         else:
-            self.messages.append({"role": "assistant", "content": response.text})
+            assistant = {"role": "assistant", "content": response.text}
+        if "responses_replay_handle" in response.metadata:
+            assistant["_responses_replay_handle"] = response.metadata["responses_replay_handle"]
+        self.messages.append(assistant)
         measured = self.usage()
         reason = post_attempt_limit(measured, max_total_tokens=self.budget.max_total_tokens,
                                     max_model_cost_usd=self.budget.max_model_cost_usd,
@@ -190,15 +199,25 @@ class _Run:
             raise _Stop(reason)
         return response.text
 
+    def discard_replay(self) -> None:
+        """Release only this run's provider-held reasoning on every exit path."""
+        discard = getattr(self.provider, "discard_replay_handles", None)
+        if self.replay_handles and callable(discard):
+            discard(self.replay_handles)
+        self.replay_handles.clear()
+
     def finish_report(self, stop_reason: str | None = None) -> dict:
         if stop_reason is not None:
             self.report["stop_reason"] = stop_reason
         self.report["usage"] = self.usage()
         self.report["latency_seconds"] = time.monotonic() - self.started
-        self.report["conversation"] = self.messages
+        self.report["conversation"] = [
+            {key: value for key, value in message.items() if key != "_responses_replay_handle"}
+            for message in self.messages]
         if self.state is not None:
             self.report["active_state"] = self.state.summary()
             self.report["source_revisions"] = self.state.revisions
+        self.discard_replay()
         return self.report
 
 
@@ -765,6 +784,8 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
             return run.finish_report(str(leaves[0]))
         run.report["transport_error_type"] = type(exc).__name__
         return run.finish_report("mcp_session_failed")
+    finally:
+        run.discard_replay()
 
 
 async def run_unaided(task: str, provider: TextProvider, *, budget: AgentBudget = AgentBudget(),
@@ -807,6 +828,8 @@ async def run_unaided(task: str, provider: TextProvider, *, budget: AgentBudget 
         return run.finish_report(str(exc))
     except TimeoutError:
         return run.finish_report("elapsed_time_budget_exhausted")
+    finally:
+        run.discard_replay()
 
 
 def main() -> None:

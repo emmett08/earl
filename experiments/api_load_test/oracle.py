@@ -121,6 +121,37 @@ def reference(case: dict) -> dict:
     return reference_report(case, case["expected_report_id"])
 
 
+def packet_reference_check(case: dict, report_id: str, packet: dict, *, checked=False, host_status=None) -> dict:
+    """Privately check every route's supplied facts against independent raw rows.
+
+    This diagnostic never enters model-visible packets. Measurement-only routes
+    retain that boundary; checked routes additionally have their decision tested.
+    """
+    truth = reference_report(case, report_id)
+    checks = truth["checks"]
+    age = ((_instant(case["assessment_time"]) - _instant(case["reports"][report_id]["observed_at"]))
+           .total_seconds() if checks["report_valid"] else None)
+    facts = {"report_valid": checks["report_valid"], "identity_matches": checks["identity"],
+             "complete_records": checks["completeness"], "consistent_records": checks["consistency"],
+             "age_seconds": age}
+    mismatches = [key for key, expected in (("report_id", report_id), ("metrics", truth["metrics"]),
+                                            ("measurement_facts", facts))
+                  if packet.get(key) != expected]
+    decision_fields = ("status", "failed_checks", "unknown_checks")
+    if checked or host_status is not None or any(key in packet for key in decision_fields):
+        if packet.get("status") != truth["status"]:
+            mismatches.append("status")
+        for key in ("failed_checks", "unknown_checks"):
+            actual = packet.get(key)
+            if (not isinstance(actual, list) or not all(isinstance(item, str) for item in actual)
+                    or len(actual) != len(set(actual)) or set(actual) != set(truth[key])):
+                mismatches.append(key)
+    if host_status is not None and host_status != (
+            "supported" if truth["status"] == "supported" else "unsupported"):
+        mismatches.append("host_status")
+    return {"report_id": report_id, "agrees": not mismatches, "mismatches": mismatches}
+
+
 def grade(answer: dict | None, truth: dict | None, *, collected: bool,
           inspected_report_ids=(), host_status=None) -> dict:
     """Score the final answer and demonstrated use of its target evidence."""

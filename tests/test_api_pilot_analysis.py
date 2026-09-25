@@ -2,12 +2,13 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 
 import pytest
 
 from experiments.api_load_test.analysis import markdown, summarise
-from experiments.api_load_test.oracle import grade, reference, reference_report
+from experiments.api_load_test.oracle import grade, packet_reference_check, reference, reference_report
 
 
 def measured_case(count=100):
@@ -161,8 +162,60 @@ def test_unassessable_conditions_cannot_be_scored_as_failed_conditions():
     assert not score(omitted)["unknown_checks_correct"]
 
 
+def reference_packet(case):
+    """Synthetic packet control; no collector or executable checker is involved."""
+    truth = reference(case)
+    checks = truth["checks"]
+    return {"report_id": truth["report_id"], "metrics": copy.deepcopy(truth["metrics"]),
+            "measurement_facts": {"report_valid": checks["report_valid"],
+                                  "identity_matches": checks["identity"],
+                                  "complete_records": checks["completeness"],
+                                  "consistent_records": checks["consistency"],
+                                  "age_seconds": 300 if checks["report_valid"] else None}}
+
+
+@pytest.mark.parametrize("corruption,field", [
+    (lambda packet: packet["metrics"].update(p95_ms=150), "metrics"),
+    (lambda packet: packet["measurement_facts"].update(identity_matches=False), "measurement_facts"),
+    (lambda packet: packet["measurement_facts"].update(age_seconds=0), "measurement_facts"),
+    (lambda packet: packet.update(report_id="wrong-report"), "report_id"),
+])
+def test_private_reference_checks_measurement_only_packets(corruption, field):
+    case = measured_case()
+    packet = reference_packet(case)
+    before = copy.deepcopy(packet)
+    assert packet_reference_check(case, "target-report", packet)["agrees"]
+    assert packet == before and "status" not in packet
+    corruption(packet)
+    result = packet_reference_check(case, "target-report", packet)
+    assert not result["agrees"] and result["mismatches"] == [field]
+
+
+def test_private_reference_checks_malformed_facts_and_checked_decisions():
+    case = measured_case()
+    case["reports"]["target-report"]["requests"][0]["elapsed_ms"] = "missing"
+    truth = reference(case)
+    packet = reference_packet(case)
+    assert packet_reference_check(case, "target-report", packet)["agrees"]
+    missing_decision = packet_reference_check(case, "target-report", packet, checked=True)
+    assert set(missing_decision["mismatches"]) == {"status", "failed_checks", "unknown_checks"}
+    packet.update({key: truth[key] for key in ("status", "failed_checks", "unknown_checks")})
+    assert packet_reference_check(case, "target-report", packet, host_status="unsupported")["agrees"]
+    packet["unknown_checks"] = []
+    result = packet_reference_check(case, "target-report", packet, host_status="supported")
+    assert set(result["mismatches"]) == {"unknown_checks", "host_status"}
+
+
 def write_run(tmp_path, *, transports=("text",), repeats=1, arms=("eal_mcp", "json_prompt")):
     assignments = []
+    case_hashes = {}
+    for index in range(4):
+        case = {"id": f"case-{index}", "synthetic_analysis_control": True}
+        case_hashes[case["id"]] = hashlib.sha256(json.dumps(case, sort_keys=True).encode()).hexdigest()
+        directory = tmp_path / "cases" / case["id"]
+        directory.mkdir(parents=True)
+        (directory / "case.json").write_text(json.dumps(case))
+    (tmp_path / "case-manifest.json").write_text(json.dumps({"schema": "eal-api-case-freeze/2", "cases": case_hashes}))
     for transport in transports:
         for repeat in range(repeats):
             for index in range(4):
@@ -176,6 +229,7 @@ def write_run(tmp_path, *, transports=("text",), repeats=1, arms=("eal_mcp", "js
                     directory = tmp_path / "trials" / assignment["id"]
                     directory.mkdir(parents=True)
                     (directory / "trial.json").write_text(json.dumps({**assignment, "state": "complete",
+                        "case_sha256": case_hashes[assignment["case_id"]],
                         "outcome": {"correct": correct}, "model_calls": []}))
     manifest = {"schema": "eal-api-experiment-run/3", "mode": "pilot", "transport": "text",
                 "models": [{"id": "synthetic-model"}], "assignments": assignments,
@@ -258,6 +312,108 @@ def test_failed_and_missing_assignments_remain_in_the_operational_denominator(tm
     assert contrast["both_incorrect"] == 2
     assert contrast["completed_pair_table"]["both_incorrect"] == 1
     assert all(cell["correct"] == 1 and cell["assigned"] == 4 for cell in result["cells"])
+
+
+def test_interrupted_trials_retain_settled_and_pending_calls_without_rewriting(tmp_path):
+    manifest = write_run(tmp_path)
+    path = tmp_path / "trials" / manifest["assignments"][0]["id"] / "trial.json"
+    row = json.loads(path.read_text())
+    row.update(state="running", model_calls=[
+        {"turn": 0, "state": "complete", "estimated_usd": 0.01,
+         "response": {"input_tokens": 100, "output_tokens": 20, "metadata": {}}},
+        {"turn": 1, "state": "in_flight", "estimated_usd": None, "response": None,
+         "reserved_usd": 0.1, "started_at": "2026-09-25T12:00:00Z"}])
+    path.write_text(json.dumps(row))
+    original = path.read_bytes()
+    summary = summarise(tmp_path)
+    cell = next(item for item in summary["cells"] if item["arm"] == "eal_mcp")
+    assert summary["assigned"] == 8 and summary["failed"] == 1 and summary["not_attempted"] == 0
+    assert cell["failure_categories"] == {"interrupted": 1}
+    assert cell["correct"] == 1 and cell["model_calls"] == 2 and cell["unknown_cost_calls"] == 1
+    assert cell["estimated_usd_known"] == 0.01 and cell["input_tokens_known"] == 100
+    assert summary["measurement_valid"] and path.read_bytes() == original
+
+
+@pytest.mark.parametrize("failure", ["host_reference_disagreement", "host_error:ToolExecutionError",
+                                     "host_setup_error:ValueError", "host_finalization_error:RuntimeError"])
+def test_instrument_failures_suspend_affected_contrasts_but_retain_diagnostics(tmp_path, failure):
+    manifest = write_run(tmp_path, arms=("eal_mcp", "json_prompt", "plain_explicit", "plain_validator"))
+    path = tmp_path / "trials" / manifest["assignments"][1]["id"] / "trial.json"
+    row = json.loads(path.read_text())
+    row.update(state="failed", failure=failure, host_checks=[{"report_id": "target", "agrees": False}])
+    path.write_text(json.dumps(row))
+    result = summarise(tmp_path)
+    assert not result["measurement_valid"] and result["invalid_measurements"][0]["reason"] == failure
+    contrasts = {item["comparator"]: item for item in result["contrasts"] if item["reference_arm"] == "eal_mcp"}
+    assert contrasts["json_prompt"]["interpretation"] == "suspended_invalid_measurement"
+    assert contrasts["json_prompt"]["paired_blocks"] == 4
+    assert contrasts["json_prompt"]["accuracy_difference"] == 0.25
+    assert contrasts["plain_explicit"]["interpretation"] == "development_suite_descriptive"
+    report = markdown(result)
+    assert "Invalid measurement" in report and "interpretation of affected comparisons is suspended" in report
+    assert failure in report
+
+
+def test_trial_case_digest_must_match_the_frozen_case(tmp_path):
+    manifest = write_run(tmp_path)
+    path = tmp_path / "trials" / manifest["assignments"][0]["id"] / "trial.json"
+    row = json.loads(path.read_text())
+    row["case_sha256"] = "different-case"
+    path.write_text(json.dumps(row))
+    summary = summarise(tmp_path)
+    assert not summary["measurement_valid"]
+    assert summary["invalid_measurements"][0]["reason"] == "trial_case_digest_mismatch"
+    assert summary["contrasts"][0]["interpretation"] == "suspended_invalid_measurement"
+
+
+def test_retained_case_content_must_match_the_freeze(tmp_path):
+    write_run(tmp_path)
+    (tmp_path / "cases" / "case-0" / "case.json").write_text('{"id":"case-0","changed":true}')
+    summary = summarise(tmp_path)
+    assert not summary["measurement_valid"] and len(summary["invalid_measurements"]) == 2
+    assert {item["reason"] for item in summary["invalid_measurements"]} == {"retained_case_digest_mismatch"}
+
+
+def test_trial_with_case_digest_requires_its_freeze(tmp_path):
+    write_run(tmp_path)
+    (tmp_path / "case-manifest.json").unlink()
+    summary = summarise(tmp_path)
+    assert not summary["measurement_valid"] and len(summary["invalid_measurements"]) == 8
+    assert all("missing_case_freeze" in item["reason"] for item in summary["invalid_measurements"])
+
+
+@pytest.mark.parametrize("freeze_content", ["{bad json", "[]"])
+def test_unreadable_freeze_suspends_scores_without_discarding_known_costs(tmp_path, freeze_content):
+    manifest = write_run(tmp_path)
+    (tmp_path / "case-manifest.json").write_text(freeze_content)
+    path = tmp_path / "trials" / manifest["assignments"][0]["id"] / "trial.json"
+    row = json.loads(path.read_text())
+    row["model_calls"] = [{"state": "complete", "estimated_usd": 0.25,
+                           "response": {"input_tokens": 200, "output_tokens": 50}}]
+    path.write_text(json.dumps(row))
+    summary = summarise(tmp_path)
+    assert not summary["measurement_valid"] and summary["assigned"] == summary["completed"] == 8
+    cell = next(item for item in summary["cells"] if item["arm"] == "eal_mcp")
+    assert cell["estimated_usd_known"] == 0.25 and cell["model_calls"] == 1
+    assert all("invalid_case_freeze" in item["reason"] for item in summary["invalid_measurements"])
+
+
+def test_missing_retained_case_suspends_its_attempted_assignments(tmp_path):
+    write_run(tmp_path)
+    (tmp_path / "cases" / "case-0" / "case.json").unlink()
+    summary = summarise(tmp_path)
+    assert not summary["measurement_valid"] and len(summary["invalid_measurements"]) == 2
+    assert all(item["reason"] == "missing_retained_case" for item in summary["invalid_measurements"])
+
+
+def test_preflight_without_attempts_needs_no_case_freeze(tmp_path):
+    manifest = write_run(tmp_path)
+    for assignment in manifest["assignments"]:
+        (tmp_path / "trials" / assignment["id"] / "trial.json").unlink()
+    (tmp_path / "case-manifest.json").unlink()
+    summary = summarise(tmp_path)
+    assert summary["measurement_valid"] and not summary["invalid_measurements"]
+    assert summary["assigned"] == summary["not_attempted"] == 8
 
 
 def test_transport_and_case_repetitions_are_not_pooled_as_new_cases(tmp_path):

@@ -2,7 +2,7 @@
 
 This experiment extends the [single engineering example](../../examples/api-load-test/README.md) with real HTTP measurements and live model calls. A developer asks whether an identified orders API run meets its latency and error limits. The model must select the right report, inspect its evidence and give a decision limited to that measured run.
 
-Version 3 repairs measurement and conversation handling after the version 2 pilot exposed ambiguous decision fields, an unclear failed-check rubric and an overly broad model stop rule. A small, manually dispatched **calibration** precedes any larger development invocation. The full catalogue still contains 40 reviewed cases and six model snapshots. This is a measurement and development investigation; it is not a powered superiority or equivalence study.
+Version 3.1 adds interruption recovery and enforces measurement-integrity checks after the version 3 repairs to measurement and conversation handling. The version 2 pilot exposed ambiguous decision fields, an unclear failed-check rubric and an overly broad model stop rule. A small, manually dispatched **calibration** precedes any larger development invocation. The full catalogue still contains 40 reviewed cases and six model snapshots. This is a measurement and development investigation; it is not a powered superiority or equivalence study.
 
 ## What is compared?
 
@@ -69,7 +69,7 @@ Variants change concurrency and fault details. The reference uses actual measure
 
 ## Decision and grading
 
-The finite acceptance criteria are: matching service/build/run/workload and response identities; valid, complete, consistent evidence; age at most 300 seconds at assessment; at least 100 requests; nearest-rank sample p95 at most 200 ms; and at most 1% errors. Every attempted request counts; non-2xx and transport failures are errors.
+The finite acceptance criteria are: matching service/build/run/workload and response identities; valid, complete, consistent evidence; age at most 300 seconds at assessment; at least 100 requests; nearest-rank sample p95 at most 200 ms; and at most 1% errors. Every attempted request counts; non-2xx and transport failures are errors. A scored report must retain a valid acquisition envelope: its schema, dataset label, input/context objects and timezone-qualified observation time. Malformed request measurements within that envelope produce `unavailable` with unknown performance checks. Missing or malformed envelope metadata is an instrument failure; the host rejects it without inventing a measurement timestamp.
 
 | Decision | Meaning |
 | --- | --- |
@@ -81,7 +81,7 @@ The final answer contains the selected `report_id`, `status`, requested `scope` 
 
 The reference grades these fields independently from raw rows and case provenance. Full correctness requires collection, correct selection and scope, the correct status and both complete check sets, an exact count, and numeric measurements within 0.01 units; measurements that cannot be computed must be null. Narrative explanation and private model reasoning are not scored. This changed rubric is a version 3 measurement contract; historical scores are preserved under their original rubric.
 
-The model receives **one canonical `status` field** in each checked result. When EAL cannot support the claim because evidence is inadequate, the host maps that evidence condition to `unavailable`; an adequate measured failure maps to `unsupported`. EAL's raw support status remains in the retained audit trace and is omitted from the model-facing packet. The ordinary validator uses the same canonical decision contract. Each checker must agree with the independent reference. Host support alone earns no model credit.
+The model receives **one canonical `status` field** in each checked result. When EAL cannot support the claim because evidence is inadequate, the host maps that evidence condition to `unavailable`; an adequate measured failure maps to `unsupported`. EAL's raw support status remains in the retained audit trace and is omitted from the model-facing packet. The ordinary validator uses the same canonical decision contract. Every route’s metrics and measurement facts are checked privately against the independent raw-row reference; checked routes also have their status and checklists verified. These audit results never supply a verdict to the measurement-only arms. Host support alone earns no model credit.
 
 Missing, malformed, uncollected, failed and unattempted assignments score zero in the planned denominator. Component counts expose status, metric, selection, scope, failed-check and unknown-check errors. False support, false rejection, false unavailability, correct unavailability and unsupported assertions without collection are reported separately. “Complete” means the assigned conversations finished, not that every answer was correct.
 
@@ -91,11 +91,11 @@ For each model and contrast, the paired table names its reference and comparator
 (reference-only correct − comparator-only correct) / all assigned paired cases
 ```
 
-Completed-pair counts and a separate completed-pair 2×2 table are reported alongside that denominator, so a provider outage is not mistaken for a task-decision discordance. The completed subset may be selected by model or transport failure; it supports diagnosis, not an efficacy estimate with failures discarded. These are exact descriptions of the recorded assignments. **No population confidence interval, superiority, equivalence or model-class ranking is claimed.** Forty purposively selected development cases are not a power calculation. The next inference gate is a separately frozen held-out case distribution, with simulation-checked interval coverage and power across plausible discordance, family dependence, model variability and missingness. That future protocol must declare its practical effect margin, comparison family and stopping rule before observing held-out results.
+Completed-pair counts and a separate completed-pair 2×2 table are reported alongside that denominator, so a provider outage is not mistaken for a task-decision discordance. Collector/reference disagreement, host failures and frozen-evidence integrity defects suspend interpretation of affected comparisons. Diagnostic counts and recorded usage remain available. The completed subset may be selected by model or transport failure; it supports diagnosis, not an efficacy estimate with failures discarded. These are exact descriptions of the recorded assignments. **No population confidence interval, superiority, equivalence or model-class ranking is claimed.** Forty purposively selected development cases are not a power calculation. The next inference gate is a separately frozen held-out case distribution, with simulation-checked interval coverage and power across plausible discordance, family dependence, model variability and missingness. That future protocol must declare its practical effect margin, comparison family and stopping rule before observing held-out results.
 
 ## Run in GitHub Actions
 
-The [workflow](../../.github/workflows/api-experiment.yml) builds the custom [Docker image](Dockerfile). Python, Java, Make, the package, locked Python dependencies, parser generator, tests, HTTP service and collectors are bundled. The runner needs Docker and outbound package/OpenAI access; it does not need host Python.
+The [workflow](../../.github/workflows/api-experiment.yml) builds the custom [Docker image](Dockerfile). Python, Java, Make, the package, locked Python dependencies, parser generator, tests, HTTP service and collectors are bundled. The runner needs Bash, Docker and outbound package/OpenAI access; it does not need host Python.
 
 1. Set repository secret **`OPENAI_API_TOKEN`**.
 2. The runner defaults to GitHub-hosted **`ubuntu-24.04`**. To use a registered custom runner, set repository variable **`EAL_RUNNER_LABEL`** to its available label. A queued job awaiting a runner has not started its container or made model calls.
@@ -118,7 +118,7 @@ The secret enters only the paid container's runtime environment, never an image 
 
 Fatal account/configuration failures, unclassified provider failures, uncertain cost accounting, unexpected model identity, host exceptions, checker/reference disagreement and exhausted allowance stop further calls for the affected model; remaining assignments are retained as unattempted. There is no implicit favourable trial retry or model substitution. Ordinary output truncation therefore cannot discard every later case for that model merely because its response was incomplete.
 
-The paid step prints a start event for each request, followed by completion with response ID and token usage, or failure. A start records an attempt; returned usage establishes measured token consumption. Evidence acquisition and Docker checks occur before paid calls and consume no OpenAI tokens. Raw evidence, manifests, responses, traces, component scores and summaries are uploaded as workflow artefacts.
+The paid step prints a start event for each request, followed by completion with response ID and token usage, or failure. A start records an attempt; returned usage establishes measured token consumption. Evidence acquisition and Docker checks occur before paid calls and consume no OpenAI tokens. Raw evidence, manifests, responses, traces, component scores and summaries are uploaded as workflow artefacts. Each dispatched call has one durable record that is updated on completion or failure. Cancellation retains unresolved attempts as unknown-cost calls; requests still waiting for admission make no API call. Returned snapshot identity must match before the configured rate is used. The workflow stops its named paid container before credential-free, network-disabled summary recovery. If the runner itself is lost, recover from the retained files when available; no local checkpoint can guarantee evidence survives destruction of its storage.
 
 ## Run the same image locally
 
@@ -137,11 +137,13 @@ docker run --rm --user "$(id -u):$(id -g)" \
   python -m experiments.api_load_test run --mode calibration --transport text --output /results/run
 ```
 
-Use a fresh output directory; the runner refuses to overwrite one. Calibration is the CLI default. Use `--model` with an exact table ID for one snapshot, or `--transport native` for a separately labelled native-function diagnostic. Choose `--mode smoke` or `--mode pilot` explicitly only when their larger scope is intended. Recompute summaries without model calls with:
+Use a fresh output directory; the runner refuses to overwrite one. Calibration is the CLI default. Use `--model` with an exact table ID for one snapshot, or `--transport native` for a separately labelled native-function diagnostic. Choose `--mode smoke` or `--mode pilot` explicitly only when their larger scope is intended. Recompute summaries, including interrupted-run summaries, without model calls with:
 
 ```bash
 python -m experiments.api_load_test analyse --output experiment-results/run
 ```
+
+Analysis reports retained running trials as interrupted without rewriting the original trial records or resuming paid work. It verifies case digests and suspends affected comparisons when measurement integrity fails.
 
 `make experiment-check` exercises real HTTP and MCP without credentials in an installed checkout. Unit tests may use explicitly mocked paid-provider replies; those replies are never empirical model-comparison evidence.
 

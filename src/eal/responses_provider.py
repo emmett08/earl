@@ -238,6 +238,8 @@ class ResponsesProvider:
                                       ("function_call", "reasoning") for item in output):
                 raise failure("Native response must contain one function call and optional reasoning", "invalid_operation")
             call = calls[0]
+            if call.get("status") not in (None, "completed"):
+                raise failure("Native response contained an incomplete function call", "output_incomplete")
             if (not isinstance(call.get("call_id"), str) or not call["call_id"]
                     or not isinstance(call.get("name"), str)
                     or call["name"] not in {entry["operation"] for entry in operations or []}
