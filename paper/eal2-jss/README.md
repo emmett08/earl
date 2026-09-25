@@ -7,7 +7,8 @@ manuscript. The historical relay and notation records remain pinned to
 checker and offline records are described at
 `d78836b8fd769c236c646f263246e7728a488922`. The amended 96-, 960- and
 800-call records were merged in [PR #8](https://github.com/emmett08/earl/pull/8)
-at `b9177df`. The new bias-agent study is a separate prospective protocol.
+at `b9177df`. The separate bias-agent Stage A run was recovered at `430945c` and merged in
+PR #14 at `f2ba7eb`; this revision reports its retained outcomes.
 
 ## Why this journal
 
@@ -67,7 +68,7 @@ complete listing reproduces `examples/rms.eal` byte for byte.
 | Mechanism developmental schedule and result | `benchmarks/experiments/mechanisms-960/` and `benchmarks/results/eal2-960-campaign-20260924.tar.gz`; 960 assigned/attempted, 942 strict completions, four malformed, fourteen provider failures, 460 exact available-information statuses and 130 admitted false supports on selected synthetic roots; 11 response-less requests have unknown charges |
 | Deployment developmental schedule and result | `benchmarks/experiments/deployment-800/`, `benchmarks/results/2026-09-24-deployment-800-a3-developmental/a3-terminal.tar.gz`, `docs/eal2-study-amendment-20260924.md` and `docs/eal2-grammar-decision-20260924.md`; 800 completed assigned slots in 804 actual requests, 290/384 fixed-source exact statuses, 0/32 valid final authored products and 320 unavailable recipient packets. A1/A2/C1 stopped diagnostic attempts are separate and not pooled |
 | Deployment exploratory explanation reviews | `docs/reviews/deployment-800-a3-*` and the archived postcall review frame; two isolated AI reviewers agreed 4/48 preselected actual-prompt responses faithful, all in raw-source cases. All 16 checked-host statuses in this subset matched their synthetic reference, but none of the sixteen recipient explanations was rated faithful; not a human quality estimate |
-| Prospective bias attribution and agent comparison | `benchmarks/experiments/bias-mechanisms/PROTOCOL.md`, `AMENDMENT-0.1.1.md` and `RUN_STATUS.md`; 12 synthetic families with four dependent variants, three model classes, two Stage A topologies, 288 assigned model--case--route cells and 432 planned API calls. Static source validation passed 48/48 with zero diagnostics and thirteen offline tests passed. The original zero-call freezes are retained as invalidated historical material after variant-label leakage and scoring repairs. Amended version 0.1.1 pilot and full freezes in `benchmarks/results/2026-09-24-bias-agent-zero-call/` retain 72 and 432 planned calls, with internal SHA-256 values `ddff588b8b619397ad052fd2fae20b03012267b7a35dbccbd6325bd2d2fc3f72` and `28d1610056b3c68f12d2d4f73445096211cc505b60a11169288552e45163690e`; their material checks pin `analyse.py`, `PROTOCOL.md` and the amendment. A no-key connectivity preflight timed out before any paid call. No response ledger or model result exists. Raw agent judgements are primary; the author-labelled gate is an oracle-assisted diagnostic. Human causal benefit requires a separate randomised engineer study |
+| Developmental bias-attribution Stage A | `benchmarks/results/2026-09-24-bias-agent-stage-a/` and the stopped-pilot archive; 432 terminal calls, 160 valid calls, 98 admitted route dispositions and five fully warranted dispositions among 288 assignments. The 72-call pilot is included once. Twenty strong false attributions occur in parsed analyst answers rejected by subsequent validation. Paired family-bootstrap intervals are descriptive; direct and independent routes allocate one and two calls. Amendment 0.1.2 followed the first invalid pilot response. `verify_stage_a.py` reproduces both reports from their pinned historical sources and generates the paper table. No human outcome is measured |
 | Matched format and equal-allocation follow-ups | `benchmarks/experiments/bias-followups/` and `benchmarks/results/2026-09-24-bias-followups-zero-call/`; checked EAL/2 versus mechanically derived typed JSON and two general critics versus mechanism/rival critics, with two assigned calls per cell. The exposed 12 families yield 128 pilot and 768 full planned calls, frozen at internal SHA-256 `1d543e38827ee95ec7e17535ff6c1777d60e9a967d7677d1be696d88de05b678` and `1f790f06b2078a6244e9d7039b9a51f43e503df81dd71cc303e23d74dcdc68f2`. Five offline tests passed; endpoint preflight timed out before credential lookup, so there are no model calls or performance results. Actual billed compute and input length may differ |
 | Human decision trial protocol | `benchmarks/experiments/bias-human-trial/`; six assistance arms crossed with fluent/plain wording, with staged pre/post packets and descriptive scoring. Four synthetic administrative tests passed. New independent case review, ethics arrangements, recruitment, power analysis and preregistration are needed; no participants or human outcomes exist |
 
@@ -94,12 +95,12 @@ is unavailable.
 EAL/2 began as a way to help a person question a fluent AI answer by exposing
 the claim, grounds, inference, assumptions and objections. The paper now
 separates that human-facing purpose from the demonstrated host checks and from
-the prospective experiment. An inaccurate or unjustified argument is not, by
+the completed developmental Stage A experiment and unexecuted follow-ups. An inaccurate or unjustified argument is not, by
 itself, evidence of a particular human cognitive bias. The study therefore
 requires cue exposure, an opportunity, evidence of uptake, a predicted
 directional signature, a discriminating contrast and serious rival accounts;
-it scores false bias attribution and agent-induced engineering errors alongside
-correct detection. Model cue sensitivity tests concern the model system. A
+it retains false bias attribution and wrong corrections alongside the full
+reference score, valid response count, positive recall and decisive coverage. Model cue sensitivity tests concern the model system. A
 randomised human study would be needed to show improved human decisions.
 
 The preferred current result claim is that EAL/2 supplies a bounded, inspectable
@@ -156,6 +157,46 @@ The exact table, formulas and syntax-highlighted source provide the clearest
 comparison. No figure is included solely to decorate the manuscript. A
 reproducible task-level graphic could be warranted after a larger independent
 sample provides a distribution rather than five exposed templates.
+
+## Reproduce the Stage A paper results
+
+The executed study used the historical material at
+`430945cd24588240fc5ea351b723f4cfc924dea5`. Later EAL implementation changes
+alter its pinned source set. Run the paper verifier from a clone that contains
+that commit:
+
+```sh
+python paper/eal2-jss/verify_stage_a.py --check
+cd paper/eal2-jss
+latexmk -pdf -interaction=nonstopmode -halt-on-error manuscript.tex
+```
+
+The verifier reconstructs historical source files from local Git objects in a
+temporary directory, checks the frozen material, verifies archive hashes and
+ledger chains, and requires byte-for-byte reproduction of the pilot and full
+reports. A checkout of the historical material may instead be supplied with
+`--source-root /path/to/historical/checkout`. This is an offline analysis;
+`COMMANDS.txt` in the retained archive records past execution and must not be
+used to send the study calls again.
+
+Run the verifier without `--check` to regenerate `stage-a-summary.json` and
+`stage-a-table.tex`; the manuscript includes the generated table directly.
+`completed_assignments` in the retained report means every required call
+passed response validation. The paper calls this an admitted disposition to
+distinguish it from a terminal call or a fully warranted answer. The admission
+and fully warranted totals are 98/288 and 5/288. The twenty pre-validation
+strong false attributions are counted in parsed analyst answers, while the
+zero admitted count follows response filtering. The primary score remains
+the frozen raw disposition endpoint; no retrospective output-contract repair
+is applied.
+
+The final reconciliation preserves Stage A's executed history and treats
+PR #13's distinct zero-call source refresh as an unexecuted proposal. The
+paper reports the one-call stopped pilot and subsequent execution-control
+amendment. Original freezes, ledgers and reports are unchanged. The older
+reused-case follow-up and human-trial designs remain separate from the newer
+fresh-family `bias-next` plans; all are unexecuted. The two human protocols
+need one reconciled design before registration.
 
 ## Before journal submission
 
