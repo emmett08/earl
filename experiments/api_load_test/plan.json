@@ -1,7 +1,7 @@
 {
-  "schema": "eal-api-experiment/3",
+  "schema": "eal-api-experiment/4",
   "id": "INV-EAL-API-001",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "seed": 20260925,
   "arms": [
     "eal_mcp",
@@ -17,9 +17,9 @@
   "max_transcript_bytes": 200000,
   "minimum_call_interval_seconds": 1,
   "smoke_max_usd_per_model": 5,
-  "primary_outcome": "Correct collected report selection, bounded scope, availability or performance verdict, separate complete failed and unknown check sets, and numeric measurements.",
-  "failure_rule": "Retain all assignments; missing, malformed, uncollected and failed trials score zero. Known-cost provider-classified invalid, ambiguous or incomplete replies fail that trial without retry; proceed to the next assignment. Unknown cost, identity mismatch, fatal account/configuration or unclassified provider failures, host failures and exhausted cost accounting stop that model; unattempted assignments remain separate. Interrupted dispatched calls remain recorded with unknown cost until measured usage is retained. Instrument failures or frozen-evidence integrity failures suspend affected comparison interpretation while preserving diagnostic counts and usage.",
-  "scope": "Development calibration or pilot on reviewed case instances of one API service and six fixed model snapshots. EAL includes executable checking and MCP; JSON and prose use direct tools without EAL evaluation or MCP. plain_validator adds ordinary deterministic checking to the explicit prose arm. Transports are separate. No confirmatory efficacy claim or population inference.",
+  "primary_outcome": "Correct inspected report selection and bounded result: status, complete failed and unknown check sets, and numeric measurements. Model finalisation measures model-authored decisions; checked finalisation measures retained checker output and must not be described as model accuracy. Context is host-bound and explanation is optional.",
+  "failure_rule": "Retain every assignment with no effect-based stopping. Retry only provider-marked retryable http_server, timeout or transport failures, at most twice per trial after 1 and 2 seconds; every attempt uses the existing model-call cap and keeps unknown charges reserved. Exhausted transient retries fail that trial; three consecutive transient-failed trials stop the affected model. Known-cost invalid, incomplete or ambiguous replies fail their trial without retry. Fatal account/configuration errors, unclassified failures, unverified returned model identity or usage, host failures, checker/reference disagreement and exhausted admission allowance stop the model immediately. Preserve failed and unattempted assignments separately; instrument or evidence-integrity defects suspend affected comparisons.",
+  "scope": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation.",
   "transport": "text",
   "pilot_cases": 40,
   "smoke_cases": 4,
@@ -40,5 +40,12 @@
   ],
   "calibration_cases": 3,
   "calibration_max_model_calls_per_trial": 3,
-  "calibration_max_usd_per_model": 0.5
+  "calibration_max_usd_per_model": 0.5,
+  "finalisation": "model",
+  "max_provider_retries_per_trial": 2,
+  "provider_retry_delays_seconds": [
+    1,
+    2
+  ],
+  "max_consecutive_transient_failures": 3
 }

@@ -14,3 +14,9 @@ Primary sources consulted on 25 September 2026. The bibliography cites the publi
 | `mcp2025` | [Official Tools specification, revision 2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25/server/tools). | Protocol tool interaction; EAL-specific assessment semantics are attributed to the implementation. |
 
 Repository claims were checked against `docs/` and source/tests, rather than inferred from bibliography titles. Bibliographic identifiers and exact author lists for the two ACL papers and PAL were checked against their primary publication records. The reference set is deliberately limited to sources actually used; a broader literature review may be appropriate after an editor identifies the preferred JSS article category.
+
+## Nano follow-up primary artefact
+
+The later empirical claims use the supplied archive for [Actions run 36176588712](https://github.com/emmett08/earl/actions/runs/36176588712), attempt 1. SHA-256: `186adeb144ccaf4c77f5e36165999f3ad203a98bcfc24a7119c68d5c5eb206c5`. Its manifest pins plan 3.1.0 and source commit `8220e838a8d42922edc0496ff50927c672a1f87d`. The eight files in `analysis/nano_v3_original/` match the manifest's source digests. The curated projection retains case rows, all 240 assignments, response text, protocol errors, model-visible packets and complete tool receipts. Original provider object duplicates and replay handles are omitted.
+
+`analysis/reproduce_nano.py` independently recomputes the reference and each attempted grade using the frozen oracle, verifies model-visible packets against raw rows and reproduces the original summary exactly. This verifies the numerical account against the retained artefact. It does not supply independent replication or identify the causal effect of changing prompts, transport or retry rules. No additional literature source is used to explain the observed nano failures.

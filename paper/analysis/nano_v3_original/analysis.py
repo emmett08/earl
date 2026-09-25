@@ -63,8 +63,8 @@ def _frozen_cases(output):
 
 def summarise(output: Path) -> dict:
     manifest = json.loads((output / "manifest.json").read_text())
-    if manifest["schema"] != "eal-api-experiment-run/4":
-        raise ValueError("Earlier runs retain their original reports; this analysis requires a v4 manifest")
+    if manifest["schema"] != "eal-api-experiment-run/3":
+        raise ValueError("Earlier runs retain their original reports; this analysis requires a v3 manifest")
     frozen_cases, freeze_errors = _frozen_cases(output)
     rows, identities = [], set()
     for assignment in manifest["assignments"]:
@@ -96,42 +96,27 @@ def summarise(output: Path) -> dict:
                                    if call.get("state") == "in_flight" else call for call in calls]}
         if row.get("state") not in {"complete", "failed", "not_attempted"}:
             raise ValueError("Trial state must be complete, failed or not_attempted before analysis")
-        row = {**row, "transport": row.get("transport", manifest["transport"]),
-               "finalisation": row.get("finalisation", manifest["finalisation"])}
-        if row["finalisation"] not in {"model", "checked"}:
-            raise ValueError("Unknown finalisation mode")
-        if row["finalisation"] == "checked" and row["arm"] not in {"eal_mcp", "plain_validator"}:
-            raise ValueError("Checked finalisation requires a checked arm")
+        row = {**row, "transport": row.get("transport", manifest["transport"])}
         rows.append(row)
     if not rows:
         raise ValueError("No assigned development cases")
-    invalid_measurements = [{key: row[key] for key in ("id", "model", "transport", "finalisation", "arm", "case_id")}
+    invalid_measurements = [{key: row[key] for key in ("id", "model", "transport", "arm", "case_id")}
                             | {"reason": "; ".join(filter(None, [row.get("failure"),
                                                  *row.get("measurement_integrity_errors", [])]))
                                           or "host_reference_disagreement"}
                             for row in rows if _instrument_failure(row)]
     by_cell = defaultdict(list)
     for row in rows:
-        by_cell[row["model"], row["transport"], row["finalisation"], row["arm"]].append(row)
+        by_cell[row["model"], row["transport"], row["arm"]].append(row)
     cells = []
-    for (model, transport, finalisation, arm), values in sorted(by_cell.items()):
+    for (model, transport, arm), values in sorted(by_cell.items()):
         calls = [call for row in values for call in row.get("model_calls", [])]
         responses = [call["response"] for call in calls if call.get("response")]
         costs = [call["estimated_usd"] for call in calls if call.get("estimated_usd") is not None]
         outcomes = {key: sum(bool(row.get("outcome", {}).get(key)) for row in values) for key in OUTCOMES}
         outcomes["correct"] = sum(_correct(row) for row in values)
         states = Counter(row["state"] for row in values)
-        cells.append({"model": model, "transport": transport, "finalisation": finalisation, "arm": arm,
-                      "answer_origin_counts": dict(sorted(Counter(
-                          row.get("answer_origin") or "none" for row in values).items())),
-                      "protocol_complete": sum(bool(row.get("protocol_complete")) for row in values),
-                      "answer_complete": sum(bool(row.get("answer_complete")) for row in values),
-                      "explanation_present": sum(bool(row.get("explanation_present")) for row in values),
-                      # Dispatch markers survive a killed process that never
-                      # writes its terminal trial counters.
-                      "provider_retries": sum("retry_of_turn" in call for call in calls),
-                      "transient_failed_trials": sum(bool(row.get("transient_failure"))
-                                                     and row["state"] == "failed" for row in values),
+        cells.append({"model": model, "transport": transport, "arm": arm,
                       "assigned": len(values), "distinct_cases": len({row["case_id"] for row in values}),
                       "completed": states["complete"], "failed": states["failed"],
                       "not_attempted": states["not_attempted"], "states": dict(states),
@@ -156,9 +141,8 @@ def summarise(output: Path) -> dict:
     comparisons = [("eal_mcp", arm) for arm in arms if arm != "eal_mcp"] if "eal_mcp" in arms else []
     if {"plain_validator", "plain_explicit"} <= set(arms):
         comparisons.append(("plain_validator", "plain_explicit"))
-    for model, transport, finalisation in sorted({(row["model"], row["transport"], row["finalisation"]) for row in rows}):
-        values = [row for row in rows if row["model"] == model and row["transport"] == transport
-                  and row["finalisation"] == finalisation]
+    for model, transport in sorted({(row["model"], row["transport"]) for row in rows}):
+        values = [row for row in rows if row["model"] == model and row["transport"] == transport]
         lookup = {}
         for row in values:
             key = (row["block"], row["arm"])
@@ -166,8 +150,6 @@ def summarise(output: Path) -> dict:
                 raise ValueError("Duplicate paired block and arm")
             lookup[key] = row
         for reference_arm, comparator in comparisons:
-            if finalisation == "checked" and not {reference_arm, comparator} <= {"eal_mcp", "plain_validator"}:
-                continue
             pairs = []
             blocks = sorted({block for block, arm in lookup if arm in {reference_arm, comparator}})
             for block in blocks:
@@ -185,8 +167,8 @@ def summarise(output: Path) -> dict:
             cases = Counter(a["case_id"] for a, _ in pairs)
             invalid = [item["id"] for item in invalid_measurements
                        if item["model"] == model and item["transport"] == transport
-                       and item["finalisation"] == finalisation and item["arm"] in {reference_arm, comparator}]
-            contrasts.append({"model": model, "transport": transport, "finalisation": finalisation,
+                       and item["arm"] in {reference_arm, comparator}]
+            contrasts.append({"model": model, "transport": transport,
                               "reference_arm": reference_arm, "comparator": comparator,
                               "paired_blocks": len(pairs), "paired_cases": len(cases),
                               "paired_completed": len(completed_pairs),
@@ -196,7 +178,7 @@ def summarise(output: Path) -> dict:
                               "invalid_measurement_trials": invalid,
                               "interpretation": ("suspended_invalid_measurement" if invalid else
                                                  "development_suite_descriptive")})
-    return {"schema": "eal-api-experiment-summary/4", "mode": manifest["mode"],
+    return {"schema": "eal-api-experiment-summary/3", "mode": manifest["mode"],
             "assigned": len(rows), "distinct_cases": len({row["case_id"] for row in rows}),
             "completed": sum(row["state"] == "complete" for row in rows),
             "failed": sum(row["state"] == "failed" for row in rows),
@@ -209,8 +191,6 @@ def summarise(output: Path) -> dict:
             "limitations": ["Observed differences describe this finite suite, not a sampled task population.",
                             "Repeated sessions on one case are repetitions, not additional distinct cases.",
                             "Native and text-mediated transports are reported separately.",
-                            "Model and checked-host finalisation are separate conditions; checked-host accuracy is not model-answer accuracy.",
-                            "Protocol completion, substantive correctness and narrative presence are separate measures; presence does not establish explanation quality.",
                             "EAL combines notation, MCP execution and checking; the contrast does not isolate notation.",
                             "The ordinary validator uses explicit prose with direct checking; its contrast estimates the combined checking addition on this suite.",
                             "Missing, malformed and failed assignments remain in the denominator.",
@@ -230,39 +210,28 @@ def markdown(summary: dict) -> str:
         lines.append("")
     lines += [
              "## Assignment completion", "",
-             "| Model | Transport | Finalisation | Arm | Assigned | Completed | Failed | Not attempted | Failure categories |",
-             "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | --- |"]
+             "| Model | Transport | Arm | Assigned | Completed | Failed | Not attempted | Failure categories |",
+             "| --- | --- | --- | ---: | ---: | ---: | ---: | --- |"]
     for cell in summary["cells"]:
         categories = "; ".join(f"{key}: {count}" for key, count in cell["failure_categories"].items()) or "—"
-        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['finalisation']} | {cell['arm']} | {cell['assigned']} | "
+        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['arm']} | {cell['assigned']} | "
                      f"{cell['completed']} | {cell['failed']} | {cell['not_attempted']} | {categories} |")
     lines += ["", "Failed conversations and unattempted assignments count as incorrect in the assigned denominator. "
               "They are reported separately from completed answers with incorrect decisions. "
               "Retained running trials are reported as interrupted; dispatched calls without a settled cost remain unknown.", "",
-              "## Completion, decision and narrative measures", "",
-              "| Model | Transport | Finalisation | Arm | Valid model finish | Complete answer | Correct / assigned | Explanation present | Provider retries | Transient failed trials |",
-              "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
-    for cell in summary["cells"]:
-        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['finalisation']} | {cell['arm']} | "
-                     f"{cell['protocol_complete']} | {cell['answer_complete']} | {cell['correct']}/{cell['assigned']} | "
-                     f"{cell['explanation_present']} | {cell['provider_retries']} | {cell['transient_failed_trials']} |")
-    lines += ["", "A valid model finish records protocol completion. Checked-host finalisation returns a tool decision "
-              "without a model finish; its accuracy measures the checked system, not model-answer accuracy. "
-              "Explanation presence records non-empty text only and makes no claim about its quality. "
-              "Substantive correctness retains the report, scope, status, metric and check-set rubric.", "",
               "## Assigned-answer scores and resource use", "",
-             "| Model | Transport | Finalisation | Arm | Correct / assigned | False support | False rejection | Calls | Unknown-cost calls | Known USD |",
-             "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
+             "| Model | Transport | Arm | Correct / assigned | False support | False rejection | Calls | Unknown-cost calls | Known USD |",
+             "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
     for cell in summary["cells"]:
-        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['finalisation']} | {cell['arm']} | "
+        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['arm']} | "
                      f"{cell['correct']}/{cell['assigned']} | {cell['false_support']} | {cell['false_rejection']} | "
                      f"{cell['model_calls']} | {cell['unknown_cost_calls']} | {cell['estimated_usd_known']:.4f} |")
     lines += ["", "Costs use frozen token rates; unknown usage remains unknown. HTTP requests and model calls are not independent cases.",
               "", "## Paired case outcomes", "",
-              "| Model | Transport | Finalisation | Reference | Comparator | Cases / blocks | Both correct | Reference only | Comparator only | Both incorrect | Difference | Interpretation |",
-              "| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |"]
+              "| Model | Transport | Reference | Comparator | Cases / blocks | Both correct | Reference only | Comparator only | Both incorrect | Difference | Interpretation |",
+              "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |"]
     for row in summary["contrasts"]:
-        lines.append(f"| {row['model']} | {row['transport']} | {row['finalisation']} | {row['reference_arm']} | {row['comparator']} | "
+        lines.append(f"| {row['model']} | {row['transport']} | {row['reference_arm']} | {row['comparator']} | "
                      f"{row['paired_cases']}/{row['paired_blocks']} | {row['both_correct']} | {row['reference_only_correct']} | "
                      f"{row['comparator_only_correct']} | {row['both_incorrect']} | {row['accuracy_difference']:+.3f} | "
                      f"{row['interpretation']} |")
@@ -270,19 +239,19 @@ def markdown(summary: dict) -> str:
               "For valid measurements, zero is an observed assigned-score tie on this suite; it does not establish equivalence. "
               "Suspended comparisons cannot support a task-performance interpretation.",
               "", "## Full-answer disagreements among completed pairs", "",
-              "| Model | Transport | Finalisation | Reference | Comparator | Completed pairs | Reference only correct | Comparator only correct | Interpretation |",
-              "| --- | --- | --- | --- | --- | ---: | ---: | ---: | --- |"]
+              "| Model | Transport | Reference | Comparator | Completed pairs | Reference only correct | Comparator only correct | Interpretation |",
+              "| --- | --- | --- | --- | ---: | ---: | ---: | --- |"]
     for row in summary["contrasts"]:
         table = row["completed_pair_table"]
-        lines.append(f"| {row['model']} | {row['transport']} | {row['finalisation']} | {row['reference_arm']} | {row['comparator']} | {row['paired_completed']} | "
+        lines.append(f"| {row['model']} | {row['transport']} | {row['reference_arm']} | {row['comparator']} | {row['paired_completed']} | "
                      f"{table['reference_only_correct']} | {table['comparator_only_correct']} | {row['interpretation']} |")
     lines += ["", "This diagnostic separates completed-answer disagreements from execution failures. "
               "Completion selects a subset; it does not replace the assigned denominator or establish an efficacy effect.",
               "", "## Decision components", "",
-              "| Model | Transport | Finalisation | Arm | Evidence selection | Scope | Failed criteria | Unknown criteria | Status | Metrics | Assigned |",
-              "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
+              "| Model | Transport | Arm | Evidence selection | Scope | Failed criteria | Unknown criteria | Status | Metrics | Assigned |",
+              "| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
     for cell in summary["cells"]:
-        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['finalisation']} | {cell['arm']} | {cell['evidence_selection_correct']} | "
+        lines.append(f"| {cell['model']} | {cell['transport']} | {cell['arm']} | {cell['evidence_selection_correct']} | "
                      f"{cell['scope_correct']} | {cell['failed_checks_correct']} | {cell['unknown_checks_correct']} | {cell['status_correct']} | "
                      f"{cell['metrics_correct']} | {cell['assigned']} |")
     lines += ["", summary["scope"], "", "An efficacy study requires new held-out cases, an explicit effect margin "

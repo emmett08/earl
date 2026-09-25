@@ -26,7 +26,7 @@ def main():
     require(len(entries) == len(set(entries)), "Duplicate bibliography key")
     require(cited == set(entries), "Missing or unused bibliography entry")
     figures = re.findall(r"\\includegraphics\[[^\]]*\]\{([^}]+)\}", text)
-    require(len(figures) == len(set(figures)) == 3, "Expected exactly three figures")
+    require(len(figures) == len(set(figures)) == 4, "Expected exactly four figures")
     for filename in figures:
         path = PAPER / filename
         require(path.exists(), f"Missing figure: {filename}")
@@ -52,6 +52,20 @@ def main():
                                      for row in mini_eal) == 7,
             "Mini-model EAL error interpretation changed")
     require(components["recorded_host_agreement_flags"] == {"True": 141}, "Host flags changed")
+    nano = json.loads((PAPER / "results/nano-summary.json").read_text())
+    require(len(nano["cells"]) == 6 and nano["assigned"] == 240, "Nano design changed")
+    require((nano["completed"], nano["failed"], nano["not_attempted"]) == (141, 43, 56),
+            "Historical nano completion changed")
+    diagnosis = json.loads((PAPER / "results/nano-diagnosis.json").read_text())
+    require(diagnosis["scores_and_summary"] == "exact_match", "Nano historical replay differs")
+    require(diagnosis["eal_partition"] == {"assigned": 40, "attempted": 30,
+            "completed_incorrect": 13, "correct": 3, "model_call_limit": 14, "not_attempted": 10},
+            "Nano figure partition changed")
+    require(diagnosis["eal_first_assessment_success"] == 30
+            and diagnosis["eal_completed_error_components"]["status_incorrect"] == 12
+            and diagnosis["eal_failed_second_response_missing_operation"] == 13
+            and diagnosis["stop"]["http_status"] == 503,
+            "Nano figure diagnostic interpretation changed")
     highlights = (PAPER / "highlights.txt").read_text().splitlines()
     require(len(highlights) == 4 and all(len(line) <= 85 for line in highlights), "Highlights length")
     # The publication includes vector PDF graphics with embedded fonts.
@@ -61,8 +75,8 @@ def main():
         fonts = subprocess.check_output(["pdffonts", str(path)], text=True).splitlines()[2:]
         require(fonts and all(re.search(r"\s+yes\s+(yes|no)\s+(yes|no)\s+\d+\s+\d+\s*$", row)
                              for row in fonts), f"Unembedded font: {path.name}")
-    print("PASS: 3 figures; references resolved; no overflow; all fonts embedded; "
-          "30 result cells; component interpretations verified")
+    print("PASS: 4 figures; references resolved; no overflow; all fonts embedded; "
+          "30 original + 6 nano result cells; historical diagnoses verified")
 
 
 if __name__ == "__main__":

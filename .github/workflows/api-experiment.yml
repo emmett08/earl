@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Calibration: 3 cases x 3 arms; smoke: 4 x 6; pilot: 40 x 6, per selected model'
+        description: 'Cases per model: calibration 3, smoke 4, pilot 40; checked finalisation uses 2 arms'
         required: true
         default: calibration
         type: choice
@@ -28,6 +28,12 @@ on:
         default: text
         type: choice
         options: [text, native]
+      finalisation:
+        description: 'Model-authored answers or direct checked decisions (EAL and validator only)'
+        required: true
+        default: model
+        type: choice
+        options: [model, checked]
 
 permissions:
   contents: read
@@ -48,6 +54,7 @@ jobs:
     env:
       EXPERIMENT_MODE: ${{ inputs.mode }}
       EXPERIMENT_MODEL: ${{ inputs.model }}
+      EXPERIMENT_FINALISATION: ${{ inputs.finalisation }}
       EXPERIMENT_TRANSPORT: ${{ inputs.transport }}
       EXPERIMENT_IMAGE: eal-api-experiment:${{ github.run_id }}-${{ github.run_attempt }}
       EXPERIMENT_CONTAINER: eal-api-experiment-${{ github.run_id }}-${{ github.run_attempt }}
@@ -80,7 +87,7 @@ jobs:
             --volume "$PWD/experiment-results:/results" \
             "$EXPERIMENT_IMAGE" \
             python -m experiments.api_load_test run --mode "$EXPERIMENT_MODE" \
-              --transport "$EXPERIMENT_TRANSPORT" "${model_args[@]}" --output /results/run
+              --transport "$EXPERIMENT_TRANSPORT" --finalisation "$EXPERIMENT_FINALISATION" "${model_args[@]}" --output /results/run
       - name: Stop this invocation's paid container
         id: stop_paid
         if: always()

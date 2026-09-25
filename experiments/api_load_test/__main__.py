@@ -23,6 +23,8 @@ def main():
             command.add_argument("--mode", choices=("calibration", "smoke", "pilot"), default="calibration")
             command.add_argument("--transport", choices=("text", "native"), default="text",
                                  help="Text-mediated operations by default; native is a separate diagnostic")
+            command.add_argument("--finalisation", choices=("model", "checked"), default="model",
+                                 help="Model-authored answer or direct checked decision (EAL/validator arms only)")
             command.add_argument("--model", action="append", help="Exact ID from models.json; omission runs all six")
     args = parser.parse_args()
     output = args.output.resolve()
@@ -32,6 +34,7 @@ def main():
     if args.command == "run":
         plan = json.loads((HERE / "plan.json").read_text())
         plan["transport"] = args.transport
+        plan["finalisation"] = args.finalisation
         specs = json.loads((HERE / "models.json").read_text())["models"]
         if args.model:
             if set(args.model) - {spec["id"] for spec in specs} or len(set(args.model)) != len(args.model):
