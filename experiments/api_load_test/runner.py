@@ -55,13 +55,13 @@ def event(path: Path, value):
     print(json.dumps(progress, allow_nan=False), flush=True)
 
 
-def schedule(model: str, cases: list[dict], seed: int, transport: str = "text"):
+def schedule(model: str, cases: list[dict], seed: int, transport: str = "text", *, selected_arms=ARMS):
     rng = random.Random(f"{seed}:{model}:{transport}")
     blocks = list(cases)
     rng.shuffle(blocks)
     assignments = []
     for case in blocks:
-        arms = list(ARMS)
+        arms = list(selected_arms)
         rng.shuffle(arms)
         for arm in arms:
             key = f"{seed}:{model}:{transport}:{case['id']}:{arm}"
@@ -123,6 +123,7 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
     handles, calls = [], []
     answer, failure = None, None
     stop_model = False
+    protocol_errors = []
     started = time.monotonic()
     result = {**assignment, "model_spec": spec, "started_at": utc_now(), "state": "running",
               "case_sha256": hashlib.sha256(json.dumps(case, sort_keys=True).encode()).hexdigest(),
@@ -153,12 +154,22 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
                                                                operations=advertised, native_tools=native_tools)
             except ProviderError as exc:
                 cost = budget.settle(reserved, exc.response, provider)
-                calls.append({"turn": turn, "error": str(exc), "estimated_usd": cost,
+                calls.append({"turn": turn, "error": str(exc), "category": exc.category,
+                              "retryable": exc.retryable, "diagnostics": exc.diagnostics, "estimated_usd": cost,
                               "response": dataclasses.asdict(exc.response) if exc.response else None,
                               "seconds": time.monotonic() - call_started})
                 event(workspace / "events.jsonl", {"type": "model_call_failed", "id": assignment["id"],
                                                    "model": spec["id"], "arm": arm, **calls[-1]})
-                failure, stop_model = "provider_error", True
+                failure = exc.category
+                # A measured reply failure belongs to this assigned trial. Do
+                # not silently retry it, or abandon unrelated paired cases.
+                reply_failures = {"output_truncated", "output_filtered", "output_incomplete",
+                                  "multiple_messages", "missing_message", "invalid_operation",
+                                  "invalid_response", "operation_protocol"}
+                verified = exc.response is not None and exc.response.model == spec["id"] and cost is not None
+                stop_model = not (verified and exc.category in reply_failures)
+                if exc.response is not None and (exc.response.model != spec["id"] or cost is None):
+                    failure = "model_identity_or_usage_unverified"
                 break
             cost = budget.settle(reserved, response, provider)
             calls.append({"turn": turn, "response": dataclasses.asdict(response), "estimated_usd": cost,
@@ -191,6 +202,7 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
                 packet = await tools.execute(arm, operation["report_id"])
             except (ValueError, KeyError, TypeError, jsonschema.ValidationError) as exc:
                 packet = {"error": type(exc).__name__, "message": str(exc)[:2000]}
+                protocol_errors.append({"turn": turn, **packet})
             if native_tools:
                 messages.append({"role": "tool", "tool_call_id": native["id"], "content": json.dumps(packet)})
             else:
@@ -201,22 +213,26 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
         if answer is None and failure is None:
             failure = "model_call_limit"
     except Exception as exc:
-        failure = f"host_error:{type(exc).__name__}"
+        failure, stop_model = f"host_error:{type(exc).__name__}", True
         event(workspace / "events.jsonl", {"type": "host_error", "category": type(exc).__name__})
     finally:
         provider.discard_replay_handles(handles)
         host_checks = []
         for report_id, packet in tools.packets.items():
-            if "host_status" not in packet:
+            if "status" not in packet:
                 continue
             report_truth = reference_report(case, report_id)
-            agrees = (packet["host_status"] == ("supported" if report_truth["status"] == "supported" else "unsupported")
-                      and packet["decision_status"] == report_truth["status"]
+            assessment = tools.host_assessments.get(report_id)
+            agrees = (packet["status"] == report_truth["status"]
                       and packet["metrics"] == report_truth["metrics"]
-                      and set(packet["failed_checks"]) == set(report_truth["failed_checks"]))
+                      and set(packet["failed_checks"]) == set(report_truth["failed_checks"])
+                      and set(packet["unknown_checks"]) == set(report_truth["unknown_checks"]))
+            if assessment is not None:
+                agrees = agrees and (assessment["host_status"] ==
+                                     ("supported" if report_truth["status"] == "supported" else "unsupported"))
             host_checks.append({"report_id": report_id, "agrees": agrees})
         if any(not item["agrees"] for item in host_checks):
-            failure = "host_reference_disagreement"
+            failure, stop_model = "host_reference_disagreement", True
         outcome = grade(answer, truth, collected=bool(tools.inspected_report_ids),
                         inspected_report_ids=tools.inspected_report_ids)
         outcome["host_agrees_with_reference"] = all(item["agrees"] for item in host_checks) if host_checks else None
@@ -224,7 +240,8 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
             outcome["correct"] = False
         result.update(state="complete" if answer and not failure else "failed", failure=failure,
                       answer=answer, reference=truth, outcome=outcome,
-                      host_status=tools.host_status, host_checks=host_checks, completed_at=utc_now(),
+                      host_status=tools.host_status, host_assessments=tools.host_assessments,
+                      host_checks=host_checks, protocol_errors=protocol_errors, completed_at=utc_now(),
                       seconds=time.monotonic() - started, stop_model=stop_model,
                       inspected_report_ids=sorted(tools.inspected_report_ids),
                       collected=bool(tools.inspected_report_ids), tool_route="mcp" if arm == "eal_mcp" else "direct")
@@ -237,20 +254,28 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
 async def run(output: Path, specs: list[dict], plan: dict, *, mode: str, provider_factory=make_provider):
     if tuple(plan["arms"]) != ARMS:
         raise ValueError("Plan arms differ from the frozen executable materials")
-    if mode not in ("smoke", "pilot") or plan["transport"] not in ("text", "native"):
-        raise ValueError("Select a development pilot or smoke check and an explicit transport")
+    if mode not in ("calibration", "smoke", "pilot") or plan["transport"] not in ("text", "native"):
+        raise ValueError("Select calibration, smoke or pilot and an explicit transport")
+    # Freeze the selected mode's actual limits and arms, not merely the larger
+    # configured suite. Existing evidence keeps its original versioned contract.
+    plan = dict(plan)
+    if mode == "calibration":
+        plan["arms"] = list(plan["calibration_arms"])
+        plan["max_model_calls_per_trial"] = plan["calibration_max_model_calls_per_trial"]
+    if not plan["arms"] or len(set(plan["arms"])) != len(plan["arms"]) or set(plan["arms"]) - set(ARMS):
+        raise ValueError("Invalid selected arms")
     if not specs or len({spec["id"] for spec in specs}) != len(specs):
         raise ValueError("Select at least one model, without duplicate snapshots")
     output.mkdir(parents=True, exist_ok=False)
     selected_cases = case_specs(mode)
-    assignments = [item for spec in specs for item in schedule(spec["id"], selected_cases, plan["seed"], plan["transport"])]
+    assignments = [item for spec in specs for item in schedule(spec["id"], selected_cases, plan["seed"], plan["transport"], selected_arms=plan["arms"])]
     files = [*HERE.glob("*.py"), *HERE.glob("*.json"), HERE / "Dockerfile", HERE / "requirements.lock",
              *ROOT.joinpath("src/eal").rglob("*.py")]
     commit = os.environ.get("EAL_SOURCE_COMMIT")
     if not commit:
         commit = (subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
                   if (ROOT / ".git").exists() else "source-snapshot-only")
-    manifest = {"schema": "eal-api-experiment-run/2", "mode": mode, "transport": plan["transport"],
+    manifest = {"schema": "eal-api-experiment-run/3", "mode": mode, "transport": plan["transport"],
                 "started_at": utc_now(), "plan": plan, "models": specs, "assignments": assignments,
                 "case_specs": selected_cases, "commit": commit,
                 "github_run_id": os.environ.get("GITHUB_RUN_ID"), "github_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),

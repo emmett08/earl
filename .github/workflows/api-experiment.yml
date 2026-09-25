@@ -4,11 +4,30 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: 'Pilot: 40 cases x 6 models x 5 arms; smoke: 4 cases x 6 models x 5 arms'
+        description: 'Calibration: 3 cases x 3 arms; smoke: 4 x 6; pilot: 40 x 6, per selected model'
         required: true
-        default: smoke
+        default: calibration
         type: choice
-        options: [smoke, pilot]
+        options: [calibration, smoke, pilot]
+      model:
+        description: 'Select a pinned snapshot; all runs the six-model matrix'
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - gpt-4.1-nano-2025-04-14
+          - gpt-4.1-mini-2025-04-14
+          - gpt-4.1-2025-04-14
+          - gpt-5.4-nano-2026-03-17
+          - gpt-5.4-mini-2026-03-17
+          - gpt-5.4-2026-03-05
+      transport:
+        description: 'Text adapter by default; native is a separate diagnostic run'
+        required: true
+        default: text
+        type: choice
+        options: [text, native]
 
 permissions:
   contents: read
@@ -25,6 +44,8 @@ jobs:
     timeout-minutes: 240
     env:
       EXPERIMENT_MODE: ${{ inputs.mode }}
+      EXPERIMENT_MODEL: ${{ inputs.model }}
+      EXPERIMENT_TRANSPORT: ${{ inputs.transport }}
       EXPERIMENT_IMAGE: eal-api-experiment:${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -40,17 +61,22 @@ jobs:
           docker image inspect "$EXPERIMENT_IMAGE" > experiment-results/image-inspect.json
       - name: Run tests and HTTP/MCP controls in Docker
         run: docker run --rm --network none "$EXPERIMENT_IMAGE"
-      - name: Run all model classes and prompt arms in Docker
+      - name: Run the selected calibration or development suite in Docker
         env:
           OPENAI_API_TOKEN: ${{ secrets.OPENAI_API_TOKEN }}
         run: |
+          model_args=()
+          if [ "$EXPERIMENT_MODEL" != all ]; then
+            model_args=(--model "$EXPERIMENT_MODEL")
+          fi
           # The value is inherited from the environment, not placed in argv or an image layer.
           docker run --rm --user "$(id -u):$(id -g)" \
             --env OPENAI_API_TOKEN --env GITHUB_RUN_ID --env GITHUB_RUN_ATTEMPT \
             --env EAL_SOURCE_COMMIT="$(git rev-parse HEAD)" \
             --volume "$PWD/experiment-results:/results" \
             "$EXPERIMENT_IMAGE" \
-            python -m experiments.api_load_test run --mode "$EXPERIMENT_MODE" --output /results/run
+            python -m experiments.api_load_test run --mode "$EXPERIMENT_MODE" \
+              --transport "$EXPERIMENT_TRANSPORT" "${model_args[@]}" --output /results/run
       - name: Publish the measured summary
         if: always()
         run: |

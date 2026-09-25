@@ -19,7 +19,7 @@ def main():
         command = commands.add_parser(name)
         command.add_argument("--output", type=Path, required=True)
         if name == "run":
-            command.add_argument("--mode", choices=("smoke", "pilot"), default="pilot")
+            command.add_argument("--mode", choices=("calibration", "smoke", "pilot"), default="calibration")
             command.add_argument("--transport", choices=("text", "native"), default="text",
                                  help="Text-mediated operations by default; native is a separate diagnostic")
             command.add_argument("--model", action="append", help="Exact ID from models.json; omission runs all six")

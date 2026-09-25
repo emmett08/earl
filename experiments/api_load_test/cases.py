@@ -22,12 +22,14 @@ FAMILIES = ("healthy", "near_limit", "slow", "errors", "incomplete",
 
 
 def case_specs(mode: str = "pilot") -> list[dict]:
-    if mode not in {"pilot", "smoke"}:
-        raise ValueError("Case set must be pilot or smoke")
+    if mode not in {"pilot", "smoke", "calibration"}:
+        raise ValueError("Case set must be calibration, smoke or pilot")
     specs = [{"id": "case-" + hashlib.sha256(f"development-v2:{family}:{variant}".encode()).hexdigest()[:12], "family": family, "variant": variant}
              for index, family in enumerate(FAMILIES) for variant in range(4)]
-    return specs if mode == "pilot" else [next(row for row in specs if row["family"] == family)
-                                          for family in ("healthy", "errors", "stale", "distractor")]
+    if mode == "pilot":
+        return specs
+    families = ("healthy", "corrupt", "stale") if mode == "calibration" else ("healthy", "errors", "stale", "distractor")
+    return [next(row for row in specs if row["family"] == family) for family in families]
 
 
 def canonical_bytes(value: dict) -> bytes:

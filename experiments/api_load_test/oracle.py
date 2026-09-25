@@ -101,12 +101,18 @@ def reference_report(case: dict, report_id: str) -> dict:
         # claimed_summary is untrusted narrative. Valid raw records determine
         # the result even when that narrative says the opposite.
     except (ValueError, KeyError, TypeError, OverflowError):
+        # A malformed report does not establish any other criterion. Reset
+        # partial computations so failed validity cannot become performance
+        # failure evidence in either a checklist or a numeric diagnostic.
+        checks.update(dict.fromkeys(CHECKS))
+        metrics.update(dict.fromkeys(METRICS))
         checks["report_valid"] = False
     available = all(checks[key] is True for key in AVAILABILITY_CHECKS)
     truth.update(available=available,
                  status=("unavailable" if not available else
                          "supported" if all(checks[key] is True for key in CHECKS) else "unsupported"),
-                 failed_checks=[key for key in CHECKS if checks[key] is False])
+                 failed_checks=[key for key in CHECKS if checks[key] is False],
+                 unknown_checks=[key for key in CHECKS if checks[key] is None])
     return truth
 
 
@@ -130,14 +136,19 @@ def grade(answer: dict | None, truth: dict | None, *, collected: bool,
                           and all(isinstance(key, str) for key in failed)
                           and len(failed) == len(set(failed))
                           and set(failed) == set(truth["failed_checks"]))
+    unknown = answer.get("unknown_checks")
+    unknown_correct = bool(truth and isinstance(unknown, list)
+                           and all(isinstance(key, str) for key in unknown)
+                           and len(unknown) == len(set(unknown))
+                           and set(unknown) == set(truth["unknown_checks"]))
     metrics_correct = bool(truth and isinstance(metrics, dict) and set(metrics) == set(METRICS)
                            and all(_close(metrics[key], truth["metrics"][key], key) for key in METRICS))
-    correct = all((evidence_correct, status_correct, scope_correct, failed_correct, metrics_correct))
+    correct = all((evidence_correct, status_correct, scope_correct, failed_correct, unknown_correct, metrics_correct))
     return {
         "correct": correct,
         "status_correct": status_correct, "metrics_correct": metrics_correct,
         "evidence_selection_correct": evidence_correct, "scope_correct": scope_correct,
-        "failed_checks_correct": failed_correct,
+        "failed_checks_correct": failed_correct, "unknown_checks_correct": unknown_correct,
         "false_support": bool(truth and answer.get("status") == "supported"
                               and truth["status"] != "supported"),
         "false_rejection": bool(truth and answer.get("status") == "unsupported"

@@ -8,9 +8,9 @@ import pytest
 from eal.formatter import semantic_ir
 from eal.parser import parse
 from experiments.api_load_test.cases import FAMILIES, build_cases, case_specs, digest
-from experiments.api_load_test.materials import prompt_for, source_for
+from experiments.api_load_test.materials import CHECK_NAMES, operations, prompt_for, source_for
 from experiments.api_load_test.oracle import reference, reference_report
-from experiments.api_load_test.routes import TrialTools
+from experiments.api_load_test.routes import ToolExecutionError, TrialTools
 
 
 @pytest.fixture(scope="module")
@@ -51,15 +51,19 @@ def test_json_prompt_preserves_the_same_argument_and_catalogue(cases):
 
 
 @pytest.mark.parametrize("family", FAMILIES)
-@pytest.mark.parametrize("arm", ("json_prompt", "eal_mcp"))
+@pytest.mark.parametrize("arm", ("json_prompt", "eal_mcp", "plain_validator"))
 def test_every_failure_mechanism_agrees_with_independent_raw_reference(cases, tmp_path, monkeypatch, family, arm):
     case = cases[family, 0]
     source = source_for(case["target"]["input"], case["target"]["context"])
     tools = TrialTools(tmp_path, source, {"case": case})
-    if arm == "json_prompt":
+    if arm != "eal_mcp":
         async def forbidden(*_):
-            raise AssertionError("A JSON prompt must never execute MCP")
+            raise AssertionError("Direct routes must never execute MCP")
         monkeypatch.setattr(tools, "_mcp", forbidden)
+        def forbidden_source(*_):
+            raise AssertionError("Direct routes must never parse or evaluate EAL")
+        monkeypatch.setattr("experiments.api_load_test.routes.source_for", forbidden_source)
+        monkeypatch.setattr("experiments.api_load_test.materials.parse", forbidden_source)
     report_id = case["expected_report_id"]
     packet = asyncio.run(tools.execute(arm, report_id))
     truth = reference(case)
@@ -67,15 +71,24 @@ def test_every_failure_mechanism_agrees_with_independent_raw_reference(cases, tm
     assert asyncio.run(tools.execute(arm, report_id)) == packet
     assert tools.inspected_report_ids == [report_id]
     assert json.loads(tools.report_path.read_text()) == case["reports"][report_id]
-    if arm == "eal_mcp":
-        assert packet["decision_status"] == truth["status"]
+    assert "host_status" not in packet and "decision_status" not in packet
+    if arm in ("eal_mcp", "plain_validator"):
+        assert packet["status"] == truth["status"]
         assert set(packet["failed_checks"]) == set(truth["failed_checks"])
-        assert packet["host_status"] == ("supported" if truth["status"] == "supported" else "unsupported")
+        assert set(packet["unknown_checks"]) == set(truth["unknown_checks"])
+        assert not set(packet["failed_checks"]) & set(packet["unknown_checks"])
+    if arm == "eal_mcp":
+        assert tools.host_assessments[report_id]["host_status"] == (
+            "supported" if truth["status"] == "supported" else "unsupported")
+        assert "reasoning" not in packet and "evidence" not in packet
         assert [row["tool"] for row in tools.trace if "tool" in row] == [
             "eal_validate", "eal_collect", "eal_reason", "eal_explain"]
     else:
-        assert "host_status" not in packet and "decision_status" not in packet
+        assert not tools.host_assessments
         assert all(row.get("route") != "mcp_stdio" for row in tools.trace)
+        if arm == "json_prompt":
+            assert all(key not in packet for key in ("status", "failed_checks", "unknown_checks"))
+            assert all(row.get("route") != "direct_validator" for row in tools.trace)
 
 
 @pytest.mark.parametrize("variant", (1, 2, 3))
@@ -83,8 +96,9 @@ def test_corrupt_field_variants_cannot_become_negative_performance_results(cases
     case = cases["corrupt", variant]
     tools = TrialTools(tmp_path, source_for(case["target"]["input"], case["target"]["context"]), {"case": case})
     packet = asyncio.run(tools.execute("eal_mcp", case["expected_report_id"]))
-    assert packet["decision_status"] == "unavailable"
+    assert packet["status"] == "unavailable"
     assert packet["failed_checks"] == ["report_valid"]
+    assert set(packet["unknown_checks"]) == set(CHECK_NAMES) - {"report_valid"}
     assert all(value is None for value in packet["metrics"].values())
 
 
@@ -103,6 +117,50 @@ def test_report_tampering_is_rejected_before_it_becomes_model_evidence(cases, tm
     case = copy.deepcopy(cases["healthy", 0])
     case["reports"][case["expected_report_id"]]["requests"][0]["elapsed_ms"] += 1
     tools = TrialTools(tmp_path, source_for(case["target"]["input"], case["target"]["context"]), {"case": case})
-    with pytest.raises(ValueError, match="collector failed"):
+    with pytest.raises(ToolExecutionError, match="collector failed"):
         asyncio.run(tools.execute("json_prompt", case["expected_report_id"]))
     assert not tools.inspected_report_ids
+
+
+def test_invalid_model_selector_remains_repairable(cases, tmp_path):
+    case = cases["healthy", 0]
+    tools = TrialTools(tmp_path, source_for(case["target"]["input"], case["target"]["context"]), {"case": case})
+    with pytest.raises(ValueError, match="Choose a report_id"):
+        asyncio.run(tools.execute("json_prompt", "not-in-the-catalogue"))
+    assert not tools.attempted_report_ids
+    packet = asyncio.run(tools.execute("json_prompt", case["expected_report_id"]))
+    assert packet["report_id"] == case["expected_report_id"]
+
+
+def test_malformed_collector_envelope_is_an_internal_failure(cases, tmp_path, monkeypatch):
+    import subprocess
+    case = cases["healthy", 0]
+    tools = TrialTools(tmp_path, source_for(case["target"]["input"], case["target"]["context"]), {"case": case})
+    monkeypatch.setattr("experiments.api_load_test.routes.subprocess.run",
+                        lambda *_args, **_kwargs: subprocess.CompletedProcess([], 0, "{bad json", ""))
+    with pytest.raises(ToolExecutionError):
+        asyncio.run(tools.execute("json_prompt", case["expected_report_id"]))
+    assert not tools.packets and not tools.inspected_report_ids
+
+
+def test_conventional_validator_keeps_exact_plain_explicit_prompt(cases):
+    case = cases["healthy", 0]
+    workload, context = case["target"]["input"], case["target"]["context"]
+    source = source_for(workload, context)
+    assert prompt_for("plain_validator", source, workload, case) == prompt_for(
+        "plain_explicit", source, workload, case)
+    assert operations("plain_validator")[0]["operation"] == "inspect_report"
+
+
+@pytest.mark.parametrize("arm", ("eal_mcp", "plain_validator"))
+def test_checked_packets_expose_one_canonical_status_for_unavailable_evidence(cases, tmp_path, arm):
+    case = cases["corrupt", 0]
+    tools = TrialTools(tmp_path, source_for(case["target"]["input"], case["target"]["context"]), {"case": case})
+    packet = asyncio.run(tools.execute(arm, case["expected_report_id"]))
+    assert packet["status"] == "unavailable"
+    assert "host_status" not in json.dumps(packet) and "decision_status" not in json.dumps(packet)
+    assert "unsupported" not in json.dumps(packet)
+    if arm == "eal_mcp":
+        assert tools.host_assessments[case["expected_report_id"]]["host_status"] == "unsupported"
+        assert any(row.get("tool") == "eal_reason" and row["result"]["claims"]["performance_criteria_met"]["status"]
+                   == "unsupported" for row in tools.trace)

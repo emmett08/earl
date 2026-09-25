@@ -16,10 +16,43 @@ from .materials import CLAIM, source_for
 ROOT = Path(__file__).resolve().parents[2]
 
 
+class ToolExecutionError(RuntimeError):
+    """Internal collection or assessment failure, never a model argument error."""
+
+
 def child_environment() -> dict:
     return {"PATH": str(Path(sys.executable).parent) + os.pathsep + os.defpath,
             "PYTHONPATH": os.pathsep.join((str(ROOT), str(ROOT / "src"))),
             "PYTHONIOENCODING": "utf-8", "LANG": "C.UTF-8"}
+
+
+def checked_decision(packet: dict) -> dict:
+    """Ordinary deterministic classification of collector facts, without EAL.
+
+    The MCP route uses the same presentation contract after checking its formal
+    host assessment. The raw-measurement oracle is implemented separately.
+    """
+    facts, metrics = packet["measurement_facts"], packet["metrics"]
+    checks = {"report_valid": facts["report_valid"], "identity": None,
+              "completeness": None, "freshness": None, "sample_size": None,
+              "latency": None, "errors": None, "consistency": None}
+    if facts["report_valid"]:
+        checks.update(identity=facts["identity_matches"],
+                      completeness=facts["complete_records"],
+                      consistency=facts["consistent_records"],
+                      freshness=(0 <= facts["age_seconds"] <= 300)
+                      if facts["age_seconds"] is not None else None,
+                      sample_size=metrics["request_count"] >= 100,
+                      latency=metrics["p95_ms"] <= 200 if metrics["p95_ms"] is not None else None,
+                      errors=metrics["error_rate_percent"] <= 1
+                      if metrics["error_rate_percent"] is not None else None)
+    available = all(checks[name] is True for name in
+                    ("report_valid", "identity", "completeness", "consistency", "freshness"))
+    status = ("unavailable" if not available else
+              "supported" if all(value is True for value in checks.values()) else "unsupported")
+    return {"status": status,
+            "failed_checks": sorted(name for name, value in checks.items() if value is False),
+            "unknown_checks": sorted(name for name, value in checks.items() if value is None)}
 
 
 class TrialTools:
@@ -27,8 +60,9 @@ class TrialTools:
         self.workspace, self.source, self.config = workspace, source, config
         self.case = config["case"]
         self.trace, self.packets, self.inspected_report_ids = [], {}, []
+        self.host_assessments = {}
         self.attempted_report_ids = set()
-        self.host_status = self.decision_status = self.packet = None
+        self.host_status = self.packet = None
         self.assessed_at = self.case["assessment_time"]
         self.report_path = workspace / "report.json"
         workspace.mkdir(parents=True, exist_ok=True)
@@ -41,8 +75,7 @@ class TrialTools:
         if report_id in self.packets:
             self.packet = self.packets[report_id]
             self.report_path = self.workspace / report_id / "report.json"
-            self.host_status = self.packet.get("host_status")
-            self.decision_status = self.packet.get("decision_status")
+            self.host_status = self.host_assessments.get(report_id, {}).get("host_status")
             return self.packet
         if report_id in self.attempted_report_ids:
             raise ValueError("This report inspection already failed; failed attempts are not rerun")
@@ -52,15 +85,25 @@ class TrialTools:
         report_path = directory / "report.json"
         argv = [sys.executable, "-m", "experiments.api_load_test.collector", "--config",
                 str(self.workspace / "config.json"), "--report", str(report_path)]
-        if arm == "eal_mcp":
-            packet = await self._mcp(report_id, directory, argv)
-        else:
-            packet = await asyncio.to_thread(self._direct, report_id, directory, argv)
+        try:
+            if arm == "eal_mcp":
+                packet = await self._mcp(report_id, directory, argv)
+            else:
+                packet = await asyncio.to_thread(self._direct, report_id, directory, argv)
+                if arm == "plain_validator":
+                    packet.update(checked_decision(packet))
+                    self.trace.append({"route": "direct_validator", "report_id": report_id,
+                                       "result": {key: packet[key] for key in
+                                                  ("status", "failed_checks", "unknown_checks")}})
+        except (ValueError, KeyError, TypeError) as exc:
+            # Valid report selectors have crossed the host boundary. A broken
+            # collector envelope or assessment is an experiment failure; asking
+            # the model to repair it would confound infrastructure and behaviour.
+            raise ToolExecutionError(f"Report inspection failed: {exc}") from exc
         self.packets[report_id] = self.packet = packet
         self.inspected_report_ids.append(report_id)
         self.report_path = report_path
-        self.host_status = packet.get("host_status")
-        self.decision_status = packet.get("decision_status")
+        self.host_status = self.host_assessments.get(report_id, {}).get("host_status")
         return packet
 
     def _request(self, report_id):
@@ -132,21 +175,17 @@ class TrialTools:
                     or explanation["result"]["status"] != host_status):
                     raise ValueError("MCP assessment identity or explanation differs")
                 packet = self._packet(record["value"], record["collected_at"], record["details"])
-                facts, metrics = packet["measurement_facts"], packet["metrics"]
-                checks = {"report_valid": facts["report_valid"], "identity": facts["identity_matches"],
-                          "completeness": facts["complete_records"], "consistency": facts["consistent_records"],
-                          "freshness": (0 <= facts["age_seconds"] <= 300) if facts["age_seconds"] is not None else None}
-                if facts["report_valid"]:
-                    checks.update(sample_size=metrics["request_count"] >= 100,
-                                  latency=metrics["p95_ms"] <= 200 if metrics["p95_ms"] is not None else None,
-                                  errors=metrics["error_rate_percent"] <= 1 if metrics["error_rate_percent"] is not None else None)
-                unavailable = not all(checks[name] for name in
-                    ("report_valid", "identity", "completeness", "consistency", "freshness"))
-                packet.update(host_status=host_status, decision_status="unavailable" if unavailable else host_status,
-                              failed_checks=sorted(name for name, passed in checks.items() if passed is False),
-                              claim=CLAIM, source_digest=expected_digest,
+                decision = checked_decision(packet)
+                expected_host = "supported" if decision["status"] == "supported" else "unsupported"
+                if host_status != expected_host:
+                    raise ValueError("MCP assessment differs from the declared decision contract")
+                # Raw EAL status and detailed reasoning remain in the audit
+                # artefact. Models receive one canonical status field only.
+                self.host_assessments[report_id] = {
+                    "host_status": host_status, "status": decision["status"],
+                    "source_digest": expected_digest, "collection_id": collected["collection_id"],
+                    "assessment_id": assessed["assessment_id"]}
+                packet.update(**decision, claim=CLAIM, source_digest=expected_digest,
                               method_registry_fingerprint=assessed["method_registry_fingerprint"],
-                              reasoning=assessed["reasoning"], evidence=assessed["evidence"],
-                              collection_id=collected["collection_id"], assessment_id=assessed["assessment_id"],
-                              status_mapping="unavailable denotes unusable evidence; raw EAL unsupported does not establish falsity")
+                              collection_id=collected["collection_id"], assessment_id=assessed["assessment_id"])
                 return packet

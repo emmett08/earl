@@ -1,4 +1,4 @@
-"""Synthetic, labelled controls for independent v2 adjudication and reporting."""
+"""Synthetic, labelled controls for independent v3 adjudication and reporting."""
 from __future__ import annotations
 
 import copy
@@ -31,7 +31,8 @@ def measured_case(count=100):
 
 
 def correct_answer(truth):
-    return {key: copy.deepcopy(truth[key]) for key in ("report_id", "status", "scope", "metrics", "failed_checks")}
+    return {key: copy.deepcopy(truth[key]) for key in
+            ("report_id", "status", "scope", "metrics", "failed_checks", "unknown_checks")}
 
 
 def test_inclusive_raw_boundaries_and_summary_cannot_override_measurements():
@@ -83,6 +84,7 @@ def test_availability_failures_retain_actual_numeric_diagnostics(fault, failed):
     truth = reference(case)
     assert truth["status"] == "unavailable"
     assert truth["failed_checks"] == failed
+    assert truth["unknown_checks"] == []
     assert truth["metrics"]["p95_ms"] == 200
 
 
@@ -101,6 +103,8 @@ def test_malformed_measurements_are_unavailable_with_null_metrics(field, value):
     truth = reference(case)
     assert truth["status"] == "unavailable"
     assert truth["failed_checks"] == ["report_valid"]
+    assert set(truth["unknown_checks"]) == {
+        "identity", "completeness", "freshness", "sample_size", "latency", "errors", "consistency"}
     assert truth["metrics"] == {"request_count": None, "p95_ms": None, "error_rate_percent": None}
 
 
@@ -123,7 +127,8 @@ def test_grade_requires_inspection_selection_scope_all_failures_and_metrics():
     assert grade(answer, truth, collected=True, inspected_report_ids={"other"})["correct"] is False
     assert grade(answer, truth, collected=False, inspected_report_ids={"target-report"})["correct"] is False
     for key, changed in (("report_id", "other"), ("scope", {**answer["scope"], "build_id": "other"}),
-                         ("failed_checks", ["errors"]), ("metrics", {**answer["metrics"], "p95_ms": 0})):
+                         ("failed_checks", ["errors"]), ("unknown_checks", ["errors"]),
+                         ("metrics", {**answer["metrics"], "p95_ms": 0})):
         assert score({**answer, key: changed})["correct"] is False
     assert score({**answer, "status": "unsupported"})["false_rejection"] is True
     assert score({**answer, "status": "unavailable"})["false_unavailable"] is True
@@ -140,25 +145,41 @@ def test_correct_abstention_requires_evidence_and_matches_core_unsupported_state
     assert not grade(answer, truth, collected=False)["correct_unavailable"]
 
 
-def write_run(tmp_path, *, transports=("text",), repeats=1):
+def test_unassessable_conditions_cannot_be_scored_as_failed_conditions():
+    case = measured_case()
+    case["reports"]["target-report"]["requests"][0]["elapsed_ms"] = "missing"
+    truth = reference(case)
+    answer = correct_answer(truth)
+    score = lambda value: grade(value, truth, collected=True, inspected_report_ids={"target-report"})
+    assert score(answer)["correct"]
+    confused = {**answer, "failed_checks": answer["failed_checks"] + answer["unknown_checks"],
+                "unknown_checks": []}
+    outcome = score(confused)
+    assert outcome["status_correct"] and not outcome["correct"]
+    assert not outcome["failed_checks_correct"] and not outcome["unknown_checks_correct"]
+    omitted = {key: value for key, value in answer.items() if key != "unknown_checks"}
+    assert not score(omitted)["unknown_checks_correct"]
+
+
+def write_run(tmp_path, *, transports=("text",), repeats=1, arms=("eal_mcp", "json_prompt")):
     assignments = []
     for transport in transports:
         for repeat in range(repeats):
             for index in range(4):
-                for arm in ("eal_mcp", "json_prompt"):
+                for arm in arms:
                     assignment = {"id": f"{transport}-{repeat}-{index}-{arm}", "model": "synthetic-model",
                                   "arm": arm, "case_id": f"case-{index}", "case_family": "synthetic",
                                   "repeat": repeat, "block": f"{repeat}:{index}", "transport": transport}
                     assignments.append(assignment)
                     # Rows cover each paired 2x2 cell exactly once.
-                    correct = ((index in (0, 1)) if arm == "eal_mcp" else (index in (0, 2)))
+                    correct = ((index in (0, 1)) if arm in ("eal_mcp", "plain_validator") else (index in (0, 2)))
                     directory = tmp_path / "trials" / assignment["id"]
                     directory.mkdir(parents=True)
                     (directory / "trial.json").write_text(json.dumps({**assignment, "state": "complete",
                         "outcome": {"correct": correct}, "model_calls": []}))
-    manifest = {"schema": "eal-api-experiment-run/2", "mode": "pilot", "transport": "text",
+    manifest = {"schema": "eal-api-experiment-run/3", "mode": "pilot", "transport": "text",
                 "models": [{"id": "synthetic-model"}], "assignments": assignments,
-                "plan": {"arms": ["eal_mcp", "json_prompt"], "scope": "Synthetic analysis control"}}
+                "plan": {"arms": list(arms), "scope": "Synthetic analysis control"}}
     (tmp_path / "manifest.json").write_text(json.dumps(manifest))
     return manifest
 
@@ -169,7 +190,8 @@ def test_paired_report_counts_discordances_without_claiming_equivalence(tmp_path
     comparison = result["contrasts"][0]
     assert comparison["paired_cases"] == comparison["paired_blocks"] == comparison["paired_completed"] == 4
     assert comparison["both_correct"] == comparison["both_incorrect"] == 1
-    assert comparison["eal_only_correct"] == comparison["comparator_only_correct"] == 1
+    assert comparison["reference_arm"] == "eal_mcp" and comparison["comparator"] == "json_prompt"
+    assert comparison["reference_only_correct"] == comparison["comparator_only_correct"] == 1
     assert comparison["accuracy_difference"] == 0
     assert comparison["interpretation"] == "development_suite_descriptive"
     text = markdown(result)
@@ -177,15 +199,60 @@ def test_paired_report_counts_discordances_without_claiming_equivalence(tmp_path
     assert "interval" not in comparison
 
 
+def test_ordinary_validator_adds_paired_explicit_prose_control(tmp_path):
+    write_run(tmp_path, arms=("eal_mcp", "json_prompt", "plain_explicit", "plain_validator"))
+    result = summarise(tmp_path)
+    comparisons = {(row["reference_arm"], row["comparator"]): row for row in result["contrasts"]}
+    assert set(comparisons) == {
+        ("eal_mcp", "json_prompt"), ("eal_mcp", "plain_explicit"),
+        ("eal_mcp", "plain_validator"), ("plain_validator", "plain_explicit")}
+    validator = comparisons["plain_validator", "plain_explicit"]
+    assert validator["paired_completed"] == validator["paired_cases"] == 4
+    assert validator["reference_only_correct"] == validator["comparator_only_correct"] == 1
+    assert validator["both_correct"] == validator["both_incorrect"] == 1
+    assert validator["accuracy_difference"] == 0
+    assert comparisons["eal_mcp", "plain_validator"]["both_correct"] == 2
+    text = markdown(result)
+    assert "| plain_validator | plain_explicit |" in text
+    assert text.index("## Assignment completion") < text.index("## Assigned-answer scores")
+
+
+def test_calibration_has_only_selected_comparisons(tmp_path):
+    write_run(tmp_path, arms=("eal_mcp", "json_prompt", "plain_validator"))
+    result = summarise(tmp_path)
+    assert {(row["reference_arm"], row["comparator"]) for row in result["contrasts"]} == {
+        ("eal_mcp", "json_prompt"), ("eal_mcp", "plain_validator")}
+
+
+def test_earlier_contract_remains_separate_from_v3_analysis(tmp_path):
+    manifest = write_run(tmp_path)
+    manifest["schema"] = "eal-api-experiment-run/2"
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    with pytest.raises(ValueError, match="requires a v3 manifest"):
+        summarise(tmp_path)
+
+
 def test_failed_and_missing_assignments_remain_in_the_operational_denominator(tmp_path):
     manifest = write_run(tmp_path)
     failed = tmp_path / "trials" / manifest["assignments"][0]["id"] / "trial.json"
     record = json.loads(failed.read_text())
     record["state"] = "failed"  # Even an inconsistent retained success must score zero.
+    record["failure"] = "output_truncated"
+    record["model_calls"] = [{"error": "Response incomplete", "category": "output_truncated",
+                             "estimated_usd": 0.02, "response": {"input_tokens": 100,
+                             "output_tokens": 4096, "metadata": {"reasoning_tokens": 4096}}}]
     failed.write_text(json.dumps(record))
     (tmp_path / "trials" / manifest["assignments"][1]["id"] / "trial.json").unlink()
     result = summarise(tmp_path)
     assert result["assigned"] == 8 and not result["complete"]
+    assert result["completed"] == 6 and result["failed"] == result["not_attempted"] == 1
+    cells = {row["arm"]: row for row in result["cells"]}
+    assert cells["eal_mcp"]["failed"] == 1 and cells["eal_mcp"]["not_attempted"] == 0
+    assert cells["eal_mcp"]["failure_categories"] == {"output_truncated": 1}
+    assert cells["eal_mcp"]["provider_error_categories"] == {"output_truncated": 1}
+    assert cells["eal_mcp"]["estimated_usd_known"] == 0.02
+    assert cells["eal_mcp"]["output_tokens_known"] == 4096
+    assert cells["json_prompt"]["not_attempted_reasons"] == {"no_retained_trial": 1}
     contrast = result["contrasts"][0]
     assert contrast["paired_blocks"] == 4 and contrast["paired_completed"] == 3
     assert contrast["both_incorrect"] == 2

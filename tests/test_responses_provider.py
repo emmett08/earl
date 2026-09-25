@@ -170,7 +170,7 @@ def test_structured_response_unwraps_only_one_valid_request():
         payload = json.loads(request.content)
         observed.append(payload)
         return httpx.Response(200, json=_response([
-            {"type": "message", "status": "completed", "content": [
+            {"type": "message", "role": "assistant", "status": "completed", "content": [
                 {"type": "output_text", "text": '{"request":{"operation":"assess_bound_task"}}'}]},
         ]))
 
@@ -194,6 +194,107 @@ def test_incomplete_response_preserves_usage_but_does_not_issue_text():
         asyncio.run(provider.complete([{"role": "user", "content": "Check"}], 100))
     assert failure.value.response.input_tokens == 120
     assert failure.value.response.output_tokens == 30
+    assert failure.value.category == "output_incomplete"
+    assert failure.value.response.metadata["status"] == "incomplete"
+
+
+def test_token_truncation_retains_exact_termination_and_visible_parts_without_private_reasoning():
+    payload = _response([
+        {"type": "reasoning", "id": "rs-secret", "encrypted_content": "private-ciphertext",
+         "content": [{"type": "reasoning_text", "text": "private-reasoning"}]},
+        {"type": "message", "id": "msg-partial", "role": "assistant", "status": "incomplete",
+         "content": [{"type": "output_text", "text": '{"operation":'}]},
+    ], status="incomplete", output_tokens=4096)
+    payload["incomplete_details"] = {"reason": "max_output_tokens"}
+    provider = ResponsesProvider(model="explicit", api_key_env=None,
+                                 transport=httpx.MockTransport(lambda _: httpx.Response(200, json=payload)))
+    with pytest.raises(ProviderError) as failure:
+        asyncio.run(provider.complete_request([], 4096, operations=[OPERATION]))
+    error = failure.value
+    assert error.category == "output_truncated"
+    assert error.retryable is False
+    assert error.response.output_tokens == 4096
+    assert error.response.text == ""
+    assert error.diagnostics["incomplete_details"] == {"reason": "max_output_tokens"}
+    assert error.response.metadata["visible_output"] == [{
+        "output_index": 1, "type": "message", "id": "msg-partial", "role": "assistant",
+        "status": "incomplete", "content": [{"content_index": 0, "type": "output_text",
+                                                 "text": '{"operation":'}]}]
+    assert "private-" not in json.dumps(error.diagnostics)
+    assert "rs-secret" not in json.dumps(error.response.metadata)
+    assert provider._replay_items == {}
+
+
+def test_failed_response_keeps_safe_error_code_and_known_usage_without_remote_message():
+    payload = _response([], status="failed")
+    payload["error"] = {"code": "server_error", "message": "private prompt echoed by remote endpoint"}
+    provider = ResponsesProvider(model="explicit", api_key_env=None,
+                                 transport=httpx.MockTransport(lambda _: httpx.Response(200, json=payload)))
+    with pytest.raises(ProviderError) as failure:
+        asyncio.run(provider.complete_request([], 100, operations=[OPERATION]))
+    assert failure.value.category == "output_incomplete"
+    assert failure.value.response.metadata["status"] == "failed"
+    assert failure.value.response.metadata["error"] == {"code": "server_error"}
+    assert failure.value.response.output_tokens == 30
+    assert "private prompt" not in json.dumps(failure.value.diagnostics)
+
+
+def test_operation_route_rejects_multiple_messages_even_when_joining_would_form_valid_json():
+    output = [{"type": "message", "id": f"msg-{i}", "role": "assistant", "status": "completed",
+               "phase": ("commentary", "final_answer")[i],
+               "content": [{"type": "output_text", "text": text}]}
+              for i, text in enumerate(['{"operation":', '"assess_bound_task"}'])]
+    provider = ResponsesProvider(model="explicit", api_key_env=None,
+                                 transport=httpx.MockTransport(lambda _: httpx.Response(200, json=_response(output))))
+    with pytest.raises(ProviderError, match="exactly one assistant message") as failure:
+        asyncio.run(provider.complete_request([], 100, operations=[OPERATION]))
+    assert failure.value.category == "multiple_messages"
+    assert failure.value.response.input_tokens == 120
+    assert failure.value.response.text == ""
+    assert [item["content"][0]["text"] for item in failure.value.diagnostics["visible_output"]] == [
+        '{"operation":', '"assess_bound_task"}']
+    assert [item["phase"] for item in failure.value.diagnostics["visible_output"]] == [
+        "commentary", "final_answer"]
+    assert provider._replay_items == {}
+    # General prose completion can span messages; original boundaries remain available.
+    result = asyncio.run(provider.complete([], 100))
+    assert json.loads(result.text) == {"operation": "assess_bound_task"}
+    assert len(result.metadata["visible_output"]) == 2
+
+
+def test_single_message_parts_are_preserved_and_private_replay_is_released():
+    output = [
+        {"type": "reasoning", "encrypted_content": "private-encrypted"},
+        {"type": "message", "role": "assistant", "status": "completed", "content": [
+            {"type": "output_text", "text": '{"operation":'},
+            {"type": "output_text", "text": '"assess_bound_task"}'}]},
+    ]
+    provider = ResponsesProvider(model="explicit", api_key_env=None,
+                                 transport=httpx.MockTransport(lambda _: httpx.Response(200, json=_response(output))))
+    result = asyncio.run(provider.complete_request([], 100, operations=[OPERATION]))
+    assert json.loads(result.text) == {"operation": "assess_bound_task"}
+    assert [part["content_index"] for part in result.metadata["visible_output"][0]["content"]] == [0, 1]
+    assert "private-encrypted" not in json.dumps(result.metadata)
+    handle = result.metadata["responses_replay_handle"]
+    assert provider._input([{"role": "assistant", "content": result.text,
+                             "_responses_replay_handle": handle}]) == output
+    provider.discard_replay_handles([handle])
+    assert provider._replay_items == {}
+
+
+@pytest.mark.parametrize("output, category", [
+    ([], "missing_message"),
+    ([{"type": "message", "role": "user", "content": []}], "invalid_response"),
+    ([{"type": ["unexpected"]}], "invalid_response"),
+])
+def test_operation_protocol_errors_preserve_usage_with_typed_diagnostics(output, category):
+    provider = ResponsesProvider(model="explicit", api_key_env=None,
+                                 transport=httpx.MockTransport(lambda _: httpx.Response(200, json=_response(output))))
+    with pytest.raises(ProviderError) as failure:
+        asyncio.run(provider.complete_request([], 100, operations=[OPERATION]))
+    assert failure.value.category == category
+    assert failure.value.response.output_tokens == 30
+    assert provider._replay_items == {}
 
 
 def test_config_loads_responses_and_rejects_missing_key_or_unsupported_seed():

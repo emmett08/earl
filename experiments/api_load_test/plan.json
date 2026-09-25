@@ -1,14 +1,15 @@
 {
-  "schema": "eal-api-experiment/2",
+  "schema": "eal-api-experiment/3",
   "id": "INV-EAL-API-001",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "seed": 20260925,
   "arms": [
     "eal_mcp",
     "json_prompt",
     "plain_brief",
     "plain_explicit",
-    "plain_review"
+    "plain_review",
+    "plain_validator"
   ],
   "max_model_calls_per_trial": 6,
   "max_output_tokens_per_call": 4096,
@@ -16,9 +17,9 @@
   "max_transcript_bytes": 200000,
   "minimum_call_interval_seconds": 1,
   "smoke_max_usd_per_model": 5,
-  "primary_outcome": "Correct collected report selection, bounded scope, availability or performance verdict, complete failed-check set, and numeric measurements.",
-  "failure_rule": "Retain all assignments; missing, malformed, uncollected and provider-failed trials score zero. Stop further paid calls for a model after provider failure or exhausted cost accounting; retain unattempted assignments separately.",
-  "scope": "Development pilot on forty distinct reviewed case instances of one API service, six fixed model snapshots and one common text-mediated transport. EAL includes executable checking and MCP; JSON and prose use direct tools without EAL evaluation or MCP. No confirmatory efficacy claim or population inference.",
+  "primary_outcome": "Correct collected report selection, bounded scope, availability or performance verdict, separate complete failed and unknown check sets, and numeric measurements.",
+  "failure_rule": "Retain all assignments; missing, malformed, uncollected and failed trials score zero. Known-cost provider-classified invalid, ambiguous or incomplete replies fail that trial without retry; proceed to the next assignment. Unknown cost, identity mismatch, fatal account/configuration or unclassified provider failures, host failures and exhausted cost accounting stop that model; unattempted assignments remain separate.",
+  "scope": "Development calibration or pilot on reviewed case instances of one API service and six fixed model snapshots. EAL includes executable checking and MCP; JSON and prose use direct tools without EAL evaluation or MCP. plain_validator adds ordinary deterministic checking to the explicit prose arm. Transports are separate. No confirmatory efficacy claim or population inference.",
   "transport": "text",
   "pilot_cases": 40,
   "smoke_cases": 4,
@@ -28,6 +29,16 @@
     "eal_mcp - json_prompt",
     "eal_mcp - plain_brief",
     "eal_mcp - plain_explicit",
-    "eal_mcp - plain_review"
-  ]
+    "eal_mcp - plain_review",
+    "eal_mcp - plain_validator",
+    "plain_validator - plain_explicit"
+  ],
+  "calibration_arms": [
+    "eal_mcp",
+    "json_prompt",
+    "plain_validator"
+  ],
+  "calibration_cases": 3,
+  "calibration_max_model_calls_per_trial": 3,
+  "calibration_max_usd_per_model": 0.5
 }
