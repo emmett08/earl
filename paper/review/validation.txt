@@ -1,0 +1,48 @@
+Validation date: 2026-09-25
+Implementation snapshot: 8220e838a8d42922edc0496ff50927c672a1f87d
+Historical experiment: 3490076dd78404caa1326d9aae704f964910c4c8
+
+Environment
+  Linux x86_64, glibc 2.39
+  Python 3.12.14
+  engineering-argument-language 2.5.0
+  antlr4-python3-runtime 4.13.2
+  mcp 1.30.0
+  jsonschema 4.26.0
+  httpx 0.28.1
+  pytest 9.1.1
+  pdfTeX 1.40.25 (TeX Live 2023/Debian)
+  latexmk 4.83
+  Poppler pdfinfo/pdffonts 26.05.0
+
+Software verification
+  Command: python -m pytest -q
+  Result: 846 passed in 127.69s (0:02:07)
+  No runtime source, original tests or experiment protocol modified by this PR.
+
+Historical replay
+  Command: python3 paper/analysis/reproduce.py
+  Archive SHA-256 matches supplied ZIP and GitHub artefact metadata.
+  40 case hashes, 1,200 assignment identities and original scorer hashes checked.
+  All 759 attempted assignment scores and the complete summary match exactly.
+  628 complete, 131 failed, 441 not attempted; 403 correct assignments.
+  2,342 model calls; USD 3.97892431 at frozen rates; 0 unknown-cost calls.
+  141 original host-agreement flags are true (no historical host rerun).
+
+Publication build
+  Command: make -C paper check
+  Result: PASS
+  Exactly 3 included figures with editable TikZ and standalone PDF outputs.
+  30 result cells, all with 40 assigned cases.
+  Component checks validate the full-model JSON and mini-model EAL interpretation.
+  References and citations resolve; no duplicate labels, missing glyphs or overflow.
+  Fonts embedded in manuscript and all figure PDFs.
+  Independent visualisation-skill renderer compiled each exact TikZ source.
+  Inspected every manuscript page and three 300 dpi figure previews.
+  Direct labels preserve distinctions in greyscale.
+
+Scope
+  Reanalysis and publication commands make no provider or network calls.
+  Source tests and exact replay support bounded implementation/data claims.
+  Author metadata, current full journal guide and durable full-archive deposit
+  remain submission tasks; see submission-status.md.

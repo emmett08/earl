@@ -54,4 +54,4 @@ The implementation provides finite, explicit support and attack reasoning with v
 | [MCP and tools](docs/mcp-and-tools.md) | Tool acquisition, persistence and model hosts |
 | [Sources](docs/sources.md) | Primary research and retained references |
 
-[`CONTRACT.md`](CONTRACT.md) records implementation interfaces. The [paper workspace](paper/README.md) links the Journal of Systems and Software author guide and relevant skills. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).
+[`CONTRACT.md`](CONTRACT.md) records implementation interfaces. The [JSS paper](paper/README.md) contains a manuscript, three figures and a reproducible reanalysis of the historical API pilot, with its incomplete execution and evidence limits explicit. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).

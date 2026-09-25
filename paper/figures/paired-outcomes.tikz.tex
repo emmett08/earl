@@ -1,0 +1,37 @@
+% Required packages: amsmath, amssymb, xcolor, tikz
+% Required TikZ libraries: none
+% Target width: 160 mm
+% Minimum text size: 8 pt
+% Colour/greyscale intent: one teal accent; direct labels preserve all distinctions
+\begingroup
+\definecolor{ealfigaccent}{RGB}{15,91,103}
+\begin{tikzpicture}[x=1mm,y=1mm,font=\fontsize{9}{11}\selectfont]
+\path[use as bounding box] (0,0) rectangle (156,94);
+\node[anchor=west] at (2,90) {Rows: EAL/MCP correct, incorrect. Columns: JSON correct, incorrect.};
+\node[font=\bfseries] at (26,81) {4.1 nano};
+\node at (26,70) {$\displaystyle\begin{bmatrix}5&\color{ealfigaccent}11\\\color{ealfigaccent}1&23\end{bmatrix}$};
+\node at (26,57) {$\Delta=+25$ percentage points};
+\node[font=\fontsize{8}{10}\selectfont] at (26,50) {Completed pairs: 25/40};
+\node[font=\bfseries] at (78,81) {4.1 mini};
+\node at (78,70) {$\displaystyle\begin{bmatrix}20&\color{ealfigaccent}12\\\color{ealfigaccent}1&7\end{bmatrix}$};
+\node at (78,57) {$\Delta=+27.5$ percentage points};
+\node[font=\fontsize{8}{10}\selectfont] at (78,50) {Completed pairs: 40/40};
+\node[font=\bfseries] at (130,81) {4.1 full};
+\node at (130,70) {$\displaystyle\begin{bmatrix}36&\color{ealfigaccent}4\\\color{ealfigaccent}0&0\end{bmatrix}$};
+\node at (130,57) {$\Delta=+10$ percentage points};
+\node[font=\fontsize{8}{10}\selectfont] at (130,50) {Completed pairs: 40/40};
+\node[font=\bfseries] at (26,42) {5.4 nano};
+\node at (26,31) {$\displaystyle\begin{bmatrix}0&\color{ealfigaccent}2\\\color{ealfigaccent}0&38\end{bmatrix}$};
+\node at (26,18) {$\Delta=+5$ percentage points};
+\node[font=\fontsize{8}{10}\selectfont] at (26,11) {Completed pairs: 4/40};
+\node[font=\bfseries] at (78,42) {5.4 mini};
+\node at (78,31) {$\displaystyle\begin{bmatrix}9&\color{ealfigaccent}7\\\color{ealfigaccent}8&16\end{bmatrix}$};
+\node at (78,18) {$\Delta=-2.5$ percentage points};
+\node[font=\fontsize{8}{10}\selectfont] at (78,11) {Completed pairs: 13/40};
+\node[font=\bfseries] at (130,42) {5.4 full};
+\node at (130,31) {$\displaystyle\begin{bmatrix}0&\color{ealfigaccent}0\\\color{ealfigaccent}0&40\end{bmatrix}$};
+\node at (130,18) {$\Delta=+0$ percentage points};
+\node[font=\fontsize{8}{10}\selectfont] at (130,11) {Completed pairs: 0/40};
+\node[anchor=west] at (2,3) {Each matrix retains all 40 assigned pairs. Off-diagonal counts determine $\Delta$.};
+\end{tikzpicture}
+\endgroup

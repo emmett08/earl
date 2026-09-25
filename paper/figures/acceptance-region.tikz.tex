@@ -1,0 +1,38 @@
+% Required packages: amsmath, amssymb, xcolor, tikz
+% Required TikZ libraries: none
+% Target width: 160 mm
+% Minimum text size: 8 pt
+% Colour/greyscale intent: one teal accent; direct labels preserve all distinctions
+\begingroup
+\definecolor{ealfigaccent}{RGB}{15,91,103}
+\begin{tikzpicture}[x=1mm,y=1mm,font=\fontsize{9}{11}\selectfont]
+\path[use as bounding box] (0,0) rectangle (156,73);
+\node[anchor=west,font=\bfseries] at (3,68) {Available evidence: $A=1$};
+\draw[line width=.55pt] (14,13)--(91,13);
+\draw[line width=.55pt] (14,13)--(14,59);
+\node[anchor=north] at (53,5) {Sample p95 latency (ms)};
+\node[anchor=west] at (3,62) {Error rate (\%)};
+\foreach \x/\label in {14/0,39/100,64/200,89/300} {
+ \draw[line width=.5pt] (\x,13)--(\x,11.5);
+ \node[anchor=north,font=\fontsize{8}{10}\selectfont] at (\x,11) {\label};
+}
+\foreach \y/\label in {13/0,28/1,43/2,58/3} {
+ \draw[line width=.5pt] (14,\y)--(12.5,\y);
+ \node[anchor=east,font=\fontsize{8}{10}\selectfont] at (12,\y) {\label};
+}
+\draw[ealfigaccent,line width=.9pt] (14,28)--(64,28)--(64,13);
+\node[text=ealfigaccent] at (36,20) {supported};
+\node at (64,52) {unsupported};
+\draw[line width=.8pt] (58,27)--(60,29) (58,29)--(60,27);
+\node[anchor=south east,font=\fontsize{8}{10}\selectfont] at (57.5,30) {$(180,1)$};
+\draw[line width=.8pt] (58,42)--(60,44) (58,44)--(60,42);
+\node[anchor=west,font=\fontsize{8}{10}\selectfont] at (62,43) {$(180,2)$};
+\node[anchor=west,font=\bfseries] at (103,61) {Unavailable: $A=0$};
+\node[anchor=west] at (103,50) {wrong identity};
+\node[anchor=west] at (103,42) {incomplete records};
+\node[anchor=west] at (103,34) {stale observation};
+\node[anchor=west] at (103,26) {invalid measurements};
+\node[anchor=west] at (103,14) {Performance remains};
+\node[anchor=west] at (103,8) {unresolved.};
+\end{tikzpicture}
+\endgroup

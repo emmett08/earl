@@ -1,14 +1,58 @@
-# EAL/2 empirical paper
+# EAL/2 paper for the Journal of Systems and Software
 
-This directory is a fresh starting point for a prospective empirical paper. No manuscript or experimental result is implied by this README. The proposed comparison asks whether EAL/2 with an EAL MCP host improves **correct, evidence-grounded engineering decisions** over equally resourced prose and machine-readable alternatives on sampled real tasks and model classes. An experiment can estimate effects in the sampled conditions; it cannot establish superiority for every language model.
+[Read the manuscript PDF](manuscript.pdf) · [LaTeX source](manuscript.tex) · [Submission checklist](review/submission-status.md)
 
-The previous benchmark plans and runner have been removed. The [API load-test example](../examples/api-load-test/README.md) demonstrates one checked argument using synthetic records. The single [live API experiment](../experiments/api_load_test/README.md) supplies a versioned protocol, real HTTP tooling, four pinned models and a Docker workflow. It compares combined systems on one controlled task; implementation and smoke execution alone provide no comparative advantage claim.
+This author-review manuscript describes EAL/2's implemented evidence binding and defeasible assessment, and reanalyses the supplied historical API load-test experiment. It includes **three figures**, an exact excerpt of the tested EAL example, generated result tables and a reproducible dataset. The scientific conclusion is bounded to the recorded systems and development cases.
 
-## Journal requirements
+The historical run assigned 1,200 trials: 628 completed, 131 failed and 441 were not attempted after model-level stops. Every assignment is retained. Replaying the original scorer reproduces every trial score and the full summary. GPT-4.1 full scored 40/40 with EAL/MCP and 36/40 with JSON; all four JSON errors concern failed-check enumeration, while its statuses were correct. GPT-4.1 mini scored 32/40 and 21/40. Different checker access and incomplete execution prevent an isolated notation or general model-capability conclusion.
 
-Target: Elsevier's *Journal of Systems and Software* (JSS). Use the [official Guide for Authors](https://www.sciencedirect.com/journal/journal-of-systems-and-software/publish/guide-for-authors) as the current authority for article type, manuscript preparation, declarations, research data, submission files and submission procedure. The [journal page](https://www.sciencedirect.com/journal/journal-of-systems-and-software) says articles should provide evidence supporting their claims. Recheck the guide before submission; this README does not impose an unverified page or word limit. For research materials, also consult Elsevier's [research data guidelines](https://www.elsevier.com/researcher/author/tools-and-resources/research-data/data-guidelines) and [data statement guidance](https://www.elsevier.com/researcher/author/tools-and-resources/research-data/data-statement).
+## Build and reproduce
 
-The paper must identify the software/source version and model/provider versions used in each run, preserve assigned attempts including failures, retain tool requests and receipts, and report outcomes, uncertainty, cost and limits of generalisation. Executable tests establish software behaviour; study results require actual model calls and independently checked cases.
+From the repository root:
+
+```sh
+# Recompute scores, case identities, token costs and generated numerical tables.
+python3 paper/analysis/reproduce.py
+
+# Regenerate all three vector figures and the manuscript PDF.
+make -C paper
+
+# Also check references, overflow, fonts, result cells and error interpretations.
+make -C paper check
+```
+
+Analysis requires Python 3.11+ and only its standard library. Building requires `make`, `latexmk`, `pdflatex`, BibTeX, and the LaTeX packages listed in `manuscript.tex` and `analysis/render_figures.py`, including TikZ, `standalone`, Latin Modern and `natbib`. PDF checks additionally use Poppler's `pdfinfo` and `pdffonts`. The build uses a fixed `SOURCE_DATE_EPOCH`; generated outputs are committed for readers without TeX. See [validation](review/validation.txt) for the tested environment.
+
+No command above makes network requests or provider calls. To run the separately described software tests, install the repository development dependencies and use `python -m pytest -q`; 846 tests passed for the inspected source snapshot.
+
+## Materials and version boundaries
+
+| Material | Location / identity | Meaning |
+| --- | --- | --- |
+| Software description and tests | Commit `8220e838a8d42922edc0496ff50927c672a1f87d`, package 2.5.0 | Current implementation evidence |
+| Historical experiment | Commit `3490076dd78404caa1326d9aae704f964910c4c8`, plan 2.0.0, run schema `/2` | Five conditions, six pinned models, 40 development cases |
+| Original archive | [Run 36163505801, attempt 1](https://github.com/emmett08/earl/actions/runs/36163505801), artefact 10879620453 | Actual HTTP observations and provider calls, partial execution |
+| Reproduction inputs | `data/` | Raw case rows, all assignments, answers, outcomes and token accounting |
+| Historical scorers | `analysis/v2_oracle.py`, `analysis/v2_summary.py` | Byte-identical copies of the run commit, checked against its manifest |
+| Regenerated results | `results/` | Full summary, dispositions, costs and component-level errors |
+| Figures | `figures/*.tikz.tex` and matching PDFs | Two explanatory figures and one empirical paired-outcome figure |
+| Review records | `review/` | Claim/source map, references, figure choices, validation and submission status |
+
+The later [experiment protocol](../experiments/api_load_test/README.md) adds a sixth condition and other changes. Its planned assignments and rubric must not be substituted for this historical run. The [worked API example](../examples/api-load-test/README.md) contains synthetic teaching records and uses a different freshness limit. It is not an additional pilot observation.
+
+The archive SHA-256 is `bf5b59c340b1c11c85a3e39679bc9cc1bc4521af741f45d9dc5cc1c65cbd8547`, matching GitHub's artefact metadata. `data/provenance.json` contains source-member and curated-file digests. To regenerate the curated files from the exact supplied ZIP:
+
+```sh
+python3 paper/analysis/extract_archive.py /path/to/api-experiment-36163505801-1.zip
+```
+
+The extraction retains every assignment and all fields needed for score/cost reproduction, while omitting full provider responses, replay handles and per-call transcripts. Those remain in the original archive, whose Actions retention expires on 25 October 2026. A durable full-archive deposit remains a submission task.
+
+## Journal preparation
+
+Target: Elsevier's *Journal of Systems and Software*. The [official Guide for Authors](https://www.sciencedirect.com/journal/journal-of-systems-and-software/publish/guide-for-authors) is the authority for article type, manuscript preparation, declarations and submission files. Its full text could not be retrieved during this task; the paper does not impose an unverified page limit or claim exact journal-format compliance.
+
+The manuscript uses a single-column review layout. Four highlights are provided in `highlights.txt`. Author metadata, funding, competing interests, contribution statements, AI-assistance disclosure and current journal requirements need author confirmation before submission. [Submission status](review/submission-status.md) records these decisions without inventing declarations. The PR is ready for manuscript review; no journal submission has been made.
 
 ## Relevant skills
 
@@ -34,4 +78,4 @@ The following are exact skill names in this project's Codex environment. The fir
 
 ## Evidence boundary
 
-Freeze the question, comparators, case selection, source snapshots, model strata, prompt budgets, tool access, outcome adjudication and analysis before observing confirmatory outcomes. Keep a complete one-attempt ledger per assignment and version the full protocol. Treat the single worked EAL/2 example as a demonstration until independent cases and live runs support a population claim. Preserve failed attempts and unpublished or unfavourable outcomes in the analysis.
+The pilot is a descriptive reanalysis of an existing development run. No retrospective protocol is represented as preregistered. Keep the original case pairing, assignment denominator, failure outcomes, provider snapshots and token rates when reproducing its results. A confirmatory follow-up needs a frozen question and analysis plan, independent cases, matched validation access and a stopping rule that distinguishes transient incomplete output from persistent model-configuration failure.
