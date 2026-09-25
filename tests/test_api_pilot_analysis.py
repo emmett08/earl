@@ -231,7 +231,7 @@ def write_run(tmp_path, *, transports=("text",), repeats=1, arms=("eal_mcp", "js
                     (directory / "trial.json").write_text(json.dumps({**assignment, "state": "complete",
                         "case_sha256": case_hashes[assignment["case_id"]],
                         "outcome": {"correct": correct}, "model_calls": []}))
-    manifest = {"schema": "eal-api-experiment-run/3", "mode": "pilot", "transport": "text",
+    manifest = {"schema": "eal-api-experiment-run/4", "mode": "pilot", "transport": "text", "finalisation": "model",
                 "models": [{"id": "synthetic-model"}], "assignments": assignments,
                 "plan": {"arms": list(arms), "scope": "Synthetic analysis control"}}
     (tmp_path / "manifest.json").write_text(json.dumps(manifest))
@@ -278,11 +278,11 @@ def test_calibration_has_only_selected_comparisons(tmp_path):
         ("eal_mcp", "json_prompt"), ("eal_mcp", "plain_validator")}
 
 
-def test_earlier_contract_remains_separate_from_v3_analysis(tmp_path):
+def test_earlier_contract_remains_separate_from_v4_analysis(tmp_path):
     manifest = write_run(tmp_path)
     manifest["schema"] = "eal-api-experiment-run/2"
     (tmp_path / "manifest.json").write_text(json.dumps(manifest))
-    with pytest.raises(ValueError, match="requires a v3 manifest"):
+    with pytest.raises(ValueError, match="requires a v4 manifest"):
         summarise(tmp_path)
 
 
@@ -422,6 +422,57 @@ def test_transport_and_case_repetitions_are_not_pooled_as_new_cases(tmp_path):
     assert len(result["contrasts"]) == 2 and len(result["cells"]) == 4
     assert {row["transport"] for row in result["contrasts"]} == {"text", "native"}
     assert all(row["paired_cases"] == 4 and row["paired_blocks"] == 8 for row in result["contrasts"])
+
+
+def test_checked_answers_are_not_pooled_with_model_answers_or_narrative_presence(tmp_path):
+    manifest = write_run(tmp_path, arms=("eal_mcp", "plain_validator"))
+    for assignment in list(manifest["assignments"]):
+        path = tmp_path / "trials" / assignment["id"] / "trial.json"
+        row = json.loads(path.read_text())
+        row.update(finalisation="model", answer_origin="model", protocol_complete=True,
+                   answer_complete=True, explanation_present=False)
+        assignment["finalisation"] = "model"
+        path.write_text(json.dumps(row))
+        checked = {**assignment, "id": "checked-" + assignment["id"], "finalisation": "checked"}
+        manifest["assignments"].append(checked)
+        directory = tmp_path / "trials" / checked["id"]
+        directory.mkdir()
+        (directory / "trial.json").write_text(json.dumps({
+            **row, **checked, "answer_origin": "checked_host", "protocol_complete": False,
+            "outcome": {"correct": True}, "provider_retries": 1,
+            "model_calls": [{"retry_of_turn": 0, "state": "complete", "estimated_usd": 0}]}))
+    (tmp_path / "manifest.json").write_text(json.dumps(manifest))
+    summary = summarise(tmp_path)
+    assert len(summary["cells"]) == 4 and len(summary["contrasts"]) == 2
+    for cell in summary["cells"]:
+        assert cell["assigned"] == cell["answer_complete"] == 4
+        assert cell["explanation_present"] == 0
+        if cell["finalisation"] == "model":
+            assert cell["correct"] == 2 and cell["protocol_complete"] == 4
+            assert cell["answer_origin_counts"] == {"model": 4}
+        else:
+            assert cell["correct"] == 4 and cell["protocol_complete"] == 0
+            assert cell["answer_origin_counts"] == {"checked_host": 4}
+            assert cell["provider_retries"] == 4
+    assert all(row["paired_blocks"] == 4 for row in summary["contrasts"])
+    report = markdown(summary)
+    assert "not model-answer accuracy" in report and "no claim about its quality" in report
+
+
+def test_interrupted_retry_count_comes_from_durable_dispatches(tmp_path):
+    manifest = write_run(tmp_path)
+    path = tmp_path / "trials" / manifest["assignments"][0]["id"] / "trial.json"
+    row = json.loads(path.read_text())
+    row.update(state="running", model_calls=[
+        {"turn": 0, "state": "failed", "error": "HTTP 503", "category": "http_server",
+         "estimated_usd": None},
+        {"turn": 1, "state": "in_flight", "retry_of_turn": 0, "estimated_usd": None}])
+    path.write_text(json.dumps(row))
+    original = path.read_bytes()
+    cell = next(item for item in summarise(tmp_path)["cells"] if item["arm"] == row["arm"])
+    assert cell["provider_retries"] == 1 and cell["unknown_cost_calls"] == 2
+    assert cell["failure_categories"] == {"interrupted": 1}
+    assert path.read_bytes() == original
 
 
 def test_mutated_assignments_and_duplicate_blocks_fail_closed(tmp_path):

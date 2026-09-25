@@ -7,8 +7,10 @@ all: figures
 	cp build/manuscript.pdf manuscript.pdf
 reproduce:
 	$(PYTHON) analysis/reproduce.py
+	$(PYTHON) analysis/reproduce_nano.py
 figures: reproduce
 	$(PYTHON) analysis/make_figures.py
+	$(PYTHON) analysis/make_diagnosis_figure.py
 	$(PYTHON) analysis/render_figures.py
 check: all
 	$(PYTHON) analysis/check_paper.py

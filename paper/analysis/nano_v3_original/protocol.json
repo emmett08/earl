@@ -1,14 +1,14 @@
 {
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-API-001",
-  "title": "Calibration of explicit answer contracts, checked finalisation and bounded provider recovery",
-  "version": "4.0.0",
+  "title": "Calibration and development of evidence-grounded API decisions after diagnostic repairs",
+  "version": "3.1.0",
   "status": "specified",
-  "question": "Do explicit answer templates and protocol-specific feedback reduce model completion failures, and how do separately retained checker outputs behave when model restatement is removed? Can bounded transient recovery preserve later assignments without losing unknown-cost accounting?",
+  "question": "Do explicit failed-versus-unknown checks, a single canonical decision and retained provider termination records yield interpretable model outcomes, and what additional diagnostic contrast is supplied by an ordinary validator control?",
   "primary_claim_id": "CLM-001",
   "scope": {
-    "system_or_population": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation.",
-    "conditions": "Docker on one runner; real loopback HTTP evidence acquired once per case and frozen for every arm and model; live Responses API conversations; common text-mediated operation transport by default. Model and checked finalisation are distinct invocations with distinct assignment identities.",
+    "system_or_population": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only.",
+    "conditions": "Docker on one runner; real loopback HTTP evidence acquired once per case and frozen for every arm and model; live Responses API conversations; common text-mediated operation transport by default.",
     "spatial_scope": "One container and its loopback network.",
     "temporal_scope": "Each recorded invocation and model snapshot. Claims about freshness refer to the frozen case assessment time, not the later replay wall clock.",
     "exclusions": [
@@ -18,18 +18,17 @@
       "Unknown model parameter counts",
       "Population efficacy or equivalence inference from development cases",
       "A model being intrinsically unable to call tools merely because native function calling is disabled",
-      "Private chain-of-thought quality",
-      "Interpreting checked finalisation as model-authored answer accuracy"
+      "Private chain-of-thought quality"
     ],
     "knowledge_cut": "2026-09-25"
   },
   "claims": [
     {
       "id": "CLM-001",
-      "statement": "The version 4 instrument is designed to distinguish model-authored decisions, deterministic finalisation, operation-contract errors and bounded transient provider recovery. Live version 4 behaviour remains unmeasured.",
+      "statement": "The repaired instrument can distinguish decision and evidence-handling errors from provider or operation-transport failures on selected development cases, permitting bounded paired descriptions and informing a later held-out study.",
       "claim_type": "measurement",
       "role": "primary",
-      "scope_limit": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation.",
+      "scope_limit": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only.",
       "success_consequence": "Report calibration completion and diagnostic outcomes, followed only by an explicitly selected larger invocation; use finite-suite discordance to plan held-out investigation without declaring superiority.",
       "failure_consequence": "Report continued ceiling, concordance or invalid measurement; revise the task or instrument before an efficacy study."
     }
@@ -48,7 +47,7 @@
       "statement": "The independent reference correctly distinguishes false checks from unknown checks and unavailable evidence from an adequately measured failed criterion, and grades finite scope, evidence selection and metrics.",
       "role": "measurement",
       "status": "untested",
-      "test_or_justification": "Version 3.1 produced correct tool packets but frequent final-answer schema and status errors; one transient 503 stopped every later assignment. Version 4 requires independent raw-row checks, contract leakage tests, real direct/MCP controls and cost-preserving transient recovery tests. Actual version 4 calibration remains pending.",
+      "test_or_justification": "Version 2 exposed an ambiguous failure taxonomy and conflicting displayed statuses. Version 3 requires false/null boundary tests, independent raw-row calculations and real direct, ordinary-validator and MCP controls; live calibration remains pending.",
       "failure_consequence": "Suspend affected scores; version the correction and use a new invocation without replacing earlier outcomes."
     },
     {
@@ -73,7 +72,7 @@
         "ASM-001",
         "ASM-002"
       ],
-      "scope": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation."
+      "scope": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only."
     },
     {
       "id": "H-002",
@@ -87,7 +86,7 @@
         "ASM-001",
         "ASM-002"
       ],
-      "scope": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation."
+      "scope": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only."
     },
     {
       "id": "H-004",
@@ -100,7 +99,7 @@
       "auxiliary_assumption_ids": [
         "ASM-002"
       ],
-      "scope": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation."
+      "scope": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only."
     }
   ],
   "predictions": [
@@ -164,9 +163,9 @@
     {
       "id": "CON-001",
       "name": "Evidence-grounded finite-run decision",
-      "definition": "The model selects and inspects candidate evidence. Model finalisation additionally requires model-authored status, checks and metrics; checked finalisation retains those fields directly from the selected checker. The host supplies immutable selection context, and narrative presence is measured separately.",
+      "definition": "The model selects and inspects candidate evidence, gives the correct finite-run decision and scope, and distinguishes established failed checks from checks the evidence cannot determine.",
       "role": "outcome",
-      "scope": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation.",
+      "scope": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only.",
       "proxy_for_claim_ids": [
         "CLM-001"
       ],
@@ -188,7 +187,7 @@
       "construct_ids": [
         "CON-001"
       ],
-      "observable": "Binary full correctness and its status, metric, evidence-selection, finite-scope, failed-check and unknown-check components; false support, false rejection, correct unavailability and unsupported assertions without collection; public response-message boundaries, provider status and incomplete_details, calls, usage, known costs and latency. Finalisation mode, answer origin, valid model finish versus retained answer completion, explanation presence and bounded provider retry counts remain separately observable.",
+      "observable": "Binary full correctness and its status, metric, evidence-selection, finite-scope, failed-check and unknown-check components; false support, false rejection, correct unavailability and unsupported assertions without collection; public response-message boundaries, provider status and incomplete_details, calls, usage, known costs and latency.",
       "instrument_or_procedure": "Real perf_counter_ns HTTP acquisition; immutable evidence bundles; collector and independent raw-row reference; actual Responses API usage.",
       "scale_or_units": "Binary correctness; milliseconds; error percentage; count; USD estimates.",
       "timing": "Acquire and freeze each case before paid calls. Assess freshness at its recorded reference time. Fresh model conversations select and inspect evidence within fixed call limits.",
@@ -196,18 +195,18 @@
       "calibration": "Real HTTP and MCP route controls plus inclusive 200 ms, 1 percent and 100-request boundaries and evidence-validity controls; no simulated provider response counts as experimental evidence.",
       "reliability": "All arms and models use the same immutable case report bundle; reference grades actual raw timings, never the intended latency-profile label.",
       "validity": "Supported means adequate evidence meets every finite criterion. Unsupported means adequate evidence demonstrates at least one performance or sample-size criterion failure. Unavailable means provenance, freshness, completeness, integrity or consistency prevents that assessment. A false evaluated check enters failed_checks; a null check enters unknown_checks; true checks enter neither. Failed evidence validity can coexist with unknown performance. Only one canonical status is exposed in checked packets; raw EAL support remains in audit traces.",
-      "measurement_invariance": "Within one finalisation mode, all selected arms share frozen evidence, the independent grader and host-bound context. Model finalisation uses six arms with optional narrative; checked finalisation uses EAL/MCP and ordinary validator only and retains their returned decisions without model restatement. Measurement-only arms never receive oracle-derived status or check sets. Do not pool finalisation modes.",
+      "measurement_invariance": "Same case bundles, selection surface, final schema and independent grader for every assigned model and arm. EAL receives executable assessment through MCP; plain_validator receives an ordinary deterministic checker through direct tools. JSON and the other prose arms receive direct evidence without host assessment.",
       "reactivity": "HTTP acquisition consumes local resources before model trials; replay prevents arm-dependent timing noise.",
-      "error_model": "Retain every assignment with no effect-based stopping. Retry only provider-marked retryable http_server, timeout or transport failures, at most twice per trial after 1 and 2 seconds; every attempt uses the existing model-call cap and keeps unknown charges reserved. Exhausted transient retries fail that trial; three consecutive transient-failed trials stop the affected model. Known-cost invalid, incomplete or ambiguous replies fail their trial without retry. Fatal account/configuration errors, unclassified failures, unverified returned model identity or usage, host failures, checker/reference disagreement and exhausted admission allowance stop the model immediately. Preserve failed and unattempted assignments separately; instrument or evidence-integrity defects suspend affected comparisons.",
+      "error_model": "Collector, checker, oracle and adapter defects remain possible. Known-cost incomplete responses fail their assigned trial without suppressing later assignments; missing/malformed answers and unattempted assignments score zero in the planned denominator. Costs, termination details and operational causes are separately counted.",
       "blinding": "Arm-independent deterministic grader uses frozen case evidence and answer fields; investigators and model prompts are unblinded."
     }
   ],
   "design": {
     "design_type": "controlled-experiment",
-    "rationale": "Version 3.1 traces identify correct checker output followed by operation omissions, failed repair and incorrect restatement. Version 4 separates model restatement from checked finalisation, supplies explicit templates without oracle leakage and tests bounded recovery from transient provider failures.",
+    "rationale": "A small measurement calibration checks repairs identified from version 2. A larger fixed development comparison is selected separately. Shared evidence and the ordinary-validator control diagnose task decisions, executable-checking assistance and operation-transport failures.",
     "setting": "Controlled local HTTP service in Docker, with live remote model inference.",
     "temporal_structure": "Acquire case evidence once; freeze it and the assignment ledger before paid calls. Up to six concurrent model workers each follow a seeded case and arm order with fresh sessions.",
-    "assignment_method": "Freeze seeded case and arm orders and selected finalisation before paid calls. Finalisation enters each assignment identity. Concurrent model workers preserve their frozen order; only prespecified transient provider retries may repeat a call within its original assignment.",
+    "assignment_method": "Freeze seeded case and arm orders before the first paid call; concurrent model workers avoid a single model-major wall-clock sequence. No response-dependent assignment or favourable rerun.",
     "allocation_concealment": "Models see their current prompt and candidate report catalogue without case family labels, oracle results or other model answers.",
     "masking": "Automated arm-independent reference; operators unblinded.",
     "comparator": "Equivalent JSON semantic representation and three ordinary developer prompts use direct evidence tools without MCP or EAL assessment. A sixth arm uses the explicit prose prompt with an ordinary direct deterministic validator.",
@@ -219,12 +218,12 @@
     ]
   },
   "units": {
-    "target_population_or_system": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation.",
-    "sampling_frame": "Forty reviewed development cases crossed with selected snapshots. Model finalisation uses six arms; checked finalisation uses EAL and ordinary validator only. Calibration selects healthy, corrupt and stale variant 0; model mode includes JSON and checked mode omits it.",
+    "target_population_or_system": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only.",
+    "sampling_frame": "Forty purposefully reviewed development cases from one API task, crossed with selected pinned models and six arms for the full pilot. Calibration selects healthy, corrupt and stale variant 0 and EAL, JSON and ordinary-validator arms.",
     "experimental_unit": "One fresh model conversation assigned to one arm and one immutable case bundle.",
-    "observational_unit": "One retained result, labelled by model or checked origin; HTTP requests, tool operations, model calls and bounded retries remain nested measurements.",
-    "assignment_unit": "Prompt/tool arm within finalisation, snapshot, transport and case block.",
-    "analysis_unit": "Matched case pair for a fixed snapshot, transport, finalisation and comparator; never pool model tiers, transports or finalisation modes.",
+    "observational_unit": "One final decision; HTTP requests, tool operations and model calls are nested measurements.",
+    "assignment_unit": "Prompt/tool arm within model, transport and case block.",
+    "analysis_unit": "Matched case pair for a fixed model, transport and comparator; never pool model tiers or native/text transports.",
     "inclusion_criteria": [
       "Every assignment frozen in manifest"
     ],
@@ -239,8 +238,8 @@
       "kind": "intervention",
       "description": "Six frozen prompt/tool arms: EAL/MCP, equivalent JSON, brief prose, explicit prose, review prose and explicit prose with an ordinary direct validator.",
       "target": "Candidate evidence selection and correct bounded interpretation of its provenance and measured criteria.",
-      "implementation": "Default text-mediated operations: the model emits a validated operation request, the host executes it, then returns the result. EAL requests invoke real stdio MCP; JSON/prose invoke direct tools, and only plain_validator receives ordinary deterministic assessment. No JSON/prose route invokes the EAL runtime. Native function calling is an optional separately labelled transport diagnostic. Distinct public provider messages remain separate; ambiguous multiple operations are not silently concatenated or salvaged. Version 4 requires explicit operation names, supplies mode-appropriate final templates and concise repair feedback, binds report_id/scope to inspected context and makes explanation optional. The checked finalisation mode automatically retains the tool decision after a successful inspection, without requiring model restatement. Measurement-only arms are excluded from that mode.",
-      "dose_or_intensity": "Model finalisation: calibration 3 cases x 3 arms x 6 models = 54 assignments (9 for one model), smoke 4 x 6 x 6 = 144, pilot 40 x 6 x 6 = 1440. Checked finalisation: calibration 3 x 2 x 6 = 36 assignments (6 for one model), smoke 4 x 2 x 6 = 48, pilot 40 x 2 x 6 = 480. Calibration allows 3 model calls/trial and USD0.50/model; smoke and pilot allow 6 calls/trial and USD5/model or USD20/model respectively. All attempts, including transient retries, count against these call caps. All modes retain 4096 output tokens/call, 120-second request timeout, one-second spacing and up to six workers. No automatic larger run follows calibration.",
+      "implementation": "Default text-mediated operations: the model emits a validated operation request, the host executes it, then returns the result. EAL requests invoke real stdio MCP; JSON/prose invoke direct tools, and only plain_validator receives ordinary deterministic assessment. No JSON/prose route invokes the EAL runtime. Native function calling is an optional separately labelled transport diagnostic. Distinct public provider messages remain separate; ambiguous multiple operations are not silently concatenated or salvaged.",
+      "dose_or_intensity": "Calibration: three case instances times three arms times six models = 54 assignments, or nine for one selected model; at most three calls/trial and USD0.50/model allowance. Smoke: 144 assignments and USD5/model; pilot: 1440 assignments and USD20/model; both allow six calls/trial. All modes retain 4096 output tokens/call, 120-second request timeout, one-second spacing and up to six workers. No automatic larger run follows calibration.",
       "timing": "All evidence is acquired before model calls; arm order is seeded within each case block.",
       "admissibility": "admissible",
       "manipulation_checks": [
@@ -249,12 +248,7 @@
         "Native-disabled text transport must omit native tools from the provider request",
         "Checked packets expose exactly one canonical status; raw EAL support is retained only in audit traces",
         "Separate failed_checks for false predicates from unknown_checks for null predicates",
-        "Retain provider status, incomplete_details and distinct public message boundaries without retaining private reasoning payloads",
-        "Unchecked-arm templates contain no checker or oracle decision fields",
-        "Explicit report_id or scope conflicts are rejected rather than overwritten",
-        "Protocol errors do not alter previously supplied evidence",
-        "Every transient attempt occupies one retained call record and unknown charges remain reserved",
-        "Checked results identify their origin separately from a valid model finish"
+        "Retain provider status, incomplete_details and distinct public message boundaries without retaining private reasoning payloads"
       ],
       "off_target_checks": [
         "Record tokens, calls, latency and component errors because prompt length and checking authority differ",
@@ -319,7 +313,7 @@
     },
     {
       "id": "CF-003",
-      "description": "Version 4 repairs are informed by observed version 2 and version 3.1 errors.",
+      "description": "Version 3 repairs are informed by observed version 2 errors.",
       "causal_or_measurement_path": "Post-observation rubric and adapter changes can improve familiar cases without showing out-of-sample performance.",
       "control_or_adjustment": "Label all repaired-case work calibration or development; preserve prior rubrics, traces and scores under their original source revisions.",
       "diagnostic": "Retain old and new protocol versions and state changed measurement contracts.",
@@ -333,15 +327,15 @@
         "CLM-001"
       ],
       "estimand_type": "descriptive",
-      "population_or_system": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation.",
+      "population_or_system": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only.",
       "intervention_or_exposure": "EAL/2 plus MCP and executable dependency checks.",
       "comparator": "Each of JSON, plain_brief, plain_explicit, plain_review and plain_validator separately within one model snapshot and transport.",
       "outcome_measurement_ids": [
         "M-001"
       ],
       "time": "The invocation and its fixed snapshots.",
-      "summary_measure": "Within model finalisation, assigned-trial model-answer difference; within checked finalisation, assigned-trial retained-result difference between EAL and ordinary validator. In either mode: reference-only correct minus comparator-only correct, divided by all assigned paired cases. Retain both-correct/both-incorrect counts and origin labels.",
-      "interpretation": "Describes the finite combined-system contrast within a finalisation mode. Checked results measure the selected checker workflow, not model-authored answer accuracy or a notation effect."
+      "summary_measure": "Finite-suite assigned-trial accuracy difference: (EAL-only-correct minus comparator-only-correct) divided by all assigned paired cases; also report both-correct and both-incorrect counts.",
+      "interpretation": "Describes the realised combined-system contrast and error pattern for the fixed suite, not expected future accuracy or a notation effect."
     },
     {
       "id": "EST-002",
@@ -349,13 +343,13 @@
         "CLM-001"
       ],
       "estimand_type": "descriptive",
-      "population_or_system": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation.",
+      "population_or_system": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only.",
       "intervention_or_exposure": "Explicit developer prose with an ordinary direct deterministic checker.",
       "comparator": "The identical explicit prose prompt with direct evidence inspection only.",
       "outcome_measurement_ids": [
         "M-001"
       ],
-      "time": "The same invocation, cases, snapshot and transport in model finalisation only, when both arms were assigned.",
+      "time": "The same invocation, selected cases and fixed snapshot; only when both arms were assigned.",
       "summary_measure": "(Validator-only correct minus explicit-prose-only correct) divided by all assigned paired cases; retain completed-pair and operational counts.",
       "interpretation": "Describes ordinary checking assistance on the realised finite suite; it does not estimate a population effect or isolate notation."
     }
@@ -401,24 +395,23 @@
   },
   "sampling": {
     "method": "Fixed purposive development suite, with seeded model/case/arm ordering.",
-    "sample_size_or_information_target": "Model finalisation: calibration 3 cases x 3 arms x 6 models = 54 assignments (9 for one model), smoke 4 x 6 x 6 = 144, pilot 40 x 6 x 6 = 1440. Checked finalisation: calibration 3 x 2 x 6 = 36 assignments (6 for one model), smoke 4 x 2 x 6 = 48, pilot 40 x 2 x 6 = 480. Calibration allows 3 model calls/trial and USD0.50/model; smoke and pilot allow 6 calls/trial and USD5/model or USD20/model respectively. All attempts, including transient retries, count against these call caps. All modes retain 4096 output tokens/call, 120-second request timeout, one-second spacing and up to six workers. No automatic larger run follows calibration.",
+    "sample_size_or_information_target": "Calibration: three fixed case instances (healthy, corrupt, stale variant 0) times three arms (EAL, JSON, ordinary validator) times six models = 54 assignments; one model gives nine. Smoke: four cases times six models times six arms = 144. Pilot: 40 cases times six models times six arms = 1440. The operator explicitly selects mode, snapshot subset and transport.",
     "inputs": [
       "Prior four-profile pilot completed 80/80 correct trials and exposed a ceiling",
       "Families healthy, near_limit, slow, errors, incomplete, wrong_identity, stale, corrupt, conflicting and distractor; four variants each.",
       "Six model snapshots spanning nano, mini and full product tiers in two model families",
       "Six prompt/tool arms; default common text transport",
-      "Version 2 retained 628 completed, 131 failed and 441 unattempted assignments; failed-check taxonomy, dual statuses and broad model-stop behaviour require calibration before new comparisons.",
-      "Version 3.1 nano-only run retained 141 completed, 43 failed and 56 unattempted assignments. EAL tool results agreed with reference, while model restatement and protocol completion failed; a transient HTTP503 stopped later assignments."
+      "Version 2 retained 628 completed, 131 failed and 441 unattempted assignments; failed-check taxonomy, dual statuses and broad model-stop behaviour require calibration before new comparisons."
     ],
     "dependence_structure": "Pair arms within model, transport and case; variants share case-family mechanisms and raw acquisition lineage. Calls and HTTP requests are not extra case replications.",
-    "multiplicity": "Model finalisation full pilot: 30 EAL/comparator contrasts plus 6 validator/explicit-prose contrasts. Checked full pilot: 6 EAL/validator contrasts. Report only assigned-arm contrasts within each mode; no confirmatory rejection or efficacy decision.",
+    "multiplicity": "Full pilot: thirty descriptive EAL/comparator contrasts plus six ordinary-validator versus explicit-prose contrasts. Calibration reports only assigned-arm contrasts. No confirmatory rejection, confidence declaration or multiplicity-adjusted efficacy decision.",
     "attrition_or_loss": "Retain every assigned trial; failures and unattempted assignments contribute zero correctness in the planned denominator. Report completed-pair counts separately.",
     "result": "The calibration targets observed instrument and stopping-rule failures, not inferential precision. Forty reviewed cases remain an engineering development target rather than a power calculation. No population interval, superiority or equivalence claim follows.",
     "sensitivity_analysis": "Report case-family and component outcomes, complete-pair counts and operational failures. Use observed discordance only to inform simulations for a separately frozen held-out design.",
-    "stopping_implications": "Retain every assignment with no effect-based stopping. Retry only provider-marked retryable http_server, timeout or transport failures, at most twice per trial after 1 and 2 seconds; every attempt uses the existing model-call cap and keeps unknown charges reserved. Exhausted transient retries fail that trial; three consecutive transient-failed trials stop the affected model. Known-cost invalid, incomplete or ambiguous replies fail their trial without retry. Fatal account/configuration errors, unclassified failures, unverified returned model identity or usage, host failures, checker/reference disagreement and exhausted admission allowance stop the model immediately. Preserve failed and unattempted assignments separately; instrument or evidence-integrity defects suspend affected comparisons."
+    "stopping_implications": "Fixed ledger with no effect-based stopping. Known-cost provider-classified invalid, incomplete or ambiguous multiple-message responses fail only their trial; subsequent assignments remain eligible, with no implicit trial retry. Fatal account/configuration errors, unclassified provider failures, unknown cost accounting, unexpected model identity, host exceptions, checker/reference disagreement or failed cost admission stop the affected model and retain remaining assignments as unattempted."
   },
   "analysis": {
-    "preprocessing_lock": "Freeze case catalogue, raw evidence, explicit perturbations, target scopes, assessment times, prompt material, schemas, independent reference and model settings before paid calls. Freeze finalisation and retry/circuit settings with the manifest.",
+    "preprocessing_lock": "Freeze case catalogue, raw evidence, explicit perturbations, target scopes, assessment times, prompt material, schemas, independent reference and model settings before paid calls.",
     "exclusion_lock": "No removal, favourable reruns or response repair after grading.",
     "models": [
       {
@@ -427,7 +420,7 @@
           "EST-001",
           "EST-002"
         ],
-        "model_or_procedure": "Descriptive paired counts within snapshot, transport and finalisation. Model mode reports model-authored decision accuracy; checked mode reports retained checker correctness. Include component errors, valid model-finish and retained-answer counts, optional narrative presence, retries and assigned/completed operational counts.",
+        "model_or_procedure": "Descriptive paired 2x2 correctness counts and finite-suite differences for each named reference-arm/comparator contrast; EAL is the reference for five contrasts and plain_validator for its plain_explicit contrast. Separate false/unknown-check components, provider termination outcomes and assigned/completed operational counts.",
         "assumptions": [
           "No leaked answers between arms",
           "Correct independent reference",
@@ -439,9 +432,7 @@
           "Inspect evidence selection, scope, failed-check and transport errors",
           "Compare assigned and completed-pair 2x2 tables; completed-only cases may be selected by provider or transport failures and are diagnostic only.",
           "Distinguish explicit false predicates from null predicates; score both check lists",
-          "Inspect provider status, incomplete_details and original public message boundaries before attributing malformed operation output to a model",
-          "Separate answer_complete from protocol_complete and retain answer_origin",
-          "Inspect retry categories, per-attempt reservations and transient circuit stops"
+          "Inspect provider status, incomplete_details and original public message boundaries before attributing malformed operation output to a model"
         ],
         "outputs": [
           "reference_arm",
@@ -466,19 +457,18 @@
       "EAL minus plain_review",
       "EAL minus plain_validator",
       "plain_validator minus plain_explicit, when both arms are assigned",
-      "Each contrast reported separately for each snapshot, transport and finalisation; no pooling across modes or model classes"
+      "Each contrast reported separately for each model and transport; no pooled model-class estimate"
     ],
     "uncertainty": "No population confidence intervals are reported for this purposively selected development suite. The observed finite-suite difference is exact for the recorded assignments; unobserved model stochasticity, future cases and provider drift remain unresolved.",
     "multiplicity": "Report every prespecified contrast supported by assigned arms for every selected model; no confirmatory efficacy test is performed.",
     "missing_data": "Failed, absent, malformed and unattempted assignments score zero; separate attempted/completed counts and unknown costs expose the operational component. No imputed model answers. Retain a completed-pair 2x2 table to distinguish decision discordance from operational failure, with an explicit selection caveat; do not replace the assigned denominator with that subset.",
-    "stopping_rule": "Retain every assignment with no effect-based stopping. Retry only provider-marked retryable http_server, timeout or transport failures, at most twice per trial after 1 and 2 seconds; every attempt uses the existing model-call cap and keeps unknown charges reserved. Exhausted transient retries fail that trial; three consecutive transient-failed trials stop the affected model. Known-cost invalid, incomplete or ambiguous replies fail their trial without retry. Fatal account/configuration errors, unclassified failures, unverified returned model identity or usage, host failures, checker/reference disagreement and exhausted admission allowance stop the model immediately. Preserve failed and unattempted assignments separately; instrument or evidence-integrity defects suspend affected comparisons.",
+    "stopping_rule": "Fixed ledger with no effect-based stopping. Known-cost provider-classified invalid, incomplete or ambiguous multiple-message responses fail only their trial; subsequent assignments remain eligible, with no implicit trial retry. Fatal account/configuration errors, unclassified provider failures, unknown cost accounting, unexpected model identity, host exceptions, checker/reference disagreement or failed cost admission stop the affected model and retain remaining assignments as unattempted.",
     "robustness_checks": [
       "Report family-specific and component errors without selecting favourable subsets",
       "Distinguish decision discordance among completed valid pairs from provider/transport failures",
       "Keep optional transport diagnostics separate",
       "Keep verdict correctness distinct from full-answer rubric correctness; instrument ambiguity must not be described as an acceptance-decision advantage",
-      "Preserve versions 1, 2 and 3.1 artefacts and scores under their original contracts; version 4 supplies no retrospective replacement score",
-      "Never label automatic checked finalisation as model answer accuracy"
+      "Preserve version 2 results without retroactive rescoring under the repaired version 3 contract"
     ],
     "software_and_versions": [
       "requirements.lock",
@@ -512,7 +502,7 @@
           ],
           "disposition": "strengthen",
           "rationale": "H-001 is supported as a development-suite discrimination claim; effect generalisation remains untested.",
-          "scope_limit": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation."
+          "scope_limit": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only."
         }
       ],
       "hypothesis_effects": [
@@ -545,7 +535,7 @@
           ],
           "disposition": "weaken",
           "rationale": "H-002 remains compatible; no observed paired error contrast distinguishes prompt/tool systems.",
-          "scope_limit": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation."
+          "scope_limit": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only."
         }
       ],
       "hypothesis_effects": [
@@ -578,7 +568,7 @@
           ],
           "disposition": "suspend",
           "rationale": "H-004 or measurement failure prevents interpreting apparent decision differences.",
-          "scope_limit": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation."
+          "scope_limit": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only."
         }
       ],
       "hypothesis_effects": [
@@ -611,7 +601,7 @@
           ],
           "disposition": "no-change",
           "rationale": "Observed operational failure is retained; neither comparative efficacy nor complete-suite concordance is established.",
-          "scope_limit": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation."
+          "scope_limit": "One orders API, up to 40 purposively reviewed development cases, six prompt/tool arms and six pinned OpenAI model snapshots; a separately labelled small calibration subset precedes a larger invocation. Conclusions describe the selected finite suite and invocation only."
         }
       ],
       "hypothesis_effects": [
@@ -689,13 +679,15 @@
       "All failures recorded"
     ],
     "stopping_rules": [
-      "Retain every assignment with no effect-based stopping. Retry only provider-marked retryable http_server, timeout or transport failures, at most twice per trial after 1 and 2 seconds; every attempt uses the existing model-call cap and keeps unknown charges reserved. Exhausted transient retries fail that trial; three consecutive transient-failed trials stop the affected model. Known-cost invalid, incomplete or ambiguous replies fail their trial without retry. Fatal account/configuration errors, unclassified failures, unverified returned model identity or usage, host failures, checker/reference disagreement and exhausted admission allowance stop the model immediately. Preserve failed and unattempted assignments separately; instrument or evidence-integrity defects suspend affected comparisons."
+      "Fatal account/configuration error, unclassified provider failure, unknown cost accounting, unexpected model identity, host exception or checker/reference disagreement stops the affected model",
+      "Pre-call allowance exhaustion stops the affected model",
+      "Known-cost incomplete responses and ambiguous multiple operations fail their trial without cancelling later assigned cases; no implicit retry"
     ],
     "stop_authority": "Repository owner or workflow operator.",
     "review_status": "not-required",
     "post_stop_actions": [
       "Stop this invocation's named paid container before offline summary recovery; retain dispatched attempts with unknown cost when no verified response is available.",
-      "Retain incomplete invocation and diagnose it. A fresh invocation requires manual dispatch; only the frozen within-trial transient retries are automatic."
+      "Retain incomplete run; inspect cause; corrections require a fresh manual invocation, never an implicit retry."
     ]
   },
   "feasibility": {
@@ -722,7 +714,8 @@
       "ANTLR jar verified by SHA256"
     ],
     "blockers": [
-      "Version 4 conversation, finalisation and recovery changes require a fresh retained live calibration; offline tests establish implemented behaviour only. No live version 4 result or paid invocation is reported."
+      "Revised termination handling, message-boundary retention, canonical status and failed/unknown rubric require actual retained live calibration; code and mocked-provider tests alone cannot establish live behaviour.",
+      "At the version 3 repair review on 2026-09-25, api-experiment.yml exists in PR #22 but is absent from main; Actions UI manual dispatch requires the workflow on the default branch. No merge or paid run has occurred for this repair."
     ],
     "fallback": "Retain actual failed or unattempted assignments; never substitute mock provider responses for empirical outcomes."
   },
@@ -736,11 +729,11 @@
       "Pinned model snapshots, reasoning settings and prices",
       "Complete assignment ledger and seeded order"
     ],
-    "data_plan": "Retain shared raw measurements, case/provenance digests, explicit fault injections, prompts, EAL/JSON source, model responses, selected evidence, operation traces, component scores, failures and summaries; exclude secrets and private reasoning replay payloads. Version 3 additionally retains public message boundaries, provider status and incomplete_details; final check lists distinguish false from unknown. Raw EAL support remains audit-only. Version 3.1 checkpoints one slot per dispatched call, with known usage or an unresolved charge reservation; interruption summaries preserve retained calls without resuming work. Frozen-case integrity and private raw-reference checks apply to every arm. Detected instrument or integrity defects suspend affected comparisons. Version 4 records finalisation, answer origin/completion, protocol completion, narrative presence and retries. Unknown charges retain their reservations. The current plan, manifest and summary schemas are eal-api-experiment/4, eal-api-experiment-run/4 and eal-api-experiment-summary/4 respectively.",
+    "data_plan": "Retain shared raw measurements, case/provenance digests, explicit fault injections, prompts, EAL/JSON source, model responses, selected evidence, operation traces, component scores, failures and summaries; exclude secrets and private reasoning replay payloads. Version 3 additionally retains public message boundaries, provider status and incomplete_details; final check lists distinguish false from unknown. Raw EAL support remains audit-only. Version 3.1 checkpoints one slot per dispatched call, with known usage or an unresolved charge reservation; interruption summaries preserve retained calls without resuming work. Frozen-case integrity and private raw-reference checks apply to every arm. Detected instrument or integrity defects suspend affected comparisons.",
     "code_plan": "All implementation and tests committed in this PR.",
     "randomisation_or_seed_plan": "Seed 20260925; seeded case/arm order within each concurrent model worker; entire assignment ledger frozen before paid calls.",
     "provenance_plan": "Retain source SHA, dependency versions, Docker image inspection, workflow ID and attempt, provider response IDs and usage.",
-    "deviation_and_amendment_plan": "Increment protocol version for planned changes and preserve historical artefacts, schemas and scores. Version 4 follows observed version 3.1 failures; it makes no retrospective efficacy claim. PR updates and pushes never initiate paid invocations.",
+    "deviation_and_amendment_plan": "Increment protocol version for planned changes; keep previous invocation artefacts, schemas and rubrics unchanged. Version 3 is a measured-failure-informed repair, not a retroactive reinterpretation of old scores. No paid invocation starts from a PR update or push.",
     "replication_plan": "Use a fresh output directory and immutable manifest per invocation. Repeating development cases measures repeatability; it does not create independent task coverage. A held-out efficacy study requires a new separately frozen protocol."
   },
   "execution": {
@@ -758,7 +751,7 @@
       "Repository maintainer with Codex implementation assistance"
     ],
     "created_at": "2026-09-25T00:00:00Z",
-    "updated_at": "2026-09-25T20:16:02.178953+00:00",
+    "updated_at": "2026-09-25T18:17:04Z",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
       "https://developers.openai.com/api/docs/models/gpt-4.1",
@@ -773,8 +766,7 @@
       "1.0.0: initial specified protocol; live model outcomes not yet observed.",
       "2.0.0: richer fixed development cases, immutable matched evidence, explicit evidence-validity outcomes, six model tiers and common text-mediated tool operations; replace uninformative v1 decision bounds with descriptive paired tables. Historical v1 feasibility outcomes remain separate. Protocol schema remains 1.0; experiment manifest and raw report become version 2 contracts. EAL/2 syntax and structured/1 semantics are unchanged.",
       "3.0.0: preserve provider termination details and visible message boundaries; make known-cost truncation trial-local; expose one canonical checked status; score false and unknown checks separately; add ordinary direct-validator control and its explicit-prose comparison; default to a 54-assignment manual calibration with USD3 aggregate admission allowance. Historical v1/v2 outcomes and rubrics remain unchanged. Protocol schema stays 1.0, experiment manifest becomes version 3 and raw report remains version 2; EAL/2 syntax and structured/1 semantics are unchanged.",
-      "3.1.0: repair interruption and finalization accounting with durable per-call checkpoints; keep unexpected-model costs unknown; verify measurements privately for every arm and enforce invalid-measurement suspension with frozen-case integrity checks; reject malformed report-envelope metadata as an instrument fault; preserve Responses continuation state in the general agent and reject incomplete native function items. Add named-container cleanup and offline summary recovery. Cases, prompts, rubric, model settings and spending limits are unchanged; manifest/summary schemas remain version 3 with additional diagnostics, raw report remains version 2, and EAL/2 language and structured/1 semantics are unchanged.",
-      "4.0.0: explicit final-answer templates and concise protocol-only repair feedback; host-bound report identity/scope and optional explanation; separate model and checked finalisation with different assignment identities and origin/completion counts; bounded transient retries within call and cost caps and a three-trial transient circuit. Plan, run manifest and summary schemas advance to version 4. Historical outcomes stay frozen. Protocol document schema remains 1.0, raw report remains version 2, EAL/2 syntax and structured/1 semantics are unchanged. No live version 4 result is claimed."
+      "3.1.0: repair interruption and finalization accounting with durable per-call checkpoints; keep unexpected-model costs unknown; verify measurements privately for every arm and enforce invalid-measurement suspension with frozen-case integrity checks; reject malformed report-envelope metadata as an instrument fault; preserve Responses continuation state in the general agent and reject incomplete native function items. Add named-container cleanup and offline summary recovery. Cases, prompts, rubric, model settings and spending limits are unchanged; manifest/summary schemas remain version 3 with additional diagnostics, raw report remains version 2, and EAL/2 language and structured/1 semantics are unchanged."
     ]
   },
   "prior_evidence": [
@@ -815,29 +807,6 @@
       "mcp_assessments": 141,
       "mcp_reference_agreements": 141,
       "interpretation": "HTTP/MCP and live-call feasibility verified, with failed-check taxonomy and dual-status ambiguity and three incomplete responses causing excessive downstream stopping. Full GPT-4.1 had EAL 40/40 versus JSON 36/40 full-answer scores but both gave 40/40 correct verdicts. These four JSON discrepancies do not establish better acceptance decisions. Incomplete GPT-5.4 assignments cannot support model-class ranking. Version 3 repairs require fresh live calibration."
-    },
-    {
-      "protocol_version": "3.1.0",
-      "role": "development and instrument-diagnostic evidence; frozen original score",
-      "source_commit": "8220e838a8d42922edc0496ff50927c672a1f87d",
-      "workflow_run_id": 36176588712,
-      "workflow_url": "https://github.com/emmett08/earl/actions/runs/36176588712",
-      "artifact_sha256": "186adeb144ccaf4c77f5e36165999f3ad203a98bcfc24a7119c68d5c5eb206c5",
-      "model": "gpt-4.1-nano-2025-04-14",
-      "assigned_trials": 240,
-      "completed_trials": 141,
-      "failed_trials": 43,
-      "unattempted_trials": 56,
-      "fully_correct_by_arm": {
-        "eal_mcp": 3,
-        "json_prompt": 6,
-        "plain_brief": 6,
-        "plain_explicit": 5,
-        "plain_review": 6,
-        "plain_validator": 11
-      },
-      "interpretation": "Correct tool outputs coexisted with model restatement and protocol failures. All 30 attempted EAL trials selected the correct report and completed MCP assessment; 14 exhausted the six-call limit. A retryable HTTP503 with unknown call cost caused the version 3.1 stop rule to leave 56 later assignments unattempted. These diagnostic findings motivate version 4 and do not establish its performance.",
-      "artifact_id": 10883614782
     }
   ],
   "next_investigation_gate": {
@@ -853,55 +822,21 @@
       "corrupt variant 0",
       "stale variant 0"
     ],
-    "arms": {
-      "model": [
-        "eal_mcp",
-        "json_prompt",
-        "plain_validator"
-      ],
-      "checked": [
-        "eal_mcp",
-        "plain_validator"
-      ]
-    },
+    "arms": [
+      "eal_mcp",
+      "json_prompt",
+      "plain_validator"
+    ],
     "model_selection": "All six pinned snapshots by default, or one explicitly selected snapshot.",
-    "assigned_trials_all_models": {
-      "model": 54,
-      "checked": 36
-    },
-    "assigned_trials_one_model": {
-      "model": 9,
-      "checked": 6
-    },
+    "assigned_trials_all_models": 54,
+    "assigned_trials_one_model": 9,
     "max_calls_per_trial": 3,
     "max_output_tokens_per_call": 4096,
     "admission_allowance_usd_per_model": 0.5,
     "admission_allowance_usd_all_models": 3.0,
-    "purpose": "Inspect operation completion, model/checked result separation, optional narrative and bounded transient recovery before an explicitly selected larger invocation.",
-    "advance_rule": "Review every assigned result, tool/reference agreement, model/checked origin, protocol completion, retry and cost record. Successful calibration permits a bounded statement about those observations only. Any larger invocation requires explicit manual selection.",
-    "live_validation": "Version 3.1 nano-only results are retained as prior evidence. Version 4 live calibration is pending; this change neither starts a paid run nor establishes a live result.",
+    "purpose": "Diagnose known adapter, canonical-status and false-versus-unknown rubric failures before spending on a larger invocation.",
+    "advance_rule": "Inspect all assigned/completed counts, independent checker agreement, check-state scoring and retained termination/message records. A failure requires diagnosis, not an automatic retry. A successful calibration permits only a bounded feasibility statement and explicit operator selection of any larger mode.",
+    "live_validation": "pending: workflow is not yet present on the default branch at the version 3 repair review; no paid calibration dispatched",
     "workflow_trigger": "workflow_dispatch only; no push or pull_request trigger"
-  },
-  "finalisation_contract": {
-    "default": "model",
-    "model": "The model supplies status, check sets and metrics through an explicit finish. The host binds omitted report_id/scope and rejects explicit conflicts. Explanation is optional and its presence is recorded.",
-    "checked": "Only EAL/MCP and plain_validator are assigned. After model selection and successful inspection the host retains the checker decision directly, labelled checked origin rather than model answer accuracy.",
-    "pooling": "Keep invocations, assignment identities and summaries separate by finalisation."
-  },
-  "provider_recovery": {
-    "max_provider_retries_per_trial": 2,
-    "provider_retry_delays_seconds": [
-      1,
-      2
-    ],
-    "eligible_categories": [
-      "http_server",
-      "timeout",
-      "transport"
-    ],
-    "requires_retryable_flag": true,
-    "max_consecutive_transient_failures": 3,
-    "accounting": "Every dispatched attempt counts against the same trial call cap. Retain unknown charges and their reservations. Do not retry semantic errors, output truncation, authentication/configuration failures or unverified returned identity/usage.",
-    "rule": "Retain every assignment with no effect-based stopping. Retry only provider-marked retryable http_server, timeout or transport failures, at most twice per trial after 1 and 2 seconds; every attempt uses the existing model-call cap and keeps unknown charges reserved. Exhausted transient retries fail that trial; three consecutive transient-failed trials stop the affected model. Known-cost invalid, incomplete or ambiguous replies fail their trial without retry. Fatal account/configuration errors, unclassified failures, unverified returned model identity or usage, host failures, checker/reference disagreement and exhausted admission allowance stop the model immediately. Preserve failed and unattempted assignments separately; instrument or evidence-integrity defects suspend affected comparisons."
   }
 }

@@ -21,10 +21,8 @@ SYSTEM = (
     "Supported means valid, complete, consistent, fresh evidence for the requested identity meets "
     "all sample criteria. Unsupported means usable evidence fails a performance criterion. "
     "Unavailable means missing, corrupt, incomplete, inconsistent, stale or wrong-identity "
-    "evidence prevents assessment. State only what this measured run establishes. The host binds the "
-    "most recently inspected report ID and requested scope to your final answer. If you include either "
-    "field, it must match that bound context. Explanation is optional. Return status, failed_checks, "
-    "unknown_checks and metrics to at least two "
+    "evidence prevents assessment. State only what this measured run establishes. Return the "
+    "selected report ID, requested scope, failed_checks, unknown_checks and metrics to at least two "
     "decimal places; use null when metrics cannot be computed. List a check in failed_checks only "
     "when the evidence establishes that its condition is false. List it in unknown_checks only "
     "when its condition cannot be assessed. A passed check belongs in neither list. The two lists "
@@ -113,9 +111,17 @@ def prompt_for(arm: str, source: str, workload: dict, case: dict | None = None) 
     ) + suffix
 
 
-def finish_schema() -> dict:
-    """Final decision fields; immutable selection context is supplied by the host."""
-    fields = {
+def operations(arm: str) -> list[dict]:
+    name = "assess_load_test" if arm == "eal_mcp" else "inspect_report"
+    description = ("Execute the fixed EAL/2 argument for the selected report through actual MCP validation, "
+                   "collection, structured/1 reasoning and explanation at the case assessment time."
+                   if arm == "eal_mcp" else
+                   "Inspect the selected immutable API report with an ordinary deterministic checker. "
+                   "Return statistics, measurement facts, a status, failed_checks and unknown_checks. "
+                   "This checker uses direct collection without MCP or EAL evaluation."
+                   if arm == "plain_validator" else
+                   "Inspect the selected immutable API report and return statistics and measurement facts. No claim is evaluated.")
+    finish_fields = {
         "operation": {"const": "finish"},
         "report_id": {"type": "string"},
         "status": {"enum": ["supported", "unsupported", "unavailable"]},
@@ -131,28 +137,13 @@ def finish_schema() -> dict:
             "required": ["request_count", "p95_ms", "error_rate_percent"], "additionalProperties": False},
         "explanation": {"type": "string", "maxLength": 2000},
     }
-    return {"type": "object", "properties": fields,
-            "required": ["operation", "status", "failed_checks", "unknown_checks", "metrics"],
-            "additionalProperties": False}
-
-
-def operations(arm: str) -> list[dict]:
-    name = "assess_load_test" if arm == "eal_mcp" else "inspect_report"
-    description = ("Execute the fixed EAL/2 argument for the selected report through actual MCP validation, "
-                   "collection, structured/1 reasoning and explanation at the case assessment time."
-                   if arm == "eal_mcp" else
-                   "Inspect the selected immutable API report with an ordinary deterministic checker. "
-                   "Return statistics, measurement facts, a status, failed_checks and unknown_checks. "
-                   "This checker uses direct collection without MCP or EAL evaluation."
-                   if arm == "plain_validator" else
-                   "Inspect the selected immutable API report and return statistics and measurement facts. No claim is evaluated.")
     return [
         {"operation": name, "description": description,
          "input_schema": {"type": "object", "properties": {"operation": {"const": name}, "report_id": {"type": "string"}},
                           "required": ["operation", "report_id"], "additionalProperties": False}},
-        {"operation": "finish", "description": "Submit the final answer and measured values. Explanation is optional. "
-         "The host supplies report_id and requested scope; supplied values must match the bound context. "
+        {"operation": "finish", "description": "Submit the final answer, measured values and concise explanation. "
          "failed_checks contains conditions established false; unknown_checks contains unassessable conditions. "
          "Passed conditions appear in neither list; the lists must be disjoint.",
-         "input_schema": finish_schema()},
+         "input_schema": {"type": "object", "properties": finish_fields,
+                          "required": list(finish_fields), "additionalProperties": False}},
     ]

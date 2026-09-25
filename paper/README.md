@@ -2,9 +2,11 @@
 
 [Read the manuscript PDF](manuscript.pdf) · [LaTeX source](manuscript.tex) · [Submission checklist](review/submission-status.md)
 
-This author-review manuscript describes EAL/2's implemented evidence binding and defeasible assessment, and reanalyses the supplied historical API load-test experiment. It includes **three figures**, an exact excerpt of the tested EAL example, generated result tables and a reproducible dataset. The scientific conclusion is bounded to the recorded systems and development cases.
+This author-review manuscript describes EAL/2's implemented evidence binding and defeasible assessment, and reanalyses two supplied API load-test experiments. It includes **four figures**, an exact excerpt of the tested EAL example, generated result tables and separately versioned reproducible datasets. The scientific conclusion is bounded to the recorded systems and development cases.
 
 The historical run assigned 1,200 trials: 628 completed, 131 failed and 441 were not attempted after model-level stops. Every assignment is retained. Replaying the original scorer reproduces every trial score and the full summary. GPT-4.1 full scored 40/40 with EAL/MCP and 36/40 with JSON; all four JSON errors concern failed-check enumeration, while its statuses were correct. GPT-4.1 mini scored 32/40 and 21/40. Different checker access and incomplete execution prevent an isolated notation or general model-capability conclusion.
+
+The later nano-only run assigned 240 trials under plan 3.1.0: 141 completed, 43 failed and 56 were unattempted. Plain-validator scored 11/40 against EAL/MCP's 3/40. All 30 attempted EAL assignments obtained correct assessment packets; 13 final answers were incorrect, 14 conversations exhausted the six-call limit and ten assignments were never dispatched after a provider HTTP 503 stopped execution. The revised rubric and newly acquired observations require separate analysis. These pilots do not establish an EAL accuracy advantage over ordinary validation. Protocol-4 repairs are described as implementation changes checked offline, with no new model-performance result.
 
 ## Build and reproduce
 
@@ -13,8 +15,9 @@ From the repository root:
 ```sh
 # Recompute scores, case identities, token costs and generated numerical tables.
 python3 paper/analysis/reproduce.py
+python3 paper/analysis/reproduce_nano.py
 
-# Regenerate all three vector figures and the manuscript PDF.
+# Regenerate all four vector figures and the manuscript PDF.
 make -C paper
 
 # Also check references, overflow, fonts, result cells and error interpretations.
@@ -34,11 +37,13 @@ No command above makes network requests or provider calls. To run the separately
 | Original archive | [Run 36163505801, attempt 1](https://github.com/emmett08/earl/actions/runs/36163505801), artefact 10879620453 | Actual HTTP observations and provider calls, partial execution |
 | Reproduction inputs | `data/` | Raw case rows, all assignments, answers, outcomes and token accounting |
 | Historical scorers | `analysis/v2_oracle.py`, `analysis/v2_summary.py` | Byte-identical copies of the run commit, checked against its manifest |
+| Nano follow-up | [Run 36176588712, attempt 1](https://github.com/emmett08/earl/actions/runs/36176588712), commit `8220e838a8d42922edc0496ff50927c672a1f87d`, plan 3.1.0 | Six conditions, one pinned model, 40 newly acquired case reports |
+| Follow-up inputs and source | `data/nano-v3/`, `analysis/nano_v3_original/` | All 240 assignments, raw cases, response text, host packets, full tool traces and hash-verified original source |
 | Regenerated results | `results/` | Full summary, dispositions, costs and component-level errors |
-| Figures | `figures/*.tikz.tex` and matching PDFs | Two explanatory figures and one empirical paired-outcome figure |
+| Figures | `figures/*.tikz.tex` and matching PDFs | Two explanatory figures, empirical paired outcomes and nano failure diagnosis |
 | Review records | `review/` | Claim/source map, references, figure choices, validation and submission status |
 
-The later [experiment protocol](../experiments/api_load_test/README.md) adds a sixth condition and other changes. Its planned assignments and rubric must not be substituted for this historical run. The [worked API example](../examples/api-load-test/README.md) contains synthetic teaching records and uses a different freshness limit. It is not an additional pilot observation.
+The current [experiment protocol](../experiments/api_load_test/README.md) changes finalisation and transient-error handling. Its rules must not be substituted for either historical run. The [worked API example](../examples/api-load-test/README.md) contains synthetic teaching records and uses a different freshness limit. It is not an additional pilot observation.
 
 The archive SHA-256 is `bf5b59c340b1c11c85a3e39679bc9cc1bc4521af741f45d9dc5cc1c65cbd8547`, matching GitHub's artefact metadata. `data/provenance.json` contains source-member and curated-file digests. To regenerate the curated files from the exact supplied ZIP:
 
@@ -46,7 +51,15 @@ The archive SHA-256 is `bf5b59c340b1c11c85a3e39679bc9cc1bc4521af741f45d9dc5cc1c6
 python3 paper/analysis/extract_archive.py /path/to/api-experiment-36163505801-1.zip
 ```
 
-The extraction retains every assignment and all fields needed for score/cost reproduction, while omitting full provider responses, replay handles and per-call transcripts. Those remain in the original archive, whose Actions retention expires on 25 October 2026. A durable full-archive deposit remains a submission task.
+The first extraction retains every assignment and all fields needed for score/cost reproduction, while omitting full provider responses, replay handles and per-call transcripts. Those remain in the original archive, whose Actions retention expires on 25 October 2026. A durable full-archive deposit remains a submission task.
+
+The nano archive SHA-256 is `186adeb144ccaf4c77f5e36165999f3ad203a98bcfc24a7119c68d5c5eb206c5`. Its extraction preserves provider response text once per call, all protocol errors, every model-visible host packet and the complete tool traces. It omits duplicate provider objects and replay handles. Its frozen reference and summary are verified against the original manifest before execution:
+
+```sh
+python3 paper/analysis/reproduce_nano.py --extract /path/to/api-experiment-36176588712-1.zip
+```
+
+`results/nano-diagnosis.json` supplies the fourth figure and regenerates the counts behind the failure analysis. `results/nano-summary.json` must match the archived summary exactly. The known follow-up cost is USD 0.1146428 over 689 recorded calls; one call has unknown cost, retained separately. Keeping that uncertainty avoids treating an HTTP failure as a known zero charge.
 
 ## Journal preparation
 
@@ -78,4 +91,4 @@ The following are exact skill names in this project's Codex environment. The fir
 
 ## Evidence boundary
 
-The pilot is a descriptive reanalysis of an existing development run. No retrospective protocol is represented as preregistered. Keep the original case pairing, assignment denominator, failure outcomes, provider snapshots and token rates when reproducing its results. A confirmatory follow-up needs a frozen question and analysis plan, independent cases, matched validation access and a stopping rule that distinguishes transient incomplete output from persistent model-configuration failure.
+The pilots are descriptive reanalyses of existing development runs. No retrospective protocol is represented as preregistered. Keep each run's case pairing, assignment denominator, failure outcomes, provider snapshots and token rates when reproducing its results. Reused case identifiers do not make changed observations and rubrics interchangeable. A confirmatory follow-up needs a frozen question and analysis plan, independent cases, matched validation access and predefined execution rules. Direct host finalisation changes the evaluated system and must remain separate from model-finalised answers.

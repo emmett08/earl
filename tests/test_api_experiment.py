@@ -221,7 +221,7 @@ def test_calibration_freezes_small_selected_design_without_paid_calls(tmp_path, 
     output = tmp_path / "calibration"
     assert asyncio.run(run(output, [SPEC], PLAN, mode="calibration")) is False
     manifest = json.loads((output / "manifest.json").read_text())
-    assert manifest["schema"] == "eal-api-experiment-run/3"
+    assert manifest["schema"] == "eal-api-experiment-run/4"
     assert len(manifest["assignments"]) == 9
     assert {row["family"] for row in manifest["case_specs"]} == {"healthy", "corrupt", "stale"}
     assert all(row["variant"] == 0 for row in manifest["case_specs"])
@@ -574,6 +574,12 @@ def test_trial_rejects_incorrect_or_missing_tool_results_privately(tmp_path, mon
     result = asyncio.run(trial(assignment, SPEC, {**PLAN, "minimum_call_interval_seconds": 0},
                                tmp_path, Replies(), Budget(5), measured_case))
     assert result["failure"] == "host_reference_disagreement" and result["stop_model"]
-    assert result["outcome"]["status_correct"] and not result["outcome"]["correct"]
+    assert not result["outcome"]["correct"]
+    if arm == "json_prompt":
+        assert result["outcome"]["status_correct"] and len(result["model_calls"]) == 2
+    else:
+        # The checked packet cannot supply a final-answer template. Stop before
+        # asking the model to repair missing host output or paying another call.
+        assert result["answer"] is None and len(result["model_calls"]) == 1
     expected = ["measurement_facts"] if arm == "json_prompt" else ["status", "failed_checks", "unknown_checks"]
     assert result["host_checks"][0]["mismatches"] == expected

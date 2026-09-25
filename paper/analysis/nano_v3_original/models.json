@@ -1,0 +1,99 @@
+{
+  "schema": "eal-api-model-matrix/2",
+  "checked_at": "2026-09-25",
+  "size_definition": "Nano, mini and full are provider product tiers, not disclosed parameter counts.",
+  "models": [
+    {
+      "id": "gpt-4.1-nano-2025-04-14",
+      "family": "gpt-4.1",
+      "class": "non_reasoning",
+      "tier": "nano",
+      "sampling": {
+        "temperature": 0.2
+      },
+      "reasoning_effort": null,
+      "pricing": {
+        "input_usd_per_million": 0.1,
+        "cached_input_usd_per_million": 0.025,
+        "output_usd_per_million": 0.4
+      },
+      "source": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+      "shutdown_date": "2026-10-23",
+      "deprecation_source": "https://developers.openai.com/api/docs/deprecations"
+    },
+    {
+      "id": "gpt-4.1-mini-2025-04-14",
+      "family": "gpt-4.1",
+      "class": "non_reasoning",
+      "sampling": {
+        "temperature": 0.2
+      },
+      "reasoning_effort": null,
+      "pricing": {
+        "input_usd_per_million": 0.4,
+        "cached_input_usd_per_million": 0.1,
+        "output_usd_per_million": 1.6
+      },
+      "source": "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
+      "tier": "mini"
+    },
+    {
+      "id": "gpt-4.1-2025-04-14",
+      "family": "gpt-4.1",
+      "class": "non_reasoning",
+      "sampling": {
+        "temperature": 0.2
+      },
+      "reasoning_effort": null,
+      "pricing": {
+        "input_usd_per_million": 2,
+        "cached_input_usd_per_million": 0.5,
+        "output_usd_per_million": 8
+      },
+      "source": "https://developers.openai.com/api/docs/models/gpt-4.1",
+      "tier": "full"
+    },
+    {
+      "id": "gpt-5.4-nano-2026-03-17",
+      "family": "gpt-5.4",
+      "class": "reasoning",
+      "tier": "nano",
+      "sampling": {},
+      "reasoning_effort": "medium",
+      "pricing": {
+        "input_usd_per_million": 0.2,
+        "cached_input_usd_per_million": 0.02,
+        "output_usd_per_million": 1.25
+      },
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.4-nano"
+    },
+    {
+      "id": "gpt-5.4-mini-2026-03-17",
+      "family": "gpt-5.4",
+      "class": "reasoning",
+      "sampling": {},
+      "reasoning_effort": "medium",
+      "pricing": {
+        "input_usd_per_million": 0.75,
+        "cached_input_usd_per_million": 0.075,
+        "output_usd_per_million": 4.5
+      },
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.4-mini",
+      "tier": "mini"
+    },
+    {
+      "id": "gpt-5.4-2026-03-05",
+      "family": "gpt-5.4",
+      "class": "reasoning",
+      "sampling": {},
+      "reasoning_effort": "medium",
+      "pricing": {
+        "input_usd_per_million": 2.5,
+        "cached_input_usd_per_million": 0.25,
+        "output_usd_per_million": 15
+      },
+      "source": "https://developers.openai.com/api/docs/models/gpt-5.4",
+      "tier": "full"
+    }
+  ]
+}
