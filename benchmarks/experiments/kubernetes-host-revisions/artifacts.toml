@@ -1,7 +1,0 @@
-[artifacts.k8s_checkout]
-path = "source.eal"
-sha256 = "a927713a6e933115bf42cbaa46cd4718932a2f172bb735830c0674f242a09ebd"
-method_registry_fingerprint = "31ad450d8b06500f2e294d0c9e1d5d5d7b9397a1e4d089f3a598b92494e228e5"
-claims = ["checkout_latency", "checkout_test_record", "rollout_digest", "service_failover"]
-context = { cluster = "prod_east", namespace = "checkout" }
-now = "2026-09-24T12:00:00Z"

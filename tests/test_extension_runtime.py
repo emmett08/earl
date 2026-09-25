@@ -2,8 +2,6 @@
 import asyncio
 import json
 import os
-from pathlib import Path
-import shutil
 import sys
 
 import pytest
@@ -11,9 +9,7 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 from eal.runtime import load_method_registry
-
-
-ROOT = Path(__file__).resolve().parents[1]
+from _runtime_cases import RMS_SOURCE, write_case
 
 
 def test_host_factory_is_explicit_and_returns_a_checked_registry():
@@ -28,14 +24,12 @@ def test_host_factory_is_explicit_and_returns_a_checked_registry():
 
 
 def test_registered_extension_real_mcp_collection_format_reason_and_explain(tmp_path):
-    (tmp_path / 'examples').mkdir()
-    for name in ('rms-tools.toml', 'rms-observation.json'):
-        shutil.copyfile(ROOT / 'examples' / name, tmp_path / 'examples' / name)
-    source = (ROOT / 'examples/rms.eal').read_text()
-    context = json.loads((ROOT / 'examples/rms-context.json').read_text())
+    _, _, registry = write_case(tmp_path, 'rms')
+    source = RMS_SOURCE
+    context = {'site': 'bench'}
     parameters = StdioServerParameters(command=sys.executable, args=[
         '-m', 'eal.server', '--workspace', str(tmp_path),
-        '--registry', str(tmp_path / 'examples/rms-tools.toml'),
+        '--registry', str(registry),
         '--methods', 'eal.extensions:example_registry',
     ], env=dict(os.environ))
 

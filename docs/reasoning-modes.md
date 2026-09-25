@@ -4,6 +4,12 @@ A reasoning declaration selects an operation appropriate to the evidence and sta
 
 The implemented methods form a bounded computational vocabulary, rather than an exhaustive taxonomy of human reasoning. `structured/1` preserves an explicitly authored relationship. The other methods calculate properties of a particular logical case, statistical sample, hypothesis model, experiment, causal model, feature mapping or finite trace. Question formation, explanation construction, model selection and the interpretation of natural-language claims remain authored activities. Subarguments can supply reasons for their modelling choices and evidence relevance.
 
+## Contents
+
+1. [Composition and result requirements](#composition-and-result-requirements)
+2. [Evidence value schemas](#evidence-value-schemas)
+3. [Bounds, failure behaviour and extensions](#bounds-failure-behaviour-and-extensions)
+
 ## Composition and result requirements
 
 The argument graph composes claims through `premises`. Each premise must have its own supporting argument; dependent support is recalculated when a premise, condition, assumption or observation becomes unavailable or contested. Independent alternative arguments can support the same claim.
@@ -21,7 +27,7 @@ reasoning estimate_reliability {
 }
 ```
 
-The predicate refers to a scalar field in `details`, without a `details.` prefix. Consult the [language reference](language.md) for full declaration syntax and the working examples for complete programmes.
+The predicate refers to a scalar field in `details`, without a `details.` prefix. Consult the [language reference](language.md) for full declaration syntax and the [GitHub workflow example](../examples/workflow-gate/README.md) for one complete programme using `structured/1`.
 
 A successful method calculation establishes its documented computational result. The argument's result predicates specify the threshold needed for the conclusion. The relevance of that threshold to an authored natural-language claim remains an explicit part of the reasoning rationale. In particular, propositional atoms are supplied symbols: this version does not automatically translate claim prose into logical formulas or prove that a supplied formula expresses that prose.
 
@@ -42,7 +48,7 @@ The computation helper returns `{status, reasons, details, method}`, with the se
 
 ## Evidence value schemas
 
-The following objects are the `value` of an evidence record. Execution provenance, collection time, tool identity and environment belong to the surrounding evidence record. Fields shown are mandatory and additional fields in these schema objects are rejected. All numbers must be finite. Booleans are not numbers. Units must be normalised consistently before calculation; the scalar proposition system checks its closed quantity/unit catalogue; general dimensional algebra is not implemented.
+For an untyped claim, the following objects are the designated evidence record's `value`. For a typed proposition they are its `EAL/typed-input/1` envelope's `payload`, after the [formal correspondence check](language.md#typed-propositions-and-observations). Execution provenance, collection time, tool identity and environment belong to the surrounding evidence record. Fields shown are mandatory and additional fields in these schema objects are rejected. All numbers must be finite. Booleans are not numbers. Units must be normalised consistently before calculation; the scalar proposition system checks its closed quantity/unit catalogue; general dimensional algebra is not implemented.
 
 ### Structured reasoning
 
@@ -191,12 +197,18 @@ The comparison operator is one of `lt`, `le`, `eq`, `ne`, `ge` or `gt`. `holds` 
 
 A trace with a gap can have `holds: true` and `coverage: false`. A complete trace containing a violating sample has `holds: false` and `coverage: true`. This distinction prevents sample agreement from concealing missing observations. Even complete coverage establishes no continuous-time property between samples and makes no claim about times outside the interval. This version implements neither eventuality nor full temporal logic. The caller must use another explicit model to justify interpolation or continuous-time bounds. A trace contains 1–10,000 events.
 
-## Bounds, failure behaviour and extension
+## Bounds, failure behaviour and extensions
 
 Calculations preserve integer counts, timestamp coordinates and scalar comparisons. Causal means and their contrast are accumulated as exact rational values of the supplied numbers; integral results stay integers and other results are rounded only for output. The causal standard error combines standard deviations without first squaring small floating-point values. A nonzero causal mean, contrast or standard error that cannot be represented without becoming zero yields an unsupported result. Entirely integer affine structural equations preserve integer arithmetic. Other statistical calculations and mixed floating-point structural equations use double-precision arithmetic. Numeric input magnitude is at most `1e100`; structural intermediate values have the same bound. Real-number equality is a computational comparison, not measurement equivalence. Underflow of extremely small posterior terms or variance terms can still occur after stable calculation, so inputs requiring arbitrary precision need a different backend.
 
 A supplied calculation value is checked before evaluation: at most 100,000 JSON nodes, nesting depth 64, 10,000 items per array or object and 4,096 characters per string. Every computational method also enforces its registered input/output schemas and serialised byte bounds; formula, candidate, feature and structural-model limits apply in addition. Unknown fields, unsupported schema forms, nonfinite numbers, invalid references, cycles and exceeded limits return an explicit unsupported result. There is no evaluation of embedded Python, shell commands or unbounded symbolic search in these methods.
 
-Adding a method requires a distinct evidence contract, mathematical interpretation, declared computational bound, reference cases with independently known results, malformed-input cases and a documented statement of the assumptions that the calculation cannot verify. An LLM can propose a declaration or model through a host; the server reports the bounded computation and dependencies without pretending that the model itself has been established.
+### Host-registered methods
+
+An operator can register a new pure calculation without adding grammar keywords. Source selects its exact versioned method identifier, for example `method "engineering/rms/1";`, but cannot import the implementation. A `MethodContract` declares one evidence kind, bounded input/query/output schemas, claim-addressable output paths, compatible quantity and unit rules, trusted implementation function, implementation version and resource limits. Built-ins use the same binding and schema checks. Duplicate identities and unknown schema features fail registration. A new method needs a mathematical interpretation, independently known reference cases, malformed-input and limit cases, and explicit modelling assumptions; a registered type contract alone cannot establish mathematical correctness.
+
+Custom functions execute in a fresh POSIX worker with time, address-space, CPU, JSON-size and output bounds. This boundary controls resources; it does not sandbox filesystem or network access or prove purity. Runtime checks a loaded entry-point code digest against the registered digest, and discovery/assessments record the method-registry fingerprint. These identify declared code and contracts, but do not hash every imported dependency or guarantee reproducibility of an external environment. Changing a method's meaning calls for a new identifier/version and preserved dependencies. This implementation supports the extension interface, but the reset repository's single maintained worked case uses built-in `structured/1`.
+
+An LLM can propose a declaration or model through a host; the server reports the bounded computation and dependencies without pretending that the model itself has been established.
 
 The foundations and the limits of each correspondence are documented in [sources.md](sources.md). The relationships among claims, objections and supporting subarguments are specified in [argument-model.md](argument-model.md).

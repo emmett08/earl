@@ -1,39 +1,28 @@
-# Executable vocabulary
+# EAL/2 vocabulary and distinctions
 
-EAL/2 uses one source language and one reasoning-method selector. A declaration name identifies one object; references are resolved before evaluation, including forward references. Pattern bodies use their own typed parameter scope. Clause order follows the grammar.
+This glossary defines what the authored terms denote. [Language](language.md) gives their syntax and static rules; [argument model](argument-model.md) defines the computed statuses; [MCP and tools](mcp-and-tools.md) specifies observation acquisition and protocol operations.
 
-| Spelling | Meaning and operands | Evaluation effect or boundary |
+| Term | Denotation | Distinction that changes an assessment |
 |---|---|---|
-| `claim` | A named proposition, its explanatory `statement`, and `environment` | Receives the status of its applicable supporting arguments. The statement is never interpreted as a formula. |
-| `argument` | One `conclusion`, one `reasoning` method, and named grounds | Required grounds combine conjunctively. Alternative arguments for a claim remain distinct. |
-| `premises` | Claims required by an argument or objection | Their derivations and final acceptability are evaluated. Shared identity does not create additional observations or independence. |
-| `reasoning` | A named method application with a versioned `method`, `rationale` and optional `backing` observations | Computational methods calculate a specified result; structured support records an authored relation. Rationale text is not executable logic. |
-| `evidence` | A collection and eligibility specification; within an argument, references to those specifications | Actual observations are separate runtime records. Records must match the source, tool, inputs and environment, and satisfy freshness and value predicates. |
-| `kind` | The observation's method-specific data contract | A logical case cannot substitute for a sample or intervention experiment. |
-| `tool` | A configured observation producer with a declared `version` and execution `mode` | Host configuration supplies its executable. Source never defines command paths. |
-| `deterministic`, `nondeterministic` | The declared variability of tool execution | Neither word certifies validity, truth or statistical independence. |
-| `environment` | A named conjunction of predicates over supplied context | Failed predicates make dependent claims out of scope. Context identity does not establish physical conditions. |
-| `assumption` | A stated proposition requiring validation evidence within an optional interval | Missing validation or expiry removes current support. It does not prove the assumption false. This profile requires empirical support; it has no separate hypothetical assumption discharge calculus. |
-| `validate` | An assumption's required evidence reference | Names the observation used to support applicability; it is not an organisational approval. |
-| `valid_from`, `valid_until` | Timezone-aware instants bounding applicability | Intervals are half open: the starting instant is included and the ending instant excluded. |
-| `max_age` | Maximum age in seconds of the original observation | Age equal to the limit is usable. Reimporting a file does not refresh its observation time. |
-| `require` | A field path, scalar comparison and expected value | Looks up a context, observation or computed output field according to its declaration. Missing fields and incompatible types fail the condition. |
-| `proposition` | A typed, explicitly scoped formal query and result condition attached to a claim | Its `subject`, `quantity`, `unit`, `scope`, interval, `query` and result must correspond to the bound computation. |
-| `query` | The defining fields of the formal problem, excluding the live observations allowed by its method contract | Rejects a returned calculation of a different problem. JSON is a bounded method data structure, never executable code. |
-| `result` | A method output path, comparison and scalar threshold | States the formal conclusion being checked. A successful negative finding can support an explicitly negative condition. |
-| `binding` | The designated computational evidence reference for a typed claim's argument | Checks the input envelope, method query, identity, dimensions and interval before applying the result condition. It cannot authenticate measurement provenance. |
-| `objection` | A supported challenge to a claim, assumption, reasoning application or argument/objection | Permits evidence and claim subarguments as grounds. Targeting another objection supplies a defence under the same applicability rules. |
-| `target` | The category and name challenged by an objection | `claim`, `reasoning`, `assumption`, `argument` or `objection`. Reasoning targets affect applications in the objection source environment. |
-| `pattern` | A named argument body with typed parameters | Closed lexical scope; all body references are parameters. It does not introduce a new inference rule. |
-| `apply` | Named instantiation of an argument pattern | Substitutes checked declaration identities and yields one ordinary argument. |
-| `method` | The exact versioned identifier of an installed host contract | Selects the contract and computation; source cannot install or replace code. Unversioned reasoning aliases are rejected. |
+| `claim` | A named conclusion with a prose `statement`, environment and optional typed `proposition` | The statement is authored explanation, never interpreted as a formula. The optional proposition is a separately checked mathematical condition. |
+| `argument` | One declared route from required sources through `reasoning` to a conclusion | Sources within a route are conjunctive. Other arguments for the same claim are alternative routes, preserving their separate identities. |
+| `premises` | Named claims on which an argument or objection depends | Each has its own support graph. A `deductive/1` payload's `premises` are separate propositional formulae; the interpreter does not translate claim text into them. |
+| `reasoning` | A named application of a versioned computational method, with an authored `rationale` and optional `backing` evidence | The method calculates its documented output; the rationale states why that calculation bears on the claim and is not executable logic. `structured/1` records a conditional authored relation without mechanically proving its sufficiency. |
+| `evidence` | An authored request and eligibility specification referring to a `tool`, `kind`, `environment`, `input`, freshness and value criteria | An observation is the separate, actual runtime record. A matching record still cannot authenticate an untrusted producer or establish that all relevant measurements were requested. |
+| `backing` | Evidence attached to a reasoning declaration and included in the using argument's evidence set | Its availability is checked like direct evidence; it is neither a new observation nor independent corroboration when reused. |
+| `kind` | The contract for an evidence value required by a selected method | A `logical_case` cannot substitute for a `sample` or `experiment`. |
+| `tool` and `mode` | An authored tool identity/version and declared `deterministic` or `nondeterministic` acquisition variability | Host configuration supplies the executable. Mode makes no claim about validity, truth, accuracy or statistical independence. |
+| `method` | Exact versioned identifier of a host-installed reasoning contract | It selects a computation and its input/query/output meaning. Source cannot import or replace code; method selection differs from tool execution mode. |
+| `environment` | Named predicates over the assessment context | Matching identifies declared context fields. It does not prove that omitted physical conditions hold. |
+| `assumption` and `validate` | A stated proposition provisionally used after its named validation observation and applicable interval pass | This profile checks present empirical applicability. It has no hypothetical assumption-discharge operation; an unavailable validation removes support without proving negation. |
+| `max_age` | The maximum interval between original observation time `collected_at` and assessment time | Reimporting at `ingested_at` does not make the measurement newer. |
+| `valid_from`, `valid_until` | A half-open asserted applicability interval | For assumptions it bounds assessment time; for a typed proposition it identifies the entire model or episode interval, which the input envelope must contain. It is distinct from evidence freshness. |
+| `require` | A comparison against a context, observed-value or method-output scalar selected by a dotted path | Missing or incompatible fields fail the condition. It cannot compare objects or evaluate prose. |
+| `proposition` | A typed claim condition naming `subject`, `quantity`, `unit`, `scope`, interval, `query` and `result` | Subject and quantity identity are checked separately from dimensions; equal units alone cannot identify the physical variable or episode. |
+| `query` | The method-defined fields that identify the formal mathematical question | It is compared with the bound input payload. Answering a different query cannot support this proposition even if the resulting number passes the same threshold. |
+| `result` | A predicate on a declared method output path | A usable negative finding can support an explicitly negative result condition. Execution failure is not such a finding. |
+| `binding` | The named computational evidence source designated for a typed conclusion | It checks method, identity, quantity, unit, scope, interval and query correspondence before the result predicate. It is not independent verification of physical provenance. |
+| `objection` and `target` | A sourced challenge to a claim, reasoning application, assumption, argument or objection | An objection requires evidence or premise claims; targeting another objection supplies a defence. No contradiction is inferred from claim prose. |
+| `pattern` and `apply` | A closed, typed argument template and one named application | Expansion yields an ordinary argument. Reuse does not replicate observations or introduce an inference rule. |
 
-`mode` describes tool variability only; `method` selects the reasoning computation. `valid` in an API result means static well-formedness; it is never the truth of a claim. The stored `collected_at` field retains the original observation time; `ingested_at` records ingestion.
-
-## Why the new constructs are needed
-
-Removing `proposition` would lose the distinction between prose and checked formal content. Removing `query` would permit a tool to answer a different mathematical problem while preserving superficial labels. Removing `binding` would make the association between a computational input and a typed conclusion implicit or ambiguous. Subject, quantity and scope identity remain distinct: identical dimensions do not make two physical quantities or model episodes interchangeable.
-
-No new core keyword was added for an individual numerical algorithm or model provider. The typed input envelope is versioned separately as `EAL/typed-input/1`. EAL/2 extends the method set by host registration of typed, versioned contracts; it requires no grammar change for each new calculation. Source-defined executable plug-ins remain excluded.
-
-`supported`, `contested`, `unsupported` and `out_of_scope` describe an argument assessment. They are not four truth values. EAL/2 also exposes the separate acceptance labels `accepted`, `rejected` and `undecided` for its explicitly constructed support/attack graph. Its construction and least-information equations are defined in the argument model. Rejection is a decision about acceptance under those relations, not the falsity of the claim. The independent grounded operation retains its ordinary argument-and-attack interface.
+The result field `valid` reports static source validity. Claim and argument statuses such as `supported`, `contested`, `unsupported` and `out_of_scope` describe assessed support, not truth values. Grounded labels `accepted`, `rejected` and `undecided` describe acceptance in the declared support/attack graph; rejection does not prove the claim false. Their exact construction and objection status projection are specified once in the [argument model](argument-model.md).

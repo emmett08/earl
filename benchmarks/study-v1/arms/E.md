@@ -1,0 +1,5 @@
+# E: EAL/2 with the EAL MCP server
+
+Assess the engineering decision in the supplied case at its stated decision cut. Use the permitted read-only catalogue and advertised EAL/2 language contract. Choose the relevant argument family and author valid `EAL/2` source for the exact commit, effective release rule, workflow, relevant run attempt, required jobs, query, scope and material objections. This study version supports **direct declarations only**; do not use patterns or applications.
+
+In the first phase, return only `{"source":"...","claim":"..."}`. The source must declare permitted evidence requests within the tool-call limit. The host then uses the actual EAL MCP stdio session to validate, collect, reason and explain; it supplies the checked assessment, explanation, records and any failure. In the second phase, return one JSON object with `recommendation`, `explanation` and `cited_record_ids`; optional model `status` text is untrusted. The application displays the MCP-owned status. State its decisive basis and limits faithfully. Never claim a source, evidence record or MCP operation succeeded unless its retained response says so.

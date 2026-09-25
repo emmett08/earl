@@ -1,21 +1,20 @@
 """Experiment design/accounting regression tests; these are not model trials."""
 import asyncio
 import json
-from pathlib import Path
 import sys
 
 import pytest
 
 from eal.experiment import aggregate_experiment, cluster_interval, freeze_experiment, load_plan, make_schedule, run_experiment
-
-SUITE = Path(__file__).resolve().parents[1] / "benchmarks/engineering-v1/suite.json"
+from _runtime_cases import write_suite
 
 
 def plan_file(tmp_path):
+    suite = write_suite(tmp_path)
     provider = tmp_path / "provider.toml"
     provider.write_text('[provider]\nkind="command"\nmodel="scripted-regression-not-an-LLM"\nmeasurement_kind="interface_only"\nargv=' + json.dumps([sys.executable, "-c", "raise RuntimeError('must not run')"]) + '\n')
-    plan = {"schema": "EAL/experiment-plan/1", "name": "regression-only", "suite": str(SUITE),
-            "split": "development", "task_ids": ["nested-model-observation"], "repetitions": 2,
+    plan = {"schema": "EAL/experiment-plan/1", "name": "regression-only", "suite": str(suite),
+            "split": "development", "task_ids": ["pressure-trial"], "repetitions": 2,
             "order_seed": 29, "sampling_seeds": [101, 103], "concurrency": 2, "bootstrap_samples": 50,
             "per_mcp_call_usd": 0, "conditions": [
                 {"id": "unaided", "provider": str(provider), "model_class": "fixture", "arm": "unaided"},

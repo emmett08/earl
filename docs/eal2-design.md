@@ -1,101 +1,65 @@
 # EAL/2 design decisions
 
-EAL/2 has one source language, one versioned reasoning-method selector and one set of support/attack semantics. Backwards compatibility is never a project requirement. The design favours a small set of explicit, composable rules; prior source versions, reasoning aliases and version-dependent objection behaviour are removed. Historical measurements retain their original labels and results.
+This is the rationale and alternative-design record for the current EAL/2 source language. It does not specify syntax, the argument solver or the MCP wire protocol; those belong respectively to [language](language.md), [argument model](argument-model.md) and [MCP and tools](mcp-and-tools.md). [Design aim](design-aim.md) gives the broader research target.
 
-The intended gain is easier faithful expression and revision of engineering arguments. This remains a design hypothesis. The [23 September 2026 regression report](eal2-model-results.md) measures selected model/host systems using EAL/2 package 2.1.0 on previously exposed tasks. Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured; passing interpreter tests cannot establish those gains.
+## Contents
 
-## Expert recommendations and EAL adaptations
+- [Research status and decision rule](#research-status-and-decision-rule)
+- [Primary recommendations and adaptations](#primary-recommendations-and-adaptations)
+- [One typed method boundary](#one-typed-method-boundary)
+- [Derived argument patterns](#derived-argument-patterns)
+- [Bounded support and attack](#bounded-support-and-attack)
+- [Alternatives and empirical tests](#alternatives-and-empirical-tests)
 
-These are primary-source recommendations followed by project decisions. The authors did not assess or endorse EAL.
+## Research status and decision rule
+
+The current source contract is EAL/2 and the installed Python package declares version 2.5.0. Source version, package version, observation envelope and method identifiers name different contracts. Historical assessments are tied to their actual code and data, not retrospectively relabelled as evidence for this version. Backwards compatibility with prior language versions is not a design requirement.
+
+The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. That gain over prose or another notation is a **hypothesis**. The maintained [workflow example](../examples/workflow-gate/README.md) establishes an execution path for one task, whereas the [prospective comparison](../benchmarks/study-v1/README.md) specifies the measurements needed to compare plain prose, Toulmin prose, JSON and EAL/2 plus MCP across selected model classes. This new study has not run. No task count, parser test or earlier exposed-case result establishes superiority for every model class.
+
+A grammar addition requires a task whose necessary distinction cannot be represented and checked using existing claims, propositions, versioned methods, premises and targeted objections. For example, an explicit negative-finding keyword would not improve the currently represented finite sampled counterexample unless it adds a distinct meaning or demonstrably reduces authoring failures. The exact [historical counterexample source](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/negative-revision/counterexample.eal) records the earlier bounded case. A richer causal or temporal task might justify an additional typed method or formal expression; it should first show which existing operation fails and why.
+
+## Primary recommendations and adaptations
+
+The cited authors supplied language-design ideas; they did not evaluate or endorse EAL/2. The source-to-design relation is recorded here so their recommendations are not mistaken for evidence of model performance or for the language's inference semantics.
 
 | Primary source and inspected location | Source recommendation | EAL/2 adaptation |
 |---|---|---|
-| C. A. R. Hoare, *Hints on Programming Language Design* (1973), reprint §§13.2–13.3, [text](https://flint.cs.yale.edu/cs428/doc/HintsPL.pdf) | Simplicity, readable programmes and early error detection help programmers understand consequences. Modularity and orthogonality serve simplicity. | Use one exact method selector, common argument checks and local diagnostics; permit combinations only when their meaning is defined. |
-| Niklaus Wirth, *Good Ideas, Through the Looking Glass* (2005 author manuscript), §§4.8, 5.1–5.2, [text](https://people.inf.ethz.ch/wirth/Articles/GoodIdeas_origFig.pdf) | Type loopholes undermine checking; parser power cannot compensate for obscure, privately invented notation. | Keep a shared grammar and checked input/query/output contracts. New numerical algorithms add typed vocabulary through the registry. |
-| Guy L. Steele Jr., *Growing a Language* (1998 talk; published 1999), preliminary manuscript pp. 3–6, [text](https://homepages.inf.ed.ac.uk/wadler/gj/Documents/steele-oopsla98.pdf) | A language should support growth and let user-defined vocabulary compose naturally with built-in vocabulary. | Built-in and installed methods have the same invocation and binding rules. Typed argument patterns factor repeated dependency structures. |
-| Matthias Felleisen, *On the Expressive Power of Programming Languages* (1991), introduction and formal framework, [text](https://www2.ccs.neu.edu/racket/pubs/scp91-felleisen.pdf) | Computability alone is a weak comparison; constrained translation and eliminability distinguish expressive facilities. | Show a local, meaning-preserving expansion before adding an inference primitive. Argument patterns are derived forms, not a claimed increase in formal expressive power. |
-| Terence Parr, *Language Implementation Patterns* (2009), [publisher overview](https://pragprog.com/titles/tpdsl/language-implementation-patterns/), [contents](https://media.pragprog.com/titles/tpdsl/toc.pdf), [typing excerpt](https://media.pragprog.com/titles/tpdsl/static.pdf) | Recognition, intermediate representation, symbol handling, checking and interpretation have separate responsibilities. | ANTLR recognises source; lowering resolves typed patterns into arguments; static analysis and evaluation operate independently. Locations survive lowering for diagnostics. |
+| C. A. R. Hoare, *Hints on Programming Language Design* (1973), reprint §§13.2–13.3, [text](https://flint.cs.yale.edu/cs428/doc/HintsPL.pdf) | Simplicity, readable programmes and early error detection help programmers understand consequences; modularity and orthogonality can serve simplicity. | Keep one exact method selector, common argument checks and local diagnostics; combine features only where their meaning is specified. |
+| Niklaus Wirth, *Good Ideas, Through the Looking Glass* (2005 author manuscript), §§4.8, 5.1–5.2, [text](https://people.inf.ethz.ch/wirth/Articles/GoodIdeas_origFig.pdf) | Type loopholes undermine checking; parser power does not cure obscure notation. | Use a shared grammar and checked input/query/output contracts rather than a free-form algorithm payload. |
+| Guy L. Steele Jr., *Growing a Language* (1998 talk; published 1999), preliminary manuscript pp. 3–6, [text](https://homepages.inf.ed.ac.uk/wadler/gj/Documents/steele-oopsla98.pdf) | Built-in and user-defined vocabulary should compose as a language grows. | Give registered methods the same selector and binding checks as built-ins; factor repeated dependency structures through typed argument patterns. |
+| Matthias Felleisen, *On the Expressive Power of Programming Languages* (1991), introduction and formal framework, [text](https://www2.ccs.neu.edu/racket/pubs/scp91-felleisen.pdf) | Computability alone is a weak expressiveness comparison; constrained translation and eliminability distinguish facilities. | Expand each argument pattern locally into an ordinary argument before adding a new inference primitive. This expansion is not a formal expressiveness theorem. |
+| Terence Parr, *Language Implementation Patterns* (2009), [publisher overview](https://pragprog.com/titles/tpdsl/language-implementation-patterns/), [contents](https://media.pragprog.com/titles/tpdsl/toc.pdf), [typing excerpt](https://media.pragprog.com/titles/tpdsl/static.pdf) | Recognition, intermediate representation, symbol handling, checking and interpretation have distinct responsibilities. | Generate an ANTLR recogniser, lower to typed IR, resolve declarations and check contracts before evaluation. Retain locations for diagnostics. |
 
-The language's defeasible reasoning meaning comes from the explicitly defined [argument model](argument-model.md). The recommendations above guide its expression and implementation, not its logical soundness or empirical adequacy.
+The [sources catalogue](sources.md) holds the other reasoning, statistical and protocol references. These recommendations guide expression and implementation; the [argument model](argument-model.md) defines the executable inferential profile.
 
 ## One typed method boundary
 
-```eal
-reasoning contrast {
-  method "causal/1";
-  rationale "Compare group means under the declared experiment assumptions.";
-}
-reasoning vibration {
-  method "engineering/rms/1";
-  rationale "Calculate RMS deviation from the specified origin.";
-}
-```
+Every reasoning declaration uses one exact versioned method contract. The host installs the implementation; source selects it. A new statistic such as the trusted example `engineering/rms/1` belongs in a registered typed contract rather than another parser keyword. The same input, query, output and proposition checks apply to built-ins and extensions. The [language reference](language.md#method-selection-and-static-checks) specifies source selection and static binding; [reasoning methods](reasoning-modes.md#host-registered-methods) specifies runtime contracts and computations.
 
-Both declarations use the same grammar and typed contract lookup. The second works when the host installs its contract. Source cannot import code. There is no reasoning `mode` alternative; tool `mode` still denotes collection variability.
+The decisive error case is a calculation with a correct-looking scalar but the wrong question or engineering quantity. A pressure contrast cannot verify a flow-rate claim solely because it exceeds a number; RMS about a different origin cannot answer the declared RMS question. The bound proposition checks quantity, input unit, subject, scope, interval, formal query and the output's unit interpretation. Its metadata still does not establish that a producer measured the asserted physical variable or that the prose and statistical assumptions are valid.
 
-The decisive case is two successful numerical procedures with different formal questions or units. A pressure contrast cannot support a flow-rate claim merely because its scalar exceeds a threshold. A bound query about RMS deviation from zero cannot be answered by a calculation about another origin. Uniform schemas, result interpretation and explicit `binding` check those distinctions for built-in and installed methods alike. A method's implementation still needs independent mathematical verification.
+An untyped payload escape hatch would bypass these correspondence checks. A new algorithm keyword would change the grammar without changing how the operation is selected or bound. A genuinely new inference relation can justify a language change once a case demonstrates that a typed library solution loses its required meaning. The [repository skill](../skills/engineer-argumentation-languages/SKILL.md) records this removal test.
 
-Each declared query field must also be a required input field with the identical schema. This ensures that every admissible declared question has the same type when supplied to the method. Schema enumerations distinguish booleans from numbers at every nesting level. A result predicate must select an output declared by its method contract. Unit conversion that overflows or would round a nonzero value to zero leaves the binding unsupported, with the conversion failure retained in the explanation.
+## Derived argument patterns
 
-Adding a keyword per algorithm was rejected: it changes the parser while duplicating the same application rules. An untyped payload escape hatch was rejected: it hides correspondence checks precisely where a new algorithm needs them. New inference relations remain possible core changes when a task demonstrates that the existing relations cannot preserve its meaning.
+The archived [reusable measurement source](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/reusable-measurements.eal) demonstrated two typed conclusions from one identified trial. Its pattern expansions substitute declaration identities. Reuse therefore remains visible without duplicating the measurement, its validation time or its independent evidential weight. The two expanded arguments retain different names and may receive different objections. The [language reference](language.md#reusable-argument-patterns) contains current syntax and bounds.
 
-## Closed, reusable argument patterns
+Closed typed parameters and named bindings prevent accidental global capture and check each application. A general macro system would need recursion, capture and effect rules; those extra rules are not required for the existing reuse case. Neither the pattern nor its expansion adds a strict or defeasible inference law. The engineering equivalence is testable by comparing the expanded application and a directly authored argument under fixed observations.
 
-The complete [reusable measurement example](../examples/reusable-measurements.eal) applies one causal observation to two typed claims. Both claims preserve their own output criteria and refer to the same measured trial.
+## Bounded support and attack
 
-```eal
-pattern estimate_from_trial(c: claim, r: reasoning, e: evidence) {
-  conclusion c;
-  reasoning r;
-  evidence e;
-  binding e;
-}
-apply pressure_argument = estimate_from_trial(c=pressure_increase, r=pressure_difference, e=pressure_trial);
-apply upper_argument = estimate_from_trial(c=pressure_bounded, r=pressure_difference, e=pressure_trial);
-```
+The source identifies supports and attacks explicitly. Its evaluator checks finite method outputs and dependencies, then calculates acceptance with a least-information support/attack fixed point. It preserves alternative arguments and permits objections supported by further claim arguments and objections to objections. These decisions address a specific challenge-and-revision task. Their equations and limitations are given once in the [argument model](argument-model.md), with an independent construction in [grounded reasoning](grounded-reasoning.md).
 
-This is a fragment; names must resolve to corresponding global declarations. A pattern has typed `claim`, `reasoning`, `evidence` or `assumption` parameters. Every body reference must be a parameter; a same-spelled global declaration is not silently captured. Named bindings make changed inputs visible. The body contains exactly one ordinary argument and expansion yields an argument under the application's name, so an objection can target one application without attacking all uses of the pattern.
+ASPIC+ would require additional choices about a logical language, strict and defeasible rules, generated arguments, contrariness, preferences and defeat. This profile does not infer those relations from prose or implement full ASPIC+. Source authoring remains responsible for selecting relevant arguments and objections. An unsupported or unresolved status cannot by itself establish the opposite proposition.
 
-For a single application, the meaning is the directly written argument:
+## Alternatives and empirical tests
 
-```eal
-argument pressure_argument {
-  conclusion pressure_increase;
-  reasoning pressure_difference;
-  evidence pressure_trial;
-  binding pressure_trial;
-}
-```
-
-Substitution preserves identity. Two applications using `pressure_trial` do not create independent measurements or duplicate its evidential weight. Assumption bindings preserve validation evidence and time/environment qualifications. Patterns cannot discharge assumptions, introduce global declarations, invoke patterns recursively or collect evidence. Invalid unused patterns are diagnosed. Expanded arguments undergo ordinary scope, reference, method and proposition checks. At most 1,000 applications and 100,000 total expanded references are allowed.
-
-This bounded derived form addresses actual repeated argument structure. A general macro system would require additional capture, recursion and effect rules without improving this case. Text substitution would move type errors and accidental capture into user code. A claim parameter checks declaration kind; it is not a general quantified proposition type. Task-dependent unit, scope and query checks remain obligations of each expanded argument.
-
-## Alternatives considered
-
-| Design | Strongest advantage | Decision and distinguishing case |
+| Alternative | Useful property | Decision for the current task |
 |---|---|---|
-| Typed JSON only | One structured representation can suit constrained generation and machine transport. | Retain JSON for observations, formal queries and host requests; retain readable EAL for authored argument structure. Human/model comparisons are still needed to determine which surface performs best. |
-| Host library only | Numerical methods and reusable builders can be ordinary library functions. | Keep numerical methods in typed host libraries. Put argument pattern application in source so its dependencies, names and objection targets remain reviewable without executing a generator. |
-| Smaller core plus derived patterns | Expansion preserves ordinary argument meaning without a new inference calculus. | Selected: closed typed parameter substitution, common checks and identity-preserving expansion. |
-| General macros or new inference primitives | Could express recursive or rule-generating abstractions beyond one argument. | Defer until a required task needs the extra semantics. The present reuse case is locally expressible with ordinary arguments. |
+| Typed JSON as the authored format | Constrained structure and transport without a separate textual grammar | Retain JSON for method input and host requests; compare a semantically equivalent JSON authored arm in the prospective study rather than assuming EAL notation is easier. |
+| Host library without source patterns | Reusable ordinary programming abstractions | Keep computation in trusted host libraries; represent argument dependency identities and objection targets in reviewable source. |
+| General macros or a rule-generating syntax | Wider forms of reusable argument generation | Defer until a required case cannot preserve meaning under bounded, closed pattern expansion. |
+| Full ASPIC+ | Explicit strict/defeasible distinctions and preferences | Specify and implement only if a task and independent verification require those distinctions; the current declared attack profile makes no such conformance claim. |
 
-No formal Felleisen-style expressiveness theorem is claimed: the observation model and translation restrictions required for one have not been formalised. The expansion is an engineering design and regression obligation.
-
-## Diagnostics and evidence of improvement
-
-Static diagnostics carry a stable code and message, a declaration and source span when available, and expected/actual descriptions where applicable. Spans use one-based positions and an exclusive end. Pattern-origin metadata identifies how an application became an argument. A repair should identify the mismatched reference or contract without silently weakening a claim. Canonical formatting preserves the checked representation, while changed source bytes still invalidate old observation identity.
-
-The typed representation is checked before pattern expansion and name resolution, including when a Python caller constructs it directly. Declaration identities, field types, actual reference counts and JSON values must satisfy the same structural contract as parsed source. Strings must contain Unicode scalar values; JSON objects require string keys. Predicate paths and operand types are checked against declared method outputs where their schema determines the type. Paths through open JSON fields retain runtime checks.
-
-Current verification covers interpreter behaviour: parsing, typed references, expansion, method contracts, units/query correspondence, source locations, canonical round trips and support/attack consequences. The larger design aim remains task-bounded; there is no general dimensional algebra, recursive argument definition system or hypothetical assumption-discharge calculus.
-
-Fresh evaluation should compare the same tasks through readable source and typed structured requests, with equal observations, methods and budgets. Include model alone, source in the prompt, host-mediated EAL and an equivalent structured-tool baseline. Measure semantic correctness, unjustified claims, justified unresolved answers, repairs, comprehension, tokens, latency and total cost per correct task. Count failures. Earlier public benchmark instances are development knowledge for EAL/2. The [current regression measurements](eal2-model-results.md) cover those exposed cases; new held-out cases and controlled notation comparisons are required to assess generalisation and notation-specific gains.
-
-## Package 2.1.0 contract corrections
-
-The EAL/2 grammar is unchanged. Built-in computations now enforce the same registered input/output schemas and byte bounds as installed methods. Method output remains separate from execution metadata. Causal contrasts preserve small differences between large represented numbers; integer affine models preserve exact integer sums. These repairs enforce the declared meanings and bounds, without adding inference constructs.
-
-Imported observations identify their acquisition through tool, version, mode, input and context. Reusing an observation in another argument is possible when that acquisition still matches; the new collection separately identifies the exact argument source. Old import envelopes lacking that identity are rejected. The strongest alternative was binding imported files permanently to source bytes, which would prevent justified reuse after an internal identifier rename without improving acquisition correspondence.
-
-MCP requests are checked against their advertised schemas before SDK conversion. Host results retain and check source, context, collection and assessment time. This prevents a correct calculation for another request from being reported as the requested conclusion. Implementation verification consists of executable regressions, CLI examples, subprocess MCP/host calls and package inspection. The [live model measurements](eal2-model-results.md) separately assess selected model/host systems on previously exposed tasks.
+The prospective test must give every arm an equally specified task, evidence access, checker authority and cost accounting. It must measure source authoring and argument-family selection as well as checked communication: a correct computation can still concern the wrong workflow run, use a missing observation, or be misreported by a model. Compare paired outcomes within predeclared model strata and retain every attempt. A single working example or a result on exposed cases cannot establish a model-class-wide effect, much less universal superiority.

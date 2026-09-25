@@ -2,13 +2,13 @@
 import asyncio
 import copy
 import json
-from pathlib import Path
 import sys
 
 import pytest
 
 from eal.benchmark import score_answer
 from eal.relay import combine_sequence, freeze_relay, handoff_packet, load_relay_plan, run_relay
+from _runtime_cases import write_suite
 
 
 def stage_result(task=None, *, correct=True, cost=.01):
@@ -26,13 +26,14 @@ def stage_result(task=None, *, correct=True, cost=.01):
 
 
 def plan_file(tmp_path, conditions=None):
+    suite = write_suite(tmp_path, split="held_out")
     provider = tmp_path / "provider.toml"
     provider.write_text('[provider]\nkind="command"\nmodel="scripted-not-an-LLM"\nmeasurement_kind="interface_only"\nargv=' + json.dumps([sys.executable, "-c", "raise RuntimeError('must not call')"]) + '\n')
     stage = {"provider": str(provider), "model_class": "interface_fixture", "arm": "unaided"}
     protocol = tmp_path / "protocol.json"
     protocol.write_text('{"status":"synthetic_test_only"}')
-    plan = {"schema": "EAL/relay-plan/1", "name": "synthetic", "suite": str(Path(__file__).resolve().parents[1] / "benchmarks/engineering-v2/suite.json"),
-            "protocol": str(protocol), "split": "held_out", "task_ids": ["registered-rms-velocity"],
+    plan = {"schema": "EAL/relay-plan/1", "name": "synthetic", "suite": str(suite),
+            "protocol": str(protocol), "split": "held_out", "task_ids": ["pressure-trial"],
             "repetitions": 1, "order_seed": 23, "concurrency": 4, "bootstrap_samples": 10,
             "per_mcp_call_usd": 0, "max_campaign_model_cost_usd": 1, "budget": {"max_model_cost_usd": .05},
             "conditions": conditions or [{"id": "solo", "stages": [stage]},
@@ -69,11 +70,11 @@ def test_three_stage_evidence_retains_earlier_packet_without_shared_mutation():
     assert first["claims"]
 
 
-def test_actual_mcp_stage_receives_packet_without_changing_task_anchors():
+def test_actual_mcp_stage_receives_packet_without_changing_task_anchors(tmp_path):
     from eal.benchmark import evaluate_task, load_suite
     from eal.providers import ModelResponse
-    suite_path = Path(__file__).resolve().parents[1] / "benchmarks/engineering-v2/suite.json"
-    task = next(t for t in load_suite(suite_path)["tasks"] if t["id"] == "registered-rms-velocity")
+    suite_path = write_suite(tmp_path, split="held_out")
+    task = load_suite(suite_path)["tasks"][0]
     packet = handoff_packet(stage_result(), "evidence")
     class Scripted:
         def __init__(self): self.calls = 0

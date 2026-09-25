@@ -4,7 +4,6 @@ from dataclasses import replace
 import json
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 
@@ -16,18 +15,16 @@ from eal.formatter import format_program
 from eal.parser import parse
 from test_agent import ScriptedProvider
 from eal.runtime import ReasoningService
+from _runtime_cases import PRESSURE_SOURCE, write_case
 
-ROOT = Path(__file__).resolve().parents[1]
-SOURCE = (ROOT / "examples/reusable-measurements.eal").read_text()
+SOURCE = PRESSURE_SOURCE
 CONTEXT = {"site": "bench", "revision": "A"}
 NOW = "2026-09-23T10:30:00Z"
 
 
 def setup_example(tmp_path):
-    (tmp_path / "examples").mkdir()
-    for name in ("reusable-measurements.eal", "reusable-observation.json", "reusable-tools.toml"):
-        shutil.copyfile(ROOT / "examples" / name, tmp_path / "examples" / name)
-    return ReasoningService(tmp_path, tmp_path / "examples/reusable-tools.toml")
+    _, _, registry = write_case(tmp_path, "pressure")
+    return ReasoningService(tmp_path, registry)
 
 
 def expanded_source():
@@ -67,7 +64,7 @@ def test_cli_format_and_validate_pattern_source(tmp_path):
     setup_example(tmp_path)
     args = [sys.executable, "-m", "eal.cli", "--workspace", str(tmp_path)]
     for operation in ("validate", "format"):
-        result = subprocess.run(args + [operation, "examples/reusable-measurements.eal"],
+        result = subprocess.run(args + [operation, "cases/pressure.eal"],
                                 capture_output=True, text=True, check=True)
         value = json.loads(result.stdout)
         if operation == "validate":
@@ -80,7 +77,7 @@ def test_cli_format_and_validate_pattern_source(tmp_path):
 def test_text_model_host_assesses_reusable_arguments_through_mcp(tmp_path):
     setup_example(tmp_path)
     server = StdioServerParameters(command=sys.executable, args=["-m", "eal.server", "--workspace", str(tmp_path),
-        "--registry", str(tmp_path / "examples/reusable-tools.toml")], env=dict(os.environ))
+        "--registry", str(tmp_path / "cases/pressure.toml")], env=dict(os.environ))
     provider = ScriptedProvider([{"operation": "assess"}, {"operation": "finish"}])
     report = asyncio.run(run_agent("Assess the two pressure estimates from the supplied trial.", provider, server,
         required_claims=("pressure_increase", "pressure_bounded"),

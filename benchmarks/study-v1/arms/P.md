@@ -1,0 +1,5 @@
+# P: strong plain prose
+
+Assess the engineering decision in the supplied case at its stated decision cut. Use the permitted read-only catalogue to identify the exact repository commit, the effective workflow and release rule, the relevant CI run and attempt, and all required job outcomes. Check source identity, observation time, scope and contrary records. Never treat a missing, failed or later record as a successful decision-time result.
+
+In the first phase, select the evidence to read. Return only `{"calls":[{"tool_id":"...","arguments":{...}}]}` with permitted exact inputs, within the supplied tool-call limit; make no decision yet. The host executes these calls and supplies the retained results or errors. In the second phase, state what those records warrant and what remains uncertain. Give a concise recommendation, including abstention when justified. Return one JSON object with `status`, `recommendation`, `explanation` and `cited_record_ids`. Choose `status` from `supported`, `contested`, `unsupported`, `out_of_scope` or `indeterminate`.

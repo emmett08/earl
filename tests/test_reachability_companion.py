@@ -2,22 +2,16 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
-import shutil
 
 from eal.reachability import reachability_registry
 from eal.runtime import ReasoningService
-
-ROOT = Path(__file__).resolve().parents[1]
+from _runtime_cases import REACHABILITY_SOURCE, write_case
 
 
 def test_new_graph_observation_changes_host_assessment(tmp_path):
-    examples = tmp_path / "examples"
-    examples.mkdir()
-    for name in ("finite-reachability-observation.json", "finite-reachability-tools.toml"):
-        shutil.copyfile(ROOT / "examples" / name, examples / name)
-    source = (ROOT / "examples/finite-reachability.eal").read_text()
-    service = ReasoningService(tmp_path, examples / "finite-reachability-tools.toml",
+    _, record_path, registry = write_case(tmp_path, 'reachability')
+    source = REACHABILITY_SOURCE
+    service = ReasoningService(tmp_path, registry,
                                tmp_path / "study.sqlite", method_registry=reachability_registry())
     assert service.validate(source)["valid"]
     context = {"site": "simulation"}
@@ -27,7 +21,6 @@ def test_new_graph_observation_changes_host_assessment(tmp_path):
     assert safe["claims"]["bounded_safe"]["status"] == "supported"
     assert safe["arguments"]["safety_route"]["reasoning_result"]["details"]["counterexample"] == []
 
-    record_path = examples / "finite-reachability-observation.json"
     changed = json.loads(record_path.read_text())
     changed["value"]["payload"]["edges"].append([2, 3])
     record_path.write_text(json.dumps(changed))

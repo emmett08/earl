@@ -1,88 +1,42 @@
-# Design aim: a precise engineering reasoning language
+# Design aim: precise, usable engineering reasoning
 
-The aim is a human-readable language that can express and execute the reasoning required for engineering arguments, using a small semantic core and explicit method contracts. Engineers and AI agents should use the same represented claims, subarguments, evidence, assumptions and conclusions. A small or large language model can delegate supported reasoning operations through an application host and a custom MCP server. Low cost is an objective to measure across that whole system.
+EAL/2 aims to let an engineer or a language-model host state a bounded engineering question, obtain observations, evaluate explicit reasoning methods, revise an argument after a challenge and report the checked conclusion with its scope. The source should remain readable to a person and parsable by a small or large model. The interpreter supplies only its defined checks; the author and evidence collector remain responsible for the question's relevance and the observation's origin.
 
-This document specifies the wider aim and distinguishes it from implemented EAL/2 behaviour. EAL/2 is the only supported source language. See [EAL/2 design decisions](eal2-design.md), the [engineering task suite](engineering-tasks.md) and [model evaluation](model-evaluation.md).
+## Contents
 
-## Applying Parr’s patterns
+- [Purpose and acceptance criteria](#purpose-and-acceptance-criteria)
+- [Language and implementation choices](#language-and-implementation-choices)
+- [Delegation and end-to-end study](#delegation-and-end-to-end-study)
+- [Present coverage and open obligations](#present-coverage-and-open-obligations)
 
-The skill requires working implementations of selected patterns from Terence Parr’s Language Implementation Patterns. The publisher’s [contents](https://media.pragprog.com/titles/tpdsl/toc.pdf) and [typing excerpt](https://media.pragprog.com/titles/tpdsl/static.pdf) support the pattern references below. The book presents alternative implementation choices; the language should select those needed for its semantics.
+## Purpose and acceptance criteria
 
-| Pattern family | Application | EAL/2 status |
-|---|---|---|
-| P.8 and P.10–11 | Recognition followed by typed intermediate representation | ANTLR4 parse tree lowered to typed declarations |
-| P.13 | External visitor | `_ASTBuilder` converts generated contexts into semantic objects |
-| P.16, bounded scope adaptation | Name resolution | Global declaration maps, closed pattern parameter scopes, typed references and uniqueness checks |
-| P.20 and P.22, bounded adaptation | Expression types and compatible operations | Scalar predicate, quantity and contract checks; a closed unit catalogue, formal query correspondence and compatible method outputs. General expression type inference is not implemented |
-| P.25 | Interpretation of checked intermediate objects | Dependency evaluation and bounded method computations |
-| Chapter 11 translation architecture | Output translation from checked intermediate objects | Explicit IR-to-source emission with round-trip checks. Rule-based rewriting, target-specific generator classes, templates and general solver translation are possible later choices, not implemented patterns |
+“Complete for engineering purposes” requires a named set of tasks and a demonstrated result for each one. Specify the engineering decision, represented system, quantities and units, observation sources, temporal and physical scope, required reasoning relations, expected revisions and computation budget. For every task, test a correct case and an adverse variant against an independently established reference. Report separately whether the language can *represent* the question, the method can *compute* the defined result, the argument evaluator can *compose* it, the evidence can justify its use for the physical question, and a model-assisted host can *communicate* the checked outcome.
 
-ANTLR4 supplies recognition; its visitor is adapted to the book’s separation of concerns. Current code does not implement every alternative parser, virtual machine or type system in the book. Nested scopes, richer expression checking or specialised translators should be introduced when a required engineering task needs them.
+Useful coverage cases include a model property with measured applicability, competing fault explanations after a new measurement, a causal contrast distinct from a model-based counterfactual, an expiring calibration assumption, an objection to an intermediate argument with an independent defence, and a text-only model completing the full host interaction. Boundary cases include unit and quantity mismatch, relevant and irrelevant observations, partial negative searches, ambiguous briefs, missing evidence and changed source versions. Each added domain may demand new method contracts. The finite built-ins do not imply a complete procedure for arbitrary mathematics.
 
-## Purpose completeness
+The human test is whether an engineer can recover a claim, formal question, supporting sources, author-supplied warrant, assumptions, objections and the effect of changed evidence from the source and result. The model test is whether the whole system reaches the justified qualified decision within measured resource limits. Parse success and shorter text are intermediate measures; neither alone establishes semantic fidelity or a better decision.
 
-“Complete for engineering purposes” requires a declared task domain and demonstrated coverage. A version should identify its engineering question classes, relevant system/model types, quantities, evidence forms, reasoning relations, argument composition and computational limits. Coverage must be assessed against those tasks, rather than inferred from the number of named reasoning modes.
+## Language and implementation choices
 
-For each required task, supply a readable representation, typed inputs, explicit assumptions, a known-answer instance, an adverse instance, the required result and an explanation of its scope. Distinguish representational coverage, implemented calculation, checked derivation, empirical assumptions and operational model use. Keep unsupported task families explicit. Correctly returning an unresolved result for insufficient evidence is necessary; resolving the cases with adequate evidence and known answers is also necessary.
+A keyword must denote one necessary concept with defined operands, types, scope, evaluation effect and failure behaviour. Source syntax, the typed representation and structured host interchange must agree about those concepts. The grammar and contract tables are in [language](language.md) and [vocabulary](vocabulary.md); the exact support and attack construction is in the [argument model](argument-model.md). Add algorithms through typed, versioned method contracts when the existing argument relations express the task. Add a new core relation only after a task shows that existing constructs cannot preserve its meaning. [EAL/2 design decisions](eal2-design.md) records the alternatives and the primary language-design recommendations.
 
-A starting task suite should include:
+The implementation applies selected patterns from Parr's *Language Implementation Patterns*: ANTLR4 recognition, external visitor lowering to typed declarations, closed name resolution and checks, and interpretation of the checked representation. A formatter emits source from the representation and is tested for semantic round trips. This division exposes syntax and type failures before method execution. It does not supply general expression inference, proof of correspondence between a prose statement and its typed proposition, or a general solver translation architecture. The [publisher's contents and typing extract](sources.md#language-implementation) anchor the pattern descriptions; Parr's book presents implementation choices, not EAL/2 semantics.
 
-1. A model-derived property combined with experimental observations and a model-applicability subargument.
-2. Competing fault explanations revised by a new measurement, including shared evidence whose reuse does not imply independence.
-3. Causal and counterfactual questions with distinct input requirements and assumptions.
-4. A calibration assumption applicable only to part of an operating episode, including historical and current assessments.
-5. An objection to an intermediate argument, a counterargument to that objection, and an independent route to the main conclusion.
-6. A text-only model completing construction, collection, calculation, revision and explanation through the host within a specified cost/resource budget.
+For a typed proposition, correspond the queried method input and output to the proposition's subject, quantity, unit, scope and interval. For instance, a successful calculation of pressure about one origin cannot justify a flow-rate claim or a different origin. The runtime checks represented correspondence; an independently reviewed brief and source are still needed to establish that this is the physical question the user asked. An observation's matching digest and environment fingerprint identify supplied data but cannot authenticate a measurement or detect an omitted operating condition.
 
-Add cases for incompatible units, mismatched physical quantities, unsupported generalisation, missing evidence and time-dependent validity. Expand the suite when another engineering domain reveals a new required relation. Mathematical decision guarantees must state their formal fragment; the general aim does not imply a terminating complete decision procedure for unrestricted mathematics.
+## Delegation and end-to-end study
 
-## Precise vocabulary and minimal syntax
+A text model can formulate the question, author or select a source and request further observations. A host validates its requests, calls the MCP server and configured collectors, returns diagnostics for bounded repair, obtains an assessment and preserves its exact statuses when composing the final answer. This loop is part of the tested *system route*: MCP availability by itself cannot make a model call tools, translate a brief faithfully or adopt a checked status. [MCP and tools](mcp-and-tools.md) specifies the current interface and trust boundaries.
 
-A keyword should denote one documented concept, with specified operand types, binding rules, semantic effect, scope/time behaviour and failure or unknown outcomes. Its tests should distinguish it from adjacent concepts. The canonical source, diagnostic messages, structured API and explanations should use the same meanings.
+The [one workflow decision example](../examples/workflow-gate/README.md) demonstrates EAL/2 source, assessment of a captured GitHub API projection through CLI and MCP, and a checked report for a bounded question. Its live collector remains a configured path requiring external network verification. It is a development demonstration, exposed to implementers. It cannot estimate an effect across model classes or real engineering tasks.
 
-| Concept | Required distinction |
-|---|---|
-| Claim | The proposition being considered, including its formal identity where verification is intended |
-| Argument | A stated conclusion connected to grounds by a specified reasoning method |
-| Premise | A proposition used by a particular argument; it may itself have supporting subarguments |
-| Observation | A recorded measurement or tool result with its original time and context |
-| Evidence | An identified observation/result used for a claim through a specified evidential relation |
-| Collection specification | The requested observation and the configured means of obtaining it |
-| Assumption | A proposition used provisionally under explicit conditions; represent whether reasoning is hypothetical or claims current empirical support |
-| Reasoning method | An operation with typed inputs, defined computation and a stated interpretation of its outputs |
-| Objection | Reasoning against a premise, conclusion or applicability of a reasoning step |
-| Verification | A named procedure establishing a specified property of an identified representation |
+The [new prospective study](../benchmarks/study-v1/README.md) treats superiority as a falsifiable hypothesis. Compare a strong ordinary task prompt (P), Toulmin prose (T), a meaning-equivalent structured JSON representation (J) and EAL/2 through its MCP host (E) on independently selected, reviewed workflow cases. Give comparable evidence, authorised tool access and decision budgets; record every attempt, invalid source, omitted observation, irrelevant family, tool error, repaired draft and final status. Freeze model snapshots and define small and large strata before outcomes. Distinguish the effect of executable checks and host-controlled reporting from the effect of EAL notation by including an equally capable structured checker where the question requires that contrast. Estimate effects within named model and task strata, with intervals and costs; a finite sample cannot establish superiority for *every* possible model.
 
-These are design distinctions, not a proposal to turn every row into a new reserved word. Retain a construct only when removing it loses a required distinction or makes a necessary task materially harder to express and check. Keep numerical procedures, tool-provider settings and transport mechanics behind appropriate interfaces. Method additions should usually extend typed contracts rather than force new core keywords.
+Independent papers on program-assisted reasoning, symbolic-solver feedback, defeasible argumentation and prompt-format sensitivity motivate these alternatives; their reported effects concern their own systems and data. Their bibliographic entries and limits are in [sources](sources.md#model-assisted-reasoning-and-study-design). Earlier EAL/2 model trials and notation diagnostics used exposed development tasks; they are archived at the [pre-reset commit](sources.md#retired-repository-artefacts), not carried forward as evidence for the new prospective study.
 
-The [executable vocabulary](vocabulary.md) defines the current constructs. `evidence` declares collection and eligibility criteria; observations live in runtime records. `method` selects an exact versioned reasoning contract, while `mode` describes tool variability. `valid` reports static well-formedness. `collected_at` denotes original observation time and `ingested_at` denotes storage time. Backwards compatibility is never a project requirement.
+## Present coverage and open obligations
 
-## Human readability and executable meaning
+The grammar currently declares environments, tools, evidence, assumptions, reasoning, claims with optional typed propositions, arguments, closed patterns and applications, and objections. The runtime supports bounded method contracts, source and type checking, formal query/result bindings, finite support/attack evaluation, CLI and MCP calls and a host interaction loop. Those are implementation properties established by repository tests and one worked path. They do not verify the engineering warrant in a source, authenticate an external observation, or demonstrate a performance advantage over equally capable prose or JSON systems.
 
-Source text and structured interchange should denote the same typed representation. Provide canonical formatting and parse–format–parse equivalence. Use readable domain expressions for quantities, relations, scope and assumptions where these are needed; retaining essential mathematical meaning only in an opaque payload does not meet the readability aim.
-
-Bind method inputs and outputs to the intended propositions. For example, a pressure calculation cannot verify a flow-rate claim merely because a successful result is attached to that claim’s identifier. Verify quantity/unit, variable, model, environment and time correspondence where the method depends on them. Keep explanatory text attached to the formal proposition and expose any unformalised correspondence explicitly.
-
-Human comprehension trials should ask engineers to recover the conclusion, method, premises, observations, assumptions, objections and expected effects of changed evidence from the source. Model trials should test the same semantic distinctions. Short source is useful when it preserves meaning and reduces errors; raw token count alone is insufficient.
-
-## Delegating to ordinary text models
-
-The model articulates a question, proposes an argument or requests an operation. The host validates the request and manages state. The interpreter and configured methods perform the represented reasoning and argument checks. An MCP interface makes those operations callable from the host. A model without native tool calls can still participate by producing text that satisfies the host’s request schema.
-
-An autonomous application needs a complete interaction loop: operation/schema discovery, request construction, validation, diagnostic feedback, bounded repair, execution, result retrieval, argument revision and stopping conditions. Explanations should identify the checked proposition and its dependencies. Compact responses can refer to stored source/results and offer a separate detailed explanation, preserving essential qualifications.
-
-Empirical capability and savings require actual model experiments. Compare selected named models with and without delegation on held-out engineering tasks. Record correct conclusions, unjustified conclusions, unresolved tasks, retries, token use, tool/solver costs and end-to-end latency. Include every failed attempt in total cost per correctly resolved task. Model size and a “non-reasoning” label do not predict those results sufficiently.
-
-## Current implementation and remaining work
-
-| Area | Implemented | Still required by the wider design aim |
-|---|---|---|
-| Argument composition | Typed closed-scope argument patterns, reusable subclaims, alternative arguments, scoped evidence and assumptions; typed scalar query/result bindings | Wider proposition forms, explicit binding from symbolic premise atoms to independently supported claim propositions |
-| Reasoning methods | Seven bounded computations plus authored structured support; immutable host registries with versioned input/query/output contracts and bounded custom methods | Task-driven methods for further domains; broader units and proposition types |
-| Counterarguments | Objection premises, attacks on particular arguments and objections, defence chains and an explicit least-information support/attack construction; standalone grounded graph solver | Preferences, contrariness and strict/defeasible rule systems would need further semantics if required by new tasks |
-| Representation | Declaration syntax, source-located typed IR, canonical formatting and semantic round trips | Richer mathematical expressions beyond the bounded scalar/query fragment; engineer comprehension trials |
-| Verification | Source and direct-IR structure, reference/type checks, registered output predicates, declared query/input schema agreement, unit/quantity/scope/time bindings and dependencies | General dimensional algebra, quantified propositions and independently established physical/prose correspondence |
-| Model access | Actual MCP server, source-preserving host state, targeted draft revision, plain-text and native-function interfaces, bounded feedback and a repeated paired experiment harness | Wider model/task coverage and infrastructure-inclusive costs; mechanisms usable across model classes do not guarantee equal effectiveness |
-| Completeness | Versioned known-answer engineering tasks and adverse variants, composed-defence cases, runtime and protocol regressions | Wider domains, human comprehension trials, hypothetical assumption/discharge calculus and richer formal premise bindings |
-
-The task suite, vocabulary, typed bindings, canonical representation, extensible methods, composed objections and model interaction loop provide a bounded implementation. Typed argument patterns now make recurring dependency structures reusable without copying evidence identity. The suite records its uncovered distinctions instead of claiming complete engineering coverage. The [23 September 2026 EAL/2 regression report](eal2-model-results.md) measures selected model/host systems using package 2.1.0 on previously exposed tasks. Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured. [Historical EAL/0.3 experiments](eal03-model-results.md) retain their original measured outcomes.
+The new study has a versioned prospective runner with injected arm rules and a one-attempt ledger, but reviewed independent cases, frozen model snapshots, external execution receipts and comparative outcomes remain to be supplied. Claims about authoring reliability, human comprehension, transfer to new task families, overall cost and universal model-class superiority are open empirical questions. The next actionable gate is to review case and acquisition identities independently, freeze the comparison, exercise each arm with actual authorised tool calls, and publish all attempted outcomes by prespecified class and task root.

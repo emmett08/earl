@@ -533,7 +533,8 @@ async def evaluate_models(path: str | Path, provider, *, split: str = "held_out"
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--suite", type=Path, default=Path("benchmarks/engineering-v1/suite.json"))
+    parser.add_argument("--suite", type=Path, required=True,
+                        help="Versioned task suite to check or evaluate")
     parser.add_argument("--check-tasks", action="store_true")
     parser.add_argument("--summary", action="store_true", help="Print concise task-check output; --output still saves the full report")
     parser.add_argument("--provider", type=Path)
