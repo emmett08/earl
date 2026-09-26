@@ -37,6 +37,11 @@ def _close(actual, expected, key):
 
 def _row_identity(row, expected):
     # Recompute from retained response fields, never the collector's Boolean.
+    if row["status_code"] == 0:
+        # A response-less failed attempt is attributable only when its bound
+        # request row explicitly records the transport error and absent reply.
+        return (row.get("response_identity") is None and row.get("identity_matches") is False
+                and isinstance(row.get("error"), str) and bool(row["error"]))
     identity = row.get("response_identity")
     return (isinstance(identity, dict)
             and identity.get("header_build_id") == expected["build_id"]

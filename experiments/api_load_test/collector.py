@@ -30,6 +30,15 @@ def inspect(report: dict, target: dict, assessment_time: str) -> dict:
     identities = report.get("input") == workload and report.get("context") == target["context"]
     if valid:
         for row in rows:
+            if row["status_code"] == 0:
+                # A failed request has no response identity to authenticate.
+                # The trusted bound request log can still attribute its
+                # attempted ID and recorded transport error to this run.
+                attributed = (row.get("response_identity") is None
+                              and row["identity_matches"] is False
+                              and isinstance(row.get("error"), str) and bool(row["error"]))
+                identities = identities and attributed
+                continue
             response = row.get("response_identity")
             if not isinstance(response, dict):
                 identities = False

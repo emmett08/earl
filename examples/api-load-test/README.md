@@ -38,7 +38,7 @@ The expected output contains:
 
 The source names the service, build, run, client count and report digest. Its evidence declaration sets the three acceptance thresholds and a 24-hour evidence age limit. The `structured/1` method records the author's justification for using these computed fields to support `performance_criteria_met`.
 
-The host's [tool registry](tools.toml) binds `load_test_report/1` to [collect_results.py](collect_results.py). The EAL tool declaration has only its name and version; source does not declare whether collection is deterministic. The collector reads the selected report, checks its SHA-256 digest and identity, then computes the statistics. The EAL source supplies expected identity and thresholds; the trusted host selects the executable and report file. Collection records carry a store-local keyed `tool_binding_digest` of that selected configuration. It detects later registry changes when stored collections are reasoned over; it does not pin Python, the script bytes or external dependencies.
+The host's [tool registry](tools.toml) binds `load_test_report/1` to [collect_results.py](collect_results.py). The EAL tool declaration has only its name and version; source does not declare whether collection is deterministic. The collector reads the selected report, checks its SHA-256 digest and identity, then computes the statistics. The EAL source supplies expected identity and thresholds; the trusted host selects the executable and report file. Collection records carry a store-local keyed `tool_binding_digest` of that selected configuration. The registry pins the collector script's bytes and rejects changes at collection or later assessment. It does not pin Python or all imported dependencies.
 
 For n recorded requests, the nearest-rank p95 is the sorted latency at one-based position ceil(0.95 × n). In this report, position 95 is 180 ms. All requests contribute to latency, including errors. Any non-2xx HTTP status counts as a failed request; status code 0 represents a transport failure or timeout, whose elapsed time must also be recorded. One failed request out of 100 gives 1%, which meets the inclusive limit. This is a sample statistic with no population confidence bound.
 
@@ -72,7 +72,7 @@ To use MCP directly, launch `eal-mcp --workspace . --registry examples/api-load-
 
 ## Reuse a reviewed argument for later prose
 
-The optional argument host uses a second, bounded view of this **same synthetic fixture**. Its [reviewed scheme](argument-schemes.toml) pins [EAL source bytes](argument-host.eal), two initial wordings and one later wording. [Tool configuration](argument-tools.toml) selects a [collector](recompute_synthetic.py) that checks the fixture's digest and identity, then computes the sample statistics again. That computation is current; the original fixture's measurement time remains `2026-09-25T10:00:00Z`. It does not represent a new load test.
+The optional argument host uses a second, bounded view of this **same synthetic fixture**. Its [reviewed scheme](argument-schemes.toml) pins [EAL source bytes](argument-host.eal), three initial wordings and one later wording. [Tool configuration](argument-tools.toml) selects a pinned [collector](recompute_synthetic.py) that checks the fixture's digest and identity, then computes the sample statistics again. That computation is current; the original fixture's measurement time remains `2026-09-25T10:00:00Z`. It does not represent a new load test.
 
 From the repository root after installing the package, run:
 
@@ -80,7 +80,7 @@ From the repository root after installing the package, run:
 python examples/api-load-test/argument_host_demo.py
 ```
 
-The [demonstration](argument_host_demo.py) obtains `supported` and `adequate` for the first wording. A later prose question resolves to the same reviewed claim and method but triggers a new tool collection and assessment. An unreviewed question about production reliability stays `unresolved` and runs no evidence tools. The output identifies the two different collection IDs through `fresh_collection_for_later_wording: true`; it does not recycle the first status. The temporary database is removed at the end.
+The [demonstration](argument_host_demo.py) obtains `supported` and `adequate` for the first wording. A later question and a reviewed paraphrase each resolve to the same claim and method but trigger new tool collections and assessments. An unreviewed question about production reliability stays `unresolved` and runs no evidence tools. The output checks three different collection IDs through `fresh_collection_for_later_wording: true`; it does not recycle the first status. The temporary database is removed at the end.
 
 Changing the EAL source invalidates the scheme's pinned SHA-256 until an operator reviews and updates the TOML contract. The form match establishes applicability only for these reviewed phrasings and synthetic context, including the separately reviewed p95/error paraphrase. Negated, compound, stronger and production questions remain unresolved before collection. The three adequacy obligations check sample count, sample p95 and observed sample error percentage; neither they nor `structured/1` establish population reliability, representative workload or production readiness.
 

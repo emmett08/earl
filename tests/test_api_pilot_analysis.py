@@ -58,7 +58,47 @@ def test_nearest_rank_includes_every_attempt_and_transport_failure():
     report["requests"][5]["elapsed_ms"] = 250
     assert reference(case)["failed_checks"] == ["latency"]
     report["requests"][0]["status_code"] = 0
+    report["requests"][0]["response_identity"] = None
+    report["requests"][0]["identity_matches"] = False
+    report["requests"][0]["error"] = "TimeoutError"
     assert reference(case)["failed_checks"] == ["latency", "errors"]
+
+
+def test_attributed_transport_failure_is_an_error_not_an_identity_failure():
+    from experiments.api_load_test.collector import inspect
+
+    case = measured_case()
+    report = case["reports"]["target-report"]
+    row = report["requests"][0]
+    row.update(status_code=0, response_identity=None, identity_matches=False, error="TimeoutError")
+    truth = reference(case)
+    measured = inspect(report, case["target"], case["assessment_time"])
+    assert truth["status"] == "unsupported" and truth["failed_checks"] == ["errors"]
+    assert measured["facts"]["identity_matches"] is True
+    assert measured["metrics"] == truth["metrics"]
+    row["error"] = None
+    assert reference(case)["status"] == "unavailable"
+    assert inspect(report, case["target"], case["assessment_time"])["facts"]["identity_matches"] is False
+
+
+@pytest.mark.parametrize("arm", ["eal_mcp", "plain_validator"])
+def test_attributed_transport_failure_reaches_checked_routes(tmp_path, arm):
+    import asyncio
+    from experiments.api_load_test.cases import digest
+    from experiments.api_load_test.materials import source_for
+    from experiments.api_load_test.routes import TrialTools
+
+    case = measured_case()
+    report = case["reports"]["target-report"]
+    report["requests"][0].update(status_code=0, response_identity=None,
+                                 identity_matches=False, error="TimeoutError")
+    case["audit"] = {"report_sha256": {"target-report": digest(report)}}
+    source = source_for(case["target"]["input"], case["target"]["context"])
+    tools = TrialTools(tmp_path / arm, source, {"case": case})
+    packet = asyncio.run(tools.execute(arm, "target-report"))
+    assert packet["status"] == "unsupported" and packet["failed_checks"] == ["errors"]
+    assert packet_reference_check(case, "target-report", packet, checked=True,
+        host_status=tools.host_status)["agrees"]
 
 
 @pytest.mark.parametrize("fault,failed", [
