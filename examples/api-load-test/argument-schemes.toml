@@ -2,7 +2,7 @@ schema = "eal2-argument-schemes/1"
 
 [schemes.bundled_fixture]
 source = "examples/api-load-test/argument-host.eal"
-source_sha256 = "4858901d46a4589e5546b40e6aff12c4e86a7d49abb8061edcac10649096a2f2"
+source_sha256 = "447c5246846e1f76605f85f34dd6fd3d9a8ae9752f4e9a7b0947c1ae5d0240b5"
 claim = "fixture_criteria_met"
 kind = "decision"
 description = "Check the bundled synthetic API fixture's sample criteria after recomputation."

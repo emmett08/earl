@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "investigation_id": "INV-EAL-API-001",
   "title": "Calibration of explicit answer contracts, checked finalisation and bounded provider recovery",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "status": "specified",
   "question": "Do explicit answer templates and protocol-specific feedback reduce model completion failures, and how do separately retained checker outputs behave when model restatement is removed? Can bounded transient recovery preserve later assignments without losing unknown-cost accounting?",
   "primary_claim_id": "CLM-001",
@@ -26,7 +26,7 @@
   "claims": [
     {
       "id": "CLM-001",
-      "statement": "The version 4 instrument is designed to distinguish model-authored decisions, deterministic finalisation, operation-contract errors and bounded transient provider recovery. Live version 4 behaviour remains unmeasured.",
+      "statement": "The version 5 instrument distinguishes model-authored decisions, deterministic finalisation and checked evidence usability from observed failed criteria. The EAL route obtains its finite decision from two typed method-backed claims; live version 5 behaviour remains unmeasured.",
       "claim_type": "measurement",
       "role": "primary",
       "scope_limit": "One orders API, up to 40 purposively reviewed development cases and six pinned snapshots. Model finalisation assigns up to six prompt/tool arms; checked finalisation assigns only EAL/MCP and ordinary validator. Analyse each selected snapshot, transport and finalisation separately. A small calibration precedes an explicitly selected larger invocation; conclusions describe only that finite suite and invocation.",
@@ -48,7 +48,7 @@
       "statement": "The independent reference correctly distinguishes false checks from unknown checks and unavailable evidence from an adequately measured failed criterion, and grades finite scope, evidence selection and metrics.",
       "role": "measurement",
       "status": "untested",
-      "test_or_justification": "Version 3.1 produced correct tool packets but frequent final-answer schema and status errors; one transient 503 stopped every later assignment. Version 4 requires independent raw-row checks, contract leakage tests, real direct/MCP controls and cost-preserving transient recovery tests. Actual version 4 calibration remains pending.",
+      "test_or_justification": "Earlier invocations showed correct checked packets and model final-answer errors. Version 5 checks the source-level distinction between unusable evidence and an adequate negative result against independent raw rows, with real direct/MCP controls. Actual version 5 calibration remains pending.",
       "failure_consequence": "Suspend affected scores; version the correction and use a new invocation without replacing earlier outcomes."
     },
     {
@@ -477,7 +477,7 @@
       "Distinguish decision discordance among completed valid pairs from provider/transport failures",
       "Keep optional transport diagnostics separate",
       "Keep verdict correctness distinct from full-answer rubric correctness; instrument ambiguity must not be described as an acceptance-decision advantage",
-      "Preserve versions 1, 2 and 3.1 artefacts and scores under their original contracts; version 4 supplies no retrospective replacement score",
+      "Preserve earlier artefacts and scores under their original contracts; version 5 supplies no retrospective replacement score",
       "Never label automatic checked finalisation as model answer accuracy"
     ],
     "software_and_versions": [
@@ -722,7 +722,7 @@
       "ANTLR jar verified by SHA256"
     ],
     "blockers": [
-      "Version 4 conversation, finalisation and recovery changes require a fresh retained live calibration; offline tests establish implemented behaviour only. No live version 4 result or paid invocation is reported."
+      "Version 5 source, method and host-status changes require a fresh retained live calibration; offline tests establish implemented behaviour only. No live version 5 result or paid invocation is reported."
     ],
     "fallback": "Retain actual failed or unattempted assignments; never substitute mock provider responses for empirical outcomes."
   },
@@ -736,11 +736,11 @@
       "Pinned model snapshots, reasoning settings and prices",
       "Complete assignment ledger and seeded order"
     ],
-    "data_plan": "Retain shared raw measurements, case/provenance digests, explicit fault injections, prompts, EAL/JSON source, model responses, selected evidence, operation traces, component scores, failures and summaries; exclude secrets and private reasoning replay payloads. Version 3 additionally retains public message boundaries, provider status and incomplete_details; final check lists distinguish false from unknown. Raw EAL support remains audit-only. Version 3.1 checkpoints one slot per dispatched call, with known usage or an unresolved charge reservation; interruption summaries preserve retained calls without resuming work. Frozen-case integrity and private raw-reference checks apply to every arm. Detected instrument or integrity defects suspend affected comparisons. Version 4 records finalisation, answer origin/completion, protocol completion, narrative presence and retries. Unknown charges retain their reservations. The current plan, manifest and summary schemas are eal-api-experiment/4, eal-api-experiment-run/4 and eal-api-experiment-summary/4 respectively.",
+    "data_plan": "Retain shared raw measurements, case/provenance digests, explicit fault injections, prompts, EAL/JSON source, model responses, selected evidence, operation traces, component scores, failures and summaries; exclude secrets and private reasoning replay payloads. Version 3 retains public message boundaries, provider status and incomplete_details; final check lists distinguish false from unknown. Version 3.1 checkpoints one slot per dispatched call, with known usage or an unresolved charge reservation. Frozen-case integrity and private raw-reference checks apply to every arm. Version 4 records finalisation, answer origin/completion, protocol completion, narrative presence and retries. Version 5 additionally records the two EAL claim statuses and evidence usability; checker agreement treats numeric rounding within the independent grader tolerance as agreement. Unknown charges retain their reservations. The current plan, manifest and summary schemas are eal-api-experiment/5, eal-api-experiment-run/5 and eal-api-experiment-summary/5 respectively. Raw reports retain eal-live-api-report/2.",
     "code_plan": "All implementation and tests committed in this PR.",
     "randomisation_or_seed_plan": "Seed 20260925; seeded case/arm order within each concurrent model worker; entire assignment ledger frozen before paid calls.",
     "provenance_plan": "Retain source SHA, dependency versions, Docker image inspection, workflow ID and attempt, provider response IDs and usage.",
-    "deviation_and_amendment_plan": "Increment protocol version for planned changes and preserve historical artefacts, schemas and scores. Version 4 follows observed version 3.1 failures; it makes no retrospective efficacy claim. PR updates and pushes never initiate paid invocations.",
+    "deviation_and_amendment_plan": "Increment protocol version for planned changes and preserve historical artefacts, schemas and scores. Version 5 separates evidence usability from negative measured findings in the EAL source and does not replace earlier scores. PR updates and pushes never initiate paid invocations.",
     "replication_plan": "Use a fresh output directory and immutable manifest per invocation. Repeating development cases measures repeatability; it does not create independent task coverage. A held-out efficacy study requires a new separately frozen protocol."
   },
   "execution": {
@@ -758,7 +758,7 @@
       "Repository maintainer with Codex implementation assistance"
     ],
     "created_at": "2026-09-25T00:00:00Z",
-    "updated_at": "2026-09-25T20:16:02.178953+00:00",
+    "updated_at": "2026-09-26T16:40:00Z",
     "sources": [
       "https://developers.openai.com/api/docs/models/gpt-4.1-mini",
       "https://developers.openai.com/api/docs/models/gpt-4.1",
@@ -768,13 +768,14 @@
       "https://developers.openai.com/api/docs/models/gpt-5.4-nano",
       "https://developers.openai.com/api/docs/deprecations"
     ],
-    "knowledge_cut": "2026-09-25",
+    "knowledge_cut": "2026-09-26",
     "change_log": [
       "1.0.0: initial specified protocol; live model outcomes not yet observed.",
       "2.0.0: richer fixed development cases, immutable matched evidence, explicit evidence-validity outcomes, six model tiers and common text-mediated tool operations; replace uninformative v1 decision bounds with descriptive paired tables. Historical v1 feasibility outcomes remain separate. Protocol schema remains 1.0; experiment manifest and raw report become version 2 contracts. EAL/2 syntax and structured/1 semantics are unchanged.",
       "3.0.0: preserve provider termination details and visible message boundaries; make known-cost truncation trial-local; expose one canonical checked status; score false and unknown checks separately; add ordinary direct-validator control and its explicit-prose comparison; default to a 54-assignment manual calibration with USD3 aggregate admission allowance. Historical v1/v2 outcomes and rubrics remain unchanged. Protocol schema stays 1.0, experiment manifest becomes version 3 and raw report remains version 2; EAL/2 syntax and structured/1 semantics are unchanged.",
       "3.1.0: repair interruption and finalization accounting with durable per-call checkpoints; keep unexpected-model costs unknown; verify measurements privately for every arm and enforce invalid-measurement suspension with frozen-case integrity checks; reject malformed report-envelope metadata as an instrument fault; preserve Responses continuation state in the general agent and reject incomplete native function items. Add named-container cleanup and offline summary recovery. Cases, prompts, rubric, model settings and spending limits are unchanged; manifest/summary schemas remain version 3 with additional diagnostics, raw report remains version 2, and EAL/2 language and structured/1 semantics are unchanged.",
-      "4.0.0: explicit final-answer templates and concise protocol-only repair feedback; host-bound report identity/scope and optional explanation; separate model and checked finalisation with different assignment identities and origin/completion counts; bounded transient retries within call and cost caps and a three-trial transient circuit. Plan, run manifest and summary schemas advance to version 4. Historical outcomes stay frozen. Protocol document schema remains 1.0, raw report remains version 2, EAL/2 syntax and structured/1 semantics are unchanged. No live version 4 result is claimed."
+      "4.0.0: explicit final-answer templates and concise protocol-only repair feedback; host-bound report identity/scope and optional explanation; separate model and checked finalisation with different assignment identities and origin/completion counts; bounded transient retries within call and cost caps and a three-trial transient circuit. Plan, run manifest and summary schemas advance to version 4. Historical outcomes stay frozen. Protocol document schema remains 1.0, raw report remains version 2, EAL/2 syntax and structured/1 semantics are unchanged.",
+      "5.0.0: admissible reports support explicit passing or failing EAL claims through host-installed engineering/api-load-criteria/1; unavailable evidence supports neither claim. The versioned host-status audit now distinguishes supported, unsupported and unavailable; checker numeric agreement uses the independent grading tolerance. Plan, run manifest and summary schemas advance to version 5. Source syntax stays EAL/2; raw reports stay eal-live-api-report/2; the Python package becomes 2.8.0. Development assignments and case IDs are unchanged; historical results retain their own semantics. Live version 5 behaviour remains unmeasured."
     ]
   },
   "prior_evidence": [
@@ -879,7 +880,7 @@
     "admission_allowance_usd_all_models": 3.0,
     "purpose": "Inspect operation completion, model/checked result separation, optional narrative and bounded transient recovery before an explicitly selected larger invocation.",
     "advance_rule": "Review every assigned result, tool/reference agreement, model/checked origin, protocol completion, retry and cost record. Successful calibration permits a bounded statement about those observations only. Any larger invocation requires explicit manual selection.",
-    "live_validation": "Version 3.1 nano-only results are retained as prior evidence. Version 4 live calibration is pending; this change neither starts a paid run nor establishes a live result.",
+    "live_validation": "Earlier development results retain their original protocols. Version 5 live calibration is pending; this change neither starts a paid run nor establishes a live result.",
     "workflow_trigger": "workflow_dispatch only; no push or pull_request trigger"
   },
   "finalisation_contract": {

@@ -12,6 +12,7 @@ from pathlib import Path
 
 import pytest
 
+from eal.api_load_methods import registry as api_load_registry
 from eal.parser import parse
 from eal.runtime import ReasoningService, acquisition_request
 from eal.semantics import validate
@@ -24,6 +25,7 @@ RAW = (EXAMPLE / "report.json").read_bytes()
 REPORT = json.loads(RAW)
 CONTEXT = {"service": "orders-api", "build_id": "demo-build-42", "dataset": "synthetic"}
 CLAIM = "performance_criteria_met"
+FAILED_CLAIM = "performance_criteria_failed"
 spec = importlib.util.spec_from_file_location("load_test_collector", EXAMPLE / "collect_results.py")
 collector = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(collector)
@@ -51,14 +53,14 @@ def assess(tmp_path, report, *, now=None):
         f'argv={json.dumps(argv)}\n'
         f'env={{PYTHONPATH={json.dumps(str(ROOT / "src"))}}}\n'
     )
-    service = ReasoningService(tmp_path, registry)
+    service = ReasoningService(tmp_path, registry, method_registry=api_load_registry())
     collected = service.collect(source, CONTEXT)
     assessed = service.reason(source, CONTEXT, collected["collection_id"], now or REPORT["observed_at"])
     return collected, assessed
 
 
 def test_report_statistics_and_original_observation_time():
-    assert not validate(parse(SOURCE))
+    assert not validate(parse(SOURCE), registry=api_load_registry())
     result = collector.summarise(request(), RAW)
     assert result["value"] == {
         "request_count": 100, "p95_ms": 180, "failed_requests": 1, "error_rate_percent": 1.0,
@@ -79,18 +81,19 @@ def test_cli_and_actual_mcp_server_agree():
                             capture_output=True, text=True, timeout=60, check=True)
     report = json.loads(result.stdout)
     assert report["cli_claim_status"] == report["mcp_claim_status"] == "supported"
+    assert report["cli_failed_claim_status"] == report["mcp_failed_claim_status"] == "unsupported"
     assert report["dataset"] == "synthetic"
 
 
-@pytest.mark.parametrize("variant,expected", [
-    ("inclusive_limits", "supported"),
-    ("latency", "unsupported"),
-    ("errors", "unsupported"),
-    ("incomplete", "unsupported"),
-    ("stale", "unsupported"),
-    ("build", "unsupported"),
+@pytest.mark.parametrize("variant,expected,failed", [
+    ("inclusive_limits", "supported", "unsupported"),
+    ("latency", "unsupported", "supported"),
+    ("errors", "unsupported", "supported"),
+    ("incomplete", "unsupported", "supported"),
+    ("stale", "unsupported", "unsupported"),
+    ("build", "unsupported", "unsupported"),
 ])
-def test_acceptance_limits_and_scope(tmp_path, variant, expected):
+def test_acceptance_limits_and_scope(tmp_path, variant, expected, failed):
     report = copy.deepcopy(REPORT)
     now = None
     if variant == "inclusive_limits":
@@ -110,6 +113,7 @@ def test_acceptance_limits_and_scope(tmp_path, variant, expected):
     collected, assessed = assess(tmp_path, report, now=now)
     assert collected["records"]["load_test"]["status"] == ("error" if variant == "build" else "ok")
     assert assessed["claims"][CLAIM]["status"] == expected
+    assert assessed["claims"][FAILED_CLAIM]["status"] == failed
 
 
 def test_changed_report_without_repinning_is_rejected():

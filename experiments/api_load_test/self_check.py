@@ -30,9 +30,15 @@ async def self_check(output: Path):
                             or set(packet["unknown_checks"]) != set(truth["unknown_checks"])):
                         raise RuntimeError(f"Checked decision disagrees with independent reference: {case['id']}")
                 if arm == "eal_mcp":
-                    expected_host = "supported" if truth["status"] == "supported" else "unsupported"
-                    if tools.host_assessments[report_id]["host_status"] != expected_host:
-                        raise RuntimeError(f"MCP raw status disagrees with independent reference: {case['id']}")
+                    host = tools.host_assessments[report_id]
+                    expected_claims = {
+                        "performance_criteria_met": ("supported" if truth["status"] == "supported" else "unsupported"),
+                        "performance_criteria_failed": ("supported" if truth["status"] == "unsupported" else "unsupported"),
+                    }
+                    if (host["host_status"] != truth["status"] or host["claims"] != expected_claims
+                            or host["evidence_status"] !=
+                            ("unavailable" if truth["status"] == "unavailable" else "available")):
+                        raise RuntimeError(f"MCP claims disagree with independent reference: {case['id']}")
                 elif arm == "json_prompt" and any(key in packet for key in
                                                    ("status", "failed_checks", "unknown_checks")):
                     raise RuntimeError("Direct route must not supply a host verdict")

@@ -231,7 +231,8 @@ def test_checked_finalisation_retains_tool_decision_without_model_rewrite(
     trace = json.loads((tmp_path / "tool-trace.json").read_text())
     if arm == "eal_mcp":
         calls = [item for item in trace if "tool" in item]
-        assert [item["tool"] for item in calls] == ["eal_validate", "eal_collect", "eal_reason", "eal_explain"]
+        assert [item["tool"] for item in calls] == [
+            "eal_validate", "eal_collect", "eal_reason", "eal_explain"]
         assert all(not item["is_error"] for item in calls)
     else:
         assert [item["route"] for item in trace] == ["direct_command", "direct_validator"]
@@ -294,7 +295,7 @@ def test_checked_run_freezes_distinct_assignments_and_only_checking_arms(tmp_pat
     output = tmp_path / "checked"
     assert not asyncio.run(runner.run(output, [SPEC], {**PLAN, "finalisation": "checked"}, mode="calibration"))
     manifest = json.loads((output / "manifest.json").read_text())
-    assert manifest["schema"] == "eal-api-experiment-run/4"
+    assert manifest["schema"] == "eal-api-experiment-run/5"
     assert manifest["finalisation"] == "checked"
     assert manifest["plan"]["arms"] == ["eal_mcp", "plain_validator"]
     model_ids = {row["id"] for row in runner.schedule(SPEC["id"], manifest["case_specs"], PLAN["seed"])}

@@ -10,7 +10,7 @@ environment bundled_fixture {
 tool fixture_recompute { version "1"; }
 
 evidence recomputed_sample {
-  tool fixture_recompute; kind test; environment bundled_fixture; max_age 120;
+  tool fixture_recompute; kind api_report; environment bundled_fixture; max_age 120;
   input {
     "service": "orders-api",
     "build_id": "demo-build-42",
@@ -19,14 +19,19 @@ evidence recomputed_sample {
     "dataset": "synthetic",
     "report_sha256": "0ed808bf1858159172a3fd79dd818c842079f47fa9bb6a0c7e300e41a90b152d"
   };
-  require "request_count" >= 100;
-  require "p95_ms" <= 200;
-  require "error_rate_percent" <= 1;
+  require "request_count" >= 0;
 }
 
-reasoning sample_criteria {
-  method "structured/1";
-  rationale "The host recomputes sample statistics from the pinned synthetic fixture. This says nothing about a current deployed service or the population failure rate.";
+reasoning passing_sample_criteria {
+  method "engineering/api-load-criteria/1";
+  rationale "The host recomputes sample statistics from the pinned synthetic fixture. The installed method checks the three inclusive sample criteria. This says nothing about a deployed service or the population failure rate.";
+  require "passes" == true;
+}
+
+reasoning failing_sample_criteria {
+  method "engineering/api-load-criteria/1";
+  rationale "The recomputed usable synthetic sample supports a failed finite criterion only when the installed method reports a measured failure.";
+  require "fails" == true;
 }
 
 claim fixture_criteria_met {
@@ -34,8 +39,19 @@ claim fixture_criteria_met {
   environment bundled_fixture;
 }
 
-argument checked_fixture {
+claim fixture_criteria_failed {
+  statement "A current recomputation of the bundled synthetic fixture fails at least one sample-size, latency or error-rate criterion.";
+  environment bundled_fixture;
+}
+
+argument passing_fixture {
   conclusion fixture_criteria_met;
-  reasoning sample_criteria;
+  reasoning passing_sample_criteria;
+  evidence recomputed_sample;
+}
+
+argument failing_fixture {
+  conclusion fixture_criteria_failed;
+  reasoning failing_sample_criteria;
   evidence recomputed_sample;
 }
