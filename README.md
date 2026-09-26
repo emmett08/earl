@@ -2,7 +2,7 @@
 
 EAL/2 is a language and host for bounded engineering arguments. A source file identifies the claim, the question it addresses, its reasoning method, evidence obligations, premises and objections. The interpreter validates those declarations, collects observations through host-configured tools, evaluates the stated method and records an explanation of the resulting status. A checked status is about the declared question and collected observations; the source's relevance and the observations' real-world provenance still require review.
 
-The Python package is **2.7.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Formal reasoning-method inputs use the independent `EAL/typed-input/1` envelope. Source, package, acquisition and typed-method identifiers describe different contracts.
+The Python package is **2.8.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Formal reasoning-method inputs use the independent `EAL/typed-input/1` envelope. Source, package, acquisition and typed-method identifiers describe different contracts.
 
 ## Start here
 
@@ -27,6 +27,8 @@ The report contains 100 requests, a nearest-rank sample p95 of 180 ms and one fa
 
 The source pins the report's build, run and digest. The collector preserves its original observation time; EAL checks the declared scope, age and acceptance predicates. The [walkthrough](examples/api-load-test/README.md) explains those checks, the expected output and how to substitute a real report. The synthetic records illustrate assessment behaviour; release decisions need genuine measurements and a representative workload.
 
+An [optional ASPIC+ method](docs/aspic-method.md) uses the same API load-test setting to resolve conflicting synthetic findings. It constructs strict and defeasible arguments and computes grounded defeat while EAL binds the scoped theory to an observation. Run `python examples/api-load-test/aspic_demo.py` for the additional runtime and MCP walkthrough.
+
 A [live API experiment](experiments/api_load_test/README.md) compares EAL/2+MCP with meaning-equivalent JSON and ordinary prose, including a conventional checked-result control. Its manually dispatched, Docker-based protocol freezes the selected measurements and scores decisions independently. An optional checked finalisation mode returns the verified decision without asking a model to restate it. The experiment measures the combined system under its specified cases; no general accuracy, cost or speed advantage over equally capable alternatives follows from the language or the synthetic example alone.
 
 ## Interfaces and boundaries
@@ -50,6 +52,7 @@ The implementation provides finite, explicit support and attack reasoning with v
 | [Argument model](docs/argument-model.md) | Composed support, objections and propagation |
 | [Grounded reasoning](docs/grounded-reasoning.md) | Explicit Dung graph solver |
 | [Reasoning modes](docs/reasoning-modes.md) | Computational method inputs, outputs and bounds |
+| [ASPIC+ method](docs/aspic-method.md) | Optional finite formal-theory solver and evidence boundary |
 | [MCP and tools](docs/mcp-and-tools.md) | Tool acquisition, persistence and model hosts |
 | [Executable argument host](docs/executable-argument-host.md) | Reviewed argument forms, adequacy checks and action preflight |
 | [Sources](docs/sources.md) | Primary research and retained references |

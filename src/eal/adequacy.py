@@ -144,7 +144,7 @@ class AdequacyContract:
                 raise ValueError("Formal premise bindings require argument, formula and claim")
             if any(not isinstance(binding[key], str) or not _ID.fullmatch(binding[key]) for key in ("argument", "claim")):
                 raise ValueError("Formal premise bindings must name EAL argument and claim identifiers")
-            # The deductive method separately checks formula syntax and bounds.
+            # The chosen formal method separately checks formula syntax and bounds.
             identity = (binding["argument"], canonical_digest(binding["formula"]))
             if identity in identities:
                 raise ValueError("A formal premise has multiple correspondence bindings")
@@ -396,21 +396,31 @@ class AdequacyEvaluator:
                     gaps.append(f"Argument {argument_id!r} has no satisfied main criterion on its evidence or computed result.")
                 if method not in allowed_methods:
                     gaps.append(f"Accepted argument {argument_id!r} uses unreviewed method {method!r}.")
-                if method == "deductive/1":
-                    logical_id = next((item for item in source_ids if program.evidence[item].kind == "logical_case"), None)
-                    payload = records.get(logical_id, {}).get("value", {})
-                    if argument.binding == logical_id and program.claims[name].proposition is not None:
+                if method in ("deductive/1", "argumentation/aspic/1"):
+                    kind = "logical_case" if method == "deductive/1" else "aspic_theory"
+                    theory_id = next((item for item in source_ids if program.evidence[item].kind == kind), None)
+                    payload = records.get(theory_id, {}).get("value", {})
+                    typed = argument.binding == theory_id and program.claims[name].proposition is not None
+                    if typed:
                         payload = payload.get("payload", {})
-                    formal = payload.get("premises", []) if isinstance(payload, dict) else []
+                    if method == "argumentation/aspic/1":
+                        if not typed:
+                            gaps.append(f"ASPIC+ argument {argument_id!r} requires a typed, bound formal theory.")
+                        theory = payload.get("theory", {}) if isinstance(payload, dict) else {}
+                        formal = ([row["atom"] for row in theory.get("premises", [])
+                                   if isinstance(row, dict) and isinstance(row.get("atom"), str)]
+                                  if isinstance(theory, dict) else [])
+                    else:
+                        formal = payload.get("premises", []) if isinstance(payload, dict) else []
                     bindings = {canonical_digest(row["formula"]): row["claim"] for row in premise_bindings
                                 if row["argument"] == argument_id}
                     for formula in formal:
                         bound = bindings.get(canonical_digest(formula))
                         if (bound not in argument.premises or
                                 assessment.get("claims", {}).get(bound, {}).get("status") != "supported"):
-                            gaps.append(f"Deductive argument {argument_id!r} has an undisclosed or unsupported formal premise: {formula!r}.")
+                            gaps.append(f"Formal argument {argument_id!r} has an undisclosed or unsupported premise: {formula!r}.")
                     if any(key not in {canonical_digest(formula) for formula in formal} for key in bindings):
-                        gaps.append(f"Deductive argument {argument_id!r} has a binding to an absent formal premise.")
+                        gaps.append(f"Formal argument {argument_id!r} has a binding to an absent formal premise.")
                 for assumption in argument.assumptions:
                     if f"assumption:{assumption}" not in mapped:
                         gaps.append(f"Assumption {assumption!r} has no satisfied evidence-adequacy mapping; its use remains conditional.")

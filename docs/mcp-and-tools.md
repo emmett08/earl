@@ -38,7 +38,7 @@ The MCP server exposes the EAL/2 interpreter through a local stdio service. It u
 | `eal_assess_bound_prose` (recipient schemes) | None | Run the checked assessment for the launcher's bound original prose |
 | `eal_finish_prose` (with `--schemes`) | `assessment_id` | Recover the checked result for the bound principal and session |
 
-Run `eal-mcp --workspace /absolute/path/to/earl --registry /absolute/path/to/earl/examples/api-load-test/tools.toml`. The default database is `.eal/runs.sqlite3` under that workspace; `--database` overrides it. Keep stdout for MCP protocol messages. The server checks advertised JSON schemas before SDK conversion, rejecting extra fields and incorrect types. The CLI uses the same service and accepts `--workspace`, `--registry`, `--database` and an optional host-registered `--methods` factory before its subcommand. The server uses stdio; HTTP MCP deployment is not included.
+Run `eal-mcp --workspace /absolute/path/to/earl --registry /absolute/path/to/earl/examples/api-load-test/tools.toml`. The default database is `.eal/runs.sqlite3` under that workspace; `--database` overrides it. Keep stdout for MCP protocol messages. The server checks advertised JSON schemas before SDK conversion, rejecting extra fields and incorrect types. The CLI uses the same service and accepts `--workspace`, `--registry`, `--database` and an optional host-registered `--methods` factory before its subcommand. For the [finite ASPIC+ method](aspic-method.md), supply `--methods eal.aspic:aspic_registry` to the CLI or MCP server; discovery then advertises its exact versioned input and output contract. The server uses stdio; HTTP MCP deployment is not included.
 
 ## Tool registry and observation identity
 

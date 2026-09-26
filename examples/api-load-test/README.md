@@ -92,6 +92,17 @@ Review the claim and thresholds for that workload. Update the EAL input, environ
 
 The regression tests exercise limits that this example must respect: exactly 1% passes; 2% fails; excessive p95 latency, too few requests, stale evidence and mismatched build identities cannot support the claim.
 
+## Resolve conflicting findings with the optional ASPIC+ method
+
+The same API task has an additional [synthetic formal variant](aspic-source.eal). The [fixture](aspic-fixture.json) stipulates a primary latency finding, a trace gap that undercuts its inference, and an independent probe of that same run. Strict and defeasible rules, explicit contrariness and global ordinal ranks appear in the formal theory; the source binds its **complete** theory as a typed query for `demo-load-001`. EAL collects scoped observations through the [pinned fixture collector](aspic_fixture_collector.py) and requires supported EAL claims for the theory's premises. The ASPIC+ method constructs and resolves the formal conflict. The [method reference](../../docs/aspic-method.md) defines its exact semantics and limits.
+
+```sh
+python examples/api-load-test/aspic_demo.py
+```
+
+The script expects `formal_status: "accepted"` and `defeat_kinds: ["undercut"]`: the primary route is defeated, while the independent probe route remains accepted. It also reports `claim_status: "supported"`, `adequacy: "adequate"` under the stated reviewed mappings, and `mcp_claim_status: "supported"` from a real stdio exchange. All findings are stipulated synthetic records. The original [report](report.json) is unchanged and does not contain the additional trace or probe observations. A real use needs an identified, trustworthy collector for each finding and review of the rule and premise meanings.
+
 ## Live model comparison
 
 The single [API experiment](../../experiments/api_load_test/README.md) extends this same task with actual HTTP traffic and six nano/mini/full model snapshots. It compares EAL/2+MCP, equivalent JSON prompt text and three developer prompts in Docker. The synthetic report here remains a reproducible teaching fixture and is not used as experimental measurement data.
+The optional ASPIC+ variant is outside that frozen experiment. A formal solver comparison would need a separate paired protocol with equal observations and checker authority.
