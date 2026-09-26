@@ -1,0 +1,15 @@
+// Offline semantic controls. These statements concern only the recorded bench case.
+language "EAL/2";
+environment lab { require "site" == "bench"; }
+tool runner { version "1"; }
+evidence a { tool runner; kind test; environment lab; max_age 60; require "ok" == true; }
+evidence b { tool runner; kind test; environment lab; max_age 60; require "ok" == true; }
+evidence fault { tool runner; kind test; environment lab; max_age 60; require "found" == true; }
+reasoning method { method "structured/1";
+  rationale "Identified observations support this finite bench claim only."; }
+claim root { statement "At least one validated bench observation holds."; environment lab; }
+claim downstream { statement "The scoped dependent bench conclusion follows."; environment lab; }
+argument base { conclusion root; reasoning method; evidence a; }
+argument alternative { conclusion root; reasoning method; evidence b; }
+argument dependent { conclusion downstream; reasoning method; premises root; }
+objection sensor_fault { target argument base; evidence fault; }
