@@ -13,7 +13,8 @@ from experiments.api_load_test.cases import build_cases, case_specs
 from experiments.api_load_test.collector import collect
 from experiments.api_load_test.materials import ARMS, source_for
 from experiments.api_load_test.oracle import reference
-from experiments.api_load_test.routes import TrialTools, child_environment
+from experiments.api_load_test.routes import (TrialTools, checked_decision,
+                                               child_environment, eal_decision)
 from experiments.api_load_test.runner import Budget, HERE, event, run, schedule, trial
 
 PLAN = json.loads((HERE / "plan.json").read_text())
@@ -55,6 +56,21 @@ def test_credentials_do_not_enter_collector_or_mcp_environments(monkeypatch):
     monkeypatch.setenv("OPENAI_API_TOKEN", "unit-test-secret")
     monkeypatch.setenv("GITHUB_TOKEN", "unit-test-github-secret")
     assert "TOKEN" not in json.dumps(child_environment())
+
+
+def test_eal_projection_uses_checked_claim_status_and_refuses_conflicts():
+    packet = {"measurement_facts": {"report_valid": True, "identity_matches": True,
+        "complete_records": True, "consistent_records": True, "age_seconds": 12},
+        "metrics": {"request_count": 100, "p95_ms": 4.2, "error_rate_percent": 0.0}}
+    assert checked_decision(packet)["status"] == "supported"
+    assert eal_decision(packet, "unsupported")["status"] == "unsupported"
+    assert eal_decision(packet, "supported") == checked_decision(packet)
+    with pytest.raises(ValueError, match="unambiguous"):
+        eal_decision(packet, "contested")
+    packet["measurement_facts"]["age_seconds"] = 301
+    assert eal_decision(packet, "unsupported")["status"] == "unavailable"
+    with pytest.raises(ValueError, match="conflicts"):
+        eal_decision(packet, "supported")
 
 
 def test_experiment_collector_requires_the_mode_free_acquisition_request(tmp_path, measured_case):

@@ -220,6 +220,7 @@ def test_checked_finalisation_retains_tool_decision_without_model_rewrite(
     assert len(requests) == len(result["model_calls"]) == 1 and result["state"] == "complete"
     assert result["outcome"]["correct"] and result["outcome"]["host_agrees_with_reference"]
     assert result["answer_origin"] == "checked_host" and result["answer_complete"]
+    assert result["answer_consistent_with_checker"] is True
     assert not result["protocol_complete"] and not result["explanation_present"]
     assert result["answer"] == {
         **{key: truth[key] for key in ("status", "report_id", "scope", "metrics")},
@@ -246,6 +247,7 @@ def test_model_finalisation_preserves_wrong_status_and_valid_protocol(tmp_path, 
     assert result["state"] == "complete" and result["protocol_complete"]
     assert result["answer"]["status"] == "supported" and not result["outcome"]["correct"]
     assert result["outcome"]["host_agrees_with_reference"]
+    assert result["answer_consistent_with_checker"] is False
 
 
 @pytest.mark.parametrize("transport", ["text", "native"])

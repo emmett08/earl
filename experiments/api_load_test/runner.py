@@ -298,11 +298,20 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
         outcome = grade(answer, truth, collected=bool(tools.inspected_report_ids),
                         inspected_report_ids=tools.inspected_report_ids)
         outcome["host_agrees_with_reference"] = all(item["agrees"] for item in host_checks) if host_checks else None
+        checker_agreement = None
+        if answer is not None and arm in CHECKED_ARMS and tools.packet is not None:
+            checker_agreement = (answer.get("report_id") == tools.packet.get("report_id")
+                and answer.get("status") == tools.packet.get("status")
+                and answer.get("metrics") == tools.packet.get("metrics")
+                and all(isinstance(answer.get(key), list) and
+                        set(answer[key]) == set(tools.packet.get(key, []))
+                        for key in ("failed_checks", "unknown_checks")))
         if failure:
             outcome["correct"] = False
         result.update(state="complete" if answer and not failure else "failed", failure=failure,
                       answer=answer, reference=truth, outcome=outcome,
                       answer_origin=answer_origin, answer_complete=answer is not None,
+                      answer_consistent_with_checker=checker_agreement,
                       protocol_complete=answer_origin == "model",
                       explanation_present=bool(answer and isinstance(answer.get("explanation"), str)
                                                and answer["explanation"].strip()),
