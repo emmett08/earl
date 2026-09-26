@@ -35,6 +35,13 @@ def _close(actual, expected, key):
             <= (0 if key == "request_count" else 0.01))
 
 
+def metrics_match(actual, expected):
+    """Use the answer rubric's numeric tolerance for checker agreement too."""
+    return (isinstance(actual, dict) and isinstance(expected, dict)
+            and set(actual) == set(expected) == set(METRICS)
+            and all(_close(actual[key], expected[key], key) for key in METRICS))
+
+
 def _row_identity(row, expected):
     # Recompute from retained response fields, never the collector's Boolean.
     if row["status_code"] == 0:
@@ -177,8 +184,7 @@ def grade(answer: dict | None, truth: dict | None, *, collected: bool,
                            and all(isinstance(key, str) for key in unknown)
                            and len(unknown) == len(set(unknown))
                            and set(unknown) == set(truth["unknown_checks"]))
-    metrics_correct = bool(truth and isinstance(metrics, dict) and set(metrics) == set(METRICS)
-                           and all(_close(metrics[key], truth["metrics"][key], key) for key in METRICS))
+    metrics_correct = bool(truth and metrics_match(metrics, truth["metrics"]))
     correct = all((evidence_correct, status_correct, scope_correct, failed_correct, unknown_correct, metrics_correct))
     return {
         "correct": correct,

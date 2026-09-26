@@ -15,7 +15,7 @@ from experiments.api_load_test.materials import ARMS, source_for
 from experiments.api_load_test.oracle import reference
 from experiments.api_load_test.routes import (TrialTools, checked_decision,
                                                child_environment, eal_decision)
-from experiments.api_load_test.runner import Budget, HERE, event, run, schedule, trial
+from experiments.api_load_test.runner import Budget, HERE, answer_agrees_with_checker, event, run, schedule, trial
 
 PLAN = json.loads((HERE / "plan.json").read_text())
 SPEC = json.loads((HERE / "models.json").read_text())["models"][0]
@@ -71,6 +71,20 @@ def test_eal_projection_uses_checked_claim_status_and_refuses_conflicts():
     assert eal_decision(packet, "unsupported")["status"] == "unavailable"
     with pytest.raises(ValueError, match="conflicts"):
         eal_decision(packet, "supported")
+
+
+def test_checker_agreement_uses_answer_precision_without_masking_status_errors():
+    packet = {"report_id": "target", "status": "supported", "failed_checks": [],
+              "unknown_checks": [], "metrics": {"request_count": 100,
+                                            "p95_ms": 6.479093, "error_rate_percent": 0.0}}
+    answer = {**packet, "metrics": {"request_count": 100, "p95_ms": 6.48,
+                                    "error_rate_percent": 0.0}}
+    assert answer_agrees_with_checker(answer, packet)
+    assert not answer_agrees_with_checker({**answer, "status": "unsupported"}, packet)
+    assert not answer_agrees_with_checker({**answer, "metrics": {**answer["metrics"],
+                                                          "p95_ms": 6.50}}, packet)
+    assert not answer_agrees_with_checker({**answer, "metrics": {**answer["metrics"],
+                                                          "request_count": 101}}, packet)
 
 
 def test_experiment_collector_requires_the_mode_free_acquisition_request(tmp_path, measured_case):

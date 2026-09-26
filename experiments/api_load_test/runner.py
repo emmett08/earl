@@ -24,7 +24,7 @@ from .api import utc_now
 from .cases import build_cases, case_specs
 from .conversation import finish_answer, prepare_packet, repair_feedback
 from .materials import ARMS, SYSTEM, operations, prompt_for, source_for
-from .oracle import grade, packet_reference_check, reference
+from .oracle import grade, metrics_match, packet_reference_check, reference
 from .recording import TrialRecord, event, write_json
 from .routes import ROOT, ToolExecutionError, TrialTools
 
@@ -32,6 +32,18 @@ from .routes import ROOT, ToolExecutionError, TrialTools
 HERE = Path(__file__).resolve().parent
 CHECKED_ARMS = {"eal_mcp", "plain_validator"}
 TRANSIENT_ERRORS = {"http_server", "timeout", "transport"}
+
+
+def answer_agrees_with_checker(answer: dict, packet: dict) -> bool:
+    """Compare decisions using the same numeric precision as answer grading."""
+    return (answer.get("report_id") == packet.get("report_id")
+            and answer.get("status") == packet.get("status")
+            and metrics_match(answer.get("metrics"), packet.get("metrics"))
+            and all(isinstance(answer.get(key), list)
+                    and all(isinstance(value, str) for value in answer[key])
+                    and len(answer[key]) == len(set(answer[key]))
+                    and set(answer[key]) == set(packet.get(key, []))
+                    for key in ("failed_checks", "unknown_checks")))
 
 
 def schedule(model: str, cases: list[dict], seed: int, transport: str = "text", *, selected_arms=ARMS,
@@ -300,12 +312,7 @@ async def trial(assignment, spec, plan, workspace, provider, budget, case, *, ca
         outcome["host_agrees_with_reference"] = all(item["agrees"] for item in host_checks) if host_checks else None
         checker_agreement = None
         if answer is not None and arm in CHECKED_ARMS and tools.packet is not None:
-            checker_agreement = (answer.get("report_id") == tools.packet.get("report_id")
-                and answer.get("status") == tools.packet.get("status")
-                and answer.get("metrics") == tools.packet.get("metrics")
-                and all(isinstance(answer.get(key), list) and
-                        set(answer[key]) == set(tools.packet.get(key, []))
-                        for key in ("failed_checks", "unknown_checks")))
+            checker_agreement = answer_agrees_with_checker(answer, tools.packet)
         if failure:
             outcome["correct"] = False
         result.update(state="complete" if answer and not failure else "failed", failure=failure,
