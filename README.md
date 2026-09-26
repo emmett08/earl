@@ -2,7 +2,7 @@
 
 EAL/2 is a language and host for bounded engineering arguments. A source file identifies the claim, the question it addresses, its reasoning method, evidence obligations, premises and objections. The interpreter validates those declarations, collects observations through host-configured tools, evaluates the stated method and records an explanation of the resulting status. A checked status is about the declared question and collected observations; the source's relevance and the observations' real-world provenance still require review.
 
-The Python package is **2.12.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Formal reasoning-method inputs use the independent `EAL/typed-input/1` envelope. Source, package, acquisition and typed-method identifiers describe different contracts.
+The Python package is **2.12.1** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Formal reasoning-method inputs use the independent `EAL/typed-input/1` envelope. Source, package, acquisition and typed-method identifiers describe different contracts.
 
 ## Start here
 
@@ -62,3 +62,4 @@ The implementation provides finite, explicit support and attack reasoning with v
 | [Sources](docs/sources.md) | Primary research and retained references |
 
 [`CONTRACT.md`](CONTRACT.md) records implementation interfaces. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).
+
