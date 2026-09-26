@@ -6,7 +6,7 @@ from . import __version__
 
 EXAMPLE = '''language "EAL/2";
 environment bench { require "site" == "bench"; }
-tool collector { version "1"; mode deterministic; }
+tool collector { version "1"; }
 evidence observation {
   tool collector; kind test; environment bench; max_age 3600;
   require "passed" == true;
@@ -35,7 +35,7 @@ def describe_language(*, registry=None) -> dict:
             "notation": "Capitalised placeholders denote strings, identifiers, numbers or JSON. Square brackets denote optional clauses; + denotes one or more repetitions. Clause order is fixed. Names are unique across declarations; forward references are allowed. Strings use JSON quoting. Comments use // or /* */.",
             "program": 'language "EAL/2"; DECLARATIONS',
             "environment": 'environment NAME { require "CONTEXT.FIELD" OP SCALAR; + }',
-            "tool": 'tool NAME { version "VERSION"; mode deterministic|nondeterministic; }',
+            "tool": 'tool NAME { version "VERSION"; }',
             "evidence": 'evidence NAME { tool TOOL; kind KIND; environment ENV; max_age SECONDS; [input JSON;] require "VALUE.FIELD" OP SCALAR; + }',
             "assumption": 'assumption NAME { statement "TEXT"; environment ENV; validate EVIDENCE; [valid_from "TIME";] [valid_until "TIME";] }',
             "reasoning": 'reasoning NAME { method "VERSIONED_METHOD_ID"; rationale "TEXT"; [backing EVIDENCE_LIST;] [require "OUTPUT.FIELD" OP SCALAR; ...] }',
@@ -71,7 +71,7 @@ def describe_language(*, registry=None) -> dict:
         "source_identity": "Collections bind exact UTF-8 source bytes. Revision or formatting requires recollection. Keep source, context and explicit assessment time tied to the intended task.",
         "observation_import": {
             "required_envelope_fields": ["value", "observed_at", "context", "request"],
-            "acquisition_request_fields": ["tool", "tool_version", "mode", "input", "context"],
+            "acquisition_request_fields": ["tool", "tool_version", "input", "context"],
             "correspondence": "File observations must match the requested acquisition. Source and local evidence identifiers are assigned separately by collection; an observation can be reused only when its acquisition still matches.",
             "interpretation": "Matching metadata checks correspondence; it does not authenticate a measurement. Importing again preserves original observation time.",
         },

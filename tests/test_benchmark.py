@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from eal.benchmark import compare_sources, evaluate_models, load_suite, score_answer, source_correspondence, summarise, task_inputs, workflow_score
+from eal.benchmark import compare_sources, evaluate_models, evidence_trace_score, load_suite, score_answer, source_correspondence, summarise, task_inputs, workflow_score
 from _runtime_cases import PRESSURE_SOURCE, write_suite
 
 def report(claims, status="completed"):
@@ -52,7 +52,7 @@ def test_alpha_equivalence_accepts_consistent_internal_renaming_only():
 def test_alpha_equivalence_handles_declaration_order_and_cycles_without_rewriting_literals():
     source = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool instrument { version "1"; mode deterministic; }
+tool instrument { version "1"; }
 evidence measured { tool instrument; kind test; environment lab; max_age 60; require "passed" == true; }
 reasoning step { method "structured/1"; rationale "measured means an observation, not a replaceable literal"; }
 claim outcome { statement "The trial supports this property."; environment lab; }
@@ -163,7 +163,18 @@ def test_paired_harness_through_actual_mcp_with_explicit_regression_provider(tmp
     assert result["trials"][0]["inputs"] == result["trials"][1]["inputs"]
     delegated = next(trial for trial in result["trials"] if trial["arm"] == "delegated")
     assert delegated["score"]["source_correspondence"]
+    collection = next(event["result"] for event in delegated["report"]["tool_calls"]
+                      if event["tool"] == "eal_collect" and event["status"] == "ok")
+    independent = {"collection": {"records": copy.deepcopy(collection["records"])}}
+    independent["collection"]["records"]["pressure_trial"]["tool_binding_digest"] = "f" * 64
+    comparison = delegated["score"]["source_comparison"]
+    assert evidence_trace_score(delegated["inputs"], independent, comparison,
+                                delegated["report"])["verified"]
+    altered = copy.deepcopy(delegated["report"])
+    altered_collection = next(event["result"] for event in altered["tool_calls"]
+                              if event["tool"] == "eal_collect" and event["status"] == "ok")
+    altered_collection["records"]["pressure_trial"]["tool_binding_digest"] = "e" * 64
+    trace = evidence_trace_score(delegated["inputs"], independent, comparison, altered)
+    assert not trace["verified"] and any("local assessed tool binding" in reason for reason in trace["reasons"])
     assert delegated["cost"]["mcp_calls"] >= 3
     assert result["summary"]["delegated"]["cost_complete"]
-
-

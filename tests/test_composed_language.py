@@ -3,12 +3,13 @@ from eal.evaluator import canonical_digest, environment_fingerprint, evaluate
 from eal.formatter import format_source, semantic_ir
 from eal.parser import parse
 from eal.semantics import validate
+from _provenance import synthetic_provenance
 
 NOW = '2026-09-23T12:00:00Z'
 CONTEXT = {'site': 'bench'}
 BASE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool collector { version "1"; mode deterministic; }
+tool collector { version "1"; }
 evidence positive { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
 evidence negative { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
 evidence defence_data { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
@@ -27,13 +28,14 @@ def assess(source, *, stale=()):
     for name, evidence in program.evidence.items():
         value = {'holds': True}
         records[name] = {'evidence_id': name, 'source_digest': program.source_digest,
-                         'tool': evidence.tool, 'tool_version': '1', 'mode': 'deterministic',
+                         'tool': evidence.tool, 'tool_version': '1',
                          'evidence_kind': evidence.kind, 'environment': evidence.environment,
                          'environment_fingerprint': environment_fingerprint(evidence.environment, CONTEXT),
                          'input_digest': canonical_digest(evidence.input),
                          'collected_at': '2026-09-23T11:58:00Z' if name in stale else NOW,
                          'run_id': 'composed-test', 'status': 'ok', 'value': value,
-                         'data_digest': canonical_digest(value)}
+                         'data_digest': canonical_digest(value),
+                         **synthetic_provenance(program, name, CONTEXT)}
     result = evaluate(program, records, now=NOW, context=CONTEXT)
     assert result['valid'], result['diagnostics']
     return result

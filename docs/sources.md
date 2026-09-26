@@ -80,7 +80,7 @@ MCP connects application hosts and clients to server capabilities. A text-only m
 
 ## Project-specific decisions
 
-Evidence freshness, environment identity, assumption intervals, deterministic versus nondeterministic tool declarations, and the exact result vocabulary are EAL design decisions. Their suitability depends on the intended engineering question. They should be assessed through executable examples and counterexamples, rather than attributed to Toulmin, ASPIC+, Dung or ANTLR.
+Evidence freshness, environment identity, assumption intervals, binding digests and the exact result vocabulary are EAL design decisions. The current grammar no longer declares deterministic versus nondeterministic tool modes. Their suitability depends on the intended engineering question. They should be assessed through executable examples and counterexamples, rather than attributed to Toulmin, ASPIC+, Dung or ANTLR.
 
 ## Model-assisted reasoning and study design
 

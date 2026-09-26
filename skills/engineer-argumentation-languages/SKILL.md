@@ -63,7 +63,7 @@ Interpret a fixed source, observation set, environment and explicit evaluation t
 
 ## Connect evidence and delegated reasoning
 
-Implement adapters for actual tools and a durable observation store when required. Record request, tool/version/mode, environment, timing, result, execution errors and relevant digests. Bind observations to their intended evidence declarations and inputs. Preserve original observation timestamps for imported results. Test failure, stale data, wrong environment and wrong request as well as successful collection.
+Implement adapters for actual tools and a durable observation store when required. Record the request, tool version, selected host-binding configuration digest, environment, timing, result, execution errors and relevant digests. Keep any qualified repeatability assertion in the trusted host contract; do not infer it from one result or treat it as evidence sufficiency. Bind observations to their intended evidence declarations and inputs. Preserve original observation timestamps for imported results. Test failure, stale data, wrong environment and wrong request as well as successful collection.
 
 Expose small MCP operations for parsing/validation, evidence collection, reasoning, explanation and supported solver operations. Share interpreter functions with the CLI. Use the official SDK for protocol lifecycle and stdio transport. Keep host configuration for executable commands separate from argument source.
 

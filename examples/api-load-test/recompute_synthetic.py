@@ -16,9 +16,10 @@ IDENTITY = ("service", "build_id", "run_id", "concurrent_clients", "dataset")
 def main() -> None:
     try:
         request = json.loads(sys.stdin.buffer.read(MAX_BYTES + 1).decode("utf-8"))
-        if (request.get("tool"), request.get("tool_version"), request.get("mode")) != (
-                "fixture_recompute", "1", "deterministic"):
+        if (request.get("tool"), request.get("tool_version")) != ("fixture_recompute", "1"):
             raise ValueError("Expected the reviewed fixture_recompute/1 request")
+        if set(request) != {"evidence_id", "environment", "tool", "tool_version", "input", "context"}:
+            raise ValueError("Unexpected collection request fields")
         raw = REPORT.read_bytes()
         expected = request["input"]
         if (len(raw) > MAX_BYTES or hashlib.sha256(raw).hexdigest() != expected["report_sha256"]
@@ -52,7 +53,7 @@ def main() -> None:
         result = {
             "value": values, "context": request["context"],
             "request": {key: request[key] for key in
-                        ("tool", "tool_version", "mode", "input", "context")},
+                        ("tool", "tool_version", "input", "context")},
             "details": {"dataset": "synthetic", "assessment_kind": "recomputation",
                         "source_report_observed_at": report["observed_at"],
                         "report_sha256": expected["report_sha256"]},

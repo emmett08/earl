@@ -8,13 +8,14 @@ import pytest
 
 from eal.evaluator import canonical_digest, environment_fingerprint, evaluate
 from eal.parser import parse
+from _provenance import synthetic_provenance
 
 
 NOW = "2026-09-23T12:00:00Z"
 CONTEXT = {"site": "bench"}
 BASE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool collector { version "1"; mode deterministic; }
+tool collector { version "1"; }
 evidence positive { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
 evidence negative { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
 evidence independent { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
@@ -37,12 +38,13 @@ def assess(source, *, missing=(), values=None, registry=None):
         value = values[name] if values is not None and name in values else {"passed": True}
         tool = program.tools[evidence.tool]
         records[name] = {"evidence_id": name, "source_digest": program.source_digest,
-                         "tool": tool.name, "tool_version": tool.version, "mode": tool.mode,
+                         "tool": tool.name, "tool_version": tool.version,
                          "evidence_kind": evidence.kind, "environment": evidence.environment,
                          "environment_fingerprint": environment_fingerprint(evidence.environment, CONTEXT),
                          "input_digest": canonical_digest(evidence.input), "collected_at": NOW,
                          "run_id": "independent-semantic-review", "status": "ok", "value": value,
-                         "data_digest": canonical_digest(value)}
+                         "data_digest": canonical_digest(value),
+                         **synthetic_provenance(program, name, CONTEXT)}
     result = evaluate(program, records, now=NOW, context=CONTEXT, registry=registry)
     assert result["valid"], result["diagnostics"]
     return result
@@ -178,7 +180,7 @@ def test_custom_method_checks_question_identity_even_when_scalar_answer_is_uncha
 
     source = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool collector { version "1"; mode deterministic; }
+tool collector { version "1"; }
 evidence series { tool collector; kind sum_input; environment lab; max_age 60;
   require "schema" == "EAL/typed-input/1";
 }
@@ -225,7 +227,7 @@ def _fixture_server(tmp_path):
     (tmp_path / "value.json").write_text(json.dumps({"value": {"passed": True}, "context": CONTEXT, "observed_at": NOW,
         "request": acquisition_request(parse(BASE), "positive", CONTEXT)}))
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.collector]\nkind="json_file"\npath="value.json"\nmode="deterministic"\nversion="1"\n')
+    registry.write_text('[tools.collector]\nkind="json_file"\npath="value.json"\nversion="1"\n')
     return StdioServerParameters(command=sys.executable,
         args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(registry)])
 

@@ -78,7 +78,7 @@ def prepare_task(task: dict, root: Path, workspace: Path) -> tuple[ReasoningServ
         (workspace / filename).write_text(json.dumps(envelope, allow_nan=False))
         declaration = program.tools[tool]
         registry.extend([f"[tools.{tool}]", 'kind="json_file"', f"path={json.dumps(filename)}",
-                         f"version={json.dumps(declaration.version)}", f"mode={json.dumps(declaration.mode)}", ""])
+                         f"version={json.dumps(declaration.version)}", ""])
     registry_path = workspace / "tools.toml"
     registry_path.write_text("\n".join(registry))
     from .runtime import load_method_registry
@@ -350,7 +350,24 @@ def evidence_trace_score(inputs: dict, reference: dict, comparison: dict, report
         if not isinstance(actual, dict) or not isinstance(expected, dict):
             reasons.append(f"Provided observation {evidence_id!r} was not included in the assessment collection")
             continue
-        fields = ["status", "tool", "tool_version", "mode", "evidence_kind", "input_digest"]
+        # Each trial workspace derives a keyed identity using a different
+        # store key. Compare the supplied record with its own assessment;
+        # cross-workspace equality would reject the same trusted binding.
+        binding_digest = actual.get("tool_binding_digest")
+        assessed_evidence = reason["result"].get("evidence", {}).get(actual_id)
+        assessed_binding = (assessed_evidence.get("tool_binding_digest")
+                            if isinstance(assessed_evidence, dict) else None)
+        expected_binding = expected.get("tool_binding_digest")
+        # A failed collection can lack a binding entirely. Preserve that
+        # outcome when both sides have the same error instead of requiring a
+        # digest that could not have been derived.
+        if ((expected_binding is None and binding_digest is not None)
+                or (expected_binding is not None
+                    and (not isinstance(binding_digest, str) or len(binding_digest) != 64
+                         or any(char not in "0123456789abcdef" for char in binding_digest)
+                         or binding_digest != assessed_binding))):
+            reasons.append(f"Provided observation {evidence_id!r} has no matching local assessed tool binding")
+        fields = ["status", "tool", "tool_version", "evidence_kind", "input_digest"]
         if expected.get("status") == "ok":
             fields += ["value", "data_digest", "collected_at"]
         else:

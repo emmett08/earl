@@ -7,7 +7,7 @@ environment bundled_fixture {
   require "dataset" == "synthetic";
 }
 
-tool fixture_recompute { version "1"; mode deterministic; }
+tool fixture_recompute { version "1"; }
 
 evidence recomputed_sample {
   tool fixture_recompute; kind test; environment bundled_fixture; max_age 120;

@@ -152,6 +152,14 @@ def test_finish_cannot_reuse_expired_observations(tmp_path, monkeypatch):
         host.finish(packet["assessment_id"])
 
 
+def test_finish_rejects_same_version_tool_binding_configuration_drift(tmp_path):
+    host, _, _, tools = _host(tmp_path)
+    packet = host.assess("check the error limit for payments")
+    tools.write_text(tools.read_text() + 'max_output_bytes=2048\n')
+    with pytest.raises(ValueError, match="identity|binding|reassess"):
+        host.finish(packet["assessment_id"])
+
+
 def test_new_principal_cannot_retrieve_another_principals_result(tmp_path):
     host, service, manifest, _ = _host(tmp_path)
     packet = host.assess("check the error limit for payments")
@@ -192,5 +200,20 @@ def test_pending_resolution_cannot_finish_an_earlier_assessment(tmp_path):
     host, _, _, _ = _host(tmp_path)
     packet = host.assess("check the error limit for payments")
     assert host.resolve("assess request failures for orders")["status"] == "resolved"
+    with pytest.raises(ValueError, match="active request"):
+        host.finish(packet["assessment_id"])
+
+
+def test_finish_rechecks_session_after_slow_evaluation(tmp_path, monkeypatch):
+    host, _, _, _ = _host(tmp_path)
+    packet = host.assess("check the error limit for payments")
+    original_evaluate = module.evaluate
+
+    def superseded_during_evaluation(*args, **kwargs):
+        result = original_evaluate(*args, **kwargs)
+        assert host.resolve("assess request failures for orders")["status"] == "resolved"
+        return result
+
+    monkeypatch.setattr(module, "evaluate", superseded_during_evaluation)
     with pytest.raises(ValueError, match="active request"):
         host.finish(packet["assessment_id"])

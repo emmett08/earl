@@ -7,7 +7,7 @@ environment test_run {
   require "dataset" == "synthetic";
 }
 
-tool load_test_report { version "1"; mode deterministic; }
+tool load_test_report { version "1"; }
 
 evidence load_test {
   tool load_test_report; kind test; environment test_run; max_age 86400;

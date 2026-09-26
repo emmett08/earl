@@ -11,7 +11,7 @@ from test_evaluator import CONTEXT, NOW, record
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool runner { version "1"; mode deterministic; }
+tool runner { version "1"; }
 evidence report { tool runner; kind test; environment lab; max_age 60;
  require "complete" == true;
 }
@@ -209,7 +209,7 @@ def test_registry_load_roundtrip_and_rejection_of_duplicate_or_unknown_fields(tm
 
 LOGIC = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool runner { version "1"; mode deterministic; }
+tool runner { version "1"; }
 evidence fact { tool runner; kind test; environment lab; max_age 60; require "recorded" == true; }
 evidence logic { tool runner; kind logical_case; environment lab; max_age 60; require "conclusion" == "p"; }
 reasoning observed_rule { method "structured/1"; rationale "The recorded observation establishes the scoped atom."; }

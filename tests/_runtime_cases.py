@@ -10,7 +10,7 @@ from pathlib import Path
 PRESSURE_SOURCE = """// Synthetic data and two model-conditional estimates.
 language "EAL/2";
 environment bench { require "site" == "bench"; require "revision" == "A"; }
-tool pressure_trial_tool { version "1"; mode deterministic; }
+tool pressure_trial_tool { version "1"; }
 evidence pressure_trial { tool pressure_trial_tool; kind experiment; environment bench; max_age 7200; require "schema" == "EAL/typed-input/1"; }
 
 reasoning pressure_difference { method "causal/1"; rationale "Difference of means for the identified pressure trial; units convert before checking the claim."; }
@@ -62,7 +62,6 @@ PRESSURE_OBSERVATION = json.loads("""{
   "request": {
     "tool": "pressure_trial_tool",
     "tool_version": "1",
-    "mode": "deterministic",
     "input": {},
     "context": {
       "site": "bench",
@@ -73,7 +72,7 @@ PRESSURE_OBSERVATION = json.loads("""{
 
 RMS_SOURCE = """language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool readings { version "1"; mode deterministic; }
+tool readings { version "1"; }
 evidence series {
   tool readings;
   kind measurement_series;
@@ -132,7 +131,6 @@ RMS_OBSERVATION = json.loads("""{
   "request": {
     "tool": "readings",
     "tool_version": "1",
-    "mode": "deterministic",
     "input": {},
     "context": {
       "site": "bench"
@@ -142,7 +140,7 @@ RMS_OBSERVATION = json.loads("""{
 
 REACHABILITY_SOURCE = """language "EAL/2";
 environment controller_bench { require "site" == "simulation"; }
-tool graph_reader { version "1"; mode deterministic; }
+tool graph_reader { version "1"; }
 evidence graph_record {
   tool graph_reader; kind finite_graph; environment controller_bench;
   max_age 3600; require "schema" == "EAL/typed-input/1";
@@ -174,7 +172,6 @@ REACHABILITY_OBSERVATION = json.loads("""{
   "request": {
     "tool": "graph_reader",
     "tool_version": "1",
-    "mode": "deterministic",
     "input": {},
     "context": {
       "site": "simulation"
@@ -227,7 +224,7 @@ def write_case(workspace: Path, name: str) -> tuple[Path, Path, Path]:
     registry_path = directory / f"{name}.toml"
     registry_path.write_text(
         f'[tools.{tool}]\nkind = "json_file"\npath = "cases/{name}.json"\n'
-        'version = "1"\nmode = "deterministic"\n'
+        'version = "1"\n'
     )
     return source_path, observation_path, registry_path
 

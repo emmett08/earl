@@ -8,11 +8,12 @@ import pytest
 from eal.evaluator import canonical_digest, environment_fingerprint, evaluate
 from eal.parser import parse
 from eal.semantics import validate
+from _provenance import synthetic_provenance
 
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool collector { version "1"; mode deterministic; }
+tool collector { version "1"; }
 evidence positive { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
 evidence negative { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
 evidence defence { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
@@ -36,12 +37,13 @@ def _record(program, name, *, collected_at=NOW):
     value = {'holds': True}
     return {
         'evidence_id': name, 'source_digest': program.source_digest,
-        'tool': declaration.tool, 'tool_version': '1', 'mode': 'deterministic',
+        'tool': declaration.tool, 'tool_version': '1',
         'evidence_kind': declaration.kind, 'environment': declaration.environment,
         'environment_fingerprint': environment_fingerprint(declaration.environment, CONTEXT),
         'input_digest': canonical_digest(declaration.input), 'collected_at': collected_at,
         'run_id': 'stage-fixture', 'status': 'ok', 'value': value,
         'data_digest': canonical_digest(value),
+        **synthetic_provenance(program, name, CONTEXT),
     }
 
 
@@ -51,11 +53,11 @@ def _digest(value):
 
 
 @pytest.mark.parametrize('missing,stale,context,expected_digest', [
-    ((), (), CONTEXT, 'c70ab60c7f447cee629e399a049ce513073b5b9031a649d82e2a7c7c43bbc4d7'),
-    (('defence',), (), CONTEXT, 'c345a9c713187194c26d5abd7483fa47f55f53b2170032781a18dc7cfd4b1504'),
-    (('positive',), (), CONTEXT, '225da311b89e52a6edb22556d6701a568e21eed8617ba1ff99d829ab2d0b3db5'),
-    ((), ('negative',), CONTEXT, 'e10bcf5571e51d6271f8ea347d601d3d01cc94f3712c4a439001e9ccf0ccf605'),
-    ((), (), {'site': 'elsewhere'}, 'e693d5cd5d41824de52a795124646a17ecb52bd9f6359930d391795c0661730d'),
+    ((), (), CONTEXT, 'cc0e4f60b76c933c69b1bf863426663fd5cfa57c065c5296c78367a221fcee9e'),
+    (('defence',), (), CONTEXT, '957e2da71501524ebda55e3f873275cb892e6403c539fc43f0e36fa597dc0ffc'),
+    (('positive',), (), CONTEXT, 'bd8c19cee29b319c1190e6736be1711ee66a8fa74012322df56118110bab1ac2'),
+    ((), ('negative',), CONTEXT, '49921072a49fa7525c3a90280cddb31444d34239e9461ce65ae68dc4f70f703c'),
+    ((), (), {'site': 'elsewhere'}, 'ca5fc814c44f13d8ef939a809cc3a19bb91106afc7ac032e094c053b78b33b8d'),
 ])
 def test_full_result_is_stable_across_pipeline_stages(missing, stale, context, expected_digest):
     program = parse(SOURCE)

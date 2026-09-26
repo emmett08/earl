@@ -17,7 +17,7 @@ from eal.runtime import ReasoningService
 def source(site: str) -> str:
     return f'''language "EAL/2";
 environment rig {{ require "site" == "{site}"; }}
-tool reader {{ version "1"; mode deterministic; }}
+tool reader {{ version "1"; }}
 evidence result {{ tool reader; kind test; environment rig; max_age 3600; require "passed" == true; }}
 reasoning relation {{ method "structured/1"; rationale "A scoped record supplies provisional support."; }}
 claim accepted {{ statement "The {site} rig test passed."; environment rig; }}

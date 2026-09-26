@@ -22,7 +22,7 @@ from eal.runtime import ReasoningService
 
 STATISTICAL_SOURCE = '''language "EAL/2";
 environment observed_service { require "service" == "$service"; }
-tool sample_reader { version "1"; mode deterministic; }
+tool sample_reader { version "1"; }
 evidence sample {
   tool sample_reader; kind sample; environment observed_service; max_age 60;
   input {"subject":"$service"};
@@ -65,7 +65,7 @@ value = {
 }
 print(json.dumps({"value": value, "context": request["context"],
                  "request": {k: request[k] for k in
-                     ("tool", "tool_version", "mode", "input", "context")}}))
+                     ("tool", "tool_version", "input", "context")}}))
 '''
 
 
@@ -80,7 +80,7 @@ def _statistical_host_files(tmp_path: Path):
     }))
     tools_path = tmp_path / "tools.toml"
     tools_path.write_text(
-        '[tools.sample_reader]\nkind="command"\nmode="deterministic"\nversion="1"\n'
+        '[tools.sample_reader]\nkind="command"\nversion="1"\n'
         'argv=' + json.dumps([sys.executable, str(tmp_path / "collector.py")]) + '\n'
     )
     service = ReasoningService(tmp_path, tools_path)

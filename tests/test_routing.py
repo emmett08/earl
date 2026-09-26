@@ -30,7 +30,7 @@ def routed(tmp_path, *, principal="caller_a", claims=None):
     )
     tools = tmp_path / "tools.toml"
     tools.write_text(
-        '[tools.reader]\nkind="command"\nmode="deterministic"\nversion="1"\n'
+        '[tools.reader]\nkind="command"\nversion="1"\n'
         f'argv={json.dumps([sys.executable, str(collector)])}\n', encoding="utf-8",
     )
     artifacts = ArtifactRegistry.load(ReasoningService(tmp_path, tools), manifest)

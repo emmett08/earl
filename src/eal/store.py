@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import json
+import os
+import secrets
 import sqlite3
+import stat
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -14,10 +17,48 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
+def _private_binding_key(database_path: Path) -> bytes:
+    """Atomically establish a private store-local identity key outside SQLite."""
+    parent = database_path.parent
+    if os.name == "posix":
+        directory = parent.stat()
+        if (not stat.S_ISDIR(directory.st_mode) or directory.st_uid != os.getuid()
+                or directory.st_mode & 0o022):
+            raise PermissionError("The run-store directory must be owned by the process and not writable by others")
+    key_path = database_path.with_name(database_path.name + ".binding-key")
+    temporary = key_path.with_name(key_path.name + "." + secrets.token_hex(16) + ".tmp")
+    descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL |
+                         getattr(os, "O_NOFOLLOW", 0), 0o600)
+    try:
+        candidate = secrets.token_bytes(32)
+        with os.fdopen(descriptor, "wb") as stream:
+            stream.write(candidate)
+            stream.flush()
+            os.fsync(stream.fileno())
+        try:
+            os.link(temporary, key_path, follow_symlinks=False)
+        except FileExistsError:
+            pass
+    finally:
+        temporary.unlink(missing_ok=True)
+    descriptor = os.open(key_path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    with os.fdopen(descriptor, "rb") as stream:
+        info = os.fstat(stream.fileno())
+        if not stat.S_ISREG(info.st_mode) or info.st_mode & 0o077:
+            raise PermissionError("The run-store binding key must be a private regular file")
+        if os.name == "posix" and info.st_uid != os.getuid():
+            raise PermissionError("The run-store binding key must be owned by the process")
+        key = stream.read(33)
+    if len(key) != 32:
+        raise ValueError("The run-store binding key must contain exactly 32 bytes")
+    return key
+
+
 class RunStore:
     def __init__(self, path: str | Path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
+        self._binding_key = _private_binding_key(self.path)
         with self._connect() as connection:
             connection.execute("PRAGMA journal_mode=WAL")
             connection.execute(

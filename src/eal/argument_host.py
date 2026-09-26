@@ -581,9 +581,11 @@ class ArgumentHost:
                       "collection_id": packet["collection_id"]}
         original = {**self.service.store.get(assessment_id, kind="assessment"),
                     "assessment_id": assessment_id}
-        current = evaluate(parse(source), collection["records"], now=utc_now(),
-                           context=resolution["context"], registry=self.service.method_registry)
-        _require_complete_collection(parse(source), set(resolution["obligations"]["evidence"]), collection, current)
+        program = parse(source)
+        current = evaluate(program, collection["records"], now=utc_now(),
+                           context=resolution["context"], registry=self.service.method_registry,
+                           binding_digests=self.service.current_binding_digests(program))
+        _require_complete_collection(program, set(resolution["obligations"]["evidence"]), collection, current)
         # Recheck temporal validity separately from the immutable assessment:
         # a historical ID must never be relabelled as a newly evaluated record.
         if any(current.get(key) != original.get(key) for key in
@@ -592,6 +594,10 @@ class ArgumentHost:
         adequacy = self._adequacy(self.schemes[resolution["scheme_id"]], resolution, source, original, collection)
         if adequacy != packet["adequacy"]:
             raise ValueError("Stored adequacy assessment differs from its checked dependencies")
+        current_revision, current_state = self._session()
+        if (current_revision != revision or current_state.get("assessment_id") != assessment_id
+                or current_state.get("request_digest") != packet["request_digest"]):
+            raise ValueError("Assessment is no longer the active request; reassess")
         return packet
 
 

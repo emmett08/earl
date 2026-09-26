@@ -7,6 +7,7 @@ import pytest
 
 from eal.evaluator import canonical_digest, environment_fingerprint, evaluate
 from eal.parser import parse
+from _provenance import synthetic_provenance
 
 
 NOW = "2026-09-23T12:00:00Z"
@@ -18,7 +19,7 @@ KINDS = {"deductive": "logical_case", "causal": "experiment",
 def source(mode, query, *, quantity="proposition", unit="1", result='"entailed" == true'):
     return f'''language "EAL/2";
 environment lab {{ require "site" == "bench"; }}
-tool collector {{ version "1"; mode deterministic; }}
+tool collector {{ version "1"; }}
 evidence measured {{ tool collector; kind {KINDS[mode]}; environment lab;
   max_age 60; require "schema" == "EAL/typed-input/1";
 }}
@@ -45,12 +46,13 @@ def envelope(mode, payload, *, quantity="proposition", unit="1"):
 def assess(text, value):
     program = parse(text)
     record = {"evidence_id": "measured", "source_digest": program.source_digest,
-              "tool": "collector", "tool_version": "1", "mode": "deterministic",
+              "tool": "collector", "tool_version": "1",
               "evidence_kind": program.evidence["measured"].kind, "environment": "lab",
               "environment_fingerprint": environment_fingerprint("lab", CONTEXT),
               "input_digest": canonical_digest(program.evidence["measured"].input),
               "collected_at": NOW, "run_id": "independent-review", "status": "ok",
-              "value": value, "data_digest": canonical_digest(value)}
+              "value": value, "data_digest": canonical_digest(value),
+              **synthetic_provenance(program, "measured", CONTEXT)}
     result = evaluate(program, {"measured": record}, now=NOW, context=CONTEXT)
     assert result["valid"], result["diagnostics"]
     return result

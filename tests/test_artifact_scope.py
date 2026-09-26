@@ -15,7 +15,7 @@ from eal.runtime import ReasoningService
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
 environment field { require "site" == "field"; }
-tool runner { version "1"; mode deterministic; }
+tool runner { version "1"; }
 evidence leaf_record { tool runner; kind test; environment lab; max_age 3600; require "passed" == true; }
 evidence calibration_record { tool runner; kind test; environment lab; max_age 3600; require "passed" == true; }
 evidence backing_record { tool runner; kind test; environment lab; max_age 3600; require "passed" == true; }
@@ -62,7 +62,7 @@ def setup_registry(tmp_path, *, source=SOURCE):
         "date='2039-01-31T08:30:00Z' if Path('stale.txt').exists() and name==Path('stale.txt').read_text() else '2040-01-31T08:30:00Z'\n"
         "print(json.dumps({'value':value,'observed_at':date}))\n")
     tools = tmp_path / "tools.toml"
-    tools.write_text('[tools.runner]\nkind="command"\nmode="deterministic"\nversion="1"\nargv='
+    tools.write_text('[tools.runner]\nkind="command"\nversion="1"\nargv='
                      + json.dumps([sys.executable, str(collector)]) + "\n")
     service = ReasoningService(tmp_path, tools)
     manifest = tmp_path / "artifacts.toml"

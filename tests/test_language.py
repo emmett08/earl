@@ -6,7 +6,7 @@ from eal.semantics import validate
 
 BASE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool runner { version "1"; mode deterministic; }
+tool runner { version "1"; }
 evidence observation {
  tool runner; kind test; environment lab; max_age 60;
  input {"suite": "smoke", "args": [1, true, null]}; require "passed" == true;
@@ -31,6 +31,7 @@ def test_real_antlr_visitor_builds_typed_ast():
     assert program.evidence['observation'].kind == 'test'
     assert program.reasoning['measured'].method == 'structured/1'
     assert not hasattr(program.reasoning['measured'], 'mode')
+    assert not hasattr(program.tools['runner'], 'mode')
     assert program.assumptions['stable'].valid_from is None
     assert program.assumptions['stable'].valid_until == '2027-01-01T00:00:00Z'
     assert len(program.source_digest) == 64
@@ -126,3 +127,8 @@ def test_previous_and_unrecognised_language_versions_are_rejected(language):
 def test_source_reasoning_mode_is_rejected(mode):
     with pytest.raises(EALSyntaxError):
         parse(BASE.replace('method "structured/1";', f'mode {mode};'))
+
+
+def test_removed_tool_mode_clause_does_not_accept_an_old_source():
+    with pytest.raises(EALSyntaxError):
+        parse(BASE.replace('version "1";', 'version "1"; mode nondeterministic;'))

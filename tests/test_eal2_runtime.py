@@ -11,12 +11,13 @@ from eal.model import Diagnostic, SourceSpan
 from eal.modes import assess_mode, validate_mode
 from eal.parser import parse
 from eal.semantics import validate
+from _provenance import synthetic_provenance
 
 NOW = '2026-09-23T12:00:00Z'
 CONTEXT = {'site': 'bench'}
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool observer { version "1"; mode deterministic; }
+tool observer { version "1"; }
 evidence measurement { tool observer; kind experiment; environment lab; max_age 60; require "schema" == "EAL/typed-input/1"; }
 evidence calibration { tool observer; kind test; environment lab; max_age 60; require "holds" == true; }
 assumption calibrated { statement "The instrument calibration applies."; environment lab; validate calibration;
@@ -47,12 +48,13 @@ def records_for(program, context=CONTEXT, *, stale=()):
         tool = program.tools[evidence.tool]
         value = deepcopy(VALUE if name == 'measurement' else {'holds': True})
         records[name] = {'evidence_id': name, 'source_digest': program.source_digest,
-                         'tool': tool.name, 'tool_version': tool.version, 'mode': tool.mode,
+                         'tool': tool.name, 'tool_version': tool.version,
                          'evidence_kind': evidence.kind, 'environment': evidence.environment,
                          'environment_fingerprint': environment_fingerprint(evidence.environment, context),
                          'input_digest': canonical_digest(evidence.input), 'run_id': 'fixed-observation',
                          'collected_at': '2026-09-23T11:58:00Z' if name in stale else NOW,
-                         'status': 'ok', 'value': value, 'data_digest': canonical_digest(value)}
+                         'status': 'ok', 'value': value, 'data_digest': canonical_digest(value),
+                         **synthetic_provenance(program, name, context)}
     return records
 
 
@@ -123,7 +125,7 @@ def test_reasoning_and_computation_explanations_identify_methods_without_reasoni
         assert any(method in reason for reason in entry['reasons'])
         assert not hasattr(program.reasoning[name], 'mode')
     assert result['arguments']['measured']['reasoning_result']['method'] == 'causal/1'
-    assert result['evidence']['measurement']['mode'] == 'deterministic'
+    assert result['evidence']['measurement']['tool_binding_digest'] == '0' * 64
 
 
 def test_static_diagnostics_retain_lowering_spans_and_attach_declaration_spans():

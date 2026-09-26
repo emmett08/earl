@@ -24,7 +24,7 @@ The source byte limit is 1 MiB and the token limit is 100,000. Structural valida
 | Form | Required clauses in order | Optional clauses in grammar order |
 |---|---|---|
 | `environment NAME` | One or more `require` predicates over supplied context | — |
-| `tool NAME` | `version` string; `mode deterministic` or `mode nondeterministic` | — |
+| `tool NAME` | `version` string | — |
 | `evidence NAME` | `tool` reference; `kind` identifier; `environment` reference; `max_age` seconds; one or more `require` predicates over observation value | `input` JSON before predicates |
 | `assumption NAME` | `statement` string; `environment` reference; `validate` evidence reference | `valid_from` then `valid_until` |
 | `reasoning NAME` | `method` exact versioned string; `rationale` string | `backing` evidence list; zero or more `require` result predicates |
@@ -37,6 +37,8 @@ The source byte limit is 1 MiB and the token limit is 100,000. Structural valida
 Lists use commas. An argument needs at least one direct evidence, assumption or premise claim. A typed conclusion requires `binding` to a designated computational evidence source among its direct evidence, reasoning backing or assumption validation evidence. An untyped computational conclusion needs a `reasoning require` predicate. The authored `structured/1` method may omit result predicates. Objection target categories are `claim`, `reasoning`, `assumption`, `argument` and `objection`.
 
 An argument's conclusion, evidence, assumptions, premise claims and reasoning backing must use the same named environment. An objection's evidence and premise claims must share an environment compatible with its target. A reasoning-target objection affects applications of that reasoning declaration within the objection's environment. The conclusion-to-premise graph must be acyclic; attack and objection-support cycles are permitted and may remain undecided. Their calculation is in the [argument model](argument-model.md).
+
+The current EAL/2 grammar revision rejects the former `mode deterministic` and `mode nondeterministic` tool clauses. Source selects a tool by name and exact version. Its trusted host binding specifies execution, while the observation records the selected binding's digest. This change does not claim that collection variability can be inferred from the executable or that stable outputs prove reproducibility.
 
 ## Reusable argument patterns
 

@@ -21,7 +21,7 @@ from eal.runtime import ReasoningService
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool runner { version "1"; mode deterministic; }
+tool runner { version "1"; }
 evidence measured { tool runner; kind test; environment lab; max_age 60; require "passed" == true; }
 reasoning measurement { method "structured/1"; rationale "The specified observation supplies support."; }
 claim works { statement "The requested bounded test passes."; environment lab; }
@@ -38,7 +38,7 @@ def setup_artifact(tmp_path, *, source=SOURCE, claims=("works",), method_fingerp
     tool = tmp_path / "collector.py"
     tool.write_text("import json,sys\njson.load(sys.stdin)\nprint(json.dumps({'value': {'passed': True}}))\n")
     tools = tmp_path / "tools.toml"
-    tools.write_text('[tools.runner]\nkind="command"\nmode="deterministic"\nversion="1"\nargv='
+    tools.write_text('[tools.runner]\nkind="command"\nversion="1"\nargv='
                      + json.dumps([sys.executable, str(tool)]) + "\n")
     service = ReasoningService(tmp_path, tools)
     fingerprint = method_fingerprint or service.method_registry.fingerprint

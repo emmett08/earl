@@ -1,18 +1,22 @@
 from __future__ import annotations
 
 import json
+import os
+import sqlite3
 import sys
+import stat
 from datetime import datetime, timedelta, timezone
 
 import pytest
 
 from eal.evaluator import canonical_digest
+from eal.parser import parse
 from eal.runtime import ReasoningService, ToolBinding, ToolRegistry, acquisition_request, bounded_path
 
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool runner { version "1.0"; mode deterministic; }
+tool runner { version "1.0"; }
 evidence measured {
   tool runner; kind test; environment lab; max_age 60;
   input {"value": 7}; require "passed" == true;
@@ -24,13 +28,13 @@ argument result { conclusion works; reasoning observation; evidence measured; }
 CONTEXT = {"site": "bench"}
 
 
-def service_for_command(tmp_path, script, *, timeout=2, limit=4096, mode="deterministic"):
+def service_for_command(tmp_path, script, *, timeout=2, limit=4096):
     adapter = tmp_path / "adapter.py"
     adapter.write_text(script)
     registry = tmp_path / "tools.toml"
     registry.write_text(
         '[tools.runner]\nkind = "command"\nversion = "1.0"\n'
-        f'mode = "{mode}"\nargv = {json.dumps([sys.executable, str(adapter)])}\n'
+        f'argv = {json.dumps([sys.executable, str(adapter)])}\n'
         f'timeout_seconds = {timeout}\nmax_output_bytes = {limit}\n'
     )
     return ReasoningService(tmp_path, registry, tmp_path / "runs.sqlite3")
@@ -46,10 +50,13 @@ def test_real_command_collection_reasoning_and_durability(tmp_path):
     assert record["status"] == "ok"
     assert record["value"] == {"passed": True}
     assert record["data_digest"] == canonical_digest(record["value"])
+    assert record["tool_binding_digest"] == service.current_binding_digests(parse(SOURCE))["measured"]
+    assert record["acquisition_request"] == acquisition_request(parse(SOURCE), "measured", CONTEXT)
+    assert "mode" not in record and "mode" not in record["acquisition_request"]
     assert len(record["process_environment_digest"]) == 64
     assert len(record["stdout_digest"]) == 64
     assert record["returncode"] == 0
-    restarted = ReasoningService(tmp_path, database_path=tmp_path / "runs.sqlite3")
+    restarted = ReasoningService(tmp_path, tmp_path / "tools.toml", tmp_path / "runs.sqlite3")
     assessment = restarted.reason(SOURCE, CONTEXT, collection["collection_id"])
     assert assessment["claims"]["works"]["status"] == "supported"
     assert restarted.explain(assessment["assessment_id"], "works")["result"]["status"] == "supported"
@@ -82,14 +89,90 @@ def test_execution_failures_are_persisted_and_cannot_support(tmp_path, script, t
     assert result["claims"]["works"]["status"] == "unsupported"
 
 
-def test_tool_modes_bound_to_operator_registry(tmp_path):
-    service = service_for_command(tmp_path, "print('{\"value\":{\"passed\":true}}')\n", mode="nondeterministic")
-    refused = service.collect(SOURCE, CONTEXT)
+def test_tool_version_bound_to_operator_registry(tmp_path):
+    service = service_for_command(tmp_path, "print('{\"value\":{\"passed\":true}}')\n")
+    refused = service.collect(SOURCE.replace('version "1.0"', 'version "2.0"'), CONTEXT)
     assert refused["records"]["measured"]["status"] == "error"
-    source = SOURCE.replace("mode deterministic", "mode nondeterministic")
-    collected = service.collect(source, CONTEXT)
-    assert collected["records"]["measured"]["mode"] == "nondeterministic"
-    assert service.reason(source, CONTEXT, collected["collection_id"])["claims"]["works"]["status"] == "supported"
+    assert "version differs" in refused["records"]["measured"]["error"]["message"]
+    collected = service.collect(SOURCE, CONTEXT)
+    assert service.reason(SOURCE, CONTEXT, collected["collection_id"])["claims"]["works"]["status"] == "supported"
+
+
+def test_changed_registry_configuration_under_same_version_requires_recollection(tmp_path):
+    service = service_for_command(tmp_path, "print('{\"value\":{\"passed\":true}}')\n")
+    first = service.collect(SOURCE, CONTEXT)
+    assert service.reason(SOURCE, CONTEXT, first["collection_id"])["claims"]["works"]["status"] == "supported"
+    registry_path = tmp_path / "tools.toml"
+    registry_path.write_text(registry_path.read_text().replace("max_output_bytes = 4096", "max_output_bytes = 8192"))
+    assessment = service.reason(SOURCE, CONTEXT, first["collection_id"])
+    assert assessment["claims"]["works"]["status"] == "unsupported"
+    assert "Current operator tool binding differs from the collected binding" in assessment["evidence"]["measured"]["reasons"]
+    second = service.collect(SOURCE, CONTEXT)
+    assert first["records"]["measured"]["tool_binding_digest"] != second["records"]["measured"]["tool_binding_digest"]
+    assert service.reason(SOURCE, CONTEXT, second["collection_id"])["claims"]["works"]["status"] == "supported"
+
+
+def test_binding_identity_uses_private_store_key_and_is_stable_on_restart(tmp_path):
+    service = service_for_command(tmp_path, "print('{\"value\":{\"passed\":true}}')\n")
+    registry_path = tmp_path / "tools.toml"
+    registry_path.write_text(registry_path.read_text() + '[tools.runner.env]\nTOKEN = "guessable-secret"\n')
+    collection = service.collect(SOURCE, CONTEXT)
+    record = collection["records"]["measured"]
+    assert record["status"] == "ok"
+    key_path = tmp_path / "runs.sqlite3.binding-key"
+    assert key_path.exists() and len(key_path.read_bytes()) == 32
+    assert stat.S_IMODE(key_path.stat().st_mode) == 0o600
+    assert "guessable-secret" not in json.dumps(record)
+    binding = ToolRegistry.load(registry_path).bindings["runner"]
+    unkeyed_configuration = {"name": binding.name, "kind": binding.kind,
+                             "version": binding.version, "argv": list(binding.argv),
+                             "path": binding.path, "timeout_seconds": binding.timeout_seconds,
+                             "max_output_bytes": binding.max_output_bytes,
+                             "env": dict(binding.env)}
+    assert record["tool_binding_digest"] != canonical_digest(unkeyed_configuration)
+    assert record["process_environment_digest"] != canonical_digest({**os.environ, **binding.env})
+    restarted = ReasoningService(tmp_path, registry_path, tmp_path / "runs.sqlite3")
+    assert restarted.current_binding_digests(parse(SOURCE))["measured"] == record["tool_binding_digest"]
+    assert restarted.reason(SOURCE, CONTEXT, collection["collection_id"])["claims"]["works"]["status"] == "supported"
+    registry_path.write_text(registry_path.read_text().replace('TOKEN = "guessable-secret"',
+                                                              'TOKEN = "different-secret"'))
+    reassessed = restarted.reason(SOURCE, CONTEXT, collection["collection_id"])
+    assert reassessed["claims"]["works"]["status"] == "unsupported"
+    assert "Current operator tool binding differs from the collected binding" in reassessed["evidence"]["measured"]["reasons"]
+    assert "different-secret" not in json.dumps(reassessed)
+
+
+def test_copying_database_without_private_key_invalidates_old_observations(tmp_path):
+    service = service_for_command(tmp_path, "print('{\"value\":{\"passed\":true}}')\n")
+    collection = service.collect(SOURCE, CONTEXT)
+    copy = tmp_path / "copy"
+    copy.mkdir()
+    database = copy / "runs.sqlite3"
+    with sqlite3.connect(service.store.path) as original, sqlite3.connect(database) as target:
+        original.backup(target)
+    recreated = ReasoningService(copy, tmp_path / "tools.toml", database)
+    assessed = recreated.reason(SOURCE, CONTEXT, collection["collection_id"])
+    assert assessed["claims"]["works"]["status"] == "unsupported"
+    assert "Current operator tool binding differs from the collected binding" in assessed["evidence"]["measured"]["reasons"]
+
+
+def test_public_or_symlinked_binding_key_is_rejected(tmp_path):
+    service = service_for_command(tmp_path, "print('{\"value\":{\"passed\":true}}')\n")
+    path = tmp_path / "runs.sqlite3.binding-key"
+    path.chmod(0o644)
+    with pytest.raises(PermissionError, match="private regular file"):
+        ReasoningService(tmp_path, tmp_path / "tools.toml", tmp_path / "runs.sqlite3")
+    path.unlink()
+    path.symlink_to(tmp_path / "adapter.py")
+    with pytest.raises(OSError):
+        ReasoningService(tmp_path, tmp_path / "tools.toml", tmp_path / "runs.sqlite3")
+
+
+def test_toml_rejects_obsolete_mode(tmp_path):
+    registry = tmp_path / "tools.toml"
+    registry.write_text('[tools.runner]\nkind="command"\nversion="1.0"\nmode="deterministic"\nargv=["echo"]\n')
+    with pytest.raises(ValueError, match="Unknown registry settings"):
+        ToolRegistry.load(registry)
 
 
 def test_import_preserves_observation_age_and_scope(tmp_path):
@@ -101,7 +184,7 @@ def test_import_preserves_observation_age_and_scope(tmp_path):
     data = tmp_path / "observation.json"
     data.write_text(json.dumps(observation))
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.runner]\nkind="json_file"\nmode="deterministic"\nversion="1.0"\npath="observation.json"\n')
+    registry.write_text('[tools.runner]\nkind="json_file"\nversion="1.0"\npath="observation.json"\n')
     service = ReasoningService(tmp_path, registry)
     collection = service.collect(SOURCE, CONTEXT)
     assert collection["records"]["measured"]["collected_at"] == past
@@ -136,10 +219,10 @@ def test_missing_tool_and_wrong_input_do_not_support(tmp_path):
 
 def test_registry_rejects_shell_strings_and_unknown_keys(tmp_path):
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.runner]\nkind="command"\nmode="deterministic"\nversion="1.0"\nargv="echo unsafe"\n')
+    registry.write_text('[tools.runner]\nkind="command"\nversion="1.0"\nargv="echo unsafe"\n')
     with pytest.raises(ValueError, match="argv"):
         ToolRegistry.load(registry)
-    registry.write_text('[tools.runner]\nkind="command"\nmode="deterministic"\nversion="1.0"\nargv=["echo"]\ncommand="echo"\n')
+    registry.write_text('[tools.runner]\nkind="command"\nversion="1.0"\nargv=["echo"]\ncommand="echo"\n')
     with pytest.raises(ValueError, match="Unknown"):
         ToolRegistry.load(registry)
 
@@ -157,7 +240,7 @@ def test_command_observation_cannot_override_requested_acquisition(tmp_path):
     script = ("import json,sys\n"
               "r=json.load(sys.stdin)\n"
               "print(json.dumps({'value':{'passed':True}, 'request':"
-              "{'tool':r['tool'], 'tool_version':r['tool_version'], 'mode':r['mode'], "
+              "{'tool':r['tool'], 'tool_version':r['tool_version'], "
               "'input':{'value':99}, 'context':r['context']}}))\n")
     service = service_for_command(tmp_path, script)
     record = service.collect(SOURCE, CONTEXT)["records"]["measured"]
@@ -170,7 +253,7 @@ def test_command_observation_cannot_override_requested_acquisition(tmp_path):
 def test_file_output_limit_retains_bounded_bytes_and_file_identity(tmp_path):
     (tmp_path / "observation.json").write_text("x" * 4096)
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.runner]\nkind="json_file"\nmode="deterministic"\n'
+    registry.write_text('[tools.runner]\nkind="json_file"\n'
                         'version="1.0"\npath="observation.json"\nmax_output_bytes=128\n')
     service = ReasoningService(tmp_path, registry)
     record = service.collect(SOURCE, CONTEXT)["records"]["measured"]
@@ -182,7 +265,7 @@ def test_file_output_limit_retains_bounded_bytes_and_file_identity(tmp_path):
 
 
 def test_unknown_operator_adapter_fails_closed_and_stores_error(tmp_path):
-    registry = ToolRegistry({"runner": ToolBinding("runner", "unknown", "deterministic", "1.0")})
+    registry = ToolRegistry({"runner": ToolBinding("runner", "unknown", "1.0")})
     service = ReasoningService(tmp_path)
     service.runtime.registry = registry
     record = service.collect(SOURCE, CONTEXT)["records"]["measured"]

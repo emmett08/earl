@@ -295,7 +295,7 @@ def test_real_eal_collector_argument_host_and_staged_checker_gate_one_edit(tmp_p
 
     source = '''language "EAL/2";
 environment repository { require "repository" == "pilot"; }
-tool pattern_reader { version "1"; mode deterministic; }
+tool pattern_reader { version "1"; }
 evidence design_record {
   tool pattern_reader; kind test; environment repository; max_age 60;
   require "pattern" == "approved";
@@ -326,10 +326,10 @@ with (directory / "collector-calls.txt").open("a") as record:
 pattern=(directory / "patterns/design.txt").read_text()
 print(json.dumps({"value":{"pattern":pattern},"context":request["context"],
                   "request":{key:request[key] for key in
-                    ("tool","tool_version","mode","input","context")}}))
+                    ("tool","tool_version","input","context")}}))
 ''')
     tools = tmp_path / "tools.toml"
-    tools.write_text('[tools.pattern_reader]\nkind="command"\nmode="deterministic"\nversion="1"\n'
+    tools.write_text('[tools.pattern_reader]\nkind="command"\nversion="1"\n'
                      'argv=' + json.dumps([sys.executable, str(collector)]) + '\n')
     service = ReasoningService(tmp_path, tools)
     manifest = tmp_path / "schemes.toml"

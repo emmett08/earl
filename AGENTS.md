@@ -6,7 +6,7 @@ Apply each change across affected current documentation, discovery schemas and t
 
 Use the repository's `skills/engineer-argumentation-languages/SKILL.md` and its expert language design reference for changes to syntax, abstractions, method contracts or reasoning semantics. Separate primary-source recommendations, EAL design decisions, implemented behaviour and measured results.
 
-Keep one versioned reasoning-method selector: `method "name/version"`. Tool `mode` describes collection variability and has a separate meaning. Built-in and installed reasoning methods follow the same typed contracts and binding checks.
+Keep one versioned reasoning-method selector: `method "name/version"`. A tool declaration names an interface version; its operational characteristics belong to the trusted host binding and the recorded acquisition, not an EAL `mode` clause. Built-in and installed reasoning methods follow the same typed contracts and binding checks.
 
 Reusable argument patterns use typed parameters with closed lexical scope. Expansion must preserve evidence, claim and assumption identity and the qualifications of an ordinary argument. Retain source locations in diagnostics and canonical parse–format–parse meaning.
 

@@ -22,8 +22,7 @@ MAX_PREMISE_DEPTH = 128
 _PATH = re.compile(r"[A-Za-z_][A-Za-z_0-9-]*(?:\.[A-Za-z_][A-Za-z_0-9-]*)*\Z")
 _IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z_0-9]*\Z")
 # Contextual words explicitly admitted by grammar/identifier are absent here.
-_RESERVED_NAMES = frozenset("""language environment tool version mode deterministic
-nondeterministic evidence kind max_age input assumption statement validate valid_from
+_RESERVED_NAMES = frozenset("""language environment tool version evidence kind max_age input assumption statement validate valid_from
 valid_until reasoning rationale backing claim argument conclusion assumptions premises
 objection target require true false null""".split())
 
@@ -276,8 +275,6 @@ def _validate_tools_and_evidence(program, error, reference, identifier):
     for value in program.tools.values():
         if not value.version.strip():
             error("empty_version", "A tool requires an explicit nonempty version", value.name)
-        if value.mode not in ("deterministic", "nondeterministic"):
-            error("invalid_tool_mode", "Tool mode must be deterministic or nondeterministic", value.name)
     for value in program.evidence.values():
         identifier(value.kind, value.name)
         reference(value.tool, program.tools, "tool", value.name)

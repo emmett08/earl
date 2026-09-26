@@ -7,13 +7,14 @@ This is the rationale and alternative-design record for the current EAL/2 source
 - [Research status and decision rule](#research-status-and-decision-rule)
 - [Primary recommendations and adaptations](#primary-recommendations-and-adaptations)
 - [One typed method boundary](#one-typed-method-boundary)
+- [Tool identity without an authored mode](#tool-identity-without-an-authored-mode)
 - [Derived argument patterns](#derived-argument-patterns)
 - [Bounded support and attack](#bounded-support-and-attack)
 - [Alternatives and empirical tests](#alternatives-and-empirical-tests)
 
 ## Research status and decision rule
 
-The current source contract is EAL/2 and the installed Python package declares version 2.6.0. Source version, package version, observation envelope and method identifiers name different contracts. Historical assessments are tied to their actual code and data, not retrospectively relabelled as evidence for this version. Backwards compatibility with prior language versions is not a design requirement.
+The current source contract is EAL/2 and the installed Python package declares version 2.7.0. On 26 September 2026 the EAL/2 grammar and acquisition contract were revised to remove the authored binary tool mode; prior source with that clause is rejected. The independent `EAL/typed-input/1` formal reasoning-method envelope retains its meaning. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts. Historical assessments are tied to their actual code and data, not retrospectively relabelled as evidence for this version. Backwards compatibility with prior language versions is not a design requirement.
 
 The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. That gain over prose or another notation is a **hypothesis**. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path for one task using synthetic data. The [live API experiment](../experiments/api_load_test/README.md) adds actual measurements and a bounded combined-system comparison; broader inference needs independent cases; no task count, parser test or earlier exposed-case result establishes superiority for every model class.
 
@@ -40,6 +41,14 @@ Every reasoning declaration uses one exact versioned method contract. The host i
 The decisive error case is a calculation with a correct-looking scalar but the wrong question or engineering quantity. A pressure contrast cannot verify a flow-rate claim solely because it exceeds a number; RMS about a different origin cannot answer the declared RMS question. The bound proposition checks quantity, input unit, subject, scope, interval, formal query and the output's unit interpretation. Its metadata still does not establish that a producer measured the asserted physical variable or that the prose and statistical assumptions are valid.
 
 An untyped payload escape hatch would bypass these correspondence checks. A new algorithm keyword would change the grammar without changing how the operation is selected or bound. A genuinely new inference relation can justify a language change once a case demonstrates that a typed library solution loses its required meaning. The [repository skill](../skills/engineer-argumentation-languages/SKILL.md) records this removal test.
+
+## Tool identity without an authored mode
+
+The current tool declaration has one selector, `tool NAME { version "VERSION"; }`. A trusted TOML binding chooses the collector. Under the earlier grammar, a second authored `mode deterministic|nondeterministic` had to equal a second TOML field; that equality checked two labels, while the evaluator and inference methods did not use the distinction to change an assessment procedure. Removing it preserves the actual source task: select a particular collector contract, collect a result and check the argument's relevant evidence obligations. The selected binding's digest is recorded in a collected observation and checked by the host before reasoning with stored collection records.
+
+The strongest alternative is a source repeatability guarantee with specified replay inputs, algorithm version, environment and test procedure. Such a guarantee could alter an adequacy obligation or mandate multiple acquisitions, and would justify an explicit construct or typed contract if a concrete task needed it. The removed binary label supplied none of those checks. For the decisive counterexample, a test runner with fixed code can read a changing remote service and return different results, while a stochastic simulation with recorded initial state and seed can reproduce one run. Neither case is correctly classified by inspecting a name or executable as simply deterministic or nondeterministic. Repeated outputs do not prove independence or correct measurements. A configuration digest identifies configured arguments and limits, not executable bytes, dependencies, external state or physical authenticity.
+
+The revised syntax removes one duplicated declaration and mismatch check. Whether it improves model accuracy, tokens or end-to-end latency remains unmeasured; a paired comparison must hold evidence access, methods and prompts constant and record failures.
 
 ## Derived argument patterns
 

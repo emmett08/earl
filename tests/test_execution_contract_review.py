@@ -20,7 +20,7 @@ from eal.runtime import ReasoningService, acquisition_request
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool reader { version "1"; mode deterministic; }
+tool reader { version "1"; }
 evidence reading { tool reader; kind measurement; environment lab; max_age 60;
   input {"sensor":"A"}; require "passed" == true;
 }
@@ -38,12 +38,12 @@ def file_service(tmp_path):
     path = tmp_path / "observation.json"
     path.write_text(json.dumps(envelope))
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.reader]\nkind="json_file"\nmode="deterministic"\nversion="1"\npath="observation.json"\n')
+    registry.write_text('[tools.reader]\nkind="json_file"\nversion="1"\npath="observation.json"\n')
     return ReasoningService(tmp_path, registry), path, envelope
 
 
 @pytest.mark.parametrize(("field", "wrong"), [
-    ("tool", "unrelated_reader"), ("tool_version", "0"), ("mode", "nondeterministic"),
+    ("tool", "unrelated_reader"), ("tool_version", "0"),
     ("input", {"sensor": "B"}), ("context", {"site": "other"}),
 ])
 def test_import_cannot_rebind_a_measurement_from_another_acquisition(tmp_path, field, wrong):
@@ -57,6 +57,15 @@ def test_import_cannot_rebind_a_measurement_from_another_acquisition(tmp_path, f
     assert service.store.get(record["run_id"], kind="observation") == record
     assessment = service.reason(SOURCE, CONTEXT, collection["collection_id"], NOW)
     assert assessment["claims"]["works"]["status"] == "unsupported"
+
+
+def test_import_rejects_obsolete_unrequested_mode_metadata(tmp_path):
+    service, path, envelope = file_service(tmp_path)
+    envelope["request"]["mode"] = "deterministic"
+    path.write_text(json.dumps(envelope))
+    record = service.collect(SOURCE, CONTEXT)["records"]["reading"]
+    assert record["status"] == "error"
+    assert "Observation request differs" in record["error"]["message"]
 
 
 def test_import_requires_acquisition_identity_and_retains_measurement_age(tmp_path):

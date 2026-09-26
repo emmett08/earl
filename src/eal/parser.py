@@ -69,7 +69,7 @@ class _ASTBuilder(EALVisitor):
         return Environment(ctx.identifier().getText(), tuple(self.visit(p) for p in ctx.predicate()))
 
     def visitToolDecl(self, ctx):
-        return Tool(ctx.identifier().getText(), _string(ctx.STRING()), ctx.executionMode().getText())
+        return Tool(ctx.identifier().getText(), _string(ctx.STRING()))
 
     def visitEvidenceDecl(self, ctx):
         return Evidence(ctx.identifier(0).getText(), ctx.identifier(1).getText(), ctx.identifier(2).getText(), ctx.identifier(3).getText(),

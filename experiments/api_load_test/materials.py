@@ -48,7 +48,7 @@ def source_for(workload: dict, context: dict, report_id: str = "SELECT_REPORT") 
 environment test_run {{
 {predicates}
 }}
-tool api_load_test {{ version "2"; mode deterministic; }}
+tool api_load_test {{ version "2"; }}
 evidence load_test {{
   tool api_load_test; kind test; environment test_run; max_age 300;
   input {json.dumps({**workload, 'report_id': report_id}, sort_keys=True)};

@@ -421,7 +421,7 @@ def _compact_feedback(response: dict) -> dict:
         return response
     value = dict(original)
     if operation == "collect":
-        fields = {"status", "error", "collected_at", "run_id", "tool", "tool_version", "mode",
+        fields = {"status", "error", "collected_at", "run_id", "tool", "tool_version", "tool_binding_digest",
                   "evidence_kind", "environment", "value", "data_digest", "execution_error", "output_truncated"}
         value["records"] = {name: {key: item for key, item in record.items() if key in fields}
                             for name, record in original.get("records", {}).items()}

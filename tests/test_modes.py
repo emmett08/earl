@@ -4,6 +4,7 @@ import math
 import pytest
 
 from eal.modes import MODE_KINDS, assess_mode, validate_mode
+from _provenance import synthetic_provenance
 
 
 def run(mode, value):
@@ -301,7 +302,7 @@ def test_negative_computed_results_can_support_explicit_negative_claims(mode, ki
     now = "2026-09-23T12:00:00Z"
     source = f'''language "EAL/2";
     environment lab {{ require "site" == "bench"; }}
-    tool calculation {{ version "1"; mode deterministic; }}
+    tool calculation {{ version "1"; }}
     evidence observed {{ tool calculation; kind {kind}; environment lab; max_age 60;
       require {input_predicate}; }}
     reasoning check_result {{ method "{mode}/1"; rationale "The computed negative result establishes the stated failure.";
@@ -311,12 +312,13 @@ def test_negative_computed_results_can_support_explicit_negative_claims(mode, ki
     '''
     program = parse(source)
     observation = {"evidence_id": "observed", "source_digest": program.source_digest,
-                   "tool": "calculation", "tool_version": "1", "mode": "deterministic",
+                   "tool": "calculation", "tool_version": "1",
                    "evidence_kind": kind, "environment": "lab",
                    "environment_fingerprint": environment_fingerprint("lab", context),
                    "input_digest": canonical_digest(program.evidence["observed"].input),
                    "collected_at": now, "run_id": "negative-result", "status": "ok",
-                   "value": value, "data_digest": canonical_digest(value)}
+                   "value": value, "data_digest": canonical_digest(value),
+                   **synthetic_provenance(program, "observed", context)}
     result = evaluate(program, {"observed": observation}, now=now, context=context)
     assert result["valid"]
     assert result["claims"]["failure"]["status"] == "supported", result

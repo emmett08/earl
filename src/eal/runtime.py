@@ -66,7 +66,7 @@ def acquisition_request(program, evidence_id: str, context: Mapping[str, Any]) -
     """
     evidence = program.evidence[evidence_id]
     tool = program.tools[evidence.tool]
-    return {"tool": tool.name, "tool_version": tool.version, "mode": tool.mode,
+    return {"tool": tool.name, "tool_version": tool.version,
             "input": evidence.input, "context": dict(context)}
 
 
@@ -79,7 +79,8 @@ class EvidenceRuntime:
         self.store = store
         self.method_registry = default_registry() if method_registry is None else method_registry
 
-    def collect(self, program, context: Mapping[str, Any], evidence_ids: list[str] | None = None) -> dict:
+    def collect(self, program, context: Mapping[str, Any], evidence_ids: list[str] | None = None,
+                *, registry: ToolRegistry | None = None) -> dict:
         from .evaluator import canonical_digest
         from .semantics import validate
 
@@ -93,15 +94,16 @@ class EvidenceRuntime:
         if (not isinstance(names, list) or any(not isinstance(name, str) for name in names)
                 or len(set(names)) != len(names) or any(name not in program.evidence for name in names)):
             raise ValueError("evidence_ids must be unique declared evidence identifiers")
+        selected_registry = self.registry if registry is None else registry
         records = {}
         for name in names:
-            records[name] = self._collect_one(program, name, context)
+            records[name] = self._collect_one(program, name, context, selected_registry)
         collection = {"source_digest": program.source_digest, "context": dict(context), "records": records}
         collection_id = self.store.put("collection", collection)
         return {"collection_id": collection_id, **collection}
 
 
-    def _collect_one(self, program, name: str, context: dict) -> dict:
+    def _collect_one(self, program, name: str, context: dict, registry: ToolRegistry) -> dict:
         from .evaluator import canonical_digest, environment_fingerprint
 
         declaration = program.evidence[name]
@@ -110,7 +112,7 @@ class EvidenceRuntime:
         started_at = utc_now()
         record = {
             "evidence_id": name, "source_digest": program.source_digest,
-            "tool": declaration.tool, "tool_version": declared_tool.version, "mode": declared_tool.mode,
+            "tool": declaration.tool, "tool_version": declared_tool.version,
             "evidence_kind": declaration.kind,
             "environment": declaration.environment,
             "environment_fingerprint": environment_fingerprint(declaration.environment, context),
@@ -120,14 +122,14 @@ class EvidenceRuntime:
         }
         stdout, stderr = b"", b""
         try:
-            binding = self.registry.binding_for(declaration.tool,
-                                                version=declared_tool.version, mode=declared_tool.mode)
+            binding = registry.binding_for(declaration.tool, version=declared_tool.version)
+            record["tool_binding_digest"] = binding.binding_digest(self.store._binding_key)
             acquisition = acquisition_request(program, name, context)
             request = {"evidence_id": name, "environment": declaration.environment, **acquisition}
             record["request_digest"] = canonical_digest(request)
             record["acquisition_request"] = acquisition
             record["acquisition_request_digest"] = canonical_digest(acquisition)
-            result = self.registry.acquire(binding, request, self.workspace)
+            result = registry.acquire(binding, request, self.workspace, secret=self.store._binding_key)
             stdout, stderr = result.stdout, result.stderr
             record.update(result.metadata)
             if result.error is not None:
@@ -169,7 +171,8 @@ class ReasoningService:
         if not isinstance(self.method_registry, MethodRegistry):
             raise TypeError("method_registry must be a MethodRegistry")
         self.workspace = Path(workspace).resolve()
-        registry = ToolRegistry.load(registry_path) if registry_path else ToolRegistry()
+        self.registry_path = Path(registry_path).resolve() if registry_path else None
+        registry = ToolRegistry.load(self.registry_path) if self.registry_path else ToolRegistry()
         self.store = RunStore(database_path or self.workspace / ".eal" / "runs.sqlite3")
         self.runtime = EvidenceRuntime(self.workspace, registry, self.store, method_registry=self.method_registry)
 
@@ -202,7 +205,28 @@ class ReasoningService:
     def collect(self, source: str, context: dict, evidence_ids: list[str] | None = None) -> dict:
         from .parser import parse
 
-        return self.runtime.collect(parse(source), context, evidence_ids)
+        registry = ToolRegistry.load(self.registry_path) if self.registry_path is not None else self.runtime.registry
+        return self.runtime.collect(parse(source), context, evidence_ids, registry=registry)
+
+    def current_binding_digests(self, program) -> dict[str, str | None]:
+        """Resolve current operator configuration for each evidence declaration.
+
+        A missing or changed configuration invalidates a stored observation;
+        the digest does not authenticate executable contents or physical data.
+        """
+        registry = ToolRegistry.load(self.registry_path) if self.registry_path is not None else self.runtime.registry
+        current = {}
+        for name, evidence in program.evidence.items():
+            tool = program.tools.get(evidence.tool)
+            if tool is None:
+                current[name] = None
+                continue
+            try:
+                current[name] = registry.binding_for(
+                    tool.name, version=tool.version).binding_digest(self.store._binding_key)
+            except ValueError:
+                current[name] = None
+        return current
 
     def reason(self, source: str, context: dict, collection_id: str | None = None, now: str | None = None) -> dict:
         from .evaluator import evaluate
@@ -212,7 +236,9 @@ class ReasoningService:
         if collection_id is not None and (not isinstance(collection_id, str) or not collection_id.strip()):
             raise ValueError("collection_id must be a nonempty string or null")
         collection = self.store.get(collection_id, kind="collection") if collection_id is not None else {"records": {}}
-        assessment = evaluate(program, collection["records"], now=utc_now() if now is None else now, context=context, registry=self.method_registry)
+        assessment = evaluate(program, collection["records"], now=utc_now() if now is None else now,
+                              context=context, registry=self.method_registry,
+                              binding_digests=self.current_binding_digests(program))
         assessment["collection_id"] = collection_id
         assessment["method_registry_fingerprint"] = self.method_registry.fingerprint
         assessment_id = self.store.put("assessment", assessment)

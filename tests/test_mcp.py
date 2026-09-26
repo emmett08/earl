@@ -9,7 +9,7 @@ from mcp.client.stdio import stdio_client
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool runner { version "1"; mode deterministic; }
+tool runner { version "1"; }
 evidence measured { tool runner; kind test; environment lab; max_age 60; require "passed" == true; }
 reasoning measurement { method "structured/1"; rationale "The bounded observation supplies support."; }
 claim works { statement "The requested check passes."; environment lab; }
@@ -21,7 +21,7 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
     script = tmp_path / "tool.py"
     script.write_text("import json,sys\nrequest=json.load(sys.stdin)\nprint(json.dumps({'value':{'passed':True}}))\n")
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.runner]\nkind="command"\nmode="deterministic"\nversion="1"\nargv=' + json.dumps([sys.executable, str(script)]) + '\n')
+    registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nargv=' + json.dumps([sys.executable, str(script)]) + '\n')
     parameters = StdioServerParameters(
         command=sys.executable,
         args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(registry)],

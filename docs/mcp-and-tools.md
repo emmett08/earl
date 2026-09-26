@@ -1,6 +1,6 @@
 # MCP, tools and model hosts
 
-The MCP server exposes the EAL/2 interpreter through a local stdio service. It uses the official Python SDK pinned to 1.30.0; its subprocess test negotiates the 2025-11-25 protocol profile. The newer SDK v2 and 2026 protocol have not been integrated or verified here. The package also provides a CLI, a strict JSON host for text-only models, an interactive model host and optional operator-reviewed artefact and question routes. These host interfaces do not alter the [source grammar](../grammar/EAL.g4) or the `EAL/typed-input/1` observation schema. The [API load-test example](../examples/api-load-test/README.md) exercises CLI and MCP paths over one synthetic request report; it reports no model-comparison result. The [live API experiment](../experiments/api_load_test/README.md) separately executes the configured collector against a real local HTTP service and compares model decisions, with JSON and prose using direct collection without MCP.
+The MCP server exposes the EAL/2 interpreter through a local stdio service. It uses the official Python SDK pinned to 1.30.0; its subprocess test negotiates the 2025-11-25 protocol profile. The newer SDK v2 and 2026 protocol have not been integrated or verified here. The package also provides a CLI, a strict JSON host for text-only models, an interactive model host and optional operator-reviewed artefact and question routes. The current [source grammar](../grammar/EAL.g4) and acquisition records omit tool `mode`; the independent `EAL/typed-input/1` formal reasoning-method payload schema is unchanged. The [API load-test example](../examples/api-load-test/README.md) exercises CLI and MCP paths over one synthetic request report; it reports no model-comparison result. The [live API experiment](../experiments/api_load_test/README.md) separately executes the configured collector against a real local HTTP service and compares model decisions, with JSON and prose using direct collection without MCP.
 
 ## Contents
 
@@ -9,7 +9,8 @@ The MCP server exposes the EAL/2 interpreter through a local stdio service. It u
 3. [Text-model hosts and provider configuration](#text-model-hosts-and-provider-configuration)
 4. [Reviewed artefacts and bounded recipients](#reviewed-artefacts-and-bounded-recipients)
 5. [Reviewed question and retrieval](#reviewed-question-and-retrieval)
-6. [Verification and sources](#verification-and-sources)
+6. [Reusable argument procedures](#reusable-argument-procedures)
+7. [Verification and sources](#verification-and-sources)
 
 ## MCP operations
 
@@ -33,6 +34,8 @@ The MCP server exposes the EAL/2 interpreter through a local stdio service. It u
 | `eal_finish_bound_task` | `assessment_id` | Recover the checked historical packet under the same question and grant |
 | `eal_resolve_prose` (with `--schemes`) | `prose`, optional `context`, `proposal` | Select a reviewed argument form and typed bindings without running collectors |
 | `eal_assess_prose` (with `--schemes`) | `prose`, optional `context`, `proposal` | Collect and assess the selected form with explicit correspondence and adequacy obligations |
+| `eal_resolve_bound_prose` (recipient schemes) | None | Resolve the launcher's bound original prose without collection |
+| `eal_assess_bound_prose` (recipient schemes) | None | Run the checked assessment for the launcher's bound original prose |
 | `eal_finish_prose` (with `--schemes`) | `assessment_id` | Recover the checked result for the bound principal and session |
 
 Run `eal-mcp --workspace /absolute/path/to/earl --registry /absolute/path/to/earl/examples/api-load-test/tools.toml`. The default database is `.eal/runs.sqlite3` under that workspace; `--database` overrides it. Keep stdout for MCP protocol messages. The server checks advertised JSON schemas before SDK conversion, rejecting extra fields and incorrect types. The CLI uses the same service and accepts `--workspace`, `--registry`, `--database` and an optional host-registered `--methods` factory before its subcommand. The server uses stdio; HTTP MCP deployment is not included.
@@ -46,20 +49,19 @@ Argument source names tools and supplies typed input. A host TOML file binds nam
 kind = "command"
 argv = ["python3", "examples/api-load-test/collect_results.py"]
 version = "1"
-mode = "deterministic"
 timeout_seconds = 10
 max_output_bytes = 16384
 ```
 
-The executable receives one JSON object on stdin containing `evidence_id`, `environment`, `tool`, `tool_version`, `mode`, `input` and `context`. It emits one JSON object containing `value`, with optional `observed_at`, `context`, `request` and `details`. A returned `request` must match the acquisition identity described below. A nonzero exit, invalid JSON, unknown output fields, a mismatched request or context, timeout or excessive output produces a stored error observation. Configured commands run as trusted host programs with the host's access; the command adapter is not a sandbox and currently requires POSIX. Source cannot supply executable paths, shell syntax or provider credentials.
+The executable receives one JSON object on stdin containing `evidence_id`, `environment`, `tool`, `tool_version`, `input` and `context`. It emits one JSON object containing `value`, with optional `observed_at`, `context`, `request` and `details`. A returned `request` must match the acquisition identity described below. A nonzero exit, invalid JSON, unknown output fields, a mismatched request or context, timeout or excessive output produces a stored error observation. Configured commands run as trusted host programs with the host's access; the command adapter is not a sandbox and currently requires POSIX. Source cannot supply executable paths, shell syntax or provider credentials.
 
-A `json_file` binding uses `path` instead of `argv`. Paths resolve to regular files within the workspace. File observations require `observed_at`, `context` and `request`; rereading a file preserves its original age. `request` contains exactly `tool`, `tool_version`, `mode`, `input` and `context`, recording the acquisition the observation answers. These fields must match the requested acquisition. Changing a suite name, input value, tool version or context cannot silently relabel an old observation. Earlier envelopes lacking `request` are rejected; all current examples supply it.
+A `json_file` binding uses `path` instead of `argv`. Paths resolve to regular files within the workspace. File observations require `observed_at`, `context` and `request`; rereading a file preserves its original age. `request` contains exactly `tool`, `tool_version`, `input` and `context`, recording the acquisition the observation answers. These fields must match the requested acquisition. Changing a suite name, input value, tool version or context cannot silently relabel an old observation. Earlier envelopes with the previous `mode` field, or without `request`, are rejected by the current contract.
 
 The acquisition identity is separate from the current source digest and local evidence identifier. The same recorded measurement can be used in a revised argument when its acquisition still matches; collection then binds it to that argument's exact source. Neither matching digests nor matching request metadata authenticates a producer. A live command that returns historical measurements must also supply the original `observed_at` rather than relying on ingestion time. `details` can hold model identity, solver configuration, source data identity or sampling settings.
 
-Records preserve source digest, evidence kind/identifier, tool/version/mode, input digest, environment fingerprint, observation time, ingestion time, execution identity and result digest. These bindings detect mismatched inputs; they do not establish empirical truth or authenticate an entirely forged record. SQLite stores collections, individual success/error observations and reasoning results. The pure evaluator can also be called with supplied records for reproducible offline analysis.
+Records preserve source digest, evidence kind/identifier, tool/version, `tool_binding_digest`, input digest, environment fingerprint, observation time, ingestion time, execution identity and result digest. The trusted host computes a store-local, keyed HMAC identity from the selected TOML configuration and checks it again when reasoning over a stored collection. The command adapter also records a keyed `process_environment_digest`; neither field exposes an unkeyed hash of configured environment values. The private `<database>.binding-key` sidecar must remain private and travel with the SQLite database if existing collections should remain assessable after moving it. A database copied without that key receives a new identity and its old collections lose current-binding support. The pure evaluator requires a well-formed identity field; given only a record, it cannot independently select or authenticate the registry binding. Digests detect mismatched declared inputs or changed configuration, but do not establish empirical truth, pin the collector's executable or all its dependencies, or authenticate an entirely forged record. SQLite stores collections, individual success/error observations and reasoning results. The pure evaluator can also be called with supplied records for reproducible offline analysis.
 
-Deterministic and nondeterministic describe tool output generation. They do not classify logical validity. Repeated stochastic outputs are not automatically independent samples, and a fixed seed does not establish independence or full reproducibility.
+Tool output variability depends on the algorithm, actual input bytes, external state, sampling procedure and execution environment. An authored binary label cannot certify repeatability: a deterministic algorithm can read changing data, while a stochastic algorithm may replay a recorded seed and input. If a conclusion requires reproducibility or independent samples, put the exact data, seed, execution dependencies and sampling obligations in a reviewed tool/evidence contract and check them through appropriate observations. Neither a matching tool binding digest nor repeated equal outputs establishes those properties.
 
 ## Text-model hosts and provider configuration
 
