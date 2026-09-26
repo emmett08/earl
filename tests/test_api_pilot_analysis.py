@@ -175,12 +175,12 @@ def test_grade_requires_inspection_selection_scope_all_failures_and_metrics():
     assert score({**answer, "status": "unavailable"})["false_unavailable"] is True
 
 
-def test_correct_abstention_requires_evidence_and_matches_core_unsupported_state():
+def test_correct_abstention_requires_evidence_and_matches_host_unavailable_state():
     case = measured_case()
     case["assessment_time"] = "2026-09-25T12:05:01Z"
     truth = reference(case)
     answer = correct_answer(truth)
-    outcome = grade(answer, truth, collected=True, inspected_report_ids={"target-report"}, host_status="unsupported")
+    outcome = grade(answer, truth, collected=True, inspected_report_ids={"target-report"}, host_status="unavailable")
     assert outcome["correct"] and outcome["correct_unavailable"] and outcome["host_agrees_with_reference"]
     assert grade({**answer, "status": "supported"}, truth, collected=False)["false_support"]
     assert not grade(answer, truth, collected=False)["correct_unavailable"]
@@ -240,7 +240,7 @@ def test_private_reference_checks_malformed_facts_and_checked_decisions():
     missing_decision = packet_reference_check(case, "target-report", packet, checked=True)
     assert set(missing_decision["mismatches"]) == {"status", "failed_checks", "unknown_checks"}
     packet.update({key: truth[key] for key in ("status", "failed_checks", "unknown_checks")})
-    assert packet_reference_check(case, "target-report", packet, host_status="unsupported")["agrees"]
+    assert packet_reference_check(case, "target-report", packet, host_status="unavailable")["agrees"]
     packet["unknown_checks"] = []
     result = packet_reference_check(case, "target-report", packet, host_status="supported")
     assert set(result["mismatches"]) == {"unknown_checks", "host_status"}
@@ -271,7 +271,7 @@ def write_run(tmp_path, *, transports=("text",), repeats=1, arms=("eal_mcp", "js
                     (directory / "trial.json").write_text(json.dumps({**assignment, "state": "complete",
                         "case_sha256": case_hashes[assignment["case_id"]],
                         "outcome": {"correct": correct}, "model_calls": []}))
-    manifest = {"schema": "eal-api-experiment-run/4", "mode": "pilot", "transport": "text", "finalisation": "model",
+    manifest = {"schema": "eal-api-experiment-run/5", "mode": "pilot", "transport": "text", "finalisation": "model",
                 "models": [{"id": "synthetic-model"}], "assignments": assignments,
                 "plan": {"arms": list(arms), "scope": "Synthetic analysis control"}}
     (tmp_path / "manifest.json").write_text(json.dumps(manifest))
@@ -318,11 +318,11 @@ def test_calibration_has_only_selected_comparisons(tmp_path):
         ("eal_mcp", "json_prompt"), ("eal_mcp", "plain_validator")}
 
 
-def test_earlier_contract_remains_separate_from_v4_analysis(tmp_path):
+def test_earlier_contract_remains_separate_from_v5_analysis(tmp_path):
     manifest = write_run(tmp_path)
     manifest["schema"] = "eal-api-experiment-run/2"
     (tmp_path / "manifest.json").write_text(json.dumps(manifest))
-    with pytest.raises(ValueError, match="requires a v4 manifest"):
+    with pytest.raises(ValueError, match="requires a v5 manifest"):
         summarise(tmp_path)
 
 

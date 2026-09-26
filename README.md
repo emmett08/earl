@@ -2,7 +2,7 @@
 
 EAL/2 is a language and host for bounded engineering arguments. A source file identifies the claim, the question it addresses, its reasoning method, evidence obligations, premises and objections. The interpreter validates those declarations, collects observations through host-configured tools, evaluates the stated method and records an explanation of the resulting status. A checked status is about the declared question and collected observations; the source's relevance and the observations' real-world provenance still require review.
 
-The Python package is **2.7.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Formal reasoning-method inputs use the independent `EAL/typed-input/1` envelope. Source, package, acquisition and typed-method identifiers describe different contracts.
+The Python package is **2.8.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Formal reasoning-method inputs use the independent `EAL/typed-input/1` envelope. Source, package, acquisition and typed-method identifiers describe different contracts.
 
 ## Start here
 
@@ -25,9 +25,11 @@ make example
 
 The report contains 100 requests, a nearest-rank sample p95 of 180 ms and one failed request. It meets the example's limits of 200 ms and 1% at its recorded assessment time. `make example` validates, collects, reasons and explains through both the CLI and the actual MCP stdio server. It runs locally with no credentials or model provider, using a temporary database.
 
-The source pins the report's build, run and digest. The collector preserves its original observation time; EAL checks the declared scope, age and acceptance predicates. The [walkthrough](examples/api-load-test/README.md) explains those checks, the expected output and how to substitute a real report. The synthetic records illustrate assessment behaviour; release decisions need genuine measurements and a representative workload.
+The source pins the report's build, run and digest. The collector preserves its original observation time; EAL checks scope and age, then the installed typed method assesses the three numerical limits. Separate passing and failing claims distinguish a measured threshold failure from unusable evidence. The [walkthrough](examples/api-load-test/README.md) explains those checks, the expected output and how to substitute a real report. The synthetic records illustrate assessment behaviour; release decisions need genuine measurements and a representative workload.
 
 A [live API experiment](experiments/api_load_test/README.md) compares EAL/2+MCP with meaning-equivalent JSON and ordinary prose, including a conventional checked-result control. Its manually dispatched, Docker-based protocol freezes the selected measurements and scores decisions independently. An optional checked finalisation mode returns the verified decision without asking a model to restate it. The experiment measures the combined system under its specified cases; no general accuracy, cost or speed advantage over equally capable alternatives follows from the language or the synthetic example alone.
+
+The [coolant-loop composition example](experiments/composition_revision/README.md) evaluates shared premises, alternatives, an objection, evidence revocation, expiry and changed scope with EAL/2 and an independently written typed-rule implementation. The [paired runner](experiments/composition_comparison/README.md) freezes cases and scores both arms against the same expected claim statuses and revision effects. The [authoring and revision instrument](experiments/authoring_revision/README.md) freezes matched briefs and cases, preserves submitted source, replays it independently and records review and work time. The included cases and plans are synthetic controls; a claim about engineering advantage needs independently chosen tasks and observed human outcomes.
 
 ## Interfaces and boundaries
 

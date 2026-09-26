@@ -7,6 +7,7 @@ from pathlib import Path
 import tempfile
 
 from eal.argument_host import ArgumentHost
+from eal.api_load_methods import registry as api_load_registry
 from eal.runtime import ReasoningService
 
 
@@ -20,7 +21,7 @@ PARAPHRASE = "Are the recorded sample p95 and error percentage within the bundle
 def main() -> None:
     with tempfile.TemporaryDirectory(prefix="eal-argument-host-") as temporary:
         service = ReasoningService(ROOT, EXAMPLE / "argument-tools.toml",
-                                   Path(temporary) / "runs.sqlite3")
+                                   Path(temporary) / "runs.sqlite3", method_registry=api_load_registry())
         host = ArgumentHost.load(service, EXAMPLE / "argument-schemes.toml",
                                  principal="synthetic-demo", session_id="one-conversation")
         first = host.assess(FIRST)

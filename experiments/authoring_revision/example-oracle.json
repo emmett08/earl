@@ -1,0 +1,95 @@
+{
+  "schema": "eal-authoring-oracle/1",
+  "tasks": {
+    "cooling_both_routes": {
+      "initial": {
+        "a_nominal": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "supported",
+          "rejection_sufficient": "supported",
+          "cooling_at_8kw": "supported"
+        },
+        "a_alternative": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "supported",
+          "rejection_sufficient": "supported",
+          "cooling_at_8kw": "supported"
+        },
+        "a_disputed_alone": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "contested",
+          "rejection_sufficient": "supported",
+          "cooling_at_8kw": "contested"
+        }
+      },
+      "revision": {
+        "a_both_good": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "supported",
+          "rejection_sufficient": "supported",
+          "cooling_at_8kw": "supported"
+        },
+        "a_only_b": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "unsupported",
+          "rejection_sufficient": "supported",
+          "cooling_at_8kw": "unsupported"
+        },
+        "a_disputed_with_b": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "contested",
+          "rejection_sufficient": "supported",
+          "cooling_at_8kw": "contested"
+        },
+        "a_other_loop": {
+          "power_sufficient": "out_of_scope",
+          "flow_sufficient": "out_of_scope",
+          "rejection_sufficient": "out_of_scope",
+          "cooling_at_8kw": "out_of_scope"
+        }
+      }
+    },
+    "cooling_ten_kw": {
+      "initial": {
+        "b_nominal": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "supported",
+          "rejection_sufficient": "supported",
+          "cooling_at_8kw": "supported"
+        },
+        "b_supply_revoked": {
+          "power_sufficient": "unsupported",
+          "flow_sufficient": "unsupported",
+          "rejection_sufficient": "supported",
+          "cooling_at_8kw": "unsupported"
+        },
+        "b_other_loop": {
+          "power_sufficient": "out_of_scope",
+          "flow_sufficient": "out_of_scope",
+          "rejection_sufficient": "out_of_scope",
+          "cooling_at_8kw": "out_of_scope"
+        }
+      },
+      "revision": {
+        "b_heat_11": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "supported",
+          "rejection_sufficient": "supported",
+          "cooling_at_10kw": "supported"
+        },
+        "b_heat_9": {
+          "power_sufficient": "supported",
+          "flow_sufficient": "supported",
+          "rejection_sufficient": "unsupported",
+          "cooling_at_10kw": "unsupported"
+        },
+        "b_old_scope": {
+          "power_sufficient": "out_of_scope",
+          "flow_sufficient": "out_of_scope",
+          "rejection_sufficient": "out_of_scope",
+          "cooling_at_10kw": "out_of_scope"
+        }
+      }
+    }
+  }
+}

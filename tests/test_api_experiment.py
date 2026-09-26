@@ -11,11 +11,11 @@ from eal.responses_provider import ResponsesProvider
 from experiments.api_load_test.analysis import summarise
 from experiments.api_load_test.cases import build_cases, case_specs
 from experiments.api_load_test.collector import collect
-from experiments.api_load_test.materials import ARMS, source_for
+from experiments.api_load_test.materials import ARMS, CLAIM, FAILED_CLAIM, source_for
 from experiments.api_load_test.oracle import reference
 from experiments.api_load_test.routes import (TrialTools, checked_decision,
                                                child_environment, eal_decision)
-from experiments.api_load_test.runner import Budget, HERE, event, run, schedule, trial
+from experiments.api_load_test.runner import Budget, HERE, answer_agrees_with_checker, event, run, schedule, trial
 
 PLAN = json.loads((HERE / "plan.json").read_text())
 SPEC = json.loads((HERE / "models.json").read_text())["models"][0]
@@ -58,19 +58,36 @@ def test_credentials_do_not_enter_collector_or_mcp_environments(monkeypatch):
     assert "TOKEN" not in json.dumps(child_environment())
 
 
-def test_eal_projection_uses_checked_claim_status_and_refuses_conflicts():
+def test_eal_projection_uses_explicit_passing_and_failing_claims():
     packet = {"measurement_facts": {"report_valid": True, "identity_matches": True,
         "complete_records": True, "consistent_records": True, "age_seconds": 12},
         "metrics": {"request_count": 100, "p95_ms": 4.2, "error_rate_percent": 0.0}}
+    passing = {CLAIM: {"status": "supported"}, FAILED_CLAIM: {"status": "unsupported"}}
+    failing = {CLAIM: {"status": "unsupported"}, FAILED_CLAIM: {"status": "supported"}}
+    unknown = {CLAIM: {"status": "unsupported"}, FAILED_CLAIM: {"status": "unsupported"}}
     assert checked_decision(packet)["status"] == "supported"
-    assert eal_decision(packet, "unsupported")["status"] == "unsupported"
-    assert eal_decision(packet, "supported") == checked_decision(packet)
-    with pytest.raises(ValueError, match="unambiguous"):
-        eal_decision(packet, "contested")
+    assert eal_decision(packet, failing, "available")["status"] == "unsupported"
+    assert eal_decision(packet, passing, "available") == checked_decision(packet)
+    with pytest.raises(ValueError, match="inconsistent"):
+        eal_decision(packet, unknown, "available")
     packet["measurement_facts"]["age_seconds"] = 301
-    assert eal_decision(packet, "unsupported")["status"] == "unavailable"
-    with pytest.raises(ValueError, match="conflicts"):
-        eal_decision(packet, "supported")
+    assert eal_decision(packet, unknown, "unavailable")["status"] == "unavailable"
+    with pytest.raises(ValueError, match="inconsistent"):
+        eal_decision(packet, passing, "unavailable")
+
+
+def test_checker_agreement_uses_answer_precision_without_masking_status_errors():
+    packet = {"report_id": "target", "status": "supported", "failed_checks": [],
+              "unknown_checks": [], "metrics": {"request_count": 100,
+                                            "p95_ms": 6.479093, "error_rate_percent": 0.0}}
+    answer = {**packet, "metrics": {"request_count": 100, "p95_ms": 6.48,
+                                    "error_rate_percent": 0.0}}
+    assert answer_agrees_with_checker(answer, packet)
+    assert not answer_agrees_with_checker({**answer, "status": "unsupported"}, packet)
+    assert not answer_agrees_with_checker({**answer, "metrics": {**answer["metrics"],
+                                                          "p95_ms": 6.50}}, packet)
+    assert not answer_agrees_with_checker({**answer, "metrics": {**answer["metrics"],
+                                                          "request_count": 101}}, packet)
 
 
 def test_experiment_collector_requires_the_mode_free_acquisition_request(tmp_path, measured_case):
@@ -250,7 +267,7 @@ def test_calibration_freezes_small_selected_design_without_paid_calls(tmp_path, 
     output = tmp_path / "calibration"
     assert asyncio.run(run(output, [SPEC], PLAN, mode="calibration")) is False
     manifest = json.loads((output / "manifest.json").read_text())
-    assert manifest["schema"] == "eal-api-experiment-run/4"
+    assert manifest["schema"] == "eal-api-experiment-run/5"
     assert len(manifest["assignments"]) == 9
     assert {row["family"] for row in manifest["case_specs"]} == {"healthy", "corrupt", "stale"}
     assert all(row["variant"] == 0 for row in manifest["case_specs"])

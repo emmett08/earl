@@ -63,8 +63,8 @@ def _frozen_cases(output):
 
 def summarise(output: Path) -> dict:
     manifest = json.loads((output / "manifest.json").read_text())
-    if manifest["schema"] != "eal-api-experiment-run/4":
-        raise ValueError("Earlier runs retain their original reports; this analysis requires a v4 manifest")
+    if manifest["schema"] != "eal-api-experiment-run/5":
+        raise ValueError("Earlier runs retain their original reports; this analysis requires a v5 manifest")
     frozen_cases, freeze_errors = _frozen_cases(output)
     rows, identities = [], set()
     for assignment in manifest["assignments"]:
@@ -198,7 +198,7 @@ def summarise(output: Path) -> dict:
                               "invalid_measurement_trials": invalid,
                               "interpretation": ("suspended_invalid_measurement" if invalid else
                                                  "development_suite_descriptive")})
-    return {"schema": "eal-api-experiment-summary/4", "mode": manifest["mode"],
+    return {"schema": "eal-api-experiment-summary/5", "mode": manifest["mode"],
             "assigned": len(rows), "distinct_cases": len({row["case_id"] for row in rows}),
             "completed": sum(row["state"] == "complete" for row in rows),
             "failed": sum(row["state"] == "failed" for row in rows),

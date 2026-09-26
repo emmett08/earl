@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 
 from eal.formatter import semantic_ir
+from eal.api_load_methods import registry
 from eal.parser import parse
 from eal.semantics import validate
 
@@ -13,6 +14,7 @@ ARMS = ("eal_mcp", "json_prompt", "plain_brief", "plain_explicit", "plain_review
 CHECK_NAMES = ("report_valid", "identity", "completeness", "freshness", "sample_size",
                "latency", "errors", "consistency")
 CLAIM = "performance_criteria_met"
+FAILED_CLAIM = "performance_criteria_failed"
 SYSTEM = (
     "Help a developer assess the identified API load-test run. Select report IDs from the catalogue "
     "and inspect evidence with the available tool before finishing. Reports are immutable replays "
@@ -50,29 +52,41 @@ environment test_run {{
 }}
 tool api_load_test {{ version "2"; }}
 evidence load_test {{
-  tool api_load_test; kind test; environment test_run; max_age 300;
+  tool api_load_test; kind api_report; environment test_run; max_age 300;
   input {json.dumps({**workload, 'report_id': report_id}, sort_keys=True)};
   require "report_valid" == true;
   require "identity_matches" == true;
   require "complete_records" == true;
   require "consistent_records" == true;
-  require "request_count" >= 100;
-  require "p95_ms" <= 200;
-  require "error_rate_percent" <= 1;
+  require "age_seconds" >= 0;
+  require "age_seconds" <= 300;
 }}
-reasoning acceptance_criteria {{
-  method "structured/1";
-  rationale "The configured collector inspects an immutable report of real HTTP requests at the declared replay assessment time. Report validity, completeness, consistency, service, build, run and workload identity are required. The sample p95 uses nearest rank over every recorded attempt. Every non-2xx status or transport failure counts as an error. Passing these inclusive limits in fresh identified measurements supports only this run's stated performance criteria. The informal rationale is author supplied, not independently proved by structured/1.";
+reasoning passing_limits {{
+  method "engineering/api-load-criteria/1";
+  rationale "A usable, identified report supports these finite run criteria when the registered method computes passes. The collector's sample p95 uses nearest rank over every attempt; every non-2xx or transport failure is an error. This applies to the measured run only.";
+  require "passes" == true;
+}}
+reasoning failing_limits {{
+  method "engineering/api-load-criteria/1";
+  rationale "A usable, identified report supports a failed criterion when the registered method computes fails. The failed sample size, latency or error result is a measured finding, not an acquisition failure.";
+  require "fails" == true;
 }}
 claim {CLAIM} {{
   statement {json.dumps(statement)};
   environment test_run;
 }}
-argument checked_performance {{
-  conclusion {CLAIM}; reasoning acceptance_criteria; evidence load_test;
+claim {FAILED_CLAIM} {{
+  statement "The identified, usable orders-api run fails at least one sample-size, latency or error criterion.";
+  environment test_run;
+}}
+argument passing_performance {{
+  conclusion {CLAIM}; reasoning passing_limits; evidence load_test;
+}}
+argument failing_performance {{
+  conclusion {FAILED_CLAIM}; reasoning failing_limits; evidence load_test;
 }}
 '''
-    problems = validate(parse(source))
+    problems = validate(parse(source), registry=registry())
     if problems:
         raise ValueError(f"Invalid experimental argument: {problems}")
     return source
@@ -139,7 +153,7 @@ def finish_schema() -> dict:
 def operations(arm: str) -> list[dict]:
     name = "assess_load_test" if arm == "eal_mcp" else "inspect_report"
     description = ("Execute the fixed EAL/2 argument for the selected report through actual MCP validation, "
-                   "collection, structured/1 reasoning and explanation at the case assessment time."
+                   "collection, typed API criteria reasoning and explanation at the case assessment time."
                    if arm == "eal_mcp" else
                    "Inspect the selected immutable API report with an ordinary deterministic checker. "
                    "Return statistics, measurement facts, a status, failed_checks and unknown_checks. "
