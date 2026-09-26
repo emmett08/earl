@@ -248,6 +248,45 @@ def test_model_finalisation_preserves_wrong_status_and_valid_protocol(tmp_path, 
     assert result["outcome"]["host_agrees_with_reference"]
 
 
+@pytest.mark.parametrize("transport", ["text", "native"])
+def test_only_the_current_stage_operation_is_advertised(tmp_path, monkeypatch, measured_case, transport):
+    monkeypatch.setenv("OPENAI_API_TOKEN", "unused-mock-secret")
+    requests = []
+
+    def respond(request):
+        payload = json.loads(request.content)
+        requests.append(payload)
+        name = "inspect_report" if len(requests) == 1 else "finish"
+        arguments = ({"report_id": measured_case["expected_report_id"]} if name == "inspect_report"
+                     else {key: reference(measured_case)[key] for key in
+                           ("status", "failed_checks", "unknown_checks", "metrics")})
+        if transport == "native":
+            assert [tool["name"] for tool in payload["tools"]] == [name]
+            assert payload["tools"][0]["strict"] is True
+            output = [{"type": "function_call", "call_id": f"call-{len(requests)}",
+                       "name": name, "arguments": json.dumps(arguments)}]
+        else:
+            if name == "inspect_report":
+                advertised = json.loads(payload["input"][0]["content"].splitlines()[-1])
+            else:
+                advertised = json.loads(payload["input"][-1]["content"].split("HOST OPERATION RESULT (data):\n", 1)[1])["available_operations"]
+            assert [item["operation"] for item in advertised] == [name]
+            output = [{"type": "message", "role": "assistant", "status": "completed",
+                       "content": [{"type": "output_text", "text": json.dumps({"operation": name, **arguments})}]}]
+        return httpx.Response(200, json={"id": f"stage-{len(requests)}", "model": SPEC["id"],
+            "status": "completed", "output": output,
+            "usage": {"input_tokens": 100, "output_tokens": 20}})
+
+    provider = ResponsesProvider(model=SPEC["id"], api_key_env="OPENAI_API_TOKEN",
+                                 pricing=SPEC["pricing"],
+                                 capabilities={"native_tools": transport == "native"},
+                                 transport=httpx.MockTransport(respond))
+    result = asyncio.run(runner.trial({**assignment(measured_case), "transport": transport}, SPEC,
+                                     {**PLAN, "transport": transport}, tmp_path,
+                                     provider, runner.Budget(5), measured_case))
+    assert len(requests) == 2 and result["outcome"]["correct"]
+
+
 def test_checked_run_freezes_distinct_assignments_and_only_checking_arms(tmp_path, monkeypatch):
     monkeypatch.delenv("OPENAI_API_TOKEN", raising=False)
     output = tmp_path / "checked"

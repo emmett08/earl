@@ -81,7 +81,7 @@ def test_native_tool_call_replays_reasoning_and_call_id_without_leaking_credenti
     assert requests[0]["store"] is False
     assert requests[0]["include"] == ["reasoning.encrypted_content"]
     assert requests[0]["reasoning"] == {"effort": "medium"}
-    assert requests[0]["tools"][0]["strict"] is False
+    assert requests[0]["tools"][0]["strict"] is True
     assert requests[0]["tools"][0]["parameters"]["properties"] == {}
     assert requests[0]["parallel_tool_calls"] is False
 
@@ -200,7 +200,7 @@ def test_structured_response_unwraps_only_one_valid_request():
         operations=[OPERATION]))
     assert json.loads(result.text) == {"operation": "assess_bound_task"}
     assert observed[0]["text"]["format"]["type"] == "json_schema"
-    assert observed[0]["text"]["format"]["strict"] is False
+    assert observed[0]["text"]["format"]["strict"] is True
     assert observed[0]["store"] is False
 
 

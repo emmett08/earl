@@ -15,6 +15,7 @@ from typing import Any
 import httpx
 
 from .http_provider import (bearer_headers, native_operation_schema, post_json,
+                            restore_optional_fields, strict_operation_schema,
                             safe_error_details,
                             validate_api_key_env, validate_endpoint,
                             validate_max_response_bytes, validate_model)
@@ -181,22 +182,37 @@ class ResponsesProvider:
                                    **self.sampling}
         if "reasoning_effort" in self.capabilities:
             payload["reasoning"] = {"effort": self.capabilities["reasoning_effort"]}
+        schema_modes: dict[str, bool] = {}
         if native_tools:
             tools = []
             for entry in operations or []:
-                schema = native_operation_schema(entry)
+                try:
+                    schema = strict_operation_schema(entry, native=True)
+                    strict = True
+                except ValueError:
+                    # An open host schema cannot be closed without changing
+                    # its contract. Its host-side validator remains required.
+                    schema, strict = native_operation_schema(entry), False
+                schema_modes[entry["operation"]] = strict
                 tools.append({"type": "function", "name": entry["operation"],
                               "description": entry.get("description") or entry["operation"],
-                              "parameters": schema, "strict": False})
+                              "parameters": schema, "strict": strict})
             payload.update(tools=tools, tool_choice="required", parallel_tool_calls=False)
         elif self.capabilities["structured_output"] == "json_object":
             payload["text"] = {"format": {"type": "json_object"}}
         elif self.capabilities["structured_output"] == "json_schema" and operations:
+            try:
+                alternatives = [strict_operation_schema(entry, native=False) for entry in operations]
+                strict = True
+            except ValueError:
+                alternatives = [entry["input_schema"] for entry in operations]
+                strict = False
             schema = {"type": "object", "properties": {
-                "request": {"anyOf": [entry["input_schema"] for entry in operations]}},
+                "request": {"anyOf": alternatives}},
                 "required": ["request"], "additionalProperties": False}
             payload["text"] = {"format": {"type": "json_schema", "name": "eal_reply",
-                                         "schema": schema, "strict": False}}
+                                         "schema": schema, "strict": strict}}
+            schema_modes = {entry["operation"]: strict for entry in operations}
         data = await post_json(self.endpoint, headers, payload,
                                timeout_seconds=self.timeout_seconds,
                                max_response_bytes=self.max_response_bytes,
@@ -249,7 +265,11 @@ class ResponsesProvider:
                 arguments = strict_json(call["arguments"])
                 if not isinstance(arguments, dict) or "operation" in arguments:
                     raise ValueError("Expected object arguments without an operation field")
-                flat = json.dumps({"operation": call["name"], **arguments}, ensure_ascii=False, allow_nan=False)
+                entry = next(entry for entry in operations or [] if entry["operation"] == call["name"])
+                if schema_modes[call["name"]]:
+                    arguments = restore_optional_fields(arguments, native_operation_schema(entry))
+                flat_request = {"operation": call["name"], **arguments}
+                flat = json.dumps(flat_request, ensure_ascii=False, allow_nan=False)
             except (ValueError, TypeError) as exc:
                 raise failure("Native function arguments are invalid", "invalid_operation") from exc
             handle = secrets.token_urlsafe(24)
@@ -257,6 +277,7 @@ class ResponsesProvider:
             metadata["responses_replay_handle"] = handle
             metadata["native_tool_call"] = {"id": call["call_id"], "type": "function",
                                             "function": {"name": call["name"], "arguments": call["arguments"]}}
+            metadata["operation_schema_mode"] = "strict" if schema_modes[call["name"]] else "host_validated"
             return ModelResponse(flat, measured.input_tokens, measured.output_tokens, measured.model, metadata)
         if any(not isinstance(item, dict) or item.get("type") not in ("message", "reasoning") for item in output):
             raise failure("Text response contained a tool or non-message item")
@@ -284,8 +305,15 @@ class ResponsesProvider:
                 wrapper = strict_json(result)
                 if not isinstance(wrapper, dict) or set(wrapper) != {"request"} or not isinstance(wrapper["request"], dict):
                     raise ValueError("Expected a request envelope")
+                name = wrapper["request"].get("operation")
+                entry = next((entry for entry in operations if entry["operation"] == name), None)
+                if entry is None:
+                    raise ValueError("Unknown structured operation")
+                request = (restore_optional_fields(wrapper["request"], entry["input_schema"])
+                           if schema_modes[name] else wrapper["request"])
                 metadata["structured_response_text"] = result
-                result = json.dumps(wrapper["request"], ensure_ascii=False, allow_nan=False)
+                metadata["operation_schema_mode"] = "strict" if schema_modes[name] else "host_validated"
+                result = json.dumps(request, ensure_ascii=False, allow_nan=False)
             except (ValueError, TypeError) as exc:
                 raise failure("Structured response did not contain one request", "invalid_operation") from exc
         handle = secrets.token_urlsafe(24)

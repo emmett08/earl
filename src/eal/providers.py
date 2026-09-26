@@ -20,6 +20,7 @@ from typing import Any, Protocol
 import httpx
 
 from .http_provider import (bearer_headers, native_operation_schema, post_json,
+                            restore_optional_fields, strict_operation_schema,
                             validate_api_key_env, validate_endpoint,
                             validate_max_response_bytes, validate_model)
 from .runtime import strict_json
@@ -302,24 +303,39 @@ class ChatCompletionsProvider:
         if "reasoning_effort" in self.capabilities:
             payload["reasoning_effort"] = self.capabilities["reasoning_effort"]
         structured = self.capabilities["structured_output"]
+        schema_modes: dict[str, bool] = {}
         if native_tools:
             functions = []
             for entry in operations:
-                parameters = native_operation_schema(entry)
+                try:
+                    parameters = strict_operation_schema(entry, native=True)
+                    strict = True
+                except ValueError:
+                    parameters, strict = native_operation_schema(entry), False
+                schema_modes[entry["operation"]] = strict
                 functions.append({"type": "function", "function": {"name": entry["operation"],
                     "description": entry.get("description") or entry["operation"], "parameters": parameters,
-                    "strict": False}})
+                    "strict": strict}})
             payload.update(tools=functions, tool_choice="required", parallel_tool_calls=False)
         elif structured == "json_object":
             payload["response_format"] = {"type": "json_object"}
         elif structured == "json_schema":
             schema = {"type": "object"}
+            strict = False
             if operations:
-                schema = {"type": "object", "properties": {"request": {"anyOf": [entry["input_schema"] for entry in operations]}},
+                try:
+                    alternatives = [strict_operation_schema(entry, native=False) for entry in operations]
+                    strict = True
+                except ValueError:
+                    alternatives = [entry["input_schema"] for entry in operations]
+                    strict = False
+                schema = {"type": "object", "properties": {"request": {"anyOf": alternatives}},
                           "required": ["request"], "additionalProperties": False}
+                schema_modes = {entry["operation"]: strict for entry in operations}
                 payload["messages"] = [*messages, {"role": "system", "content":
                     "For this response wrap the single flat operation request in a JSON object with exactly one field: request. Example: {\"request\":{\"operation\":\"validate\"}}. The host will unwrap it before execution."}]
-            payload["response_format"] = {"type": "json_schema", "json_schema": {"name": "eal_reply", "schema": schema, "strict": False}}
+            payload["response_format"] = {"type": "json_schema", "json_schema": {"name": "eal_reply", "schema": schema,
+                                                                                  "strict": strict}}
         data = await post_json(self.endpoint, headers, payload,
                                timeout_seconds=self.timeout_seconds,
                                max_response_bytes=self.max_response_bytes,
@@ -363,11 +379,16 @@ class ChatCompletionsProvider:
                 arguments = strict_json(function["arguments"])
                 if not isinstance(arguments, dict) or "operation" in arguments:
                     raise ValueError("Native operation arguments must be an object without an operation field")
-                flat = json.dumps({"operation": function["name"], **arguments}, ensure_ascii=False, allow_nan=False)
+                entry = next(entry for entry in operations if entry["operation"] == function["name"])
+                if schema_modes[function["name"]]:
+                    arguments = restore_optional_fields(arguments, native_operation_schema(entry))
+                flat_request = {"operation": function["name"], **arguments}
+                flat = json.dumps(flat_request, ensure_ascii=False, allow_nan=False)
             except (ValueError, TypeError) as exc:
                 raise ProviderError("Native model response arguments are invalid JSON", response=measured) from exc
             metadata["native_tool_call"] = {"id": call["id"], "type": "function", "function": {
                 "name": function["name"], "arguments": function["arguments"]}}
+            metadata["operation_schema_mode"] = "strict" if schema_modes[function["name"]] else "host_validated"
             if message.get("content") is not None:
                 metadata["native_content"] = message["content"]
             metadata.pop("response_choices", None)
@@ -382,9 +403,16 @@ class ChatCompletionsProvider:
                 envelope = strict_json(result.text)
                 if not isinstance(envelope, dict) or set(envelope) != {"request"} or not isinstance(envelope["request"], dict):
                     raise ValueError("Expected a request envelope")
+                name = envelope["request"].get("operation")
+                entry = next((entry for entry in operations if entry["operation"] == name), None)
+                if entry is None:
+                    raise ValueError("Unknown structured operation")
+                request = (restore_optional_fields(envelope["request"], entry["input_schema"])
+                           if schema_modes[name] else envelope["request"])
                 metadata["structured_response_text"] = result.text
+                metadata["operation_schema_mode"] = "strict" if schema_modes[name] else "host_validated"
                 metadata.pop("response_choices", None)
-                return ModelResponse(json.dumps(envelope["request"], ensure_ascii=False, allow_nan=False),
+                return ModelResponse(json.dumps(request, ensure_ascii=False, allow_nan=False),
                                      measured.input_tokens, measured.output_tokens, measured.model, metadata)
             except (ValueError, TypeError) as exc:
                 raise ProviderError("Structured model response did not contain one request object", response=result) from exc

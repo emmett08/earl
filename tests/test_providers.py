@@ -143,8 +143,10 @@ def test_explicit_reasoning_control_and_structured_schema_preserve_flat_host_con
         assert "temperature" not in payload
         schema = payload["response_format"]
         assert schema["type"] == "json_schema"
-        assert schema["json_schema"]["strict"] is False
-        assert schema["json_schema"]["schema"]["properties"]["request"]["anyOf"] == [OPERATIONS[0]["input_schema"]]
+        assert schema["json_schema"]["strict"] is True
+        choice = schema["json_schema"]["schema"]["properties"]["request"]["anyOf"][0]
+        assert choice["required"] == ["operation", "source"]
+        assert choice["properties"]["source"] == {"anyOf": [{"type": "string"}, {"type": "null"}]}
         assert "wrap" in payload["messages"][-1]["content"]
         return httpx.Response(200, json=response_data(
             usage={"prompt_tokens": 20, "completion_tokens": 80, "completion_tokens_details": {"reasoning_tokens": 60}},
