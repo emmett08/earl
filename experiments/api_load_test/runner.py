@@ -373,7 +373,7 @@ async def run(output: Path, specs: list[dict], plan: dict, *, mode: str, provide
     if not commit:
         commit = (subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
                   if (ROOT / ".git").exists() else "source-snapshot-only")
-    manifest = {"schema": "eal-api-experiment-run/4", "mode": mode, "transport": plan["transport"],
+    manifest = {"schema": "eal-api-experiment-run/5", "mode": mode, "transport": plan["transport"],
                 "finalisation": plan["finalisation"],
                 "started_at": utc_now(), "plan": plan, "models": specs, "assignments": assignments,
                 "case_specs": selected_cases, "commit": commit,

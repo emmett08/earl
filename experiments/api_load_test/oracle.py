@@ -158,8 +158,7 @@ def packet_reference_check(case: dict, report_id: str, packet: dict, *, checked=
             if (not isinstance(actual, list) or not all(isinstance(item, str) for item in actual)
                     or len(actual) != len(set(actual)) or set(actual) != set(truth[key])):
                 mismatches.append(key)
-    if host_status is not None and host_status != (
-            "supported" if truth["status"] == "supported" else "unsupported"):
+    if host_status is not None and host_status != truth["status"]:
         mismatches.append("host_status")
     return {"report_id": report_id, "agrees": not mismatches, "mismatches": mismatches}
 
@@ -200,6 +199,5 @@ def grade(answer: dict | None, truth: dict | None, *, collected: bool,
         "correct_unavailable": bool(correct and truth["status"] == "unavailable"),
         "unsupported_assertion_without_collection": answer.get("status") == "supported" and not collected,
         "host_agrees_with_reference": (None if host_status is None or truth is None else
-                                       host_status == ("supported" if truth["status"] == "supported"
-                                                       else "unsupported")),
+                                       host_status == truth["status"]),
     }

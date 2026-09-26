@@ -11,7 +11,7 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from eal.tool_acquisition import strict_json
 from .api import utc_now
-from .materials import CLAIM, source_for
+from .materials import CLAIM, FAILED_CLAIM, source_for
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -63,11 +63,26 @@ def checked_decision(packet: dict) -> dict:
     return application_decision(checks, claim_supported=all(value is True for value in checks.values()))
 
 
-def eal_decision(packet: dict, claim_status: str) -> dict:
-    """Project the assessed EAL claim through the application's evidence policy."""
-    if claim_status not in {"supported", "unsupported"}:
-        raise ValueError("This experiment requires an unambiguous EAL claim assessment")
-    return application_decision(measurement_checks(packet), claim_supported=claim_status == "supported")
+def eal_decision(packet: dict, claims: dict, evidence_status: str) -> dict:
+    """Project the two EAL conclusions; retain the checklist as diagnostics.
+
+    The application does not recompute the performance verdict. If admissible
+    evidence leaves neither or both conclusions supported, the method or
+    source has failed this experiment's contract.
+    """
+    pass_status, fail_status = (claims[name]["status"] for name in (CLAIM, FAILED_CLAIM))
+    if evidence_status == "unavailable" and (pass_status, fail_status) == ("unsupported", "unsupported"):
+        status = "unavailable"
+    elif evidence_status == "available" and (pass_status, fail_status) == ("supported", "unsupported"):
+        status = "supported"
+    elif evidence_status == "available" and (pass_status, fail_status) == ("unsupported", "supported"):
+        status = "unsupported"
+    else:
+        raise ValueError("EAL evidence and passing/failing claims are inconsistent or unresolved")
+    checks = measurement_checks(packet)
+    return {"status": status,
+            "failed_checks": sorted(name for name, value in checks.items() if value is False),
+            "unknown_checks": sorted(name for name, value in checks.items() if value is None)}
 
 
 class TrialTools:
@@ -156,7 +171,8 @@ class TrialTools:
                             'timeout_seconds=60\nmax_output_bytes=32768\n'
                             f'argv={json.dumps(argv)}\n')
         settings = StdioServerParameters(command=sys.executable,
-            args=["-m", "eal.server", "--workspace", str(directory), "--registry", str(registry)],
+            args=["-m", "eal.server", "--workspace", str(directory), "--registry", str(registry),
+                  "--methods", "eal.api_load_methods:registry"],
             env=child_environment())
         self.trace.append({"route": "mcp_stdio", "report_id": report_id, "started_at": utc_now()})
         async with stdio_client(settings) as (reader, writer):
@@ -181,26 +197,29 @@ class TrialTools:
                     raise ValueError("MCP report collector failed")
                 assessed = await call("eal_reason", {"source": source, "context": context,
                                       "collection_id": collected["collection_id"], "now": self.assessed_at})
-                explanation = await call("eal_explain", {"assessment_id": assessed["assessment_id"], "claim": CLAIM})
                 expected_digest = hashlib.sha256(source.encode()).hexdigest()
-                host_status = assessed["claims"][CLAIM]["status"]
+                claims = assessed["claims"]
                 if (assessed["source_digest"] != expected_digest
-                    or assessed["collection_id"] != collected["collection_id"]
-                    or explanation["assessment_id"] != assessed["assessment_id"]
-                    or explanation["result"]["status"] != host_status):
-                    raise ValueError("MCP assessment identity or explanation differs")
+                    or assessed["collection_id"] != collected["collection_id"]):
+                    raise ValueError("MCP assessment identity differs")
                 packet = self._packet(record["value"], record["collected_at"], record["details"])
-                decision = eal_decision(packet, host_status)
-                expected_host = "supported" if decision["status"] == "supported" else "unsupported"
-                if host_status != expected_host:
-                    raise ValueError("MCP assessment differs from the declared decision contract")
-                # Raw EAL status and detailed reasoning remain in the audit
-                # artefact. Models receive one canonical status field only.
+                decision = eal_decision(packet, claims, assessed["evidence"]["load_test"]["status"])
+                supported_claim = (CLAIM if decision["status"] != "unsupported" else FAILED_CLAIM)
+                explanation = await call("eal_explain", {"assessment_id": assessed["assessment_id"],
+                                                         "claim": supported_claim})
+                if (explanation["assessment_id"] != assessed["assessment_id"]
+                        or explanation["result"]["status"] != claims[supported_claim]["status"]):
+                    raise ValueError("MCP explanation differs from assessment")
+                # Full EAL conclusions and detailed reasoning remain in the
+                # audit artefact. Models receive one canonical status field.
                 self.host_assessments[report_id] = {
-                    "host_status": host_status, "status": decision["status"],
+                    "host_status": decision["status"],
+                    "claims": {name: claims[name]["status"] for name in (CLAIM, FAILED_CLAIM)},
+                    "evidence_status": assessed["evidence"]["load_test"]["status"],
                     "source_digest": expected_digest, "collection_id": collected["collection_id"],
                     "assessment_id": assessed["assessment_id"]}
-                packet.update(**decision, claim=CLAIM, source_digest=expected_digest,
+                packet.update(**decision, claim=(None if decision["status"] == "unavailable" else supported_claim),
+                              source_digest=expected_digest,
                               method_registry_fingerprint=assessed["method_registry_fingerprint"],
                               collection_id=collected["collection_id"], assessment_id=assessed["assessment_id"])
                 return packet

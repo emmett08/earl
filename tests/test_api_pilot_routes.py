@@ -78,8 +78,11 @@ def test_every_failure_mechanism_agrees_with_independent_raw_reference(cases, tm
         assert set(packet["unknown_checks"]) == set(truth["unknown_checks"])
         assert not set(packet["failed_checks"]) & set(packet["unknown_checks"])
     if arm == "eal_mcp":
-        assert tools.host_assessments[report_id]["host_status"] == (
-            "supported" if truth["status"] == "supported" else "unsupported")
+        assert tools.host_assessments[report_id]["host_status"] == truth["status"]
+        assert tools.host_assessments[report_id]["claims"] == {
+            "performance_criteria_met": "supported" if truth["status"] == "supported" else "unsupported",
+            "performance_criteria_failed": "supported" if truth["status"] == "unsupported" else "unsupported",
+        }
         assert "reasoning" not in packet and "evidence" not in packet
         assert [row["tool"] for row in tools.trace if "tool" in row] == [
             "eal_validate", "eal_collect", "eal_reason", "eal_explain"]
@@ -161,6 +164,6 @@ def test_checked_packets_expose_one_canonical_status_for_unavailable_evidence(ca
     assert "host_status" not in json.dumps(packet) and "decision_status" not in json.dumps(packet)
     assert "unsupported" not in json.dumps(packet)
     if arm == "eal_mcp":
-        assert tools.host_assessments[case["expected_report_id"]]["host_status"] == "unsupported"
+        assert tools.host_assessments[case["expected_report_id"]]["host_status"] == "unavailable"
         assert any(row.get("tool") == "eal_reason" and row["result"]["claims"]["performance_criteria_met"]["status"]
                    == "unsupported" for row in tools.trace)

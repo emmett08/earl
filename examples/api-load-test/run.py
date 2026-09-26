@@ -19,6 +19,8 @@ ROOT = EXAMPLE.parents[1]
 CONTEXT = {"service": "orders-api", "build_id": "demo-build-42", "dataset": "synthetic"}
 ASSESS_AT = "2026-09-25T10:00:00Z"
 CLAIM = "performance_criteria_met"
+FAILED_CLAIM = "performance_criteria_failed"
+METHOD_FACTORY = "eal.api_load_methods:registry"
 
 
 def environment() -> dict:
@@ -31,17 +33,19 @@ def environment() -> dict:
 def cli(database: Path, operation: str, *args: str) -> dict:
     result = subprocess.run(
         [sys.executable, "-m", "eal.cli", "--workspace", str(ROOT),
-         "--registry", str(EXAMPLE / "tools.toml"), "--database", str(database), operation, *args],
+         "--registry", str(EXAMPLE / "tools.toml"), "--database", str(database),
+         "--methods", METHOD_FACTORY, operation, *args],
         capture_output=True, text=True, env=environment(), timeout=30, check=True,
     )
     return json.loads(result.stdout)
 
 
-async def mcp(database: Path) -> str:
+async def mcp(database: Path) -> dict[str, str]:
     settings = StdioServerParameters(
         command=sys.executable,
         args=["-m", "eal.server", "--workspace", str(ROOT),
-              "--registry", str(EXAMPLE / "tools.toml"), "--database", str(database)],
+              "--registry", str(EXAMPLE / "tools.toml"), "--database", str(database),
+              "--methods", METHOD_FACTORY],
         env=environment(),
     )
     source = (EXAMPLE / "source.eal").read_text()
@@ -64,9 +68,13 @@ async def mcp(database: Path) -> str:
                 "now": ASSESS_AT,
             })
             assert assessed["claims"][CLAIM]["status"] == "supported", assessed
-            explained = await call("eal_explain", {"assessment_id": assessed["assessment_id"], "claim": CLAIM})
-            assert explained["result"]["status"] == "supported", explained
-            return explained["result"]["status"]
+            assert assessed["claims"][FAILED_CLAIM]["status"] == "unsupported", assessed
+            statuses = {}
+            for claim in (CLAIM, FAILED_CLAIM):
+                explained = await call("eal_explain", {"assessment_id": assessed["assessment_id"], "claim": claim})
+                assert explained["result"]["status"] == assessed["claims"][claim]["status"], explained
+                statuses[claim] = explained["result"]["status"]
+            return statuses
 
 
 def main() -> None:
@@ -80,13 +88,19 @@ def main() -> None:
         assessed = cli(database, "reason", source, "--context", json.dumps(CONTEXT),
                        "--collection", collected["collection_id"], "--now", ASSESS_AT)
         assert assessed["claims"][CLAIM]["status"] == "supported", assessed
-        explained = cli(database, "explain", assessed["assessment_id"], "--claim", CLAIM)
-        assert explained["result"]["status"] == "supported", explained
+        assert assessed["claims"][FAILED_CLAIM]["status"] == "unsupported", assessed
+        explanations = {claim: cli(database, "explain", assessed["assessment_id"], "--claim", claim)
+                        for claim in (CLAIM, FAILED_CLAIM)}
+        for claim, explanation in explanations.items():
+            assert explanation["result"]["status"] == assessed["claims"][claim]["status"]
+        mcp_statuses = asyncio.run(mcp(database))
         print(json.dumps({
             "dataset": "synthetic", "assessed_at": ASSESS_AT,
             "metrics": collected["records"]["load_test"]["value"],
-            "cli_claim_status": explained["result"]["status"],
-            "mcp_claim_status": asyncio.run(mcp(database)),
+            "cli_claim_status": explanations[CLAIM]["result"]["status"],
+            "mcp_claim_status": mcp_statuses[CLAIM],
+            "cli_failed_claim_status": explanations[FAILED_CLAIM]["result"]["status"],
+            "mcp_failed_claim_status": mcp_statuses[FAILED_CLAIM],
         }, indent=2))
 
 

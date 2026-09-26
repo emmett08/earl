@@ -14,11 +14,13 @@ This explains the design of the EAL/2 source language. Syntax, the argument solv
 
 ## Purpose and extension criterion
 
-EAL/2 is the source contract and the installed Python package declares version 2.7.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
+EAL/2 is the source contract and the installed Python package declares version 2.8.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
 
 The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. A gain over prose or another notation remains a **hypothesis**. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data. The [live API experiment](../experiments/api_load_test/README.md) measures a bounded combined-system comparison; broader inference needs independent tasks.
 
 A grammar addition requires a task whose necessary distinction cannot be represented and checked using existing claims, propositions, versioned methods, premises and targeted objections. For example, a new negative-finding keyword would need to express a semantic distinction that an explicit negative method result cannot express. A richer causal or temporal task should first identify which existing method or relation fails; an additional typed method may address it without changing the grammar.
+
+The API load-test case exercises that choice. A measured p95 above the limit remains a usable observation; `engineering/api-load-criteria/1` computes a negative criterion result and supports the explicit failing claim. A stale or mismatched report makes the evidence unusable and supports neither the passing nor failing claim. The competing design placed threshold predicates on the evidence declaration, so the interpreter called a measured failure unavailable and application code had to reconstruct the distinction. The installed method expresses the required calculation through existing EAL/2 claims and predicates without new syntax. Tests establish the declared finite outcomes; comparative readability and maintenance benefits require separate human tasks.
 
 ## Primary recommendations and adaptations
 
