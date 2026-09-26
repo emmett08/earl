@@ -41,15 +41,18 @@ expiry at 61 seconds, and a different coolant-loop identity. Reassessment
 starts from the full revised observation set rather than reusing a cached
 conclusion.
 
-Run the local, credential-free control:
+Run the credential-free paired comparison:
 
-    PYTHONPATH=src python -m experiments.composition_revision.study --output /tmp/cooling-new-result
+    PYTHONPATH=src python -m experiments.composition_comparison.experiment run --output /tmp/cooling-new-result
 
-It writes source/configuration digests, fixture hash, claim/argument/evidence
-statuses and elapsed evaluator time for both arms. The output directory must
-be new. Nine reviewed development cases demonstrate this bounded behaviour;
-they do not measure engineer authoring time, model ability, a held-out task
-population or an EAL advantage over typed configuration.
+The runner stores the assignment manifest, one trial per arm and case, and
+summary.json. A failure in one arm is retained and does not prevent its paired
+arm or subsequent cases from executing. It records source/configuration
+digests, fixture hash, claim/argument/evidence statuses and evaluation time
+where available. Use a new output directory. Nine reviewed development cases
+demonstrate this bounded behaviour; they do not measure engineer authoring
+time, model ability, a held-out task population or an EAL advantage over typed
+configuration.
 
 For an authoring comparison, give different engineers the two starting
 implementations and time the **same** subsequent requests: raise the bench

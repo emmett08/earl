@@ -1,8 +1,6 @@
 """Run either coolant-loop assessor on the same declared synthetic reading set."""
 from __future__ import annotations
 
-import argparse
-import hashlib
 import json
 from pathlib import Path
 from time import perf_counter
@@ -112,32 +110,3 @@ def run_arm(case: dict[str, Any], arm: Arm) -> dict[str, Any]:
     return {"claims": claims, "argument_statuses": arguments,
             "evidence_statuses": evidence, "objection_statuses": objections,
             "elapsed_seconds": seconds, "source_digest": source_digest}
-
-
-def run(output: Path) -> dict[str, Any]:
-    """Emit all assigned offline assessments and their expected outcomes."""
-    fixture = load_cases()
-    rows = []
-    for case in fixture["cases"]:
-        rows.append({"case_id": case["id"], "revision_of": case.get("revision_of"),
-                     "expected": case["expected"], "affected": case["affected"],
-                     "arms": {arm: run_arm(case, arm) for arm in ("eal", "typed_rule")}})
-    results = {"schema": "eal2-composition-revision-result/1",
-               "fixture_sha256": hashlib.sha256(CASES_PATH.read_bytes()).hexdigest(),
-               "scope": "Synthetic development cases; no model calls or authoring study",
-               "cases": rows}
-    output.mkdir(parents=True, exist_ok=False)
-    (output / "result.json").write_text(json.dumps(results, indent=2, sort_keys=True) + "\n")
-    return results
-
-
-if __name__ == "__main__":
-    cli = argparse.ArgumentParser(description=__doc__)
-    cli.add_argument("--output", required=True, type=Path)
-    args = cli.parse_args()
-    report = run(args.output)
-    incorrect = [(row["case_id"], arm) for row in report["cases"] for arm in row["arms"]
-                 if row["arms"][arm]["claims"] != row["expected"]]
-    print(f"{len(report['cases']) * 2 - len(incorrect)}/{len(report['cases']) * 2} matched expected claim vectors")
-    if incorrect:
-        raise SystemExit(1)
