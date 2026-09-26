@@ -113,6 +113,8 @@ def build_aspic_view(result: dict) -> dict:
                         raise ValueError("Source map rule identity is inconsistent")
                     origin_by_rule[rule_id] = {"kind": kind[:-1], "name": name,
                                                "span": item.get("span"),
+                                               "formal_review": (item.get("strict_annotation")
+                                                                 or item.get("rank_annotation")),
                                                **({"rationale": item.get("rationale"),
                                                    "reasoning": item.get("reasoning")}
                                                   if kind == "arguments" else {})}
@@ -124,6 +126,7 @@ def build_aspic_view(result: dict) -> dict:
                     raise ValueError("Source map evidence identity is inconsistent")
                 origin_by_atom[atom] = {"kind": "evidence", "name": name,
                                         "span": item.get("span"),
+                                        "formal_review": item.get("rank_annotation"),
                                         "observation": item.get("identity")}
             else:
                 if (not isinstance(item.get("reasons", []), list)
@@ -138,6 +141,20 @@ def build_aspic_view(result: dict) -> dict:
         if basis and basis.get("atom") in premises:
             origin_by_atom[basis["atom"]] = {"kind": "structural basis", "name": "compiler_basis",
                                                      "meaning": basis["meaning"]}
+
+    contrary_origins = {}
+    if source is not None:
+        for item in source.get("contraries", []):
+            if isinstance(item, dict):
+                contrary_origins[(item.get("attacker"), item.get("target"))] = {
+                    "objection": item.get("objection"),
+                    "annotation": item.get("annotation")}
+    viewed_defeats = []
+    for event in defeats:
+        target = by_id[event["subargument"]]
+        attacked_atom = target.get("rule_name") if event["kind"] == "undercut" else target["conclusion"]
+        relation = contrary_origins.get((by_id[event["attacker"]]["conclusion"], attacked_atom))
+        viewed_defeats.append({**event, **({"relation_origin": relation} if relation else {})})
 
     nodes = []
     for arg in arguments:
@@ -160,7 +177,7 @@ def build_aspic_view(result: dict) -> dict:
             "authored_claim_status": result.get("authored_claim_status"),
             "source_digest": result.get("source_digest"),
             "snapshot_digest": source.get("snapshot_digest") if source else None,
-            "arguments": nodes, "defeats": defeats,
+            "arguments": nodes, "defeats": viewed_defeats,
             "unavailable_evidence": missing}
 
 
@@ -294,6 +311,9 @@ function select(id) {
   if (arg.rule_id) element("p", detail, "Rule: " + arg.rule_id + (arg.rule_name ? " · applicability: " + arg.rule_name : ""));
   if (arg.origin.span) element("p", detail, "Source location: " + JSON.stringify(arg.origin.span));
   if (arg.origin.rationale) element("p", detail, "Authored rationale: " + arg.origin.rationale);
+  if (arg.origin.formal_review) element("p", detail, "Formal choice reviewed: " +
+    arg.origin.formal_review.kind + " · " + arg.origin.formal_review.review +
+    " · " + JSON.stringify(arg.origin.formal_review.span));
   if (arg.origin.observation) element("p", detail, "Checked observation identity: " + JSON.stringify(arg.origin.observation));
   if (arg.origin.meaning) element("p", detail, arg.origin.meaning);
   element("h3", detail, "Direct subarguments (premises first)");
@@ -309,12 +329,16 @@ function select(id) {
   for (const item of incoming) {
     const row = element("p", attacks, item.kind + " at " + item.subargument + " from ");
     linkArg(row, item.attacker);
+    if (item.relation_origin?.objection) element("span", row, " · EAL objection " + item.relation_origin.objection);
+    if (item.relation_origin?.annotation) element("span", row, " · reviewed " + item.relation_origin.annotation.review);
   }
   element("h3", attacks, "Outgoing defeats · " + outgoing.length + " witnesses");
   if (!outgoing.length) element("p", attacks, "No recorded outgoing defeat witness.");
   for (const item of outgoing) {
     const row = element("p", attacks, item.kind + " at " + item.subargument + " against ");
     linkArg(row, item.target);
+    if (item.relation_origin?.objection) element("span", row, " · EAL objection " + item.relation_origin.objection);
+    if (item.relation_origin?.annotation) element("span", row, " · reviewed " + item.relation_origin.annotation.review);
   }
   for (const button of picker.querySelectorAll("button")) {
     button.setAttribute("aria-current", button.dataset.argumentId === id ? "true" : "false");

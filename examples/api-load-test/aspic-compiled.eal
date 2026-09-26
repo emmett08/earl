@@ -52,3 +52,8 @@ argument independent_probe {
   conclusion run_passes; reasoning recorded; premises alternate_probe_ok;
 }
 objection primary_trace_gap { target argument primary_run; premises trace_gap; }
+aspic {
+  strict argument report_arg reviewed "synthetic-review/checked-record-implication";
+  rank argument independent_probe 700 reviewed "synthetic-review/independent-probe";
+  rank evidence probe_record 700 reviewed "synthetic-review/probe-observation";
+}

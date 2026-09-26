@@ -19,6 +19,21 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EALParser#aspicDecl.
+    def visitAspicDecl(self, ctx:EALParser.AspicDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#aspicDirective.
+    def visitAspicDirective(self, ctx:EALParser.AspicDirectiveContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#aspicRankKind.
+    def visitAspicRankKind(self, ctx:EALParser.AspicRankKindContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EALParser#environmentDecl.
     def visitEnvironmentDecl(self, ctx:EALParser.EnvironmentDeclContext):
         return self.visitChildren(ctx)

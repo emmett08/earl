@@ -1,8 +1,8 @@
 # Optional ASPIC+ method
 
-`argumentation/aspic/1` is a bounded, host-installed ASPIC+ instantiation. It constructs arguments from an explicit finite theory, derives undermining, rebutting and undercutting defeats, and computes the grounded extension of that defeat graph. The separate, opt-in `EAL/2-compiled-aspic/1` operation translates authored EAL routes at a checked observation snapshot. Neither changes the EAL/2 grammar or the default authored objection calculus. The [ASPIC+ tutorial](sources.md#argument-and-reasoning-models) supplies the framework's argument, attack and defeat definitions; the restrictions and ranking below are this implementation's choices.
+`argumentation/aspic/1` is a bounded, host-installed ASPIC+ instantiation. It constructs arguments from an explicit finite theory, derives undermining, rebutting and undercutting defeats, and computes the grounded extension of that defeat graph. The separate, opt-in `EAL/2-compiled-aspic/2` operation translates authored EAL routes at a checked observation snapshot. EAL/2 now admits an optional reviewed `aspic` declaration; the default authored objection calculus ignores its formal choices. The [ASPIC+ tutorial](sources.md#argument-and-reasoning-models) supplies the framework's argument, attack and defeat definitions; the restrictions and ranking below are this implementation's choices.
 
-Package 2.9.0 adds the offline visualisation and the direct-subargument field to the ASPIC method output, identifying its changed implementation as `eal-aspic-grounded-3`. The EAL/2 source-language contract and stored observation schema do not change. The existing API experiment remains frozen against its own recorded package version and source revision.
+Package 2.10.0 adds checked formal annotations to EAL/2 and changes the compiled profile to `/2`. The installed ASPIC method stays `argumentation/aspic/1` with implementation `eal-aspic-grounded-3`; the stored observation schema is unchanged. The existing API experiment remains frozen against its recorded package version and source revision.
 
 ## Run the synthetic engineering case
 
@@ -48,19 +48,41 @@ Save the complete `compile-aspic` JSON result, then render a standalone HTML pag
 eal --workspace . visualise-aspic compiled-result.json --output compiled-arguments.html
 ```
 
-The optional `--focus A3` opens a named formal argument. Alternatively, the single synthetic demonstration writes the same page with `python examples/api-load-test/aspic_compiled_demo.py --visualise /tmp/compiled-arguments.html`. The page lists all constructed arguments and lets you select one to see its **direct** antecedent arguments in a derivation graph, its grounded label, its incoming and outgoing defeat witnesses (including the attacked subargument), and its authored claim wording, inference rationale, EAL declaration span and checked observation identity when a source map exists. It lists unavailable EAL evidence with reasons separately: absence never becomes a contrary premise. An explicit theory result can also be rendered from JSON containing `theory` and its matching `formal` output; it has no EAL provenance.
+The optional `--focus A3` opens a named formal argument. Alternatively, the single synthetic demonstration writes the same page with `python examples/api-load-test/aspic_compiled_demo.py --visualise /tmp/compiled-arguments.html`. The page lists all constructed arguments and lets you select one to see its **direct** antecedent arguments in a derivation graph, its grounded label, its incoming and outgoing defeat witnesses (including the attacked subargument), and its authored claim wording, inference rationale, EAL declaration span, checked observation identity and formal review references when a source map exists. It lists unavailable EAL evidence with reasons separately: absence never becomes a contrary premise. An explicit theory result can also be rendered from JSON containing `theory` and its matching `formal` output; it has no EAL provenance.
 
 The renderer checks the theory digest, derivation edges, defeat references and mapped origin IDs before writing. It is a read-only view of the supplied JSON; it does not recompute labels, verify that the supplied source map is authentic, rerun a collector, or prove that formal atoms mean the engineer's prose. The authored EAL status and formal label stay separately named. The browser UI uses text nodes for supplied values and has no network dependencies. The command accepts at most 4 MiB of JSON and confines its input and output paths to `--workspace`.
 
 | EAL/2 input at the checked snapshot | Compiled ASPIC+ representation |
 |---|---|
 | Available evidence | Distinct ordinary premise with its recorded identity in `source_map` |
-| Locally usable argument | Defeasible rule from its evidence, backing, assumption and claim dependencies to its conclusion |
+| Locally usable argument | Defeasible rule from its evidence, backing, assumption and claim dependencies to its conclusion; an explicit reviewed `strict` directive changes that route to a strict rule |
 | Applicable assumption | Defeasible rule from its validation observation to an assumption atom |
 | Eligible objection | Defeasible objection rule whose conclusion undercuts the targeted argument, assumption or objection rule; a claim or reasoning target expands to matching routes |
+| Reviewed `rank` and directed `contrary` | Integer rank on a fallible premise or rule, and a directed formal attack relation between two claims; source map retains the review reference and directive span |
 | Authored relation with no antecedent | Marked structural axiom used solely to satisfy the finite rule profile; it is not a measurement |
 
-The compiler assigns the same rank, 500, to every generated ordinary premise and defeasible rule. It infers no strict rule, preference, negation, contrary between claim statements, or validity of prose. Directed undercuts come only from explicit EAL objection targets. A negative diagnostic needs its own declared evidence whose `require` predicate admits that finding, as `gap_found == true` does in the example; a failed or absent observation does not become a contrary. Compilation rejects an invalid EAL programme, an unknown goal, a source already using `argumentation/aspic/1`, or a theory outside the finite solver profile; the host operation also rejects a source/collection/context mismatch. This translation is an explicit derived interpretation of authored EAL routes, not a general equivalence between EAL/2 and ASPIC+ or an automatic adequacy review. The authored EAL evaluator stays the default. Promoting this profile would require a concrete inference case EAL cannot express, differential review of disputed outcomes, and measured latency and memory cost on representative engineering tasks; the synthetic fixture does not establish those conditions.
+Unannotated ordinary premises and defeasible rules have rank 500. The compiler infers no strict inference, logical contradiction, preference, negation or validity of prose. Directed undercuts come only from EAL objection targets. A negative diagnostic needs its own declared evidence whose `require` predicate admits that finding, as `gap_found == true` does in the example; a failed or absent observation does not become a contrary. Compilation rejects an invalid EAL programme, an unknown goal, a source already using `argumentation/aspic/1`, an objection that would undercut a strict route, or a theory outside the finite solver profile; the host operation also rejects a source/collection/context mismatch. The authored EAL evaluator stays the default. Promoting this profile would require a concrete inference case EAL cannot express, differential review of disputed outcomes, and measured latency and memory cost on representative engineering tasks; the synthetic fixture does not establish those conditions.
+
+### Declare formal choices in EAL/2
+
+Place one or more directives in an optional `aspic` block, anywhere among EAL declarations. References resolve after pattern applications expand, so a generated route can be named. For example, with two claims `run_passes` and `run_fails` in the same environment and authored routes `probe_route` and `failure_route`:
+
+```eal
+aspic {
+  strict argument report_arg reviewed "review/report-implication";
+  rank evidence probe_record 700 reviewed "review/probe-observation";
+  rank argument probe_route 800 reviewed "review/probe-inference";
+  rank argument failure_route 400 reviewed "review/diagnostic-limit";
+  contrary claim run_fails to run_passes reviewed "review/incompatible-outcomes";
+  contrary claim run_passes to run_fails reviewed "review/incompatible-outcomes";
+}
+```
+
+`strict` applies only to an argument rule. `rank` applies to evidence, assumptions, arguments and objections and requires an integer 0–1000; strict arguments cannot have ranks. One directed `contrary` expresses a one-way attack; both directions make the claim pair contradictory, so the solver compares attacker and attacked subargument strengths. The solver uses the minimum rank of each argument's fallible elements, and undercuts defeat regardless of rank. The `reviewed` string is a required human supplied review reference, **not** proof that a claim follows deductively, that two English sentences are logical contraries, or that evidence is authentic. The validator rejects duplicate directives, unknown references, self-contraries and contraries crossing EAL environments. If an objection addresses an argument, claim or reasoning declaration whose expansion includes a strict route, compilation rejects the mapping because a strict rule has no undercuttable name. A strict route can still lose through a defeated fallible subargument. Default `reason` ignores these directives and may disagree with the compiled profile; both statuses remain separately reported.
+
+### Coverage boundary
+
+The compiler lowers named patterns and applications, scopes evidence to the checked collection, uses EAL's local method and proposition checks as gates, expands alternative and nested claim routes into formal subarguments, and translates assumption validation and objections against claims, reasoning, arguments, assumptions or other objections. It preserves directed attack cycles for grounded evaluation and exposes original declarations, spans, review references and observation identities in the source map. This is complete for the representable finite acyclic **EAL/2 compiled profile**, including declared formal choices. It is not a semantics preserving transformation of arbitrary prose or every ASPIC+ variant: atom dependencies must be acyclic; the host method has fixed bounds, minimum global rank preference and grounded semantics. A failure to fit those conditions is an error, never an omitted derivation. A review reference records responsibility for a formal choice but does not check its truth or logical soundness.
 
 ## Formal contract
 

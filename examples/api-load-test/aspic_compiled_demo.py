@@ -50,6 +50,9 @@ def main() -> None:
         assert authored["arguments"]["independent_probe"]["status"] == "supported"
         assert compiled["routes"]["primary_run"]["status"] == "rejected"
         assert compiled["routes"]["independent_probe"]["status"] == "accepted"
+        assert compiled["source_map"]["arguments"]["report_arg"]["rule_kind"] == "strict"
+        assert compiled["source_map"]["arguments"]["independent_probe"]["rank"] == 700
+        assert compiled["source_map"]["evidence"]["probe_record"]["rank"] == 700
 
         argument_by_id = {item["id"]: item for item in compiled["formal"]["arguments"]}
         primary_rule = compiled["source_map"]["arguments"]["primary_run"]["rule_id"]
@@ -71,6 +74,7 @@ def main() -> None:
             "authored_claim_status": authored["claims"][GOAL]["status"],
             "compiled_claim_status": compiled["claim_status"],
             "formal_status": compiled["formal"]["grounded_status"],
+            "profile": compiled["profile"],
             "routes": {
                 name: {"authored_status": authored["arguments"][name]["status"],
                        "compiled": compiled["routes"][name]}

@@ -26,6 +26,8 @@ def semantic_ir(program: Program):
         argument.pop('origin', None)
     for diagnostic in result['lowering_diagnostics']:
         diagnostic.pop('span', None)
+    for directive in result['aspic']:
+        directive.pop('span', None)
     return result
 
 
@@ -97,6 +99,17 @@ def format_program(program: Program, *, registry=None) -> str:
             if getattr(value, key):
                 lines.append(f'{key} {", ".join(getattr(value, key))};')
         emit('objection', name, lines)
+    if program.aspic:
+        lines = []
+        for directive in program.aspic:
+            if directive.kind == 'strict':
+                line = f'strict argument {directive.name}'
+            elif directive.kind == 'rank':
+                line = f'rank {directive.target_kind} {directive.name} {directive.rank}'
+            else:
+                line = f'contrary claim {directive.name} to {directive.other}'
+            lines.append(f'{line} reviewed {_json(directive.review)};')
+        blocks.append('aspic {\n' + '\n'.join(f'  {line}' for line in lines) + '\n}')
     return '\n\n'.join(blocks) + '\n'
 
 

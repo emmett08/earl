@@ -220,3 +220,33 @@ def test_pyarg_collapses_distinct_names_for_identical_rule_shapes():
     # while retaining the other, but PyArg Rule equality omits the rule ID.
     p, x = Literal("p"), Literal("x")
     assert DefeasibleRule("d1", {p}, x) == DefeasibleRule("d2", {p}, x)
+
+
+def test_compiled_eal_routes_and_reviewed_strict_rule_match_reference_fragment():
+    """Compare a source generated theory, rather than a manually authored JSON one."""
+    from test_aspic_compiler import BASE, compare
+
+    source = BASE + '''
+claim run_fails { statement "This synthetic run fails."; environment lab; }
+argument failure_route { conclusion run_fails; reasoning authored; evidence gap_data; }
+objection challenge { target argument primary_route; evidence gap_data; }
+aspic {
+  strict argument reporting_route reviewed "review/report-implication";
+  contrary claim run_fails to run_passes reviewed "review/one-way-incompatibility";
+}
+'''
+    _, result = compare(source)
+    theory = result["theory"]
+    # PyArg uses a defeasible rule's identifier as its applicability literal.
+    # Alpha rename those compiler-generated atoms while retaining every edge.
+    names = {rule["name"]: rule["id"] for rule in theory["rules"]
+             if rule["kind"] == "defeasible"}
+    normalised = {
+        **theory,
+        "rules": [{**rule, **({"name": rule["id"]} if rule["kind"] == "defeasible" else {})}
+                  for rule in theory["rules"]],
+        "contraries": [{"attacker": names.get(pair["attacker"], pair["attacker"]),
+                        "target": names.get(pair["target"], pair["target"])}
+                       for pair in theory["contraries"]],
+    }
+    _assert_same_framework(normalised)

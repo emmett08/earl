@@ -11,7 +11,7 @@ from .generated.EALLexer import EALLexer
 from .generated.EALParser import EALParser
 from .generated.EALVisitor import EALVisitor
 from .abstractions import lower_patterns
-from .model import (Application, Argument, Assumption, Claim, Environment, Evidence,
+from .model import (Application, Argument, AspicDirective, Assumption, Claim, Environment, Evidence,
                     Pattern, PatternBinding, PatternParameter, Reasoning, Objection,
                     Predicate, Program, Proposition, SourceSpan, Tool)
 
@@ -65,6 +65,21 @@ def _argument_fields(ctx):
 
 
 class _ASTBuilder(EALVisitor):
+    def visitAspicDecl(self, ctx):
+        return tuple(self.visit(directive) for directive in ctx.aspicDirective())
+
+    def visitAspicDirective(self, ctx):
+        words = ctx.getChild(0).getText()
+        names = ctx.identifier()
+        return AspicDirective(
+            words,
+            "argument" if words == "strict" else
+            ctx.aspicRankKind().getText() if words == "rank" else "claim",
+            names[0].getText(),
+            names[1].getText() if words == "contrary" else None,
+            int(ctx.NUMBER().getText()) if words == "rank" and ctx.NUMBER().getText().isdigit() else None,
+            _string(ctx.STRING()), _span(ctx))
+
     def visitEnvironmentDecl(self, ctx):
         return Environment(ctx.identifier().getText(), tuple(self.visit(p) for p in ctx.predicate()))
 
@@ -182,9 +197,13 @@ def parse(source: str) -> Program:
     symbols = set()
     duplicates = []
     locations = {}
+    aspic = []
     try:
         for declaration in tree.declaration():
             value = builder.visit(declaration.getChild(0))
+            if isinstance(value, tuple):
+                aspic.extend(value)
+                continue
             if value.name in symbols:
                 duplicates.append(value.name)
             symbols.add(value.name)
@@ -193,6 +212,6 @@ def parse(source: str) -> Program:
     except (RecursionError, ValueError, OverflowError) as exc:
         raise EALSyntaxError(f"Invalid JSON data: {exc}") from exc
     program = Program(language=_string(tree.STRING()), source_digest=hashlib.sha256(encoded).hexdigest(),
-                      **groups, duplicates=tuple(duplicates), locations=locations,
-                      declaration_count=len(tree.declaration()) + len(groups["patterns"]))
+                      **groups, aspic=tuple(aspic), duplicates=tuple(duplicates), locations=locations,
+                      declaration_count=len(tree.declaration()) + len(aspic) + len(groups["patterns"]))
     return lower_patterns(program)

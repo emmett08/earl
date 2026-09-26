@@ -23,7 +23,7 @@ NOW = "2026-09-25T10:30:00Z"
 
 
 def assert_compiled_result(compiled, authored):
-    assert compiled["profile"] == "EAL/2-compiled-aspic/1"
+    assert compiled["profile"] == "EAL/2-compiled-aspic/2"
     assert compiled["claim"] == "run_passes"
     assert compiled["source_digest"] == authored["source_digest"]
     assert compiled["authored_claim_status"] == authored["claims"]["run_passes"]["status"]
@@ -36,6 +36,10 @@ def assert_compiled_result(compiled, authored):
         a["rule_id"] for a in compiled["formal"]["arguments"] if "rule_id" in a}
     assert mapping["evidence"]["probe_record"]["identity"]["run_id"]
     assert mapping["contraries"][0]["target_name"] == "primary_run"
+    assert mapping["arguments"]["report_arg"]["rule_kind"] == "strict"
+    assert mapping["arguments"]["report_arg"]["strict_annotation"]["review"].startswith("synthetic-review/")
+    assert mapping["arguments"]["independent_probe"]["rank"] == 700
+    assert mapping["evidence"]["probe_record"]["rank"] == 700
 
 
 def test_service_compilation_is_opt_in_and_collection_bound(tmp_path):

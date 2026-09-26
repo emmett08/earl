@@ -3,7 +3,12 @@ grammar EAL;
 program : 'language' STRING ';' declaration* EOF ;
 declaration : environmentDecl | toolDecl | evidenceDecl | assumptionDecl
             | reasoningDecl | claimDecl | argumentDecl | objectionDecl
-            | patternDecl | applicationDecl ;
+            | patternDecl | applicationDecl | aspicDecl ;
+aspicDecl : 'aspic' '{' aspicDirective+ '}' ;
+aspicDirective : 'strict' 'argument' identifier 'reviewed' STRING ';'
+               | 'rank' aspicRankKind identifier NUMBER 'reviewed' STRING ';'
+               | 'contrary' 'claim' identifier 'to' identifier 'reviewed' STRING ';' ;
+aspicRankKind : 'evidence' | 'assumption' | 'argument' | 'objection' ;
 environmentDecl : 'environment' identifier '{' predicate+ '}' ;
 toolDecl : 'tool' identifier '{' 'version' STRING ';' '}' ;
 evidenceDecl : 'evidence' identifier '{' 'tool' identifier ';' 'kind' identifier ';' 'environment' identifier ';'
@@ -37,7 +42,7 @@ jsonValue : jsonScalar | jsonObject | jsonArray ;
 jsonObject : '{' (STRING ':' jsonValue (',' STRING ':' jsonValue)*)? '}' ;
 jsonArray : '[' (jsonValue (',' jsonValue)*)? ']' ;
 jsonScalar : STRING | NUMBER | 'true' | 'false' | 'null' ;
-identifier : ID | 'proposition' | 'subject' | 'quantity' | 'unit' | 'scope' | 'result' | 'binding' | 'query' | 'method' | 'pattern' | 'apply' ;
+identifier : ID | 'proposition' | 'subject' | 'quantity' | 'unit' | 'scope' | 'result' | 'binding' | 'query' | 'method' | 'pattern' | 'apply' | 'aspic' | 'strict' | 'rank' | 'contrary' | 'reviewed' | 'to' ;
 ID : [a-zA-Z_] [a-zA-Z_0-9]* ;
 NUMBER : '-'? ('0' | [1-9] [0-9]*) ('.' [0-9]+)? ([eE] [+-]? [0-9]+)? ;
 STRING : '"' (ESC | ~["\\\r\n])* '"' ;

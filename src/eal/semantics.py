@@ -188,6 +188,7 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     _validate_reasoning_and_claims(program, registry, error, reference)
     _validate_arguments(program, registry, error, reference, scope)
     _validate_objections(program, error, reference, scope)
+    _validate_aspic_annotations(program, problems)
     _validate_dependencies(program, error)
     return problems
 
@@ -198,7 +199,7 @@ def _validate_declarations(program, error, identifier):
                    program.assumptions, program.reasoning, program.claims,
                    program.arguments, program.objections, program.patterns,
                    program.applications)
-    actual_count = sum(len(table) for table in collections) + len(program.patterns)
+    actual_count = sum(len(table) for table in collections) + len(program.patterns) + len(program.aspic)
     if max(actual_count, program.declaration_count) > MAX_DECLARATIONS:
         error("resource_limit", f"At most {MAX_DECLARATIONS} declaration/body records after pattern expansion are supported")
         return False
@@ -433,6 +434,60 @@ def _validate_objections(program, error, reference, scope):
                 if reference(item, sources, kind, value.name):
                     for environment in sorted(expected):
                         scope(sources[item].environment, environment, value.name, item)
+
+
+def _validate_aspic_annotations(program, problems):
+    """Check authored formal relationships independently of EAL prose and observations."""
+    targets = {"evidence": program.evidence, "assumption": program.assumptions,
+               "argument": program.arguments, "objection": program.objections,
+               "claim": program.claims}
+    seen = set()
+    ranked_arguments = {item.name for item in program.aspic
+                        if item.kind == "rank" and item.target_kind == "argument"}
+
+    def error(code, message, directive, *, expected=None, actual=None):
+        problems.append(Diagnostic(code, message, directive.name, directive.span,
+                                   expected, actual))
+
+    for directive in program.aspic:
+        if directive.kind == "strict":
+            valid = directive.target_kind == "argument" and directive.other is None and directive.rank is None
+            key = (directive.kind, directive.target_kind, directive.name)
+        elif directive.kind == "rank":
+            valid = (directive.target_kind in ("evidence", "assumption", "argument", "objection")
+                     and directive.other is None and type(directive.rank) is int
+                     and 0 <= directive.rank <= 1000)
+            key = (directive.kind, directive.target_kind, directive.name)
+        elif directive.kind == "contrary":
+            valid = (directive.target_kind == "claim" and directive.rank is None
+                     and directive.other is not None)
+            key = (directive.kind, directive.name, directive.other)
+        else:
+            valid = False
+            key = (directive.kind, directive.target_kind, directive.name)
+        if not valid:
+            error("invalid_aspic_annotation", "Invalid formal directive or rank; ranks must be integers from 0 through 1000", directive)
+        if not directive.review.strip():
+            error("missing_aspic_review", "A formal relationship requires a nonempty review reference", directive)
+        if key in seen:
+            error("duplicate_aspic_annotation", "A formal relationship is declared more than once", directive)
+        seen.add(key)
+        table = targets.get(directive.target_kind)
+        if table is None or directive.name not in table:
+            error("unknown_aspic_reference", f"Unknown formal {directive.target_kind} target {directive.name!r}", directive)
+        if directive.kind == "contrary":
+            if directive.other == directive.name:
+                error("invalid_aspic_contrary", "A claim cannot be contrary to itself", directive)
+            if directive.other not in program.claims:
+                error("unknown_aspic_reference", f"Unknown contrary claim {directive.other!r}", directive)
+            if directive.name in program.claims and directive.other in program.claims:
+                first = program.claims[directive.name].environment
+                second = program.claims[directive.other].environment
+                if first != second:
+                    error("aspic_environment_mismatch", "Contrary claims require the same EAL environment", directive,
+                          expected=first, actual=second)
+        if directive.kind == "strict" and directive.name in ranked_arguments:
+            error("aspic_strict_rank", "A strict rule cannot have a defeasible rank", directive)
 
 
 def _validate_dependencies(program, error):
