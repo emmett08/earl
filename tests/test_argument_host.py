@@ -4,6 +4,8 @@ from __future__ import annotations
 from dataclasses import replace
 from datetime import datetime, timedelta
 import hashlib
+import json
+from pathlib import Path
 
 import pytest
 
@@ -12,6 +14,9 @@ from eal.argument_host import ArgumentHost
 from eal.evaluator import canonical_digest
 from eal.parser import parse
 from test_argument_host_integration import _host
+
+
+HELD_OUT = json.loads((Path(__file__).parent / "fixtures" / "argument-host-heldout.json").read_text())
 
 
 @pytest.mark.parametrize("punctuation", ["?", ".", "?!"])
@@ -77,6 +82,37 @@ def test_model_argument_proposal_requires_independent_correspondence(tmp_path, m
     result = host.assess(prose, routing_candidate=_candidate(prose))
     assert result["status"] == "unresolved"
     assert any("independent correspondence" in reason for reason in result["reasons"])
+
+
+@pytest.mark.parametrize("case", HELD_OUT["cases"], ids=lambda item: item["category"])
+def test_heldout_wording_is_not_silently_promoted_to_a_reviewed_claim(tmp_path, monkeypatch, case):
+    host, service, _, _ = _host(tmp_path)
+    monkeypatch.setattr(service, "collect", lambda *args: pytest.fail("Unreviewed wording collected evidence"))
+    result = host.assess(case["request"])
+    assert result["status"] == "unresolved"
+    assert result["tool_execution"] is False
+
+
+def test_independent_correspondence_admits_only_the_reviewed_heldout_paraphrase(tmp_path):
+    host, service, _, _ = _host(tmp_path)
+    approved = HELD_OUT["cases"][0]["request"]
+
+    class Reviewer:
+        def validate(self, prose, scheme_id, bindings, context, candidate):
+            assert scheme_id == "error_probability"
+            return ({"status": "satisfied", "method": "reviewed-heldout/1"}
+                    if prose == approved and bindings == {"service": "payments"}
+                    and context == {"service": "payments"} else {"status": "unresolved"})
+
+    route = ArgumentHost(service, host.schemes, principal="engineer", session_id="heldout",
+                         correspondence_validator=Reviewer())
+    packet = route.assess(approved, routing_candidate=_candidate(approved))
+    assert packet["status"] == "supported" and packet["adequacy"]["status"] == "adequate"
+    assert route.finish(packet["assessment_id"])["status"] == "supported"
+    for case in HELD_OUT["cases"][1:]:
+        prose = case["request"]
+        result = route.assess(prose, routing_candidate=_candidate(prose))
+        assert result["status"] == "unresolved" and result["tool_execution"] is False
 
 
 def test_an_action_proposal_never_functions_as_a_routing_proposal(tmp_path):
