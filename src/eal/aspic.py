@@ -60,11 +60,13 @@ OUTPUT_SCHEMA = _obj({
     "arguments": {"type": "array", "items": _obj({
         "id": _ATOM_SCHEMA, "conclusion": _ATOM_SCHEMA, "top": _ATOM_SCHEMA,
         "subarguments": {"type": "array", "items": _ATOM_SCHEMA, "maxItems": MAX_ARGUMENTS},
+        "direct_subarguments": {"type": "array", "items": _ATOM_SCHEMA, "maxItems": 8},
         "strength": {"type": "integer", "minimum": 0, "maximum": 1001},
         "label": {"type": "string", "enum": ["in", "out", "undecided"]},
         "rule_id": _ATOM_SCHEMA, "rule_name": _ATOM_SCHEMA,
         "rank": _RANK,
-    }, required=["id", "conclusion", "top", "subarguments", "strength", "label"]),
+    }, required=["id", "conclusion", "top", "subarguments", "direct_subarguments",
+                 "strength", "label"]),
         "minItems": 1, "maxItems": MAX_ARGUMENTS},
     "defeats": {"type": "array", "items": _obj({
         "attacker": _ATOM_SCHEMA, "target": _ATOM_SCHEMA, "subargument": _ATOM_SCHEMA,
@@ -79,6 +81,7 @@ class _Argument:
     conclusion: str
     top: str
     subarguments: tuple[str, ...]
+    direct_subarguments: tuple[str, ...]
     strength: int
     rule_id: str | None = None
     rule_name: str | None = None
@@ -173,6 +176,7 @@ def solve_aspic(payload):
         subs = tuple(dict.fromkeys(sub for child in children
                                    for sub in (*child.subarguments, child.id)))
         arg = _Argument(f"A{len(arguments)}", atom, top, subs,
+                        tuple(child.id for child in children),
                         min(rank, *(child.strength for child in children)) if children else rank,
                         rule_id, name, rank if rank != 1001 else None)
         arguments.append(arg)
@@ -253,6 +257,7 @@ def solve_aspic(payload):
         "theory_sha256": hashlib.sha256(encoded).hexdigest(),
         "arguments": [{"id": a.id, "conclusion": a.conclusion, "top": a.top,
                        "subarguments": list(a.subarguments), "strength": a.strength,
+                       "direct_subarguments": list(a.direct_subarguments),
                        "label": "in" if a.id in accepted else "out" if a.id in rejected else "undecided",
                        **({"rule_id": a.rule_id} if a.rule_id is not None else {}),
                        **({"rule_name": a.rule_name} if a.rule_name is not None else {}),
@@ -269,7 +274,7 @@ ASPIC_CONTRACT = MethodContract(
     output_schema=OUTPUT_SCHEMA,
     outputs={"grounded_accepted": "boolean", "grounded_rejected": "boolean"},
     quantities=("proposition",), exact_unit=True,
-    implementation=solve_aspic, implementation_version="eal-aspic-grounded-2",
+    implementation=solve_aspic, implementation_version="eal-aspic-grounded-3",
     timeout_seconds=5.0, max_input_bytes=256 * 1024, max_output_bytes=1024 * 1024,
 )
 

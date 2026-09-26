@@ -66,6 +66,12 @@ def describe_language(*, registry=None) -> dict:
             "output": ["profile", "theory", "formal", "routes", "source_map", "claim_status", "authored_claim_status", "source_digest", "snapshot_digest", "collection_id"],
             "limits": "Equal default ranks, defeasible generated rules and objection undercuts only; no inferred strict rule, claim contrariness, preference, prose semantics or general EAL/ASPIC+ equivalence",
         },
+        "aspic_visualisation": {
+            "cli": "visualise-aspic RESULT.json --output VIEW.html [--focus ARGUMENT_ID]",
+            "input": "A previously computed compiled result, or an explicit theory and matching formal solver result",
+            "output": "Standalone offline HTML with searchable arguments, direct derivation graph, grounded labels, defeat witnesses, unavailable EAL evidence and mapped source locations where supplied",
+            "meaning": "Read-only visualisation of the supplied bounded theory and snapshot; validates the formal theory digest and graph references but does not recollect, authenticate observations, or settle prose correspondence",
+        },
         "typed_bindings": describe_bindings(registry=registry),
         "composition": "Default EAL/2 computes the least-information fixed point of authored conjunctive support, alternative derivations and objection attacks. Objections can depend on claim subarguments; targeting an objection expresses defence. Attack cycles may remain undecided. Default assessment does not construct ASPIC+ rule arguments or preference-sensitive defeat. The separate opt-in compiler constructs a bounded ASPIC+ snapshot from checked EAL declarations. Rejected acceptance does not assert falsity.",
         "statuses": {

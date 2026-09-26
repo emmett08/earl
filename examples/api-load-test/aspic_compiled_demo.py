@@ -5,11 +5,13 @@ derives its theory from checked EAL routes; the source contains no formal theory
 """
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 import tempfile
 
 from eal.runtime import ReasoningService
+from eal.aspic_visualisation import render_aspic_html
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -22,6 +24,10 @@ ROUTES = ("primary_run", "independent_probe")
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--visualise", type=Path,
+                        help="Write a standalone ASPIC+ argument view to this HTML file")
+    args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="eal-compiled-aspic-demo-") as folder:
         service = ReasoningService(ROOT, HERE / "aspic-tools.toml",
                                    Path(folder) / "runs.sqlite3")
@@ -55,6 +61,10 @@ def main() -> None:
             for defeat in compiled["formal"]["defeats"]
         ), compiled["formal"]["defeats"]
 
+        if args.visualise is not None:
+            target = args.visualise.resolve()
+            target.write_text(render_aspic_html(compiled), encoding="utf-8")
+
         print(json.dumps({
             "dataset": "synthetic",
             "collection_status": record_status,
@@ -68,6 +78,7 @@ def main() -> None:
             },
             "defeats": compiled["formal"]["defeats"],
             "source_map": compiled["source_map"],
+            **({"visualisation": str(target)} if args.visualise is not None else {}),
         }, indent=2, allow_nan=False))
 
 

@@ -43,6 +43,8 @@ Run `eal-mcp --workspace /absolute/path/to/earl --registry /absolute/path/to/ear
 
 For a hand-authored formal theory, install the [finite ASPIC+ method](aspic-method.md) with `--methods eal.aspic:aspic_registry`; discovery then advertises its exact versioned input and output contract. For a source containing ordinary EAL arguments and objections, call `eal_compile_aspic` after `eal_collect`, using the returned `collection_id` and a declared goal claim. The CLI equivalent is `eal --workspace . --registry TOOLS.toml compile-aspic SOURCE.eal --context '{"site":"bench"}' --collection COLLECTION_ID --goal CLAIM --now 2026-09-25T10:00:30Z`. Compilation checks the collection's source and context, current collector bindings and evidence eligibility; it does not collect again or replace an ordinary EAL assessment. Its returned `formal` result and `authored_claim_status` should be read together with `source_map`. The [synthetic companion](aspic-method.md#compile-authored-eal-routes) gives commands with a matching source, registry and context.
 
+To inspect the returned argument structure offline, save the complete compilation JSON and run `eal --workspace . visualise-aspic RESULT.json --output VIEW.html [--focus A3]`. The standalone page displays direct subarguments, defeat witnesses, grounded labels and mapped declaration/observation origins. It is read-only; rendering does not collect, reassess or make the compiled profile the default.
+
 ## Tool registry and observation identity
 
 Argument source names tools and supplies typed input. A host TOML file binds names to executable argument vectors or imported files:

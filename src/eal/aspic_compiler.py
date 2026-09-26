@@ -156,6 +156,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                "arguments": {}, "objections": {}, "contraries": []}
     for name in sorted(claims):
         mapping["claims"][name] = {"atom": claims[name],
+                                    "statement": program.claims[name].statement,
                                     "environment": program.claims[name].environment,
                                     "span": _location(program, name)}
     for name in sorted(evidence):
@@ -223,6 +224,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                                         "antecedents": antecedents,
                                         "emitted": eligible,
                                         "reasoning": argument.reasoning,
+                                        "rationale": method.rationale,
                                         "origin": asdict(argument.origin) if argument.origin else None,
                                         "span": _location(program, name)}
         if eligible:

@@ -6,6 +6,7 @@ from itertools import product
 import pytest
 
 from eal.aspic_compiler import CompilationError, compile_eal_aspic
+from eal.aspic_visualisation import build_aspic_view
 from eal.evaluator import canonical_digest
 from eal.parser import parse
 from test_evaluator import CONTEXT, NOW, record
@@ -155,6 +156,52 @@ objection defence { target objection challenge; evidence probe_data; }
     assert compiled.assessment["objections"]["challenge"]["status"] == "defeated"
     assert compiled.assessment["claims"]["run_passes"]["status"] == "supported"
     assert projection["routes"]["primary_route"]["status"] == "accepted"
+
+
+def test_multi_level_alternative_derivations_keep_direct_edges_and_nested_defeats():
+    source = BASE + '''
+claim deployable { statement "Synthetic run may proceed."; environment lab; }
+claim release_ready { statement "Synthetic release may be considered."; environment lab; }
+argument deploy_route { conclusion deployable; reasoning authored;
+ premises reportable, run_passes; }
+argument release_route { conclusion release_ready; reasoning authored;
+ premises deployable; }
+objection challenge { target argument primary_route; evidence gap_data; }
+'''
+    programme = parse(source)
+    records = {name: record(programme, name, {"ok": True}) for name in programme.evidence}
+    compiled = compile_eal_aspic(source, records, goal="release_ready",
+                                 now=NOW, context=CONTEXT)
+    result = compiled.to_dict()
+    assert result["claim_status"] == result["authored_claim_status"] == "supported"
+    formal = result["formal"]
+    assert formal["grounded_status"] == "accepted"
+    by_id = {item["id"]: item for item in formal["arguments"]}
+    mapping = result["source_map"]["arguments"]
+    deployments = [arg for arg in by_id.values()
+                   if arg.get("rule_id") == mapping["deploy_route"]["rule_id"]]
+    assert len(deployments) == 4  # two independent routes for each premise claim
+    assert {by_id[child]["conclusion"] for child in deployments[0]["direct_subarguments"]} == {
+        result["source_map"]["claims"][name]["atom"] for name in ("reportable", "run_passes")}
+    assert any(any(child in by_id[other]["subarguments"]
+                   for other in deployment["direct_subarguments"] if other != child)
+               for deployment in deployments for child in deployment["direct_subarguments"])
+    releases = [arg for arg in by_id.values()
+                if arg.get("rule_id") == mapping["release_route"]["rule_id"]]
+    assert len(releases) == 4
+    assert all(len(arg["direct_subarguments"]) == 1 for arg in releases)
+    assert {arg["label"] for arg in releases} == {"in", "out"}
+    primary = {arg["id"] for arg in by_id.values()
+               if arg.get("rule_id") == mapping["primary_route"]["rule_id"]}
+    assert all(arg["label"] == "out" for arg in releases
+               if primary.intersection(arg["subarguments"]))
+    assert any(w["kind"] == "undercut" and w["target"] in {a["id"] for a in releases}
+               and w["subargument"] in primary for w in formal["defeats"])
+    view = build_aspic_view(result)
+    assert {arg["id"] for arg in view["arguments"] if arg["origin"]["name"] == "release_route"} == {
+        arg["id"] for arg in releases}
+    assert any(event["target"] in {arg["id"] for arg in releases}
+               and event["subargument"] in primary for event in view["defeats"])
 
 
 def test_circular_objection_is_undecided_in_both_compositions():

@@ -36,10 +36,28 @@ def main() -> None:
     explain.add_argument("--claim")
     grounded = subcommands.add_parser("grounded")
     grounded.add_argument("graph", help="JSON file containing arguments and attacks")
+    visualise = subcommands.add_parser("visualise-aspic")
+    visualise.add_argument("result", help="JSON file containing theory and formal result")
+    visualise.add_argument("--output", required=True, help="Standalone HTML file within the workspace")
+    visualise.add_argument("--focus", help="Initial formal argument ID, such as A3")
     args = parser.parse_args()
     workspace = args.workspace.resolve()
     try:
-        if args.operation == "grounded":
+        if args.operation == "visualise-aspic":
+            from .aspic_visualisation import build_aspic_view, render_aspic_html
+
+            input_path = bounded_path(workspace, args.result)
+            if input_path.stat().st_size > 4 * 1024 * 1024:
+                raise ValueError("ASPIC+ result exceeds the 4 MiB visualisation input limit")
+            supplied = strict_json(input_path.read_text(encoding="utf-8"))
+            html = render_aspic_html(supplied, focus=args.focus)
+            target = bounded_path(workspace, args.output)
+            target.write_text(html, encoding="utf-8")
+            view = build_aspic_view(supplied)
+            result = {"output": str(target), "argument_count": len(view["arguments"]),
+                      "defeat_witness_count": len(view["defeats"]),
+                      "formal_status": view["formal_status"]}
+        elif args.operation == "grounded":
             from .dialectic import solve_grounded
 
             graph = strict_json(bounded_path(workspace, args.graph).read_text())
