@@ -22,7 +22,9 @@ dataclass specifications, a provenance and freshness check, and a topologically
 ordered AND/OR rule assessment with a local objection. It does not import the
 EAL parser or solver. Its finite acyclic profile matches this task; it does
 not implement EAL's general attack cycles, reusable patterns or method
-registry. The source and typed configuration have different digests; both
+registry. Both configurations contain the same engineering claim statements,
+author-supplied reasoning rationales, scope and units in the measurement-field
+contracts. The source and typed configuration have different digests; both
 receive the same value objects, original observation instant and context in
 equivalent synthetic envelopes. Parsing/configuration preparation and
 envelope construction are outside the measured reassessment interval for

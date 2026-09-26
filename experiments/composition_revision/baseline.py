@@ -38,14 +38,16 @@ class Criterion:
     field: str
     operator: str
     value: str | int | float | bool
+    unit: str | None = None
 
     def accepts(self, reading: Mapping[str, Any]) -> bool:
         actual = reading.get(self.field)
         if self.field not in reading:
             return False
-        if self.operator == "==":
-            return type(actual) is type(self.value) and actual == self.value
         numeric = lambda item: type(item) in (int, float) and math.isfinite(item)
+        if self.operator == "==":
+            return ((type(actual) is type(self.value) or
+                     (numeric(actual) and numeric(self.value))) and actual == self.value)
         if not numeric(actual) or not numeric(self.value):
             return False
         return {">=": actual >= self.value, "<=": actual <= self.value}[self.operator]
@@ -64,6 +66,7 @@ class EvidenceSpec:
 class Rule:
     name: str
     conclusion: str
+    reasoning: str
     evidence: tuple[str, ...] = ()
     premises: tuple[str, ...] = ()
 
@@ -75,31 +78,82 @@ class Challenge:
     evidence: str
 
 
+@dataclass(frozen=True)
+class ClaimSpec:
+    name: str
+    statement: str
+    environment: str
+
+
+@dataclass(frozen=True)
+class ReasoningSpec:
+    name: str
+    method: str
+    rationale: str
+
+
+SCOPE = (Criterion("loop_id", "==", "coolant-loop-A"),
+         Criterion("load_kw", "==", 8, "kW"))
 EVIDENCE: dict[str, EvidenceSpec] = {
     "power_bus": EvidenceSpec("power_bus", KIND, 300,
-                              (Criterion("voltage_v", ">=", 24), Criterion("voltage_v", "<=", 28))),
+                              (Criterion("voltage_v", ">=", 24, "V"),
+                               Criterion("voltage_v", "<=", 28, "V"))),
     "pump_a_flow": EvidenceSpec("pump_a_flow", KIND, 60,
-                                (Criterion("flow_lpm", ">=", 14), Criterion("sensor_id", "==", "A"))),
+                                (Criterion("flow_lpm", ">=", 14, "L/min"),
+                                 Criterion("sensor_id", "==", "A"))),
     "pump_b_flow": EvidenceSpec("pump_b_flow", KIND, 60,
-                                (Criterion("flow_lpm", ">=", 14), Criterion("sensor_id", "==", "B"))),
+                                (Criterion("flow_lpm", ">=", 14, "L/min"),
+                                 Criterion("sensor_id", "==", "B"))),
     "exchanger_test": EvidenceSpec("exchanger_test", "test", 300,
-                                   (Criterion("removed_heat_kw", ">=", 8),)),
+                                   (Criterion("removed_heat_kw", ">=", 8, "kW"),)),
     "pump_a_disagreement": EvidenceSpec("pump_a_disagreement", "test", 60,
                                         (Criterion("flow_sensors_disagree", "==", True),)),
 }
+CLAIM_DECLARATIONS: dict[str, ClaimSpec] = {
+    "power_sufficient": ClaimSpec(
+        "power_sufficient",
+        "The bench supply voltage for coolant-loop-A was between 24 and 28 V at the observed time.",
+        ENVIRONMENT),
+    "flow_sufficient": ClaimSpec(
+        "flow_sufficient",
+        "At least one independently instrumented pump route recorded at least 14 L/min for coolant-loop-A at the observed time, conditional on the shared supply.",
+        ENVIRONMENT),
+    "rejection_sufficient": ClaimSpec(
+        "rejection_sufficient",
+        "The coolant-loop-A heat-exchanger bench result recorded at least 8 kW removed heat at the observed time.",
+        ENVIRONMENT),
+    "cooling_at_8kw": ClaimSpec(
+        "cooling_at_8kw",
+        "The recorded coolant-loop-A bench configuration supports removal of the stated 8 kW load under the observed supply, flow and exchanger conditions.",
+        ENVIRONMENT),
+}
+REASONING: dict[str, ReasoningSpec] = {
+    "observed_threshold": ReasoningSpec(
+        "observed_threshold", "structured/1",
+        "The synthetic reading meets its stated finite bench threshold; the authored relation to this scoped claim is not a proof of physical performance outside the bench observation."),
+    "combined_capacity": ReasoningSpec(
+        "combined_capacity", "structured/1",
+        "At this bench load, usable supply, an accepted flow route and the measured heat-exchanger result jointly support the scoped cooling statement."),
+}
 RULES = (
-    Rule("measured_power", "power_sufficient", ("power_bus",)),
-    Rule("pump_a_route", "flow_sufficient", ("pump_a_flow",), ("power_sufficient",)),
-    Rule("pump_b_route", "flow_sufficient", ("pump_b_flow",), ("power_sufficient",)),
-    Rule("measured_rejection", "rejection_sufficient", ("exchanger_test",)),
-    Rule("combined_loop", "cooling_at_8kw", (), ("flow_sufficient", "rejection_sufficient")),
+    Rule("measured_power", "power_sufficient", "observed_threshold", ("power_bus",)),
+    Rule("pump_a_route", "flow_sufficient", "observed_threshold",
+         ("pump_a_flow",), ("power_sufficient",)),
+    Rule("pump_b_route", "flow_sufficient", "observed_threshold",
+         ("pump_b_flow",), ("power_sufficient",)),
+    Rule("measured_rejection", "rejection_sufficient", "observed_threshold", ("exchanger_test",)),
+    Rule("combined_loop", "cooling_at_8kw", "combined_capacity",
+         (), ("flow_sufficient", "rejection_sufficient")),
 )
 CHALLENGES = (Challenge("disputed_pump_a", "pump_a_route", "pump_a_disagreement"),)
-CLAIMS = tuple(dict.fromkeys(rule.conclusion for rule in RULES))
+CLAIMS = tuple(CLAIM_DECLARATIONS)
 CONFIG_DIGEST = digest({"profile": "coolant-acyclic-typed-rules/1",
-                        "environment": { "loop_id": "coolant-loop-A", "load_kw": 8 },
-                        "tool": { "name": TOOL, "version": TOOL_VERSION },
+                        "environment": {"name": ENVIRONMENT,
+                                        "predicates": [asdict(item) for item in SCOPE]},
+                        "tool": {"name": TOOL, "version": TOOL_VERSION},
                         "evidence": {key: asdict(item) for key, item in EVIDENCE.items()},
+                        "claims": {key: asdict(item) for key, item in CLAIM_DECLARATIONS.items()},
+                        "reasoning": {key: asdict(item) for key, item in REASONING.items()},
                         "rules": [asdict(item) for item in RULES],
                         "challenges": [asdict(item) for item in CHALLENGES]})
 
@@ -160,7 +214,7 @@ def evaluate(records: Mapping[str, Mapping[str, Any]], *, now: str,
     dependent rule contested; an independent accepted alternative prevails.
     Missing or rejected routes do not establish a contrary engineering claim.
     """
-    in_scope = dict(context) == {"loop_id": "coolant-loop-A", "load_kw": 8}
+    in_scope = isinstance(context, Mapping) and all(item.accepts(context) for item in SCOPE)
     evidence = {name: "available" if in_scope and _record_available(spec, records.get(name),
                  now=now, context=context) else "unavailable"
                 for name, spec in EVIDENCE.items()}

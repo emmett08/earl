@@ -68,6 +68,16 @@ def test_baseline_rejects_tampering_and_boolean_number_confusion() -> None:
 
 def test_matched_configuration_and_freshness_boundary() -> None:
     program = parse(SOURCE_PATH.read_text())
+    assert set(program.claims) == set(baseline.CLAIM_DECLARATIONS)
+    for name, claim in program.claims.items():
+        other = baseline.CLAIM_DECLARATIONS[name]
+        assert (claim.statement, claim.environment) == (other.statement, other.environment)
+    assert set(program.reasoning) == set(baseline.REASONING)
+    for name, reasoning in program.reasoning.items():
+        other = baseline.REASONING[name]
+        assert (reasoning.method, reasoning.rationale) == (other.method, other.rationale)
+    assert [(p.path, p.operator, p.expected) for p in program.environments["loop_a"].predicates] == [
+        (p.field, p.operator, p.value) for p in baseline.SCOPE]
     assert set(program.evidence) == set(baseline.EVIDENCE)
     for name, item in program.evidence.items():
         other = baseline.EVIDENCE[name]
@@ -76,10 +86,20 @@ def test_matched_configuration_and_freshness_boundary() -> None:
         assert item.input == other.request
         assert [(p.path, p.operator, p.expected) for p in item.predicates] == [
             (p.field, p.operator, p.value) for p in other.criteria]
+    assert all(criterion.unit is not None for item in baseline.EVIDENCE.values()
+               for criterion in item.criteria if criterion.field in
+               {"voltage_v", "flow_lpm", "removed_heat_kw"})
+    assert set(program.arguments) == {rule.name for rule in baseline.RULES}
+    for rule in baseline.RULES:
+        authored = program.arguments[rule.name]
+        assert (authored.conclusion, authored.reasoning, authored.evidence, authored.premises) == (
+            rule.conclusion, rule.reasoning, rule.evidence, rule.premises)
     nominal = load_cases()["cases"][0]
     boundary = {**nominal, "assessed_at": "2026-09-23T12:01:00Z"}
     for arm in ("eal", "typed_rule"):
         assert run_arm(boundary, arm)["claims"]["cooling_at_8kw"] == "supported"
+        widened = {**nominal, "context": {**CONTEXT, "operator_note": "extra metadata", "load_kw": 8.0}}
+        assert run_arm(widened, arm)["claims"]["cooling_at_8kw"] == "supported"
 
 
 def test_external_case_can_supply_its_observation_instant() -> None:
