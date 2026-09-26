@@ -480,7 +480,9 @@ def _validate_formal_directives(program, problems):
             valid = (directive.other is None and type(directive.rank) is int
                      and 0 <= directive.rank <= 1000)
             key = (directive.kind, directive.name)
-            allowed = {"evidence", "assumption", "argument", "objection"}
+            # Compiled objections only undercut applicability. Undercuts ignore
+            # preferences, so an authored objection rank would have no effect.
+            allowed = {"evidence", "assumption", "argument"}
         elif directive.kind == "contrary":
             valid = directive.rank is None and directive.other is not None
             key = (directive.kind, directive.name, directive.other)

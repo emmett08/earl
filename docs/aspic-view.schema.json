@@ -1,0 +1,688 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/emmett08/earl/blob/main/docs/aspic-view.schema.json",
+  "title": "ASPIC+ graph export",
+  "description": "The Python exporter recomputes the formal result. Source metadata is supplied, not authenticated. Importing this document alone does not independently verify these assertions.",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "aspic-view/1"
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100000
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100000
+    },
+    "goal_claim": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100000
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "formal_status": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "rejected",
+        "undecided",
+        "unconstructed"
+      ]
+    },
+    "claim_status": {
+      "anyOf": [
+        {
+          "enum": [
+            "supported",
+            "unsupported",
+            "contested",
+            "out_of_scope"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "authored_claim_status": {
+      "anyOf": [
+        {
+          "enum": [
+            "supported",
+            "unsupported",
+            "contested",
+            "out_of_scope"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "source_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "snapshot_digest": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "theory_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "evaluated_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100000
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "formal_result": {
+          "const": "recomputed"
+        },
+        "provenance": {
+          "const": "supplied"
+        }
+      },
+      "required": [
+        "formal_result",
+        "provenance"
+      ],
+      "additionalProperties": false
+    },
+    "arguments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65
+          },
+          "conclusion": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65
+          },
+          "top": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65
+          },
+          "subarguments": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 65
+            },
+            "maxItems": 128
+          },
+          "direct_subarguments": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 65
+            },
+            "maxItems": 8
+          },
+          "strength": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1001
+          },
+          "label": {
+            "type": "string",
+            "enum": [
+              "in",
+              "out",
+              "undecided"
+            ]
+          },
+          "rule_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65
+          },
+          "rule_name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65
+          },
+          "rank": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "origin": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "enum": [
+                  "argument",
+                  "assumption",
+                  "objection",
+                  "evidence",
+                  "structural basis",
+                  "formal rule",
+                  "formal premise"
+                ]
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "span": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "line": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "column": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "end_line": {
+                        "type": "integer",
+                        "minimum": 1
+                      },
+                      "end_column": {
+                        "type": "integer",
+                        "minimum": 1
+                      }
+                    },
+                    "required": [
+                      "line",
+                      "column",
+                      "end_line",
+                      "end_column"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "formal_review": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "enum": [
+                          "strict",
+                          "rank",
+                          "contrary"
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      },
+                      "other": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "rank": {
+                        "anyOf": [
+                          {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 1000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "review": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      },
+                      "span": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "line": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "column": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "end_line": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "end_column": {
+                                "type": "integer",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "line",
+                              "column",
+                              "end_line",
+                              "end_column"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "target_kind": {
+                        "enum": [
+                          "argument",
+                          "assumption",
+                          "objection",
+                          "evidence",
+                          "claim"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "other",
+                      "rank",
+                      "review",
+                      "span",
+                      "target_kind"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "observation": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "run_id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      },
+                      "data_digest": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      "request_digest": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      },
+                      "collected_at": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      },
+                      "tool_binding_digest": {
+                        "type": "string",
+                        "pattern": "^[0-9a-f]{64}$"
+                      }
+                    },
+                    "required": [
+                      "run_id",
+                      "data_digest",
+                      "request_digest",
+                      "collected_at",
+                      "tool_binding_digest"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "reasoning": {
+                "type": "string",
+                "maxLength": 100000
+              },
+              "rationale": {
+                "type": "string",
+                "maxLength": 100000
+              },
+              "meaning": {
+                "type": "string",
+                "maxLength": 100000
+              }
+            },
+            "required": [
+              "kind",
+              "name"
+            ],
+            "additionalProperties": false
+          },
+          "display_conclusion": {
+            "type": "string",
+            "maxLength": 100000
+          },
+          "authored_statement": {
+            "type": "string",
+            "maxLength": 100000
+          }
+        },
+        "required": [
+          "id",
+          "conclusion",
+          "top",
+          "subarguments",
+          "direct_subarguments",
+          "strength",
+          "label",
+          "origin",
+          "display_conclusion"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 128
+    },
+    "defeats": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "attacker": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65
+          },
+          "subargument": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 65
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "undermine",
+              "rebut",
+              "undercut"
+            ]
+          },
+          "relation_origin": {
+            "type": "object",
+            "properties": {
+              "objection": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100000
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "annotation": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "enum": [
+                          "strict",
+                          "rank",
+                          "contrary"
+                        ]
+                      },
+                      "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      },
+                      "other": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "rank": {
+                        "anyOf": [
+                          {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 1000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "review": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100000
+                      },
+                      "span": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "line": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "column": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "end_line": {
+                                "type": "integer",
+                                "minimum": 1
+                              },
+                              "end_column": {
+                                "type": "integer",
+                                "minimum": 1
+                              }
+                            },
+                            "required": [
+                              "line",
+                              "column",
+                              "end_line",
+                              "end_column"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "target_kind": {
+                        "enum": [
+                          "argument",
+                          "assumption",
+                          "objection",
+                          "evidence",
+                          "claim"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "other",
+                      "rank",
+                      "review",
+                      "span",
+                      "target_kind"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "objection",
+              "annotation"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "attacker",
+          "target",
+          "subargument",
+          "kind"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 4096
+    },
+    "unavailable_evidence": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100000
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 100000
+            }
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "column": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "end_line": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "end_column": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "line",
+                  "column",
+                  "end_line",
+                  "end_column"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "reasons",
+          "span"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "profile",
+    "goal",
+    "goal_claim",
+    "formal_status",
+    "claim_status",
+    "authored_claim_status",
+    "source_digest",
+    "snapshot_digest",
+    "theory_digest",
+    "evaluated_at",
+    "validation",
+    "arguments",
+    "defeats",
+    "unavailable_evidence"
+  ],
+  "additionalProperties": false
+}

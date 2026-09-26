@@ -1,12 +1,14 @@
 """Opt-in translation is checked against the authored composed evaluator."""
 
 import json
+from copy import deepcopy
+from dataclasses import replace
 from itertools import product
 
 import pytest
 
 from eal.aspic_compiler import CompilationError, compile_eal_aspic
-from eal.aspic_visualisation import build_aspic_view
+from eal.aspic_export import export_aspic_view
 from eal.evaluator import canonical_digest
 from eal.parser import parse
 from test_evaluator import CONTEXT, NOW, record
@@ -197,7 +199,7 @@ objection challenge { target argument primary_route; evidence gap_data; }
                if primary.intersection(arg["subarguments"]))
     assert any(w["kind"] == "undercut" and w["target"] in {a["id"] for a in releases}
                and w["subargument"] in primary for w in formal["defeats"])
-    view = build_aspic_view(result)
+    view = export_aspic_view(result)
     assert {arg["id"] for arg in view["arguments"] if arg["origin"]["name"] == "release_route"} == {
         arg["id"] for arg in releases}
     assert any(event["target"] in {arg["id"] for arg in releases}
@@ -235,3 +237,66 @@ def test_unknown_goal_invalid_programme_and_formal_self_import_are_rejected():
     with pytest.raises(CompilationError, match="invalid"):
         compile_eal_aspic(BASE.replace("structured/1", "unknown/1"), records,
                           goal="run_passes", now=NOW, context=CONTEXT)
+
+
+@pytest.mark.parametrize("change", ["goal", "rule", "source_map", "assessment"])
+def test_mutated_compiled_snapshots_are_rejected_before_solving(change, monkeypatch):
+    programme = parse(BASE)
+    records = {name: record(programme, name, {"ok": True}) for name in programme.evidence}
+    compiled = compile_eal_aspic(BASE, records, goal="run_passes", now=NOW, context=CONTEXT)
+    if change == "goal":
+        compiled.theory["goal"] = "unrelated"
+    elif change == "rule":
+        compiled.theory["rules"][0]["rank"] = 0
+    elif change == "source_map":
+        compiled.source_map["claims"]["run_passes"]["statement"] = "Changed source meaning"
+    else:
+        compiled.assessment["claims"]["run_passes"]["status"] = "out_of_scope"
+
+    def unexpected_execution(*args, **kwargs):
+        pytest.fail("A changed snapshot must fail before invoking the method worker")
+
+    monkeypatch.setattr("eal.methods.execute_extension", unexpected_execution)
+    with pytest.raises(CompilationError, match="snapshot integrity check failed"):
+        compiled.solve()
+    with pytest.raises(CompilationError, match="snapshot integrity check failed"):
+        compiled.to_dict()
+
+
+def test_exported_compilation_is_detached_from_the_checked_snapshot():
+    compiled, exported = compare(BASE)
+    expected_digest = compiled.source_map["snapshot_digest"]
+    exported["theory"]["goal"] = "unrelated"
+    exported["source_map"]["goal"]["claim"] = "reportable"
+    projected = compiled.solve()
+    projected["source_map"]["arguments"]["primary_route"]["emitted"] = False
+    unchanged = compiled.to_dict()
+    assert unchanged["snapshot_digest"] == expected_digest
+    assert unchanged["claim"] == "run_passes"
+    assert unchanged["claim_status"] == "supported"
+    assert unchanged["source_map"]["arguments"]["primary_route"]["emitted"] is True
+
+
+def test_reconstructed_snapshot_cannot_project_goal_onto_another_claim():
+    compiled, _ = compare(BASE)
+    mapping = deepcopy(compiled.source_map)
+    mapping["goal"]["claim"] = "reportable"
+    reconstructed = replace(compiled, source_map=mapping)
+    with pytest.raises(CompilationError, match="provenance identities disagree"):
+        reconstructed.solve()
+
+
+def test_compiled_strict_contraries_cannot_both_be_reported_supported():
+    source = BASE + '''
+claim run_fails { statement "The run failed."; environment lab; }
+argument failure_route { conclusion run_fails; reasoning authored; evidence gap_data; }
+strict probe_route reviewed "review/probe-implication";
+strict failure_route reviewed "review/failure-implication";
+contrary run_fails to run_passes reviewed "review/incompatible-outcomes";
+contrary run_passes to run_fails reviewed "review/incompatible-outcomes";
+'''
+    programme = parse(source)
+    records = {name: record(programme, name, {"ok": True}) for name in programme.evidence}
+    compiled = compile_eal_aspic(source, records, goal="run_passes", now=NOW, context=CONTEXT)
+    with pytest.raises(CompilationError, match="Accepted conclusions contain a declared contrary pair"):
+        compiled.to_dict()

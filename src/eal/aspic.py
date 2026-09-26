@@ -248,6 +248,18 @@ def solve_aspic(payload):
     if any((a.conclusion, b.conclusion) in contraries
            for a in indefeasible for b in indefeasible):
         raise ValueError("Axiom and strict-rule closure contains contrary conclusions")
+    # Strict conclusions can also rest on fallible premises. Without further
+    # logical conditions (such as suitable contraposition rules), the attack
+    # definitions alone can leave declared contrary conclusions both in.
+    # Keep those definitions intact and reject this outcome from our bounded
+    # engineering profile rather than presenting inconsistent support.
+    accepted_conclusions = {by_id[identifier].conclusion for identifier in accepted}
+    conflicts = sorted((attacker, target) for attacker, target in contraries
+                       if attacker in accepted_conclusions and target in accepted_conclusions)
+    if conflicts:
+        attacker, target = conflicts[0]
+        raise ValueError("Accepted conclusions contain a declared contrary pair "
+                         f"{attacker!r} -> {target!r}; outside the bounded ASPIC profile")
     encoded = json.dumps(theory, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
     return {
         "grounded_accepted": status == "accepted",
@@ -274,7 +286,7 @@ ASPIC_CONTRACT = MethodContract(
     output_schema=OUTPUT_SCHEMA,
     outputs={"grounded_accepted": "boolean", "grounded_rejected": "boolean"},
     quantities=("proposition",), exact_unit=True,
-    implementation=solve_aspic, implementation_version="eal-aspic-grounded-3",
+    implementation=solve_aspic, implementation_version="eal-aspic-grounded-4",
     timeout_seconds=5.0, max_input_bytes=256 * 1024, max_output_bytes=1024 * 1024,
 )
 

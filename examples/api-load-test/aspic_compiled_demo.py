@@ -11,7 +11,7 @@ from pathlib import Path
 import tempfile
 
 from eal.runtime import ReasoningService
-from eal.aspic_visualisation import render_aspic_html
+from eal.aspic_export import export_aspic_view
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -25,8 +25,8 @@ ROUTES = ("primary_run", "independent_probe")
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--visualise", type=Path,
-                        help="Write a standalone ASPIC+ argument view to this HTML file")
+    parser.add_argument("--export-view", type=Path,
+                        help="Write validated ASPIC+ graph JSON for the Vue visualisation app")
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix="eal-compiled-aspic-demo-") as folder:
         service = ReasoningService(ROOT, HERE / "aspic-tools.toml",
@@ -64,9 +64,10 @@ def main() -> None:
             for defeat in compiled["formal"]["defeats"]
         ), compiled["formal"]["defeats"]
 
-        if args.visualise is not None:
-            target = args.visualise.resolve()
-            target.write_text(render_aspic_html(compiled), encoding="utf-8")
+        if args.export_view is not None:
+            target = args.export_view.resolve()
+            target.write_text(json.dumps(export_aspic_view(compiled), indent=2,
+                                         ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
 
         print(json.dumps({
             "dataset": "synthetic",
@@ -82,7 +83,7 @@ def main() -> None:
             },
             "defeats": compiled["formal"]["defeats"],
             "source_map": compiled["source_map"],
-            **({"visualisation": str(target)} if args.visualise is not None else {}),
+            **({"view_export": str(target)} if args.export_view is not None else {}),
         }, indent=2, allow_nan=False))
 
 

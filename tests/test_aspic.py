@@ -95,18 +95,46 @@ def test_equal_ordinary_premises_remain_undecided_and_no_goal_is_unconstructed()
     assert solve_aspic({"theory": data})["grounded_status"] == "unconstructed"
 
 
+@pytest.mark.parametrize("reciprocal", [False, True])
+def test_accepted_strict_contraries_from_fallible_premises_are_outside_profile(reciprocal):
+    data = {"premises": [{"atom": atom, "kind": "ordinary", "rank": 5}
+                         for atom in ("p", "r")],
+            "rules": [{"id": "s_yes", "kind": "strict", "antecedents": ["p"],
+                       "consequent": "yes"},
+                      {"id": "s_no", "kind": "strict", "antecedents": ["r"],
+                       "consequent": "no"}],
+            "contraries": [{"attacker": "yes", "target": "no"}],
+            "goal": "yes"}
+    if reciprocal:
+        data["contraries"].append({"attacker": "no", "target": "yes"})
+    with pytest.raises(ValueError, match="Accepted conclusions contain a declared contrary pair"):
+        solve_aspic({"theory": data})
+    assert computed(data)["status"] == "unsupported"
+
+    # Defeating a fallible premise resolves this represented conflict without
+    # inventing direct rebuttals against either strict rule.
+    data["premises"].append({"atom": "not_p", "kind": "axiom"})
+    data["contraries"].append({"attacker": "not_p", "target": "p"})
+    result = solve_aspic({"theory": data})
+    assert result["grounded_status"] == "rejected"
+    assert {arg["label"] for arg in result["arguments"]
+            if arg["conclusion"] == "no"} == {"in"}
+
+
 def test_all_alternative_antecedent_derivations_are_built_independent_of_rule_names_and_order():
-    data = {"premises": [{"atom": "p", "kind": "ordinary", "rank": 2},
+    data = {"premises": [{"atom": "seed", "kind": "ordinary", "rank": 2},
                          {"atom": "q", "kind": "ordinary", "rank": 9},
-                         {"atom": "~p", "kind": "axiom"}],
+                         {"atom": "~apply_primary", "kind": "axiom"}],
             "rules": [{"id": "b_goal", "kind": "defeasible", "antecedents": ["p"],
                        "consequent": "goal", "name": "apply_goal", "rank": 9},
                       {"id": "z_alt", "kind": "strict", "antecedents": ["q"],
-                       "consequent": "p"}],
-            "contraries": [{"attacker": "~p", "target": "p"}], "goal": "goal"}
+                       "consequent": "p"},
+                      {"id": "a_primary", "kind": "defeasible", "antecedents": ["seed"],
+                       "consequent": "p", "name": "apply_primary", "rank": 2}],
+            "contraries": [{"attacker": "~apply_primary", "target": "apply_primary"}], "goal": "goal"}
     first = solve_aspic({"theory": data})
     assert first["grounded_status"] == "accepted"
-    assert first["argument_count"] == 6
+    assert first["argument_count"] == 7
     goals = [a for a in first["arguments"] if a["conclusion"] == "goal"]
     assert sorted(a["label"] for a in goals) == ["in", "out"]
     assert all(a["rule_id"] == "b_goal" and a["rule_name"] == "apply_goal"

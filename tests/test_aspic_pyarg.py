@@ -33,7 +33,6 @@ def _key(kind, conclusion, rule_id=None, children=()):
 def _eal_framework(theory):
     result = solve_aspic({"theory": theory})
     by_id = {argument["id"]: argument for argument in result["arguments"]}
-    rules = {rule["id"]: rule for rule in theory["rules"]}
     keys = {}
 
     def key(argument_id):
@@ -44,15 +43,10 @@ def _eal_framework(theory):
         if rule_id is None:
             children = ()
         else:
-            # The output lists all subarguments, not just the direct ones.
-            # Atom acyclicity makes each antecedent identify one direct child
-            # among the particular derivation's subarguments.
-            children = []
-            for atom in rules[rule_id]["antecedents"]:
-                matches = [sub_id for sub_id in argument["subarguments"]
-                           if by_id[sub_id]["conclusion"] == atom]
-                assert len(matches) == 1, (argument, atom, matches)
-                children.append(key(matches[0]))
+            # A diamond can include different derivations of the same atom
+            # at different depths. Only the recorded direct edges identify
+            # this rule application's immediate children unambiguously.
+            children = [key(child) for child in argument["direct_subarguments"]]
         keys[argument_id] = _key(argument["top"], argument["conclusion"],
                                  rule_id, children)
         return keys[argument_id]
@@ -170,7 +164,27 @@ def test_axiom_strict_closure_is_not_undermined():
                            {"atom": "q", "kind": "ordinary", "rank": 5}],
               "rules": [{"id": "s_goal", "kind": "strict", "antecedents": ["p"],
                          "consequent": "x"}],
-              "contraries": [{"attacker": "q", "target": "p"}], "goal": "x"}
+              "contraries": [{"attacker": "q", "target": "p"},
+                             {"attacker": "p", "target": "q"}], "goal": "x"}
+    _assert_same_framework(theory)
+
+
+@pytest.mark.parametrize("attack,strict_middle,strict_goal", list(product(
+    (None, "undermine", "rebut", "undercut"), (False, True), (False, True))))
+def test_generated_diamonds_preserve_direct_children_and_shared_derivations(
+        attack, strict_middle, strict_goal):
+    theory = _generated_theory(attack or "undercut", True, False, False)
+    if attack is None:
+        theory["contraries"] = []
+    for identifier, antecedents, consequent, strict in (
+            ("middle", ["x"], "y", strict_middle),
+            ("joint", ["x", "y"], "goal", strict_goal)):
+        rule = {"id": identifier, "kind": "strict" if strict else "defeasible",
+                "antecedents": antecedents, "consequent": consequent}
+        if not strict:
+            rule.update(name=identifier, rank=5)
+        theory["rules"].append(rule)
+    theory["goal"] = "goal"
     _assert_same_framework(theory)
 
 

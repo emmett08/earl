@@ -5,7 +5,7 @@ from dataclasses import replace
 import pytest
 
 from eal.aspic_compiler import CompilationError, compile_eal_aspic
-from eal.aspic_visualisation import build_aspic_view
+from eal.aspic_export import export_aspic_view
 from eal.formatter import format_source, semantic_ir
 from eal.model import FormalDirective, SourceSpan
 from eal.parser import EALSyntaxError, parse
@@ -50,7 +50,7 @@ contrary run_passes to run_fails reviewed "synthetic-review/incompatible-outcome
     assert mapping["arguments"]["probe_route"]["rank_annotation"]["review"].startswith("synthetic-review/")
     assert mapping["evidence"]["probe_data"]["rank_annotation"]["span"]["line"] > 0
     assert len([pair for pair in mapping["contraries"] if pair["target_kind"] == "claim"]) == 2
-    view = build_aspic_view(result)
+    view = export_aspic_view(result)
     assert any(((event.get("relation_origin") or {}).get("annotation") or {}).get("review") ==
                "synthetic-review/incompatible-outcomes" for event in view["defeats"])
     assert any((arg["origin"].get("formal_review") or {}).get("kind") == "rank"
@@ -79,7 +79,6 @@ def test_strict_nested_derivation_preserves_fallible_subarguments_and_defeats():
     source = BASE + '''
 objection challenge { target argument primary_route; evidence gap_data; }
 strict reporting_route reviewed "review/report-implication";
-rank challenge 10 reviewed "review/trace-gap";
 '''
     _, result = compare(source)
     rule = next(rule for rule in result["theory"]["rules"]
@@ -161,8 +160,7 @@ contrary run_passes to remote_claim reviewed "review/different-scopes";
 
 
 def test_missing_objection_record_never_becomes_a_negative_premise():
-    source = BASE + '''objection challenge { target argument primary_route; evidence gap_data; }
-rank challenge 900 reviewed "review/diagnostic";'''
+    source = BASE + '''objection challenge { target argument primary_route; evidence gap_data; }'''
     _, result = compare(source, missing=("gap_data",))
     assert result["routes"]["primary_route"]["status"] == "accepted"
     assert result["source_map"]["objections"]["challenge"]["emitted"] is False
@@ -176,23 +174,34 @@ def test_unique_eal_names_resolve_all_rank_target_kinds_after_collection():
 rank primary_data 610 reviewed "review/measurement";
 rank calibration 620 reviewed "review/assumption";
 rank probe_route 630 reviewed "review/inference";
-rank challenge 640 reviewed "review/objection";
 '''
     _, result = compare(source)
     origins = result["source_map"]
     assert [(item["name"], item["target_kind"]) for item in origins["formal_directives"]] == [
         ("primary_data", "evidence"), ("calibration", "assumption"),
-        ("probe_route", "argument"), ("challenge", "objection")]
+        ("probe_route", "argument")]
     assert origins["evidence"]["primary_data"]["rank"] == 610
     assert origins["assumptions"]["calibration"]["rank"] == 620
     assert origins["arguments"]["probe_route"]["rank"] == 630
-    assert origins["objections"]["challenge"]["rank"] == 640
+
+
+def test_objection_rank_is_rejected_because_undercuts_ignore_preferences():
+    source = BASE + '''objection challenge { target argument primary_route; evidence gap_data; }
+rank challenge 640 reviewed "review/objection";'''
+    diagnostic = next(d for d in validate(parse(source)) if d.code == "formal_target_kind")
+    assert diagnostic.actual == "objection"
+    assert diagnostic.expected == "argument | assumption | evidence"
+    assert diagnostic.span.line == source.count("\n") + 1
+    programme = parse(source)
+    records = {name: record(programme, name, {"ok": True}) for name in programme.evidence}
+    with pytest.raises(CompilationError, match="invalid"):
+        compile_eal_aspic(source, records, goal="run_passes", now=NOW, context=CONTEXT)
 
 
 def test_wrong_kind_and_ambiguous_name_diagnostics_point_to_formal_relation():
     source = BASE + 'rank run_passes 700 reviewed "review/wrong-kind";'
     diagnostic = next(d for d in validate(parse(source)) if d.code == "formal_target_kind")
-    assert diagnostic.expected == "argument | assumption | evidence | objection"
+    assert diagnostic.expected == "argument | assumption | evidence"
     assert diagnostic.actual == "claim"
     assert diagnostic.span.line == source.count("\n") + 1
 

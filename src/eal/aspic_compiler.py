@@ -15,7 +15,8 @@ antecedents per rule and 128 constructed arguments; exceedance is an error.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from dataclasses import asdict, dataclass
+from copy import deepcopy
+from dataclasses import asdict, dataclass, field
 import hashlib
 from pathlib import Path
 
@@ -26,7 +27,7 @@ from .model import Program
 from .parser import parse
 from .semantics import objection_scopes
 
-PROFILE = "EAL/2-compiled-aspic/3"
+PROFILE = "EAL/2-compiled-aspic/4"
 RANK = 500
 
 
@@ -45,6 +46,22 @@ def _location(program: Program, name: str):
     return asdict(span) if span is not None else None
 
 
+def _backend_identity() -> dict:
+    return {"method": ASPIC_CONTRACT.identifier,
+            "contract_digest": canonical_digest(ASPIC_CONTRACT.describe()),
+            "module_digest": hashlib.sha256(Path(aspic_module.__file__).read_bytes()).hexdigest()}
+
+
+def _snapshot_digest(mapping: dict) -> str:
+    return canonical_digest({
+        **{key: mapping[key] for key in (
+            "source_digest", "assessed_at", "context_fingerprint",
+            "method_registry_fingerprint", "backend", "assessment_digest", "theory_digest")},
+        "evidence_record_digests": {name: mapping["evidence"][name]["record_digest"]
+                                    for name in sorted(mapping["evidence"])},
+    })
+
+
 @dataclass(frozen=True)
 class CompiledTheory:
     """An independently solvable theory and its source-to-formal correspondence."""
@@ -52,14 +69,47 @@ class CompiledTheory:
     theory: dict
     source_map: dict
     assessment: dict
+    _integrity: tuple[str, str, str] = field(init=False, repr=False, compare=False)
+
+    def __post_init__(self):
+        # frozen=True protects attributes, not the dictionaries they contain.
+        # Bind all provenance, including fields outside the snapshot digest,
+        # so later caller edits cannot acquire the original source identity.
+        object.__setattr__(self, "_integrity", tuple(canonical_digest(value)
+                           for value in (self.theory, self.source_map, self.assessment)))
+
+    def _checked_snapshot(self) -> tuple[dict, dict, dict]:
+        try:
+            theory, mapping, assessment = deepcopy((self.theory, self.source_map, self.assessment))
+            digests = tuple(canonical_digest(value) for value in (theory, mapping, assessment))
+            if digests != self._integrity:
+                raise ValueError("compiled theory, assessment or source map was modified")
+            if (mapping["profile"] != PROFILE or mapping["theory_digest"] != digests[0]
+                    or mapping["assessment_digest"] != digests[2]
+                    or mapping["snapshot_digest"] != _snapshot_digest(mapping)
+                    or mapping["backend"] != _backend_identity()
+                    or mapping["goal"]["atom"] != theory["goal"]
+                    or mapping["claims"][mapping["goal"]["claim"]]["atom"] != theory["goal"]
+                    or mapping["goal"]["claim"] not in assessment["claims"]
+                    or any(mapping[key] != assessment[key] for key in (
+                        "source_digest", "assessed_at", "context_fingerprint",
+                        "method_registry_fingerprint"))):
+                raise ValueError("compiled theory and provenance identities disagree")
+        except (ValueError, TypeError, KeyError, OverflowError, RecursionError, UnicodeError) as exc:
+            raise CompilationError(f"Compiled snapshot integrity check failed: {exc}") from exc
+        return theory, mapping, assessment
 
     def solve(self) -> dict:
         """Solve the compiled goal and project formal routes to EAL identities."""
+        return self._solve_snapshot(*self._checked_snapshot())
+
+    @staticmethod
+    def _solve_snapshot(theory: dict, mapping: dict, assessment: dict) -> dict:
         from .methods import execute_extension
 
         # Use the same isolated POSIX worker, input/output schemas, memory
         # ceiling and execution timeout as the installed ASPIC method.
-        computation = execute_extension(ASPIC_CONTRACT, {"theory": self.theory})
+        computation = execute_extension(ASPIC_CONTRACT, {"theory": theory})
         if computation["status"] != "supported":
             raise CompilationError("Bounded ASPIC execution failed: " +
                                    "; ".join(computation["reasons"]))
@@ -70,7 +120,7 @@ class CompiledTheory:
             if rule is not None:
                 by_rule.setdefault(rule, []).append(argument["label"])
         routes = {}
-        for name, origin in self.source_map["arguments"].items():
+        for name, origin in mapping["arguments"].items():
             labels = by_rule.get(origin["rule_id"], [])
             routes[name] = {"labels": labels,
                             "status": ("accepted" if "in" in labels else
@@ -79,28 +129,29 @@ class CompiledTheory:
                             "rule_id": origin["rule_id"],
                             "emitted": origin["emitted"]}
         status = formal["grounded_status"]
-        scoped_status = self.assessment["claims"][self.source_map["goal"]["claim"]]["status"]
+        scoped_status = assessment["claims"][mapping["goal"]["claim"]]["status"]
         return {"profile": PROFILE, "formal": formal, "routes": routes,
-                "claim": self.source_map["goal"]["claim"],
+                "claim": mapping["goal"]["claim"],
                 "claim_status": ("out_of_scope" if scoped_status == "out_of_scope" else
                                  "supported" if status == "accepted" else
                                  "contested" if status in ("rejected", "undecided") else
                                  "unsupported"),
-                "source_map": self.source_map}
+                "source_map": mapping}
 
     def to_dict(self) -> dict:
         """Return the complete JSON-serialisable, opt-in compilation result."""
-        projected = self.solve()
-        return {"profile": PROFILE, "theory": self.theory,
-                "source_map": self.source_map,
+        theory, mapping, assessment = self._checked_snapshot()
+        projected = self._solve_snapshot(theory, mapping, assessment)
+        return {"profile": PROFILE, "theory": theory,
+                "source_map": mapping,
                 "diagnostics": [],
                 "formal": projected["formal"],
                 "routes": projected["routes"],
                 "claim": projected["claim"],
                 "claim_status": projected["claim_status"],
-                "authored_claim_status": self.assessment["claims"][projected["claim"]]["status"],
-                "source_digest": self.source_map["source_digest"],
-                "snapshot_digest": self.source_map["snapshot_digest"]}
+                "authored_claim_status": assessment["claims"][projected["claim"]]["status"],
+                "source_digest": mapping["source_digest"],
+                "snapshot_digest": mapping["snapshot_digest"]}
 
 
 def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
@@ -166,10 +217,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                "assessed_at": assessment["assessed_at"],
                "context_fingerprint": assessment["context_fingerprint"],
                "method_registry_fingerprint": assessment["method_registry_fingerprint"],
-               "backend": {"method": ASPIC_CONTRACT.identifier,
-                           "contract_digest": canonical_digest(ASPIC_CONTRACT.describe()),
-                           "module_digest": hashlib.sha256(
-                               Path(aspic_module.__file__).read_bytes()).hexdigest()},
+               "backend": _backend_identity(),
                "goal": {"claim": goal, "atom": claims[goal]},
                "claims": {}, "evidence": {}, "assumptions": {},
                "arguments": {}, "objections": {}, "contraries": [],
@@ -353,15 +401,5 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
     # including present observations that were unusable at this instant.
     mapping["assessment_digest"] = canonical_digest(assessment)
     mapping["theory_digest"] = canonical_digest(theory)
-    mapping["snapshot_digest"] = canonical_digest({
-        "source_digest": program.source_digest,
-        "assessed_at": assessment["assessed_at"],
-        "context_fingerprint": assessment["context_fingerprint"],
-        "method_registry_fingerprint": assessment["method_registry_fingerprint"],
-        "backend": mapping["backend"],
-        "assessment_digest": mapping["assessment_digest"],
-        "theory_digest": mapping["theory_digest"],
-        "evidence_record_digests": {name: mapping["evidence"][name]["record_digest"]
-                                    for name in sorted(evidence)},
-    })
+    mapping["snapshot_digest"] = _snapshot_digest(mapping)
     return CompiledTheory(theory=theory, source_map=mapping, assessment=assessment)

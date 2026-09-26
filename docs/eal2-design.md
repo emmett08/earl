@@ -14,7 +14,7 @@ This explains the design of the EAL/2 source language. Syntax, the argument solv
 
 ## Purpose and extension criterion
 
-EAL/2 is the source contract and the installed Python package declares version 2.11.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
+EAL/2 is the source contract and the installed Python package declares version 2.12.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
 
 The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. A gain over prose or another notation remains a **hypothesis**. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data. The [live API experiment](../experiments/api_load_test/README.md) measures a bounded combined-system comparison; broader inference needs independent tasks.
 

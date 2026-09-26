@@ -36,24 +36,23 @@ def main() -> None:
     explain.add_argument("--claim")
     grounded = subcommands.add_parser("grounded")
     grounded.add_argument("graph", help="JSON file containing arguments and attacks")
-    visualise = subcommands.add_parser("visualise-aspic")
-    visualise.add_argument("result", help="JSON file containing theory and formal result")
-    visualise.add_argument("--output", required=True, help="Standalone HTML file within the workspace")
-    visualise.add_argument("--focus", help="Initial formal argument ID, such as A3")
+    export = subcommands.add_parser("export-aspic")
+    export.add_argument("result", help="JSON file containing theory and formal result")
+    export.add_argument("--output", required=True, help="ASPIC+ graph JSON within the workspace")
     args = parser.parse_args()
     workspace = args.workspace.resolve()
     try:
-        if args.operation == "visualise-aspic":
-            from .aspic_visualisation import build_aspic_view, render_aspic_html
+        if args.operation == "export-aspic":
+            from .aspic_export import MAX_INPUT_BYTES, export_aspic_view
 
             input_path = bounded_path(workspace, args.result)
-            if input_path.stat().st_size > 4 * 1024 * 1024:
-                raise ValueError("ASPIC+ result exceeds the 4 MiB visualisation input limit")
+            if input_path.stat().st_size > MAX_INPUT_BYTES:
+                raise ValueError("ASPIC+ result exceeds the 4 MiB export input limit")
             supplied = strict_json(input_path.read_text(encoding="utf-8"))
-            html = render_aspic_html(supplied, focus=args.focus)
+            view = export_aspic_view(supplied)
             target = bounded_path(workspace, args.output)
-            target.write_text(html, encoding="utf-8")
-            view = build_aspic_view(supplied)
+            target.write_text(json.dumps(view, indent=2, ensure_ascii=False, allow_nan=False) + "\n",
+                              encoding="utf-8")
             result = {"output": str(target), "argument_count": len(view["arguments"]),
                       "defeat_witness_count": len(view["defeats"]),
                       "formal_status": view["formal_status"]}
