@@ -29,6 +29,8 @@ The source pins the report's build, run and digest. The collector preserves its 
 
 A [live API experiment](experiments/api_load_test/README.md) compares EAL/2+MCP with meaning-equivalent JSON and ordinary prose, including a conventional checked-result control. Its manually dispatched, Docker-based protocol freezes the selected measurements and scores decisions independently. An optional checked finalisation mode returns the verified decision without asking a model to restate it. The experiment measures the combined system under its specified cases; no general accuracy, cost or speed advantage over equally capable alternatives follows from the language or the synthetic example alone.
 
+The [coolant-loop composition example](experiments/composition_revision/README.md) evaluates shared premises, alternatives, an objection, evidence revocation, expiry and changed scope with EAL/2 and an independently written typed-rule implementation. The [paired runner](experiments/composition_comparison/README.md) freezes cases and scores both arms against the same expected claim statuses and revision effects. The [authoring and revision instrument](experiments/authoring_revision/README.md) freezes matched briefs and cases, preserves submitted source, replays it independently and records review and work time. The included cases and plans are synthetic controls; a claim about engineering advantage needs independently chosen tasks and observed human outcomes.
+
 ## Interfaces and boundaries
 
 - `eal validate` checks parsing, references, types and method contracts without collecting evidence.
