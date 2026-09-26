@@ -17,25 +17,46 @@ def main() -> None:
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
     subcommands = parser.add_subparsers(dest="operation", required=True)
     subcommands.add_parser("describe")
-    for operation in ("validate", "format", "collect", "reason"):
+    for operation in ("validate", "format", "collect", "reason", "compile-aspic"):
         command = subcommands.add_parser(operation)
         command.add_argument("source", help="Source file, relative to the workspace")
-        if operation in ("collect", "reason"):
+        if operation in ("collect", "reason", "compile-aspic"):
             command.add_argument("--context", required=True, help="JSON object, or @file relative to the workspace")
         if operation == "collect":
             command.add_argument("--evidence", action="append", dest="evidence_ids")
         if operation == "reason":
             command.add_argument("--collection", dest="collection_id")
             command.add_argument("--now", help="ISO-8601 assessment time; defaults to current UTC")
+        if operation == "compile-aspic":
+            command.add_argument("--collection", dest="collection_id", required=True)
+            command.add_argument("--goal", required=True, help="Declared EAL claim to query")
+            command.add_argument("--now", help="ISO-8601 assessment time; defaults to current UTC")
     explain = subcommands.add_parser("explain")
     explain.add_argument("assessment_id")
     explain.add_argument("--claim")
     grounded = subcommands.add_parser("grounded")
     grounded.add_argument("graph", help="JSON file containing arguments and attacks")
+    export = subcommands.add_parser("export-aspic")
+    export.add_argument("result", help="JSON file containing theory and formal result")
+    export.add_argument("--output", required=True, help="ASPIC+ graph JSON within the workspace")
     args = parser.parse_args()
     workspace = args.workspace.resolve()
     try:
-        if args.operation == "grounded":
+        if args.operation == "export-aspic":
+            from .aspic_export import MAX_INPUT_BYTES, export_aspic_view
+
+            input_path = bounded_path(workspace, args.result)
+            if input_path.stat().st_size > MAX_INPUT_BYTES:
+                raise ValueError("ASPIC+ result exceeds the 4 MiB export input limit")
+            supplied = strict_json(input_path.read_text(encoding="utf-8"))
+            view = export_aspic_view(supplied)
+            target = bounded_path(workspace, args.output)
+            target.write_text(json.dumps(view, indent=2, ensure_ascii=False, allow_nan=False) + "\n",
+                              encoding="utf-8")
+            result = {"output": str(target), "argument_count": len(view["arguments"]),
+                      "defeat_witness_count": len(view["defeats"]),
+                      "formal_status": view["formal_status"]}
+        elif args.operation == "grounded":
             from .dialectic import solve_grounded
 
             graph = strict_json(bounded_path(workspace, args.graph).read_text())
@@ -61,8 +82,10 @@ def main() -> None:
                         raise ValueError("context must be a JSON object")
                     if args.operation == "collect":
                         result = service.collect(source, context, args.evidence_ids)
-                    else:
+                    elif args.operation == "reason":
                         result = service.reason(source, context, args.collection_id, args.now)
+                    else:
+                        result = service.compile_aspic(source, context, args.collection_id, args.goal, args.now)
         print(json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False))
         if result.get("valid") is False or any(record.get("status") == "error" for record in result.get("records", {}).values()):
             raise SystemExit(1)

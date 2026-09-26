@@ -21,6 +21,7 @@ The MCP server exposes the EAL/2 interpreter through a local stdio service. It u
 | `eal_validate` | `source` | Parse and check language structure, references and method contracts |
 | `eal_collect` | `source`, `context`, optional `evidence_ids` | Run configured collectors and persist observations; return `collection_id` |
 | `eal_reason` | `source`, `context`, optional `collection_id`, `now` | Compute method results and argument conclusions; persist and return `assessment_id` |
+| `eal_compile_aspic` | `source`, `context`, `collection_id`, `goal`, optional `now` | Derive and solve an opt-in bounded ASPIC+ snapshot from authored EAL routes and a matching stored collection; return both formal and authored statuses with a source map |
 | `eal_explain` | `assessment_id`, optional `claim` | Retrieve the reasoning result and dependencies |
 | `eal_grounded` | `arguments`, `attacks` | Calculate grounded labels for an explicit attack graph |
 | `eal_assess_artifact` (only with `--artifacts`) | `artifact_id` | Read one host-pinned EAL file, collect, evaluate and return its configured claim statuses with assessment ID |
@@ -39,6 +40,10 @@ The MCP server exposes the EAL/2 interpreter through a local stdio service. It u
 | `eal_finish_prose` (with `--schemes`) | `assessment_id` | Recover the checked result for the bound principal and session |
 
 Run `eal-mcp --workspace /absolute/path/to/earl --registry /absolute/path/to/earl/examples/api-load-test/tools.toml --methods eal.api_load_methods:registry` for the maintained load-test source. The default database is `.eal/runs.sqlite3` under that workspace; `--database` overrides it. Keep stdout for MCP protocol messages. The server checks advertised JSON schemas before SDK conversion, rejecting extra fields and incorrect types. The CLI uses the same service and accepts `--workspace`, `--registry`, `--database` and an optional host-registered `--methods` factory before its subcommand. The server uses stdio; HTTP MCP deployment is not included.
+
+For a hand-authored formal theory, install the [finite ASPIC+ method](aspic-method.md) with `--methods eal.aspic:aspic_registry`; discovery then advertises its exact versioned input and output contract. For a source containing ordinary EAL arguments and objections, call `eal_compile_aspic` after `eal_collect`, using the returned `collection_id` and a declared goal claim. The CLI equivalent is `eal --workspace . --registry TOOLS.toml compile-aspic SOURCE.eal --context '{"site":"bench"}' --collection COLLECTION_ID --goal CLAIM --now 2026-09-25T10:00:30Z`. Reviewed top-level EAL `strict`, `rank` and `contrary` relations are optional; the target kind follows from the named declaration. Compilation checks the collection's source and context, current collector bindings and evidence eligibility; it does not collect again or replace an ordinary EAL assessment. Its returned `formal` result and `authored_claim_status` should be read together with `source_map`. The [synthetic companion](aspic-method.md#compile-authored-eal-routes) gives commands with a matching source, registry and context.
+
+To inspect the returned argument structure, save the complete compilation JSON and run `eal --workspace . export-aspic RESULT.json --output VIEW.json`. Load the exported `aspic-view/1` file in the separate [visualisation app](https://github.com/emmett08/aspic_visualisation). Export recomputes the formal theory and checks the supplied result; the app shows direct derivations, defeats and their witnesses, grounded labels and supplied declaration/observation origins in one interactive graph. Snapshot import events make changes inspectable. Neither operation collects observations or changes the default evaluator.
 
 ## Tool registry and observation identity
 

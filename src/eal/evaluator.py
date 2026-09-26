@@ -257,8 +257,10 @@ def _compute_argument(program, argument, claim, records, premises, registry):
     sources = [{"id": e, "kind": program.evidence[e].kind, "value": records[e]["value"]}
                for e in sorted(source_ids)]
     binding = None
+    bound_observation_digest = None
     if claim.proposition is not None:
         selected = next(item for item in sources if item["id"] == argument.binding)
+        bound_observation_digest = canonical_digest(selected["value"])
         payload, binding = prepare_binding(claim.proposition, method.method,
                                            argument.binding, selected["value"], registry=registry)
         sources = [{**item, "value": payload} if item["id"] == argument.binding else item
@@ -268,6 +270,7 @@ def _compute_argument(program, argument, claim, records, premises, registry):
                 "reasons": binding["reasons"], "details": {}, "binding": binding}, False
     computation = assess_mode(method.method, sources, premises, registry=registry)
     if binding is not None:
+        computation["bound_observation_digest"] = bound_observation_digest
         if computation["status"] == "supported":
             binding = check_result(claim.proposition, method.method, computation["details"], binding,
                                    registry=registry)

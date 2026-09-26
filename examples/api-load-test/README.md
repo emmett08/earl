@@ -98,6 +98,31 @@ Review the claim and thresholds for that workload. Update the EAL input, environ
 
 The teaching collector requires at least one valid recorded request; it rejects an empty fixture before method evaluation. The experimental collector can retain an otherwise complete empty run, for which the shared method reports a failed sample-size criterion and leaves latency and error-rate criteria unknown. The regression tests exercise limits that this example must respect: exactly 1% passes; 2% fails; excessive p95 latency and too few requests support the negative claim; stale evidence and mismatched build identities support neither claim.
 
+## Resolve conflicting findings with the optional ASPIC+ method
+
+The same API task has an additional [synthetic formal variant](aspic-source.eal). The [fixture](aspic-fixture.json) stipulates a primary latency finding, a trace gap that undercuts its inference, and an independent probe of that same run. Strict and defeasible rules, explicit contrariness and global ordinal ranks appear in the formal theory; the source binds its **complete** theory as a typed query for `demo-load-001`. EAL collects scoped observations through the [pinned fixture collector](aspic_fixture_collector.py) and requires supported EAL claims for the theory's premises. The ASPIC+ method constructs and resolves the formal conflict. The [method reference](../../docs/aspic-method.md) defines its exact semantics and limits.
+
+```sh
+python examples/api-load-test/aspic_demo.py
+```
+
+The script expects `formal_status: "accepted"` and `defeat_kinds: ["undercut"]`: the primary route is defeated, while the independent probe route remains accepted. It also reports `claim_status: "supported"`, `adequacy: "adequate"` under the stated reviewed mappings, and `mcp_claim_status: "supported"` from a real stdio exchange. All findings are stipulated synthetic records. The original [report](report.json) is unchanged and does not contain the additional trace or probe observations. A real use needs an identified, trustworthy collector for each finding and review of the rule and premise meanings.
+
+## Compile authored EAL routes into ASPIC+
+
+The opt-in [compiled variant](aspic-compiled.eal) states the primary and independent probe routes as ordinary EAL arguments. Its objection targets the primary route. It contains no handwritten ASPIC+ theory. [aspic_compiled_demo.py](aspic_compiled_demo.py) collects the same four synthetic findings, runs default EAL reasoning, then calls `compile_aspic` with the **same collection**, context, goal and assessment time:
+
+```sh
+python examples/api-load-test/aspic_compiled_demo.py
+```
+
+The script checks the comparison and prints both route labels and the generated source map. Default EAL reports `run_passes` as `supported`, `primary_run` as `contested` and `independent_probe` as `supported`. The compiled theory has an `accepted` goal, a `rejected` primary route and an `accepted` probe route; a generated undercut defeats the primary rule. `contested` is EAL's engineering route status, while `rejected` is a formal grounded label. The source map links generated premises, rules and contraries to their EAL declarations and checked observation identities.
+
+To inspect the nested arguments and exact attacked rule, run `python examples/api-load-test/aspic_compiled_demo.py --export-view /tmp/compiled-arguments.json` and import the file into the [Vue/TypeScript visualisation app](https://github.com/emmett08/aspic_visualisation). It shows support and defeat in one graph, selectable source details and snapshot events. The exporter recomputes the formal result before writing JSON. The fixture remains synthetic and viewing makes no new measurement.
+
+This compiled profile uses reviewed EAL relations to mark `report_arg` strict and to rank the independent probe route and its observation at 700. The target kind is resolved from each unique EAL name. All other fallible elements keep rank 500. The trace-gap objection undercuts the primary route, and that undercut is independent of rank. The review reference identifies the asserted strict implication; the compiler cannot derive it from the English statement. A directed claim contrary could be declared if a genuinely incompatible claim and its supporting route were authored. The compiler reports a bounded snapshot under the supplied collection. Its agreement with default EAL in this example does not establish equivalence for all EAL programmes or the completeness of real-world counterevidence. The reviewed adequacy result reported by `aspic_demo.py` applies to that explicit-theory example, not to this compiled variant.
+
 ## Live model comparison
 
 The single [API experiment](../../experiments/api_load_test/README.md) extends this same task with actual HTTP traffic and six nano/mini/full model snapshots. It compares EAL/2+MCP, equivalent JSON prompt text and three developer prompts in Docker. The synthetic report here remains a reproducible teaching fixture and is not used as experimental measurement data.
+The optional ASPIC+ variant is outside that frozen experiment. A formal solver comparison would need a separate paired protocol with equal observations and checker authority.

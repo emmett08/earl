@@ -2,7 +2,7 @@
 
 A reasoning declaration selects an operation appropriate to the evidence and states result requirements. A claim may depend on several subarguments using different operations. The interpreter evaluates their dependencies before using their results. These operations support engineering reasoning; they do not reduce reasoning to one universal inference operation.
 
-The implemented methods form a bounded computational vocabulary, rather than an exhaustive taxonomy of human reasoning. `structured/1` preserves an explicitly authored relationship. The other methods calculate properties of a particular logical case, statistical sample, hypothesis model, experiment, causal model, feature mapping or finite trace. Question formation, explanation construction, model selection and the interpretation of natural-language claims remain authored activities. Subarguments can supply reasons for their modelling choices and evidence relevance.
+The implemented methods form a bounded computational vocabulary, rather than an exhaustive taxonomy of human reasoning. `structured/1` preserves an explicitly authored relationship. The other methods calculate properties of a particular logical case, statistical sample, hypothesis model, experiment, causal model, feature mapping or finite trace. An optional installed method constructs and evaluates one finite ASPIC+ theory. Question formation, explanation construction, model selection and the interpretation of natural-language claims remain authored activities. Subarguments can supply reasons for their modelling choices and evidence relevance.
 
 ## Contents
 
@@ -43,6 +43,8 @@ The calculation uses the union of direct argument evidence, reasoning backing an
 | `counterfactual/1` | `causal_model` | Intervention outcome in a supplied acyclic affine structural model |
 | `analogical/1` | `analogy` | Exact correspondence of declared relevant scalar features |
 | `temporal/1` | `trace` | A universal sample predicate and declared sampling-contract coverage |
+
+The host-installed `argumentation/aspic/1` method adds `aspic_theory` evidence, finite strict/defeasible argument construction, undermining, rebutting and undercutting defeats, and grounded acceptance. Its [exact theory schema, preference rule, bounds and example](aspic-method.md) are separate from the core EAL objection calculus. Install it explicitly through `--methods eal.aspic:aspic_registry`.
 
 The computation helper returns `{status, reasons, details, method}`, with the selected `evidence_id` beside `details` for computational methods. `details` contains only method output, so a declared result field named `evidence_id` cannot be overwritten by execution metadata. Here `supported` means that the bounded calculation or authored-support check succeeds; the argument evaluator separately checks result requirements, scope, observation freshness, assumptions, premise status and objections. `unsupported` means insufficient input, malformed input, an exceeded computational bound, or a method-specific inability to use the computation. An inconsistent logical case and an incomplete temporal sampling contract are unusable in this profile. A consistent countermodel or an observed temporal violation is a usable result: a requirement such as `require "entailed" == false;` or `require "holds" == false;` can support a claim about that failure. A probability estimate, contrast or feature-match fraction can be validly calculated even when it fails an argument's required threshold.
 

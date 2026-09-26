@@ -250,6 +250,33 @@ class ReasoningService:
         assessment_id = self.store.put("assessment", assessment)
         return {"assessment_id": assessment_id, **assessment}
 
+    def compile_aspic(self, source: str, context: dict, collection_id: str,
+                      goal: str, now: str | None = None) -> dict:
+        """Opt-in compilation of checked EAL routes into a bounded ASPIC+ snapshot.
+
+        The ordinary ``reason`` operation retains EAL's authored dialectic.
+        Compilation consumes the same operator-owned collection and current
+        collector bindings; a client cannot supply a substitute theory.
+        """
+        from .aspic_compiler import compile_eal_aspic
+        from .evaluator import canonical_digest
+        from .parser import parse
+
+        if not isinstance(collection_id, str) or not collection_id.strip():
+            raise ValueError("compile_aspic requires a stored collection_id")
+        program = parse(source)
+        collection = self.store.get(collection_id, kind="collection")
+        if (collection.get("source_digest") != program.source_digest
+                or canonical_digest(collection.get("context")) != canonical_digest(context)):
+            raise ValueError("ASPIC compilation collection differs from the source or context")
+        compiled = compile_eal_aspic(
+            source, collection["records"], goal=goal,
+            now=utc_now() if now is None else now, context=context,
+            registry=self.method_registry,
+            binding_digests=self.current_binding_digests(program),
+        )
+        return {"collection_id": collection_id, **compiled.to_dict()}
+
     def explain(self, assessment_id: str, claim: str | None = None) -> dict:
         assessment = self.store.get(assessment_id, kind="assessment")
         if claim is None:

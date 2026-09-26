@@ -125,6 +125,12 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
             return service.reason(source, context, collection_id, now)
 
         @server.tool(structured_output=True)
+        def eal_compile_aspic(source: str, context: dict, collection_id: str,
+                              goal: str, now: str | None = None) -> dict[str, Any]:
+            """Compile checked EAL routes to an opt-in bounded ASPIC+ snapshot with a source map."""
+            return service.compile_aspic(source, context, collection_id, goal, now)
+
+        @server.tool(structured_output=True)
         def eal_explain(assessment_id: str, claim: str | None = None) -> dict[str, Any]:
             """Retrieve a persisted reasoning result and its dependency explanations."""
             return service.explain(assessment_id, claim)

@@ -19,6 +19,11 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EALParser#formalDirective.
+    def visitFormalDirective(self, ctx:EALParser.FormalDirectiveContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EALParser#environmentDecl.
     def visitEnvironmentDecl(self, ctx:EALParser.EnvironmentDeclContext):
         return self.visitChildren(ctx)

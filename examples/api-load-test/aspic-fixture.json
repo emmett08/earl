@@ -1,0 +1,26 @@
+{
+  "schema": "eal-aspic-demo/1",
+  "dataset": "synthetic",
+  "observed_at": "2026-09-25T10:00:00Z",
+  "facts": {
+    "report_checked": {"checked": true},
+    "latency_ok": {"within_limit": true},
+    "trace_gap": {"gap_found": true},
+    "alternate_probe_ok": {"within_limit": true}
+  },
+  "theory": {
+    "premises": [
+      {"atom": "report_checked", "kind": "axiom"},
+      {"atom": "latency_ok", "kind": "ordinary", "rank": 6},
+      {"atom": "trace_gap", "kind": "ordinary", "rank": 1},
+      {"atom": "alternate_probe_ok", "kind": "ordinary", "rank": 8}
+    ],
+    "rules": [
+      {"id": "r_pass", "kind": "defeasible", "antecedents": ["report_checked", "latency_ok"], "consequent": "run_passes", "name": "applicable_pass", "rank": 7},
+      {"id": "r_gap", "kind": "strict", "antecedents": ["trace_gap"], "consequent": "~applicable_pass"},
+      {"id": "r_probe", "kind": "defeasible", "antecedents": ["alternate_probe_ok"], "consequent": "run_passes", "name": "applicable_probe", "rank": 8}
+    ],
+    "contraries": [{"attacker": "~applicable_pass", "target": "applicable_pass"}],
+    "goal": "run_passes"
+  }
+}

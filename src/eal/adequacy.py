@@ -17,6 +17,7 @@ from typing import Any, Mapping
 
 from .evaluator import assess_evidence_record, canonical_digest
 from .parser import parse
+from .propositions import check_result, prepare_binding
 from .semantics import parse_time, validate
 
 
@@ -144,7 +145,7 @@ class AdequacyContract:
                 raise ValueError("Formal premise bindings require argument, formula and claim")
             if any(not isinstance(binding[key], str) or not _ID.fullmatch(binding[key]) for key in ("argument", "claim")):
                 raise ValueError("Formal premise bindings must name EAL argument and claim identifiers")
-            # The deductive method separately checks formula syntax and bounds.
+            # The chosen formal method separately checks formula syntax and bounds.
             identity = (binding["argument"], canonical_digest(binding["formula"]))
             if identity in identities:
                 raise ValueError("A formal premise has multiple correspondence bindings")
@@ -317,7 +318,7 @@ class AdequacyEvaluator:
         if not any(item.role in {"threshold", "inference"} and item.about is None for item in contract.obligations):
             result["reasons"].append("No executable threshold or inference obligation assesses the main conclusion.")
         relation_gaps = self._required_relations(program, assessment, contract.claim, mapped, evidence,
-                                                set(contract.methods), contract.premise_bindings, records,
+                                                set(contract.methods), contract.premise_bindings, registry,
                                                 [item for item in contract.obligations if item.role in {"threshold", "inference"}
                                                  and item.about is None and by_id[item.id]["status"] == "satisfied"])
         result["reasons"].extend(relation_gaps)
@@ -372,7 +373,7 @@ class AdequacyEvaluator:
         return None
 
     @staticmethod
-    def _required_relations(program, assessment, claim_id, mapped, evidence, allowed_methods, premise_bindings, records, main_clauses):
+    def _required_relations(program, assessment, claim_id, mapped, evidence, allowed_methods, premise_bindings, registry, main_clauses):
         """Find a covered accepted derivation, preserving independent alternatives."""
         cache = {}
 
@@ -396,21 +397,71 @@ class AdequacyEvaluator:
                     gaps.append(f"Argument {argument_id!r} has no satisfied main criterion on its evidence or computed result.")
                 if method not in allowed_methods:
                     gaps.append(f"Accepted argument {argument_id!r} uses unreviewed method {method!r}.")
-                if method == "deductive/1":
-                    logical_id = next((item for item in source_ids if program.evidence[item].kind == "logical_case"), None)
-                    payload = records.get(logical_id, {}).get("value", {})
-                    if argument.binding == logical_id and program.claims[name].proposition is not None:
-                        payload = payload.get("payload", {})
-                    formal = payload.get("premises", []) if isinstance(payload, dict) else []
-                    bindings = {canonical_digest(row["formula"]): row["claim"] for row in premise_bindings
-                                if row["argument"] == argument_id}
-                    for formula in formal:
-                        bound = bindings.get(canonical_digest(formula))
-                        if (bound not in argument.premises or
-                                assessment.get("claims", {}).get(bound, {}).get("status") != "supported"):
-                            gaps.append(f"Deductive argument {argument_id!r} has an undisclosed or unsupported formal premise: {formula!r}.")
-                    if any(key not in {canonical_digest(formula) for formula in formal} for key in bindings):
-                        gaps.append(f"Deductive argument {argument_id!r} has a binding to an absent formal premise.")
+                if method in ("deductive/1", "argumentation/aspic/1"):
+                    kind = "logical_case" if method == "deductive/1" else "aspic_theory"
+                    theory_ids = sorted(item for item in source_ids if program.evidence[item].kind == kind)
+                    if len(theory_ids) != 1:
+                        gaps.append(f"Formal argument {argument_id!r} requires exactly one declared {kind} observation.")
+                    else:
+                        theory_id = theory_ids[0]
+                        value, failure = evidence(theory_id)
+                        if failure:
+                            gaps.append(f"Formal argument {argument_id!r} has no checked formal observation: {failure}")
+                        else:
+                            proposition = program.claims[name].proposition
+                            typed = argument.binding == theory_id and proposition is not None
+                            payload = value.get("payload") if typed and isinstance(value, dict) else value
+                            computation = entry.get("reasoning_result", {})
+                            if not isinstance(computation, Mapping):
+                                computation = {}
+                            try:
+                                matched = (computation.get("status") == "supported"
+                                           and computation.get("method") == method
+                                           and computation.get("evidence_id") == theory_id
+                                           and computation.get("input_digest") == canonical_digest(payload))
+                            except (ValueError, TypeError, RecursionError, UnicodeError):
+                                matched = False
+                            if not matched:
+                                gaps.append(f"Formal argument {argument_id!r} result does not identify the collected formal input.")
+                            if typed:
+                                if computation.get("bound_observation_digest") != canonical_digest(value):
+                                    gaps.append(f"Formal argument {argument_id!r} result does not identify the collected typed observation.")
+                                _, expected_binding = prepare_binding(proposition, method, theory_id, value, registry=registry)
+                                if expected_binding["status"] == "bound":
+                                    expected_binding = check_result(proposition, method, computation.get("details", {}),
+                                                                    expected_binding, registry=registry)
+                                try:
+                                    binding_matches = (expected_binding["status"] == "supported"
+                                                       and canonical_digest(computation.get("binding"))
+                                                       == canonical_digest(expected_binding))
+                                except (ValueError, TypeError, RecursionError, UnicodeError):
+                                    binding_matches = False
+                                if not binding_matches:
+                                    gaps.append(f"Formal argument {argument_id!r} result binding differs from its proposition and observation.")
+                            elif method == "argumentation/aspic/1":
+                                gaps.append(f"ASPIC+ argument {argument_id!r} requires a typed, bound formal theory.")
+                            if method == "argumentation/aspic/1":
+                                theory = payload.get("theory", {}) if isinstance(payload, dict) else {}
+                                rows = theory.get("premises") if isinstance(theory, dict) else None
+                                if not isinstance(rows, list):
+                                    gaps.append(f"Formal argument {argument_id!r} has no valid premise list.")
+                                    rows = []
+                                formal = [row["atom"] for row in rows
+                                          if isinstance(row, dict) and isinstance(row.get("atom"), str)]
+                            else:
+                                formal = payload.get("premises", []) if isinstance(payload, dict) else []
+                                if not isinstance(formal, list):
+                                    gaps.append(f"Formal argument {argument_id!r} has no valid premise list.")
+                                    formal = []
+                            bindings = {canonical_digest(row["formula"]): row["claim"] for row in premise_bindings
+                                        if row["argument"] == argument_id}
+                            for formula in formal:
+                                bound = bindings.get(canonical_digest(formula))
+                                if (bound not in argument.premises or
+                                        assessment.get("claims", {}).get(bound, {}).get("status") != "supported"):
+                                    gaps.append(f"Formal argument {argument_id!r} has an undisclosed or unsupported premise: {formula!r}.")
+                            if any(key not in {canonical_digest(formula) for formula in formal} for key in bindings):
+                                gaps.append(f"Formal argument {argument_id!r} has a binding to an absent formal premise.")
                 for assumption in argument.assumptions:
                     if f"assumption:{assumption}" not in mapped:
                         gaps.append(f"Assumption {assumption!r} has no satisfied evidence-adequacy mapping; its use remains conditional.")

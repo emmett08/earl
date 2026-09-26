@@ -188,6 +188,7 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     _validate_reasoning_and_claims(program, registry, error, reference)
     _validate_arguments(program, registry, error, reference, scope)
     _validate_objections(program, error, reference, scope)
+    _validate_formal_directives(program, problems)
     _validate_dependencies(program, error)
     return problems
 
@@ -198,7 +199,7 @@ def _validate_declarations(program, error, identifier):
                    program.assumptions, program.reasoning, program.claims,
                    program.arguments, program.objections, program.patterns,
                    program.applications)
-    actual_count = sum(len(table) for table in collections) + len(program.patterns)
+    actual_count = sum(len(table) for table in collections) + len(program.patterns) + len(program.formal)
     if max(actual_count, program.declaration_count) > MAX_DECLARATIONS:
         error("resource_limit", f"At most {MAX_DECLARATIONS} declaration/body records after pattern expansion are supported")
         return False
@@ -433,6 +434,85 @@ def _validate_objections(program, error, reference, scope):
                 if reference(item, sources, kind, value.name):
                     for environment in sorted(expected):
                         scope(sources[item].environment, environment, value.name, item)
+
+
+def _validate_formal_directives(program, problems):
+    """Resolve globally named formal relations after pattern expansion."""
+    tables = {"environment": program.environments, "tool": program.tools,
+              "evidence": program.evidence, "assumption": program.assumptions,
+              "reasoning": program.reasoning, "claim": program.claims,
+              "argument": program.arguments, "objection": program.objections,
+              "pattern": program.patterns}
+    kinds: dict[str, set[str]] = {}
+    for kind, table in tables.items():
+        for name in table:
+            kinds.setdefault(name, set()).add(kind)
+    # A successfully expanded application and its generated argument are one
+    # identity. An application that failed lowering is not an argument.
+    for name in program.applications:
+        if name not in program.arguments:
+            kinds.setdefault(name, set()).add("application")
+    seen = set()
+    ranked_arguments = {item.name for item in program.formal if item.kind == "rank"}
+
+    def error(code, message, directive, *, expected=None, actual=None):
+        problems.append(Diagnostic(code, message, directive.name, directive.span,
+                                   expected, actual))
+
+    def check_target(name, allowed, directive):
+        found = kinds.get(name, set())
+        if not found:
+            error("unknown_formal_reference", f"Unknown formal target {name!r}", directive,
+                  expected=" | ".join(sorted(allowed)), actual=name)
+        elif len(found) != 1 or name in program.duplicates:
+            error("ambiguous_formal_reference", f"Formal target {name!r} is not unique", directive,
+                  expected="unique symbol", actual=" | ".join(sorted(found)))
+        elif not found <= allowed:
+            error("formal_target_kind", f"Formal target {name!r} has the wrong declaration kind", directive,
+                  expected=" | ".join(sorted(allowed)), actual=next(iter(found)))
+
+    for directive in program.formal:
+        if directive.kind == "strict":
+            valid = directive.other is None and directive.rank is None
+            key = (directive.kind, directive.name)
+            allowed = {"argument"}
+        elif directive.kind == "rank":
+            valid = (directive.other is None and type(directive.rank) is int
+                     and 0 <= directive.rank <= 1000)
+            key = (directive.kind, directive.name)
+            # Compiled objections only undercut applicability. Undercuts ignore
+            # preferences, so an authored objection rank would have no effect.
+            allowed = {"evidence", "assumption", "argument"}
+        elif directive.kind == "contrary":
+            valid = directive.rank is None and directive.other is not None
+            key = (directive.kind, directive.name, directive.other)
+            allowed = {"claim"}
+        else:
+            valid = False
+            key = (directive.kind, directive.name)
+            allowed = set()
+        if not valid:
+            error("invalid_formal_directive", "Invalid formal directive or rank; ranks must be integers from 0 through 1000", directive)
+        if not directive.review.strip():
+            error("missing_formal_review", "A formal relationship requires a nonempty review reference", directive)
+        if key in seen:
+            error("duplicate_formal_directive", "A formal relationship is declared more than once", directive)
+        seen.add(key)
+        if allowed:
+            check_target(directive.name, allowed, directive)
+        if directive.kind == "contrary":
+            if directive.other == directive.name:
+                error("invalid_formal_contrary", "A claim cannot be contrary to itself", directive)
+            if directive.other is not None:
+                check_target(directive.other, {"claim"}, directive)
+            if directive.name in program.claims and directive.other in program.claims:
+                first = program.claims[directive.name].environment
+                second = program.claims[directive.other].environment
+                if first != second:
+                    error("formal_environment_mismatch", "Contrary claims require the same EAL environment", directive,
+                          expected=first, actual=second)
+        if directive.kind == "strict" and directive.name in ranked_arguments:
+            error("formal_strict_rank", "A strict rule cannot have a defeasible rank", directive)
 
 
 def _validate_dependencies(program, error):
