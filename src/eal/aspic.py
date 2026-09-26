@@ -7,6 +7,7 @@ computes grounded defeat within the supplied formal theory.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import heapq
 from itertools import product
 import hashlib
 import json
@@ -61,7 +62,10 @@ OUTPUT_SCHEMA = _obj({
         "subarguments": {"type": "array", "items": _ATOM_SCHEMA, "maxItems": MAX_ARGUMENTS},
         "strength": {"type": "integer", "minimum": 0, "maximum": 1001},
         "label": {"type": "string", "enum": ["in", "out", "undecided"]},
-    }), "minItems": 1, "maxItems": MAX_ARGUMENTS},
+        "rule_id": _ATOM_SCHEMA, "rule_name": _ATOM_SCHEMA,
+        "rank": _RANK,
+    }, required=["id", "conclusion", "top", "subarguments", "strength", "label"]),
+        "minItems": 1, "maxItems": MAX_ARGUMENTS},
     "defeats": {"type": "array", "items": _obj({
         "attacker": _ATOM_SCHEMA, "target": _ATOM_SCHEMA, "subargument": _ATOM_SCHEMA,
         "kind": {"type": "string", "enum": ["undermine", "rebut", "undercut"]},
@@ -76,7 +80,9 @@ class _Argument:
     top: str
     subarguments: tuple[str, ...]
     strength: int
+    rule_id: str | None = None
     rule_name: str | None = None
+    rank: int | None = None
 
 
 def _validate(theory):
@@ -126,65 +132,66 @@ def _validate(theory):
     for rule in theory["rules"]:
         for antecedent in rule["antecedents"]:
             graph[antecedent].add(rule["consequent"])
-    visited, active = set(), set()
-
-    def visit(atom):
-        if atom in active:
-            raise ValueError("Rule dependencies contain an atom cycle")
-        if atom not in visited:
-            active.add(atom)
-            for child in sorted(graph[atom]):
-                visit(child)
-            active.remove(atom)
-            visited.add(atom)
-
-    for atom in sorted(atoms):
-        visit(atom)
-    return contrary_pairs
+    indegree = {atom: 0 for atom in atoms}
+    for children in graph.values():
+        for child in children:
+            indegree[child] += 1
+    ready = [atom for atom, count in indegree.items() if count == 0]
+    heapq.heapify(ready)
+    ordered = []
+    while ready:
+        atom = heapq.heappop(ready)
+        ordered.append(atom)
+        for child in sorted(graph[atom]):
+            indegree[child] -= 1
+            if indegree[child] == 0:
+                heapq.heappush(ready, child)
+    if len(ordered) != len(atoms):
+        raise ValueError("Rule dependencies contain an atom cycle")
+    return contrary_pairs, ordered
 
 
 def solve_aspic(payload):
     """Construct bounded arguments, defeats and grounded labels.
 
-    A rebuttal or underminer defeats when the attacker is not strictly weaker
-    than the attacked subargument. Undercuts always defeat. Strength is the
+    A one-way contrary or an undercutter defeats regardless of preference.
+    A reciprocal contradiction defeats when the attacker is not strictly
+    weaker than the attacked subargument. Strength is the
     minimum global rank of fallible premises and defeasible rules; an argument
     containing only axioms and strict rules has strength 1001.
     """
     if type(payload) is not dict or set(payload) != {"theory"}:
         raise ValueError("ASPIC input requires exactly one theory")
     theory = payload["theory"]
-    contraries = _validate(theory)
+    contraries, atom_order = _validate(theory)
     arguments: list[_Argument] = []
     by_atom: dict[str, list[_Argument]] = {}
 
-    def add(atom, top, children=(), rank=1001, name=None):
+    def add(atom, top, children=(), rank=1001, rule_id=None, name=None):
         if len(arguments) >= MAX_ARGUMENTS:
             raise ValueError("Theory exceeds 128 constructed arguments")
         subs = tuple(dict.fromkeys(sub for child in children
                                    for sub in (*child.subarguments, child.id)))
         arg = _Argument(f"A{len(arguments)}", atom, top, subs,
-                        min(rank, *(child.strength for child in children)) if children else rank, name)
+                        min(rank, *(child.strength for child in children)) if children else rank,
+                        rule_id, name, rank if rank != 1001 else None)
         arguments.append(arg)
         by_atom.setdefault(atom, []).append(arg)
 
     for premise in theory["premises"]:
         add(premise["atom"], premise["kind"], rank=premise.get("rank", 1001))
-    pending = sorted(theory["rules"], key=lambda item: item["id"])
-    while pending:
-        remaining = []
-        progressed = False
-        for rule in pending:
-            if not all(atom in by_atom for atom in rule["antecedents"]):
-                remaining.append(rule)
+    rules_by_consequent = {atom: [] for atom in atom_order}
+    for rule in theory["rules"]:
+        rules_by_consequent[rule["consequent"]].append(rule)
+    # Atom dependencies are acyclic, so all derivations of each antecedent
+    # exist before a rule using it is visited. No rule is consumed early.
+    for atom in atom_order:
+        for rule in sorted(rules_by_consequent[atom], key=lambda item: item["id"]):
+            if not all(antecedent in by_atom for antecedent in rule["antecedents"]):
                 continue
             for children in product(*(by_atom[atom] for atom in rule["antecedents"])):
                 add(rule["consequent"], rule["kind"], children,
-                    rule.get("rank", 1001), rule.get("name"))
-            progressed = True
-        if not progressed:
-            break
-        pending = remaining
+                    rule.get("rank", 1001), rule["id"], rule.get("name"))
 
     by_id = {arg.id: arg for arg in arguments}
     defeats = []
@@ -202,7 +209,12 @@ def solve_aspic(payload):
                     kind = "rebut"
                 if kind is None:
                     continue
-                if kind != "undercut" and attacker.strength < sub.strength:
+                # A declared pair is a one-way contrary unless its reverse
+                # is declared as well. Only contradictory attacks compare
+                # preferences; undercutting always succeeds.
+                if (kind != "undercut"
+                        and (sub.conclusion, attacker.conclusion) in contraries
+                        and attacker.strength < sub.strength):
                     continue
                 edges.add((attacker.id, target.id))
                 if len(defeats) >= MAX_DEFEATS:
@@ -241,7 +253,10 @@ def solve_aspic(payload):
         "theory_sha256": hashlib.sha256(encoded).hexdigest(),
         "arguments": [{"id": a.id, "conclusion": a.conclusion, "top": a.top,
                        "subarguments": list(a.subarguments), "strength": a.strength,
-                       "label": "in" if a.id in accepted else "out" if a.id in rejected else "undecided"}
+                       "label": "in" if a.id in accepted else "out" if a.id in rejected else "undecided",
+                       **({"rule_id": a.rule_id} if a.rule_id is not None else {}),
+                       **({"rule_name": a.rule_name} if a.rule_name is not None else {}),
+                       **({"rank": a.rank} if a.rank is not None else {})}
                       for a in arguments],
         "defeats": defeats,
     }
@@ -254,7 +269,7 @@ ASPIC_CONTRACT = MethodContract(
     output_schema=OUTPUT_SCHEMA,
     outputs={"grounded_accepted": "boolean", "grounded_rejected": "boolean"},
     quantities=("proposition",), exact_unit=True,
-    implementation=solve_aspic, implementation_version="eal-aspic-grounded-1",
+    implementation=solve_aspic, implementation_version="eal-aspic-grounded-2",
     timeout_seconds=5.0, max_input_bytes=256 * 1024, max_output_bytes=1024 * 1024,
 )
 

@@ -6,6 +6,7 @@ Argument-level ``require`` predicates state what result supports a conclusion.
 from __future__ import annotations
 
 import itertools
+import hashlib
 import json
 import math
 import operator
@@ -446,6 +447,7 @@ def assess_mode(method: str, evidence: list[dict], premises: list[dict], registr
             payload = selected["value"]
         encoded = json.dumps(payload, sort_keys=True, separators=(",", ":"),
                              ensure_ascii=False, allow_nan=False).encode("utf-8")
+        input_digest = hashlib.sha256(encoded).hexdigest()
         if len(encoded) > contract.max_input_bytes:
             raise ValueError("Method input exceeds byte limit")
         errors = schema_errors(payload, contract.input_schema)
@@ -475,6 +477,10 @@ def assess_mode(method: str, evidence: list[dict], premises: list[dict], registr
         # supplied under the registered result contract.
         if selected is not None:
             result["evidence_id"] = selected["id"]
+            # Bind the computation to the exact finite JSON input it consumed.
+            # Adequacy can then detect a collection substituted after assessment,
+            # including an untyped method input that has no proposition query.
+            result["input_digest"] = input_digest
         return identified(result)
     except (ValueError, TypeError, OverflowError, RecursionError, KeyError, UnicodeError) as exc:
         return identified(_result(False, f"Method evaluation failed: {exc}"))

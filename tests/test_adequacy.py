@@ -234,6 +234,24 @@ def test_deductive_premises_need_explicit_bindings_to_accepted_named_claims():
     assert assess(config, inputs)["status"] == "unresolved"
 
 
+def test_substituted_formal_collection_cannot_reuse_a_deductive_assessment():
+    config, inputs = setup(LOGIC, values={"fact": {"recorded": True},
+                                        "logic": {"premises": ["p"], "conclusion": "p"}},
+                           clauses=[clause("consequence", "reasoning_result.details.entailed", True,
+                                           target="argument", reference="proof", role="inference")],
+                           methods=["structured/1", "deductive/1"],
+                           premise_bindings=[{"argument": "proof", "formula": "p", "claim": "observed"}])
+    assert assess(config, inputs)["status"] == "adequate"
+    # The replacement is a fresh, internally valid record for the same EAL
+    # declaration, collection and tool request. The extra repeated premise
+    # preserves the entailment and its output details; input identity changes.
+    inputs["collection"]["records"]["logic"] = record(
+        parse(LOGIC), "logic", {"premises": ["p", "p"], "conclusion": "p"})
+    answer = assess(config, inputs)
+    assert answer["status"] == "unresolved"
+    assert any("collected formal input" in reason for reason in answer["reasons"])
+
+
 def test_zero_premise_tautology_needs_no_empirical_premise_binding():
     # A typed envelope permits scalar acquisition checks around the closed
     # logical_case payload, including a formula-valued conclusion.

@@ -95,6 +95,92 @@ def test_equal_ordinary_premises_remain_undecided_and_no_goal_is_unconstructed()
     assert solve_aspic({"theory": data})["grounded_status"] == "unconstructed"
 
 
+def test_all_alternative_antecedent_derivations_are_built_independent_of_rule_names_and_order():
+    data = {"premises": [{"atom": "p", "kind": "ordinary", "rank": 2},
+                         {"atom": "q", "kind": "ordinary", "rank": 9},
+                         {"atom": "~p", "kind": "axiom"}],
+            "rules": [{"id": "b_goal", "kind": "defeasible", "antecedents": ["p"],
+                       "consequent": "goal", "name": "apply_goal", "rank": 9},
+                      {"id": "z_alt", "kind": "strict", "antecedents": ["q"],
+                       "consequent": "p"}],
+            "contraries": [{"attacker": "~p", "target": "p"}], "goal": "goal"}
+    first = solve_aspic({"theory": data})
+    assert first["grounded_status"] == "accepted"
+    assert first["argument_count"] == 6
+    goals = [a for a in first["arguments"] if a["conclusion"] == "goal"]
+    assert sorted(a["label"] for a in goals) == ["in", "out"]
+    assert all(a["rule_id"] == "b_goal" and a["rule_name"] == "apply_goal"
+               and a["rank"] == 9 for a in goals)
+    assert any(a.get("rule_id") == "z_alt" and a["top"] == "strict"
+               and "rank" not in a for a in first["arguments"])
+    # Historically the goal rule was consumed before z_alt constructed the
+    # second p argument. Reorder and rename the rules across that boundary.
+    renamed = deepcopy(data)
+    renamed["rules"][0]["id"] = "z_goal"
+    renamed["rules"][1]["id"] = "a_alt"
+    renamed["rules"].reverse()
+    second = solve_aspic({"theory": renamed})
+    assert second["grounded_status"] == first["grounded_status"]
+    assert second["argument_count"] == first["argument_count"]
+    assert sorted((a["conclusion"], a["top"], a["strength"], a["label"])
+                  for a in second["arguments"]) == sorted(
+                      (a["conclusion"], a["top"], a["strength"], a["label"])
+                      for a in first["arguments"])
+
+
+def test_independent_antecedent_routes_form_every_cartesian_combination():
+    data = {
+        "premises": [{"atom": atom, "kind": "axiom"}
+                     for atom in ("p1", "p2", "q1", "q2")],
+        "rules": [
+            {"id": "early_goal", "kind": "defeasible", "antecedents": ["p", "q"],
+             "consequent": "goal", "name": "apply_goal", "rank": 5},
+            *({"id": f"r_{atom}", "kind": "strict", "antecedents": [atom],
+               "consequent": atom[0]} for atom in ("p1", "p2", "q1", "q2")),
+        ],
+        "contraries": [], "goal": "goal",
+    }
+    result = solve_aspic({"theory": data})
+    by_id = {a["id"]: a for a in result["arguments"]}
+    goals = [a for a in result["arguments"] if a["conclusion"] == "goal"]
+    assert result["argument_count"] == 12 and result["grounded_status"] == "accepted"
+    assert len(goals) == 4
+    assert {frozenset(by_id[sub]["rule_id"] for sub in a["subarguments"]
+                      if by_id[sub].get("rule_id") in {"r_p1", "r_p2", "r_q1", "r_q2"})
+            for a in goals} == {frozenset({f"r_p{p}", f"r_q{q}"})
+                             for p in (1, 2) for q in (1, 2)}
+
+
+@pytest.mark.parametrize("attack", ["undermine", "rebut"])
+def test_one_way_contrary_ignores_preference_but_reciprocal_contradiction_uses_it(attack):
+    if attack == "undermine":
+        premises = [{"atom": "p", "kind": "ordinary", "rank": 9},
+                    {"atom": "q", "kind": "ordinary", "rank": 1}]
+        rules = []
+    else:
+        premises = [{"atom": "base_p", "kind": "axiom"},
+                    {"atom": "base_q", "kind": "axiom"}]
+        rules = [{"id": "p_rule", "kind": "defeasible", "antecedents": ["base_p"],
+                  "consequent": "p", "name": "apply_p", "rank": 9},
+                 {"id": "q_rule", "kind": "defeasible", "antecedents": ["base_q"],
+                  "consequent": "q", "name": "apply_q", "rank": 1}]
+    data = {"premises": premises, "rules": rules,
+            "contraries": [{"attacker": "q", "target": "p"}], "goal": "p"}
+    one_way = solve_aspic({"theory": data})
+    arguments = {a["id"]: a for a in one_way["arguments"]}
+    assert one_way["grounded_status"] == "rejected"
+    assert any(w["kind"] == attack and arguments[w["attacker"]]["conclusion"] == "q"
+               and arguments[w["subargument"]]["conclusion"] == "p"
+               for w in one_way["defeats"])
+    data["contraries"].append({"attacker": "p", "target": "q"})
+    reciprocal = solve_aspic({"theory": data})
+    arguments = {a["id"]: a for a in reciprocal["arguments"]}
+    assert reciprocal["grounded_status"] == "accepted"
+    assert not any(arguments[w["attacker"]]["conclusion"] == "q"
+                   and arguments[w["subargument"]]["conclusion"] == "p"
+                   for w in reciprocal["defeats"])
+
+
 @pytest.mark.parametrize("change", ["cycle", "duplicate", "strict_conflict", "invalid_rank"])
 def test_invalid_or_unbounded_theory_cannot_create_support(change):
     data = theory()

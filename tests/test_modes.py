@@ -4,6 +4,7 @@ import math
 import pytest
 
 from eal.modes import MODE_KINDS, assess_mode, validate_mode
+from eal.evaluator import canonical_digest
 from _provenance import synthetic_provenance
 
 
@@ -41,6 +42,8 @@ def test_structured_keeps_authored_support_distinct_from_computation():
 
 def test_deduction_modus_ponens_and_countermodel():
     case = {"premises": ["p", {"implies": ["p", "q"]}], "conclusion": "q"}
+    computed = run("deductive", case)
+    assert computed["input_digest"] == canonical_digest(case)
     result = details("deductive", case)
     assert result["entailed"] and result["consistent_premises"]
     assert result["satisfying_premise_valuations"] == 1

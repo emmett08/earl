@@ -17,15 +17,19 @@ def main() -> None:
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
     subcommands = parser.add_subparsers(dest="operation", required=True)
     subcommands.add_parser("describe")
-    for operation in ("validate", "format", "collect", "reason"):
+    for operation in ("validate", "format", "collect", "reason", "compile-aspic"):
         command = subcommands.add_parser(operation)
         command.add_argument("source", help="Source file, relative to the workspace")
-        if operation in ("collect", "reason"):
+        if operation in ("collect", "reason", "compile-aspic"):
             command.add_argument("--context", required=True, help="JSON object, or @file relative to the workspace")
         if operation == "collect":
             command.add_argument("--evidence", action="append", dest="evidence_ids")
         if operation == "reason":
             command.add_argument("--collection", dest="collection_id")
+            command.add_argument("--now", help="ISO-8601 assessment time; defaults to current UTC")
+        if operation == "compile-aspic":
+            command.add_argument("--collection", dest="collection_id", required=True)
+            command.add_argument("--goal", required=True, help="Declared EAL claim to query")
             command.add_argument("--now", help="ISO-8601 assessment time; defaults to current UTC")
     explain = subcommands.add_parser("explain")
     explain.add_argument("assessment_id")
@@ -61,8 +65,10 @@ def main() -> None:
                         raise ValueError("context must be a JSON object")
                     if args.operation == "collect":
                         result = service.collect(source, context, args.evidence_ids)
-                    else:
+                    elif args.operation == "reason":
                         result = service.reason(source, context, args.collection_id, args.now)
+                    else:
+                        result = service.compile_aspic(source, context, args.collection_id, args.goal, args.now)
         print(json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False))
         if result.get("valid") is False or any(record.get("status") == "error" for record in result.get("records", {}).values()):
             raise SystemExit(1)
