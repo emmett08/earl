@@ -1,0 +1,51 @@
+schema = "eal2-argument-schemes/1"
+
+[schemes.bundled_fixture]
+source = "examples/api-load-test/argument-host.eal"
+source_sha256 = "540b5279ba7a16557cef29538f6c581b75fea1a2f1d15ffd8b5d44f5dd0891e7"
+claim = "fixture_criteria_met"
+kind = "decision"
+description = "Check the bundled synthetic API fixture's sample criteria after recomputation."
+forms = [
+  "Does the bundled synthetic load-test fixture meet its recorded sample criteria?",
+  "Check the sample criteria for the bundled synthetic load-test fixture."
+]
+followups = ["Is the bundled synthetic fixture still within those recorded sample criteria?"]
+
+[schemes.bundled_fixture.context]
+service = "orders-api"
+build_id = "demo-build-42"
+dataset = "synthetic"
+
+[schemes.bundled_fixture.adequacy]
+correspondence = "reviewed_source"
+
+[[schemes.bundled_fixture.adequacy.obligations]]
+id = "sample_size"
+role = "coverage"
+target = "evidence"
+reference = "recomputed_sample"
+path = "request_count"
+operator = ">="
+expected = 100
+rationale = "All 100 bundled request results must be counted."
+
+[[schemes.bundled_fixture.adequacy.obligations]]
+id = "sample_p95"
+role = "threshold"
+target = "evidence"
+reference = "recomputed_sample"
+path = "p95_ms"
+operator = "<="
+expected = 200
+rationale = "The sample nearest-rank p95 must meet the reviewed 200 ms criterion."
+
+[[schemes.bundled_fixture.adequacy.obligations]]
+id = "sample_error_rate"
+role = "threshold"
+target = "evidence"
+reference = "recomputed_sample"
+path = "error_rate_percent"
+operator = "<="
+expected = 1
+rationale = "The observed sample error percentage must meet the reviewed 1 percent criterion."

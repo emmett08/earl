@@ -18,6 +18,7 @@ from .evaluator import canonical_digest
 from .families import FamilyRegistry
 from .retrieval import CandidateIndex
 from .routing import TaskFamilyHost
+from .argument_host import ArgumentHost
 
 
 class StrictFastMCP(FastMCP):
@@ -41,7 +42,9 @@ class StrictFastMCP(FastMCP):
 def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None = None, *,
                   recipient_only: bool = False, principal: str | None = None,
                   recipient_grants: Mapping[str, Collection[str]] | None = None,
-                  reviewed_task_host: TaskFamilyHost | None = None) -> FastMCP:
+                  reviewed_task_host: TaskFamilyHost | None = None,
+                  argument_host: ArgumentHost | None = None,
+                  bound_prose: str | None = None) -> FastMCP:
     """Create an operator server or a separate, principal-bound recipient server.
 
     The launcher authenticates the principal before constructing the latter.
@@ -51,12 +54,16 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
     if recipient_only and artifacts is not None and artifacts.historical_evaluator:
         raise ValueError("Historical evaluator cannot serve recipient claims")
     if recipient_only:
-        if (artifacts is None or not isinstance(principal, str)
+        if (not isinstance(principal, str)
                 or not re.fullmatch(r"[A-Za-z_][A-Za-z_0-9.-]{0,127}", principal)
-                or not isinstance(recipient_grants, Mapping)
-                or not 1 <= len(recipient_grants) <= 512):
-            raise ValueError("Recipient server requires a trusted principal, artifact catalogue and grants")
-        for artifact_id, claims in recipient_grants.items():
+                or (artifacts is None and argument_host is None)):
+            raise ValueError("Recipient server requires a trusted principal and a reviewed route")
+        if artifacts is not None and (not isinstance(recipient_grants, Mapping)
+                                      or not 1 <= len(recipient_grants) <= 512):
+            raise ValueError("Artifact recipient requires an artifact catalogue and grants")
+        if artifacts is None and recipient_grants not in (None, {}):
+            raise ValueError("Artifact grants require an artifact catalogue")
+        for artifact_id, claims in (recipient_grants or {}).items():
             if (not isinstance(artifact_id, str) or artifact_id not in artifacts.definitions
                     or not isinstance(claims, (set, frozenset, list, tuple))
                     or not 1 <= len(claims) <= 64
@@ -67,7 +74,8 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
             # Snapshot the launcher grant. Later mutation of its mapping or
             # claim collections must not expand a running recipient server.
             checked_grants[artifact_id] = frozenset(claims)
-    elif principal is not None or recipient_grants is not None:
+    elif (recipient_grants is not None or
+          (principal is not None and (argument_host is None or argument_host.principal != principal))):
         raise ValueError("Recipient identity and grants require recipient-only mode")
     if reviewed_task_host is not None:
         if (not recipient_only or reviewed_task_host.principal != principal
@@ -76,6 +84,14 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
                 or any(not claims <= checked_grants.get(artifact_id, frozenset())
                        for artifact_id, claims in reviewed_task_host._claims.items())):
             raise ValueError("Reviewed task route requires the same trusted recipient and grants")
+    if argument_host is not None and recipient_only and argument_host.principal != principal:
+        raise ValueError("Argument host principal differs from the recipient principal")
+    if recipient_only and argument_host is not None:
+        if (not isinstance(bound_prose, str) or not bound_prose.strip()
+                or len(bound_prose.encode("utf-8")) > 4096):
+            raise ValueError("Argument recipient requires the launcher's bounded original prose")
+    elif bound_prose is not None:
+        raise ValueError("Bound prose requires an argument recipient endpoint")
     server = StrictFastMCP(
         "EAL engineering reasoning",
         instructions="Validate explicit engineering arguments, collect configured observations, reason over their declared scope, and explain results. Support is relative to declared inference rationales, not a proof of prose truth.",
@@ -200,6 +216,37 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
             """Recover the host-owned packet under the same question, review and principal grant."""
             return reviewed_task_host.finish_bound_task(assessment_id)
 
+    if argument_host is not None:
+        if recipient_only:
+            @server.tool(structured_output=True)
+            def eal_resolve_bound_prose() -> dict[str, Any]:
+                """Resolve the launcher's original request without accepting replacement text."""
+                return argument_host.resolve(bound_prose)
+
+            @server.tool(structured_output=True)
+            def eal_assess_bound_prose() -> dict[str, Any]:
+                """Collect and assess the launcher's original request under reviewed forms."""
+                return argument_host.assess(bound_prose)
+        else:
+            @server.tool(structured_output=True)
+            def eal_resolve_prose(prose: str, context: dict | None = None,
+                                  proposal: dict | None = None,
+                                  routing_candidate: dict | None = None) -> dict[str, Any]:
+                """Match a claim, decision or proposed action to a reviewed argument form; no collection."""
+                return argument_host.resolve(prose, context, proposal, routing_candidate=routing_candidate)
+
+            @server.tool(structured_output=True)
+            def eal_assess_prose(prose: str, context: dict | None = None,
+                                 proposal: dict | None = None,
+                                 routing_candidate: dict | None = None) -> dict[str, Any]:
+                """Collect and assess a resolved form with explicit evidence-adequacy obligations."""
+                return argument_host.assess(prose, context, proposal, routing_candidate=routing_candidate)
+
+        @server.tool(structured_output=True)
+        def eal_finish_prose(assessment_id: str) -> dict[str, Any]:
+            """Recover a session-bound checked result without accepting a model-written status."""
+            return argument_host.finish(assessment_id)
+
     return server
 
 
@@ -212,6 +259,12 @@ def main() -> None:
     parser.add_argument("--artifacts", type=Path, help="Host-pinned EAL artifact catalogue TOML")
     parser.add_argument("--families", type=Path, help="Reviewed finite task-family catalogue TOML")
     parser.add_argument("--tasks", type=Path, help="Reviewed exact-question applicability catalogue TOML")
+    parser.add_argument("--schemes", type=Path, help="Reviewed reusable argument forms TOML")
+    parser.add_argument("--session-id", help="Host-assigned argument session ID")
+    parser.add_argument("--bound-prose-file", type=Path,
+                        help="Original user request supplied by the trusted recipient launcher")
+    parser.add_argument("--scheme-grant", action="append", default=[], metavar="SCHEME",
+                        help="Reviewed argument form granted to the recipient; may be repeated")
     retrieval = parser.add_mutually_exclusive_group()
     retrieval.add_argument("--aliases", type=Path,
                            help="Optional reviewed candidate-alias catalogue TOML")
@@ -228,6 +281,14 @@ def main() -> None:
     args = parser.parse_args()
     if args.recipient_grant and not args.recipient_only:
         parser.error("--recipient-grant requires --recipient-only")
+    if args.schemes and (not args.recipient_principal or not args.session_id):
+        parser.error("Argument forms require a host-assigned principal and session ID")
+    if (args.session_id or args.scheme_grant) and not args.schemes:
+        parser.error("Argument session and grants require --schemes")
+    if args.bound_prose_file and (not args.schemes or not args.recipient_only):
+        parser.error("--bound-prose-file requires recipient-only argument schemes")
+    if args.schemes and args.recipient_only and (not args.bound_prose_file or not args.scheme_grant):
+        parser.error("Argument recipient requires --bound-prose-file and explicit scheme grants")
     task_options = (args.families, args.tasks, args.recipient_task_file)
     if (any(task_options) or args.aliases or args.rag_catalogue
             or args.recipient_family_grant or args.recipient_task_grant):
@@ -272,10 +333,25 @@ def main() -> None:
             task_text=task_text, authorised_tasks=set(args.recipient_task_grant),
             candidate_index=candidate_index,
         )
+    argument_host = (ArgumentHost.load(
+        service, args.schemes, principal=args.recipient_principal,
+        session_id=args.session_id, authorised_schemes=args.scheme_grant or None,
+    ) if args.schemes else None)
+    bound_prose = None
+    if args.bound_prose_file:
+        with args.bound_prose_file.open("rb") as stream:
+            bound_bytes = stream.read(4097)
+        if not 1 <= len(bound_bytes) <= 4096:
+            parser.error("Bound prose must contain one to 4096 UTF-8 bytes")
+        try:
+            bound_prose = bound_bytes.decode("utf-8")
+        except UnicodeError:
+            parser.error("Bound prose must be UTF-8")
     create_server(service, artifacts, recipient_only=args.recipient_only,
                   principal=args.recipient_principal,
                   recipient_grants=grants if args.recipient_only else None,
-                  reviewed_task_host=task_host).run(transport="stdio")
+                  reviewed_task_host=task_host,
+                  argument_host=argument_host, bound_prose=bound_prose).run(transport="stdio")
 
 
 if __name__ == "__main__":

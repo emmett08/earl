@@ -70,6 +70,20 @@ Replace `ASSESSMENT_ID` with the assessment's identifier. Check `claims.performa
 
 To use MCP directly, launch `eal-mcp --workspace . --registry examples/api-load-test/tools.toml`. Supply the source text and the same context to `eal_validate` and `eal_collect`, then the returned collection ID and the recorded assessment time to `eal_reason`. Call `eal_explain` with its assessment ID and claim. [run.py](run.py) is a complete Python MCP client for this sequence.
 
+## Reuse a reviewed argument for later prose
+
+The optional argument host uses a second, bounded view of this **same synthetic fixture**. Its [reviewed scheme](argument-schemes.toml) pins [EAL source bytes](argument-host.eal), two initial wordings and one later wording. [Tool configuration](argument-tools.toml) selects a [collector](recompute_synthetic.py) that checks the fixture's digest and identity, then computes the sample statistics again. That computation is current; the original fixture's measurement time remains `2026-09-25T10:00:00Z`. It does not represent a new load test.
+
+From the repository root after installing the package, run:
+
+```sh
+python examples/api-load-test/argument_host_demo.py
+```
+
+The [demonstration](argument_host_demo.py) obtains `supported` and `adequate` for the first wording. A later prose question resolves to the same reviewed claim and method but triggers a new tool collection and assessment. An unreviewed question about production reliability stays `unresolved` and runs no evidence tools. The output identifies the two different collection IDs through `fresh_collection_for_later_wording: true`; it does not recycle the first status. The temporary database is removed at the end.
+
+Changing the EAL source invalidates the scheme's pinned SHA-256 until an operator reviews and updates the TOML contract. The form match establishes applicability only for these reviewed phrasings and synthetic context. The three adequacy obligations check sample count, sample p95 and observed sample error percentage; neither they nor `structured/1` establish population reliability, representative workload or production readiness.
+
 ## Try your own report
 
 Keep the report schema and include every attempted request, including timeouts. Set the actual service, immutable build identity, run ID, client count and observation time; use `"dataset": "measured"` for genuine measurements. The host can select a different report with `--report PATH` in the collector's configured argument vector.

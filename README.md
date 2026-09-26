@@ -2,7 +2,7 @@
 
 EAL/2 is a language and host for bounded engineering arguments. A source file identifies the claim, the question it addresses, its reasoning method, evidence obligations, premises and objections. The interpreter validates those declarations, collects observations through host-configured tools, evaluates the stated method and records an explanation of the resulting status. A checked status is about the declared question and collected observations; the source's relevance and the observations' real-world provenance still require review.
 
-The Python package is **2.5.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. The observation envelope is `EAL/typed-input/1`; the source, package and observation versions identify different contracts.
+The Python package is **2.6.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. The observation envelope is `EAL/typed-input/1`; the source, package and observation versions identify different contracts.
 
 ## Start here
 
@@ -36,6 +36,7 @@ A single [live API experiment](experiments/api_load_test/README.md) extends this
 - `eal validate` checks parsing, references, types and method contracts without collecting evidence.
 - `eal collect` runs the configured tools and persists their observations; `eal reason` computes method and argument statuses at an explicit or current time; `eal explain` retrieves the recorded trace.
 - `eal-mcp` serves the same operations over local stdio using the MCP SDK. `eal-host` accepts one strict JSON operation for text-only clients; `eal-agent` can run a bounded model feedback loop when a provider is configured.
+- The optional argument host recognises later prose as a scoped claim, decision or proposed action, collects fresh evidence with the existing tools and tests explicit correspondence and evidence-adequacy obligations. Its host-operated file-change adapter requires a checked decision before applying proposed bytes. See [executable argument host](docs/executable-argument-host.md).
 - The optional reviewed artifact and exact-question recipient routes bind a pinned source, context, question and claim on the host. They can keep a checked status authoritative when a recipient explanation differs.
 
 The implementation provides finite, explicit support and attack reasoning with versioned reasoning methods. It does not infer the correct argument family from a task, authenticate measurements beyond the configured acquisition path, prove informal warrants, or demonstrate cross-model superiority without a completed comparison.
@@ -52,6 +53,7 @@ The implementation provides finite, explicit support and attack reasoning with v
 | [Grounded reasoning](docs/grounded-reasoning.md) | Explicit Dung graph solver |
 | [Reasoning modes](docs/reasoning-modes.md) | Computational method inputs, outputs and bounds |
 | [MCP and tools](docs/mcp-and-tools.md) | Tool acquisition, persistence and model hosts |
+| [Executable argument host](docs/executable-argument-host.md) | Reviewed argument forms, adequacy checks and action preflight |
 | [Sources](docs/sources.md) | Primary research and retained references |
 
 [`CONTRACT.md`](CONTRACT.md) records implementation interfaces. The [JSS paper](paper/README.md) contains a manuscript, four figures and reproducible reanalyses of both historical API pilots, including the later nano-only run and a figure separating answer errors, protocol failures and unattempted assignments. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).

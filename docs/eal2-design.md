@@ -13,7 +13,7 @@ This is the rationale and alternative-design record for the current EAL/2 source
 
 ## Research status and decision rule
 
-The current source contract is EAL/2 and the installed Python package declares version 2.5.0. Source version, package version, observation envelope and method identifiers name different contracts. Historical assessments are tied to their actual code and data, not retrospectively relabelled as evidence for this version. Backwards compatibility with prior language versions is not a design requirement.
+The current source contract is EAL/2 and the installed Python package declares version 2.6.0. Source version, package version, observation envelope and method identifiers name different contracts. Historical assessments are tied to their actual code and data, not retrospectively relabelled as evidence for this version. Backwards compatibility with prior language versions is not a design requirement.
 
 The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. That gain over prose or another notation is a **hypothesis**. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path for one task using synthetic data. The [live API experiment](../experiments/api_load_test/README.md) adds actual measurements and a bounded combined-system comparison; broader inference needs independent cases; no task count, parser test or earlier exposed-case result establishes superiority for every model class.
 
