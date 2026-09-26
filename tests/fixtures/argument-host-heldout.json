@@ -1,0 +1,11 @@
+{
+  "schema": "eal2-applicability-heldout/1",
+  "cases": [
+    {"request": "Would the payments sample support the specified upper error bound?", "category": "paraphrase"},
+    {"request": "Does the payments sample fail the specified upper error bound?", "category": "negation"},
+    {"request": "Check the error limit for payments and orders", "category": "compound"},
+    {"request": "Check the error limit for payments at 99.9 percent confidence", "category": "stronger"},
+    {"request": "Check the error limit for payments in every production workload", "category": "scope"},
+    {"request": "Check the error limit for another-service", "category": "unreviewed_subject"}
+  ]
+}

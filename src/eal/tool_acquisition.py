@@ -13,6 +13,7 @@ import hmac
 import math
 import json
 import os
+import re
 import selectors
 import signal
 import stat
@@ -93,15 +94,33 @@ class ToolBinding:
     timeout_seconds: float = 30.0
     max_output_bytes: int = 1024 * 1024
     env: Mapping[str, str] = dataclasses.field(default_factory=dict, repr=False)
+    pinned_files: tuple[tuple[str, str], ...] = ()
 
-    def binding_digest(self, secret: bytes) -> str:
-        """Keyed registry identity; this does not authenticate executable bytes."""
+    def binding_digest(self, secret: bytes, *, workspace: Path | None = None) -> str:
+        """Keyed registry identity, checking each operator-pinned file's bytes."""
+        if self.pinned_files and workspace is None:
+            raise ValueError("Pinned collector files require a workspace")
+        for name, expected in self.pinned_files:
+            path = Path(name)
+            path = path.resolve() if path.is_absolute() else bounded_path(workspace, name)
+            try:
+                descriptor = os.open(path, os.O_RDONLY | os.O_NONBLOCK)
+                with os.fdopen(descriptor, "rb") as stream:
+                    details = os.fstat(stream.fileno())
+                    if not stat.S_ISREG(details.st_mode) or details.st_size > 16 * 1024 * 1024:
+                        raise ValueError("Pinned collector file must be a regular file at most 16 MiB")
+                    digest = hashlib.sha256(stream.read(16 * 1024 * 1024 + 1)).hexdigest()
+            except OSError as exc:
+                raise ValueError("Pinned collector file is inaccessible") from exc
+            if digest != expected:
+                raise ValueError("Pinned collector file identity differs from operator configuration")
         return keyed_digest(secret, b"tool-binding", {
             "name": self.name, "kind": self.kind,
             "version": self.version, "argv": list(self.argv),
             "path": self.path, "timeout_seconds": self.timeout_seconds,
             "max_output_bytes": self.max_output_bytes,
-            "env": dict(self.env)})
+            "env": dict(self.env), "pinned_files": [{"path": path, "sha256": digest}
+                                                     for path, digest in self.pinned_files]})
 
 
 @dataclasses.dataclass(frozen=True)
@@ -123,7 +142,7 @@ class ToolRegistry:
         if set(document) - {"tools"} or not isinstance(document.get("tools", {}), dict):
             raise ValueError("The registry must contain only a [tools] table")
         bindings = {}
-        allowed = {"kind", "version", "argv", "path", "timeout_seconds", "max_output_bytes", "env"}
+        allowed = {"kind", "version", "argv", "path", "timeout_seconds", "max_output_bytes", "env", "pinned_files"}
         for name, raw in document.get("tools", {}).items():
             if not isinstance(raw, dict) or set(raw) - allowed:
                 raise ValueError(f"Unknown registry settings for {name}")
@@ -147,8 +166,19 @@ class ToolRegistry:
             env = raw.get("env", {})
             if not isinstance(env, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in env.items()):
                 raise ValueError(f"{name}: env must map strings to strings")
+            pinned = raw.get("pinned_files", [])
+            if (not isinstance(pinned, list) or len(pinned) > 32
+                    or any(not isinstance(item, dict) or set(item) != {"path", "sha256"}
+                           or not isinstance(item["path"], str) or not item["path"]
+                           or not isinstance(item["sha256"], str)
+                           or re.fullmatch(r"[0-9a-f]{64}", item["sha256"]) is None for item in pinned)
+                    or len({item["path"] for item in pinned}) != len(pinned)):
+                raise ValueError(f"{name}: pinned_files requires distinct paths and lowercase SHA-256 digests")
+            if raw["kind"] != "command" and pinned:
+                raise ValueError(f"{name}: only command bindings can pin executable files")
             bindings[name] = ToolBinding(
-                name, raw["kind"], raw["version"], tuple(argv), raw.get("path"), float(timeout), limit, env
+                name, raw["kind"], raw["version"], tuple(argv), raw.get("path"), float(timeout), limit, env,
+                tuple((item["path"], item["sha256"]) for item in pinned)
             )
         return cls(bindings)
 

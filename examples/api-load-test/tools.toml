@@ -4,3 +4,4 @@ argv = ["python3", "examples/api-load-test/collect_results.py"]
 version = "1"
 timeout_seconds = 10
 max_output_bytes = 16384
+pinned_files = [{path = "examples/api-load-test/collect_results.py", sha256 = "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2"}]

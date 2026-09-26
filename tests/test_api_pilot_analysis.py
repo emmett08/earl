@@ -58,7 +58,47 @@ def test_nearest_rank_includes_every_attempt_and_transport_failure():
     report["requests"][5]["elapsed_ms"] = 250
     assert reference(case)["failed_checks"] == ["latency"]
     report["requests"][0]["status_code"] = 0
+    report["requests"][0]["response_identity"] = None
+    report["requests"][0]["identity_matches"] = False
+    report["requests"][0]["error"] = "TimeoutError"
     assert reference(case)["failed_checks"] == ["latency", "errors"]
+
+
+def test_attributed_transport_failure_is_an_error_not_an_identity_failure():
+    from experiments.api_load_test.collector import inspect
+
+    case = measured_case()
+    report = case["reports"]["target-report"]
+    row = report["requests"][0]
+    row.update(status_code=0, response_identity=None, identity_matches=False, error="TimeoutError")
+    truth = reference(case)
+    measured = inspect(report, case["target"], case["assessment_time"])
+    assert truth["status"] == "unsupported" and truth["failed_checks"] == ["errors"]
+    assert measured["facts"]["identity_matches"] is True
+    assert measured["metrics"] == truth["metrics"]
+    row["error"] = None
+    assert reference(case)["status"] == "unavailable"
+    assert inspect(report, case["target"], case["assessment_time"])["facts"]["identity_matches"] is False
+
+
+@pytest.mark.parametrize("arm", ["eal_mcp", "plain_validator"])
+def test_attributed_transport_failure_reaches_checked_routes(tmp_path, arm):
+    import asyncio
+    from experiments.api_load_test.cases import digest
+    from experiments.api_load_test.materials import source_for
+    from experiments.api_load_test.routes import TrialTools
+
+    case = measured_case()
+    report = case["reports"]["target-report"]
+    report["requests"][0].update(status_code=0, response_identity=None,
+                                 identity_matches=False, error="TimeoutError")
+    case["audit"] = {"report_sha256": {"target-report": digest(report)}}
+    source = source_for(case["target"]["input"], case["target"]["context"])
+    tools = TrialTools(tmp_path / arm, source, {"case": case})
+    packet = asyncio.run(tools.execute(arm, "target-report"))
+    assert packet["status"] == "unsupported" and packet["failed_checks"] == ["errors"]
+    assert packet_reference_check(case, "target-report", packet, checked=True,
+        host_status=tools.host_status)["agrees"]
 
 
 @pytest.mark.parametrize("fault,failed", [
@@ -430,7 +470,8 @@ def test_checked_answers_are_not_pooled_with_model_answers_or_narrative_presence
         path = tmp_path / "trials" / assignment["id"] / "trial.json"
         row = json.loads(path.read_text())
         row.update(finalisation="model", answer_origin="model", protocol_complete=True,
-                   answer_complete=True, explanation_present=False)
+                   answer_complete=True, explanation_present=False,
+                   answer_consistent_with_checker=bool(row["outcome"]["correct"]))
         assignment["finalisation"] = "model"
         path.write_text(json.dumps(row))
         checked = {**assignment, "id": "checked-" + assignment["id"], "finalisation": "checked"}
@@ -439,6 +480,7 @@ def test_checked_answers_are_not_pooled_with_model_answers_or_narrative_presence
         directory.mkdir()
         (directory / "trial.json").write_text(json.dumps({
             **row, **checked, "answer_origin": "checked_host", "protocol_complete": False,
+            "answer_consistent_with_checker": True,
             "outcome": {"correct": True}, "provider_retries": 1,
             "model_calls": [{"retry_of_turn": 0, "state": "complete", "estimated_usd": 0}]}))
     (tmp_path / "manifest.json").write_text(json.dumps(manifest))
@@ -449,9 +491,11 @@ def test_checked_answers_are_not_pooled_with_model_answers_or_narrative_presence
         assert cell["explanation_present"] == 0
         if cell["finalisation"] == "model":
             assert cell["correct"] == 2 and cell["protocol_complete"] == 4
+            assert (cell["checker_agreements"], cell["checker_disagreements"]) == (2, 2)
             assert cell["answer_origin_counts"] == {"model": 4}
         else:
             assert cell["correct"] == 4 and cell["protocol_complete"] == 0
+            assert (cell["checker_agreements"], cell["checker_disagreements"]) == (4, 0)
             assert cell["answer_origin_counts"] == {"checked_host": 4}
             assert cell["provider_retries"] == 4
     assert all(row["paired_blocks"] == 4 for row in summary["contrasts"])

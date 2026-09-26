@@ -26,12 +26,8 @@ def child_environment() -> dict:
             "PYTHONIOENCODING": "utf-8", "LANG": "C.UTF-8"}
 
 
-def checked_decision(packet: dict) -> dict:
-    """Ordinary deterministic classification of collector facts, without EAL.
-
-    The MCP route uses the same presentation contract after checking its formal
-    host assessment. The raw-measurement oracle is implemented separately.
-    """
+def measurement_checks(packet: dict) -> dict[str, bool | None]:
+    """Interpret collected fields for the shared application checklist."""
     facts, metrics = packet["measurement_facts"], packet["metrics"]
     checks = {"report_valid": facts["report_valid"], "identity": None,
               "completeness": None, "freshness": None, "sample_size": None,
@@ -46,13 +42,32 @@ def checked_decision(packet: dict) -> dict:
                       latency=metrics["p95_ms"] <= 200 if metrics["p95_ms"] is not None else None,
                       errors=metrics["error_rate_percent"] <= 1
                       if metrics["error_rate_percent"] is not None else None)
+    return checks
+
+
+def application_decision(checks: dict[str, bool | None], *, claim_supported: bool) -> dict:
+    """Project one canonical decision without replacing its checking authority."""
     available = all(checks[name] is True for name in
                     ("report_valid", "identity", "completeness", "consistency", "freshness"))
-    status = ("unavailable" if not available else
-              "supported" if all(value is True for value in checks.values()) else "unsupported")
+    if claim_supported and not all(value is True for value in checks.values()):
+        raise ValueError("Supported claim conflicts with the application checks")
+    status = "unavailable" if not available else "supported" if claim_supported else "unsupported"
     return {"status": status,
             "failed_checks": sorted(name for name, value in checks.items() if value is False),
             "unknown_checks": sorted(name for name, value in checks.items() if value is None)}
+
+
+def checked_decision(packet: dict) -> dict:
+    """Ordinary deterministic classification without EAL assessment."""
+    checks = measurement_checks(packet)
+    return application_decision(checks, claim_supported=all(value is True for value in checks.values()))
+
+
+def eal_decision(packet: dict, claim_status: str) -> dict:
+    """Project the assessed EAL claim through the application's evidence policy."""
+    if claim_status not in {"supported", "unsupported"}:
+        raise ValueError("This experiment requires an unambiguous EAL claim assessment")
+    return application_decision(measurement_checks(packet), claim_supported=claim_status == "supported")
 
 
 class TrialTools:
@@ -175,7 +190,7 @@ class TrialTools:
                     or explanation["result"]["status"] != host_status):
                     raise ValueError("MCP assessment identity or explanation differs")
                 packet = self._packet(record["value"], record["collected_at"], record["details"])
-                decision = checked_decision(packet)
+                decision = eal_decision(packet, host_status)
                 expected_host = "supported" if decision["status"] == "supported" else "unsupported"
                 if host_status != expected_host:
                     raise ValueError("MCP assessment differs from the declared decision contract")

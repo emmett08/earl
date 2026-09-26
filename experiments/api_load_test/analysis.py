@@ -126,6 +126,8 @@ def summarise(output: Path) -> dict:
                           row.get("answer_origin") or "none" for row in values).items())),
                       "protocol_complete": sum(bool(row.get("protocol_complete")) for row in values),
                       "answer_complete": sum(bool(row.get("answer_complete")) for row in values),
+                      "checker_agreements": sum(row.get("answer_consistent_with_checker") is True for row in values),
+                      "checker_disagreements": sum(row.get("answer_consistent_with_checker") is False for row in values),
                       "explanation_present": sum(bool(row.get("explanation_present")) for row in values),
                       # Dispatch markers survive a killed process that never
                       # writes its terminal trial counters.
@@ -240,11 +242,12 @@ def markdown(summary: dict) -> str:
               "They are reported separately from completed answers with incorrect decisions. "
               "Retained running trials are reported as interrupted; dispatched calls without a settled cost remain unknown.", "",
               "## Completion, decision and narrative measures", "",
-              "| Model | Transport | Finalisation | Arm | Valid model finish | Complete answer | Correct / assigned | Explanation present | Provider retries | Transient failed trials |",
-              "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |"]
+              "| Model | Transport | Finalisation | Arm | Valid model finish | Complete answer | Checker agreement / disagreement | Correct / assigned | Explanation present | Provider retries | Transient failed trials |",
+              "| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |"]
     for cell in summary["cells"]:
         lines.append(f"| {cell['model']} | {cell['transport']} | {cell['finalisation']} | {cell['arm']} | "
-                     f"{cell['protocol_complete']} | {cell['answer_complete']} | {cell['correct']}/{cell['assigned']} | "
+                     f"{cell['protocol_complete']} | {cell['answer_complete']} | "
+                     f"{cell['checker_agreements']}/{cell['checker_disagreements']} | {cell['correct']}/{cell['assigned']} | "
                      f"{cell['explanation_present']} | {cell['provider_retries']} | {cell['transient_failed_trials']} |")
     lines += ["", "A valid model finish records protocol completion. Checked-host finalisation returns a tool decision "
               "without a model finish; its accuracy measures the checked system, not model-answer accuracy. "

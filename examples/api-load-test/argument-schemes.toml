@@ -8,7 +8,8 @@ kind = "decision"
 description = "Check the bundled synthetic API fixture's sample criteria after recomputation."
 forms = [
   "Does the bundled synthetic load-test fixture meet its recorded sample criteria?",
-  "Check the sample criteria for the bundled synthetic load-test fixture."
+  "Check the sample criteria for the bundled synthetic load-test fixture.",
+  "Are the recorded sample p95 and error percentage within the bundled synthetic fixture's stated limits?"
 ]
 followups = ["Is the bundled synthetic fixture still within those recorded sample criteria?"]
 

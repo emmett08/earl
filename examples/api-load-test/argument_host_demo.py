@@ -14,6 +14,7 @@ EXAMPLE = Path(__file__).resolve().parent
 ROOT = EXAMPLE.parents[1]
 FIRST = "Does the bundled synthetic load-test fixture meet its recorded sample criteria?"
 LATER = "Is the bundled synthetic fixture still within those recorded sample criteria?"
+PARAPHRASE = "Are the recorded sample p95 and error percentage within the bundled synthetic fixture's stated limits?"
 
 
 def main() -> None:
@@ -31,6 +32,10 @@ def main() -> None:
         if later.get("status") != "supported":
             raise RuntimeError(f"Later checked sample conclusion failed: {later}")
         host.finish(later["assessment_id"])
+        paraphrase = host.assess(PARAPHRASE)
+        if paraphrase.get("status") != "supported":
+            raise RuntimeError(f"Reviewed paraphrase did not meet the checked sample contract: {paraphrase}")
+        host.finish(paraphrase["assessment_id"])
         unknown = host.assess("Is orders-api reliable in production?")
         if unknown.get("status") != "unresolved" or unknown.get("tool_execution") is not False:
             raise RuntimeError(f"Unreviewed question was not rejected: {unknown}")
@@ -38,8 +43,10 @@ def main() -> None:
             "dataset": "synthetic",
             "question_1_status": first["status"],
             "question_2_status": later["status"],
+            "reviewed_paraphrase_status": paraphrase["status"],
             "same_reviewed_source": first["source_digest"] == later["source_digest"],
-            "fresh_collection_for_later_wording": first["collection_id"] != later["collection_id"],
+            "fresh_collection_for_later_wording": len({first["collection_id"], later["collection_id"],
+                                                        paraphrase["collection_id"]}) == 3,
             "later_adequacy": later["adequacy"]["status"],
             "unreviewed_question_status": unknown["status"],
             "unreviewed_question_ran_tools": unknown["tool_execution"],

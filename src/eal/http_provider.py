@@ -104,6 +104,80 @@ def native_operation_schema(entry: dict) -> dict:
     return schema
 
 
+def strict_operation_schema(entry: dict, *, native: bool) -> dict:
+    """Translate a closed host operation to the provider's strict schema subset.
+
+    The advertised host schema remains authoritative. Provider constraints
+    improve generation but cannot replace host validation of the returned
+    request. Optional properties become required nullable properties; their
+    null transport value is removed again before validating the host request.
+    """
+    schema = native_operation_schema(entry) if native else strict_json(
+        json.dumps(entry["input_schema"], allow_nan=False))
+
+    def convert(node: dict, *, root: bool = False) -> dict:
+        if not isinstance(node, dict):
+            raise ValueError("Strict operation schema requires object nodes")
+        if "anyOf" in node:
+            if root or set(node) != {"anyOf"}:
+                raise ValueError("Strict operation alternatives require a nested anyOf")
+            return {"anyOf": [convert(choice) for choice in node["anyOf"]]}
+        result = {key: node[key] for key in ("type", "const", "enum", "description") if key in node}
+        kind = node.get("type")
+        if kind == "object":
+            if node.get("additionalProperties") is not False:
+                raise ValueError("Strict operation objects must have closed properties")
+            properties = node.get("properties", {})
+            required = set(node.get("required", []))
+            if not isinstance(properties, dict) or not required <= properties.keys():
+                raise ValueError("Strict operation required fields must be declared")
+            result["properties"] = {}
+            for key, child in properties.items():
+                converted = convert(child)
+                if key not in required:
+                    child_type = child.get("type")
+                    if child_type == "null" or (isinstance(child_type, list) and "null" in child_type):
+                        raise ValueError("Optional nullable properties have ambiguous strict transport meaning")
+                    converted = {"anyOf": [converted, {"type": "null"}]}
+                result["properties"][key] = converted
+            result["required"] = list(properties)
+            result["additionalProperties"] = False
+        elif kind == "array":
+            if "items" not in node:
+                raise ValueError("Strict operation arrays require typed items")
+            result["items"] = convert(node["items"])
+        elif isinstance(kind, list):
+            if not kind or any(item not in {"string", "number", "integer", "boolean", "null"} for item in kind):
+                raise ValueError("Strict operation has an unsupported union")
+        elif kind not in {"string", "number", "integer", "boolean", "null", None}:
+            raise ValueError("Strict operation has an unsupported type")
+        if kind is None and not ("const" in node or "enum" in node):
+            raise ValueError("Strict operation needs a type, const or enum")
+        # Bounds, uniqueness and formats remain enforced by the host's full
+        # JSON Schema. The provider accepts only its documented schema subset.
+        return result
+
+    return convert(schema, root=True)
+
+
+def restore_optional_fields(value: Any, schema: dict) -> Any:
+    """Recover omitted fields from strict transport, including nested arrays."""
+    if isinstance(value, list) and schema.get("type") == "array":
+        return [restore_optional_fields(item, schema["items"]) for item in value]
+    if not isinstance(value, dict) or schema.get("type") != "object":
+        return value
+    properties = schema.get("properties", {})
+    required = set(schema.get("required", []))
+    result = {}
+    for key, child in value.items():
+        if key not in properties:
+            raise ValueError("Provider returned an undeclared operation field")
+        if key not in required and child is None:
+            continue
+        result[key] = restore_optional_fields(child, properties[key])
+    return result
+
+
 async def post_json(endpoint: str, headers: dict[str, str], payload: dict[str, Any], *,
                     timeout_seconds: float, max_response_bytes: int,
                     transport: httpx.AsyncBaseTransport | None,
