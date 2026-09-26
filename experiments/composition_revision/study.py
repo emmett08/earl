@@ -50,15 +50,15 @@ def load_cases() -> dict[str, Any]:
 
 def _record(name: str, value: dict[str, Any], *, source_digest: str,
             kind: str, requested_input: Any, context: dict[str, Any],
-            observed_at: str = BASE_TIME) -> dict[str, Any]:
-    acquisition = {"tool": baseline.TOOL, "tool_version": baseline.TOOL_VERSION,
+            observed_at: str = BASE_TIME, specification: Any = baseline) -> dict[str, Any]:
+    acquisition = {"tool": specification.TOOL, "tool_version": specification.TOOL_VERSION,
                    "input": requested_input, "context": context}
-    request = {"evidence_id": name, "environment": baseline.ENVIRONMENT, **acquisition}
+    request = {"evidence_id": name, "environment": specification.ENVIRONMENT, **acquisition}
     return {"evidence_id": name, "source_digest": source_digest,
-            "tool": baseline.TOOL, "tool_version": baseline.TOOL_VERSION,
+            "tool": specification.TOOL, "tool_version": specification.TOOL_VERSION,
             "tool_binding_digest": "0" * 64, "evidence_kind": kind,
-            "environment": baseline.ENVIRONMENT,
-            "environment_fingerprint": environment_fingerprint(baseline.ENVIRONMENT, context),
+            "environment": specification.ENVIRONMENT,
+            "environment_fingerprint": environment_fingerprint(specification.ENVIRONMENT, context),
             "input_digest": canonical_digest(requested_input), "input": requested_input,
             "context": context, "acquisition_request": acquisition,
             "acquisition_request_digest": canonical_digest(acquisition),
@@ -67,7 +67,8 @@ def _record(name: str, value: dict[str, Any], *, source_digest: str,
             "status": "ok", "value": value, "data_digest": canonical_digest(value)}
 
 
-def run_arm(case: dict[str, Any], arm: Arm) -> dict[str, Any]:
+def run_arm(case: dict[str, Any], arm: Arm, *, source_path: Path = SOURCE_PATH,
+            typed_module: Any = baseline) -> dict[str, Any]:
     """Time one assessment; parsing and fixture-envelope construction are excluded.
 
     Arms read equivalent measurement values, original observation time and
@@ -81,17 +82,18 @@ def run_arm(case: dict[str, Any], arm: Arm) -> dict[str, Any]:
     observed_at = case.get("observed_at", BASE_TIME)
     observations = case["observations"]
     if arm == "eal":
-        program = parse(SOURCE_PATH.read_text())
+        program = parse(source_path.read_text())
         source_digest = program.source_digest
         specs = {name: (item.kind, item.input) for name, item in program.evidence.items()}
     else:
-        source_digest = baseline.CONFIG_DIGEST
-        specs = {name: (item.kind, item.request) for name, item in baseline.EVIDENCE.items()}
+        source_digest = typed_module.CONFIG_DIGEST
+        specs = {name: (item.kind, item.request) for name, item in typed_module.EVIDENCE.items()}
     if set(observations) - set(specs):
         raise ValueError("Unknown evidence ID in synthetic reading set")
     records = {name: _record(name, value, source_digest=source_digest,
                              kind=specs[name][0], requested_input=specs[name][1], context=context,
-                             observed_at=observed_at)
+                             observed_at=observed_at,
+                             specification=baseline if arm == "eal" else typed_module)
                for name, value in observations.items()}
     started = perf_counter()
     if arm == "eal":
@@ -103,7 +105,7 @@ def run_arm(case: dict[str, Any], arm: Arm) -> dict[str, Any]:
         evidence = {name: item["status"] for name, item in result["evidence"].items()}
         objections = {name: item["status"] for name, item in result["objections"].items()}
     else:
-        result = baseline.evaluate(records, now=assessed_at, context=context)
+        result = typed_module.evaluate(records, now=assessed_at, context=context)
         claims, arguments, evidence, objections = (result[key] for key in
                                                     ("claims", "arguments", "evidence", "objections"))
     seconds = perf_counter() - started
