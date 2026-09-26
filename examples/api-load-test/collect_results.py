@@ -21,10 +21,10 @@ def summarise(request: dict, raw: bytes) -> dict:
     """Bind report bytes and identity before computing the sample statistics."""
     if not isinstance(request, dict) or not isinstance(request.get("input"), dict):
         raise ValueError("Expected an EAL collection request with input")
-    if (request.get("tool"), request.get("tool_version"), request.get("mode")) != (
-        "load_test_report", "1", "deterministic"
-    ):
-        raise ValueError("Expected load_test_report/1 in deterministic mode")
+    if (request.get("tool"), request.get("tool_version")) != ("load_test_report", "1"):
+        raise ValueError("Expected load_test_report/1")
+    if set(request) != {"evidence_id", "environment", "tool", "tool_version", "input", "context"}:
+        raise ValueError("Unexpected collection request fields")
     expected = request["input"]
     if set(expected) != {*IDENTITY, "report_sha256"}:
         raise ValueError("Input must identify the report and its SHA-256 digest")
@@ -79,7 +79,7 @@ def summarise(request: dict, raw: bytes) -> dict:
         "value": values,
         "observed_at": report["observed_at"],
         "context": context,
-        "request": {key: request[key] for key in ("tool", "tool_version", "mode", "input", "context")},
+        "request": {key: request[key] for key in ("tool", "tool_version", "input", "context")},
         "details": {"report_sha256": expected["report_sha256"], "dataset": report["dataset"],
                     "percentile": "nearest-rank over all recorded requests"},
     }

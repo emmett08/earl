@@ -1,22 +1,22 @@
 # EAL/2 integration contract
 
-EAL/2 is an engineering reasoning language with explicit claims, evidence, reasoning methods, assumptions, subarguments and objections. It is the only supported source language. Backwards compatibility is never a project requirement. Its finite authored support/attack semantics are defined in [argument-model.md](docs/argument-model.md) and [grounded-reasoning.md](docs/grounded-reasoning.md); they do not implement the complete ASPIC+ framework.
+EAL/2 is an engineering reasoning language with explicit claims, evidence, reasoning methods, assumptions, subarguments and objections. It is the supported source language. Its finite authored support/attack semantics are defined in [argument-model.md](docs/argument-model.md) and [grounded-reasoning.md](docs/grounded-reasoning.md); they do not implement the complete ASPIC+ framework.
 
 ## Source and Python API
 
 - `eal.parser.parse(source: str) -> Program` raises `EALSyntaxError` on lexical or syntactic errors. Source starts with `language "EAL/2";`.
 - `eal.semantics.validate(program, *, registry=None) -> list[Diagnostic]` performs static checks. Any diagnostic prevents assessment. `Diagnostic` has `code`, `message`, optional `declaration`, optional `span`, and optional `expected`/`actual` descriptions. `SourceSpan` positions are one-based, with an exclusive end: `line`, `column`, `end_line`, `end_column`.
-- `eal.evaluator.evaluate(program, records, *, now, context, registry=None) -> dict` takes explicit observations, context and a timezone-aware ISO-8601 time or `datetime`. Assessment performs no implicit collection and supplies no implicit clock. The default registry provides built-in methods.
+- `eal.evaluator.evaluate(program, records, *, now, context, registry=None, binding_digests=None) -> dict` takes explicit observations, context and a timezone-aware ISO-8601 time or `datetime`. Assessment performs no implicit collection and supplies no implicit clock. The default registry provides built-in methods. Passing current evidence-ID-to-binding digests checks the selected operator configuration; without them, pure evaluation checks only the supplied record's internal identity fields. `ReasoningService.reason` supplies the current mapping.
 - `canonical_digest(value)` is SHA-256 of UTF-8 canonical JSON: sorted keys, compact separators, no NaN. `environment_fingerprint(name, context)` hashes `{"environment": name, "context": context}`. `Program.source_digest` hashes the exact UTF-8 source bytes.
 
-`Program` retains declaration maps for environments, tools, evidence, assumptions, reasoning, claims, arguments, objections, patterns and applications. `locations` retains source spans and `lowering_diagnostics` retains pattern-expansion errors. A `Reasoning` has one required `.method: str`. Tool `.mode` remains `deterministic` or `nondeterministic` and describes collection variability.
+`Program` retains declaration maps for environments, tools, evidence, assumptions, reasoning, claims, arguments, objections, patterns and applications. `locations` retains source spans and `lowering_diagnostics` retains pattern-expansion errors. A `Reasoning` has one required `.method: str`. A tool declaration has a name and required `.version: str`; EAL/2 source has no collection-variability mode.
 
 ## Complete source example
 
 ```eal
 language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool test_runner { version "1.0"; mode deterministic; }
+tool test_runner { version "1.0"; }
 evidence test_result {
   tool test_runner; kind test; environment lab; max_age 3600;
   input {"suite": "smoke"};
@@ -49,7 +49,7 @@ All top-level declarations share a namespace; pattern parameters have closed lex
 
 ## Typed methods and propositions
 
-A reasoning declaration has the form `reasoning NAME { method "IDENTIFIER/VERSION"; rationale STRING; ... }`, optionally followed by `backing` evidence and `require` output predicates. Every method, including `structured/1`, is selected by its exact installed versioned identifier. Reasoning `mode` and unversioned aliases are rejected.
+A reasoning declaration has the form `reasoning NAME { method "IDENTIFIER/VERSION"; rationale STRING; ... }`, optionally followed by `backing` evidence and `require` output predicates. Every method, including `structured/1`, is selected by its exact installed versioned identifier.
 
 Built-in contracts are `structured/1`, `deductive/1`, `inductive/1`, `abductive/1`, `causal/1`, `counterfactual/1`, `analogical/1` and `temporal/1`. The corresponding computational evidence kinds are `logical_case`, `sample`, `hypotheses`, `experiment`, `causal_model`, `analogy` and `trace`; structured support has no designated kind. Each computation receives the union of direct evidence, backing and assumption-validation observations, deduplicated by evidence identity. Exactly one designated computational input is required. Premise claims remain explicit graph dependencies, not implicit mathematical inputs.
 
@@ -68,12 +68,17 @@ Predicates compare scalar fields with `== != < <= > >=`. Ordered comparisons req
   "tool": "test_runner",
   "evidence_kind": "test",
   "tool_version": "1.0",
-  "mode": "deterministic",
+  "tool_binding_digest": "<keyed selected TOML binding identity>",
   "environment": "lab",
   "environment_fingerprint": "<environment and context digest>",
   "collected_at": "2026-09-23T12:00:00Z",
   "run_id": "<nonempty invocation identifier>",
+  "input": {"suite": "smoke"},
   "input_digest": "<canonical input digest>",
+  "context": {"site": "bench"},
+  "acquisition_request": {"tool": "test_runner", "tool_version": "1.0", "input": {"suite": "smoke"}, "context": {"site": "bench"}},
+  "acquisition_request_digest": "<canonical acquisition request digest>",
+  "request_digest": "<canonical full evidence request digest>",
   "status": "ok",
   "value": {"passed": true},
   "data_digest": "<canonical value digest>"
@@ -82,7 +87,7 @@ Predicates compare scalar fields with `== != < <= > >=`. Ordered comparisons req
 
 Records are observations, not conclusions. Errors use `status: "error"`. Missing, stale, future-dated, malformed, wrong-source, wrong-tool, wrong-input, wrong-environment or digest-mismatched records provide no support. Digests bind supplied records to requests but do not authenticate an untrusted producer. Imported observations retain their original `collected_at`; `ingested_at` records storage time.
 
-File-import envelopes require `observed_at`, `context`, `value` and an acquisition `request` containing exactly `tool`, `tool_version`, `mode`, `input` and `context`. That request must match the current acquisition; it is distinct from the source and evidence identifiers assigned by collection. Missing or mismatched acquisition metadata produces a stored error. The current envelope has no compatibility fallback. See [MCP and tools](docs/mcp-and-tools.md).
+File-import envelopes require `observed_at`, `context`, `value` and an acquisition `request` containing exactly `tool`, `tool_version`, `input` and `context`. That request must match the current acquisition; it is distinct from the source and evidence identifiers assigned by collection. The trusted collector adds `tool_binding_digest`, a keyed identity of the selected TOML configuration, to its record. Pure evaluation checks that identity field; the host additionally compares it with its current binding before reasoning over a collection. The private store-local `<database>.binding-key` file must remain private and accompany the database when moving it for continued assessment; a missing key gives a new identity and invalidates older observations. Missing or mismatched acquisition metadata produces a stored error. See [MCP and tools](docs/mcp-and-tools.md).
 
 Evidence is age-eligible at exactly `max_age`, but not when older. Assumption intervals are half-open `[valid_from, valid_until)` and are checked at assessment time. Every argument dependency uses its conclusion's named environment. Freshness, fingerprints and asserted intervals do not establish continuous physical validity.
 
@@ -96,7 +101,7 @@ Claims and arguments report `supported`, `contested`, `unsupported` or `out_of_s
 
 ## Formatting, discovery and host integration
 
-`format_source(source)` parses, validates and emits canonical source; `format_program(program)` emits checked IR. `semantic_ir(program)` excludes source digests and locations for round-trip comparisons. Formatting preserves declarations and applications. Exact source identity remains distinct from meaning: changed source bytes require recollecting observations.
+`format_source(source)` parses, validates and emits canonical source; `format_program(program)` emits canonical source from checked IR. `semantic_ir(program)` excludes source digests and locations for round-trip comparisons. Formatting preserves declarations and applications. Exact source identity remains distinct from meaning: changed source bytes require recollecting observations.
 
 `ReasoningService.describe()` returns language syntax, executable examples and method/binding contracts. `format(source)` returns canonical `source`, `source_digest` and `observation_recollection_required`. MCP exposes `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and `eal_grounded` through the shared service.
 
@@ -106,4 +111,18 @@ An optional `ArtifactRegistry` pins exact source bytes, installed method fingerp
 
 Stateful `run_agent` retains active source, context, time and current collection/assessment. Validation adopts a revised draft only when valid; revision invalidates earlier observations and results. `assess` performs four separately recorded and budgeted calls: validation, fresh collection, reasoning and explanation. `host_mode="stateless"` uses explicit full-source/full-identifier requests for controlled comparisons. `interaction_mode="text"` and `"native"` share operation semantics; native transport requires a configured capable provider. One-shot `eal-host` remains stateless.
 
-A finished host interaction is separate from a correct engineering answer. See [MCP and tools](docs/mcp-and-tools.md) and the [API load-test example](examples/api-load-test/README.md). The [23 September 2026 regression report](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-model-results.md) measured EAL/2 package 2.1.0 with selected models and hosts on previously exposed tasks. Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured.
+A finished host interaction is separate from a correct engineering answer. See [MCP and tools](docs/mcp-and-tools.md) and the [API load-test example](examples/api-load-test/README.md). Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured.
+
+## Executable argument host
+
+The source language is `EAL/2`; authored tools declare an interface version, while acquisition records identify the selected host binding. Formal reasoning-method inputs use `EAL/typed-input/1`. The argument host separately uses the `eal2-argument-schemes/1` catalogue, `eal-adequacy/1` contract, `eal-adequacy-result/1` and `eal2-argument-answer/1` packet. The host does not reinterpret a pure `evaluate` result or its `supported` label as evidence sufficiency.
+
+`ArgumentHost.load(service, schemes_toml, *, principal, session_id, authorised_schemes=None, recogniser=None, correspondence_validator=None)` checks each workspace-relative source's exact SHA-256 and the installed method-registry fingerprint. A scheme fixes an EAL claim, `claim`/`decision`/`action` kind, reviewed prose forms, optional follow-up forms, typed slot-to-context bindings and adequacy clauses. Slot substitution changes complete EAL string tokens only; it must leave tool and method selectors unchanged, and the instantiated claim environment must constrain each slot. All tool executables remain in the separate trusted registry.
+
+`resolve(prose, context=None, proposal=None, *, routing_candidate=None)` returns `resolved`, `unresolved` or `ambiguous` without collection. `describe()` exposes each granted scheme's argument form, including conclusion, premise IDs, inference methods, evidence roles/tools, assumptions, objections and adequacy clauses. The built-in recogniser checks reviewed full-string forms; an installed `ArgumentRecogniser` can propose roles, typed bindings and spans. A candidate proposal alone never establishes applicability: an independently installed `CorrespondenceValidator` must approve its mapping; otherwise it stays unresolved. An unmatched later request clears the active interpretation. Follow-up forms can inherit a scheme and validated context within the same principal/session, but never an earlier assessment's support. The model-facing recipient MCP route binds the original prose at launch and exposes only `eal_resolve_bound_prose()`, `eal_assess_bound_prose()` and `eal_finish_prose(assessment_id)` under explicit scheme grants; the operator route exposes `eal_resolve_prose`, `eal_assess_prose` and `eal_finish_prose`.
+
+`assess` checks the scheme and adequacy contract before collection, collects the target claim's transitive evidence and objection closure, reasons over the stored collection, assesses its adequacy, and returns the immutable checked packet with source, context, prose, proposal, template, method-registry and collection identities. `raw_status` is the EAL claim result. The packet can say `supported` only when the required collection is complete and independent adequacy is `adequate`; otherwise the answer status is `unresolved`. `finish(assessment_id)` requires issuance to the same principal/session and current request, checks exact source, current tool-binding configuration and contract identity, and re-evaluates observation/assumption validity at the current time without converting the original assessment into a new one. A stale or superseded packet is refused; reassessment recollects.
+
+`AdequacyContract` fixes the exact instantiated source digest, claim ID, written statement, environment, admitted method identifiers, `reviewed_source` correspondence assertion and finite `EvidenceObligation` clauses. Each clause names a role (`identity`, `scope`, `coverage`, `sampling`, `threshold`, `inference`, `assumption` or `objection`), an EAL observation/result/context target, a dotted scalar field and comparison, plus the reviewer rationale. `AdequacyEvaluator.assess` verifies collection and assessment identities, observed fields, the supported derivation, a main threshold or inference clause, and coverage of used evidence and material assumptions/objections. Clauses concerning assumptions or objections use `about = "assumption:<id>"` or `"objection:<id>"` and must connect to their own sources. Formal deductive premises require explicit `premise_bindings` from each formula to the supported named EAL claim. Results are `adequate`, `insufficient` or `unresolved` with per-obligation findings. Absence of a contract is unresolved. The reviewed source-correspondence assertion and clause selection are human responsibilities; this contract does not prove arbitrary natural-language equivalence, physical authenticity or completeness of all possible objections.
+
+`ActionGate` confines an action to one existing regular file identified by `ActionScope`. `GuardedFileChange` binds the original prose, exact proposed bytes and expected file hash. `preflight` stages the proposal, runs a host-pinned `ChangeValidator`, obtains a separately checked action-kind argument packet with adequate evidence and matching proposal/source/context, and returns `PreparedAction`. `commit` rechecks the baseline, scope, validator result, context and issued assessment before atomic replacement. `StagedCommandValidator(checks, *, copy_paths=(), max_input_bytes=..., pinned_host_files=...)` runs versioned `StagedCheckCommand` argument vectors on a temporary staged copy and selected project inputs. Every absolute argv file, including interpreters and script inputs, must appear in `pinned_host_files` as `(absolute_path, sha256_of_current_bytes)`; their content is rechecked on each validation, and the settings are immutable and part of `contract_digest`. Those commands run with host privileges, not in an OS sandbox. The gate cannot control other writers, certify unexamined design constraints, or make several file replacements atomic. See [executable argument host](docs/executable-argument-host.md).

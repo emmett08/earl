@@ -108,7 +108,7 @@ class TrialTools:
 
     def _request(self, report_id):
         return {"evidence_id": "load_test", "environment": "test_run", "tool": "api_load_test",
-                "tool_version": "2", "mode": "deterministic",
+                "tool_version": "2",
                 "input": {**self.case["target"]["input"], "report_id": report_id},
                 "context": self.case["target"]["context"]}
 
@@ -138,7 +138,7 @@ class TrialTools:
         (directory / "source.eal").write_text(source)
         registry = directory / "tools.toml"
         registry.write_text('[tools.api_load_test]\nkind="command"\nversion="2"\n'
-                            'mode="deterministic"\ntimeout_seconds=60\nmax_output_bytes=32768\n'
+                            'timeout_seconds=60\nmax_output_bytes=32768\n'
                             f'argv={json.dumps(argv)}\n')
         settings = StdioServerParameters(command=sys.executable,
             args=["-m", "eal.server", "--workspace", str(directory), "--registry", str(registry)],

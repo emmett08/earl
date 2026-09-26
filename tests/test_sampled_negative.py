@@ -23,7 +23,7 @@ CALIBRATION = {'detection_limit': .8, 'sensitivity_lower_bound': .98}
 def source(query, result='"finding" == true'):
     return f'''language "EAL/2";
 environment lab {{ require "site" == "bench"; }}
-tool sampler {{ version "1"; mode deterministic; }}
+tool sampler {{ version "1"; }}
 evidence sampled {{ tool sampler; kind sampled_negative_trace; environment lab;
  max_age 60; require "schema" == "EAL/typed-input/1"; }}
 reasoning sampled_method {{ method "engineering/sampled-negative/1";

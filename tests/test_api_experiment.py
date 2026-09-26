@@ -10,9 +10,10 @@ import pytest
 from eal.responses_provider import ResponsesProvider
 from experiments.api_load_test.analysis import summarise
 from experiments.api_load_test.cases import build_cases, case_specs
-from experiments.api_load_test.materials import ARMS
+from experiments.api_load_test.collector import collect
+from experiments.api_load_test.materials import ARMS, source_for
 from experiments.api_load_test.oracle import reference
-from experiments.api_load_test.routes import child_environment
+from experiments.api_load_test.routes import TrialTools, child_environment
 from experiments.api_load_test.runner import Budget, HERE, event, run, schedule, trial
 
 PLAN = json.loads((HERE / "plan.json").read_text())
@@ -54,6 +55,18 @@ def test_credentials_do_not_enter_collector_or_mcp_environments(monkeypatch):
     monkeypatch.setenv("OPENAI_API_TOKEN", "unit-test-secret")
     monkeypatch.setenv("GITHUB_TOKEN", "unit-test-github-secret")
     assert "TOKEN" not in json.dumps(child_environment())
+
+
+def test_experiment_collector_requires_the_mode_free_acquisition_request(tmp_path, measured_case):
+    source = source_for(measured_case["target"]["input"], measured_case["target"]["context"])
+    tools = TrialTools(tmp_path / "trial", source, {"case": measured_case})
+    report_id = next(iter(measured_case["reports"]))
+    request = tools._request(report_id)
+    assert set(request) == {"evidence_id", "environment", "tool", "tool_version", "input", "context"}
+    output = tmp_path / "report.json"
+    with pytest.raises(ValueError, match="Collection request differs"):
+        collect({**request, "mode": "deterministic"}, {"case": measured_case}, output)
+    assert not output.exists()
 
 
 @pytest.mark.parametrize("arm", ["eal_mcp", "json_prompt", "plain_brief", "plain_validator"])

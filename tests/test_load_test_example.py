@@ -47,7 +47,7 @@ def assess(tmp_path, report, *, now=None):
     registry = tmp_path / "tools.toml"
     argv = [sys.executable, str(EXAMPLE / "collect_results.py"), "--report", str(report_path)]
     registry.write_text(
-        '[tools.load_test_report]\nkind="command"\nversion="1"\nmode="deterministic"\n'
+        '[tools.load_test_report]\nkind="command"\nversion="1"\n'
         f'argv={json.dumps(argv)}\n'
         f'env={{PYTHONPATH={json.dumps(str(ROOT / "src"))}}}\n'
     )
@@ -65,6 +65,13 @@ def test_report_statistics_and_original_observation_time():
     }
     assert result["observed_at"] == REPORT["observed_at"]
     assert result["details"]["dataset"] == "synthetic"
+    assert set(result["request"]) == {"tool", "tool_version", "input", "context"}
+
+
+def test_collector_rejects_obsolete_source_mode_in_request():
+    legacy = {**request(), "mode": "deterministic"}
+    with pytest.raises(ValueError, match="Unexpected collection request fields"):
+        collector.summarise(legacy, RAW)
 
 
 def test_cli_and_actual_mcp_server_agree():

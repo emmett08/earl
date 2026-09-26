@@ -6,7 +6,7 @@ from . import __version__
 
 EXAMPLE = '''language "EAL/2";
 environment bench { require "site" == "bench"; }
-tool collector { version "1"; mode deterministic; }
+tool collector { version "1"; }
 evidence observation {
   tool collector; kind test; environment bench; max_age 3600;
   require "passed" == true;
@@ -27,7 +27,6 @@ def describe_language(*, registry=None) -> dict:
     registry = default_registry() if registry is None else registry
 
     return {
-        "language_evolution": "EAL/2 is the only supported source language. Earlier language syntax and semantics are rejected; no compatibility adapters are provided.",
         "implementation_version": __version__,
         "languages": ["EAL/2"],
         "method_registry_fingerprint": registry.fingerprint,
@@ -35,7 +34,7 @@ def describe_language(*, registry=None) -> dict:
             "notation": "Capitalised placeholders denote strings, identifiers, numbers or JSON. Square brackets denote optional clauses; + denotes one or more repetitions. Clause order is fixed. Names are unique across declarations; forward references are allowed. Strings use JSON quoting. Comments use // or /* */.",
             "program": 'language "EAL/2"; DECLARATIONS',
             "environment": 'environment NAME { require "CONTEXT.FIELD" OP SCALAR; + }',
-            "tool": 'tool NAME { version "VERSION"; mode deterministic|nondeterministic; }',
+            "tool": 'tool NAME { version "VERSION"; }',
             "evidence": 'evidence NAME { tool TOOL; kind KIND; environment ENV; max_age SECONDS; [input JSON;] require "VALUE.FIELD" OP SCALAR; + }',
             "assumption": 'assumption NAME { statement "TEXT"; environment ENV; validate EVIDENCE; [valid_from "TIME";] [valid_until "TIME";] }',
             "reasoning": 'reasoning NAME { method "VERSIONED_METHOD_ID"; rationale "TEXT"; [backing EVIDENCE_LIST;] [require "OUTPUT.FIELD" OP SCALAR; ...] }',
@@ -59,7 +58,7 @@ def describe_language(*, registry=None) -> dict:
             "temporal/1": {"kind": "trace", "input": {"start": "NUMBER", "end": "NUMBER", "max_gap": "NUMBER", "events": [{"time": "NUMBER", "value": "NUMBER"}], "property": {"operator": "lt|le|eq|ne|ge|gt", "value": "NUMBER"}, "semantics": "sampled"}, "outputs": ["holds"], "meaning": "Ordered, bounded finite samples with endpoint/gap coverage; no continuous-time conclusion"},
         },
         "typed_bindings": describe_bindings(registry=registry),
-        "composition": "EAL/2 computes the least-information fixed point of explicit conjunctive support, alternative derivations and attacks. Objections can depend on claim subarguments; targeting an objection expresses defence. Attack cycles may remain undecided. Rejected acceptance does not assert falsity.",
+        "composition": "EAL/2 computes the least-information fixed point of authored conjunctive support, alternative derivations and objection attacks. Objections can depend on claim subarguments; targeting an objection expresses defence. Attack cycles may remain undecided. This profile does not construct ASPIC+ rule arguments, contrariness or preference-sensitive defeat. Rejected acceptance does not assert falsity.",
         "statuses": {
             "valid": "Static language well-formedness only",
             "supported": "At least one usable, uncontested derivation under the declared model",
@@ -71,7 +70,7 @@ def describe_language(*, registry=None) -> dict:
         "source_identity": "Collections bind exact UTF-8 source bytes. Revision or formatting requires recollection. Keep source, context and explicit assessment time tied to the intended task.",
         "observation_import": {
             "required_envelope_fields": ["value", "observed_at", "context", "request"],
-            "acquisition_request_fields": ["tool", "tool_version", "mode", "input", "context"],
+            "acquisition_request_fields": ["tool", "tool_version", "input", "context"],
             "correspondence": "File observations must match the requested acquisition. Source and local evidence identifiers are assigned separately by collection; an observation can be reused only when its acquisition still matches.",
             "interpretation": "Matching metadata checks correspondence; it does not authenticate a measurement. Importing again preserves original observation time.",
         },

@@ -29,11 +29,6 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by EALParser#executionMode.
-    def visitExecutionMode(self, ctx:EALParser.ExecutionModeContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by EALParser#evidenceDecl.
     def visitEvidenceDecl(self, ctx:EALParser.EvidenceDeclContext):
         return self.visitChildren(ctx)

@@ -1,6 +1,6 @@
-# Sources and retained references
+# Sources for the current language and runtime
 
-The established language and reasoning references below were checked for the earlier design on 23 September 2026. Selected publisher and author records for current model-assisted research were checked on 25 September 2026; earlier development artefacts remain accessible through the pre-reset Git commit but have not been freshly reviewed as a body of evidence. The implementation and [argument model](argument-model.md) define executable EAL/2 semantics. A citation to another calculus, model or benchmark does not establish that EAL implements it or has its measured performance.
+These primary sources inform the language, inference methods and host interfaces. The implementation and [argument model](argument-model.md) define executable EAL/2 semantics. A citation to another calculus or package does not establish that EAL implements it or has its measured performance.
 
 ## Contents
 
@@ -10,9 +10,8 @@ The established language and reasoning references below were checked for the ear
 - [Language implementation](#language-implementation)
 - [MCP integration](#mcp-integration)
 - [Project-specific decisions](#project-specific-decisions)
-- [Model-assisted reasoning and study design](#model-assisted-reasoning-and-study-design)
+- [External argumentation and enthymeme models](#external-argumentation-and-enthymeme-models)
 - [Model host and provider interfaces](#model-host-and-provider-interfaces)
-- [Retired repository artefacts](#retired-repository-artefacts)
 
 ## Argument and reasoning models
 
@@ -26,7 +25,7 @@ Sections 3.2–3.4 define structured arguments, attacks and defeat. Section 4 ex
 
 **Sanjay Modgil and Henry Prakken, “A general account of argumentation with preferences”, _Artificial Intelligence_ 195, 361–397, 2013.** [DOI](https://doi.org/10.1016/j.artint.2012.10.008), [author-hosted corrected text](https://webspace.science.uu.nl/~prakk101/pubs/AIJfinalErratum.pdf).
 
-This gives the more detailed formal account behind the structured-reasoning extension discussed in the argument model. Its consistency and closure results have assumptions; the presence of argument-shaped data alone does not establish those properties. The corrected author-hosted version was inspected.
+This gives a formal account of preferences and defeat. Its consistency and closure results have assumptions; the presence of argument-shaped data alone does not establish those properties. EAL's authored objections do not implement this preference calculus.
 
 **Phan Minh Dung, “On the acceptability of arguments and its fundamental role in nonmonotonic reasoning, logic programming and n-person games”, _Artificial Intelligence_ 77(2), 321–357, 1995.** [DOI](https://doi.org/10.1016/0004-3702(94)00041-X), [original paper hosted by Texas A&M](https://cse-robotics.engr.tamu.edu/dshell/cs631/papers/dung95acceptability.pdf).
 
@@ -48,7 +47,7 @@ Sections 3.2.1 and 3.4 distinguish interventions and counterfactual evaluation w
 
 **Dedre Gentner, “Structure-mapping: A theoretical framework for analogy”, _Cognitive Science_ 7(2), 155–170, 1983.** [DOI](https://doi.org/10.1207/s15516709cog0702_3), [author-hosted full text](https://groups.psych.northwestern.edu/gentner/papers/Gentner83.2b.pdf).
 
-Gentner treats analogy in terms of correspondences between represented domains, with an emphasis on relations. EAL's initial feature-comparison method checks declared correspondences and reports mismatches. It does not implement Gentner's full relational structure-mapping theory or establish the truth of an unmeasured target property.
+Gentner treats analogy in terms of correspondences between represented domains, with an emphasis on relations. EAL's bounded feature-comparison method checks declared correspondences and reports mismatches. It does not implement Gentner's full relational structure-mapping theory or establish the truth of an unmeasured target property.
 
 **Andreas Bauer, Martin Leucker and Christian Schallhart, “Runtime Verification for LTL and TLTL”, _ACM Transactions on Software Engineering and Methodology_ 20(4), article 14, 2011.** [DOI](https://doi.org/10.1145/2000799.2000800), [author institution's publication page](https://www.isp.uni-luebeck.de/research/publications/runtime-verification-ltl-and-tltl).
 
@@ -74,64 +73,24 @@ Generated parser code and its runtime must use compatible, explicitly selected v
 
 ## MCP integration
 
-**Model Context Protocol maintainers, architecture and protocol specification.** [Architecture](https://modelcontextprotocol.io/docs/learn/architecture), [dated tools specification](https://modelcontextprotocol.io/specification/2025-11-25/server/tools), [2026-07-28 release announcement](https://blog.modelcontextprotocol.io/posts/2026-07-28/).
+**Model Context Protocol maintainers, architecture and protocol specification.** [Architecture](https://modelcontextprotocol.io/docs/learn/architecture), [dated tools specification](https://modelcontextprotocol.io/specification/2025-11-25/server/tools).
 
 MCP connects application hosts and clients to server capabilities. A text-only model can produce a structured request for a host adapter to validate and dispatch. Protocol integration alone does not give that model native tool invocation. This implementation uses the official Python SDK 1.30.0 and selects the 2025-11-25 protocol profile; it does not claim support for the later 2026 protocol. The runtime tests exercise negotiation and tool invocation for the selected profile.
 
 ## Project-specific decisions
 
-Evidence freshness, environment identity, assumption intervals, deterministic versus nondeterministic tool declarations, and the exact result vocabulary are EAL design decisions. Their suitability depends on the intended engineering question. They should be assessed through executable examples and counterexamples, rather than attributed to Toulmin, ASPIC+, Dung or ANTLR.
+Evidence freshness, environment identity, assumption intervals, binding digests, tool declarations and result vocabulary are EAL design decisions. Their suitability depends on the intended engineering question and should be tested through executable examples and counterexamples rather than attributed to Toulmin, ASPIC+, Dung or ANTLR.
 
-## Model-assisted reasoning and study design
+## External argumentation and enthymeme models
 
-The studies below motivate testable comparisons: interpreter delegation, solver feedback, formal argumentation, completeness-sensitive negative answers, adaptive evaluation, routing and representation effects. Each result belongs to its own task, model and evaluation setting. None supplies an estimate of EAL/2's advantage over prose or meaning-equivalent JSON. Historical papers and prior versions are retained as source links; the selected publisher/author records reviewed on 25 September 2026 do not constitute full-paper replication.
+**Jean-Guy Mailly, [`pygarg` 1.0.2](https://pypi.org/project/pygarg/) and [source repository](https://github.com/jgmailly/pygarg).** This PySAT-backed package solves extension and acceptability queries for supplied abstract Dung argument-and-attack graphs under several semantics. It is a useful candidate if EAL needs preferred, stable, semi-stable or other abstract extension queries. It does not construct arguments, evidence obligations or attacks from EAL source, and it does not directly implement EAL's claim dependencies, alternative derivations and explanatory trace. The existing grounded solver covers the present graph contract; adopting `pygarg` would require an explicit adapter and differential tests for a specified new query.
 
-### Scholarly references from retired studies
+**Daphne Odekerken and PyArg contributors, [PyArg documentation](https://daphneodekerken.github.io/PyArg/aspic_examples.html) and [source repository](https://github.com/DaphneOdekerken/PyArg).** The `python-argumentation` package exposes ASPIC+ theory construction, arguments, attacks and extensions. It is an external candidate for a specifically defined ASPIC+ computation, not an implementation of EAL's authored support/attack profile or a dependency installed by this repository. A provider would need explicit translation rules, a stated semantics and differential checks. Its result would still need reviewed bindings from the theory's premises, rules, contraries and preferences to the intended engineering claim and evidence obligations.
 
-- [Logic-LM: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning](https://aclanthology.org/2023.findings-emnlp.248/)
-- [Grammar-Constrained Decoding Makes Large Language Models Better Logical Parsers](https://aclanthology.org/2025.acl-industry.34/)
-- [The Hidden Cost of Structure](https://aclanthology.org/2025.ranlp-1.124/)
-- [Gao et al., PAL](https://arxiv.org/abs/2211.10435)
-- [Zhou et al.](https://arxiv.org/abs/2303.11315)
-- [Turpin et al.](https://arxiv.org/abs/2305.04388)
-- [Quantifying Language Models' Sensitivity to Spurious Features in Prompt Design](https://arxiv.org/abs/2310.11324v2)
-- [Tyen et al.](https://arxiv.org/abs/2311.08516)
-- [The Instruction Hierarchy: Training LLMs to Prioritize Privileged Instructions](https://arxiv.org/abs/2404.13208)
-- [When Absence Is Evidence: Evaluating Completeness-Sensitive Negative Reasoning in Large Language Models](https://arxiv.org/abs/2608.04591)
-- [Equivalence Tests: A Practical Primer for t Tests, Correlations, and Meta-Analyses](https://doi.org/10.1177/1948550617697177)
-- [Argumentative Large Language Models for Explainable and Contestable Claim Verification](https://doi.org/10.1609/aaai.v39i14.33637)
-- [A Knowledge Compilation Map](https://doi.org/10.1613/jair.989)
-- [Efficient Computation of Extensions for Dynamic Abstract Argumentation Frameworks: An Incremental Approach](https://doi.org/10.24963/ijcai.2017/8)
-- [LLM-ASPIC+: A Neuro-Symbolic Framework for Defeasible Reasoning](https://doi.org/10.3233/FAIA250981)
-- [Causal Inference: What If](https://miguelhernan.org/whatifbook)
-- [Generalization in Adaptive Data Analysis and Holdout Reuse](https://papers.neurips.cc/paper_files/paper/2015/hash/bad5f33780c42f2588878a9d07405083-Abstract.html)
-- [RouteLLM: Learning to Route LLMs from Preference Data](https://proceedings.iclr.cc/paper_files/paper/2025/hash/5503a7c69d48a2f86fc00b3dc09de686-Abstract-Conference.html)
-- [PAL: Program-aided Language Models](https://proceedings.mlr.press/v202/gao23f.html)
-- [Completeness of Queries over Incomplete Databases](https://www.vldb.org/pvldb/vol4/p749-razniewski.pdf)
+**Victor David and Anthony Hunter, “A Logic-based Framework for Decoding Enthymemes in Argument Maps Involving Implicitness in Premises and Claims”, _IJCAI 2025_, 4445–4453.** [Official paper and DOI](https://www.ijcai.org/proceedings/2025/495), [PDF](https://www.ijcai.org/proceedings/2025/0495.pdf). The work models missing premises or claims through implicit default rules and uses MaxSAT to select decodings that respect an argument map's support and attack relations. Its optimisation criterion and background theory address an enthymeme-decoding problem; they do not prove correspondence between arbitrary prose and an EAL claim. A candidate decoding needs independent applicability review before it can enter the checked argument procedure.
+
+**`formal-argumentation` 0.3.0, [PyPI distribution and documented interfaces](https://pypi.org/project/formal-argumentation/), [source repository](https://github.com/ctoth/argumentation).** The package documents Dung and ASPIC+ operations, with optional solver and grounding dependencies. It is a possible external provider to evaluate after fixing exact task semantics, input limits, licensing, dependency and version contracts. It is not installed by EAL; package documentation alone does not establish substitutability with `solve_composed`.
 
 ## Model host and provider interfaces
 
-These are version- and service-dependent interface pointers retained from earlier studies. Check their current contracts and the selected model snapshots before reuse; the list asserts no current availability, price or capability.
-
-- [OpenAI function calling](https://developers.openai.com/api/docs/guides/function-calling)
-- [Latency optimization](https://developers.openai.com/api/docs/guides/latency-optimization)
-- [Prompt caching](https://developers.openai.com/api/docs/guides/prompt-caching)
-- [structured output](https://developers.openai.com/api/docs/guides/structured-outputs)
-- [OpenAI token counting](https://developers.openai.com/api/docs/guides/token-counting)
-- [GPT-4.1](https://developers.openai.com/api/docs/models/gpt-4.1)
-- [mini / GPT-4.1 mini](https://developers.openai.com/api/docs/models/gpt-4.1-mini)
-- [nano / GPT-4.1 nano / OpenAI GPT-4.1 nano model page / OpenAI model page](https://developers.openai.com/api/docs/models/gpt-4.1-nano)
-- [GPT-5](https://developers.openai.com/api/docs/models/gpt-5)
-- [mini / GPT-5 mini](https://developers.openai.com/api/docs/models/gpt-5-mini)
-- [nano](https://developers.openai.com/api/docs/models/gpt-5-nano)
-- [OpenAI Chat Completions reference](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create)
-- [`POST /v1/embeddings` contract](https://developers.openai.com/api/reference/resources/embeddings/methods/create)
-- [Official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
-
-## Retired repository artefacts
-
-The repository reset removed earlier experiments, fixtures and notes from the current tree. Their prior state remains in the [pre-reset commit](https://github.com/emmett08/earl/tree/a9cdabee643118ff3ae28b3ec5c346427cca8cad). Those exposed development tasks do not establish comparative benefits for the current implementation. The subsequently removed workflow example and benchmark plans remain at [commit 0fddb9f](https://github.com/emmett08/earl/tree/0fddb9f5280711d9e10efa85b51bad2efcf89e2b).
-
-### Other repository references
-
-- [PR #3](https://github.com/emmett08/earl/pull/3)
+The [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) implements the local stdio protocol path used by EAL. The [OpenAI Chat Completions API](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create) and [embeddings API](https://developers.openai.com/api/reference/resources/embeddings/methods/create) describe optional host-configured provider boundaries. Model capabilities, costs and availability must be verified for the selected deployment; they are not properties of EAL/2 source or argument semantics.

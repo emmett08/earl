@@ -12,6 +12,7 @@ import hashlib
 import json
 import math
 import operator
+import re
 from typing import Any
 
 from .model import Diagnostic, Environment, Predicate, Program
@@ -53,6 +54,14 @@ def _canonical_bytes(value) -> bytes:
 def canonical_digest(value) -> str:
     """SHA-256 of canonical finite UTF-8 JSON, with bounded nesting and nodes."""
     return hashlib.sha256(_canonical_bytes(value)).hexdigest()
+
+
+def _same_json(left, right) -> bool:
+    """Compare typed JSON identity; Python equates True with 1."""
+    try:
+        return _canonical_bytes(left) == _canonical_bytes(right)
+    except (ValueError, TypeError, RecursionError, UnicodeError):
+        return False
 
 
 def environment_fingerprint(name: str, context: Mapping[str, Any]) -> str:
@@ -121,7 +130,9 @@ def assess_environment(environment: Environment, context: Mapping[str, Any]) -> 
 
 def assess_evidence_record(program: Program, name: str, record: Mapping | None, *,
                            instant: datetime, context: Mapping[str, Any],
-                           environment_matched: bool) -> EvidenceVerdict:
+                           environment_matched: bool,
+                           expected_tool_binding_digest: str | None = None,
+                           check_current_binding: bool = False) -> EvidenceVerdict:
     """Check a record once, independently of explanation wording."""
     evidence = program.evidence[name]
     reasons = []
@@ -132,7 +143,7 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
         return EvidenceVerdict(_entry("unavailable", reasons), False)
     tool = program.tools[evidence.tool]
     expected = {"evidence_id": name, "source_digest": program.source_digest,
-                "tool": tool.name, "tool_version": tool.version, "mode": tool.mode,
+                "tool": tool.name, "tool_version": tool.version,
                 "evidence_kind": evidence.kind,
                 "environment": evidence.environment,
                 "environment_fingerprint": environment_fingerprint(evidence.environment, context),
@@ -140,6 +151,24 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
     for key, wanted in expected.items():
         if record.get(key) != wanted:
             reasons.append(f"Record {key} does not match the declared evidence request")
+    binding_digest = record.get("tool_binding_digest")
+    if not isinstance(binding_digest, str) or re.fullmatch(r"[0-9a-f]{64}", binding_digest) is None:
+        reasons.append("Record requires a tool binding configuration digest")
+    if check_current_binding and binding_digest != expected_tool_binding_digest:
+        reasons.append("Current operator tool binding differs from the collected binding")
+    acquisition = {"tool": tool.name, "tool_version": tool.version,
+                   "input": evidence.input, "context": dict(context)}
+    full_request = {"evidence_id": name, "environment": evidence.environment, **acquisition}
+    if not _same_json(record.get("input"), evidence.input):
+        reasons.append("Record input differs from the declared evidence input")
+    if not _same_json(record.get("context"), dict(context)):
+        reasons.append("Record context differs from the supplied assessment context")
+    if not _same_json(record.get("acquisition_request"), acquisition):
+        reasons.append("Record acquisition request differs from the declared request")
+    if record.get("acquisition_request_digest") != canonical_digest(acquisition):
+        reasons.append("Record acquisition request digest does not match the declared request")
+    if record.get("request_digest") != canonical_digest(full_request):
+        reasons.append("Record request digest does not match the declared evidence request")
     if record.get("status") != "ok":
         reasons.append("Tool execution did not produce an ok observation")
     if not isinstance(record.get("run_id"), str) or not record["run_id"].strip():
@@ -172,11 +201,13 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
     else:
         available = False
     return EvidenceVerdict(_entry("available" if available else "unavailable", reasons,
-                                  tool=tool.name, mode=tool.mode, run_id=record.get("run_id")), complete)
+                                  tool=tool.name, tool_version=tool.version,
+                                  tool_binding_digest=binding_digest, run_id=record.get("run_id")), complete)
 
 
 def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime | str,
-             context: Mapping[str, Any], registry=None) -> dict:
+             context: Mapping[str, Any], registry=None,
+             binding_digests: Mapping[str, str | None] | None = None) -> dict:
     """Derive scoped claim statuses with explicit time and explanatory dependencies.
 
     Evidence integrity fields are checked for consistency, not authenticated.
@@ -187,6 +218,8 @@ def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime 
     instant = parse_time(now)
     if not isinstance(context, Mapping) or not isinstance(records, Mapping):
         raise ValueError("Context and records must be mappings")
+    if binding_digests is not None and not isinstance(binding_digests, Mapping):
+        raise ValueError("binding_digests must map evidence IDs to current operator configurations")
     if len(records) > 4096:
         raise ValueError("At most 4096 evidence records may be supplied")
     diagnostics = validate(program, registry=registry)
@@ -204,7 +237,9 @@ def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime 
     for name, evidence in program.evidence.items():
         result["evidence"][name] = assess_evidence_record(
             program, name, records.get(name), instant=instant, context=context,
-            environment_matched=result["environments"][evidence.environment]["status"] == "matched"
+            environment_matched=result["environments"][evidence.environment]["status"] == "matched",
+            expected_tool_binding_digest=None if binding_digests is None else binding_digests.get(name),
+            check_current_binding=binding_digests is not None,
         ).entry
 
     return _evaluate_arguments(program, records, instant, result, registry)

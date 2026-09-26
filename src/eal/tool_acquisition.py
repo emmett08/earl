@@ -8,6 +8,8 @@ process sandbox.
 from __future__ import annotations
 
 import dataclasses
+import hashlib
+import hmac
 import math
 import json
 import os
@@ -21,6 +23,18 @@ from pathlib import Path
 from typing import Any, Mapping
 
 MAX_JSON_DEPTH = 128
+
+
+def keyed_digest(secret: bytes, domain: bytes, value: Any) -> str:
+    """Public configuration identity without an offline low-entropy value oracle."""
+    from .evaluator import canonical_digest
+
+    if not isinstance(secret, bytes) or len(secret) != 32:
+        raise ValueError("A private 32-byte store key is required")
+    if not isinstance(domain, bytes) or not domain:
+        raise ValueError("A domain separator is required")
+    return hmac.new(secret, b"EAL/2\0" + domain + b"\0" +
+                    bytes.fromhex(canonical_digest(value)), hashlib.sha256).hexdigest()
 
 
 def strict_json(text: str) -> Any:
@@ -73,13 +87,21 @@ def bounded_path(workspace: Path, name: str) -> Path:
 class ToolBinding:
     name: str
     kind: str
-    mode: str
     version: str
     argv: tuple[str, ...] = ()
     path: str | None = None
     timeout_seconds: float = 30.0
     max_output_bytes: int = 1024 * 1024
-    env: Mapping[str, str] = dataclasses.field(default_factory=dict)
+    env: Mapping[str, str] = dataclasses.field(default_factory=dict, repr=False)
+
+    def binding_digest(self, secret: bytes) -> str:
+        """Keyed registry identity; this does not authenticate executable bytes."""
+        return keyed_digest(secret, b"tool-binding", {
+            "name": self.name, "kind": self.kind,
+            "version": self.version, "argv": list(self.argv),
+            "path": self.path, "timeout_seconds": self.timeout_seconds,
+            "max_output_bytes": self.max_output_bytes,
+            "env": dict(self.env)})
 
 
 @dataclasses.dataclass(frozen=True)
@@ -101,14 +123,12 @@ class ToolRegistry:
         if set(document) - {"tools"} or not isinstance(document.get("tools", {}), dict):
             raise ValueError("The registry must contain only a [tools] table")
         bindings = {}
-        allowed = {"kind", "mode", "version", "argv", "path", "timeout_seconds", "max_output_bytes", "env"}
+        allowed = {"kind", "version", "argv", "path", "timeout_seconds", "max_output_bytes", "env"}
         for name, raw in document.get("tools", {}).items():
             if not isinstance(raw, dict) or set(raw) - allowed:
                 raise ValueError(f"Unknown registry settings for {name}")
             if raw.get("kind") not in _ADAPTERS:
                 raise ValueError(f"{name}: kind must be command or json_file")
-            if raw.get("mode") not in {"deterministic", "nondeterministic"}:
-                raise ValueError(f"{name}: mode must be deterministic or nondeterministic")
             if not isinstance(raw.get("version"), str) or not raw["version"]:
                 raise ValueError(f"{name}: a nonempty version is required")
             argv = raw.get("argv", [])
@@ -128,24 +148,25 @@ class ToolRegistry:
             if not isinstance(env, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in env.items()):
                 raise ValueError(f"{name}: env must map strings to strings")
             bindings[name] = ToolBinding(
-                name, raw["kind"], raw["mode"], raw["version"], tuple(argv), raw.get("path"), float(timeout), limit, env
+                name, raw["kind"], raw["version"], tuple(argv), raw.get("path"), float(timeout), limit, env
             )
         return cls(bindings)
 
-    def binding_for(self, name: str, *, version: str, mode: str) -> ToolBinding:
+    def binding_for(self, name: str, *, version: str) -> ToolBinding:
         binding = self.bindings.get(name)
         if binding is None:
             raise ValueError(f"Tool {name!r} is not in the operator registry")
-        if binding.version != version or binding.mode != mode:
-            raise ValueError("Declared tool version/mode differs from the operator registry")
+        if binding.version != version:
+            raise ValueError("Declared tool version differs from the operator registry")
         return binding
 
-    def acquire(self, binding: ToolBinding, request: dict, workspace: Path) -> AcquisitionResult:
+    def acquire(self, binding: ToolBinding, request: dict, workspace: Path,
+                *, secret: bytes) -> AcquisitionResult:
         """Choose the trusted adapter selected by the operator's tool binding."""
         adapter = _ADAPTERS.get(binding.kind)
         if adapter is None:
             raise ValueError(f"Unsupported operator tool kind {binding.kind!r}")
-        return adapter(binding, request, workspace)
+        return adapter(binding, request, workspace, secret)
 
 
 def _kill_process(process: subprocess.Popen) -> None:
@@ -158,13 +179,13 @@ def _kill_process(process: subprocess.Popen) -> None:
         pass
 
 
-def _execute(binding: ToolBinding, request: dict, workspace: Path) -> tuple[bytes, bytes, int, dict]:
+def _execute(binding: ToolBinding, request: dict, workspace: Path, secret: bytes) -> tuple[bytes, bytes, int, dict]:
     """Read bounded stdout/stderr without retaining unbounded subprocess output."""
-    from .evaluator import canonical_digest
-
     effective_env = dict(os.environ)
     effective_env.update(binding.env)
-    metadata = {"process_environment_digest": canonical_digest(effective_env), "argv": list(binding.argv)}
+    # Arguments may themselves contain credentials. The keyed binding digest
+    # identifies the configured command without copying argv into a record.
+    metadata = {"process_environment_digest": keyed_digest(secret, b"process-environment", effective_env)}
     if os.name != "posix":
         raise RuntimeError("The bounded command adapter currently requires a POSIX host")
     process = subprocess.Popen(
@@ -233,8 +254,8 @@ def _execute(binding: ToolBinding, request: dict, workspace: Path) -> tuple[byte
     return bytes(stdout), bytes(stderr), returncode, metadata
 
 
-def _acquire_command(binding: ToolBinding, request: dict, workspace: Path) -> AcquisitionResult:
-    stdout, stderr, returncode, metadata = _execute(binding, request, workspace)
+def _acquire_command(binding: ToolBinding, request: dict, workspace: Path, secret: bytes) -> AcquisitionResult:
+    stdout, stderr, returncode, metadata = _execute(binding, request, workspace, secret)
     if metadata.get("execution_error"):
         error = ValueError(metadata["execution_error"])
     elif returncode != 0:
@@ -244,7 +265,7 @@ def _acquire_command(binding: ToolBinding, request: dict, workspace: Path) -> Ac
     return AcquisitionResult(stdout, stderr, metadata, error)
 
 
-def _acquire_json_file(binding: ToolBinding, request: dict, workspace: Path) -> AcquisitionResult:
+def _acquire_json_file(binding: ToolBinding, request: dict, workspace: Path, secret: bytes) -> AcquisitionResult:
     path = bounded_path(workspace, binding.path)
     metadata = {"file": str(path.relative_to(workspace))}
     # A FIFO or device can block indefinitely before a bounded read begins.
@@ -284,4 +305,3 @@ def validate_envelope(stdout: bytes, *, file_import: bool, context: dict,
         if not isinstance(envelope["context"], dict) or canonical_digest(envelope["context"]) != canonical_digest(context):
             raise ValueError("Observation context differs from the requested context")
     return envelope
-

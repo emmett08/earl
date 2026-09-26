@@ -21,7 +21,8 @@ def collector_fixture():
     case = {"target": {"input": workload, "context": context},
             "assessment_time": "2026-09-25T12:01:00Z", "reports": {"selected": report},
             "audit": {"report_sha256": {"selected": digest(report)}}}
-    request = {"tool": "api_load_test", "tool_version": "2", "mode": "deterministic",
+    request = {"evidence_id": "load_test", "environment": "test_run",
+               "tool": "api_load_test", "tool_version": "2",
                "input": {**workload, "report_id": "selected"}, "context": context}
     return request, case, report
 

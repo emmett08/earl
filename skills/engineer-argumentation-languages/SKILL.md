@@ -5,7 +5,7 @@ description: Design, implement, extend and critically test domain-specific langu
 
 # Engineer Argumentation Languages
 
-This directory is the repository-maintained edition of the installed `engineer-argumentation-languages` skill, refreshed from its expert-design guidance on 23 September 2026. Retain it so contributors can use the guidance without a personal skill installation. When refreshing it, update the references, agent metadata and assets together; preserve the project-specific EAL/2 and backwards-compatibility instructions in `AGENTS.md` and below. General language-design advice remains distinct from implemented behaviour and measured results.
+This directory provides the repository-maintained `engineer-argumentation-languages` skill so contributors can use the guidance without a personal skill installation. When updating it, check the references, agent metadata and assets together; follow the project-specific EAL/2 instructions in `AGENTS.md` and below. General language-design advice remains distinct from implemented behaviour and measured results.
 
 Build languages that help engineers formulate, derive, challenge and revise conclusions from explicit grounds. Keep the object of the language reasoning and argumentation. Introduce organisational approvals, release controls or compliance workflows only when independently requested.
 
@@ -15,7 +15,7 @@ Read [expert-language-design.md](references/expert-language-design.md) before de
 
 Inspect the target repository, its local instructions, existing grammar and examples. For this repository, EAL/2 is the only supported language and backwards compatibility is never a requirement. Remove obsolete syntax, aliases, version-dependent semantics and compatibility adapters when a coherent current design supersedes them. Do not create migration machinery solely for earlier source versions. Historical experiment records retain their original labels and measurements. The repository name does not imply EARL 6.1 syntax.
 
-Update current documentation, discovery schemas, examples, task fixtures and runnable experiment plans with the implementation. Check every public entry point against the same contract. Keep superseded experiment plans in the documented history area with their original content, separate from runnable current plans. Distinguish source-language, package and observation-schema versions; advance the affected contract explicitly without retaining an older execution path. Existing model measurements continue to describe the frozen implementation that produced them.
+Update current documentation, discovery schemas, examples, task fixtures and runnable experiment plans with the implementation. Check every public entry point against the same contract. Keep revision history in Git; retain immutable experimental records with the implementation identity that produced them. Distinguish source-language, package and observation-schema versions; advance the affected contract explicitly without retaining an older execution path.
 
 Identify a concrete engineering question, competing conclusions, available observations, intended inference, conditional assumptions and what would change the conclusion. Start with one worked reasoning problem and a counterexample. Separate the proposition to be considered, its executable representation, the observations relevant to it and the inferential relation. Resolve routine design choices directly; ask only when the answer changes the language’s purpose or semantics.
 
@@ -63,7 +63,7 @@ Interpret a fixed source, observation set, environment and explicit evaluation t
 
 ## Connect evidence and delegated reasoning
 
-Implement adapters for actual tools and a durable observation store when required. Record request, tool/version/mode, environment, timing, result, execution errors and relevant digests. Bind observations to their intended evidence declarations and inputs. Preserve original observation timestamps for imported results. Test failure, stale data, wrong environment and wrong request as well as successful collection.
+Implement adapters for actual tools and a durable observation store when required. Record the request, tool version, selected host-binding configuration digest, environment, timing, result, execution errors and relevant digests. Keep any qualified repeatability assertion in the trusted host contract; do not infer it from one result or treat it as evidence sufficiency. Bind observations to their intended evidence declarations and inputs. Preserve original observation timestamps for imported results. Test failure, stale data, wrong environment and wrong request as well as successful collection.
 
 Expose small MCP operations for parsing/validation, evidence collection, reasoning, explanation and supported solver operations. Share interpreter functions with the CLI. Use the official SDK for protocol lifecycle and stdio transport. Keep host configuration for executable commands separate from argument source.
 

@@ -2,7 +2,6 @@ include README.md
 recursive-include grammar *.g4
 recursive-include examples *.eal *.json *.toml *.py *.md
 recursive-include docs *.md
-recursive-include paper *.md
 include scripts/generate_parser.py
 
 include Makefile CONTRACT.md AGENTS.md

@@ -1,23 +1,24 @@
 # EAL/2 design decisions
 
-This is the rationale and alternative-design record for the current EAL/2 source language. It does not specify syntax, the argument solver or the MCP wire protocol; those belong respectively to [language](language.md), [argument model](argument-model.md) and [MCP and tools](mcp-and-tools.md). [Design aim](design-aim.md) gives the broader research target.
+This explains the design of the EAL/2 source language. Syntax, the argument solver and the MCP interface are specified respectively in [language](language.md), [argument model](argument-model.md) and [MCP and tools](mcp-and-tools.md). [Design aim](design-aim.md) describes the intended engineering tasks and evaluation criteria.
 
 ## Contents
 
-- [Research status and decision rule](#research-status-and-decision-rule)
+- [Purpose and extension criterion](#purpose-and-extension-criterion)
 - [Primary recommendations and adaptations](#primary-recommendations-and-adaptations)
 - [One typed method boundary](#one-typed-method-boundary)
+- [Tool identity and acquisition](#tool-identity-and-acquisition)
 - [Derived argument patterns](#derived-argument-patterns)
 - [Bounded support and attack](#bounded-support-and-attack)
 - [Alternatives and empirical tests](#alternatives-and-empirical-tests)
 
-## Research status and decision rule
+## Purpose and extension criterion
 
-The current source contract is EAL/2 and the installed Python package declares version 2.5.0. Source version, package version, observation envelope and method identifiers name different contracts. Historical assessments are tied to their actual code and data, not retrospectively relabelled as evidence for this version. Backwards compatibility with prior language versions is not a design requirement.
+EAL/2 is the source contract and the installed Python package declares version 2.7.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
 
-The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. That gain over prose or another notation is a **hypothesis**. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path for one task using synthetic data. The [live API experiment](../experiments/api_load_test/README.md) adds actual measurements and a bounded combined-system comparison; broader inference needs independent cases; no task count, parser test or earlier exposed-case result establishes superiority for every model class.
+The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. A gain over prose or another notation remains a **hypothesis**. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data. The [live API experiment](../experiments/api_load_test/README.md) measures a bounded combined-system comparison; broader inference needs independent tasks.
 
-A grammar addition requires a task whose necessary distinction cannot be represented and checked using existing claims, propositions, versioned methods, premises and targeted objections. For example, an explicit negative-finding keyword would not improve the currently represented finite sampled counterexample unless it adds a distinct meaning or demonstrably reduces authoring failures. The exact [historical counterexample source](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/arguments/negative-revision/counterexample.eal) records the earlier bounded case. A richer causal or temporal task might justify an additional typed method or formal expression; it should first show which existing operation fails and why.
+A grammar addition requires a task whose necessary distinction cannot be represented and checked using existing claims, propositions, versioned methods, premises and targeted objections. For example, a new negative-finding keyword would need to express a semantic distinction that an explicit negative method result cannot express. A richer causal or temporal task should first identify which existing method or relation fails; an additional typed method may address it without changing the grammar.
 
 ## Primary recommendations and adaptations
 
@@ -41,9 +42,17 @@ The decisive error case is a calculation with a correct-looking scalar but the w
 
 An untyped payload escape hatch would bypass these correspondence checks. A new algorithm keyword would change the grammar without changing how the operation is selected or bound. A genuinely new inference relation can justify a language change once a case demonstrates that a typed library solution loses its required meaning. The [repository skill](../skills/engineer-argumentation-languages/SKILL.md) records this removal test.
 
+## Tool identity and acquisition
+
+The tool declaration is `tool NAME { version "VERSION"; }`. A trusted TOML binding chooses the collector. The selected binding's digest is recorded in a collected observation and checked by the host before reasoning with stored collection records. Source describes the intended acquisition; the host owns execution configuration. Evidence obligations check the value and applicability of each acquired observation.
+
+Repeatability needs specified replay inputs, algorithm version, environment and test procedure, possibly multiple acquisitions or a sampling obligation. A test runner with fixed code can read a changing remote service, while a stochastic simulation with a recorded seed and initial state can replay one run. A binary source label would not establish either property's relevance to a conclusion. Repeated outputs do not prove independence or measurement accuracy. A configuration digest identifies configured arguments and limits, not executable bytes, dependencies, external state or physical authenticity.
+
+Whether this syntax improves model accuracy, tokens or end-to-end latency must be measured under comparable evidence access, methods and answer contracts, including failed attempts.
+
 ## Derived argument patterns
 
-The archived [reusable measurement source](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/reusable-measurements.eal) demonstrated two typed conclusions from one identified trial. Its pattern expansions substitute declaration identities. Reuse therefore remains visible without duplicating the measurement, its validation time or its independent evidential weight. The two expanded arguments retain different names and may receive different objections. The [language reference](language.md#reusable-argument-patterns) contains current syntax and bounds.
+Pattern expansion substitutes declaration identities into a named argument. Several applications may refer to the same observation without duplicating that measurement or its evidential weight. The expanded arguments retain separate names and can receive distinct objections. The [language reference](language.md#reusable-argument-patterns) gives current syntax and bounds.
 
 Closed typed parameters and named bindings prevent accidental global capture and check each application. A general macro system would need recursion, capture and effect rules; those extra rules are not required for the existing reuse case. Neither the pattern nor its expansion adds a strict or defeasible inference law. The engineering equivalence is testable by comparing the expanded application and a directly authored argument under fixed observations.
 
@@ -53,11 +62,13 @@ The source identifies supports and attacks explicitly. Its evaluator checks fini
 
 ASPIC+ would require additional choices about a logical language, strict and defeasible rules, generated arguments, contrariness, preferences and defeat. This profile does not infer those relations from prose or implement full ASPIC+. Source authoring remains responsible for selecting relevant arguments and objections. An unsupported or unresolved status cannot by itself establish the opposite proposition.
 
+An external structured-argumentation solver would answer only the formal theory supplied to it. EAL's present adequacy evaluator requires reviewed claim-to-source correspondence and explicit evidence obligations; it binds deductive formula premises to supported named claims for `deductive/1`, but does not establish the provenance or relevance of ASPIC+ axioms, ordinary premises, contraries, rules or preferences. A provider for that calculus would need reviewed bindings for those inputs and a separately specified adequacy contract before its extension could support an engineering conclusion.
+
 ## Alternatives and empirical tests
 
 | Alternative | Useful property | Decision for the current task |
 |---|---|---|
-| Typed JSON as the authored format | Constrained structure and transport without a separate textual grammar | Retain JSON for method input and host requests; compare a semantically equivalent JSON authored arm in a future study before claiming EAL notation is easier. |
+| Typed JSON as the authored format | Constrained structure and transport without a separate textual grammar | Retain JSON for method input and host requests; the live experiment includes a semantically equivalent JSON prompt arm, so notation claims depend on measured outcomes. |
 | Host library without source patterns | Reusable ordinary programming abstractions | Keep computation in trusted host libraries; represent argument dependency identities and objection targets in reviewable source. |
 | General macros or a rule-generating syntax | Wider forms of reusable argument generation | Defer until a required case cannot preserve meaning under bounded, closed pattern expansion. |
 | Full ASPIC+ | Explicit strict/defeasible distinctions and preferences | Specify and implement only if a task and independent verification require those distinctions; the current declared attack profile makes no such conformance claim. |

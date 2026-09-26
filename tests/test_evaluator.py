@@ -9,7 +9,7 @@ from eal.semantics import parse_time
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool runner { version "1"; mode nondeterministic; }
+tool runner { version "1"; }
 evidence observed { tool runner; kind test; environment lab; max_age 60;
  input {"suite":"smoke"}; require "passed" == true;
 }
@@ -31,11 +31,19 @@ NOW = '2026-09-23T12:00:00Z'
 def record(program, name, value, collected_at=NOW):
     evidence = program.evidence[name]
     tool = program.tools[evidence.tool]
+    acquisition = {'tool': tool.name, 'tool_version': tool.version,
+                   'input': evidence.input, 'context': CONTEXT}
     return {'evidence_id': name, 'source_digest': program.source_digest,
-            'tool': tool.name, 'tool_version': tool.version, 'mode': tool.mode,
+            'tool': tool.name, 'tool_version': tool.version,
+            'tool_binding_digest': '0' * 64,
             'evidence_kind': evidence.kind, 'environment': evidence.environment,
             'environment_fingerprint': environment_fingerprint(evidence.environment, CONTEXT),
             'input_digest': canonical_digest(evidence.input), 'collected_at': collected_at,
+            'input': evidence.input, 'context': CONTEXT,
+            'acquisition_request': acquisition,
+            'acquisition_request_digest': canonical_digest(acquisition),
+            'request_digest': canonical_digest({'evidence_id': name,
+                                                'environment': evidence.environment, **acquisition}),
             'run_id': 'test-run', 'status': 'ok', 'value': value, 'data_digest': canonical_digest(value)}
 
 
@@ -46,13 +54,13 @@ def run(source=SOURCE, *, values=None, now=NOW):
     return evaluate(program, records, now=now, context=CONTEXT)
 
 
-def test_nested_subarguments_and_nondeterministic_observation_supply_support():
+def test_nested_subarguments_and_observation_supply_support():
     result = run()
     assert result['valid']
     assert result['claims']['working']['status'] == 'supported'
     assert result['claims']['downstream']['status'] == 'supported'
     assert result['arguments']['nested']['dependencies']['premises'] == ['working']
-    assert result['evidence']['observed']['mode'] == 'nondeterministic'
+    assert result['evidence']['observed']['tool_binding_digest'] == '0' * 64
 
 
 def test_unsupported_never_means_false_and_missing_sources_propagate():
@@ -64,8 +72,10 @@ def test_unsupported_never_means_false_and_missing_sources_propagate():
 
 @pytest.mark.parametrize('key,value', [
     ('source_digest', 'other'), ('tool', 'other'), ('tool_version', '2'),
-    ('mode', 'deterministic'), ('evidence_kind', 'sample'), ('environment', 'elsewhere'),
+    ('tool_binding_digest', 'invalid'), ('evidence_kind', 'sample'), ('environment', 'elsewhere'),
     ('environment_fingerprint', 'other'), ('input_digest', 'other'),
+    ('input', {'suite': 'other'}), ('context', {'site': 'elsewhere'}),
+    ('acquisition_request_digest', 'other'), ('request_digest', 'other'),
     ('data_digest', 'other'), ('run_id', ''), ('status', 'error'),
     ('collected_at', '2026-09-23T12:00:01Z'), ('collected_at', '2026-09-23T11:58:59Z'),
     ('collected_at', '2026-09-23T12:00:00'),
@@ -79,6 +89,22 @@ def test_record_mismatch_missing_or_stale_fails_closed(key, value):
     assert result['claims']['downstream']['status'] == 'unsupported'
 
 
+def test_acquisition_fields_compare_json_types_and_current_binding():
+    program = parse(SOURCE)
+    item = record(program, 'observed', {'passed': True})
+    assert evaluate(program, {'observed': item}, now=NOW, context=CONTEXT,
+                    binding_digests={'observed': '1' * 64})['evidence']['observed']['status'] == 'unavailable'
+    item['input'] = {'suite': 'smoke'}
+    item['context'] = {'site': 'bench'}
+    assert evaluate(program, {'observed': item}, now=NOW, context=CONTEXT,
+                    binding_digests={'observed': '0' * 64})['evidence']['observed']['status'] == 'available'
+    alternate = SOURCE.replace('"suite":"smoke"', '"suite":1')
+    other = parse(alternate)
+    forged = record(other, 'observed', {'passed': True})
+    forged['input'] = {'suite': True}
+    assert evaluate(other, {'observed': forged}, now=NOW, context=CONTEXT)['evidence']['observed']['status'] == 'unavailable'
+
+
 def test_record_diagnostic_entry_and_order_are_preserved():
     program = parse(SOURCE)
     missing = evaluate(program, {}, now=NOW, context=CONTEXT)
@@ -90,7 +116,8 @@ def test_record_diagnostic_entry_and_order_are_preserved():
                 collected_at='2026-09-23T12:00:00', data_digest='other')
     entry = evaluate(program, {'observed': item}, now=NOW, context=CONTEXT)['evidence']['observed']
     assert entry == {
-        'status': 'unavailable', 'tool': 'runner', 'mode': 'nondeterministic', 'run_id': '',
+        'status': 'unavailable', 'tool': 'runner', 'tool_version': '1',
+        'tool_binding_digest': '0' * 64, 'run_id': '',
         'reasons': [
             'Record source_digest does not match the declared evidence request',
             'Tool execution did not produce an ok observation',
@@ -210,7 +237,7 @@ def test_explicit_time_and_finite_json_are_required():
 def test_inductive_computation_and_declared_threshold_control_derivation():
     source = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool counter { version "1"; mode deterministic; }
+tool counter { version "1"; }
 evidence sample_data { tool counter; kind sample; environment lab; max_age 60;
  require "trials" >= 1;
 }
@@ -237,7 +264,7 @@ argument estimation { conclusion reliable; reasoning estimate_rate; evidence sam
 def test_deductive_entailment_countermodel_and_inconsistency_do_not_collapse():
     source = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool encoder { version "1"; mode deterministic; }
+tool encoder { version "1"; }
 evidence formal_case { tool encoder; kind logical_case; environment lab; max_age 60;
  require "conclusion" == "q";
 }

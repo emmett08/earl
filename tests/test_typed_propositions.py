@@ -10,7 +10,7 @@ from test_evaluator import record, CONTEXT, NOW
 
 SOURCE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool readings { version "1"; mode deterministic; }
+tool readings { version "1"; }
 evidence trial { tool readings; kind experiment; environment lab; max_age 60;
  require "schema" == "EAL/typed-input/1";
 }

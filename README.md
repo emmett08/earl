@@ -2,7 +2,7 @@
 
 EAL/2 is a language and host for bounded engineering arguments. A source file identifies the claim, the question it addresses, its reasoning method, evidence obligations, premises and objections. The interpreter validates those declarations, collects observations through host-configured tools, evaluates the stated method and records an explanation of the resulting status. A checked status is about the declared question and collected observations; the source's relevance and the observations' real-world provenance still require review.
 
-The Python package is **2.5.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. The observation envelope is `EAL/typed-input/1`; the source, package and observation versions identify different contracts.
+The Python package is **2.7.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Formal reasoning-method inputs use the independent `EAL/typed-input/1` envelope. Source, package, acquisition and typed-method identifiers describe different contracts.
 
 ## Start here
 
@@ -27,15 +27,14 @@ The report contains 100 requests, a nearest-rank sample p95 of 180 ms and one fa
 
 The source pins the report's build, run and digest. The collector preserves its original observation time; EAL checks the declared scope, age and acceptance predicates. The [walkthrough](examples/api-load-test/README.md) explains those checks, the expected output and how to substitute a real report. The synthetic records illustrate assessment behaviour; release decisions need genuine measurements and a representative workload.
 
-The benchmark plans and previous examples have been removed from the current tree. Their prior versions remain in Git history. Comparative benefits over prose or JSON remain empirical questions.
-
-A single [live API experiment](experiments/api_load_test/README.md) extends this task: six pinned nano/mini/full reasoning and non-reasoning models compare EAL/2+MCP, equivalent JSON prompt text, three developer prompts and explicit prose with an ordinary deterministic validator. It implements a real HTTP service, collectors and independent scoring. The workflow starts only by manual dispatch and runs inside its Docker image, using repository secret `OPENAI_API_TOKEN` for the selected comparison. Dispatch defaults to a 54-trial calibration across all six models, or nine trials for one selected snapshot, with a $0.50 admission allowance per model. The full development pilot has 40 distinct cases and 1,440 assigned trials. All arms share immutable measurements, and the default text-mediated tool adapter requires no native function calling. Protocol 4 adds explicit final-answer guidance, optional narrative, bounded transient-provider retries and a separately labelled checked finalisation mode for EAL/MCP and the ordinary validator. Checked finalisation uses two arms: 36 calibration or 480 pilot assignments across all six models. Historical evidence is preserved separately; live evaluation of these repairs is pending. Neither historical pilot establishes a notation-specific accuracy advantage or equivalence.
+A [live API experiment](experiments/api_load_test/README.md) compares EAL/2+MCP with meaning-equivalent JSON and ordinary prose, including a conventional checked-result control. Its manually dispatched, Docker-based protocol freezes the selected measurements and scores decisions independently. An optional checked finalisation mode returns the verified decision without asking a model to restate it. The experiment measures the combined system under its specified cases; no general accuracy, cost or speed advantage over equally capable alternatives follows from the language or the synthetic example alone.
 
 ## Interfaces and boundaries
 
 - `eal validate` checks parsing, references, types and method contracts without collecting evidence.
 - `eal collect` runs the configured tools and persists their observations; `eal reason` computes method and argument statuses at an explicit or current time; `eal explain` retrieves the recorded trace.
 - `eal-mcp` serves the same operations over local stdio using the MCP SDK. `eal-host` accepts one strict JSON operation for text-only clients; `eal-agent` can run a bounded model feedback loop when a provider is configured.
+- The optional argument host maps reviewed prose forms to a scoped claim, decision or proposed action, collects evidence with the configured tools and tests explicit correspondence and evidence-adequacy obligations. Unreviewed wording remains unresolved unless a separately installed correspondence validator approves its interpretation. Its host-operated file-change adapter requires a checked decision before applying proposed bytes. See [executable argument host](docs/executable-argument-host.md).
 - The optional reviewed artifact and exact-question recipient routes bind a pinned source, context, question and claim on the host. They can keep a checked status authoritative when a recipient explanation differs.
 
 The implementation provides finite, explicit support and attack reasoning with versioned reasoning methods. It does not infer the correct argument family from a task, authenticate measurements beyond the configured acquisition path, prove informal warrants, or demonstrate cross-model superiority without a completed comparison.
@@ -52,6 +51,7 @@ The implementation provides finite, explicit support and attack reasoning with v
 | [Grounded reasoning](docs/grounded-reasoning.md) | Explicit Dung graph solver |
 | [Reasoning modes](docs/reasoning-modes.md) | Computational method inputs, outputs and bounds |
 | [MCP and tools](docs/mcp-and-tools.md) | Tool acquisition, persistence and model hosts |
+| [Executable argument host](docs/executable-argument-host.md) | Reviewed argument forms, adequacy checks and action preflight |
 | [Sources](docs/sources.md) | Primary research and retained references |
 
-[`CONTRACT.md`](CONTRACT.md) records implementation interfaces. The [JSS paper](paper/README.md) contains a manuscript, four figures and reproducible reanalyses of both historical API pilots, including the later nano-only run and a figure separating answer errors, protocol failures and unattempted assignments. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).
+[`CONTRACT.md`](CONTRACT.md) records implementation interfaces. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).

@@ -16,7 +16,7 @@ from test_typed_propositions import SOURCE, VALUE
 
 BASE = '''language "EAL/2";
 environment lab { require "site" == "bench"; }
-tool runner { version "1"; mode deterministic; }
+tool runner { version "1"; }
 evidence samples { tool runner; kind test; environment lab; max_age 60; require "ok" == true; }
 assumption stable { statement "The same configuration persists."; environment lab; validate samples; }
 reasoning measured { method "structured/1"; rationale "The test supports the bounded claim."; }
@@ -150,13 +150,19 @@ def test_declaration_locations_use_one_based_exclusive_end_positions():
     assert diagnostic.span == invalid.locations['reason']
 
 
-def test_reasoning_has_one_method_while_tools_retain_execution_mode():
+def test_reasoning_method_and_tool_version_are_separate_contracts():
     program = parse(BASE)
     assert program.reasoning['measured'].method == 'structured/1'
     assert not hasattr(program.reasoning['measured'], 'mode')
-    assert program.tools['runner'].mode == 'deterministic'
+    assert program.tools['runner'].version == '1'
+    assert not hasattr(program.tools['runner'], 'mode')
     with pytest.raises(EALSyntaxError):
         parse(BASE.replace('method "structured/1";', 'mode structured;'))
+
+
+def test_obsolete_tool_execution_mode_is_rejected_at_recognition():
+    with pytest.raises(EALSyntaxError):
+        parse(BASE.replace('version "1";', 'version "1"; mode deterministic;'))
 
 
 def test_pattern_roundtrip_retains_authoring_and_typed_runtime_meaning():

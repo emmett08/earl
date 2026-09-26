@@ -22,7 +22,6 @@ class Environment:
 class Tool:
     name: str
     version: str
-    mode: str
 
 
 @dataclass(frozen=True)

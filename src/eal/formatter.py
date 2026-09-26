@@ -53,7 +53,7 @@ def format_program(program: Program, *, registry=None) -> str:
     for name, value in program.environments.items():
         emit('environment', name, predicates(value.predicates))
     for name, value in program.tools.items():
-        emit('tool', name, [f'version {_json(value.version)};', f'mode {value.mode};'])
+        emit('tool', name, [f'version {_json(value.version)};'])
     for name, value in program.evidence.items():
         emit('evidence', name, [f'tool {value.tool};', f'kind {value.kind};',
              f'environment {value.environment};', f'max_age {_json(value.max_age)};',

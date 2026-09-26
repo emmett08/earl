@@ -78,9 +78,9 @@ def collect(request: dict, config: dict, report_path: Path) -> dict:
     report_id = request.get("input", {}).get("report_id")
     if report_id not in case["reports"]:
         raise ValueError("Choose a report_id from the provided catalogue")
-    expected = {"tool": "api_load_test", "tool_version": "2", "mode": "deterministic",
+    expected = {"tool": "api_load_test", "tool_version": "2",
                 "input": {**case["target"]["input"], "report_id": report_id}, "context": case["target"]["context"]}
-    if {key: request.get(key) for key in expected} != expected:
+    if request != {"evidence_id": "load_test", "environment": "test_run", **expected}:
         raise ValueError("Collection request differs from the fixed target and selected report")
     report = case["reports"][report_id]
     # The controlled catalogue freezes a bound report envelope. Corrupt raw

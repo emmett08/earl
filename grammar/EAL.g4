@@ -5,8 +5,7 @@ declaration : environmentDecl | toolDecl | evidenceDecl | assumptionDecl
             | reasoningDecl | claimDecl | argumentDecl | objectionDecl
             | patternDecl | applicationDecl ;
 environmentDecl : 'environment' identifier '{' predicate+ '}' ;
-toolDecl : 'tool' identifier '{' 'version' STRING ';' 'mode' executionMode ';' '}' ;
-executionMode : 'deterministic' | 'nondeterministic' ;
+toolDecl : 'tool' identifier '{' 'version' STRING ';' '}' ;
 evidenceDecl : 'evidence' identifier '{' 'tool' identifier ';' 'kind' identifier ';' 'environment' identifier ';'
                'max_age' NUMBER ';' ('input' jsonValue ';')? predicate+ '}' ;
 assumptionDecl : 'assumption' identifier '{' 'statement' STRING ';' 'environment' identifier ';'
