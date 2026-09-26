@@ -230,10 +230,8 @@ def test_compiled_eal_routes_and_reviewed_strict_rule_match_reference_fragment()
 claim run_fails { statement "This synthetic run fails."; environment lab; }
 argument failure_route { conclusion run_fails; reasoning authored; evidence gap_data; }
 objection challenge { target argument primary_route; evidence gap_data; }
-aspic {
-  strict argument reporting_route reviewed "review/report-implication";
-  contrary claim run_fails to run_passes reviewed "review/one-way-incompatibility";
-}
+strict reporting_route reviewed "review/report-implication";
+contrary run_fails to run_passes reviewed "review/one-way-incompatibility";
 '''
     _, result = compare(source)
     theory = result["theory"]

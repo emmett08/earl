@@ -11,7 +11,7 @@ from .generated.EALLexer import EALLexer
 from .generated.EALParser import EALParser
 from .generated.EALVisitor import EALVisitor
 from .abstractions import lower_patterns
-from .model import (Application, Argument, AspicDirective, Assumption, Claim, Environment, Evidence,
+from .model import (Application, Argument, FormalDirective, Assumption, Claim, Environment, Evidence,
                     Pattern, PatternBinding, PatternParameter, Reasoning, Objection,
                     Predicate, Program, Proposition, SourceSpan, Tool)
 
@@ -65,19 +65,15 @@ def _argument_fields(ctx):
 
 
 class _ASTBuilder(EALVisitor):
-    def visitAspicDecl(self, ctx):
-        return tuple(self.visit(directive) for directive in ctx.aspicDirective())
-
-    def visitAspicDirective(self, ctx):
+    def visitFormalDirective(self, ctx):
         words = ctx.getChild(0).getText()
         names = ctx.identifier()
-        return AspicDirective(
+        rank_text = ctx.NUMBER().getText() if words == "rank" else None
+        return FormalDirective(
             words,
-            "argument" if words == "strict" else
-            ctx.aspicRankKind().getText() if words == "rank" else "claim",
             names[0].getText(),
             names[1].getText() if words == "contrary" else None,
-            int(ctx.NUMBER().getText()) if words == "rank" and ctx.NUMBER().getText().isdigit() else None,
+            int(rank_text) if rank_text is not None and rank_text.isdigit() else None,
             _string(ctx.STRING()), _span(ctx))
 
     def visitEnvironmentDecl(self, ctx):
@@ -197,12 +193,12 @@ def parse(source: str) -> Program:
     symbols = set()
     duplicates = []
     locations = {}
-    aspic = []
+    formal = []
     try:
         for declaration in tree.declaration():
             value = builder.visit(declaration.getChild(0))
-            if isinstance(value, tuple):
-                aspic.extend(value)
+            if isinstance(value, FormalDirective):
+                formal.append(value)
                 continue
             if value.name in symbols:
                 duplicates.append(value.name)
@@ -212,6 +208,6 @@ def parse(source: str) -> Program:
     except (RecursionError, ValueError, OverflowError) as exc:
         raise EALSyntaxError(f"Invalid JSON data: {exc}") from exc
     program = Program(language=_string(tree.STRING()), source_digest=hashlib.sha256(encoded).hexdigest(),
-                      **groups, aspic=tuple(aspic), duplicates=tuple(duplicates), locations=locations,
-                      declaration_count=len(tree.declaration()) + len(aspic) + len(groups["patterns"]))
+                      **groups, formal=tuple(formal), duplicates=tuple(duplicates), locations=locations,
+                      declaration_count=len(tree.declaration()) + len(groups["patterns"]))
     return lower_patterns(program)

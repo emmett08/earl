@@ -1,8 +1,8 @@
 # Optional ASPIC+ method
 
-`argumentation/aspic/1` is a bounded, host-installed ASPIC+ instantiation. It constructs arguments from an explicit finite theory, derives undermining, rebutting and undercutting defeats, and computes the grounded extension of that defeat graph. The separate, opt-in `EAL/2-compiled-aspic/2` operation translates authored EAL routes at a checked observation snapshot. EAL/2 now admits an optional reviewed `aspic` declaration; the default authored objection calculus ignores its formal choices. The [ASPIC+ tutorial](sources.md#argument-and-reasoning-models) supplies the framework's argument, attack and defeat definitions; the restrictions and ranking below are this implementation's choices.
+`argumentation/aspic/1` is a bounded, host-installed ASPIC+ instantiation. It constructs arguments from an explicit finite theory, derives undermining, rebutting and undercutting defeats, and computes the grounded extension of that defeat graph. The separate, opt-in `EAL/2-compiled-aspic/3` operation translates authored EAL routes at a checked observation snapshot. EAL/2 admits reviewed `strict`, `rank` and `contrary` relations with targets resolved through its own declaration namespace. The default authored objection calculus ignores those formal choices. The [ASPIC+ tutorial](sources.md#argument-and-reasoning-models) supplies the framework's argument, attack and defeat definitions; the restrictions and ranking below are this implementation's choices.
 
-Package 2.10.0 adds checked formal annotations to EAL/2 and changes the compiled profile to `/2`. The installed ASPIC method stays `argumentation/aspic/1` with implementation `eal-aspic-grounded-3`; the stored observation schema is unchanged. The existing API experiment remains frozen against its recorded package version and source revision.
+The Python package is 2.11.0. The compiled profile is `/3`, while the installed ASPIC method is `argumentation/aspic/1` with implementation `eal-aspic-grounded-3`. The stored observation schema is unchanged. The existing API experiment remains frozen against its recorded package version and source revision.
 
 ## Run the synthetic engineering case
 
@@ -65,20 +65,18 @@ Unannotated ordinary premises and defeasible rules have rank 500. The compiler i
 
 ### Declare formal choices in EAL/2
 
-Place one or more directives in an optional `aspic` block, anywhere among EAL declarations. References resolve after pattern applications expand, so a generated route can be named. For example, with two claims `run_passes` and `run_fails` in the same environment and authored routes `probe_route` and `failure_route`:
+Place one or more reviewed relations among EAL declarations. Names resolve after pattern applications expand, so a generated route can be named. For example, with two claims `run_passes` and `run_fails` in the same environment and authored routes `probe_route` and `failure_route`:
 
 ```eal
-aspic {
-  strict argument report_arg reviewed "review/report-implication";
-  rank evidence probe_record 700 reviewed "review/probe-observation";
-  rank argument probe_route 800 reviewed "review/probe-inference";
-  rank argument failure_route 400 reviewed "review/diagnostic-limit";
-  contrary claim run_fails to run_passes reviewed "review/incompatible-outcomes";
-  contrary claim run_passes to run_fails reviewed "review/incompatible-outcomes";
-}
+strict report_arg reviewed "review/report-implication";
+rank probe_record 700 reviewed "review/probe-observation";
+rank probe_route 800 reviewed "review/probe-inference";
+rank failure_route 400 reviewed "review/diagnostic-limit";
+contrary run_fails to run_passes reviewed "review/incompatible-outcomes";
+contrary run_passes to run_fails reviewed "review/incompatible-outcomes";
 ```
 
-`strict` applies only to an argument rule. `rank` applies to evidence, assumptions, arguments and objections and requires an integer 0–1000; strict arguments cannot have ranks. One directed `contrary` expresses a one-way attack; both directions make the claim pair contradictory, so the solver compares attacker and attacked subargument strengths. The solver uses the minimum rank of each argument's fallible elements, and undercuts defeat regardless of rank. The `reviewed` string is a required human supplied review reference, **not** proof that a claim follows deductively, that two English sentences are logical contraries, or that evidence is authentic. The validator rejects duplicate directives, unknown references, self-contraries and contraries crossing EAL environments. If an objection addresses an argument, claim or reasoning declaration whose expansion includes a strict route, compilation rejects the mapping because a strict rule has no undercuttable name. A strict route can still lose through a defeated fallible subargument. Default `reason` ignores these directives and may disagree with the compiled profile; both statuses remain separately reported.
+EAL's unique names determine each target kind. `strict` requires an argument, including a named `apply` result. `rank` accepts evidence, assumptions, arguments and objections and requires an integer 0–1000; it is an ordinal defeat preference, not a probability. Strict arguments cannot have ranks. `contrary` requires two claims in one environment. One direction expresses a one-way attack; both directions make the claim pair contradictory, so the solver compares attacker and attacked subargument strengths. The solver uses the minimum rank of each argument's fallible elements, and undercuts defeat regardless of rank. The `reviewed` string is a required human supplied review reference, **not** proof that a claim follows deductively, that two English sentences are logical contraries, or that evidence is authentic. The validator reports unknown, ambiguous and wrong-kind names at the relation's source span, and rejects duplicate relations and self-contraries. If an objection addresses an argument, claim or reasoning declaration whose expansion includes a strict route, compilation rejects the mapping because a strict rule has no undercuttable name. A strict route can still lose through a defeated fallible subargument. Default `reason` ignores these relations and may disagree with the compiled profile; both statuses remain separately reported.
 
 ### Coverage boundary
 

@@ -7,7 +7,7 @@ method checks first.  The returned source map preserves the checked origins of
 every generated premise, rule and attack, including unavailable observations.
 
 Strictness, directed claim contraries and ranks require explicit reviewed EAL
-formal annotations; none is inferred from English statements. Unannotated
+formal relations; none is inferred from English statements. Unannotated
 fallible premises and rules receive the same rank.
 The current ASPIC method bounds the theory to 64 rules/premises, eight
 antecedents per rule and 128 constructed arguments; exceedance is an error.
@@ -26,7 +26,7 @@ from .model import Program
 from .parser import parse
 from .semantics import objection_scopes
 
-PROFILE = "EAL/2-compiled-aspic/2"
+PROFILE = "EAL/2-compiled-aspic/3"
 RANK = 500
 
 
@@ -137,16 +137,23 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
     if any(program.reasoning[a.reasoning].method == METHOD for a in program.arguments.values()):
         raise CompilationError("Compile authored EAL routes, not an argumentation/aspic/1 theory")
 
-    annotations = {(item.kind, item.target_kind, item.name): item for item in program.aspic
+    annotations = {(item.kind, item.name): item for item in program.formal
                    if item.kind != "contrary"}
+    target_kinds = {name: kind for kind, table in (
+        ("evidence", program.evidence), ("assumption", program.assumptions),
+        ("argument", program.arguments), ("objection", program.objections),
+        ("claim", program.claims)) for name in table}
 
-    def rank(kind: str, name: str) -> int:
-        item = annotations.get(("rank", kind, name))
+    def rank(name: str) -> int:
+        item = annotations.get(("rank", name))
         return item.rank if item is not None else RANK
 
-    def annotated(kind: str, target_kind: str, name: str):
-        item = annotations.get((kind, target_kind, name))
-        return asdict(item) if item is not None else None
+    def formal_directive(item):
+        return {**asdict(item), "target_kind": target_kinds[item.name]}
+
+    def annotated(kind: str, name: str):
+        item = annotations.get((kind, name))
+        return formal_directive(item) if item is not None else None
 
     claims = {name: _symbol("c", name) for name in program.claims}
     evidence = {name: _symbol("e", name) for name in program.evidence}
@@ -166,7 +173,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                "goal": {"claim": goal, "atom": claims[goal]},
                "claims": {}, "evidence": {}, "assumptions": {},
                "arguments": {}, "objections": {}, "contraries": [],
-               "formal_annotations": [asdict(item) for item in program.aspic]}
+               "formal_directives": [formal_directive(item) for item in program.formal]}
     for name in sorted(claims):
         mapping["claims"][name] = {"atom": claims[name],
                                     "statement": program.claims[name].statement,
@@ -191,12 +198,12 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
         mapping["evidence"][name] = {"atom": evidence[name], "available": available,
                                       "identity": identity, "record_digest": record_digest,
                                       "reasons": verdict["reasons"],
-                                      "rank": rank("evidence", name),
-                                      "rank_annotation": annotated("rank", "evidence", name),
+                                      "rank": rank(name),
+                                      "rank_annotation": annotated("rank", name),
                                       "span": _location(program, name)}
         if available:
             premises.append({"atom": evidence[name], "kind": "ordinary",
-                             "rank": rank("evidence", name)})
+                             "rank": rank(name)})
     for name in sorted(assumptions):
         assumption = program.assumptions[name]
         # EAL marks a locally valid assumption ``contested`` only after the
@@ -207,8 +214,8 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
         mapping["assumptions"][name] = {"atom": assumptions[name], "rule_id": rule_id,
                                          "applicability_atom": _symbol("x", rule_id),
                                          "validation": assumption.validation,
-                                         "rank": rank("assumption", name),
-                                         "rank_annotation": annotated("rank", "assumption", name),
+                                         "rank": rank(name),
+                                         "rank_annotation": annotated("rank", name),
                                          "emitted": supported,
                                          "span": _location(program, name)}
         if supported:
@@ -216,7 +223,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                           "antecedents": [evidence[assumption.validation]],
                           "consequent": assumptions[name],
                           "name": mapping["assumptions"][name]["applicability_atom"],
-                          "rank": rank("assumption", name)})
+                          "rank": rank(name)})
 
     # EAL permits an objection supported by no evidence or premise.  A marked
     # structural axiom lets a defeasible authored objection use a rule with a
@@ -233,7 +240,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
              *(assumptions[a] for a in argument.assumptions),
              *(claims[p] for p in argument.premises)]))
         eligible = assessment["arguments"][name]["locally_usable"]
-        strict = ("strict", "argument", name) in annotations
+        strict = ("strict", name) in annotations
         rule_id = _symbol("r", name)
         applicability = _symbol("x", rule_id)
         mapping["arguments"][name] = {"rule_id": rule_id,
@@ -245,9 +252,9 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                                         "reasoning": argument.reasoning,
                                         "rationale": method.rationale,
                                         "rule_kind": "strict" if strict else "defeasible",
-                                        "strict_annotation": annotated("strict", "argument", name),
-                                        "rank": None if strict else rank("argument", name),
-                                        "rank_annotation": annotated("rank", "argument", name),
+                                        "strict_annotation": annotated("strict", name),
+                                        "rank": None if strict else rank(name),
+                                        "rank_annotation": annotated("rank", name),
                                         "origin": asdict(argument.origin) if argument.origin else None,
                                         "span": _location(program, name)}
         if eligible:
@@ -258,7 +265,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                     "antecedents": antecedents,
                     "consequent": claims[argument.conclusion]}
             if not strict:
-                rule.update({"name": applicability, "rank": rank("argument", name)})
+                rule.update({"name": applicability, "rank": rank(name)})
             rules.append(rule)
 
     scopes = objection_scopes(program)
@@ -292,8 +299,8 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                                        "targets": [{"kind": kind, "name": target}
                                                    for kind, target in targets],
                                        "antecedents": antecedents,
-                                       "rank": rank("objection", name),
-                                       "rank_annotation": annotated("rank", "objection", name),
+                                       "rank": rank(name),
+                                       "rank_annotation": annotated("rank", name),
                                        "emitted": eligible,
                                        "span": _location(program, name)}
         if eligible:
@@ -303,7 +310,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
             rules.append({"id": rule_id, "kind": "defeasible",
                           "antecedents": antecedents,
                           "consequent": objections[name],
-                          "name": applicability, "rank": rank("objection", name)})
+                          "name": applicability, "rank": rank(name)})
         for kind, target in targets:
             owner = {"argument": mapping["arguments"],
                      "assumption": mapping["assumptions"],
@@ -322,14 +329,14 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                                            "target_kind": kind,
                                            "target_name": target})
 
-    for item in program.aspic:
+    for item in program.formal:
         if item.kind == "contrary":
             pair = {"attacker": claims[item.name], "target": claims[item.other]}
             contraries.append(pair)
             mapping["contraries"].append({**pair, "target_kind": "claim",
                                            "attacker_name": item.name,
                                            "target_name": item.other,
-                                           "annotation": asdict(item)})
+                                           "annotation": formal_directive(item)})
 
     if basis_needed or not premises:
         premises.append({"atom": structural, "kind": "axiom"})

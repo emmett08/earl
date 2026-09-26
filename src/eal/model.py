@@ -147,15 +147,14 @@ class SourceSpan:
 
 
 @dataclass(frozen=True)
-class AspicDirective:
-    """Reviewed formal choice for the opt-in compiled profile, never inferred from prose.
+class FormalDirective:
+    """Reviewed EAL formal relation, never inferred from prose.
 
     ``other`` is the target claim of a directed contrary; ``rank`` is an
     integer from 0 through 1000. Exactly one is set when applicable.
     """
 
     kind: str
-    target_kind: str
     name: str
     other: str | None
     rank: int | None
@@ -187,7 +186,7 @@ class Program:
     objections: dict[str, Objection] = field(default_factory=dict)
     patterns: dict[str, Pattern] = field(default_factory=dict)
     applications: dict[str, Application] = field(default_factory=dict)
-    aspic: tuple[AspicDirective, ...] = ()
+    formal: tuple[FormalDirective, ...] = ()
     duplicates: tuple[str, ...] = ()
     declaration_count: int = 0
     locations: dict[str, SourceSpan] = field(default_factory=dict)
