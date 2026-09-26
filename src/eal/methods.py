@@ -354,7 +354,13 @@ def _worker(payload, connection, contract):
     try:
         os.setsid()
         import resource
-        resource.setrlimit(resource.RLIMIT_CPU, (max(1, math.ceil(contract.timeout_seconds)), max(1, math.ceil(contract.timeout_seconds))))
+        # RLIMIT_CPU is cumulative from process birth. Spawn reimports the
+        # launcher before reaching this function, so charge only subsequent
+        # CPU against the callback allowance. The parent separately bounds
+        # startup and execution wall time.
+        usage = resource.getrusage(resource.RUSAGE_SELF)
+        cpu_limit = math.ceil(usage.ru_utime + usage.ru_stime + contract.timeout_seconds)
+        resource.setrlimit(resource.RLIMIT_CPU, (cpu_limit, cpu_limit))
         resource.setrlimit(resource.RLIMIT_AS, (contract.max_memory_bytes, contract.max_memory_bytes))
         # Pure callbacks receive a detached JSON object and return only their
         # typed outputs. Child stdout/stderr cannot corrupt the MCP transport.
