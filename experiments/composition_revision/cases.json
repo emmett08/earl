@@ -1,0 +1,113 @@
+{
+  "schema": "eal2-composition-revision/1",
+  "base_time": "2026-09-23T12:00:00Z",
+  "context": {"loop_id": "coolant-loop-A", "load_kw": 8},
+  "cases": [
+    {
+      "id": "nominal",
+      "observations": {
+        "power_bus": {"voltage_v": 25},
+        "pump_a_flow": {"flow_lpm": 16, "sensor_id": "A"},
+        "pump_b_flow": {"flow_lpm": 15, "sensor_id": "B"},
+        "exchanger_test": {"removed_heat_kw": 9},
+        "pump_a_disagreement": {"flow_sensors_disagree": false}
+      },
+      "expected": {"power_sufficient": "supported", "flow_sufficient": "supported", "rejection_sufficient": "supported", "cooling_at_8kw": "supported"},
+      "affected": []
+    },
+    {
+      "id": "revoke_primary_keep_alternative",
+      "revision_of": "nominal",
+      "observations": {
+        "power_bus": {"voltage_v": 25},
+        "pump_b_flow": {"flow_lpm": 15, "sensor_id": "B"},
+        "exchanger_test": {"removed_heat_kw": 9}
+      },
+      "expected": {"power_sufficient": "supported", "flow_sufficient": "supported", "rejection_sufficient": "supported", "cooling_at_8kw": "supported"},
+      "affected": []
+    },
+    {
+      "id": "revoke_both_routes",
+      "revision_of": "nominal",
+      "observations": {
+        "power_bus": {"voltage_v": 25},
+        "exchanger_test": {"removed_heat_kw": 9}
+      },
+      "expected": {"power_sufficient": "supported", "flow_sufficient": "unsupported", "rejection_sufficient": "supported", "cooling_at_8kw": "unsupported"},
+      "affected": ["flow_sufficient", "cooling_at_8kw"]
+    },
+    {
+      "id": "shared_supply_revoked",
+      "revision_of": "nominal",
+      "observations": {
+        "pump_a_flow": {"flow_lpm": 16, "sensor_id": "A"},
+        "pump_b_flow": {"flow_lpm": 15, "sensor_id": "B"},
+        "exchanger_test": {"removed_heat_kw": 9}
+      },
+      "expected": {"power_sufficient": "unsupported", "flow_sufficient": "unsupported", "rejection_sufficient": "supported", "cooling_at_8kw": "unsupported"},
+      "affected": ["power_sufficient", "flow_sufficient", "cooling_at_8kw"]
+    },
+    {
+      "id": "pump_a_disputed_with_alternative",
+      "revision_of": "nominal",
+      "observations": {
+        "power_bus": {"voltage_v": 25},
+        "pump_a_flow": {"flow_lpm": 16, "sensor_id": "A"},
+        "pump_b_flow": {"flow_lpm": 15, "sensor_id": "B"},
+        "exchanger_test": {"removed_heat_kw": 9},
+        "pump_a_disagreement": {"flow_sensors_disagree": true}
+      },
+      "expected": {"power_sufficient": "supported", "flow_sufficient": "supported", "rejection_sufficient": "supported", "cooling_at_8kw": "supported"},
+      "affected": []
+    },
+    {
+      "id": "pump_a_disputed_alone",
+      "revision_of": "nominal",
+      "observations": {
+        "power_bus": {"voltage_v": 25},
+        "pump_a_flow": {"flow_lpm": 16, "sensor_id": "A"},
+        "exchanger_test": {"removed_heat_kw": 9},
+        "pump_a_disagreement": {"flow_sensors_disagree": true}
+      },
+      "expected": {"power_sufficient": "supported", "flow_sufficient": "contested", "rejection_sufficient": "supported", "cooling_at_8kw": "contested"},
+      "affected": ["flow_sufficient", "cooling_at_8kw"]
+    },
+    {
+      "id": "exchanger_result_revoked",
+      "revision_of": "nominal",
+      "observations": {
+        "power_bus": {"voltage_v": 25},
+        "pump_a_flow": {"flow_lpm": 16, "sensor_id": "A"},
+        "pump_b_flow": {"flow_lpm": 15, "sensor_id": "B"}
+      },
+      "expected": {"power_sufficient": "supported", "flow_sufficient": "supported", "rejection_sufficient": "unsupported", "cooling_at_8kw": "unsupported"},
+      "affected": ["rejection_sufficient", "cooling_at_8kw"]
+    },
+    {
+      "id": "flow_readings_expire",
+      "revision_of": "nominal",
+      "assessed_at": "2026-09-23T12:01:01Z",
+      "observations": {
+        "power_bus": {"voltage_v": 25},
+        "pump_a_flow": {"flow_lpm": 16, "sensor_id": "A"},
+        "pump_b_flow": {"flow_lpm": 15, "sensor_id": "B"},
+        "exchanger_test": {"removed_heat_kw": 9}
+      },
+      "expected": {"power_sufficient": "supported", "flow_sufficient": "unsupported", "rejection_sufficient": "supported", "cooling_at_8kw": "unsupported"},
+      "affected": ["flow_sufficient", "cooling_at_8kw"]
+    },
+    {
+      "id": "changed_loop_identity",
+      "revision_of": "nominal",
+      "context": {"loop_id": "coolant-loop-B", "load_kw": 8},
+      "observations": {
+        "power_bus": {"voltage_v": 25},
+        "pump_a_flow": {"flow_lpm": 16, "sensor_id": "A"},
+        "pump_b_flow": {"flow_lpm": 15, "sensor_id": "B"},
+        "exchanger_test": {"removed_heat_kw": 9}
+      },
+      "expected": {"power_sufficient": "out_of_scope", "flow_sufficient": "out_of_scope", "rejection_sufficient": "out_of_scope", "cooling_at_8kw": "out_of_scope"},
+      "affected": ["power_sufficient", "flow_sufficient", "rejection_sufficient", "cooling_at_8kw"]
+    }
+  ]
+}
