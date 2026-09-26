@@ -11,7 +11,6 @@ This is the reference for authored syntax, static checks and typed proposition b
 - [Typed propositions and observations](#typed-propositions-and-observations)
 - [Method selection and static checks](#method-selection-and-static-checks)
 - [Validation and canonical formatting](#validation-and-canonical-formatting)
-- [Historical examples](#historical-examples)
 
 ## Source structure
 
@@ -38,7 +37,7 @@ Lists use commas. An argument needs at least one direct evidence, assumption or 
 
 An argument's conclusion, evidence, assumptions, premise claims and reasoning backing must use the same named environment. An objection's evidence and premise claims must share an environment compatible with its target. A reasoning-target objection affects applications of that reasoning declaration within the objection's environment. The conclusion-to-premise graph must be acyclic; attack and objection-support cycles are permitted and may remain undecided. Their calculation is in the [argument model](argument-model.md).
 
-The current EAL/2 grammar revision rejects the former `mode deterministic` and `mode nondeterministic` tool clauses. Source selects a tool by name and exact version. Its trusted host binding specifies execution, while the observation records the selected binding's digest. This change does not claim that collection variability can be inferred from the executable or that stable outputs prove reproducibility.
+Source selects a tool by name and exact version. The trusted host binding specifies execution, while the observation records the selected binding's digest. A tool declaration has no repeatability classification: actual variability depends on inputs, state, software and collection conditions.
 
 ## Reusable argument patterns
 
@@ -121,7 +120,7 @@ The implemented quantity identities are `pressure`, `time`, `length`, `mass`, `t
 
 ## Method selection and static checks
 
-`method "namespace/name/1";` resolves an exact installed contract. Built-ins include `structured/1` and seven computational methods. Host extensions use the same selector, output predicates and typed binding. An unknown or unversioned method is a static error even if unused. Source cannot install Python functions, change a registry or choose an executable collector. Assessments record `method_registry_fingerprint`.
+`method "name/1";` or `method "namespace/name/1";` resolves an exact installed contract. Built-ins include `structured/1` and seven computational methods. Host extensions use the same selector, output predicates and typed binding. An unknown or unversioned method is a static error even if unused. Source cannot install Python functions, change a registry or choose an executable collector. Assessments record `method_registry_fingerprint`.
 
 The selected contract fixes which input fields may occur in a typed `query` and which result paths can be required. Every query field must be required by the method input schema with the same type, and output predicates must address declared, compatible scalar fields. See [host-registered methods](reasoning-modes.md#host-registered-methods) for registration, execution limits and versioning; the implementation is in the [method registry](../src/eal/methods.py) and [example extension](../src/eal/extensions.py).
 
@@ -130,7 +129,3 @@ The selected contract fixes which input fields may occur in a typed `query` and 
 Recognition produces typed intermediate representation. Independent passes check IR shape, unique identity, reference kinds, predicate types, registered method contracts, typed query/output correspondence, dependencies, scopes and bounds. Diagnostics provide a code, message, declaration and, where available, one-based source span with exclusive end; contract mismatches can include expected and actual types. Open JSON output fields retain runtime checks. Malformed Python-created IR is checked too.
 
 `format_source(source)` validates and emits canonical source. `format_program(program)` applies the same checks to IR; `semantic_ir(program)` supports parse–format–parse comparisons. Formatting retains meaning and authored pattern/application forms, but can change comments and declaration order across categories. Changed exact source bytes change its digest, so observations must be recollected or explicitly rebound through the normal collection workflow.
-
-## Historical examples
-
-The reset replaced the old example directory. The exact pre-reset commit retains the [temporal assumption case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/latency.eal), [synthetic mixed-method case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/mixed-reasoning.eal) and [local tool execution case](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/examples/live.eal) for provenance. They document prior demonstrations, not the maintained case.

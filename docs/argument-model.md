@@ -6,6 +6,7 @@ EAL/2 evaluates an authored argument graph against recorded observations, a sele
 
 - [Argument structure](#argument-structure)
 - [Local support and formal propositions](#local-support-and-formal-propositions)
+- [Reviewed evidence adequacy](#reviewed-evidence-adequacy)
 - [Compositional objections and defences](#compositional-objections-and-defences)
 - [Result interpretation](#result-interpretation)
 - [Scope, assumptions and evidence time](#scope-assumptions-and-evidence-time)
@@ -35,6 +36,10 @@ For each application, the evaluator checks its declared environment; the availab
 A typed `proposition` adds subject, quantity, unit, scope, validity interval, query and result criterion. Its `binding` checks that a designated observation addresses the registered method query and that the output addresses the proposition criterion. This is correspondence within the represented contract, not verification of the claim's natural-language statement; assessed claims expose `prose_verified: false`. Without a typed proposition, author-supplied text and selected output predicates still constrain support, but the evaluator cannot infer a formal meaning from the text.
 
 Local usability precedes dialectical acceptance. A source-usable derivation has usable local sources and a source-usable path through its required premise claims. The composed solver then decides whether that derivation survives attacks. Keeping these stages separate prevents a locally successful calculation from pre-accepting a contested premise or objection.
+
+## Reviewed evidence adequacy
+
+The optional [argument host](executable-argument-host.md) applies a separate, operator-reviewed adequacy contract to one instantiated source, claim, context and collection. Its executable obligations compare fields in evidence values, computation results, assumptions, objections, claims or context. It also checks that a supported derivation uses reviewed methods, a satisfied main threshold or inference criterion, and required mappings for its premise formulae, assumptions and relevant objections. The result is `adequate` only when the checked EAL claim is supported, the reviewed statement correspondence holds and every required obligation is satisfied. A violated obligation is `insufficient`; an absent or uncheckable relation remains `unresolved`. This is sufficiency relative to the declared contract: it cannot discover an omitted material requirement, authenticate the external producer or establish arbitrary prose equivalence. Without an installed adequacy contract, the host leaves adequacy unresolved rather than inferring it from a tool's success.
 
 ## Compositional objections and defences
 
@@ -96,6 +101,6 @@ An assessment identifies its source, observation set, context, evaluation time a
 
 The attack-only fragment of the composed solver, when all nodes are locally usable, agrees with Dung grounded labelling. The separate `eal_grounded` operation directly solves an explicitly supplied finite argument-and-attack graph. A complementary Dung-node construction has been used as an independent check of the composed equations; that construction and the finite tests are described in [grounded reasoning](grounded-reasoning.md).
 
-ASPIC+ motivates the separation between challenged premises, conclusions and rule applicability. EAL/2 does not automatically build arguments from strict and defeasible rules, infer contrariness from propositions or apply preferences. Its targeted objections are authored attacks under the equations above; calling a claim-targeted attack an ASPIC+ rebuttal would assert semantics the implementation has not supplied. See [Modgil and Prakken](sources.md#argument-and-reasoning-models) for the full framework.
+ASPIC+ distinguishes strict and defeasible rules, premise categories, contrariness and preference-sensitive attack/defeat. EAL/2 supplies none of those rule-construction contracts: its targeted objections are authored attacks under the equations above, not inferred rebuttals or undercuts. An ASPIC+ profile would need defined rule and premise languages, contrary relations, preferences, argument construction and undermining, rebutting, undercutting and defeat rules. Given a separately constructed and checked defeat graph, `solve_grounded` can calculate its abstract grounded labels; it cannot check how that graph was obtained. See [Modgil and Prakken](sources.md#argument-and-reasoning-models) for the full framework.
 
 A richer deductive language, preference-sensitive defeat or probabilistic argument calculus would need a declared input model and inference rules, not simply another keyword or confidence score. In particular, multiplying support probabilities across reused evidence requires justified dependence assumptions: $P(A\cap B)=P(A)P(B\mid A)$. The present methods give method-specific numerical outputs without converting them into a probability that an engineering claim is true.

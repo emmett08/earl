@@ -27,7 +27,7 @@ Apply a removal test: identify a required task and a semantic distinction that w
 
 Provide a compact normative vocabulary alongside the grammar. Make diagnostics use the same terms. Document proposed terminology separately from executable syntax; declare actual grammar changes explicitly. This project does not require backwards compatibility or migration machinery.
 
-Treat current executable examples and discovery responses as part of the contract. Revise them with changed semantics and check that each public CLI, MCP and model-host entry point rejects obsolete request shapes. Preserve historical experiment inputs and results under explicit archival labels; replace active plans that would otherwise run old labels against a changed implementation.
+Treat current executable examples and discovery responses as part of the contract. Revise them with changed semantics and check that each public CLI, MCP and model-host entry point accepts the current request shape. Keep documentation focused on the current implementation and revision history in Git. Preserve immutable experiment inputs and results with the implementation identity that produced them; replace active plans that would otherwise run obsolete shapes against a changed implementation.
 
 ## Human-readable source and formal meaning
 

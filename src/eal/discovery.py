@@ -27,7 +27,6 @@ def describe_language(*, registry=None) -> dict:
     registry = default_registry() if registry is None else registry
 
     return {
-        "language_evolution": "EAL/2 is the only supported source language. Earlier language syntax and semantics are rejected; no compatibility adapters are provided.",
         "implementation_version": __version__,
         "languages": ["EAL/2"],
         "method_registry_fingerprint": registry.fingerprint,
@@ -59,7 +58,7 @@ def describe_language(*, registry=None) -> dict:
             "temporal/1": {"kind": "trace", "input": {"start": "NUMBER", "end": "NUMBER", "max_gap": "NUMBER", "events": [{"time": "NUMBER", "value": "NUMBER"}], "property": {"operator": "lt|le|eq|ne|ge|gt", "value": "NUMBER"}, "semantics": "sampled"}, "outputs": ["holds"], "meaning": "Ordered, bounded finite samples with endpoint/gap coverage; no continuous-time conclusion"},
         },
         "typed_bindings": describe_bindings(registry=registry),
-        "composition": "EAL/2 computes the least-information fixed point of explicit conjunctive support, alternative derivations and attacks. Objections can depend on claim subarguments; targeting an objection expresses defence. Attack cycles may remain undecided. Rejected acceptance does not assert falsity.",
+        "composition": "EAL/2 computes the least-information fixed point of authored conjunctive support, alternative derivations and objection attacks. Objections can depend on claim subarguments; targeting an objection expresses defence. Attack cycles may remain undecided. This profile does not construct ASPIC+ rule arguments, contrariness or preference-sensitive defeat. Rejected acceptance does not assert falsity.",
         "statuses": {
             "valid": "Static language well-formedness only",
             "supported": "At least one usable, uncontested derivation under the declared model",

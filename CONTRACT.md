@@ -1,6 +1,6 @@
 # EAL/2 integration contract
 
-EAL/2 is an engineering reasoning language with explicit claims, evidence, reasoning methods, assumptions, subarguments and objections. It is the only supported source language. Backwards compatibility is never a project requirement. Its finite authored support/attack semantics are defined in [argument-model.md](docs/argument-model.md) and [grounded-reasoning.md](docs/grounded-reasoning.md); they do not implement the complete ASPIC+ framework.
+EAL/2 is an engineering reasoning language with explicit claims, evidence, reasoning methods, assumptions, subarguments and objections. It is the supported source language. Its finite authored support/attack semantics are defined in [argument-model.md](docs/argument-model.md) and [grounded-reasoning.md](docs/grounded-reasoning.md); they do not implement the complete ASPIC+ framework.
 
 ## Source and Python API
 
@@ -49,7 +49,7 @@ All top-level declarations share a namespace; pattern parameters have closed lex
 
 ## Typed methods and propositions
 
-A reasoning declaration has the form `reasoning NAME { method "IDENTIFIER/VERSION"; rationale STRING; ... }`, optionally followed by `backing` evidence and `require` output predicates. Every method, including `structured/1`, is selected by its exact installed versioned identifier. Reasoning `mode` and unversioned aliases are rejected.
+A reasoning declaration has the form `reasoning NAME { method "IDENTIFIER/VERSION"; rationale STRING; ... }`, optionally followed by `backing` evidence and `require` output predicates. Every method, including `structured/1`, is selected by its exact installed versioned identifier.
 
 Built-in contracts are `structured/1`, `deductive/1`, `inductive/1`, `abductive/1`, `causal/1`, `counterfactual/1`, `analogical/1` and `temporal/1`. The corresponding computational evidence kinds are `logical_case`, `sample`, `hypotheses`, `experiment`, `causal_model`, `analogy` and `trace`; structured support has no designated kind. Each computation receives the union of direct evidence, backing and assumption-validation observations, deduplicated by evidence identity. Exactly one designated computational input is required. Premise claims remain explicit graph dependencies, not implicit mathematical inputs.
 
@@ -73,10 +73,10 @@ Predicates compare scalar fields with `== != < <= > >=`. Ordered comparisons req
   "environment_fingerprint": "<environment and context digest>",
   "collected_at": "2026-09-23T12:00:00Z",
   "run_id": "<nonempty invocation identifier>",
-  "input": {},
+  "input": {"suite": "smoke"},
   "input_digest": "<canonical input digest>",
-  "context": {"site": "lab"},
-  "acquisition_request": {"tool": "test_runner", "tool_version": "1.0", "input": {}, "context": {"site": "lab"}},
+  "context": {"site": "bench"},
+  "acquisition_request": {"tool": "test_runner", "tool_version": "1.0", "input": {"suite": "smoke"}, "context": {"site": "bench"}},
   "acquisition_request_digest": "<canonical acquisition request digest>",
   "request_digest": "<canonical full evidence request digest>",
   "status": "ok",
@@ -87,7 +87,7 @@ Predicates compare scalar fields with `== != < <= > >=`. Ordered comparisons req
 
 Records are observations, not conclusions. Errors use `status: "error"`. Missing, stale, future-dated, malformed, wrong-source, wrong-tool, wrong-input, wrong-environment or digest-mismatched records provide no support. Digests bind supplied records to requests but do not authenticate an untrusted producer. Imported observations retain their original `collected_at`; `ingested_at` records storage time.
 
-File-import envelopes require `observed_at`, `context`, `value` and an acquisition `request` containing exactly `tool`, `tool_version`, `input` and `context`. That request must match the current acquisition; it is distinct from the source and evidence identifiers assigned by collection. The trusted collector adds `tool_binding_digest`, a keyed identity of the selected TOML configuration, to its record. Pure evaluation checks that identity field; the host additionally compares it with its current binding before reasoning over a collection. The private store-local `<database>.binding-key` file must remain private and accompany the database when moving it for continued assessment; a missing key gives a new identity and invalidates older observations. Missing or mismatched acquisition metadata produces a stored error. The current envelope has no compatibility fallback. See [MCP and tools](docs/mcp-and-tools.md).
+File-import envelopes require `observed_at`, `context`, `value` and an acquisition `request` containing exactly `tool`, `tool_version`, `input` and `context`. That request must match the current acquisition; it is distinct from the source and evidence identifiers assigned by collection. The trusted collector adds `tool_binding_digest`, a keyed identity of the selected TOML configuration, to its record. Pure evaluation checks that identity field; the host additionally compares it with its current binding before reasoning over a collection. The private store-local `<database>.binding-key` file must remain private and accompany the database when moving it for continued assessment; a missing key gives a new identity and invalidates older observations. Missing or mismatched acquisition metadata produces a stored error. See [MCP and tools](docs/mcp-and-tools.md).
 
 Evidence is age-eligible at exactly `max_age`, but not when older. Assumption intervals are half-open `[valid_from, valid_until)` and are checked at assessment time. Every argument dependency uses its conclusion's named environment. Freshness, fingerprints and asserted intervals do not establish continuous physical validity.
 
@@ -101,7 +101,7 @@ Claims and arguments report `supported`, `contested`, `unsupported` or `out_of_s
 
 ## Formatting, discovery and host integration
 
-`format_source(source)` parses, validates and emits canonical source; `format_program(program)` emits checked IR. `semantic_ir(program)` excludes source digests and locations for round-trip comparisons. Formatting preserves declarations and applications. Exact source identity remains distinct from meaning: changed source bytes require recollecting observations.
+`format_source(source)` parses, validates and emits canonical source; `format_program(program)` emits canonical source from checked IR. `semantic_ir(program)` excludes source digests and locations for round-trip comparisons. Formatting preserves declarations and applications. Exact source identity remains distinct from meaning: changed source bytes require recollecting observations.
 
 `ReasoningService.describe()` returns language syntax, executable examples and method/binding contracts. `format(source)` returns canonical `source`, `source_digest` and `observation_recollection_required`. MCP exposes `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_explain` and `eal_grounded` through the shared service.
 
@@ -111,11 +111,11 @@ An optional `ArtifactRegistry` pins exact source bytes, installed method fingerp
 
 Stateful `run_agent` retains active source, context, time and current collection/assessment. Validation adopts a revised draft only when valid; revision invalidates earlier observations and results. `assess` performs four separately recorded and budgeted calls: validation, fresh collection, reasoning and explanation. `host_mode="stateless"` uses explicit full-source/full-identifier requests for controlled comparisons. `interaction_mode="text"` and `"native"` share operation semantics; native transport requires a configured capable provider. One-shot `eal-host` remains stateless.
 
-A finished host interaction is separate from a correct engineering answer. See [MCP and tools](docs/mcp-and-tools.md) and the [API load-test example](examples/api-load-test/README.md). The [23 September 2026 regression report](https://github.com/emmett08/earl/blob/a9cdabee643118ff3ae28b3ec5c346427cca8cad/docs/eal2-model-results.md) measured EAL/2 package 2.1.0 with selected models and hosts on previously exposed tasks. Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured.
+A finished host interaction is separate from a correct engineering answer. See [MCP and tools](docs/mcp-and-tools.md) and the [API load-test example](examples/api-load-test/README.md). Human comprehension, generalisation to unseen tasks and the effect of EAL notation remain unmeasured.
 
-## Executable argument host (package 2.7.0)
+## Executable argument host
 
-The source language remains `EAL/2`; the 26 September 2026 revision removes tool `mode` from authored declarations and collection records. The independent formal reasoning-method input envelope remains `EAL/typed-input/1`. This acquisition contract change is distinct from this host's `eal2-argument-schemes/1` catalogue, `eal-adequacy/1` contract, `eal-adequacy-result/1` and `eal2-argument-answer/1` packet. The host does not reinterpret the pure `evaluate` result or its `supported` label as evidence sufficiency.
+The source language is `EAL/2`; authored tools declare an interface version, while acquisition records identify the selected host binding. Formal reasoning-method inputs use `EAL/typed-input/1`. The argument host separately uses the `eal2-argument-schemes/1` catalogue, `eal-adequacy/1` contract, `eal-adequacy-result/1` and `eal2-argument-answer/1` packet. The host does not reinterpret a pure `evaluate` result or its `supported` label as evidence sufficiency.
 
 `ArgumentHost.load(service, schemes_toml, *, principal, session_id, authorised_schemes=None, recogniser=None, correspondence_validator=None)` checks each workspace-relative source's exact SHA-256 and the installed method-registry fingerprint. A scheme fixes an EAL claim, `claim`/`decision`/`action` kind, reviewed prose forms, optional follow-up forms, typed slot-to-context bindings and adequacy clauses. Slot substitution changes complete EAL string tokens only; it must leave tool and method selectors unchanged, and the instantiated claim environment must constrain each slot. All tool executables remain in the separate trusted registry.
 
