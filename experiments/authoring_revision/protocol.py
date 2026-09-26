@@ -11,6 +11,7 @@ import re
 STAGES = ("initial", "revision")
 STATUSES = {"supported", "unsupported", "unavailable", "contested", "out_of_scope"}
 ARMS = ("eal2", "typed_rules")
+ILLUSTRATIVE_COMMIT = "0" * 40
 
 
 def canonical(value: object) -> bytes:

@@ -8,8 +8,26 @@ import sys
 import tempfile
 import time
 
-from .protocol import STAGES, canonical, digest, identifier, load_frozen, read_json
+from .protocol import (ILLUSTRATIVE_COMMIT, STAGES, canonical, digest, identifier,
+                       load_frozen, read_json)
 from .recording import MAX_ARTIFACT_BYTES, _artefact_digest
+
+
+REPOSITORY = Path(__file__).resolve().parents[2]
+def _checkout_identity() -> tuple[str | None, bool | None]:
+    """Inspect the actual repository containing the study runner and evaluator."""
+    try:
+        root = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=REPOSITORY,
+                              check=True, capture_output=True, text=True).stdout.strip()
+        if Path(root).resolve() != REPOSITORY:
+            return None, None
+        head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=REPOSITORY,
+                              check=True, capture_output=True, text=True).stdout.strip()
+        status = subprocess.run(["git", "status", "--porcelain", "--untracked-files=all"],
+                                cwd=REPOSITORY, check=True, capture_output=True, text=True)
+    except (OSError, subprocess.CalledProcessError):
+        return None, None
+    return head, bool(status.stdout.strip())
 
 
 def replay(run: Path, submission_id: str, operator_id: str,
@@ -39,6 +57,13 @@ def replay(run: Path, submission_id: str, operator_id: str,
     if (record["artefact_sha256"] is None or not source.is_dir()
             or _artefact_digest(source) != record["artefact_sha256"]):
         raise ValueError("Submitted source is absent or changed")
+    repository_head, repository_dirty = _checkout_identity()
+    pinned_commit = plan["source_commit"]
+    provenance_limited = pinned_commit == ILLUSTRATIVE_COMMIT
+    if not provenance_limited and (repository_head != pinned_commit or repository_dirty is not False):
+        raise ValueError("Replay requires the pinned Git HEAD and a clean repository")
+    if not provenance_limited and not runner.resolve().is_relative_to(REPOSITORY):
+        raise ValueError("Pinned runner must be inside the assessed repository")
     task = next(task for task in plan["tasks"] if task["id"] == assignment["task_id"])
     case_bundle = {"schema": "eal-authoring-cases/1", "task_id": task["id"],
                    "stage": stage, "target_claims": task["target_claims"][stage],
@@ -49,8 +74,7 @@ def replay(run: Path, submission_id: str, operator_id: str,
     (destination / "cases.json").write_bytes(case_bytes)
     environment = {key: os.environ[key] for key in ("PATH", "LANG", "LC_ALL", "TZ")
                    if key in os.environ}
-    environment["PYTHONPATH"] = os.pathsep.join(filter(None, (str(Path.cwd().resolve()),
-                                                              os.environ.get("PYTHONPATH", ""))))
+    environment["PYTHONPATH"] = os.pathsep.join((str(REPOSITORY / "src"), str(REPOSITORY)))
     environment.update({
         "PYTHONDONTWRITEBYTECODE": "1",
         "EAL_STUDY_SOURCE": str(source.resolve()),
@@ -63,7 +87,7 @@ def replay(run: Path, submission_id: str, operator_id: str,
     error = None
     with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
         try:
-            completed = subprocess.run(command, cwd=Path.cwd(), env=environment,
+            completed = subprocess.run(command, cwd=REPOSITORY, env=environment,
                                        stdout=stdout, stderr=stderr, timeout=timeout_seconds,
                                        check=False)
             returncode = completed.returncode
@@ -80,6 +104,15 @@ def replay(run: Path, submission_id: str, operator_id: str,
         diagnostic = stderr.read(MAX_ARTIFACT_BYTES)
     if _artefact_digest(source) != record["artefact_sha256"]:
         error = "source_changed_during_replay"
+    head_after, dirty_after = _checkout_identity()
+    if not provenance_limited and (head_after != pinned_commit or dirty_after is not False):
+        error = "repository_changed_during_replay"
+    try:
+        runner_unchanged = digest(runner.read_bytes()) == runner_digest
+    except OSError:
+        runner_unchanged = False
+    if not runner_unchanged:
+        error = "runner_changed_during_replay"
     (destination / "results.json").write_bytes(output)
     (destination / "stderr.txt").write_bytes(diagnostic)
     provenance = {
@@ -87,7 +120,11 @@ def replay(run: Path, submission_id: str, operator_id: str,
         "operator_id": operator_id, "runner_version": runner_version,
         "runner_file": str(runner.resolve()), "runner_sha256": runner_digest,
         "python_version": sys.version.split()[0],
-        "command": command, "working_directory": str(Path.cwd().resolve()),
+        "repository_head": repository_head, "repository_dirty": repository_dirty,
+        "repository_head_after": head_after, "repository_dirty_after": dirty_after,
+        "source_commit_verification": ("illustrative_placeholder" if provenance_limited
+                                       else "matched_clean"),
+        "command": command, "working_directory": str(REPOSITORY),
         "source_sha256": record["artefact_sha256"],
         "cases_sha256": digest(case_bytes), "stdout_sha256": digest(output),
         "stderr_sha256": digest(diagnostic), "returncode": returncode,

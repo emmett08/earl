@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import hashlib
+import importlib
 from pathlib import Path
 import subprocess
 import sys
@@ -21,7 +22,7 @@ def _write(path: Path, value: object) -> Path:
     return path
 
 
-def _study(tmp_path: Path) -> tuple[Path, Path, list[dict]]:
+def _study(tmp_path: Path, source_commit: str = "0" * 40) -> tuple[Path, Path, list[dict]]:
     runner = tmp_path / "runner.py"
     runner.write_text(
         "import json, os\n"
@@ -34,7 +35,7 @@ def _study(tmp_path: Path) -> tuple[Path, Path, list[dict]]:
     plan = {
         "schema": "eal-authoring-plan/1", "study_id": "synthetic",
         "target_population": "Synthetic task fixtures for instrument tests only",
-        "source_commit": "a" * 40, "assignment_seed": 17,
+        "source_commit": source_commit, "assignment_seed": 17,
         "arms": ["eal2", "typed_rules"],
         "runner_sha256": {"eal2": runner_hash, "typed_rules": runner_hash},
         "practical_margins": {"correct_case_fraction": 0.1, "active_seconds": 120,
@@ -155,6 +156,41 @@ def test_perfect_participant_result_is_unscored_without_replay(tmp_path: Path) -
         replay(run, f"{assignment['id']}-initial", "operator", "runner/1", wrong_runner)
 
 
+def test_replay_checks_real_revision_and_clean_checkout(tmp_path: Path,
+                                                        monkeypatch: pytest.MonkeyPatch) -> None:
+    pin = "f" * 40
+    run, oracle_path, assignments = _study(tmp_path, source_commit=pin)
+    assignment = assignments[0]
+    source = tmp_path / "source.eal"
+    source.write_text("synthetic source", encoding="utf-8")
+    submit(run, assignment["id"], "initial", 15, source, None)
+    submission_id = f"{assignment['id']}-initial"
+    runner = tmp_path / "runner.py"
+    with pytest.raises(ValueError, match="pinned Git HEAD"):
+        replay(run, submission_id, "operator", "runner/1", runner)
+    assert not (run / "replays" / submission_id).exists()
+    replay_module = importlib.import_module("experiments.authoring_revision.replay")
+    monkeypatch.setattr(replay_module, "_checkout_identity", lambda: (pin, False))
+    with pytest.raises(ValueError, match="inside the assessed repository"):
+        replay(run, submission_id, "operator", "runner/1", runner)
+    monkeypatch.setattr(replay_module, "REPOSITORY", tmp_path)
+    monkeypatch.setattr(replay_module, "_checkout_identity", lambda: (pin, True))
+    with pytest.raises(ValueError, match="clean repository"):
+        replay(run, submission_id, "operator", "runner/1", runner)
+    monkeypatch.setattr(replay_module, "_checkout_identity", lambda: (pin, False))
+    provenance = replay(run, submission_id, "operator", "runner/1", runner)
+    assert provenance["repository_head"] == pin
+    assert provenance["repository_dirty"] is False
+    assert provenance["source_commit_verification"] == "matched_clean"
+    assert not analyse(run, oracle_path)["source_provenance_limited"]
+    provenance_path = run / "replays" / submission_id / "record.json"
+    forged = read_json(provenance_path)
+    forged["repository_head"] = "e" * 40
+    _write(provenance_path, forged)
+    with pytest.raises(ValueError, match="revision provenance"):
+        analyse(run, oracle_path)
+
+
 def test_example_cooling_replays_both_arms_from_copied_source(tmp_path: Path) -> None:
     here = Path(__file__).resolve().parents[1]
     example = here / "experiments" / "authoring_revision"
@@ -183,6 +219,7 @@ def test_example_cooling_replays_both_arms_from_copied_source(tmp_path: Path) ->
                                    cwd=here, check=True, capture_output=True)
         assert json.loads(completed.stdout)["returncode"] == 0
     report = analyse(run, example / "example-oracle.json")
+    assert report["source_provenance_limited"] is True
     replayed = [row for row in report["rows"] if row["replayed"]]
     assert {row["arm"] for row in replayed} == {"eal2", "typed_rules"}
     assert all(row["complete_correct"] and row["correct_cases"] == 3

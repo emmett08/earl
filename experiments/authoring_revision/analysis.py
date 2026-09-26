@@ -4,8 +4,10 @@ from __future__ import annotations
 from collections import defaultdict
 import json
 from pathlib import Path
+import re
 
-from .protocol import STAGES, canonical, digest, load_frozen, read_json, verify_oracle
+from .protocol import (ILLUSTRATIVE_COMMIT, STAGES, canonical, digest, load_frozen,
+                       read_json, verify_oracle)
 from .recording import _artefact_digest
 
 
@@ -100,6 +102,24 @@ def analyse(run: Path, oracle_path: Path) -> dict:
                         or replay_record["source_sha256"] != record["artefact_sha256"]
                         or replay_record["runner_sha256"] != plan["runner_sha256"][assignment["arm"]]):
                     raise ValueError("Replay source or runner identity differs from frozen plan")
+                pinned = plan["source_commit"]
+                if pinned == ILLUSTRATIVE_COMMIT:
+                    head = replay_record.get("repository_head")
+                    head_after = replay_record.get("repository_head_after")
+                    if (replay_record.get("source_commit_verification") != "illustrative_placeholder"
+                            or any(value is not None and
+                                   (not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{40}", value) is None)
+                                   for value in (head, head_after))
+                            or any(value is not None and type(value) is not bool
+                                   for value in (replay_record.get("repository_dirty"),
+                                                 replay_record.get("repository_dirty_after")))):
+                        raise ValueError("Replay revision provenance differs from frozen plan")
+                elif (replay_record.get("source_commit_verification") != "matched_clean"
+                      or replay_record.get("repository_head") != pinned
+                      or replay_record.get("repository_dirty") is not False
+                      or replay_record.get("repository_head_after") != pinned
+                      or replay_record.get("repository_dirty_after") is not False):
+                    raise ValueError("Replay revision provenance differs from frozen plan")
                 expected_cases = {"schema": "eal-authoring-cases/1", "task_id": task_id,
                                   "stage": stage,
                                   "target_claims": next(t for t in plan["tasks"]
@@ -194,6 +214,7 @@ def analyse(run: Path, oracle_path: Path) -> dict:
     return {
         "schema": "eal-authoring-analysis/1", "study_id": plan["study_id"],
         "source_commit": plan["source_commit"], "practical_margins": plan["practical_margins"],
+        "source_provenance_limited": plan["source_commit"] == ILLUSTRATIVE_COMMIT,
         "interpretation": ("Descriptive assigned-denominator results. Participant results "
                            "are never graded; absent or failed independent replays are unscored "
                            "and count as incomplete. Elapsed and review times are observed-only. "
