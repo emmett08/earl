@@ -123,7 +123,7 @@ class EvidenceRuntime:
         stdout, stderr = b"", b""
         try:
             binding = registry.binding_for(declaration.tool, version=declared_tool.version)
-            record["tool_binding_digest"] = binding.binding_digest(self.store._binding_key)
+            record["tool_binding_digest"] = binding.binding_digest(self.store._binding_key, workspace=self.workspace)
             acquisition = acquisition_request(program, name, context)
             request = {"evidence_id": name, "environment": declaration.environment, **acquisition}
             record["request_digest"] = canonical_digest(request)
@@ -132,6 +132,10 @@ class EvidenceRuntime:
             result = registry.acquire(binding, request, self.workspace, secret=self.store._binding_key)
             stdout, stderr = result.stdout, result.stderr
             record.update(result.metadata)
+            # A collector that changed during the call cannot issue a current
+            # observation under the identity checked before execution.
+            if binding.binding_digest(self.store._binding_key, workspace=self.workspace) != record["tool_binding_digest"]:
+                raise ValueError("Collector binding identity changed during acquisition")
             if result.error is not None:
                 raise result.error
             envelope = validate_envelope(stdout, file_import=binding.kind == "json_file",
@@ -211,8 +215,9 @@ class ReasoningService:
     def current_binding_digests(self, program) -> dict[str, str | None]:
         """Resolve current operator configuration for each evidence declaration.
 
-        A missing or changed configuration invalidates a stored observation;
-        the digest does not authenticate executable contents or physical data.
+        Missing or changed configuration and an operator-pinned file mismatch
+        invalidate a stored observation. Unpinned dependencies and physical
+        data are outside this identity check.
         """
         registry = ToolRegistry.load(self.registry_path) if self.registry_path is not None else self.runtime.registry
         current = {}
@@ -223,7 +228,8 @@ class ReasoningService:
                 continue
             try:
                 current[name] = registry.binding_for(
-                    tool.name, version=tool.version).binding_digest(self.store._binding_key)
+                    tool.name, version=tool.version).binding_digest(self.store._binding_key,
+                                                                    workspace=self.workspace)
             except ValueError:
                 current[name] = None
         return current

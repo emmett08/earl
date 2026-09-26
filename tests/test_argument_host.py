@@ -196,6 +196,25 @@ def test_finish_rejects_same_version_tool_binding_configuration_drift(tmp_path):
         host.finish(packet["assessment_id"])
 
 
+def test_pinned_collector_bytes_change_invalidates_finish_and_fresh_collection(tmp_path):
+    host, service, _, tools = _host(tmp_path)
+    script = tmp_path / "collector.py"
+    tools.write_text(tools.read_text() +
+        f'pinned_files=[{{path="collector.py",sha256="{hashlib.sha256(script.read_bytes()).hexdigest()}"}}]\n')
+    packet = host.assess("check the error limit for payments")
+    assert packet["status"] == "supported"
+    previous_digest = service.store.get(packet["collection_id"], kind="collection")["records"]["sample"]["tool_binding_digest"]
+    script.write_bytes(script.read_bytes() + b"\n# Changed collector implementation\n")
+    with pytest.raises(ValueError, match="identity|reassess"):
+        host.finish(packet["assessment_id"])
+    fresh = host.assess("check the error limit for payments")
+    assert fresh["status"] == "unresolved"
+    observation = service.store.get(fresh["collection_id"], kind="collection")["records"]["sample"]
+    assert observation["status"] == "error" and "tool_binding_digest" not in observation
+    assert previous_digest != service.current_binding_digests(parse(host.instantiate(
+        "error_probability", {"service": "payments"}, {"service": "payments"})))["sample"]
+
+
 def test_new_principal_cannot_retrieve_another_principals_result(tmp_path):
     host, service, manifest, _ = _host(tmp_path)
     packet = host.assess("check the error limit for payments")
