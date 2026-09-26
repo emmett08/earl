@@ -61,6 +61,23 @@ def test_failure_preserves_its_pair_and_counts_as_incorrect(tmp_path):
     assert rows["typed_rule"]["state"] == "complete"
 
 
+def test_extra_supported_claim_is_false_support_and_wrong_decision(tmp_path):
+    fixture = {**FIXTURE, "cases": FIXTURE["cases"][:1]}
+
+    def evaluator(case, arm):
+        answer = _evaluator(case, arm)
+        if arm == "eal":
+            answer["claims"]["invented"] = "supported"
+        return answer
+
+    summary = run(tmp_path / "extra", fixture=fixture, evaluator=evaluator)
+    assert summary["cells"]["eal"]["correct"] == 0
+    assert summary["cells"]["eal"]["false_support_claims"] == 1
+    assert summary["cells"]["typed_rule"]["correct"] == 1
+    assert summary["paired_correctness"]["typed_rule_only_correct"] == 1
+    assert summary["trials"][0]["false_support_claims"] == ["invented"]
+
+
 def test_predeclared_affected_set_must_follow_expected_statuses(tmp_path):
     bad = json.loads(json.dumps(FIXTURE))
     bad["cases"][1]["affected"] = []

@@ -120,6 +120,8 @@ def _trial(case: dict, arm: str, evaluator: Callable[[dict, str], dict]) -> dict
         claims = response["claims"]
         seconds = response["elapsed_seconds"]
         if (not isinstance(claims, dict) or
+                any(not isinstance(name, str) or status not in STATUSES
+                    for name, status in claims.items()) or
                 any(claims.get(name) not in STATUSES for name in case["expected"]) or
                 type(seconds) not in (float, int) or not math.isfinite(seconds) or seconds < 0 or
                 not isinstance(response.get("source_digest"), str) or
@@ -155,16 +157,17 @@ def summarise(fixture: dict, trials: list[dict]) -> dict:
             complete = trial["state"] == "complete"
             actual = trial["claims"] if complete else None
             expected = case["expected"]
-            correct = complete and all(actual.get(name) == status for name, status in expected.items())
-            false_support = ([name for name, status in expected.items()
-                              if actual.get(name) == "supported" and status != "supported"]
+            correct = (complete and set(actual) == set(expected)
+                       and all(actual[name] == status for name, status in expected.items()))
+            false_support = ([name for name, status in actual.items()
+                              if status == "supported" and expected.get(name) != "supported"]
                              if complete else [])
             predecessor = case.get("revision_of")
             changed = None
             if predecessor is not None and complete:
                 previous = lookup[predecessor, arm]
                 if previous["state"] == "complete":
-                    changed = sorted(name for name in expected
+                    changed = sorted(name for name in set(actual) | set(previous["claims"])
                                      if actual.get(name) != previous["claims"].get(name))
             affected_correct = changed == sorted(case["affected"]) if changed is not None else None
             rows.append({**trial, "expected": expected, "correct": correct,
