@@ -36,22 +36,30 @@ def _time(path: Path) -> float:
     return value
 
 
-def _packet_state(stage: str, block: str, clone: str, arm: str,
+def artifact_name(kind: str, block: str, clone: str, run_attempt: str) -> str:
+    if not isinstance(run_attempt, str) or not run_attempt.isdecimal() or int(run_attempt) < 1:
+        raise ValueError("dispatch run_attempt must be a positive decimal string")
+    return f"attempt-{run_attempt}-{kind}-{block}-{clone}"
+
+
+def _packet_state(stage: str, block: str, clone: str, arm: str, run_attempt: str,
                   hosts: Path, preflight: Path) -> Path | None:
     if arm == "P0":
         return None
     if stage == "B":
-        return preflight / f"host-pre-B-{block}-{clone}" / "state"
+        return preflight / artifact_name("host-pre-B", block, clone, run_attempt) / "state"
     previous = "B" if stage == "C" else "C"
-    return hosts / f"host-{previous}-{block}-{clone}" / "next-state"
+    return hosts / artifact_name(f"host-{previous}", block, clone, run_attempt) / "next-state"
 
 
 def episode(stage: str, family: str, clone: str, arm: str, block: str,
             episodes: Path, hosts: Path, preflight: Path,
             dispatch: dict[str, Any]) -> dict[str, Any]:
-    prefix = f"{block}-{clone}"
-    attempt = episodes / f"episode-{stage}-{prefix}"
-    host = hosts / f"host-{stage}-{prefix}"
+    run_attempt = dispatch["run_attempt"]
+    episode_artifact = artifact_name(f"episode-{stage}", block, clone, run_attempt)
+    host_artifact = artifact_name(f"host-{stage}", block, clone, run_attempt)
+    attempt = episodes / episode_artifact
+    host = hosts / host_artifact
     exposure = read_json(attempt / "exposure.json")
     invocation = read_json(attempt / "invocation.json")
     assessment = read_json(host / "assessment.json")
@@ -73,6 +81,10 @@ def episode(stage: str, family: str, clone: str, arm: str, block: str,
         raise ValueError("model, agent class or effort differs from predeclared block")
     if any(invocation.get(key) != dispatch[key] for key in ("source_commit", "run_id", "run_attempt")):
         raise ValueError("invocation source or workflow run differs from dispatch")
+    if invocation['agent_class'] == 'codex_cli' and (
+            invocation.get('sandbox_backend') != 'bubblewrap'
+            or invocation.get('sandbox_preflight') != 'success'):
+        raise ValueError("Codex sandbox preflight or selected backend is not attested")
     version = dispatch["codex_version" if invocation["agent_class"] == "codex_cli"
                        else "claude_version"]
     if version not in str(invocation.get("cli_version", "")):
@@ -86,7 +98,7 @@ def episode(stage: str, family: str, clone: str, arm: str, block: str,
         raise ValueError("current brief digest differs from frozen brief or delivered exposure")
     if verification.get("initial_visible_tree_sha256") != exposure.get("visible_tree_sha256"):
         raise ValueError("exposure verification has a different initial tree")
-    state = _packet_state(stage, block, clone, arm, hosts, preflight)
+    state = _packet_state(stage, block, clone, arm, run_attempt, hosts, preflight)
     packet = exposure.get("packet_sha256")
     host_metrics = None
     if state is None:
@@ -147,11 +159,9 @@ def episode(stage: str, family: str, clone: str, arm: str, block: str,
             "wall_cap_enforced": True,
             "token_usage": usage.get("usage"),
             "cost_gbp": None,
-            "artifact_names": {"episode": f"episode-{stage}-{prefix}",
-                               "host": f"host-{stage}-{prefix}",
-                               "packet_host": (None if state is None else
-                                               f"host-pre-B-{prefix}" if stage == "B" else
-                                               f"host-{'B' if stage == 'C' else 'C'}-{prefix}")},
+            "artifact_names": {"episode": episode_artifact,
+                               "host": host_artifact,
+                               "packet_host": None if state is None else state.parent.name},
             "source_commit": invocation.get("source_commit"),
             "runner": {key: invocation.get(key) for key in
                        ("runner_os", "runner_arch", "cli_version", "binary_sha256",

@@ -18,7 +18,7 @@ on:
       model_blocks:
         description: 'JSON array of complete blocks. Each B/C/D class and model is identical across its P0/P1/P2 arms.'
         type: string
-        default: '[{"id":"pilot","b_class":"codex_cli","c_class":"codex_cli","d_class":"codex_cli","b_model":"gpt-6-sol","c_model":"gpt-6-sol","d_model":"gpt-6-sol","b_effort":"medium","c_effort":"medium","d_effort":"medium"}]'
+        default: '[{"id":"sandbox-repair","b_class":"codex_cli","c_class":"codex_cli","d_class":"codex_cli","b_model":"gpt-6-sol","c_model":"gpt-6-sol","d_model":"gpt-6-sol","b_effort":"medium","c_effort":"medium","d_effort":"medium"}]'
       codex_version:
         description: 'Exact @openai/codex npm version'
         type: string
@@ -49,7 +49,7 @@ jobs:
           python experiments/architecture_extension_v3/study/freeze.py verify
           python -m pytest tests/test_eal2_frontend.py tests/test_aspic_compiler.py
           python -m pytest experiments/architecture_extension_v3/technical_debt/test_tool.py experiments/architecture_extension_v3/test_workflow_ledger.py experiments/architecture_extension_v3/release_gate/test_gate.py
-          python -m pytest experiments/architecture_extension_v3/test_host.py experiments/architecture_extension_v3/study/test_study_contract.py
+          python -m pytest experiments/architecture_extension_v3/test_host.py experiments/architecture_extension_v3/study/test_study_contract.py experiments/architecture_extension_v3/study/test_assembly.py
       - name: Replay the finite release decision gate without altering frozen results
         run: |
           gate=experiments/architecture_extension_v3/release_gate
@@ -82,11 +82,34 @@ jobs:
           python "$study/host.py" prepare --source "$source" --brief "$study/study/features/R-B.md" --family R --feature B --arm P2 --packet "$RUNNER_TEMP/p2/packet-P2.json" --destination "$RUNNER_TEMP/trial" --record "$RUNNER_TEMP/exposure.json"
           python "$study/host.py" verify-exposure --trial "$RUNNER_TEMP/trial" --record "$RUNNER_TEMP/exposure.json"
           python "$study/study/assess.py" --candidate "$source" --family R --stage B > "$RUNNER_TEMP/baseline-assessment.json"
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+      - name: Install pinned Codex for a credential-free sandbox probe
+        env:
+          CODEX_VERSION: ${{ inputs.codex_version || '0.154.0' }}
+        run: npm install -g "@openai/codex@$CODEX_VERSION"
+      - name: Install Ubuntu sandbox prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+          bwrap --version
+      - name: Verify Codex sandbox before enabling live acquisition
+        run: |
+          timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
+            sandbox -- \
+            python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Retain deterministic preflight, including failures
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: architecture-v3-validation-${{ github.run_id }}
+          name: attempt-${{ github.run_attempt }}-architecture-v3-validation-${{ github.run_id }}
           path: |
             ${{ runner.temp }}/p1/
             ${{ runner.temp }}/p2/
@@ -160,7 +183,7 @@ jobs:
       - name: Retain the predeclared model and class block
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: architecture-v3-block-${{ github.run_id }}
+          name: attempt-${{ github.run_attempt }}-architecture-v3-block-${{ github.run_id }}
           path: ${{ runner.temp }}/block-manifest.json
           if-no-files-found: error
           retention-days: 30
@@ -210,7 +233,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: input-B-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-input-B-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/input-B/
           if-no-files-found: warn
           retention-days: 30
@@ -218,7 +241,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: host-pre-B-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-host-pre-B-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/host-pre-B/
           if-no-files-found: warn
           retention-days: 30
@@ -235,7 +258,7 @@ jobs:
       - name: Download only this clone's current episode input (no repository checkout)
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: input-B-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-input-B-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ github.workspace }}
       - name: Check isolated exposure before agent
         run: |
@@ -270,6 +293,26 @@ jobs:
             claude --version > "$GITHUB_WORKSPACE/agent-version.txt"
             sha256sum "$(readlink -f "$(command -v claude)")" > "$GITHUB_WORKSPACE/agent-binary-sha256.txt"
           fi
+      - name: Install Ubuntu sandbox prerequisites
+        if: ${{ matrix.block.b_class == 'codex_cli' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+          bwrap --version
+      - name: Verify Codex sandbox before spending model tokens
+        id: sandbox
+        if: ${{ matrix.block.b_class == 'codex_cli' }}
+        working-directory: trial
+        run: |
+          timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
+            sandbox -- \
+            python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
         if: ${{ matrix.block.b_class == 'codex_cli' }}
@@ -322,6 +365,7 @@ jobs:
         env:
           AGENT_CLASS: ${{ matrix.block.b_class }}
           REQUESTED_MODEL: ${{ matrix.block.b_model }}
+          SANDBOX_PREFLIGHT: ${{ steps.sandbox.outcome }}
           REQUESTED_EFFORT: ${{ matrix.block.b_effort }}
           FAMILY: ${{ matrix.family }}
           CLONE: ${{ matrix.clone }}
@@ -363,6 +407,8 @@ jobs:
               'started_unix_seconds':float(start) if start else None,
               'ended_unix_seconds':float(end) if end else None,'wall_seconds':elapsed,
               'wall_cap_seconds':1800,'exit_code':int(read('agent-exit.txt')) if read('agent-exit.txt') else None,
+              'sandbox_backend':'bubblewrap' if os.environ['AGENT_CLASS']=='codex_cli' else None,
+              'sandbox_preflight':os.environ['SANDBOX_PREFLIGHT'],
               'raw_trace_sha256_before_secret_redaction':raw_sha,
               'exact_credential_redacted':exposed}
           (root/'invocation.json').write_text(json.dumps(record,sort_keys=True,indent=2)+'\n')
@@ -371,7 +417,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: episode-B-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-episode-B-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ github.workspace }}/
           if-no-files-found: warn
           retention-days: 30
@@ -398,7 +444,7 @@ jobs:
       - name: Retrieve assigned attempt after coding job has ended
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: episode-B-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-episode-B-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/episode
       - name: Verify exact exposure, capture source-only snapshot and sealed independent result
         env:
@@ -430,7 +476,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: input-C-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-input-C-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/input-C/
           if-no-files-found: warn
           retention-days: 30
@@ -438,7 +484,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: host-B-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-host-B-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/host-B/
           if-no-files-found: warn
           retention-days: 30
@@ -455,7 +501,7 @@ jobs:
       - name: Download only this clone's current episode input (no repository checkout)
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: input-C-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-input-C-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ github.workspace }}
       - name: Check isolated exposure before agent
         run: |
@@ -490,6 +536,26 @@ jobs:
             claude --version > "$GITHUB_WORKSPACE/agent-version.txt"
             sha256sum "$(readlink -f "$(command -v claude)")" > "$GITHUB_WORKSPACE/agent-binary-sha256.txt"
           fi
+      - name: Install Ubuntu sandbox prerequisites
+        if: ${{ matrix.block.c_class == 'codex_cli' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+          bwrap --version
+      - name: Verify Codex sandbox before spending model tokens
+        id: sandbox
+        if: ${{ matrix.block.c_class == 'codex_cli' }}
+        working-directory: trial
+        run: |
+          timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
+            sandbox -- \
+            python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
         if: ${{ matrix.block.c_class == 'codex_cli' }}
@@ -542,6 +608,7 @@ jobs:
         env:
           AGENT_CLASS: ${{ matrix.block.c_class }}
           REQUESTED_MODEL: ${{ matrix.block.c_model }}
+          SANDBOX_PREFLIGHT: ${{ steps.sandbox.outcome }}
           REQUESTED_EFFORT: ${{ matrix.block.c_effort }}
           FAMILY: ${{ matrix.family }}
           CLONE: ${{ matrix.clone }}
@@ -583,6 +650,8 @@ jobs:
               'started_unix_seconds':float(start) if start else None,
               'ended_unix_seconds':float(end) if end else None,'wall_seconds':elapsed,
               'wall_cap_seconds':1800,'exit_code':int(read('agent-exit.txt')) if read('agent-exit.txt') else None,
+              'sandbox_backend':'bubblewrap' if os.environ['AGENT_CLASS']=='codex_cli' else None,
+              'sandbox_preflight':os.environ['SANDBOX_PREFLIGHT'],
               'raw_trace_sha256_before_secret_redaction':raw_sha,
               'exact_credential_redacted':exposed}
           (root/'invocation.json').write_text(json.dumps(record,sort_keys=True,indent=2)+'\n')
@@ -591,7 +660,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: episode-C-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-episode-C-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ github.workspace }}/
           if-no-files-found: warn
           retention-days: 30
@@ -618,12 +687,12 @@ jobs:
       - name: Retrieve assigned attempt after coding job has ended
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: episode-C-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-episode-C-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/episode
       - name: Retrieve the exact B source as the C change baseline
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: host-B-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-host-B-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/prior-host
       - name: Verify exact exposure, capture source-only snapshot and sealed independent result
         env:
@@ -655,7 +724,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: input-D-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-input-D-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/input-D/
           if-no-files-found: warn
           retention-days: 30
@@ -663,7 +732,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: host-C-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-host-C-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/host-C/
           if-no-files-found: warn
           retention-days: 30
@@ -680,7 +749,7 @@ jobs:
       - name: Download only this clone's current episode input (no repository checkout)
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: input-D-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-input-D-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ github.workspace }}
       - name: Check isolated exposure before agent
         run: |
@@ -715,6 +784,26 @@ jobs:
             claude --version > "$GITHUB_WORKSPACE/agent-version.txt"
             sha256sum "$(readlink -f "$(command -v claude)")" > "$GITHUB_WORKSPACE/agent-binary-sha256.txt"
           fi
+      - name: Install Ubuntu sandbox prerequisites
+        if: ${{ matrix.block.d_class == 'codex_cli' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+          bwrap --version
+      - name: Verify Codex sandbox before spending model tokens
+        id: sandbox
+        if: ${{ matrix.block.d_class == 'codex_cli' }}
+        working-directory: trial
+        run: |
+          timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
+            sandbox -- \
+            python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
         if: ${{ matrix.block.d_class == 'codex_cli' }}
@@ -767,6 +856,7 @@ jobs:
         env:
           AGENT_CLASS: ${{ matrix.block.d_class }}
           REQUESTED_MODEL: ${{ matrix.block.d_model }}
+          SANDBOX_PREFLIGHT: ${{ steps.sandbox.outcome }}
           REQUESTED_EFFORT: ${{ matrix.block.d_effort }}
           FAMILY: ${{ matrix.family }}
           CLONE: ${{ matrix.clone }}
@@ -808,6 +898,8 @@ jobs:
               'started_unix_seconds':float(start) if start else None,
               'ended_unix_seconds':float(end) if end else None,'wall_seconds':elapsed,
               'wall_cap_seconds':1800,'exit_code':int(read('agent-exit.txt')) if read('agent-exit.txt') else None,
+              'sandbox_backend':'bubblewrap' if os.environ['AGENT_CLASS']=='codex_cli' else None,
+              'sandbox_preflight':os.environ['SANDBOX_PREFLIGHT'],
               'raw_trace_sha256_before_secret_redaction':raw_sha,
               'exact_credential_redacted':exposed}
           (root/'invocation.json').write_text(json.dumps(record,sort_keys=True,indent=2)+'\n')
@@ -816,7 +908,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: episode-D-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-episode-D-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ github.workspace }}/
           if-no-files-found: warn
           retention-days: 30
@@ -843,7 +935,7 @@ jobs:
       - name: Retrieve assigned attempt after coding job has ended
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: episode-D-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-episode-D-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/episode
       - name: Verify exact exposure, capture source-only snapshot and sealed independent result
         env:
@@ -869,7 +961,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: host-D-${{ matrix.block.id }}-${{ matrix.clone }}
+          name: attempt-${{ github.run_attempt }}-host-D-${{ matrix.block.id }}-${{ matrix.clone }}
           path: ${{ runner.temp }}/host-D/
           if-no-files-found: warn
           retention-days: 30
@@ -885,31 +977,31 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          name: architecture-v3-block-${{ github.run_id }}
+          name: attempt-${{ github.run_attempt }}-architecture-v3-block-${{ github.run_id }}
           path: ${{ runner.temp }}/config
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          pattern: episode-*
+          pattern: attempt-${{ github.run_attempt }}-episode-*
           path: ${{ runner.temp }}/episodes
         continue-on-error: true
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          pattern: host-B-*
+          pattern: attempt-${{ github.run_attempt }}-host-B-*
           path: ${{ runner.temp }}/hosts
         continue-on-error: true
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          pattern: host-C-*
+          pattern: attempt-${{ github.run_attempt }}-host-C-*
           path: ${{ runner.temp }}/hosts
         continue-on-error: true
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          pattern: host-D-*
+          pattern: attempt-${{ github.run_attempt }}-host-D-*
           path: ${{ runner.temp }}/hosts
         continue-on-error: true
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
         with:
-          pattern: host-pre-B-*
+          pattern: attempt-${{ github.run_attempt }}-host-pre-B-*
           path: ${{ runner.temp }}/preflight
         continue-on-error: true
       - name: Assemble exact episode ledger and run bounded analysis
@@ -935,12 +1027,26 @@ jobs:
             echo "$?" > "$RUNNER_TEMP/comparison/analysis-exit.txt"
           fi
           set -e
+          cat "$RUNNER_TEMP/comparison/assembly-summary.json"
+          cat "$RUNNER_TEMP/comparison/assembly-error.txt"
+          if [ -f "$RUNNER_TEMP/comparison/ledger.json" ]; then
+            python - <<'PYDIAGNOSTICS'
+          import json, os
+          from pathlib import Path
+          ledger=json.loads((Path(os.environ['RUNNER_TEMP'])/'comparison/ledger.json').read_text())
+          for row in ledger.get('missing_or_invalid', []):
+              print(f"{row['clone']} {row['stage']}: {row['error']}")
+          PYDIAGNOSTICS
+          fi
+          if [ -s "$RUNNER_TEMP/comparison/analysis-error.txt" ]; then
+            cat "$RUNNER_TEMP/comparison/analysis-error.txt"
+          fi
           echo 'The masked architecture review remains unresolved; any 25% judgement is withheld.'
       - name: Retain complete or partial comparison
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
-          name: architecture-v3-comparison-${{ github.run_id }}
+          name: attempt-${{ github.run_attempt }}-architecture-v3-comparison-${{ github.run_id }}
           path: ${{ runner.temp }}/comparison/
           if-no-files-found: warn
           retention-days: 30
