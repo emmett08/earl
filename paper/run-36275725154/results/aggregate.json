@@ -1,0 +1,3646 @@
+{
+  "archive_sha256": "0d1286e661eabb78470a2283d160979d4aae7221f98a086189ee7495124de018",
+  "arms": [
+    "eal_mcp",
+    "json_prompt",
+    "plain_brief",
+    "plain_explicit",
+    "plain_review",
+    "plain_validator"
+  ],
+  "assigned": 1440,
+  "cells": [
+    {
+      "arm": "eal_mcp",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.405092,
+      "false_support": 0,
+      "model": "gpt-4.1-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 29,
+      "cost_known_usd": 0.483754,
+      "false_support": 0,
+      "model": "gpt-4.1-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 32,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 35,
+      "cost_known_usd": 0.319802,
+      "false_support": 0,
+      "model": "gpt-4.1-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 38,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 34,
+      "cost_known_usd": 0.321346,
+      "false_support": 0,
+      "model": "gpt-4.1-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 37,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 35,
+      "cost_known_usd": 0.324202,
+      "false_support": 0,
+      "model": "gpt-4.1-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 37,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.326066,
+      "false_support": 0,
+      "model": "gpt-4.1-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.0819552,
+      "false_support": 0,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 25,
+      "cost_known_usd": 0.0972404,
+      "false_support": 0,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 25,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 26,
+      "cost_known_usd": 0.0648744,
+      "false_support": 0,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "provider_calls": 81,
+      "status_correct": 27,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 25,
+      "cost_known_usd": 0.0653972,
+      "false_support": 0,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "provider_calls": 81,
+      "status_correct": 25,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 26,
+      "cost_known_usd": 0.0669772,
+      "false_support": 0,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "provider_calls": 81,
+      "status_correct": 26,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.0658132,
+      "false_support": 0,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 27,
+      "cost_known_usd": 0.0198973,
+      "false_support": 0,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "provider_calls": 81,
+      "status_correct": 27,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 5,
+      "cost_known_usd": 0.0240579,
+      "false_support": 28,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "provider_calls": 81,
+      "status_correct": 9,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 7,
+      "cost_known_usd": 0.0156541,
+      "false_support": 29,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 9,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 9,
+      "cost_known_usd": 0.015572500000000001,
+      "false_support": 31,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 9,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 4,
+      "cost_known_usd": 0.015843700000000002,
+      "false_support": 27,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 11,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 23,
+      "cost_known_usd": 0.015837300000000002,
+      "false_support": 7,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "provider_calls": 80,
+      "status_correct": 23,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.6885025,
+      "false_support": 0,
+      "model": "gpt-5.4-2026-03-05",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 38,
+      "cost_known_usd": 0.9084325,
+      "false_support": 0,
+      "model": "gpt-5.4-2026-03-05",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 39,
+      "cost_known_usd": 0.6173625,
+      "false_support": 0,
+      "model": "gpt-5.4-2026-03-05",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 37,
+      "cost_known_usd": 0.647135,
+      "false_support": 0,
+      "model": "gpt-5.4-2026-03-05",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 39,
+      "cost_known_usd": 0.6206,
+      "false_support": 0,
+      "model": "gpt-5.4-2026-03-05",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.561315,
+      "false_support": 0,
+      "model": "gpt-5.4-2026-03-05",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.20950725,
+      "false_support": 0,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "provider_calls": 80,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 38,
+      "cost_known_usd": 0.26187825,
+      "false_support": 1,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "provider_calls": 80,
+      "status_correct": 38,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 38,
+      "cost_known_usd": 0.1929417,
+      "false_support": 0,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "provider_calls": 81,
+      "status_correct": 39,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 38,
+      "cost_known_usd": 0.1960287,
+      "false_support": 0,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "provider_calls": 81,
+      "status_correct": 39,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.1866597,
+      "false_support": 0,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "provider_calls": 81,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 40,
+      "cost_known_usd": 0.17873745,
+      "false_support": 0,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "provider_calls": 81,
+      "status_correct": 40,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 36,
+      "cost_known_usd": 0.0584085,
+      "false_support": 0,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "provider_calls": 80,
+      "status_correct": 36,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 31,
+      "cost_known_usd": 0.06896775000000001,
+      "false_support": 0,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "provider_calls": 80,
+      "status_correct": 31,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 25,
+      "cost_known_usd": 0.04825425,
+      "false_support": 0,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "provider_calls": 80,
+      "status_correct": 25,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 28,
+      "cost_known_usd": 0.048765050000000004,
+      "false_support": 0,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "provider_calls": 80,
+      "status_correct": 28,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 25,
+      "cost_known_usd": 0.0506655,
+      "false_support": 0,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "provider_calls": 80,
+      "status_correct": 25,
+      "unknown_cost_calls": 0
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 40,
+      "completed": 40,
+      "correct": 36,
+      "cost_known_usd": 0.0495843,
+      "false_support": 0,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "provider_calls": 80,
+      "status_correct": 36,
+      "unknown_cost_calls": 0
+    }
+  ],
+  "distinct_cases": 40,
+  "families": [
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-mini-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "conflicting",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 1,
+      "family": "corrupt",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "errors",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "incomplete",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 3,
+      "family": "near_limit",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "slow",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "stale",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "conflicting",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 2,
+      "family": "corrupt",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "errors",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "incomplete",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 3,
+      "family": "near_limit",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "slow",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "stale",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "conflicting",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "corrupt",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "errors",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "incomplete",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 3,
+      "family": "near_limit",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "slow",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "stale",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "conflicting",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 2,
+      "family": "corrupt",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 3,
+      "family": "errors",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "incomplete",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 3,
+      "family": "near_limit",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 3,
+      "family": "slow",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "stale",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 4,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 2,
+      "family": "conflicting",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 2,
+      "family": "stale",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 3,
+      "family": "wrong_identity",
+      "model": "gpt-4.1-nano-2025-04-14"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-2026-03-05"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 1,
+      "family": "slow",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-mini-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "eal_mcp",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "json_prompt",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_brief",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_explicit",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 1,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_review",
+      "assigned": 4,
+      "correct": 0,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 2,
+      "false_support": 0,
+      "family": "conflicting",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "corrupt",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "distractor",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "errors",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "healthy",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "incomplete",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "near_limit",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "slow",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 3,
+      "false_support": 0,
+      "family": "stale",
+      "model": "gpt-5.4-nano-2026-03-17"
+    },
+    {
+      "arm": "plain_validator",
+      "assigned": 4,
+      "correct": 4,
+      "false_support": 0,
+      "family": "wrong_identity",
+      "model": "gpt-5.4-nano-2026-03-17"
+    }
+  ],
+  "finalisation": "model",
+  "inference": "Reviewed development cases; no confirmatory inference authorised.",
+  "mode": "pilot",
+  "models": [
+    "gpt-4.1-2025-04-14",
+    "gpt-4.1-mini-2025-04-14",
+    "gpt-4.1-nano-2025-04-14",
+    "gpt-5.4-2026-03-05",
+    "gpt-5.4-mini-2026-03-17",
+    "gpt-5.4-nano-2026-03-17"
+  ],
+  "pairs": [
+    {
+      "both_correct": 29,
+      "both_incorrect": 0,
+      "comparator": "json_prompt",
+      "comparator_only": 0,
+      "difference": 0.275,
+      "eal_only": 11,
+      "model": "gpt-4.1-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 35,
+      "both_incorrect": 0,
+      "comparator": "plain_brief",
+      "comparator_only": 0,
+      "difference": 0.125,
+      "eal_only": 5,
+      "model": "gpt-4.1-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 34,
+      "both_incorrect": 0,
+      "comparator": "plain_explicit",
+      "comparator_only": 0,
+      "difference": 0.15,
+      "eal_only": 6,
+      "model": "gpt-4.1-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 35,
+      "both_incorrect": 0,
+      "comparator": "plain_review",
+      "comparator_only": 0,
+      "difference": 0.125,
+      "eal_only": 5,
+      "model": "gpt-4.1-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 40,
+      "both_incorrect": 0,
+      "comparator": "plain_validator",
+      "comparator_only": 0,
+      "difference": 0.0,
+      "eal_only": 0,
+      "model": "gpt-4.1-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 25,
+      "both_incorrect": 0,
+      "comparator": "json_prompt",
+      "comparator_only": 0,
+      "difference": 0.375,
+      "eal_only": 15,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 26,
+      "both_incorrect": 0,
+      "comparator": "plain_brief",
+      "comparator_only": 0,
+      "difference": 0.35,
+      "eal_only": 14,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 25,
+      "both_incorrect": 0,
+      "comparator": "plain_explicit",
+      "comparator_only": 0,
+      "difference": 0.375,
+      "eal_only": 15,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 26,
+      "both_incorrect": 0,
+      "comparator": "plain_review",
+      "comparator_only": 0,
+      "difference": 0.35,
+      "eal_only": 14,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 40,
+      "both_incorrect": 0,
+      "comparator": "plain_validator",
+      "comparator_only": 0,
+      "difference": 0.0,
+      "eal_only": 0,
+      "model": "gpt-4.1-mini-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 5,
+      "both_incorrect": 13,
+      "comparator": "json_prompt",
+      "comparator_only": 0,
+      "difference": 0.55,
+      "eal_only": 22,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 7,
+      "both_incorrect": 13,
+      "comparator": "plain_brief",
+      "comparator_only": 0,
+      "difference": 0.5,
+      "eal_only": 20,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 9,
+      "both_incorrect": 13,
+      "comparator": "plain_explicit",
+      "comparator_only": 0,
+      "difference": 0.45,
+      "eal_only": 18,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 4,
+      "both_incorrect": 13,
+      "comparator": "plain_review",
+      "comparator_only": 0,
+      "difference": 0.575,
+      "eal_only": 23,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 21,
+      "both_incorrect": 11,
+      "comparator": "plain_validator",
+      "comparator_only": 2,
+      "difference": 0.1,
+      "eal_only": 6,
+      "model": "gpt-4.1-nano-2025-04-14",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 38,
+      "both_incorrect": 0,
+      "comparator": "json_prompt",
+      "comparator_only": 0,
+      "difference": 0.05,
+      "eal_only": 2,
+      "model": "gpt-5.4-2026-03-05",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 39,
+      "both_incorrect": 0,
+      "comparator": "plain_brief",
+      "comparator_only": 0,
+      "difference": 0.025,
+      "eal_only": 1,
+      "model": "gpt-5.4-2026-03-05",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 37,
+      "both_incorrect": 0,
+      "comparator": "plain_explicit",
+      "comparator_only": 0,
+      "difference": 0.075,
+      "eal_only": 3,
+      "model": "gpt-5.4-2026-03-05",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 39,
+      "both_incorrect": 0,
+      "comparator": "plain_review",
+      "comparator_only": 0,
+      "difference": 0.025,
+      "eal_only": 1,
+      "model": "gpt-5.4-2026-03-05",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 40,
+      "both_incorrect": 0,
+      "comparator": "plain_validator",
+      "comparator_only": 0,
+      "difference": 0.0,
+      "eal_only": 0,
+      "model": "gpt-5.4-2026-03-05",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 38,
+      "both_incorrect": 0,
+      "comparator": "json_prompt",
+      "comparator_only": 0,
+      "difference": 0.05,
+      "eal_only": 2,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 38,
+      "both_incorrect": 0,
+      "comparator": "plain_brief",
+      "comparator_only": 0,
+      "difference": 0.05,
+      "eal_only": 2,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 38,
+      "both_incorrect": 0,
+      "comparator": "plain_explicit",
+      "comparator_only": 0,
+      "difference": 0.05,
+      "eal_only": 2,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 40,
+      "both_incorrect": 0,
+      "comparator": "plain_review",
+      "comparator_only": 0,
+      "difference": 0.0,
+      "eal_only": 0,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 40,
+      "both_incorrect": 0,
+      "comparator": "plain_validator",
+      "comparator_only": 0,
+      "difference": 0.0,
+      "eal_only": 0,
+      "model": "gpt-5.4-mini-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 30,
+      "both_incorrect": 3,
+      "comparator": "json_prompt",
+      "comparator_only": 1,
+      "difference": 0.125,
+      "eal_only": 6,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 25,
+      "both_incorrect": 4,
+      "comparator": "plain_brief",
+      "comparator_only": 0,
+      "difference": 0.275,
+      "eal_only": 11,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 27,
+      "both_incorrect": 3,
+      "comparator": "plain_explicit",
+      "comparator_only": 1,
+      "difference": 0.2,
+      "eal_only": 9,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 25,
+      "both_incorrect": 4,
+      "comparator": "plain_review",
+      "comparator_only": 0,
+      "difference": 0.275,
+      "eal_only": 11,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "paired_cases": 40
+    },
+    {
+      "both_correct": 33,
+      "both_incorrect": 1,
+      "comparator": "plain_validator",
+      "comparator_only": 3,
+      "difference": 0.0,
+      "eal_only": 3,
+      "model": "gpt-5.4-nano-2026-03-17",
+      "paired_cases": 40
+    }
+  ],
+  "run_id": 36275725154,
+  "schema": "eal-run-36275725154-aggregate/1",
+  "source_commit": "f8c629f49b5bef6c760de2029f6bc7db0e762a6f",
+  "transport": "native"
+}

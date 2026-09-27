@@ -1,0 +1,37 @@
+% Required packages: tikz, xcolor, amsmath
+% Required TikZ libraries: none
+% Target width: 161 mm
+% Minimum text size: 7 pt at final reproduction
+% Colour/greyscale intent: dark ink and one restrained accent; orientations and direct labels are redundant.
+\begingroup
+\definecolor{runInk}{RGB}{38,44,51}%
+\definecolor{runQuiet}{RGB}{95,104,109}%
+\definecolor{runAccent}{RGB}{146,65,36}%
+\begin{tikzpicture}[x=1mm,y=1mm,inner sep=0pt,outer sep=0pt]
+\useasboundingbox (0,0) rectangle (160,58);
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (1.000,54.000) {Model snapshot};
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (46.000,54.000) {Median trial seconds};
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (103.000,54.000) {Known cost (mUSD / trial)};
+\node[anchor=west,text=runQuiet,font=\fontsize{7}{9}\selectfont] at (46.000,49.000) {EAL / validator = ratio of medians};
+\node[anchor=west,text=runQuiet,font=\fontsize{7}{9}\selectfont] at (103.000,49.000) {EAL / validator = ratio of totals};
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (1.000,42.000) {4.1};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (46.000,42.000) {9.15 / 4.24 $\approx 2.16\times$};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (103.000,42.000) {10.13 / 8.15 $\approx 1.24\times$};
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (1.000,35.400) {4.1 mini};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (46.000,35.400) {8.47 / 4.52 $\approx 1.87\times$};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (103.000,35.400) {2.05 / 1.65 $\approx 1.25\times$};
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (1.000,28.800) {4.1 nano};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (46.000,28.800) {8.93 / 3.92 $\approx 2.28\times$};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (103.000,28.800) {0.50 / 0.40 $\approx 1.26\times$};
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (1.000,22.200) {5.4};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (46.000,22.200) {10.37 / 6.11 $\approx 1.70\times$};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (103.000,22.200) {17.21 / 14.03 $\approx 1.23\times$};
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (1.000,15.600) {5.4 mini};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (46.000,15.600) {10.00 / 4.83 $\approx 2.07\times$};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (103.000,15.600) {5.24 / 4.47 $\approx 1.17\times$};
+\node[anchor=west,text=runInk,font=\fontsize{8}{9}\selectfont] at (1.000,9.000) {5.4 nano};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (46.000,9.000) {10.70 / 5.55 $\approx 1.93\times$};
+\node[anchor=west,text=runInk,font=\fontsize{7.6}{9}\selectfont] at (103.000,9.000) {1.46 / 1.24 $\approx 1.18\times$};
+\node[anchor=west,text=runInk,font=\fontsize{7.2}{9}\selectfont] at (1.000,2.000) {Observed paired arms; 40 completed trials in each cell, with no unknown-cost calls.};
+\end{tikzpicture}
+\endgroup\ignorespaces
