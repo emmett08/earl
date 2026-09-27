@@ -1,0 +1,33 @@
+// Synthetic bounded claim. The rationale is authored; EAL checks the declared
+// evidence, assumption, route and objection relations at a pinned time.
+language "EAL/2";
+
+environment trial { require "site" == "bench"; }
+tool fixture { version "1"; }
+
+evidence direct_test { tool fixture; kind test; environment trial; max_age 60;
+  require "ok" == true; }
+evidence alternate_test { tool fixture; kind test; environment trial; max_age 60;
+  require "ok" == true; }
+evidence calibration { tool fixture; kind test; environment trial; max_age 60;
+  require "ok" == true; }
+evidence trace_gap { tool fixture; kind inspection; environment trial; max_age 60;
+  require "ok" == true; }
+evidence global_blocker { tool fixture; kind inspection; environment trial; max_age 60;
+  require "ok" == true; }
+evidence gap_rebuttal { tool fixture; kind inspection; environment trial; max_age 60;
+  require "ok" == true; }
+
+reasoning bounded_review { method "structured/1";
+  rationale "A current calibrated direct test or an independent test supports the bounded finding, subject to the stated attacks."; }
+claim finding { statement "The synthetic trial has a supported bounded finding.";
+  environment trial; }
+assumption calibrated { statement "The direct test's calibration is applicable.";
+  environment trial; validate calibration; }
+argument direct_route { conclusion finding; reasoning bounded_review;
+  evidence direct_test; assumptions calibrated; }
+argument alternate_route { conclusion finding; reasoning bounded_review;
+  evidence alternate_test; }
+objection missing_trace { target argument direct_route; evidence trace_gap; }
+objection trace_restored { target objection missing_trace; evidence gap_rebuttal; }
+objection whole_claim_blocked { target claim finding; evidence global_blocker; }

@@ -1,0 +1,18 @@
+{
+  "schema": "inference-machinery-oracles/1",
+  "source": "Independent, pre-run application of the case contract in README.md; project-authored synthetic cases, without external adjudication.",
+  "cases": [
+    {"id":"C01","status":"supported","reason":"Current direct test and applicable calibration; no active attack."},
+    {"id":"C02","status":"contested","reason":"The current trace gap defeats the only constructed route."},
+    {"id":"C03","status":"supported","reason":"The trace gap defeats the direct route; the independent route remains."},
+    {"id":"C04","status":"contested","reason":"The current claim-level blocker attacks both routes."},
+    {"id":"C05","status":"supported","reason":"The current rebuttal defeats the route-specific trace objection."},
+    {"id":"C06","status":"unsupported","reason":"The direct test is stale; no alternate route exists."},
+    {"id":"C07","status":"supported","reason":"The direct route lacks calibration, but the alternate test independently supports the claim."},
+    {"id":"C08","status":"supported","reason":"The trace objection is stale; the calibrated direct route remains."},
+    {"id":"C09","status":"out_of_scope","reason":"The observation context fails the declared site restriction."},
+    {"id":"C10","status":"unsupported","reason":"Calibration is stale, so the only candidate route cannot be constructed."},
+    {"id":"C11","status":"contested","reason":"The current trace objection defeats the only route; its rebuttal is stale."},
+    {"id":"C12","status":"supported","reason":"The claim-level blocker is stale and two current routes support the finding."}
+  ]
+}
