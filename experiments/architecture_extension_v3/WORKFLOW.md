@@ -7,21 +7,16 @@ exercise a deterministic P1 plain collector and P2 EAL MCP round trip against
 the same frozen A source. The validation artifact retains packets, host state,
 the staged trial and baseline assessment. It creates no v3 coding outcome.
 
-The frozen pull-request path filter includes the v2 A source but not edits
-confined to its retained assessor probe or Cognitive Complexity tool. Such an
-edit alone does not start this workflow; run
-`python3 experiments/architecture_extension_v3/study/freeze.py verify` explicitly
-before accepting it. The verifier includes both files and rejects changed
-bytes. Changing this workflow's trigger after the completed local exercise
-would itself change one of the 117 registered inputs, so it requires a new
-prospective freeze rather than a silent repair of this one.
+[Workflow amendment 1](study/WORKFLOW-AMENDMENT-1.md) records the operational
+repair after run 36331015150. The original freeze and failed outcomes are
+retained. The active freeze records observed outcomes and the amended apparatus;
+new results belong to a separate development exercise.
 
-`workflow_dispatch` with `live=true` is an **opt-in, credentialed acquisition
-route** after the workflow is available on the repository's default branch.
-It requires `OPENAI_API_KEY` for Codex stages and `ANTHROPIC_API_KEY` for Claude
-Code stages. Supply dedicated, short-lived keys. The live route has not been
-executed for this PR; the workflow syntax and host-side commands can be tested
-without provider credentials, but the remote CLI behaviour remains unverified.
+`workflow_dispatch` with `live=true` requires `OPENAI_API_KEY` for Codex stages
+and `ANTHROPIC_API_KEY` for Claude Code stages. Start a new dispatch with a distinct
+block ID after a failed acquisition. `live=false` also checks the pinned Codex
+sandbox without provider calls. A failed-jobs-only retry cannot assemble inputs
+from a previous workflow attempt.
 
 ## Assignment and source flow
 
@@ -53,7 +48,8 @@ check its top-level entries, and cannot see the host's independent assessor,
 later briefs or other clones on the local runner filesystem. The source and
 briefs are committed in a public PR, so a network-enabled agent could still
 retrieve them externally; this is workspace withholding rather than a claim
-of complete secrecy. Codex runs with `workspace-write`; Claude Code runs in
+of complete secrecy. Codex runs with `workspace-write` and the explicitly selected legacy Landlock
+backend; Claude Code runs in
 restricted mode with file tools but without Bash. Those tool differences
 belong to the agent-class block, so model-class comparisons across blocks
 cannot isolate model identity. Within each three-arm family-stage block the
@@ -97,16 +93,17 @@ assignment.
 
 ## Artifacts and interpretation
 
-`input-{stage}-{block}-{clone}` contains only `trial/` and `exposure.json`.
-`episode-{stage}-{block}-{clone}` additionally retains the CLI JSONL trace,
+`attempt-{attempt}-input-{stage}-{block}-{clone}` contains only `trial/` and `exposure.json`.
+`attempt-{attempt}-episode-{stage}-{block}-{clone}` additionally retains the CLI JSONL trace,
 stderr, start/end/exit records, version and invocation metadata, including
-failure attempts. `host-pre-B-{block}-{clone}` and
-`host-{stage}-{block}-{clone}` retain host state and metrics, exact packet,
+failure attempts. `attempt-{attempt}-host-pre-B-{block}-{clone}` and
+`attempt-{attempt}-host-{stage}-{block}-{clone}` retain host state and metrics, exact packet,
 source snapshot/manifest, independent assessment, exposure verification and
 parsed usage where available. Each artifact is retained for 30 days; copy
 the run's artifacts to durable study storage before expiry.
 
-The compare job downloads all assigned episodes and host artifacts.
+The compare job downloads assigned episodes and host artifacts only from the
+current workflow attempt. It prints assembly diagnostics in the job log.
 `study/assemble.py` recomputes the brief and packet hashes, joins each host
 source to its independent assessment, checks exposure and the 30-minute
 timeout record, and emits `ledger.json`. Missing or inconsistent attempts
