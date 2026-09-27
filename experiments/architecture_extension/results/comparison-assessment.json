@@ -1,0 +1,1346 @@
+{
+  "arguments": {
+    "baseline_design": {
+      "attackers": [],
+      "conclusion": "extension_point",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [
+          "baseline_contract"
+        ],
+        "premises": [],
+        "reasoning": "existing_extension"
+      },
+      "grounded_label": "accepted",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {},
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Evidence 'baseline_contract' is available",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "supported"
+    },
+    "causal_interpretation": {
+      "attackers": [
+        "objection:allocation_confound",
+        "objection:unblinded_comparison"
+      ],
+      "conclusion": "eal_caused_check_advantage",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [],
+        "premises": [
+          "local_check_advantage"
+        ],
+        "reasoning": "causal_account"
+      },
+      "grounded_label": "rejected",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {
+        "local_check_advantage": "rejected"
+      },
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Premise claim 'local_check_advantage' lacks a source-usable derivation",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: rejected"
+      ],
+      "source_usable": false,
+      "status": "unsupported"
+    },
+    "conjunction_of_reported_findings": {
+      "attackers": [],
+      "conclusion": "reported_checks_pass",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [
+          "baseline_contract",
+          "feature_behaviour",
+          "payload_cap",
+          "registry_extension",
+          "single_dispatch_path",
+          "single_format_path",
+          "reachable_code",
+          "all_tests"
+        ],
+        "premises": [],
+        "reasoning": "report_conjunction"
+      },
+      "grounded_label": "accepted",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {},
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Evidence 'baseline_contract' is available",
+        "Evidence 'feature_behaviour' is available",
+        "Evidence 'payload_cap' is available",
+        "Evidence 'registry_extension' is available",
+        "Evidence 'single_dispatch_path' is available",
+        "Evidence 'single_format_path' is available",
+        "Evidence 'reachable_code' is available",
+        "Evidence 'all_tests' is available",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "supported"
+    },
+    "debt_prediction": {
+      "attackers": [
+        "objection:debt_not_measured"
+      ],
+      "conclusion": "future_debt_reduced",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [],
+        "premises": [
+          "architecture_within_fixture",
+          "extension_point"
+        ],
+        "reasoning": "debt_forecast"
+      },
+      "grounded_label": "rejected",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {
+        "architecture_within_fixture": "accepted",
+        "extension_point": "accepted"
+      },
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Premise claim 'architecture_within_fixture' has a source-usable derivation",
+        "Premise claim 'extension_point' has a source-usable derivation",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: rejected"
+      ],
+      "source_usable": true,
+      "status": "contested"
+    },
+    "observed_control_fail": {
+      "attackers": [],
+      "conclusion": "control_dispatch_check_failed",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [
+          "control_dispatch_fail"
+        ],
+        "premises": [],
+        "reasoning": "recorded_check"
+      },
+      "grounded_label": "rejected",
+      "locally_usable": false,
+      "origin": null,
+      "premise_labels": {},
+      "reasoning_result": {
+        "details": {},
+        "method": "structured/1",
+        "reasons": [
+          "Required sources are unavailable or out of scope"
+        ],
+        "status": "not_run"
+      },
+      "reasons": [
+        "Evidence 'control_dispatch_fail' is unavailable",
+        "Least-information acceptability label: rejected"
+      ],
+      "source_usable": false,
+      "status": "unsupported"
+    },
+    "observed_control_pass": {
+      "attackers": [],
+      "conclusion": "control_dispatch_check_passed",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [
+          "control_dispatch_pass"
+        ],
+        "premises": [],
+        "reasoning": "recorded_check"
+      },
+      "grounded_label": "accepted",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {},
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Evidence 'control_dispatch_pass' is available",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "supported"
+    },
+    "observed_dispatch_pass": {
+      "attackers": [],
+      "conclusion": "treated_dispatch_check_passed",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [
+          "single_dispatch_path"
+        ],
+        "premises": [],
+        "reasoning": "recorded_check"
+      },
+      "grounded_label": "accepted",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {},
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Evidence 'single_dispatch_path' is available",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "supported"
+    },
+    "observed_treated_path": {
+      "attackers": [],
+      "conclusion": "treated_dispatch_check_failed",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [
+          "treated_dispatch_failure"
+        ],
+        "premises": [],
+        "reasoning": "recorded_check"
+      },
+      "grounded_label": "rejected",
+      "locally_usable": false,
+      "origin": null,
+      "premise_labels": {},
+      "reasoning_result": {
+        "details": {},
+        "method": "structured/1",
+        "reasons": [
+          "Required sources are unavailable or out of scope"
+        ],
+        "status": "not_run"
+      },
+      "reasons": [
+        "Evidence 'treated_dispatch_failure' is unavailable",
+        "Least-information acceptability label: rejected"
+      ],
+      "source_usable": false,
+      "status": "unsupported"
+    },
+    "paired_advantage": {
+      "attackers": [],
+      "conclusion": "local_check_advantage",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [
+          "same_feature_control",
+          "same_start_snapshot"
+        ],
+        "premises": [
+          "treated_dispatch_check_passed",
+          "control_dispatch_check_failed"
+        ],
+        "reasoning": "paired_check"
+      },
+      "grounded_label": "rejected",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {
+        "control_dispatch_check_failed": "rejected",
+        "treated_dispatch_check_passed": "accepted"
+      },
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Evidence 'same_feature_control' is available",
+        "Evidence 'same_start_snapshot' is available",
+        "Premise claim 'treated_dispatch_check_passed' has a source-usable derivation",
+        "Premise claim 'control_dispatch_check_failed' lacks a source-usable derivation",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: rejected"
+      ],
+      "source_usable": false,
+      "status": "unsupported"
+    },
+    "paired_tie": {
+      "attackers": [],
+      "conclusion": "local_check_tie",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [
+          "same_feature_control",
+          "same_start_snapshot",
+          "control_all_tests"
+        ],
+        "premises": [
+          "reported_checks_pass",
+          "control_dispatch_check_passed"
+        ],
+        "reasoning": "paired_check"
+      },
+      "grounded_label": "accepted",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {
+        "control_dispatch_check_passed": "accepted",
+        "reported_checks_pass": "accepted"
+      },
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Evidence 'same_feature_control' is available",
+        "Evidence 'same_start_snapshot' is available",
+        "Evidence 'control_all_tests' is available",
+        "Premise claim 'reported_checks_pass' has a source-usable derivation",
+        "Premise claim 'control_dispatch_check_passed' has a source-usable derivation",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "supported"
+    },
+    "treated_architecture": {
+      "attackers": [],
+      "conclusion": "architecture_within_fixture",
+      "dependencies": {
+        "assumptions": [],
+        "evidence": [],
+        "premises": [
+          "extension_point",
+          "reported_checks_pass",
+          "treated_dispatch_check_passed"
+        ],
+        "reasoning": "scoped_architecture"
+      },
+      "grounded_label": "accepted",
+      "locally_usable": true,
+      "origin": null,
+      "premise_labels": {
+        "extension_point": "accepted",
+        "reported_checks_pass": "accepted",
+        "treated_dispatch_check_passed": "accepted"
+      },
+      "reasoning_result": {
+        "details": {
+          "authored": true,
+          "mechanically_proved": false
+        },
+        "method": "structured/1",
+        "predicates": [],
+        "premise_acceptance": "deferred_to_composed_solver",
+        "reasons": [
+          "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+        ],
+        "status": "supported"
+      },
+      "reasons": [
+        "Premise claim 'extension_point' has a source-usable derivation",
+        "Premise claim 'reported_checks_pass' has a source-usable derivation",
+        "Premise claim 'treated_dispatch_check_passed' has a source-usable derivation",
+        "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "supported"
+    }
+  },
+  "assessed_at": "2026-09-27T12:30:48.826508Z",
+  "assessment_id": "3a103018-a8bc-42e1-b6d6-75079d07738c",
+  "assumptions": {},
+  "claims": {
+    "architecture_within_fixture": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "accepted",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "Accepted derivations: treated_architecture",
+        "Least-information acceptability label: accepted; rejection does not establish claim falsity"
+      ],
+      "source_usable": true,
+      "statement": "On the recorded B EAL snapshot, the fixed registry, dispatch, preparation-call and module-import checks pass under their stated syntactic and probe limits.",
+      "status": "supported",
+      "supporting_arguments": [
+        "treated_architecture"
+      ],
+      "undecided_objections": []
+    },
+    "control_dispatch_check_failed": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "rejected",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "No source-usable derivation supplies support; this does not establish falsity",
+        "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+      ],
+      "source_usable": false,
+      "statement": "The B control report marks its single-dispatch-path check as failed.",
+      "status": "unsupported",
+      "supporting_arguments": [],
+      "undecided_objections": []
+    },
+    "control_dispatch_check_passed": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "accepted",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "Accepted derivations: observed_control_pass",
+        "Least-information acceptability label: accepted; rejection does not establish claim falsity"
+      ],
+      "source_usable": true,
+      "statement": "The B control report marks its single-dispatch-path check as passed.",
+      "status": "supported",
+      "supporting_arguments": [
+        "observed_control_pass"
+      ],
+      "undecided_objections": []
+    },
+    "eal_caused_check_advantage": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "rejected",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "No source-usable derivation supplies support; this does not establish falsity",
+        "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+      ],
+      "source_usable": false,
+      "statement": "Providing EAL/2 to the B treatment caused its local check advantage over the B control.",
+      "status": "unsupported",
+      "supporting_arguments": [],
+      "undecided_objections": []
+    },
+    "extension_point": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "accepted",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "Accepted derivations: baseline_design",
+        "Least-information acceptability label: accepted; rejection does not establish claim falsity"
+      ],
+      "source_usable": true,
+      "statement": "The baseline uses a Channel strategy selected through a registry; medium preparation, dispatch and Gateway delivery have separate responsibilities. Feature B should extend this path when its requirements fit and refactor the shared contract when they do not.",
+      "status": "supported",
+      "supporting_arguments": [
+        "baseline_design"
+      ],
+      "undecided_objections": []
+    },
+    "future_debt_reduced": {
+      "contested_arguments": [
+        "debt_prediction"
+      ],
+      "environment": "notification_study",
+      "grounded_label": "rejected",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "Source-usable derivations are rejected or undecided: debt_prediction",
+        "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+      ],
+      "source_usable": true,
+      "statement": "Keeping this architecture argument in context may reduce duplicate maintenance paths and architectural drift over later comparable changes, conditional on repeated adherence and review.",
+      "status": "contested",
+      "supporting_arguments": [],
+      "undecided_objections": []
+    },
+    "local_check_advantage": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "rejected",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "No source-usable derivation supplies support; this does not establish falsity",
+        "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+      ],
+      "source_usable": false,
+      "statement": "For the same starting A snapshot and B brief, the treated B check passed and the control B check failed.",
+      "status": "unsupported",
+      "supporting_arguments": [],
+      "undecided_objections": []
+    },
+    "local_check_tie": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "accepted",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "Accepted derivations: paired_tie",
+        "Least-information acceptability label: accepted; rejection does not establish claim falsity"
+      ],
+      "source_usable": true,
+      "statement": "For the same starting A snapshot and B brief, both B branches passed every predeclared fixed check and the candidate suite; there is no difference on those recorded Boolean outcomes.",
+      "status": "supported",
+      "supporting_arguments": [
+        "paired_tie"
+      ],
+      "undecided_objections": []
+    },
+    "reported_checks_pass": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "accepted",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "Accepted derivations: conjunction_of_reported_findings",
+        "Least-information acceptability label: accepted; rejection does not establish claim falsity"
+      ],
+      "source_usable": true,
+      "statement": "The B EAL report records passing baseline, feature, payload, registry, single dispatch, single formatting, production-module import and complete-suite checks.",
+      "status": "supported",
+      "supporting_arguments": [
+        "conjunction_of_reported_findings"
+      ],
+      "undecided_objections": []
+    },
+    "treated_dispatch_check_failed": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "rejected",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "No source-usable derivation supplies support; this does not establish falsity",
+        "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+      ],
+      "source_usable": false,
+      "statement": "The B EAL report marks its single-dispatch-path check as failed at the treated snapshot.",
+      "status": "unsupported",
+      "supporting_arguments": [],
+      "undecided_objections": []
+    },
+    "treated_dispatch_check_passed": {
+      "contested_arguments": [],
+      "environment": "notification_study",
+      "grounded_label": "accepted",
+      "objection_statuses": {},
+      "objections": [],
+      "proposition": null,
+      "prose_verified": false,
+      "reasons": [
+        "Accepted derivations: observed_dispatch_pass",
+        "Least-information acceptability label: accepted; rejection does not establish claim falsity"
+      ],
+      "source_usable": true,
+      "statement": "The B EAL report marks its single-dispatch-path check as passed at the treated snapshot.",
+      "status": "supported",
+      "supporting_arguments": [
+        "observed_dispatch_pass"
+      ],
+      "undecided_objections": []
+    }
+  },
+  "collection_id": "e98a7f62-246b-4257-9153-230ce59fd06e",
+  "context_fingerprint": "b636b47a69d896e962de68a91817fa5e17b96e425bbe634f07e5e944a23d0136",
+  "diagnostics": [],
+  "dialectic": {
+    "attacks": [
+      [
+        "objection:allocation_confound",
+        "argument:causal_interpretation"
+      ],
+      [
+        "objection:debt_not_measured",
+        "argument:debt_prediction"
+      ],
+      [
+        "objection:unblinded_comparison",
+        "argument:causal_interpretation"
+      ]
+    ],
+    "claims": {
+      "architecture_within_fixture": "accepted",
+      "control_dispatch_check_failed": "rejected",
+      "control_dispatch_check_passed": "accepted",
+      "eal_caused_check_advantage": "rejected",
+      "extension_point": "accepted",
+      "future_debt_reduced": "rejected",
+      "local_check_advantage": "rejected",
+      "local_check_tie": "accepted",
+      "reported_checks_pass": "accepted",
+      "treated_dispatch_check_failed": "rejected",
+      "treated_dispatch_check_passed": "accepted"
+    },
+    "construction": "EAL/2 scoped applications with conjunctive claim support",
+    "nodes": {
+      "argument:baseline_design": "accepted",
+      "argument:causal_interpretation": "rejected",
+      "argument:conjunction_of_reported_findings": "accepted",
+      "argument:debt_prediction": "rejected",
+      "argument:observed_control_fail": "rejected",
+      "argument:observed_control_pass": "accepted",
+      "argument:observed_dispatch_pass": "accepted",
+      "argument:observed_treated_path": "rejected",
+      "argument:paired_advantage": "rejected",
+      "argument:paired_tie": "accepted",
+      "argument:treated_architecture": "accepted",
+      "objection:allocation_confound": "accepted",
+      "objection:debt_not_measured": "accepted",
+      "objection:unblinded_comparison": "accepted"
+    },
+    "semantics": "grounded_with_support",
+    "trace": [
+      {
+        "claims": [],
+        "nodes": [
+          {
+            "id": "argument:baseline_design",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "argument:conjunction_of_reported_findings",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "argument:observed_control_fail",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": false
+              }
+            ],
+            "status": "rejected"
+          },
+          {
+            "id": "argument:observed_control_pass",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "argument:observed_dispatch_pass",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "argument:observed_treated_path",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": false
+              }
+            ],
+            "status": "rejected"
+          },
+          {
+            "id": "objection:allocation_confound",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "objection:debt_not_measured",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "objection:unblinded_comparison",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              }
+            ],
+            "status": "accepted"
+          }
+        ],
+        "round": 1
+      },
+      {
+        "claims": [
+          {
+            "id": "control_dispatch_check_failed",
+            "reasons": [
+              {
+                "id": "argument:observed_control_fail",
+                "kind": "derivation",
+                "status": "rejected"
+              }
+            ],
+            "status": "rejected"
+          },
+          {
+            "id": "control_dispatch_check_passed",
+            "reasons": [
+              {
+                "id": "argument:observed_control_pass",
+                "kind": "derivation",
+                "status": "accepted"
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "extension_point",
+            "reasons": [
+              {
+                "id": "argument:baseline_design",
+                "kind": "derivation",
+                "status": "accepted"
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "reported_checks_pass",
+            "reasons": [
+              {
+                "id": "argument:conjunction_of_reported_findings",
+                "kind": "derivation",
+                "status": "accepted"
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "treated_dispatch_check_failed",
+            "reasons": [
+              {
+                "id": "argument:observed_treated_path",
+                "kind": "derivation",
+                "status": "rejected"
+              }
+            ],
+            "status": "rejected"
+          },
+          {
+            "id": "treated_dispatch_check_passed",
+            "reasons": [
+              {
+                "id": "argument:observed_dispatch_pass",
+                "kind": "derivation",
+                "status": "accepted"
+              }
+            ],
+            "status": "accepted"
+          }
+        ],
+        "nodes": [
+          {
+            "id": "argument:causal_interpretation",
+            "reasons": [
+              {
+                "id": "objection:allocation_confound",
+                "kind": "attacker",
+                "status": "accepted"
+              },
+              {
+                "id": "objection:unblinded_comparison",
+                "kind": "attacker",
+                "status": "accepted"
+              }
+            ],
+            "status": "rejected"
+          },
+          {
+            "id": "argument:debt_prediction",
+            "reasons": [
+              {
+                "id": "objection:debt_not_measured",
+                "kind": "attacker",
+                "status": "accepted"
+              }
+            ],
+            "status": "rejected"
+          }
+        ],
+        "round": 2
+      },
+      {
+        "claims": [
+          {
+            "id": "eal_caused_check_advantage",
+            "reasons": [
+              {
+                "id": "argument:causal_interpretation",
+                "kind": "derivation",
+                "status": "rejected"
+              }
+            ],
+            "status": "rejected"
+          },
+          {
+            "id": "future_debt_reduced",
+            "reasons": [
+              {
+                "id": "argument:debt_prediction",
+                "kind": "derivation",
+                "status": "rejected"
+              }
+            ],
+            "status": "rejected"
+          }
+        ],
+        "nodes": [
+          {
+            "id": "argument:paired_advantage",
+            "reasons": [
+              {
+                "id": "control_dispatch_check_failed",
+                "kind": "premise",
+                "status": "rejected"
+              }
+            ],
+            "status": "rejected"
+          },
+          {
+            "id": "argument:paired_tie",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              },
+              {
+                "id": "control_dispatch_check_passed",
+                "kind": "premise",
+                "status": "accepted"
+              },
+              {
+                "id": "reported_checks_pass",
+                "kind": "premise",
+                "status": "accepted"
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "argument:treated_architecture",
+            "reasons": [
+              {
+                "kind": "local",
+                "usable": true
+              },
+              {
+                "id": "extension_point",
+                "kind": "premise",
+                "status": "accepted"
+              },
+              {
+                "id": "reported_checks_pass",
+                "kind": "premise",
+                "status": "accepted"
+              },
+              {
+                "id": "treated_dispatch_check_passed",
+                "kind": "premise",
+                "status": "accepted"
+              }
+            ],
+            "status": "accepted"
+          }
+        ],
+        "round": 3
+      },
+      {
+        "claims": [
+          {
+            "id": "architecture_within_fixture",
+            "reasons": [
+              {
+                "id": "argument:treated_architecture",
+                "kind": "derivation",
+                "status": "accepted"
+              }
+            ],
+            "status": "accepted"
+          },
+          {
+            "id": "local_check_advantage",
+            "reasons": [
+              {
+                "id": "argument:paired_advantage",
+                "kind": "derivation",
+                "status": "rejected"
+              }
+            ],
+            "status": "rejected"
+          },
+          {
+            "id": "local_check_tie",
+            "reasons": [
+              {
+                "id": "argument:paired_tie",
+                "kind": "derivation",
+                "status": "accepted"
+              }
+            ],
+            "status": "accepted"
+          }
+        ],
+        "nodes": [],
+        "round": 4
+      }
+    ]
+  },
+  "environments": {
+    "notification_study": {
+      "reasons": [
+        "Field 'experiment' == 'architecture-extension-v1' holds (observed 'architecture-extension-v1')",
+        "Field 'dataset' == 'local-fixture' holds (observed 'local-fixture')"
+      ],
+      "status": "matched"
+    }
+  },
+  "evidence": {
+    "all_tests": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "03309a30-81d1-4f54-a4cf-5764d34a3561",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "baseline_contract": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "7f7c956a-8d8f-4e19-907b-beb8146b4af7",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "control_all_tests": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "b3c0a17c-445e-4b9c-b807-dd9d38d82a64",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "control_dispatch_fail": {
+      "reasons": [
+        "Field 'passed' == False does not hold (observed True)"
+      ],
+      "run_id": "f0c5a7d4-7667-4a36-80b1-00e6063f9dde",
+      "status": "unavailable",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "control_dispatch_pass": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "af4f7843-eb00-46c7-b0c9-7ccc49af798f",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "feature_behaviour": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "d29c24a1-5fc1-4f8d-b54b-f177eec5353d",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "no_blinded_review": {
+      "reasons": [
+        "Field 'passed' == False holds (observed False)"
+      ],
+      "run_id": "acd594da-1a75-4f40-bbca-490013e41c81",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "no_followup": {
+      "reasons": [
+        "Field 'passed' == False holds (observed False)"
+      ],
+      "run_id": "912975e1-0cf4-44c4-bbcd-462bcd3d7a68",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "no_random_assignment": {
+      "reasons": [
+        "Field 'passed' == False holds (observed False)"
+      ],
+      "run_id": "e26a7dc0-6915-4dca-9d44-ccdfd0d43f01",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "payload_cap": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "c9332002-b7ab-4f90-899d-3c662bb864d3",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "reachable_code": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "e3509b48-5fc3-4976-982a-f7511d6364c2",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "registry_extension": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "311ad878-080a-4242-948e-a8d3c16e6501",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "same_feature_control": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "7b0d6186-b78a-4142-af92-76450c208ddc",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "same_start_snapshot": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "b55b5667-b3e0-4c81-aaa3-8eee10a2e9fd",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "single_dispatch_path": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "5d64033f-0cae-40be-b596-82f22a2031e8",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "single_format_path": {
+      "reasons": [
+        "Field 'passed' == True holds (observed True)"
+      ],
+      "run_id": "4f010ff1-a5dc-48b6-8efc-477ece9e10e4",
+      "status": "available",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    },
+    "treated_dispatch_failure": {
+      "reasons": [
+        "Field 'passed' == False does not hold (observed True)"
+      ],
+      "run_id": "10774434-a39a-43c0-8b7e-9cbeacf16b56",
+      "status": "unavailable",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1"
+    }
+  },
+  "language": "EAL/2",
+  "method_registry_fingerprint": "31ad450d8b06500f2e294d0c9e1d5d5d7b9397a1e4d089f3a598b92494e228e5",
+  "objections": {
+    "allocation_confound": {
+      "attackers": [],
+      "environment": "notification_study",
+      "evidence": [
+        "no_random_assignment"
+      ],
+      "grounded_label": "accepted",
+      "premise_labels": {},
+      "premises": [],
+      "reasons": [
+        "Objection evidence 'no_random_assignment' is available",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "active",
+      "target": "causal_interpretation",
+      "target_kind": "argument"
+    },
+    "debt_not_measured": {
+      "attackers": [],
+      "environment": "notification_study",
+      "evidence": [
+        "no_followup"
+      ],
+      "grounded_label": "accepted",
+      "premise_labels": {},
+      "premises": [],
+      "reasons": [
+        "Objection evidence 'no_followup' is available",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "active",
+      "target": "debt_prediction",
+      "target_kind": "argument"
+    },
+    "unblinded_comparison": {
+      "attackers": [],
+      "environment": "notification_study",
+      "evidence": [
+        "no_blinded_review"
+      ],
+      "grounded_label": "accepted",
+      "premise_labels": {},
+      "premises": [],
+      "reasons": [
+        "Objection evidence 'no_blinded_review' is available",
+        "Least-information acceptability label: accepted"
+      ],
+      "source_usable": true,
+      "status": "active",
+      "target": "causal_interpretation",
+      "target_kind": "argument"
+    }
+  },
+  "reasoning": {
+    "causal_account": {
+      "backing": [],
+      "method": "structured/1",
+      "objection_statuses": {},
+      "rationale": "EAL context may direct an agent to the existing extension point, but one unrandomised pair cannot separate that mechanism from session variation or ordinary baseline documentation.",
+      "reasons": [
+        "Method structured/1 and backing are locally available; acceptance is assessed per application"
+      ],
+      "status": "supported"
+    },
+    "debt_forecast": {
+      "backing": [],
+      "method": "structured/1",
+      "objection_statuses": {},
+      "rationale": "Using one protocol and registry for successive changes can reduce duplicate maintenance sites and drift. A single exercise does not measure subsequent debt, and the prediction depends on future tasks, review and repeated adherence.",
+      "reasons": [
+        "Method structured/1 and backing are locally available; acceptance is assessed per application"
+      ],
+      "status": "supported"
+    },
+    "existing_extension": {
+      "backing": [],
+      "method": "structured/1",
+      "objection_statuses": {},
+      "rationale": "The baseline separates medium preparation in Channel strategies, dispatch in NotificationService, and delivery behind Gateway; these are the applicable single-responsibility and dependency-inversion choices. Registering a new Channel in the composition root extends behaviour without altering send when the requirement fits the protocol. If it does not fit, refactor the shared boundary and dependent implementations rather than add an independent dispatcher.",
+      "reasons": [
+        "Method structured/1 and backing are locally available; acceptance is assessed per application"
+      ],
+      "status": "supported"
+    },
+    "paired_check": {
+      "backing": [],
+      "method": "structured/1",
+      "objection_statuses": {},
+      "rationale": "The same B brief and starting A snapshot allow a descriptive comparison of the recorded check vectors. Each all_tests result is the conjunction of its fixed findings and candidate suite; passing in both branches means parity on those measured checks, not absence of every possible difference or a causal no-effect result.",
+      "reasons": [
+        "Method structured/1 and backing are locally available; acceptance is assessed per application"
+      ],
+      "status": "supported"
+    },
+    "recorded_check": {
+      "backing": [],
+      "method": "structured/1",
+      "objection_statuses": {},
+      "rationale": "The named checker recorded the Boolean single-dispatch-path result on the identified snapshot. This reports its local verdict rather than a universal property of the repository or an identified duplicate path.",
+      "reasons": [
+        "Method structured/1 and backing are locally available; acceptance is assessed per application"
+      ],
+      "status": "supported"
+    },
+    "report_conjunction": {
+      "backing": [],
+      "method": "structured/1",
+      "objection_statuses": {},
+      "rationale": "The conclusion enumerates exactly the eight Boolean findings in the identified report. The inference is conjunction over those recorded findings, not a claim that the checks are complete or sound.",
+      "reasons": [
+        "Method structured/1 and backing are locally available; acceptance is assessed per application"
+      ],
+      "status": "supported"
+    },
+    "scoped_architecture": {
+      "backing": [],
+      "method": "structured/1",
+      "objection_statuses": {},
+      "rationale": "The declared registry, dispatch and formatting checks, plus module imports by the fixed probes, support a scoped architecture assessment. Import coverage does not establish function reachability or the absence of all dead code or divergent paths.",
+      "reasons": [
+        "Method structured/1 and backing are locally available; acceptance is assessed per application"
+      ],
+      "status": "supported"
+    }
+  },
+  "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+  "valid": true
+}

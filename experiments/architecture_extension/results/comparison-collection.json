@@ -1,0 +1,1039 @@
+{
+  "collection_id": "e98a7f62-246b-4257-9153-230ce59fd06e",
+  "context": {
+    "dataset": "local-fixture",
+    "experiment": "architecture-extension-v1"
+  },
+  "records": {
+    "all_tests": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "all_tests"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "eaa87be87d8a209d7133f4414c7781cd9ac1d95c2c305454cfa7dced2bd0d559",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "92e69865adda04fd23b98fc7b6a014a6e103e907ae62a0208852649d50d44b05",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "all_tests",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:42.123472Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "all_tests"
+      },
+      "input_digest": "7549539d07c97687cb486ea3d5d0e85628bf02016511f7784887a2d1d47b83ec",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "c78d5a91bad5efdcbc6a04b73c7ce782d1f923d4b9321329655a88eedc67789d",
+      "returncode": 0,
+      "run_id": "03309a30-81d1-4f54-a4cf-5764d34a3561",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.092179Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1063,
+      "stdout_digest": "26a50e07e64f9885f8ef3a8026c1dd51c5879c5df109d6076e9f2fbad82c3139",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "all_tests",
+        "command": "python -m unittest discover -s tests -p 'test*.py'",
+        "detail": "candidate suite rc=0; fixed probe rc=0; ......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "candidate tests plus fixed assessor"
+      }
+    },
+    "baseline_contract": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "baseline_contract"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "665dd86972611a6c9df31919e421beca7689be4ac448cb8f5ab0a631583d9c4c",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "0c664a2f370fa44a38ffaa2767ffb8720ec3aaea23930b3872657e4ba1093c61",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "baseline_contract",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:41.865076Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "baseline_contract"
+      },
+      "input_digest": "574f276e1c751efb4af005020e1a95c855abe65de9a2200cebeb122e1873e6ee",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "233d9de7e6e0997bbd7378eabefb0bc57ca5bccbb4c7acabecdc7b94775fe3ae",
+      "returncode": 0,
+      "run_id": "7f7c956a-8d8f-4e19-907b-beb8146b4af7",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:41.833171Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 953,
+      "stdout_digest": "0e5336e2840f4b9aebbe95a49647113ce92a94cdc1c84a48e39b46c7612be1f4",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "baseline_contract",
+        "command": "ARCH_CASE=b python materials/assessor/probe.py",
+        "detail": "fixed behavioural assertions passed",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "materials/assessor/probe.py"
+      }
+    },
+    "control_all_tests": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_no_eal",
+          "check_id": "all_tests"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "9268286b6eb898b2ef80aa993520f2bcc38e9c4307aa8c34e1095b68858fb387",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "1bad5c91429daac9ee1af736d0a99e205b987301402f85218a837ac1e4cd1a92",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "control_all_tests",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:42.254363Z",
+      "input": {
+        "case_id": "b_no_eal",
+        "check_id": "all_tests"
+      },
+      "input_digest": "0802394f16012bc65652c3a7a9ca83ac5810a8ffc4cb729ac50b6a36ccb9c15e",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "5b0c9078cf3bb520023a2f6ad6df1c451d3cd97330a8db1a9b9ea2906699e7d6",
+      "returncode": 0,
+      "run_id": "b3c0a17c-445e-4b9c-b807-dd9d38d82a64",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.219942Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1070,
+      "stdout_digest": "25eb87cd93f41b4f42a93c2e1b9b9cd9413a6bd54ef29c8c8515d54a5f2b7a6d",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_no_eal",
+        "check_id": "all_tests",
+        "command": "python -m unittest discover -s tests -p 'test*.py'",
+        "detail": "candidate suite rc=0; fixed probe rc=0; .......\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "candidate tests plus fixed assessor"
+      }
+    },
+    "control_dispatch_fail": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_no_eal",
+          "check_id": "single_dispatch_path"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "7e03b1fe02e6c002bbfacaabc299e5416e71b23c61210f861dde7de84047103d",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "302b328b0f56d00ac97cb4e2820423164b276146172b21074760ed069aed081e",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "control_dispatch_fail",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:42.219442Z",
+      "input": {
+        "case_id": "b_no_eal",
+        "check_id": "single_dispatch_path"
+      },
+      "input_digest": "7bce910d2b886cee7186c5419d4be9757d8419887a74106463c370194c3a302d",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "4d4de2a1adbfbaf9917b09084ba4797f150b8ce8a87b40184cccecd1d02edaad",
+      "returncode": 0,
+      "run_id": "f0c5a7d4-7667-4a36-80b1-00e6063f9dde",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.187800Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1026,
+      "stdout_digest": "528ee4f9c93b34fda84410cabf151405fbe9e29f40ef095445a53cb665b6694a",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_no_eal",
+        "check_id": "single_dispatch_path",
+        "command": null,
+        "detail": "NotificationService.send AST matches frozen baseline; package-wide .deliver() calls: [('notification_service/service.py', 'deliver', 22)]",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "AST of production Python files"
+      }
+    },
+    "control_dispatch_pass": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_no_eal",
+          "check_id": "single_dispatch_path"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "7e03b1fe02e6c002bbfacaabc299e5416e71b23c61210f861dde7de84047103d",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "302b328b0f56d00ac97cb4e2820423164b276146172b21074760ed069aed081e",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "control_dispatch_pass",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:42.187322Z",
+      "input": {
+        "case_id": "b_no_eal",
+        "check_id": "single_dispatch_path"
+      },
+      "input_digest": "7bce910d2b886cee7186c5419d4be9757d8419887a74106463c370194c3a302d",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "2ba3b6e5e0b99dc78b536efb552ef432fca5b937a42761912ae997e8d53c6e65",
+      "returncode": 0,
+      "run_id": "af4f7843-eb00-46c7-b0c9-7ccc49af798f",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.156017Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1026,
+      "stdout_digest": "528ee4f9c93b34fda84410cabf151405fbe9e29f40ef095445a53cb665b6694a",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_no_eal",
+        "check_id": "single_dispatch_path",
+        "command": null,
+        "detail": "NotificationService.send AST matches frozen baseline; package-wide .deliver() calls: [('notification_service/service.py', 'deliver', 22)]",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "AST of production Python files"
+      }
+    },
+    "feature_behaviour": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "feature_behaviour"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "30400069ddb0d3ea75a001dd483d4be66c84ea96c7bdec1d6fbcb41057301ce7",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "f7770d3ef4404fa310a37516fb496ed4e1990b9f85289dba433dc6e43cf51464",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "feature_behaviour",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:41.897205Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "feature_behaviour"
+      },
+      "input_digest": "f32a320a3e762e28da4c5dd77b601f772df4387313c9651e1c0df3ba4e1deb0b",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "e43ae56b0687b8010cd4110b273b807289c27cf61034c587a87c27583987b090",
+      "returncode": 0,
+      "run_id": "d29c24a1-5fc1-4f8d-b54b-f177eec5353d",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:41.865647Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 953,
+      "stdout_digest": "b0bfa2158ec344e52b704a7be04af893c85e4a96d121db3df9f70790fe847075",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "feature_behaviour",
+        "command": "ARCH_CASE=b python materials/assessor/probe.py",
+        "detail": "fixed behavioural assertions passed",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "materials/assessor/probe.py"
+      }
+    },
+    "no_blinded_review": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "design_flag": "comparison_blinded_review"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "45ef2c397cc161e2beedbd70364dfaa65b1316c14f8f329128c4abd45ce4f83e",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "fe3253dd9e9cd2b346fba4f426b9551e93770db40f1a21f53a0a8c39dd4c1c86",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "no_blinded_review",
+      "evidence_kind": "study_design",
+      "ingested_at": "2026-09-27T12:36:42.392972Z",
+      "input": {
+        "design_flag": "comparison_blinded_review"
+      },
+      "input_digest": "45c1f5034ddcc075fa83a627836900d283ffd7443dbdfa38fb943befc4dbfa94",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "e624b720ce5fbbd821dff5cf6b7a5c43105c8b7dc093e15203460d0523123b94",
+      "returncode": 0,
+      "run_id": "acd594da-1a75-4f40-bbca-490013e41c81",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.363924Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 885,
+      "stdout_digest": "77500f794a4c2cab4e7608187c0ac96aa216b3e65f0e40ac82e5198d2a47cb67",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "design_flag": "comparison_blinded_review",
+        "detail": "Operator could observe condition and diff; fixed probes were authored before outcomes.",
+        "passed": false,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf"
+      }
+    },
+    "no_followup": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "design_flag": "longitudinal_followup"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "9f4bfc9191c2b27bb2887d41a1b7f33c89d05409a5c4fb49daae4d9836d802ad",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "0bfb5b7cf773a81a05a567076c738e1747c200edf9553f1fa566522adb429609",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "no_followup",
+      "evidence_kind": "study_design",
+      "ingested_at": "2026-09-27T12:36:42.155655Z",
+      "input": {
+        "design_flag": "longitudinal_followup"
+      },
+      "input_digest": "424eae873a5c48bd378c0534751bab39de1a71a100fbbb21631566bc0098afb4",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "8f193321667001b37e98a21b64307f24fd04ba86d3358b889de0e0a9937e6457",
+      "returncode": 0,
+      "run_id": "912975e1-0cf4-44c4-bbcd-462bcd3d7a68",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.123936Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 865,
+      "stdout_digest": "b923087ff3f6b236f47067ddd00c8c019135bc6eff19c2d0cf0250cb08d9ee31",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "design_flag": "longitudinal_followup",
+        "detail": "One A change followed by one B change, without later maintenance episodes.",
+        "passed": false,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf"
+      }
+    },
+    "no_random_assignment": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "design_flag": "randomised_assignment"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "960eb985bc01fae3e10a567aa663f7ab3666d6fd71a2bac59bcddacd477336ea",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "854e2848fac51fdf1d44f6ae7e3f4f02dff32ebd10796349946421888455ee08",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "no_random_assignment",
+      "evidence_kind": "study_design",
+      "ingested_at": "2026-09-27T12:36:42.363512Z",
+      "input": {
+        "design_flag": "randomised_assignment"
+      },
+      "input_digest": "613b1a66134170f463c3679eb1b2c21c7dbd118398f4dca968b6dc9ff4d960dc",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "879c881e6b189363ef37dc3644556ffd098fe3b8f962a8ab1c8cabb0d973a883",
+      "returncode": 0,
+      "run_id": "e26a7dc0-6915-4dca-9d44-ccdfd0d43f01",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.312309Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 859,
+      "stdout_digest": "b9f6f76fab3cd97a88bbf13b39599d07e7cf191134c47a69fa6ece2cf8f96d71",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "design_flag": "randomised_assignment",
+        "detail": "Conditions were assigned to distinct fresh agents; no randomisation.",
+        "passed": false,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf"
+      }
+    },
+    "payload_cap": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "payload_cap"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "1358f24ee78daa15951b7936fd8c6e55ed73e6f27caeae63bfe975d3efef4c51",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "f6a0322c509122dc3178600dbe9afa2f438a88ec25bb715cb4fee3e286da19d5",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "payload_cap",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:41.926604Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "payload_cap"
+      },
+      "input_digest": "5d6fc4d72b4e0250086de3d6b8d23febf8cc9e5bcb300ee7415d81395ff39059",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "d424a5a0de035271fa57fef1fc31ed8a8ddc46e238d33e1fbf7d344a875e7950",
+      "returncode": 0,
+      "run_id": "c9332002-b7ab-4f90-899d-3c662bb864d3",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:41.897485Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 941,
+      "stdout_digest": "fbe6525f0c31d3eb222c397cc546d7d2891467f60df6e8ff41fe98f894b4a8e1",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "payload_cap",
+        "command": "ARCH_CASE=b python materials/assessor/probe.py",
+        "detail": "fixed behavioural assertions passed",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "materials/assessor/probe.py"
+      }
+    },
+    "reachable_code": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "reachable_code"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "20d065b06380c7485e0eb1d3660dc75f0d0a7a6827e739ffa3e60bb8f5cdb7d1",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "994a362618c736305150f166235e4955e867dd08d1a726690e8a7a3902141eb8",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "reachable_code",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:42.091784Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "reachable_code"
+      },
+      "input_digest": "80dd61d87ba4b6a7330e6e6fc865c5c66c591e48002ac1c3d85511cec33dca23",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "4df4eee4e0222a80b8bbb0edb4a6fc8e1ebf7ca6b897cf6f7e6d37de0629a551",
+      "returncode": 0,
+      "run_id": "e3509b48-5fc3-4976-982a-f7511d6364c2",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.063205Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1019,
+      "stdout_digest": "d1a944ae7425d158f897eb6eeded9750ac8d113c350afb38799afe8410ea1cec",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "reachable_code",
+        "command": null,
+        "detail": "Production modules imported by fixed behavioural probes; unimported: []. Import coverage does not rule out unreachable functions or unused branches.",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "sys.modules after fixed probes"
+      }
+    },
+    "registry_extension": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "registry_extension"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "37c37e87f784ffc208edd729215f4ea410d869f28bfd929b2e171a201410bd55",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "ce1c69cdd60175ba8d8ff1cea79115a76722e28ecafc7b5acbab048fc4bba2d5",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "registry_extension",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:41.972559Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "registry_extension"
+      },
+      "input_digest": "5275d84bd448b851291f80a04a7e8d2dc18cf20796465f13ad2ee3453001688c",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "a9eeada80ad87901497b2f81843aba8de70779069cceaff236770c32b47f613f",
+      "returncode": 0,
+      "run_id": "311ad878-080a-4242-948e-a8d3c16e6501",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:41.926937Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1008,
+      "stdout_digest": "0ab74aa111813597a64b63516f911d9627e7e1a76f1437af11af2cba3bc157ca",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "registry_extension",
+        "command": null,
+        "detail": "register/send AST unchanged; expected channels ['console', 'email', 'sms']; observed ['console', 'email', 'sms']",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "NotificationService AST and fixed runtime probe"
+      }
+    },
+    "same_feature_control": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "design_flag": "same_feature_control"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "5740066ce922feb1e60584b0915245727a63bd5907a60a3a30e40ea9c45d8dc5",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "d38f8e1907dc7983c0fbca29699ed99314c94c2e44a4e1cce22bbbc073d43054",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "same_feature_control",
+      "evidence_kind": "study_design",
+      "ingested_at": "2026-09-27T12:36:42.283662Z",
+      "input": {
+        "design_flag": "same_feature_control"
+      },
+      "input_digest": "84be44a5d489e9d5978d6f40b06bd382944e0375a84f42d4fa736bb2827f87c3",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "629afbba37b5d1190a4aa787102e06bc7fa3edbd2274252f2b9f653fe7675fff",
+      "returncode": 0,
+      "run_id": "7b0d6186-b78a-4142-af92-76450c208ddc",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.254816Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 851,
+      "stdout_digest": "6e0617ab870700b7dbf8ad16f23d3c66412a31ec86be108ffce9bc18c57dd4d9",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "design_flag": "same_feature_control",
+        "detail": "Both B agents received the identical feature B acceptance text.",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf"
+      }
+    },
+    "same_start_snapshot": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "design_flag": "same_start_snapshot"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "5c17770d15bda20e5743c66891e0833b0961160c0be4f37793a084ba8fa0d93e",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "f3eee93ad0378ce9f38e936e0e03fbda9a587e0fa93c9de28c34e6ec11c1c7ba",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "same_start_snapshot",
+      "evidence_kind": "study_design",
+      "ingested_at": "2026-09-27T12:36:42.311972Z",
+      "input": {
+        "design_flag": "same_start_snapshot"
+      },
+      "input_digest": "db4cf1710ad329d03933bc865934f97abb7c52e03cd91d880e50eb90cc47148a",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "4256e01840229c3e28989d370e8fb34c49d4a8029e69cde00467205a9c36b760",
+      "returncode": 0,
+      "run_id": "b55b5667-b3e0-4c81-aaa3-8eee10a2e9fd",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.284115Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 903,
+      "stdout_digest": "b6b90f8c4b16ea91d6eaceb7bcdc35c0c39f201bdbc09f45f520391accf6b7a0",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "design_flag": "same_start_snapshot",
+        "detail": "Both B working directories were copied from A digest c3cadf104da48df83a1558857f133fc629137649346e095e4304102a806531d2",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf"
+      }
+    },
+    "single_dispatch_path": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "single_dispatch_path"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "0f7c57ea221c2ec9117e892b4c8473b9f2773f93756c5f9099306ed319d363b8",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "1f14592b4e906cedfbe0eade5d83a7e1fd978b7fdf40cc4c5a3ec919fc83e2a6",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "single_dispatch_path",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:42.002674Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "single_dispatch_path"
+      },
+      "input_digest": "bf0c27c9a14a79c3457780b22148e95c9e17f7623321ff1dfb9aa2d9e39deea9",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "125f215ae047046493b85a55b27cf19b820e3b998c07c89480accfe3b23c01dd",
+      "returncode": 0,
+      "run_id": "5d64033f-0cae-40be-b596-82f22a2031e8",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:41.972914Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1020,
+      "stdout_digest": "82341f4c01641c473f95efab749e75f9f13960142cdef39f2cc98c0954d17fd9",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "single_dispatch_path",
+        "command": null,
+        "detail": "NotificationService.send AST matches frozen baseline; package-wide .deliver() calls: [('notification_service/service.py', 'deliver', 22)]",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "AST of production Python files"
+      }
+    },
+    "single_format_path": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "single_format_path"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "3130459041edc40157b0c971ff0d301d2f7da1b70d028eec263790e603a60a6a",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "fed135a0eb820a77d5ed1ff1b4657c2e3c4adcc4488560c9dec7a1b4bdb2d572",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "single_format_path",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:42.062912Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "single_format_path"
+      },
+      "input_digest": "ab334b6a6877e69e7e4e00c400fa259cd428216c01f5e7d7cfe28fd9183d88f2",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "ab41b31e650f15ba33d4dc4d823877ee48d488e7d9d9c1cd7748d564d1325eee",
+      "returncode": 0,
+      "run_id": "4f010ff1-a5dc-48b6-8efc-477ece9e10e4",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.033984Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1079,
+      "stdout_digest": "58085b828c679259462ad9375923edd21da0e45575a0096785955fb19d49bfe8",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "single_format_path",
+        "command": null,
+        "detail": "Dispatch continues to call one Channel.prepare; package-wide .prepare() calls: [('notification_service/service.py', 'prepare', 22)]. This syntax check cannot exclude semantically duplicate formatters.",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "AST of production Python files"
+      }
+    },
+    "treated_dispatch_failure": {
+      "acquisition_request": {
+        "context": {
+          "dataset": "local-fixture",
+          "experiment": "architecture-extension-v1"
+        },
+        "input": {
+          "case_id": "b_eal",
+          "check_id": "single_dispatch_path"
+        },
+        "tool": "architecture_report",
+        "tool_version": "1"
+      },
+      "acquisition_request_digest": "0f7c57ea221c2ec9117e892b4c8473b9f2773f93756c5f9099306ed319d363b8",
+      "collected_at": "2026-09-27T12:30:47.826508+00:00",
+      "context": {
+        "dataset": "local-fixture",
+        "experiment": "architecture-extension-v1"
+      },
+      "data_digest": "1f14592b4e906cedfbe0eade5d83a7e1fd978b7fdf40cc4c5a3ec919fc83e2a6",
+      "details": {
+        "assessor_version": "architecture-assessor/1",
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "schema": "architecture-extension-observations/1",
+        "treatment_eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+      },
+      "environment": "notification_study",
+      "environment_fingerprint": "faeca8cb4deeae46048d07b6d65b9a98751c35f1fefa89b81c99390b8f251cd2",
+      "evidence_id": "treated_dispatch_failure",
+      "evidence_kind": "test",
+      "ingested_at": "2026-09-27T12:36:42.033630Z",
+      "input": {
+        "case_id": "b_eal",
+        "check_id": "single_dispatch_path"
+      },
+      "input_digest": "bf0c27c9a14a79c3457780b22148e95c9e17f7623321ff1dfb9aa2d9e39deea9",
+      "output_truncated": false,
+      "process_environment_digest": "51dd07e1eb4463f5956851dc19799bbcb2bdab3f2c388232f5fa263918b40e5e",
+      "request_digest": "7ca0efe524e4d2675bc4f3a5eb5bb8ecd588bf573a8cee9fd61ab6f73ffc774e",
+      "returncode": 0,
+      "run_id": "10774434-a39a-43c0-8b7e-9cbeacf16b56",
+      "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+      "started_at": "2026-09-27T12:36:42.003009Z",
+      "status": "ok",
+      "stderr": "",
+      "stderr_bytes": 0,
+      "stderr_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 1020,
+      "stdout_digest": "82341f4c01641c473f95efab749e75f9f13960142cdef39f2cc98c0954d17fd9",
+      "tool": "architecture_report",
+      "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef",
+      "tool_version": "1",
+      "value": {
+        "case_id": "b_eal",
+        "check_id": "single_dispatch_path",
+        "command": null,
+        "detail": "NotificationService.send AST matches frozen baseline; package-wide .deliver() calls: [('notification_service/service.py', 'deliver', 22)]",
+        "passed": true,
+        "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+        "source": "AST of production Python files"
+      }
+    }
+  },
+  "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7"
+}

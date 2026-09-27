@@ -1,0 +1,23 @@
+{
+  "a_assessor_amendment": "After A launch, error handling for malformed output/timeouts was added; acceptance assertions and success predicates were unchanged. Both assessor digests are preserved in freeze-a and freeze-b.",
+  "a_source_sha256": "c3cadf104da48df83a1558857f133fc629137649346e095e4304102a806531d2",
+  "files": {
+    "PROTOCOL.md": "ca1a3a885d853be4d6c2ab7e8cc2efd1e8b1e8f6614170b528fe784ada8b22f8",
+    "materials/assessor/assess.py": "24c4691f4f5f8e97676ca0eab989427545e20e1a89108d5c7c1c6c1479d342e4",
+    "materials/assessor/probe.py": "e5735174ca626e9dcc7c0e30ee7741d22ff63e3bca3dde623c454fb8a369f2cd",
+    "materials/base/ARCHITECTURE.md": "1533ec0ec5dfa8b85294038ffee735524bf222bc199d0ac20e64838c21a562ee",
+    "materials/base/notification_service/__init__.py": "aed82b8e6a1d2a9a14094d17dfa9cedc4721dabd78b31e792e12c1a73a8b631b",
+    "materials/base/notification_service/bootstrap.py": "14e4f4ca6d26fea9ca01ca4b6487f34e22f6ff9838e73748ee4a2d05d5712991",
+    "materials/base/notification_service/channel.py": "5792bac85f28f984b6299869183ecc8c33242d57f46da7d1e205874451a5119b",
+    "materials/base/notification_service/console.py": "bcf71e5e506a63f49a7955f85a1821997197a7bc6d7d15238daa76acb454a287",
+    "materials/base/notification_service/model.py": "a052004208f3103543c478d14af00787f98db37637215bf364d71c305c9f0978",
+    "materials/base/notification_service/service.py": "e18a9bcf0639a15fd72f37df74ba61f1432ed23171982dd5bcb53620f8bdbd83",
+    "materials/base/tests/test_baseline.py": "89c2dcf05d25c1f4426275c72c4cd775243a6bcb8f0f5810b716d9e507ba76cf",
+    "materials/prompts/a_no_eal.md": "c07d67b7827b9e972f74cdd4b090470d1c58463bb50f86dfbaa6946482158898",
+    "materials/prompts/b_common.md": "1a02e45c8a77406874f420e6b464a12b93ef353b7e8327a01e1eb8670515bcf9",
+    "materials/prompts/b_eal_context.eal": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+  },
+  "observed_at": "2026-09-27T12:28:05.883286+00:00",
+  "phase": "before-b",
+  "schema": "architecture-extension-freeze/1"
+}

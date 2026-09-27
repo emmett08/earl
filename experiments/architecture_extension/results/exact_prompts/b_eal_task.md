@@ -1,0 +1,172 @@
+You are an AI coding agent implementing a request from Engineer 3. Work only
+inside the supplied isolated notification_service fixture. Read ARCHITECTURE.md
+and the existing code before editing. Implement feature B: an SMS channel.
+
+Acceptance contract: make_service registers `sms` alongside the existing
+channels. `send("sms", Message(destination, subject, body))` delivers UTF-8
+bytes of `body` (the subject is ignored), and returns a receipt with medium
+`sms` and the same destination. The encoded content must be at most 160 bytes.
+At exactly 160 bytes, deliver it once. Beyond 160 bytes, raise `ValueError`
+before any gateway call. Include a multibyte UTF-8 boundary test. Existing
+console and email behaviour must continue working, including email escaping.
+Add tests and run the complete local test suite.
+
+Keep the public `send(name, Message)` API. Implement the smallest coherent
+change. At the end, report changed files, the test command/result, and any
+known limitation. Do not edit files outside this isolated fixture.
+
+
+The following EAL/2 architecture argument is in your context. Read it as a scoped, defeasible design argument while implementing the feature.
+
+```eal
+// Architecture-extension study, authored before feature B is implemented.
+// The report is a local experiment record; these predicates do not certify
+// arbitrary future changes or prove that an agent read this source correctly.
+language "EAL/2";
+
+environment notification_study {
+  require "experiment" == "architecture-extension-v1";
+  require "dataset" == "local-fixture";
+}
+
+tool architecture_report { version "1"; }
+
+// The eight checks below state acceptance conditions for the B change.
+// A failed check is a recorded negative finding, not missing evidence.
+evidence baseline_contract {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"baseline_contract"};
+  require "passed" == true;
+}
+evidence feature_behaviour {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"feature_behaviour"};
+  require "passed" == true;
+}
+evidence payload_cap {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"payload_cap"};
+  require "passed" == true;
+}
+evidence registry_extension {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"registry_extension"};
+  require "passed" == true;
+}
+evidence single_dispatch_path {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"single_dispatch_path"};
+  require "passed" == true;
+}
+// Same recorded check as single_dispatch_path, with the opposite predicate.
+// These two declarations cannot both supply usable premises at one snapshot.
+evidence treated_dispatch_failure {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"single_dispatch_path"};
+  require "passed" == false;
+}
+evidence single_format_path {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"single_format_path"};
+  require "passed" == true;
+}
+evidence reachable_code {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"reachable_code"};
+  require "passed" == true;
+}
+evidence all_tests {
+  tool architecture_report; kind test; environment notification_study; max_age 2592000;
+  input {"case_id":"b_eal","check_id":"all_tests"};
+  require "passed" == true;
+}
+
+// A later forecast would need observations from further changes.
+evidence no_followup {
+  tool architecture_report; kind study_design; environment notification_study; max_age 2592000;
+  input {"design_flag":"longitudinal_followup"};
+  require "passed" == false;
+}
+
+reasoning report_conjunction {
+  method "structured/1";
+  rationale "The conclusion enumerates exactly the eight Boolean findings in the identified report. The inference is conjunction over those recorded findings, not a claim that the checks are complete or sound.";
+}
+reasoning existing_extension {
+  method "structured/1";
+  rationale "The baseline separates medium preparation in Channel strategies, dispatch in NotificationService, and delivery behind Gateway; these are the applicable single-responsibility and dependency-inversion choices. Registering a new Channel in the composition root extends behaviour without altering send when the requirement fits the protocol. If it does not fit, refactor the shared boundary and dependent implementations rather than add an independent dispatcher.";
+}
+reasoning scoped_architecture {
+  method "structured/1";
+  rationale "The declared registry, dispatch and formatting checks, plus module imports by the fixed probes, support a scoped architecture assessment. Import coverage does not establish function reachability or the absence of all dead code or divergent paths.";
+}
+reasoning debt_forecast {
+  method "structured/1";
+  rationale "Using one protocol and registry for successive changes can reduce duplicate maintenance sites and drift. A single exercise does not measure subsequent debt, and the prediction depends on future tasks, review and repeated adherence.";
+}
+reasoning recorded_check {
+  method "structured/1";
+  rationale "The named checker recorded the Boolean single-dispatch-path result on the identified snapshot. This reports its local verdict rather than a universal property of the repository or an identified duplicate path.";
+}
+
+claim extension_point {
+  statement "The baseline uses a Channel strategy selected through a registry; medium preparation, dispatch and Gateway delivery have separate responsibilities. Feature B should extend this path when its requirements fit and refactor the shared contract when they do not.";
+  environment notification_study;
+}
+claim reported_checks_pass {
+  statement "The B EAL report records passing baseline, feature, payload, registry, single dispatch, single formatting, production-module import and complete-suite checks.";
+  environment notification_study;
+}
+claim architecture_within_fixture {
+  statement "On the recorded B EAL snapshot, the fixed registry, dispatch, preparation-call and module-import checks pass under their stated syntactic and probe limits.";
+  environment notification_study;
+}
+claim treated_dispatch_check_passed {
+  statement "The B EAL report marks its single-dispatch-path check as passed at the treated snapshot.";
+  environment notification_study;
+}
+claim treated_dispatch_check_failed {
+  statement "The B EAL report marks its single-dispatch-path check as failed at the treated snapshot.";
+  environment notification_study;
+}
+claim future_debt_reduced {
+  statement "Keeping this architecture argument in context may reduce duplicate maintenance paths and architectural drift over later comparable changes, conditional on repeated adherence and review.";
+  environment notification_study;
+}
+
+argument baseline_design {
+  conclusion extension_point; reasoning existing_extension; evidence baseline_contract;
+}
+argument conjunction_of_reported_findings {
+  conclusion reported_checks_pass; reasoning report_conjunction;
+  evidence baseline_contract, feature_behaviour, payload_cap, registry_extension,
+           single_dispatch_path, single_format_path, reachable_code, all_tests;
+}
+argument treated_architecture {
+  conclusion architecture_within_fixture; reasoning scoped_architecture;
+  premises extension_point, reported_checks_pass, treated_dispatch_check_passed;
+}
+argument observed_dispatch_pass {
+  conclusion treated_dispatch_check_passed; reasoning recorded_check;
+  evidence single_dispatch_path;
+}
+argument observed_treated_path {
+  conclusion treated_dispatch_check_failed; reasoning recorded_check;
+  evidence treated_dispatch_failure;
+}
+argument debt_prediction {
+  conclusion future_debt_reduced; reasoning debt_forecast;
+  premises architecture_within_fixture, extension_point;
+}
+
+// This objection keeps the future-facing claim open until follow-up is measured.
+objection debt_not_measured {
+  target argument debt_prediction; evidence no_followup;
+}
+
+// Only the finite conjunction of report fields is reviewed as strict.
+// The opposed verdicts share one check, so no preference is inferred.
+strict conjunction_of_reported_findings reviewed "architecture-study/report-conjunction-v1";
+contrary treated_dispatch_check_failed to treated_dispatch_check_passed reviewed "architecture-study/opposed-check-verdicts-v1";
+
+```
