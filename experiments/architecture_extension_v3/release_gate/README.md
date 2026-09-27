@@ -60,11 +60,11 @@ technical-debt improvement.
 
 ## Reproduce
 
-From the repository root with the project virtual environment:
+From the repository root with the project's Python dependencies installed:
 
 ```bash
-../.venv/bin/python experiments/architecture_extension_v3/release_gate/run.py
-../.venv/bin/python -m unittest discover -s experiments/architecture_extension_v3/release_gate -p 'test_*.py' -v
+python3 experiments/architecture_extension_v3/release_gate/run.py --output /tmp/earl-v3-release-gate-replay.json
+python3 -m unittest discover -s experiments/architecture_extension_v3/release_gate -p 'test_*.py' -v
 ```
 
 `run.py` calls `eal_validate`, `eal_collect`, `eal_reason` and

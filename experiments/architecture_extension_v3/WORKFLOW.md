@@ -7,6 +7,15 @@ exercise a deterministic P1 plain collector and P2 EAL MCP round trip against
 the same frozen A source. The validation artifact retains packets, host state,
 the staged trial and baseline assessment. It creates no v3 coding outcome.
 
+The frozen pull-request path filter includes the v2 A source but not edits
+confined to its retained assessor probe or Cognitive Complexity tool. Such an
+edit alone does not start this workflow; run
+`python3 experiments/architecture_extension_v3/study/freeze.py verify` explicitly
+before accepting it. The verifier includes both files and rejects changed
+bytes. Changing this workflow's trigger after the completed local exercise
+would itself change one of the 117 registered inputs, so it requires a new
+prospective freeze rather than a silent repair of this one.
+
 `workflow_dispatch` with `live=true` is an **opt-in, credentialed acquisition
 route** after the workflow is available on the repository's default branch.
 It requires `OPENAI_API_KEY` for Codex stages and `ANTHROPIC_API_KEY` for Claude

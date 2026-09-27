@@ -27,12 +27,12 @@ Limits: up to eight work and eight demand categories, 65,536 input bytes, 18 dec
 
 ## Verify
 
-From the repository root:
+From the repository root with the project's Python dependencies installed:
 
 ```bash
 python3 -m unittest experiments/architecture_extension_v3/technical_debt/test_tool.py -v
 python3 experiments/architecture_extension_v3/technical_debt/tool.py --scenario experiments/architecture_extension_v3/technical_debt/scenarios/attached-synthetic.json
-../.venv/bin/python experiments/architecture_extension_v2/mcp_roundtrip.py \
+python3 experiments/architecture_extension_v2/mcp_roundtrip.py \
   --source experiments/architecture_extension_v3/technical_debt/debt-model.eal \
   --registry experiments/architecture_extension_v3/technical_debt/eal-tools.toml \
   --context '{"experiment":"architecture-extension-v3","stage":"post-B"}' \
