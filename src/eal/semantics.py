@@ -188,7 +188,7 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     _validate_reasoning_and_claims(program, registry, error, reference)
     _validate_arguments(program, registry, error, reference, scope)
     _validate_objections(program, error, reference, scope)
-    _validate_formal_directives(program, problems)
+    _validate_argumentation_directives(program, problems)
     _validate_dependencies(program, error)
     return problems
 
@@ -199,7 +199,7 @@ def _validate_declarations(program, error, identifier):
                    program.assumptions, program.reasoning, program.claims,
                    program.arguments, program.objections, program.patterns,
                    program.applications)
-    actual_count = sum(len(table) for table in collections) + len(program.patterns) + len(program.formal)
+    actual_count = sum(len(table) for table in collections) + len(program.patterns) + len(program.argumentation_directives)
     if max(actual_count, program.declaration_count) > MAX_DECLARATIONS:
         error("resource_limit", f"At most {MAX_DECLARATIONS} declaration/body records after pattern expansion are supported")
         return False
@@ -436,8 +436,8 @@ def _validate_objections(program, error, reference, scope):
                         scope(sources[item].environment, environment, value.name, item)
 
 
-def _validate_formal_directives(program, problems):
-    """Resolve globally named formal relations after pattern expansion."""
+def _validate_argumentation_directives(program, problems):
+    """Resolve globally named argumentation directives after pattern expansion."""
     tables = {"environment": program.environments, "tool": program.tools,
               "evidence": program.evidence, "assumption": program.assumptions,
               "reasoning": program.reasoning, "claim": program.claims,
@@ -453,7 +453,7 @@ def _validate_formal_directives(program, problems):
         if name not in program.arguments:
             kinds.setdefault(name, set()).add("application")
     seen = set()
-    ranked_arguments = {item.name for item in program.formal if item.kind == "rank"}
+    ranked_arguments = {item.name for item in program.argumentation_directives if item.kind == "rank"}
 
     def error(code, message, directive, *, expected=None, actual=None):
         problems.append(Diagnostic(code, message, directive.name, directive.span,
@@ -462,16 +462,16 @@ def _validate_formal_directives(program, problems):
     def check_target(name, allowed, directive):
         found = kinds.get(name, set())
         if not found:
-            error("unknown_formal_reference", f"Unknown formal target {name!r}", directive,
+            error("unknown_formal_reference", f"Unknown argumentation target {name!r}", directive,
                   expected=" | ".join(sorted(allowed)), actual=name)
         elif len(found) != 1 or name in program.duplicates:
-            error("ambiguous_formal_reference", f"Formal target {name!r} is not unique", directive,
+            error("ambiguous_formal_reference", f"Argumentation target {name!r} is not unique", directive,
                   expected="unique symbol", actual=" | ".join(sorted(found)))
         elif not found <= allowed:
-            error("formal_target_kind", f"Formal target {name!r} has the wrong declaration kind", directive,
+            error("formal_target_kind", f"Argumentation target {name!r} has the wrong declaration kind", directive,
                   expected=" | ".join(sorted(allowed)), actual=next(iter(found)))
 
-    for directive in program.formal:
+    for directive in program.argumentation_directives:
         if directive.kind == "strict":
             valid = directive.other is None and directive.rank is None
             key = (directive.kind, directive.name)
@@ -492,11 +492,11 @@ def _validate_formal_directives(program, problems):
             key = (directive.kind, directive.name)
             allowed = set()
         if not valid:
-            error("invalid_formal_directive", "Invalid formal directive or rank; ranks must be integers from 0 through 1000", directive)
+            error("invalid_formal_directive", "Invalid argumentation directive or rank; ranks must be integers from 0 through 1000", directive)
         if not directive.review.strip():
-            error("missing_formal_review", "A formal relationship requires a nonempty review reference", directive)
+            error("missing_formal_review", "An argumentation directive requires a nonempty review reference", directive)
         if key in seen:
-            error("duplicate_formal_directive", "A formal relationship is declared more than once", directive)
+            error("duplicate_formal_directive", "An argumentation directive is declared more than once", directive)
         seen.add(key)
         if allowed:
             check_target(directive.name, allowed, directive)

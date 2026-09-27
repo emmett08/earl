@@ -11,7 +11,7 @@ from .generated.EALLexer import EALLexer
 from .generated.EALParser import EALParser
 from .generated.EALVisitor import EALVisitor
 from .abstractions import lower_patterns
-from .model import (Application, Argument, FormalDirective, Assumption, Claim, Environment, Evidence,
+from .model import (Application, Argument, ArgumentationDirective, Assumption, Claim, Environment, Evidence,
                     Pattern, PatternBinding, PatternParameter, Reasoning, Objection,
                     Predicate, Program, Proposition, SourceSpan, Tool)
 
@@ -65,11 +65,11 @@ def _argument_fields(ctx):
 
 
 class _ASTBuilder(EALVisitor):
-    def visitFormalDirective(self, ctx):
+    def visitArgumentationDirective(self, ctx):
         words = ctx.getChild(0).getText()
         names = ctx.identifier()
         rank_text = ctx.NUMBER().getText() if words == "rank" else None
-        return FormalDirective(
+        return ArgumentationDirective(
             words,
             names[0].getText(),
             names[1].getText() if words == "contrary" else None,
@@ -193,12 +193,12 @@ def parse(source: str) -> Program:
     symbols = set()
     duplicates = []
     locations = {}
-    formal = []
+    argumentation_directives = []
     try:
         for declaration in tree.declaration():
             value = builder.visit(declaration.getChild(0))
-            if isinstance(value, FormalDirective):
-                formal.append(value)
+            if isinstance(value, ArgumentationDirective):
+                argumentation_directives.append(value)
                 continue
             if value.name in symbols:
                 duplicates.append(value.name)
@@ -208,6 +208,6 @@ def parse(source: str) -> Program:
     except (RecursionError, ValueError, OverflowError) as exc:
         raise EALSyntaxError(f"Invalid JSON data: {exc}") from exc
     program = Program(language=_string(tree.STRING()), source_digest=hashlib.sha256(encoded).hexdigest(),
-                      **groups, formal=tuple(formal), duplicates=tuple(duplicates), locations=locations,
+                      **groups, argumentation_directives=tuple(argumentation_directives), duplicates=tuple(duplicates), locations=locations,
                       declaration_count=len(tree.declaration()) + len(groups["patterns"]))
     return lower_patterns(program)

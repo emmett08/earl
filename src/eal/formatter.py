@@ -20,6 +20,8 @@ def semantic_ir(program: Program):
     newly bound observation records even when this representation is unchanged.
     """
     result = asdict(program)
+    # Keep the structured interchange key independent of Python model names.
+    result['formal'] = result.pop('argumentation_directives')
     for key in ('source_digest', 'locations'):
         result.pop(key, None)
     for argument in result['arguments'].values():
@@ -99,7 +101,7 @@ def format_program(program: Program, *, registry=None) -> str:
             if getattr(value, key):
                 lines.append(f'{key} {", ".join(getattr(value, key))};')
         emit('objection', name, lines)
-    for directive in program.formal:
+    for directive in program.argumentation_directives:
         if directive.kind == 'strict':
             line = f'strict {directive.name}'
         elif directive.kind == 'rank':

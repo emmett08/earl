@@ -1,4 +1,4 @@
-"""Reviewed EAL/2 formal choices are parsed, checked and compiled explicitly."""
+"""Reviewed EAL/2 argumentation directives are parsed, checked and compiled explicitly."""
 
 from dataclasses import replace
 
@@ -7,7 +7,7 @@ import pytest
 from eal.aspic_compiler import CompilationError, compile_eal_aspic
 from eal.aspic_export import export_aspic_view
 from eal.formatter import format_source, semantic_ir
-from eal.model import FormalDirective, SourceSpan
+from eal.model import ArgumentationDirective, SourceSpan
 from eal.parser import EALSyntaxError, parse
 from eal.evaluator import evaluate
 from eal.semantics import validate
@@ -103,7 +103,7 @@ strict reporting_route reviewed "review/report-implication";'''
         compile_eal_aspic(source, records, goal="run_passes", now=NOW, context=CONTEXT)
 
 
-def test_pattern_generated_argument_accepts_formal_annotation():
+def test_pattern_generated_argument_accepts_argumentation_directive():
     source = BASE + '''
 pattern measured_route(c: claim, r: reasoning, e: evidence) {
  conclusion c; reasoning r; evidence e;
@@ -143,7 +143,7 @@ rank measured_second 700 reviewed "review/other-instance";
     ('strict primary_route reviewed "review/x";\n'
      'rank primary_route 500 reviewed "review/y";', "formal_strict_rank"),
 ])
-def test_invalid_formal_annotation_fails_closed(annotation, expected):
+def test_invalid_argumentation_directive_fails_closed(annotation, expected):
     assert expected in codes(BASE + annotation)
 
 
@@ -154,7 +154,7 @@ contrary run_passes to remote_claim reviewed "review/different-scopes";
 '''
     assert "formal_environment_mismatch" in codes(source)
     programme = parse(BASE)
-    forged = replace(programme, formal=(FormalDirective("rank", "primary_route",
+    forged = replace(programme, argumentation_directives=(ArgumentationDirective("rank", "primary_route",
                                                        None, "high", "review/x", SourceSpan(1, 1, 1, 2)),))
     assert "invalid_ir" in {diagnostic.code for diagnostic in validate(forged)}
 
@@ -198,7 +198,7 @@ rank challenge 640 reviewed "review/objection";'''
         compile_eal_aspic(source, records, goal="run_passes", now=NOW, context=CONTEXT)
 
 
-def test_wrong_kind_and_ambiguous_name_diagnostics_point_to_formal_relation():
+def test_wrong_kind_and_ambiguous_name_diagnostics_point_to_argumentation_directive():
     source = BASE + 'rank run_passes 700 reviewed "review/wrong-kind";'
     diagnostic = next(d for d in validate(parse(source)) if d.code == "formal_target_kind")
     assert diagnostic.expected == "argument | assumption | evidence"
@@ -210,7 +210,7 @@ rank probe_data 700 reviewed "review/ambiguous";'''
     assert {"duplicate_symbol", "ambiguous_formal_reference"} <= codes(duplicate)
 
 
-def test_formal_relations_are_order_independent_and_default_eal_is_unchanged():
+def test_argumentation_directives_are_order_independent_and_default_eal_is_unchanged():
     preface = 'rank probe_data 700 reviewed "review/probe";\n'
     source = BASE.replace('language "EAL/2";\n', 'language "EAL/2";\n' + preface)
     assert semantic_ir(parse(source)) == semantic_ir(parse(format_source(source)))
@@ -220,9 +220,9 @@ def test_formal_relations_are_order_independent_and_default_eal_is_unchanged():
     # Record source bindings are exact; rebuild them for the changed source.
     annotated_records = {name: record(annotated, name, {"ok": True}) for name in annotated.evidence}
     plain = evaluate(original, records, now=NOW, context=CONTEXT)
-    formal = evaluate(annotated, annotated_records, now=NOW, context=CONTEXT)
-    assert plain["claims"] == formal["claims"]
-    assert plain["arguments"] == formal["arguments"]
+    annotated_result = evaluate(annotated, annotated_records, now=NOW, context=CONTEXT)
+    assert plain["claims"] == annotated_result["claims"]
+    assert plain["arguments"] == annotated_result["arguments"]
 
 
 def test_obsolete_solver_named_block_is_rejected_as_eal_source():
@@ -230,7 +230,7 @@ def test_obsolete_solver_named_block_is_rejected_as_eal_source():
         parse(BASE + 'aspic { rank probe_data 700 reviewed "review/old"; }')
 
 
-def test_formal_words_remain_contextual_identifiers():
+def test_argumentation_words_remain_contextual_identifiers():
     source = BASE + '''evidence rank { tool collector; kind test; environment lab;
  max_age 60; require "ok" == true; }
 rank rank 650 reviewed "review/contextual-name";
