@@ -1,10 +1,11 @@
 # Three-system argument-presentation study (v4)
 
-**Status: specified; no connected v4 model outcome observed.** Revisions 0.1.1,
-0.1.2 and 0.1.3 and their pre-outcome infrastructure amendments are recorded
-in `WORKFLOW-AMENDMENT-1.md`, `WORKFLOW-AMENDMENT-2.md` and
-`WORKFLOW-AMENDMENT-3.md`; prior freezes and failed runs are retained.
-This prospective study
+**Status: version 0.1.4 specified after partial 0.1.3 acquisition; no 0.1.4
+model outcome observed.** Earlier revisions and infrastructure amendments are
+recorded in `WORKFLOW-AMENDMENT-1.md` through `WORKFLOW-AMENDMENT-3.md`.
+`WORKFLOW-AMENDMENT-4.md` records the post-acquisition credential and
+allocation changes. Run 36344954297 and every earlier freeze remain retained.
+This new full cohort
 supersedes neither v2 nor v3. The earlier 18-episode v3 pilot remains an
 apparatus-development record. A v4 freeze and successful validation must
 precede every eligible coding session. Any later change to an input, assessor,
@@ -44,8 +45,12 @@ in shared collector or assessor discriminates none of these.
 
 One independently cloned entire B→C→D lineage is the assigned unit; later
 source in that lineage inherits earlier changes. A system × replicate block
-is a matched triad of P0/P1/P2 lineages allocated by the frozen seed and
-permutation in `manifest.json`. Three blocks per system create 27 assigned
+is a matched triad of P0/P1/P2 lineages allocated by the new frozen seed
+in `manifest.json`. Within each system, the three triads use one of two
+randomly selected cyclic orientation sets and a randomised block order. Thus
+each arm runs once in each execution position within that system. This
+restricted randomisation has 12 allowed schedules per system. Three blocks
+per system create 27 newly assigned
 lineages and 81 intended coding episodes. After D, each lineage receives two
 fresh, 120-second, read-only decision sessions on frozen clean and defeated
 finite-state cases, for 54 additional probe sessions. Their source and facts
@@ -53,12 +58,15 @@ come from registered host case fixtures rather than the agent's D candidate.
 The probe never changes or feeds back into the B→C→D source. A strict choice
 among frozen actions tests a decision change; transcript, validity, timing
 and usage are retained separately from coding. Stages and sealed checks are repeated
-measurements, not independent samples. All assignments enter intention-to-
+measurements, not independent samples. All 0.1.4 assignments enter intention-to-
 treat tabulation, including agent error, timeout, inaccessible model,
-non-delivery, assessor invalidity and missing artifact. No successful retry
-replaces the first assigned attempt; a restarted workflow has a distinct
-attempt identifier and is a protocol deviation unless it merely recovers a
-host artifact without another coding invocation.
+non-delivery, assessor invalidity and missing artifact. The partial 0.1.3
+ledger remains a separate descriptive record: preserve successful episodes,
+failed invocations, stopped blocks and uninvoked stages/probes as missing.
+No 0.1.3 result is spliced into a 0.1.4 lineage. No successful retry replaces
+the first assigned attempt within either version; a restarted workflow has a
+distinct attempt identifier and is a protocol deviation unless it merely
+recovers a host artifact without another coding invocation.
 
 The same requested `gpt-6-sol` model, medium effort, Codex CLI `0.154.0`,
 30-minute per-episode cap, prompt template, tool permissions and visible
@@ -176,9 +184,12 @@ equally system-weighted mean of within-block differences:
 
 Report raw matched differences and each system separately. Missing outcomes
 stay missing with explicit bounds/sensitivity; no complete-case result is
-promoted without attrition disclosure. Assignment is random within registered
-triads, but systems and tasks are purposively selected. No population-of-
-software inference follows.
+promoted without attrition disclosure. For any randomisation inference,
+enumerate only the 12 allowed position-balanced schedules per system, not
+independent permutations within triads. The 0.1.3 partial cohort is displayed
+separately and never pooled into the 0.1.4 primary estimator. Assignment is
+random within the registered restricted design, but systems and tasks are
+purposively selected. No population-of-software inference follows.
 
 ## Decision rules and stops
 
@@ -191,10 +202,17 @@ systems, unchanged action or invalid measurement leaves the comparison
 unresolved. Cost is unpriced when required usage or rate identity is absent.
 The finite results cannot prove EAL/2 reduces future maintenance debt.
 
-A validation failure before live acquisition stops the run. During live
-acquisition, preserve completed and failed assignments, state the exact
+A validation failure before live acquisition stops the run. The 0.1.4
+workflow draws its process `CODEX_API_KEY` from the distinct repository secret
+`CODEX_API_KEY`; this credential source and its billing identity are recorded
+as a post-0.1.3 amendment. One isolated Responses API request with an output
+cap verifies immediate model entitlement before parallel live jobs. It does
+not verify the pinned Codex CLI's authenticated integration or guarantee
+sufficient credit for the full wave. It is outside the coding and decision
+units; its allowlisted token usage and elapsed time are reported separately. During
+live acquisition, preserve completed and failed assignments, state the exact
 stopping cause (credential, budget, infrastructure, isolation or other) and
-do not silently change the model, assessor or cap. The workflow may use a
+do not silently change the credential, model, assessor or cap. The workflow may use a
 bounded concurrency setting; actual billed expenditure cannot be enforced
 from CLI turn aggregates and must be reported as unavailable until reconciled.
 Publish

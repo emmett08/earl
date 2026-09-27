@@ -73,16 +73,18 @@ class RunnerTests(unittest.TestCase):
         permutation = random.Random(int("a" * 64, 16))
         blocks = []
         for system in self.systems:
-            for rep in (1, 2):
+            base = (["P0", "P1", "P2"] if permutation.randrange(2) == 0
+                    else ["P0", "P2", "P1"])
+            orders = [base[i:] + base[:i] for i in range(3)]
+            permutation.shuffle(orders)
+            for rep, arms in enumerate(orders, 1):
                 block_id = f"{system}-{rep:02}"
-                arms = ["P0", "P1", "P2"]
-                permutation.shuffle(arms)
                 blocks.append({"id": block_id, "system": system,
                                "assignments": [{"clone": f"{block_id}-K{i+1}", "arm": arm}
                                                for i, arm in enumerate(arms)]})
         self.manifest = {"schema": runner.SCHEMA, "seed_hex": "a" * 64,
-                         "allocation_algorithm": "frozen test permutation",
-                         "systems": list(self.systems), "replicate_blocks_per_system": 2,
+                         "allocation_algorithm": runner.ALLOCATION_ALGORITHM,
+                         "systems": list(self.systems), "replicate_blocks_per_system": 3,
                          "blocks": blocks, "wall_cap_seconds": 5,
                          "agent": {"model": "synthetic", "effort": "none", "cli_version": "0.154.0"},
                          "evidence_schema": {system: {stage: {"mode": "smoke"}
@@ -280,12 +282,31 @@ class RunnerTests(unittest.TestCase):
 
     def test_allocation_rejects_missing_arm_and_insufficient_blocks(self):
         original = self.manifest["blocks"][0]["assignments"][0]["arm"]
-        self.manifest["blocks"][0]["assignments"][0]["arm"] = "P1"
+        self.manifest["blocks"][0]["assignments"][0]["arm"] = self.manifest["blocks"][0]["assignments"][1]["arm"]
         with self.assertRaisesRegex(ValueError, "one of each arm"):
             runner.validate_manifest(self.manifest, self.fixtures)
         self.manifest["blocks"][0]["assignments"][0]["arm"] = original
         self.manifest["blocks"].pop()
         with self.assertRaisesRegex(ValueError, "incomplete system-by-replicate"):
+            runner.validate_manifest(self.manifest, self.fixtures)
+
+    def test_seeded_allocation_balances_every_arm_position_per_system(self):
+        runner.validate_manifest(self.manifest, self.fixtures)
+        for system in self.systems:
+            rows = [block["assignments"] for block in self.manifest["blocks"]
+                    if block["system"] == system]
+            self.assertEqual(len(rows), 3)
+            for position in range(3):
+                self.assertEqual({row[position]["arm"] for row in rows},
+                                 {"P0", "P1", "P2"})
+
+    def test_seeded_allocation_rejects_unbalanced_but_valid_arm_schedule(self):
+        system_rows = [block for block in self.manifest["blocks"]
+                       if block["system"] == self.systems[0]]
+        system_rows[1]["assignments"] = [entry.copy() for entry in system_rows[0]["assignments"]]
+        for position, entry in enumerate(system_rows[1]["assignments"], 1):
+            entry["clone"] = f"{system_rows[1]['id']}-K{position}"
+        with self.assertRaisesRegex(ValueError, "stored assignment differs"):
             runner.validate_manifest(self.manifest, self.fixtures)
 
     def test_seeded_allocation_rejects_tampered_arm(self):

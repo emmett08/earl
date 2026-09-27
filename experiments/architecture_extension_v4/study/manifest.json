@@ -4,12 +4,12 @@
     "effort": "medium",
     "model": "gpt-6-sol"
   },
-  "allocation_algorithm": "Python random.Random(int(seed_hex, 16)); iterate systems in manifest systems order then replicate 1..3; shuffle a fresh ['P0','P1','P2'] for each block; map list positions 1..3 to clone IDs <system>-<replicate:02d>-K<position>",
+  "allocation_algorithm": "Python 3.12 random.Random(int(seed_hex,16)); for each system in manifest order, choose orientation with randrange(2): base [P0,P1,P2] if 0 else [P0,P2,P1]; form three cyclic left rotations; shuffle those three with the same RNG; map rotations to replicate 01..03 and positions 1..3 to clone IDs <system>-<replicate:02d>-K<position>. Each arm occurs once in each position per system.",
   "blocks": [
     {
       "assignments": [
         {
-          "arm": "P1",
+          "arm": "P2",
           "clone": "fulfilment-01-K1"
         },
         {
@@ -17,7 +17,7 @@
           "clone": "fulfilment-01-K2"
         },
         {
-          "arm": "P2",
+          "arm": "P1",
           "clone": "fulfilment-01-K3"
         }
       ],
@@ -45,15 +45,15 @@
     {
       "assignments": [
         {
-          "arm": "P1",
+          "arm": "P0",
           "clone": "fulfilment-03-K1"
         },
         {
-          "arm": "P2",
+          "arm": "P1",
           "clone": "fulfilment-03-K2"
         },
         {
-          "arm": "P0",
+          "arm": "P2",
           "clone": "fulfilment-03-K3"
         }
       ],
@@ -63,15 +63,15 @@
     {
       "assignments": [
         {
-          "arm": "P1",
+          "arm": "P0",
           "clone": "entitlement-01-K1"
         },
         {
-          "arm": "P0",
+          "arm": "P2",
           "clone": "entitlement-01-K2"
         },
         {
-          "arm": "P2",
+          "arm": "P1",
           "clone": "entitlement-01-K3"
         }
       ],
@@ -81,11 +81,11 @@
     {
       "assignments": [
         {
-          "arm": "P1",
+          "arm": "P2",
           "clone": "entitlement-02-K1"
         },
         {
-          "arm": "P2",
+          "arm": "P1",
           "clone": "entitlement-02-K2"
         },
         {
@@ -117,15 +117,15 @@
     {
       "assignments": [
         {
-          "arm": "P0",
+          "arm": "P2",
           "clone": "reservation-01-K1"
         },
         {
-          "arm": "P1",
+          "arm": "P0",
           "clone": "reservation-01-K2"
         },
         {
-          "arm": "P2",
+          "arm": "P1",
           "clone": "reservation-01-K3"
         }
       ],
@@ -139,11 +139,11 @@
           "clone": "reservation-02-K1"
         },
         {
-          "arm": "P2",
+          "arm": "P1",
           "clone": "reservation-02-K2"
         },
         {
-          "arm": "P1",
+          "arm": "P2",
           "clone": "reservation-02-K3"
         }
       ],
@@ -170,7 +170,7 @@
     }
   ],
   "calibration_system": "fulfilment",
-  "created_utc": "2026-09-27T18:31:37.848253+00:00",
+  "created_utc": "2026-09-27T20:01:19.415200+00:00",
   "critical_check_ids": {
     "entitlement": {
       "B": [
@@ -416,8 +416,8 @@
   },
   "max_block_high_scenario_usd": "15.00",
   "protocol_id": "INV-001",
-  "protocol_version": "0.1.3",
-  "registration_status": "specified; no v4 coding outcome observed and not preregistered",
+  "protocol_version": "0.1.4",
+  "registration_status": "specified after partial 0.1.3 acquisition; no 0.1.4 outcome observed; not preregistered",
   "replicate_blocks_per_system": 3,
   "resources": {
     "maximum_agent_invocation_seconds": 152280,
@@ -428,7 +428,7 @@
     "rate_card_path": "experiments/architecture_extension_v4/study/rate-card.json"
   },
   "schema": "architecture-extension-v4/manifest/1",
-  "seed_hex": "5e4dea3f17b5790a47f3ec2ff266a5a82080b1a4c8d6494d24165e97e00ce11a",
+  "seed_hex": "56547a4ddd1f3f69eeede34c10fb209b2ba45d1ef0eb832e4f30c0a3d6dbb34a",
   "systems": [
     "fulfilment",
     "entitlement",

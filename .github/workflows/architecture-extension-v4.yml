@@ -29,7 +29,7 @@ concurrency:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
@@ -88,12 +88,19 @@ jobs:
               codex_preflight(root / 'trial', root / 'home')
               codex_preflight(root / 'trial', root / 'home', read_only_trial=True)
           PY
+      - name: Check authenticated model access inside the isolated runner
+        if: ${{ github.run_attempt == 1 }}
+        env:
+          CODEX_API_KEY: ${{ secrets.CODEX_API_KEY }}
+        run: python experiments/architecture_extension_v4/study/credential_gate.py
       - name: Retain validation evidence and any stopped smoke attempt
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: architecture-v4-validation-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/v4-smoke/
+          path: |
+            ${{ runner.temp }}/v4-smoke/
+            ${{ runner.temp }}/v4-credential-gate/
           if-no-files-found: warn
           retention-days: 90
 
@@ -150,7 +157,7 @@ jobs:
           test "$(command -v bwrap)" = /usr/bin/bwrap
       - name: Execute one preallocated triad, retaining every assigned attempt
         env:
-          CODEX_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CODEX_API_KEY: ${{ secrets.CODEX_API_KEY }}
           BLOCK: ${{ matrix.block }}
         run: |
           test -n "$CODEX_API_KEY"

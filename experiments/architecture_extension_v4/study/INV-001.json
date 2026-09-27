@@ -25,7 +25,7 @@
           "EST-006"
         ],
         "id": "MOD-001",
-        "model_or_procedure": "Tabulate every probe and paired decision; compute system-balanced within-triad P2-P1 and secondary P2-P0 differences; randomisation inference permutes labels only within actual triads if gates pass. Aggregate the two independent post-D probe sessions as a pair per assigned arm/block; analyse their correct action-change contrast separately from coded implementation outcomes.",
+        "model_or_procedure": "Tabulate every probe and paired decision; compute system-balanced within-triad P2-P1 and secondary P2-P0 differences. If randomisation inference is used, enumerate the 12 allowed balanced assignment schedules per system (2 orientations times 3! block orders), jointly across systems; do not independently permute arm labels within each triad. Aggregate the two independent post-D probe sessions as a pair per assigned arm/block; analyse their correct action-change contrast separately from coding outcomes.",
         "outputs": [
           "ordered_findings",
           "critical_completion_diff",
@@ -813,7 +813,7 @@
   },
   "design": {
     "allocation_concealment": "Versioned seed commitment and manifest before coding; reviewer mapping sealed until both architecture forms and adjudication are filed. Host operator may know treatment while constructing packets.",
-    "assignment_method": "A precommitted seed yields a uniform P0/P1/P2 permutation over three masked clone IDs independently for each system-replicate triad.",
+    "assignment_method": "A fresh committed 256-bit seed randomises one of two cyclic orientation sets and the order of its three rotations per system. Each arm appears once in each clone execution position within each of the three systems; the lineage remains the assignment unit.",
     "comparator": "Primary P2 EAL/2 rendering versus equally current and semantically matched P1 prose; P0 ordinary source/brief secondary.",
     "control_ids": [
       "CTRL-001",
@@ -825,7 +825,7 @@
     "masking": "Assessor and architecture reviewers arm-masked where source content permits; agents cannot be masked to packet form. Record any identifier leakage.",
     "rationale": "Block each fresh B-C-D lineage by source system, task sequence and replicate; randomly assign three cloned instances to P0/P1/P2 and retain all attempts.",
     "setting": "Versioned offline software systems on isolated coding runners with host-only evidence and scoring.",
-    "temporal_structure": "Sequential B to C to D within a clone, then two independently forked clean/defeated decision sessions without carry-over; three separately randomised triads per system."
+    "temporal_structure": "Fresh B→C→D clone per arm, then two independent decision sessions. Three blocks per system are position-balanced by restricted joint randomisation; within-clone stages remain sequential and block order is recorded."
   },
   "estimands": [
     {
@@ -1068,13 +1068,13 @@
     "started_at": null
   },
   "feasibility": {
-    "access": "Local deterministic fixtures and GitHub repository connection are available. Live model credential is expected from the repository Actions secret but must be checked by CI; provider invoice access and two independent masked reviewers are unverified.",
+    "access": "A connected 0.1.3 run observed completed model turns using the old Actions OPENAI_API_KEY secret, then that account reported no credits remaining. A distinct CODEX_API_KEY secret is proposed for 0.1.4 and must be verified before the new wave. Provider invoice access and two independent masked reviewers remain unverified.",
     "apparatus_or_data": [
       "v3 host, EAL/2 evaluator, six cloned B-C-D lineages, synthetic release-gate cases and retained 63-artifact successful acquisition provide a starting harness.",
-      "v4 entitlement and reservation fixtures, hidden controls, corrected fulfilment assessor, packet parity and six finite-state decision cases passed deterministic tests. Revision 0.1.0 stopped at a nested CLI namespace. Revision 0.1.1 passed CLI isolation validation but nine first B invocations could not resolve the provider host, timed out at 1,800 seconds, and triggered the resource guard without completed turns. Unlaunched 0.1.2 received an independent preflight review; revision 0.1.3 requires a new freeze and credential-free effective-route check before connected model acquisition."
+      "v4 entitlement and reservation fixtures, hidden controls, corrected fulfilment assessor, matched P1/P2 packets and six finite-state decision cases passed deterministic tests. Revision 0.1.3 passed the provider route gate and acquired connected coding and decision records before OPENAI_API_KEY credit exhaustion; retain that partial run separately."
     ],
     "blockers": [
-      "The live credential and provider billing identity remain unverified. The nested Codex sandbox failed in run 36341669596; the outer-only CLI launched in run 36342146781 but its isolated resolver could not reach api.openai.com. Revision 0.1.3 effective-route preflight has not yet been observed in CI.",
+      "The proposed CODEX_API_KEY billing identity, available balance and authenticated model route need a recorded independent preflight. 0.1.3 OPENAI_API_KEY credit exhaustion cannot be repaired by overwriting its assigned attempts.",
       "Independent masked architecture reviewers are not yet assigned; retain that endpoint as pending if none complete forms.",
       "The conditional list-rate cap does not guarantee a billed-currency ceiling."
     ],
@@ -1155,7 +1155,7 @@
       "ASM-005",
       "ASM-006"
     ],
-    "causal_and_measurement_structure": "Conditional randomisation identifies finite-triad assignment effects once systems, interventions, source oracles and acquisition exist. Present apparatus lacks complete distinct anchors, packet parity, sealed review and price coverage; presentation-only, architecture and monetary estimands are not identified at this knowledge cut. B/C source states mediate the lineage assignment effect and must not be adjusted away.",
+    "causal_and_measurement_structure": "The new position-balanced randomisation identifies finite-system P2-versus-P1 assignment contrasts for delivered, valid 0.1.4 lineages under consistency, source parity and no cross-lineage interference. Credit failure, missing stages/probes, invalid assessment and absent architecture review or request-level billing restrict identification; keep unknown outcomes as bounds or unresolved. B/C source states mediate the lineage assignment effect and must not be adjusted away. This design tests argument presentation, not the intrinsic EAL inference algorithm or future maintenance debt.",
     "diagnostics": [
       "Three distinct source-provenance reports.",
       "Packet semantic parity and access traces.",
@@ -1164,20 +1164,24 @@
       "Masked reviewer completion and charge coverage."
     ],
     "identified_parameters": [
-      "After gates pass, within-triad intention-to-treat contrasts for included lineages can be estimated from all assigned outcomes."
+      "If all assigned outcomes are observed and valid, finite-system, position-balanced within-triad intention-to-treat contrasts for behavioural checks, paired decisions and elapsed time are identifiable.",
+      "For any new partial stop, report observed arm-specific records and bounds over missing assigned outcomes; no complete-case contrast substitutes for the full assignment contrast."
     ],
     "nonidentified_alternatives": [
-      "Information advantage when P2 contains statuses absent from P1.",
-      "Model/runner drift, leakage or source-selected tasks.",
-      "Population-of-systems effect beyond the chosen finite codebases.",
-      "Financial totals with absent rate or token classes."
+      "The independent effect of EAL/2 inference machinery rather than its formal presentation.",
+      "Population-of-systems effects beyond the three purposively constructed fixtures.",
+      "Future maintenance debt or remediation labour.",
+      "Masked architecture contrast until independent reviewers seal forms.",
+      "Exact financial contrast without request-level usage and billing identity."
     ],
     "rescue_actions": [
-      "Build and independently check two more genuine systems and reference implementations.",
-      "Implement common FactSet/DecisionContent renderers and parity rejection gate.",
-      "Freeze brief/assessor reconciliation, reviewers, tariffs and allocation before coding."
+      "Run the full fresh 0.1.4 cohort after a bounded authenticated credential preflight, retaining any further stop.",
+      "Verify live P1/P2 proposition and status parity and assessor/source digests.",
+      "Obtain two masked reviewer forms and adjudication before revealing arms.",
+      "Capture request-level usage and reconcile a verified billing channel; otherwise leave price unknown.",
+      "Register independent previously unseen systems for any broader confirmation."
     ],
-    "status": "nonidentified",
+    "status": "partially-identified",
     "target_estimand_ids": [
       "EST-001",
       "EST-002",
@@ -1187,10 +1191,11 @@
       "EST-006"
     ],
     "threats": [
-      "Only one v3 source anchor exists at initial design cut.",
-      "Current P1 omits P2 statuses.",
-      "Masked architecture review and full billed cost were not acquired in v3.",
-      "Assessor requirements may mismatch task briefs until separately corrected."
+      "Credit depletion can induce execution-order and treatment-correlated attrition.",
+      "Partial 0.1.3 observations informed this 0.1.4 design amendment.",
+      "Semantic parity may fail on a candidate even if baseline renderer tests pass.",
+      "Masked architecture review and full billed cost remain unavailable until their separate gates pass.",
+      "Purposively chosen systems do not identify a population effect."
     ]
   },
   "interventions_or_exposures": [
@@ -1510,23 +1515,24 @@
       "0.1.0: predeclared USD 15.00 upper conditional Standard API list-rate stop per block, preserving actual billed amount as unknown; 18 v3 turn aggregates yielded USD 7.17 total and USD 0.64 maximum per-episode high scenario in a retrospective calibration.",
       "0.1.1: validation run 36341669596 reached successful outer mount checks and failed on the nested Codex sandbox before any live model calls; retained its freeze, unchanged allocation and oracles, and amended the runner to use that verified outer mount as the sole filesystem boundary with Codex danger-full-access inside it.",
       "0.1.2: run 36342146781 passed validation but all nine first B invocations timed out at the 1,800-second cap after provider DNS errors, with no completed model turns; retained its freeze and artifacts. A locally frozen but unlaunched resolver-only mount and direct network preflight was reviewed before release.",
-      "0.1.3: independent prelaunch review found direct DNS/TLS probing did not follow the live proxy environment and a fixed writable probe filename could clobber candidate bytes. The credential-free route check now follows live proxy variables and requires an HTTP 401 from the unauthenticated provider endpoint; trial write checks use exclusive unpredictable names. No intervention, oracle or allocation changed."
+      "0.1.3: independent prelaunch review found direct DNS/TLS probing did not follow the live proxy environment and a fixed writable probe filename could clobber candidate bytes. The credential-free route check now follows live proxy variables and requires an HTTP 401 from the unauthenticated provider endpoint; trial write checks use exclusive unpredictable names. No intervention, oracle or allocation changed.",
+      "0.1.4: post-acquisition amendment after run 36344954297 partially completed and the OPENAI_API_KEY account reported no credits. The new full cohort uses a distinct CODEX_API_KEY secret and fresh position-balanced seed; all three source systems, briefs, assessor checks, packet meaning, model, CLI and caps remain the same. Prior 0.1.3 outcomes are retained separately as partial exploratory data, never substituted into 0.1.4."
     ],
     "created_at": "2026-09-27T19:09:54+01:00",
-    "knowledge_cut": "The v3 outputs preceded design version 0.1.0; validation run 36341669596 failed before v4 live calls, and run 36342146781 made nine timed-out, DNS-blocked first B invocations with no completed model turns. Unlaunched local 0.1.2 was superseded after preflight review. No connected v4 coding or decision outcome has been observed for revision 0.1.3.",
+    "knowledge_cut": "Run 36344954297 acquired connected 0.1.3 coding and decision records but stopped early after OPENAI_API_KEY reported no credits. Its complete and failed observations were visible before this 0.1.4 amendment; exact final coverage must be taken from the sealed 0.1.3 audit, not this proposal. No 0.1.4 model outcome has yet been observed.",
     "sources": [
       "experiments/architecture_extension_v3/study/PROTOCOL.md and task-bank.json at 42e0381f21e73f436a0de0462544ec7b052bc49b",
       "experiments/architecture_extension_v3/host.py and study/analyse.py at 42e0381f21e73f436a0de0462544ec7b052bc49b",
       "https://github.com/emmett08/earl/actions/runs/36334071057",
       "run-36334071057/review/new-study-design.md (design analysis; outside repository)"
     ],
-    "updated_at": "2026-09-27T18:37:05.570560+00:00"
+    "updated_at": "2026-09-27T20:01:19.416021+00:00"
   },
   "question": "In three registered software systems, does presenting matched current source facts, defeaters and guidance as an EAL/2 argument rather than semantically equivalent prose improve agents' verified later-change decisions and implementations without worse architecture, time or priced resource use?",
   "reproducibility": {
     "code_plan": "Pin Git tree, lockfile, dependencies, assessor and EAL tool bindings; replay assemblers, assessors, cost calculation and finite-system summaries from retained immutable snapshots.",
     "data_plan": "Retain exact trial source trees, input/output hashes, packet digests, delivery and CLI traces, assessor vectors, independent reviewer forms, invoices/rate snapshots and all deviations; copy expiring CI artifacts to durable storage. Retain all 54 post-D probe prompts, source/state facts and digests, responses, usage, timeout and parse statuses.",
-    "deviation_and_amendment_plan": "Append versioned amendments and all failed attempts; never overwrite the v3 freeze or reclassify repaired R/W as unseen independent confirmation.",
+    "deviation_and_amendment_plan": "Preserve the partial 0.1.3 assignment ledger and all prior freezes. This 0.1.4 cohort starts fresh from the same A fixtures under a new committed allocation and credential source. Never replace a failed 0.1.3 invocation or splice its successful stages into a 0.1.4 lineage; analyse cohorts separately.",
     "immutable_materials": [
       "System source anchors and provenance/licence.",
       "B/C/D briefs, visible and sealed tests, clean/defeated cases, assessor and expected action oracles.",
@@ -1536,13 +1542,13 @@
     ],
     "preregistration_status": "planned",
     "provenance_plan": "Record source revision, git blob and tree digests, case/brief authorship, timestamps, model/CLI versions, unknown backend revisions, price-source date and all raw response IDs.",
-    "randomisation_or_seed_plan": "Record independent seed commitments and uniform P0/P1/P2 permutations for each of nine system-replicate triads; reveal full allocation after reviewer seal; preserve scheduling order.",
-    "registration": "This version is a specified draft in repository; no immutable preregistration exists. Freeze a new version with timestamped digests before coding.",
+    "randomisation_or_seed_plan": "Register a fresh 256-bit seed and full position-balanced allocation before any 0.1.4 live call. The allocation is auditable in the manifest; masked architecture reviewers receive source without arm identity. Preserve actual scheduling order.",
+    "registration": "This 0.1.4 post-acquisition revision is specified after partial 0.1.3 results were seen. Its new immutable freeze must precede any 0.1.4 coding or decision call; the prior 0.1.3 freeze and run remain separate. Do not claim that 0.1.4 was preregistered before the 0.1.3 observations.",
     "replication_plan": "The first three-system wave estimates finite-system patterns; a separately registered unseen-system sample and simulation-based information target are required for confirmation."
   },
   "sampling": {
-    "attrition_or_loss": "All assigned failures, partial episodes, delivery errors and early stops remain in the ledger; do not replace them with successful retries.",
-    "dependence_structure": "Stages and probes nest inside a lineage; three lineages form one randomised triad; triads nest within independently developed systems. Resample/randomise only assignment units respecting blocks.",
+    "attrition_or_loss": "All 0.1.3 assigned successes, failed invocations, non-deliveries and uninvoked stages/probes remain in its partial ITT ledger. The separate 0.1.4 cohort includes all its newly assigned failures and early stops; no successful retry replaces a first attempt in either cohort.",
+    "dependence_structure": "Stages and probes nest inside a lineage; three lineages form a triad; triads nest within systems. Position-balanced assignments are dependent across the three blocks of one system. Randomisation inference must respect the 12 allowed schedules per system.",
     "inputs": [
       "Within-system stochastic session variability and stage carry-over to measure in the new calibration wave.",
       "System heterogeneity and correlation across task families.",
@@ -1552,7 +1558,7 @@
     "method": "Fixed feasibility replication followed by a separately registered precision/power simulation for any confirmation.",
     "multiplicity": "Behaviour and contested decision are co-primary interpretive endpoints; time, architecture and money are separately reported with no composite win count. Predeclare any formal multiplicity correction before confirmation.",
     "result": "The fixed first wave can bound mechanisms and estimate finite-system contrasts; three systems cannot calibrate a reliable population variance or establish a 25% improvement with narrow confidence bounds by fiat.",
-    "sample_size_or_information_target": "Three systems x three independently randomised three-arm triads x three stages = 27 coding lineages and 81 episodes, plus 54 isolated post-D paired decision-probe sessions (two per lineage). Fulfilment is a prior-observed calibration stratum; this is a bounded information target, not a power claim.",
+    "sample_size_or_information_target": "One fresh 0.1.4 cohort: three systems x three position-balanced three-arm triads x three stages = 27 coding lineages and 81 episodes, plus 54 isolated paired decision sessions. The partial 0.1.3 cohort is reported separately and is not added to the nominal 0.1.4 sample size.",
     "sensitivity_analysis": "Vary failure-penalty cap in declared alternatives; inspect outcomes by system and model drift and missing billing bounds; do not condition on post-treatment pass.",
     "stopping_implications": "Stop after 81 coding episodes and 54 registered 120-second decision-probe attempts unless a predeclared budget/safety or validity gate stops acquisition; retain incomplete study if stopped early."
   },
@@ -1562,11 +1568,12 @@
     "exclusions": [
       "The prior v3 R/W outcomes do not enter the new effect estimate.",
       "The synthetic release-gate replay is an apparatus check, not an independent coding system.",
-      "General software-system, human-engineer, future-debt and live-provider effects are outside scope."
+      "General software-system, human-engineer, future-debt and live-provider effects are outside scope.",
+      "Partial 0.1.3 coding and decision outcomes do not enter the 0.1.4 primary effect estimate; they are retained and reported as a separate incomplete cohort."
     ],
-    "knowledge_cut": "2026-09-27: run 36334071057 and v3 source commit 42e0381f21e73f436a0de0462544ec7b052bc49b observed before this design",
+    "knowledge_cut": "2026-09-27: v3 results and partial connected v4 revision 0.1.3 run 36344954297, including credit-related stops, were observed before this 0.1.4 amendment; no 0.1.4 outcomes observed.",
     "spatial_scope": "Isolated cloned source trees, host-only packet and assessor processes, and the registered CI or equivalent runner; no live payment, cloud deployment or customer state.",
-    "system_or_population": "The three eventual registered codebases and their frozen B-C-D task banks; fulfilment is a previously observed calibration stratum, and two additional systems are independent-system development replications.",
+    "system_or_population": "The three registered Python service fixtures and their frozen B-C-D tasks; fulfilment is a previously observed calibration stratum and entitlement and reservation are two separately constructed systems, not a random sample of production software.",
     "temporal_scope": "Each assigned B-C-D coding lineage, then two independent 120-second decision probes after D on clean and defeated states, plus sealed assessment, masked review and cost accounting; no future maintenance horizon."
   },
   "status": "specified",
@@ -1589,5 +1596,5 @@
     "sampling_frame": "The known fulfilment A snapshot plus new independently sourced systems meeting frozen pre-outcome executable eligibility criteria; no random sample of all software.",
     "target_population_or_system": "Exactly the three prospectively registered codebases; fulfilment analysed as prior-observed calibration, two independent new systems separately."
   },
-  "version": "0.1.3"
+  "version": "0.1.4"
 }

@@ -48,6 +48,14 @@ if str(SRC) not in sys.path:
 STAGES = ("B", "C", "D")
 ARMS = {"P0", "P1", "P2"}
 SCHEMA = "architecture-extension-v4/manifest/1"
+ALLOCATION_ALGORITHM = (
+    "Python 3.12 random.Random(int(seed_hex,16)); for each system in manifest order, "
+    "choose orientation with randrange(2): base [P0,P1,P2] if 0 else [P0,P2,P1]; "
+    "form three cyclic left rotations; shuffle those three with the same RNG; "
+    "map rotations to replicate 01..03 and positions 1..3 to clone IDs "
+    "<system>-<replicate:02d>-K<position>. Each arm occurs once in each "
+    "position per system."
+)
 
 
 class InfrastructureDeviation(RuntimeError):
@@ -73,8 +81,8 @@ def validate_manifest(manifest: dict[str, Any], fixtures: Path) -> list[dict[str
         raise ValueError("at least three distinct systems are required")
     if any(not _identifier(system) for system in systems):
         raise ValueError("unsafe system identifier")
-    if type(replicates) is not int or replicates < 2:
-        raise ValueError("at least two allocated blocks per system are required")
+    if type(replicates) is not int or replicates != 3:
+        raise ValueError("position-balanced allocation requires exactly three blocks per system")
     if not isinstance(blocks, list) or len(blocks) != len(systems) * replicates:
         raise ValueError("incomplete system-by-replicate block allocation")
     if not isinstance(manifest.get("seed_hex"), str) or len(manifest["seed_hex"]) != 64:
@@ -83,8 +91,8 @@ def validate_manifest(manifest: dict[str, Any], fixtures: Path) -> list[dict[str
         bytes.fromhex(manifest["seed_hex"])
     except ValueError as exc:
         raise ValueError("allocation seed must be hexadecimal") from exc
-    if not isinstance(manifest.get("allocation_algorithm"), str) or not manifest["allocation_algorithm"]:
-        raise ValueError("allocation algorithm must be declared")
+    if manifest.get("allocation_algorithm") != ALLOCATION_ALGORITHM:
+        raise ValueError("declared allocation algorithm differs from the registered algorithm")
     cap = manifest.get("wall_cap_seconds")
     if type(cap) is not int or not 1 <= cap <= 1800:
         raise ValueError("invalid per-episode wall cap")
@@ -140,10 +148,11 @@ def validate_manifest(manifest: dict[str, Any], fixtures: Path) -> list[dict[str
     allocation = random.Random(int(manifest["seed_hex"], 16))
     expected_blocks: list[dict[str, Any]] = []
     for system in systems:
-        for replicate in range(1, replicates + 1):
+        base = ["P0", "P1", "P2"] if allocation.randrange(2) == 0 else ["P0", "P2", "P1"]
+        orders = [base[position:] + base[:position] for position in range(3)]
+        allocation.shuffle(orders)
+        for replicate, arms in enumerate(orders, 1):
             block_id = f"{system}-{replicate:02d}"
-            arms = ["P0", "P1", "P2"]
-            allocation.shuffle(arms)
             expected_blocks.append({"id": block_id, "system": system,
                                     "assignments": [{"clone": f"{block_id}-K{position}",
                                                      "arm": arm}
