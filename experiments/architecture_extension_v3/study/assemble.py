@@ -82,7 +82,7 @@ def episode(stage: str, family: str, clone: str, arm: str, block: str,
     if any(invocation.get(key) != dispatch[key] for key in ("source_commit", "run_id", "run_attempt")):
         raise ValueError("invocation source or workflow run differs from dispatch")
     if invocation['agent_class'] == 'codex_cli' and (
-            invocation.get('sandbox_backend') != 'legacy-landlock'
+            invocation.get('sandbox_backend') != 'bubblewrap'
             or invocation.get('sandbox_preflight') != 'success'):
         raise ValueError("Codex sandbox preflight or selected backend is not attested")
     version = dispatch["codex_version" if invocation["agent_class"] == "codex_cli"

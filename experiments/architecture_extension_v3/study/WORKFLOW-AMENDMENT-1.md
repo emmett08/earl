@@ -23,14 +23,17 @@ same namespace and continues to verify invocation identities and exact hashes.
 An incomplete retry cannot substitute artifacts from an earlier attempt. The
 comparison log prints the named assembly errors before failing, after retention.
 
-The pinned Codex 0.154.0 Linux sandbox supports an explicit Landlock backend:
-[upstream documentation](https://github.com/openai/codex/blob/rust-v0.154.0/codex-rs/linux-sandbox/README.md).
-All Codex arms now select `features.use_legacy_landlock=true` and retain
-`workspace-write`. A bounded, credential-free shell read/write probe runs in
-validation and in every Codex coding runner before model invocation. Invocation
-records identify the backend and probe outcome; assembly requires a successful
-probe. Hosted execution must verify this backend on the actual runner. The
-independent assessor continues to determine whether each feature was completed.
+The runner installs distribution Bubblewrap and loads Ubuntu's packaged
+`bwrap-userns-restrict` AppArmor profile following the
+[OpenAI sandbox prerequisites](https://learn.chatgpt.com/docs/sandboxing).
+All Codex arms retain `workspace-write` and the default Bubblewrap backend.
+No global user-namespace restriction is disabled. A bounded, credential-free
+shell read/write probe runs in validation and in every Codex coding runner
+before model invocation. Invocation records identify the backend and probe
+outcome; assembly requires a successful probe. The probe uses the pinned
+0.154.0 host-selected `codex sandbox` CLI. Hosted execution verifies the package
+and profile on the actual runner. The independent assessor continues to
+determine whether each feature was completed.
 
 The amendment changes workflow execution, artifact addressing, assembly tests
 and this registration. It preserves the allocation, A source, briefs, EAL

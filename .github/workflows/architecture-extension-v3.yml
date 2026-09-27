@@ -89,10 +89,21 @@ jobs:
         env:
           CODEX_VERSION: ${{ inputs.codex_version || '0.154.0' }}
         run: npm install -g "@openai/codex@$CODEX_VERSION"
+      - name: Install Ubuntu sandbox prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+          bwrap --version
       - name: Verify Codex sandbox before enabling live acquisition
         run: |
           timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
-            -c features.use_legacy_landlock=true sandbox -- \
+            sandbox -- \
             python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Retain deterministic preflight, including failures
         if: always()
@@ -282,13 +293,25 @@ jobs:
             claude --version > "$GITHUB_WORKSPACE/agent-version.txt"
             sha256sum "$(readlink -f "$(command -v claude)")" > "$GITHUB_WORKSPACE/agent-binary-sha256.txt"
           fi
+      - name: Install Ubuntu sandbox prerequisites
+        if: ${{ matrix.block.b_class == 'codex_cli' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+          bwrap --version
       - name: Verify Codex sandbox before spending model tokens
         id: sandbox
         if: ${{ matrix.block.b_class == 'codex_cli' }}
         working-directory: trial
         run: |
           timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
-            -c features.use_legacy_landlock=true sandbox -- \
+            sandbox -- \
             python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
@@ -303,7 +326,7 @@ jobs:
           date +%s.%N > "$GITHUB_WORKSPACE/agent-start.txt"
           set +e
           timeout --signal=TERM --kill-after=30s 30m \
-            codex -c features.use_legacy_landlock=true exec --skip-git-repo-check --ephemeral --json \
+            codex exec --skip-git-repo-check --ephemeral --json \
             --sandbox workspace-write --model "$MODEL" \
             -c "model_reasoning_effort=$EFFORT" - \
             < FEATURE.md > "$GITHUB_WORKSPACE/agent.jsonl" 2> "$GITHUB_WORKSPACE/agent.stderr"
@@ -384,7 +407,7 @@ jobs:
               'started_unix_seconds':float(start) if start else None,
               'ended_unix_seconds':float(end) if end else None,'wall_seconds':elapsed,
               'wall_cap_seconds':1800,'exit_code':int(read('agent-exit.txt')) if read('agent-exit.txt') else None,
-              'sandbox_backend':'legacy-landlock' if os.environ['AGENT_CLASS']=='codex_cli' else None,
+              'sandbox_backend':'bubblewrap' if os.environ['AGENT_CLASS']=='codex_cli' else None,
               'sandbox_preflight':os.environ['SANDBOX_PREFLIGHT'],
               'raw_trace_sha256_before_secret_redaction':raw_sha,
               'exact_credential_redacted':exposed}
@@ -513,13 +536,25 @@ jobs:
             claude --version > "$GITHUB_WORKSPACE/agent-version.txt"
             sha256sum "$(readlink -f "$(command -v claude)")" > "$GITHUB_WORKSPACE/agent-binary-sha256.txt"
           fi
+      - name: Install Ubuntu sandbox prerequisites
+        if: ${{ matrix.block.c_class == 'codex_cli' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+          bwrap --version
       - name: Verify Codex sandbox before spending model tokens
         id: sandbox
         if: ${{ matrix.block.c_class == 'codex_cli' }}
         working-directory: trial
         run: |
           timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
-            -c features.use_legacy_landlock=true sandbox -- \
+            sandbox -- \
             python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
@@ -534,7 +569,7 @@ jobs:
           date +%s.%N > "$GITHUB_WORKSPACE/agent-start.txt"
           set +e
           timeout --signal=TERM --kill-after=30s 30m \
-            codex -c features.use_legacy_landlock=true exec --skip-git-repo-check --ephemeral --json \
+            codex exec --skip-git-repo-check --ephemeral --json \
             --sandbox workspace-write --model "$MODEL" \
             -c "model_reasoning_effort=$EFFORT" - \
             < FEATURE.md > "$GITHUB_WORKSPACE/agent.jsonl" 2> "$GITHUB_WORKSPACE/agent.stderr"
@@ -615,7 +650,7 @@ jobs:
               'started_unix_seconds':float(start) if start else None,
               'ended_unix_seconds':float(end) if end else None,'wall_seconds':elapsed,
               'wall_cap_seconds':1800,'exit_code':int(read('agent-exit.txt')) if read('agent-exit.txt') else None,
-              'sandbox_backend':'legacy-landlock' if os.environ['AGENT_CLASS']=='codex_cli' else None,
+              'sandbox_backend':'bubblewrap' if os.environ['AGENT_CLASS']=='codex_cli' else None,
               'sandbox_preflight':os.environ['SANDBOX_PREFLIGHT'],
               'raw_trace_sha256_before_secret_redaction':raw_sha,
               'exact_credential_redacted':exposed}
@@ -749,13 +784,25 @@ jobs:
             claude --version > "$GITHUB_WORKSPACE/agent-version.txt"
             sha256sum "$(readlink -f "$(command -v claude)")" > "$GITHUB_WORKSPACE/agent-binary-sha256.txt"
           fi
+      - name: Install Ubuntu sandbox prerequisites
+        if: ${{ matrix.block.d_class == 'codex_cli' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+          bwrap --version
       - name: Verify Codex sandbox before spending model tokens
         id: sandbox
         if: ${{ matrix.block.d_class == 'codex_cli' }}
         working-directory: trial
         run: |
           timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
-            -c features.use_legacy_landlock=true sandbox -- \
+            sandbox -- \
             python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
@@ -770,7 +817,7 @@ jobs:
           date +%s.%N > "$GITHUB_WORKSPACE/agent-start.txt"
           set +e
           timeout --signal=TERM --kill-after=30s 30m \
-            codex -c features.use_legacy_landlock=true exec --skip-git-repo-check --ephemeral --json \
+            codex exec --skip-git-repo-check --ephemeral --json \
             --sandbox workspace-write --model "$MODEL" \
             -c "model_reasoning_effort=$EFFORT" - \
             < FEATURE.md > "$GITHUB_WORKSPACE/agent.jsonl" 2> "$GITHUB_WORKSPACE/agent.stderr"
@@ -851,7 +898,7 @@ jobs:
               'started_unix_seconds':float(start) if start else None,
               'ended_unix_seconds':float(end) if end else None,'wall_seconds':elapsed,
               'wall_cap_seconds':1800,'exit_code':int(read('agent-exit.txt')) if read('agent-exit.txt') else None,
-              'sandbox_backend':'legacy-landlock' if os.environ['AGENT_CLASS']=='codex_cli' else None,
+              'sandbox_backend':'bubblewrap' if os.environ['AGENT_CLASS']=='codex_cli' else None,
               'sandbox_preflight':os.environ['SANDBOX_PREFLIGHT'],
               'raw_trace_sha256_before_secret_redaction':raw_sha,
               'exact_credential_redacted':exposed}

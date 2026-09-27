@@ -48,8 +48,8 @@ check its top-level entries, and cannot see the host's independent assessor,
 later briefs or other clones on the local runner filesystem. The source and
 briefs are committed in a public PR, so a network-enabled agent could still
 retrieve them externally; this is workspace withholding rather than a claim
-of complete secrecy. Codex runs with `workspace-write` and the explicitly selected legacy Landlock
-backend; Claude Code runs in
+of complete secrecy. Codex runs with `workspace-write` using distribution Bubblewrap and its loaded AppArmor
+profile; Claude Code runs in
 restricted mode with file tools but without Bash. Those tool differences
 belong to the agent-class block, so model-class comparisons across blocks
 cannot isolate model identity. Within each three-arm family-stage block the

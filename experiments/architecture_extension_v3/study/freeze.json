@@ -1,6 +1,6 @@
 {
   "amendment": {
-    "description": "Attempt-scoped artefacts, explicit Landlock sandbox and preflight, visible assembly diagnostics; original outcomes retained.",
+    "description": "Attempt-scoped artefacts, distribution Bubblewrap with packaged AppArmor profile and sandbox preflight, visible assembly diagnostics; original outcomes retained.",
     "id": "workflow-amendment-1",
     "observed_run_id": "36331015150",
     "original_manifest": "experiments/architecture_extension_v3/results/registrations/freeze-before-run-36331015150.json",
@@ -15,9 +15,9 @@
   ],
   "files": [
     {
-      "bytes": 54009,
+      "bytes": 56324,
       "path": ".github/workflows/architecture-extension-v3.yml",
-      "sha256": "c1acda350990b92c7194b48e1086850556dd71ba470cdd1d92b763d451a620de"
+      "sha256": "5d754259068ada1cc4ba9e0e6bef51a6a49c48f248b584c82a72729effeced24"
     },
     {
       "bytes": 20950,
@@ -205,9 +205,9 @@
       "sha256": "286e1fbfa7f04fbc98c766dc1a073fbc568164949065feeea35a4e00831ecc1f"
     },
     {
-      "bytes": 3080,
+      "bytes": 3204,
       "path": "experiments/architecture_extension_v3/study/WORKFLOW-AMENDMENT-1.md",
-      "sha256": "90843c29d6776e4ad9e8a48497353f62aad41f64ba456726a31674267fdafa64"
+      "sha256": "dd9e9f21f9fcdf8be3667e1be5d02fa95b30508beebc6afcecbbf3be0bf3c758"
     },
     {
       "bytes": 614,
@@ -220,9 +220,9 @@
       "sha256": "1cbe7939757f6c4e18ea9c93c96e6717341c923bab2e8d3cee6594d33e36074a"
     },
     {
-      "bytes": 11884,
+      "bytes": 11879,
       "path": "experiments/architecture_extension_v3/study/assemble.py",
-      "sha256": "5c54026210da3973e9d8ac088b288a4c2862370f16ae6cb8c66e908c971c0dd2"
+      "sha256": "ef40b43f59a8f222c472b2606a557f1c7ea9067c71583678338cba86280e3cd5"
     },
     {
       "bytes": 24136,
@@ -270,9 +270,9 @@
       "sha256": "32119ff0be5f6dbc649e7891a7c8e7057645a4dcc51af3ce0b6810c91c3dd5a2"
     },
     {
-      "bytes": 6375,
+      "bytes": 6370,
       "path": "experiments/architecture_extension_v3/study/test_assembly.py",
-      "sha256": "6093f6abd267fa50f79a7ed50eb7cd7607035505090363885c7dd26f8abfff5c"
+      "sha256": "b8245f4dd9779f5df06c7c5ac9e8aa9c2a5fd262994811aa8a6f17e45c2f60e6"
     },
     {
       "bytes": 4911,
@@ -613,5 +613,5 @@
   "python": "3.12.14",
   "schema_version": "architecture-extension-v3/freeze/1",
   "status": "post-run-instrument-amendment",
-  "tree_sha256": "42ac8eeba6bd2e61b112d3711978fb624d1d9d315342f41ab4e2e51c847be036"
+  "tree_sha256": "27999e9892270a0c2c0c17ad582bedaf8f50cc74f7bf7586e4025e41bff90bb9"
 }

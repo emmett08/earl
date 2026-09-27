@@ -50,7 +50,7 @@ class AttemptAssemblyTests(unittest.TestCase):
         (self.result / 'assessment.json').write_text(assessment)
         self.invocation = {
             'schema': 'architecture-v3-agent-invocation/1', 'family': 'R',
-            'sandbox_backend': 'legacy-landlock', 'sandbox_preflight': 'success',
+            'sandbox_backend': 'bubblewrap', 'sandbox_preflight': 'success',
             'clone': 'R-K3', 'arm': 'P0', 'stage': 'B', 'agent_class': 'codex_cli',
             'requested_model': 'test-model', 'requested_effort': 'medium',
             'source_commit': 'a' * 40, 'run_id': '123', 'run_attempt': '3',
