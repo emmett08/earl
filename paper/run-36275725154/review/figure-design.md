@@ -12,9 +12,9 @@ Primary job: expose the assigned/completed denominator in each model–arm cell 
 |---|---:|---:|---:|---:|---:|---:|---:|---|
 | Open factorial ledger with exact counts | 4.2 | 4.5 | 5.0 | 4.5 | 4.5 | 4.0 | 4.49 | Chosen: exposes every analysis denominator without a colour key. |
 | Nested Cartesian cardinality brackets | 3.8 | 4.0 | 5.0 | 4.7 | 4.6 | 3.5 | 4.25 | Compresses the total but hides individual cell completion. |
-| Permutation weave of model and arm strands | 3.5 | 3.6 | 4.2 | 3.1 | 3.5 | 4.3 | 3.67 | Incidence can be seen, but 36 contacts cannot carry the completion values economically. |
 | Index-set factorisation glyph | 3.3 | 3.5 | 5.0 | 4.7 | 4.7 | 3.5 | 3.98 | Precisely states the 40×6×6 product, yet omits the cell-level missingness check. |
 | Case-by-cell registration strip | 3.6 | 4.0 | 5.0 | 2.4 | 2.5 | 3.7 | 3.75 | The 1,440 visible strokes cost more attention than the uniform result warrants. |
+| Permutation weave of model and arm strands | 3.5 | 3.6 | 4.2 | 3.1 | 3.5 | 4.3 | 3.67 | Incidence can be seen, but 36 contacts cannot carry the completion values economically. |
 
 ## Figure 2 — trial-level correctness (`fig2-correctness`)
 
@@ -36,8 +36,8 @@ Primary job: expose off-diagonal case discordance that marginal accuracy conceal
 |---|---:|---:|---:|---:|---:|---:|---:|---|
 | Six unshaded paired contingency matrices | 4.8 | 5.0 | 5.0 | 4.6 | 4.5 | 3.8 | 4.79 | Chosen: the off-diagonal cells make directional disagreement explicit. |
 | Four-outcome algebraic decomposition | 4.2 | 4.7 | 5.0 | 4.1 | 4.4 | 3.5 | 4.46 | Exact, but less immediate as a paired comparison. |
-| Case-specific agreement braid | 4.3 | 4.5 | 4.9 | 2.8 | 3.1 | 4.2 | 4.20 | Retains identities at substantial visual cost. |
 | Symmetric-difference set plate | 4.1 | 4.4 | 4.8 | 3.6 | 4.0 | 4.0 | 4.25 | Highlights disagreement but masks jointly wrong cases. |
+| Case-specific agreement braid | 4.3 | 4.5 | 4.9 | 2.8 | 3.1 | 4.2 | 4.20 | Retains identities at substantial visual cost. |
 | Exact discordance fraction pairs | 3.7 | 4.0 | 5.0 | 4.2 | 4.5 | 3.6 | 4.16 | Net differences conceal the 3:3 discordance at 5.4 nano. |
 
 ## Figure 4 — reference-unavailable fate (`fig4-false-support`)
@@ -60,8 +60,8 @@ Primary job: present the observed EAL/validator latency and estimated API-call c
 |---|---:|---:|---:|---:|---:|---:|---:|---|
 | Aligned pair-and-ratio ledger | 4.5 | 4.7 | 5.0 | 4.8 | 4.8 | 3.6 | 4.67 | Chosen: preserves units, both observed operands and the comparison. |
 | Folded cost–time budget equation | 4.0 | 4.2 | 4.7 | 4.2 | 4.3 | 4.1 | 4.25 | Attractive for one model, but cumbersome across six. |
-| Six paired resource balance glyphs | 4.1 | 4.1 | 4.3 | 3.8 | 4.0 | 4.3 | 4.11 | Angles imply an unearned common scale between seconds and dollars. |
 | Ratio-only symbolic signatures | 3.7 | 4.0 | 5.0 | 4.6 | 4.6 | 3.5 | 4.21 | Hides the absolute resource level and rounding check. |
+| Six paired resource balance glyphs | 4.1 | 4.1 | 4.3 | 3.8 | 4.0 | 4.3 | 4.11 | Angles imply an unearned common scale between seconds and dollars. |
 | Resource interval partitions | 3.8 | 3.9 | 4.5 | 3.2 | 3.5 | 4.0 | 3.88 | Partition area could be misread as calibrated burden. |
 
 The scores use the skill's weighted six criteria: explanatory gain E (0.30), evidential force F (0.25), semantic fidelity S (0.20), perceptual economy P (0.10), reproduction R (0.10), and productive originality O (0.05). Totals are weighted sums rounded to two decimal places. Generic bars, lines, scatters, coloured heat maps, flowcharts and node-link diagrams were eliminated before this shortlist because they add conventional magnitude or process implications without preserving the relevant case pairing.

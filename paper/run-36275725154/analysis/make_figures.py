@@ -1,7 +1,7 @@
 """Regenerate the five vector evidence figures from a retained Actions ZIP.
 
 Usage: python3 analysis/make_figures.py --zip /path/to/api-experiment-36275725154-1.zip
-The sources contain direct TikZ primitives and text; the render step is separate.
+The sources contain direct TikZ primitives and text; the command also compiles PDFs.
 """
 from __future__ import annotations
 
