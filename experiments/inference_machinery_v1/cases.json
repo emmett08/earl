@@ -1,0 +1,18 @@
+{
+  "schema": "inference-machinery-cases/1",
+  "evaluated_at": "2026-09-27T21:00:00Z",
+  "cases": [
+    {"id":"C01","site":"bench","observations":{"direct_test":0,"calibration":0}},
+    {"id":"C02","site":"bench","observations":{"direct_test":0,"calibration":0,"trace_gap":0}},
+    {"id":"C03","site":"bench","observations":{"direct_test":0,"calibration":0,"trace_gap":0,"alternate_test":0}},
+    {"id":"C04","site":"bench","observations":{"direct_test":0,"calibration":0,"trace_gap":0,"alternate_test":0,"global_blocker":0}},
+    {"id":"C05","site":"bench","observations":{"direct_test":0,"calibration":0,"trace_gap":0,"gap_rebuttal":0}},
+    {"id":"C06","site":"bench","observations":{"direct_test":61,"calibration":0}},
+    {"id":"C07","site":"bench","observations":{"direct_test":0,"trace_gap":0,"alternate_test":0}},
+    {"id":"C08","site":"bench","observations":{"direct_test":0,"calibration":0,"trace_gap":61}},
+    {"id":"C09","site":"staging","observations":{"direct_test":0,"calibration":0}},
+    {"id":"C10","site":"bench","observations":{"direct_test":0,"calibration":61}},
+    {"id":"C11","site":"bench","observations":{"direct_test":0,"calibration":0,"trace_gap":0,"gap_rebuttal":61}},
+    {"id":"C12","site":"bench","observations":{"direct_test":0,"calibration":0,"alternate_test":0,"global_blocker":61}}
+  ]
+}
