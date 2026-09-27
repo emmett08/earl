@@ -213,30 +213,69 @@ def bwrap_prefix(trial: Path, home: Path, *, read_only_trial: bool = False) -> l
     if Path("/opt/hostedtoolcache").is_dir():
         command.extend(["--dir", "/opt", "--ro-bind", "/opt/hostedtoolcache",
                         "/opt/hostedtoolcache"])
+    resolver = Path("/etc/resolv.conf")
+    if not resolver.is_file():
+        raise RuntimeError("host resolver configuration is missing")
+    resolved = resolver.resolve(strict=True)
+    if not resolved.is_relative_to(Path("/etc")):
+        command.extend(_resolver_mount_args(resolved))
     return command + ["--"]
+
+
+def _resolver_mount_args(resolved: Path) -> list[str]:
+    """Expose only the resolver file, never the rest of host /run."""
+    if not resolved.is_relative_to(Path("/run")) or resolved == Path("/run"):
+        raise RuntimeError("resolver target outside /etc or /run requires review")
+    parents = []
+    current = resolved.parent
+    while current != Path("/"):
+        parents.append(current)
+        current = current.parent
+    return [part for parent in reversed(parents) for part in ("--dir", str(parent))] + [
+        "--ro-bind", str(resolved), str(resolved)]
 
 
 def codex_preflight(trial: Path, home: Path, *, read_only_trial: bool = False) -> None:
     probe = """from pathlib import Path
+import errno, secrets
+from urllib.error import HTTPError
+from urllib.request import urlopen
 assert Path('/trial/FEATURE.md').is_file()
 assert not Path('/workspace').exists()
 assert not Path('/proc/1/root/workspace').exists()
-p = Path('/trial/.runner-probe')
+assert Path('/etc/resolv.conf').is_file()
+try:
+    urlopen('https://api.openai.com/v1/models', timeout=10)
+except HTTPError as response:
+    assert response.code == 401, f'provider probe returned HTTP {response.code}'
+else:
+    raise AssertionError('unauthenticated provider probe unexpectedly succeeded')
+p = Path('/trial') / ('.runner-probe-' + secrets.token_hex(16))
+if p.exists() or p.is_symlink():
+    raise AssertionError('probe path collided with candidate source')
 if READ_ONLY:
     try:
-        p.write_text('unexpected-write')
-    except OSError:
-        pass
+        p.open('x').close()
+    except OSError as error:
+        if error.errno not in (errno.EROFS, errno.EACCES, errno.EPERM):
+            raise
     else:
+        p.unlink()
         raise AssertionError('decision source is writable')
 else:
-    p.write_text('ok')
+    with p.open('x') as handle:
+        handle.write('ok')
     assert p.read_text() == 'ok'
     p.unlink()
 """.replace("READ_ONLY", "True" if read_only_trial else "False")
     prefix = bwrap_prefix(trial, home, read_only_trial=read_only_trial)
     clean_env = {"PATH": os.environ.get("PATH", "/usr/local/bin:/usr/bin:/bin"),
                  "HOME": str(home), "LANG": os.environ.get("LANG", "C.UTF-8")}
+    # Exercise the exact effective network route that the live runner passes
+    # to Codex.  The probe sends no provider key and consumes no model tokens.
+    for name in ("HTTPS_PROXY", "HTTP_PROXY", "NO_PROXY"):
+        if os.environ.get(name):
+            clean_env[name] = os.environ[name]
     result = subprocess.run(prefix + ["/usr/bin/python3", "-c", probe],
                             env=clean_env, capture_output=True, timeout=20, check=False)
     if result.returncode != 0:

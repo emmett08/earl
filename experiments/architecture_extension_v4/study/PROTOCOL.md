@@ -1,8 +1,9 @@
 # Three-system argument-presentation study (v4)
 
-**Status: specified; no v4 agent outcome observed.** Revision 0.1.1 and its
-pre-acquisition infrastructure amendment are recorded in
-`WORKFLOW-AMENDMENT-1.md`; the failed 0.1.0 validation freeze is retained.
+**Status: specified; no connected v4 model outcome observed.** Revisions 0.1.1,
+0.1.2 and 0.1.3 and their pre-outcome infrastructure amendments are recorded
+in `WORKFLOW-AMENDMENT-1.md`, `WORKFLOW-AMENDMENT-2.md` and
+`WORKFLOW-AMENDMENT-3.md`; prior freezes and failed runs are retained.
 This prospective study
 supersedes neither v2 nor v3. The earlier 18-episode v3 pilot remains an
 apparatus-development record. A v4 freeze and successful validation must
@@ -69,7 +70,11 @@ system utilities and the provider network path. The outer mount is the sole
 filesystem sandbox; within it Codex runs with `--sandbox danger-full-access`
 to avoid attempting a prohibited nested namespace. The read-only decision
 source is enforced by the outer read-only bind. Both mount modes and CLI startup
-are checked without a credential before any live calls. The agent cannot see another
+are checked without a credential before any live calls. The 0.1.2 preflight
+also checks the effective DNS/proxy/TLS route inside each mount using a
+credential-free provider request; only a symlinked resolver target file under
+`/run` may be added to the read-only host view. Trial write checks use a fresh
+exclusive probe name, preserving candidate bytes. The agent cannot see another
 clone, assessor, later brief or host packet assembly. Host-only baseline
 source checks run before the clone begins. Preflight failure is captured, not
 promoted into a coding outcome.

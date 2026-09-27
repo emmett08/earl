@@ -235,14 +235,22 @@ class RunnerTests(unittest.TestCase):
             return "/usr/bin/bwrap" if name == "bwrap" else "/usr/local/bin/codex"
 
         with patch.object(runner_capture.shutil, "which", side_effect=binary), \
-                patch.object(runner_capture.subprocess, "run", side_effect=record):
+                patch.object(runner_capture.subprocess, "run", side_effect=record), \
+                patch.dict(runner_capture.os.environ,
+                           {"HTTPS_PROXY": "http://proxy.example:8080", "NO_PROXY": "localhost"}):
             runner_capture.codex_preflight(trial, home, read_only_trial=True)
         self.assertEqual(len(calls), 2)
         self.assertIn("--unshare-pid", calls[0][0])
         self.assertIn("--ro-bind", calls[0][0])
+        self.assertIn("urlopen('https://api.openai.com/v1/models'", calls[0][0][-1])
+        self.assertIn("response.code == 401", calls[0][0][-1])
+        self.assertIn("secrets.token_hex(16)", calls[0][0][-1])
+        self.assertIn("p.open('x')", calls[0][0][-1])
         self.assertEqual(calls[1][0][-2:], ["exec", "--help"])
         self.assertIn("--ro-bind", calls[1][0])
         self.assertNotIn("CODEX_API_KEY", calls[1][1]["env"])
+        self.assertEqual(calls[0][1]["env"]["HTTPS_PROXY"], "http://proxy.example:8080")
+        self.assertEqual(calls[1][1]["env"]["NO_PROXY"], "localhost")
 
     def test_live_command_runs_cli_only_inside_outer_mount(self):
         trial = self.root / "trial"
@@ -259,6 +267,16 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(command[command.index("--sandbox") + 1], "danger-full-access")
         self.assertIn("--bind", writable)
         self.assertEqual(readonly[readonly.index(str(trial)) - 1], "--ro-bind")
+
+    def test_resolver_mount_exposes_only_target_file(self):
+        target = Path("/run/systemd/resolve/stub-resolv.conf")
+        args = runner_capture._resolver_mount_args(target)
+        self.assertEqual(args, ["--dir", "/run", "--dir", "/run/systemd",
+                                "--dir", "/run/systemd/resolve", "--ro-bind",
+                                str(target), str(target)])
+        self.assertNotIn("--bind", args)
+        with self.assertRaisesRegex(RuntimeError, "resolver target outside"):
+            runner_capture._resolver_mount_args(Path("/home/agent/secret"))
 
     def test_allocation_rejects_missing_arm_and_insufficient_blocks(self):
         original = self.manifest["blocks"][0]["assignments"][0]["arm"]

@@ -1071,10 +1071,10 @@
     "access": "Local deterministic fixtures and GitHub repository connection are available. Live model credential is expected from the repository Actions secret but must be checked by CI; provider invoice access and two independent masked reviewers are unverified.",
     "apparatus_or_data": [
       "v3 host, EAL/2 evaluator, six cloned B-C-D lineages, synthetic release-gate cases and retained 63-artifact successful acquisition provide a starting harness.",
-      "v4 entitlement and reservation fixtures, hidden controls, corrected fulfilment assessor, packet parity and six finite-state decision cases are implemented and have passed local deterministic tests. The 0.1.0 inventory was frozen, but CI validation run 36341669596 stopped at a prohibited nested CLI namespace before model calls. Revision 0.1.1 requires a new freeze and credential-free preflight before live coding."
+      "v4 entitlement and reservation fixtures, hidden controls, corrected fulfilment assessor, packet parity and six finite-state decision cases passed deterministic tests. Revision 0.1.0 stopped at a nested CLI namespace. Revision 0.1.1 passed CLI isolation validation but nine first B invocations could not resolve the provider host, timed out at 1,800 seconds, and triggered the resource guard without completed turns. Unlaunched 0.1.2 received an independent preflight review; revision 0.1.3 requires a new freeze and credential-free effective-route check before connected model acquisition."
     ],
     "blockers": [
-      "Live credential and GitHub Actions outer-only CLI preflight have not yet been observed for revision 0.1.1; the nested Codex sandbox is unsupported inside the GitHub outer mount on run 36341669596.",
+      "The live credential and provider billing identity remain unverified. The nested Codex sandbox failed in run 36341669596; the outer-only CLI launched in run 36342146781 but its isolated resolver could not reach api.openai.com. Revision 0.1.3 effective-route preflight has not yet been observed in CI.",
       "Independent masked architecture reviewers are not yet assigned; retain that endpoint as pending if none complete forms.",
       "The conditional list-rate cap does not guarantee a billed-currency ceiling."
     ],
@@ -1508,10 +1508,12 @@
       "0.1.0: refreshed due critical-check IDs after entitlement pre-effect, conflicting-lookup and duplicate-token checks were added; D now has 13 cumulative checks.",
       "0.1.0: reconciled six frozen case sources and allowed-action oracles with decision_cases/cases.json; explicitly labelled the state records synthetic and source-linked rather than source-executed.",
       "0.1.0: predeclared USD 15.00 upper conditional Standard API list-rate stop per block, preserving actual billed amount as unknown; 18 v3 turn aggregates yielded USD 7.17 total and USD 0.64 maximum per-episode high scenario in a retrospective calibration.",
-      "0.1.1: validation run 36341669596 reached successful outer mount checks and failed on the nested Codex sandbox before any live model calls; retained its freeze, unchanged allocation and oracles, and amended the runner to use that verified outer mount as the sole filesystem boundary with Codex danger-full-access inside it. A new frozen version and validation run precede acquisition."
+      "0.1.1: validation run 36341669596 reached successful outer mount checks and failed on the nested Codex sandbox before any live model calls; retained its freeze, unchanged allocation and oracles, and amended the runner to use that verified outer mount as the sole filesystem boundary with Codex danger-full-access inside it.",
+      "0.1.2: run 36342146781 passed validation but all nine first B invocations timed out at the 1,800-second cap after provider DNS errors, with no completed model turns; retained its freeze and artifacts. A locally frozen but unlaunched resolver-only mount and direct network preflight was reviewed before release.",
+      "0.1.3: independent prelaunch review found direct DNS/TLS probing did not follow the live proxy environment and a fixed writable probe filename could clobber candidate bytes. The credential-free route check now follows live proxy variables and requires an HTTP 401 from the unauthenticated provider endpoint; trial write checks use exclusive unpredictable names. No intervention, oracle or allocation changed."
     ],
     "created_at": "2026-09-27T19:09:54+01:00",
-    "knowledge_cut": "The v3 outputs were observed before design version 0.1.0; validation run 36341669596 failed before any v4 live model call. No new-system or v4 coding outcomes have been observed for revision 0.1.1.",
+    "knowledge_cut": "The v3 outputs preceded design version 0.1.0; validation run 36341669596 failed before v4 live calls, and run 36342146781 made nine timed-out, DNS-blocked first B invocations with no completed model turns. Unlaunched local 0.1.2 was superseded after preflight review. No connected v4 coding or decision outcome has been observed for revision 0.1.3.",
     "sources": [
       "experiments/architecture_extension_v3/study/PROTOCOL.md and task-bank.json at 42e0381f21e73f436a0de0462544ec7b052bc49b",
       "experiments/architecture_extension_v3/host.py and study/analyse.py at 42e0381f21e73f436a0de0462544ec7b052bc49b",
@@ -1587,5 +1589,5 @@
     "sampling_frame": "The known fulfilment A snapshot plus new independently sourced systems meeting frozen pre-outcome executable eligibility criteria; no random sample of all software.",
     "target_population_or_system": "Exactly the three prospectively registered codebases; fulfilment analysed as prior-observed calibration, two independent new systems separately."
   },
-  "version": "0.1.1"
+  "version": "0.1.3"
 }
