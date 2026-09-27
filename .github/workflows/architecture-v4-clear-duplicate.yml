@@ -1,0 +1,23 @@
+name: Clear duplicate queued v4 study run
+
+on:
+  push:
+    branches:
+      - study/architecture-v4-1-live
+    paths:
+      - .github/workflows/architecture-v4-clear-duplicate.yml
+
+permissions:
+  contents: read
+
+# A new pending member replaces the accidental duplicate, while the active
+# frozen study run continues. This workflow makes no model call.
+concurrency:
+  group: architecture-v4-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'No agent invocation; queued duplicate replaced.'
