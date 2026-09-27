@@ -91,8 +91,8 @@ jobs:
         run: npm install -g "@openai/codex@$CODEX_VERSION"
       - name: Verify Codex sandbox before enabling live acquisition
         run: |
-          timeout --signal=TERM --kill-after=5s 45s codex sandbox linux -c 'sandbox_mode="workspace-write"' \
-            -c features.use_legacy_landlock=true -- \
+          timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
+            -c features.use_legacy_landlock=true sandbox -- \
             python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Retain deterministic preflight, including failures
         if: always()
@@ -287,8 +287,8 @@ jobs:
         if: ${{ matrix.block.b_class == 'codex_cli' }}
         working-directory: trial
         run: |
-          timeout --signal=TERM --kill-after=5s 45s codex sandbox linux -c 'sandbox_mode="workspace-write"' \
-            -c features.use_legacy_landlock=true -- \
+          timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
+            -c features.use_legacy_landlock=true sandbox -- \
             python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
@@ -303,9 +303,8 @@ jobs:
           date +%s.%N > "$GITHUB_WORKSPACE/agent-start.txt"
           set +e
           timeout --signal=TERM --kill-after=30s 30m \
-            codex exec --skip-git-repo-check --ephemeral --json \
+            codex -c features.use_legacy_landlock=true exec --skip-git-repo-check --ephemeral --json \
             --sandbox workspace-write --model "$MODEL" \
-            -c features.use_legacy_landlock=true \
             -c "model_reasoning_effort=$EFFORT" - \
             < FEATURE.md > "$GITHUB_WORKSPACE/agent.jsonl" 2> "$GITHUB_WORKSPACE/agent.stderr"
           status=$?
@@ -519,8 +518,8 @@ jobs:
         if: ${{ matrix.block.c_class == 'codex_cli' }}
         working-directory: trial
         run: |
-          timeout --signal=TERM --kill-after=5s 45s codex sandbox linux -c 'sandbox_mode="workspace-write"' \
-            -c features.use_legacy_landlock=true -- \
+          timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
+            -c features.use_legacy_landlock=true sandbox -- \
             python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
@@ -535,9 +534,8 @@ jobs:
           date +%s.%N > "$GITHUB_WORKSPACE/agent-start.txt"
           set +e
           timeout --signal=TERM --kill-after=30s 30m \
-            codex exec --skip-git-repo-check --ephemeral --json \
+            codex -c features.use_legacy_landlock=true exec --skip-git-repo-check --ephemeral --json \
             --sandbox workspace-write --model "$MODEL" \
-            -c features.use_legacy_landlock=true \
             -c "model_reasoning_effort=$EFFORT" - \
             < FEATURE.md > "$GITHUB_WORKSPACE/agent.jsonl" 2> "$GITHUB_WORKSPACE/agent.stderr"
           status=$?
@@ -756,8 +754,8 @@ jobs:
         if: ${{ matrix.block.d_class == 'codex_cli' }}
         working-directory: trial
         run: |
-          timeout --signal=TERM --kill-after=5s 45s codex sandbox linux -c 'sandbox_mode="workspace-write"' \
-            -c features.use_legacy_landlock=true -- \
+          timeout --signal=TERM --kill-after=5s 45s codex -c 'sandbox_mode="workspace-write"' \
+            -c features.use_legacy_landlock=true sandbox -- \
             python3 -c 'from pathlib import Path; p=Path(".sandbox-probe"); p.write_text("ok"); assert p.read_text()=="ok"; p.unlink(); print("Sandbox read/write succeeded")'
       - name: Implement current requirement with Codex CLI
         id: codex
@@ -772,9 +770,8 @@ jobs:
           date +%s.%N > "$GITHUB_WORKSPACE/agent-start.txt"
           set +e
           timeout --signal=TERM --kill-after=30s 30m \
-            codex exec --skip-git-repo-check --ephemeral --json \
+            codex -c features.use_legacy_landlock=true exec --skip-git-repo-check --ephemeral --json \
             --sandbox workspace-write --model "$MODEL" \
-            -c features.use_legacy_landlock=true \
             -c "model_reasoning_effort=$EFFORT" - \
             < FEATURE.md > "$GITHUB_WORKSPACE/agent.jsonl" 2> "$GITHUB_WORKSPACE/agent.stderr"
           status=$?
