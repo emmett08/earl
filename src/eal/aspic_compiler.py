@@ -7,7 +7,7 @@ method checks first.  The returned source map preserves the checked origins of
 every generated premise, rule and attack, including unavailable observations.
 
 Strictness, directed claim contraries and ranks require explicit reviewed EAL
-formal relations; none is inferred from English statements. Unannotated
+argumentation directives; none is inferred from English statements. Unannotated
 fallible premises and rules receive the same rank.
 The current ASPIC method bounds the theory to 64 rules/premises, eight
 antecedents per rule and 128 constructed arguments; exceedance is an error.
@@ -188,7 +188,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
     if any(program.reasoning[a.reasoning].method == METHOD for a in program.arguments.values()):
         raise CompilationError("Compile authored EAL routes, not an argumentation/aspic/1 theory")
 
-    annotations = {(item.kind, item.name): item for item in program.formal
+    annotations = {(item.kind, item.name): item for item in program.argumentation_directives
                    if item.kind != "contrary"}
     target_kinds = {name: kind for kind, table in (
         ("evidence", program.evidence), ("assumption", program.assumptions),
@@ -199,12 +199,12 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
         item = annotations.get(("rank", name))
         return item.rank if item is not None else RANK
 
-    def formal_directive(item):
+    def argumentation_directive(item):
         return {**asdict(item), "target_kind": target_kinds[item.name]}
 
     def annotated(kind: str, name: str):
         item = annotations.get((kind, name))
-        return formal_directive(item) if item is not None else None
+        return argumentation_directive(item) if item is not None else None
 
     claims = {name: _symbol("c", name) for name in program.claims}
     evidence = {name: _symbol("e", name) for name in program.evidence}
@@ -221,7 +221,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                "goal": {"claim": goal, "atom": claims[goal]},
                "claims": {}, "evidence": {}, "assumptions": {},
                "arguments": {}, "objections": {}, "contraries": [],
-               "formal_directives": [formal_directive(item) for item in program.formal]}
+               "formal_directives": [argumentation_directive(item) for item in program.argumentation_directives]}
     for name in sorted(claims):
         mapping["claims"][name] = {"atom": claims[name],
                                     "statement": program.claims[name].statement,
@@ -377,14 +377,14 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                                            "target_kind": kind,
                                            "target_name": target})
 
-    for item in program.formal:
+    for item in program.argumentation_directives:
         if item.kind == "contrary":
             pair = {"attacker": claims[item.name], "target": claims[item.other]}
             contraries.append(pair)
             mapping["contraries"].append({**pair, "target_kind": "claim",
                                            "attacker_name": item.name,
                                            "target_name": item.other,
-                                           "annotation": formal_directive(item)})
+                                           "annotation": argumentation_directive(item)})
 
     if basis_needed or not premises:
         premises.append({"atom": structural, "kind": "axiom"})

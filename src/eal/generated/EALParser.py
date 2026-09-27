@@ -194,7 +194,7 @@ class EALParser ( Parser ):
 
     RULE_program = 0
     RULE_declaration = 1
-    RULE_formalDirective = 2
+    RULE_argumentationDirective = 2
     RULE_environmentDecl = 3
     RULE_toolDecl = 4
     RULE_evidenceDecl = 5
@@ -220,7 +220,7 @@ class EALParser ( Parser ):
     RULE_jsonScalar = 25
     RULE_identifier = 26
 
-    ruleNames =  [ "program", "declaration", "formalDirective", "environmentDecl", 
+    ruleNames =  [ "program", "declaration", "argumentationDirective", "environmentDecl", 
                    "toolDecl", "evidenceDecl", "assumptionDecl", "reasoningDecl", 
                    "claimDecl", "propositionDecl", "argumentDecl", "argumentBody", 
                    "patternDecl", "patternParameter", "parameterKind", "applicationDecl", 
@@ -417,8 +417,8 @@ class EALParser ( Parser ):
             return self.getTypedRuleContext(EALParser.ApplicationDeclContext,0)
 
 
-        def formalDirective(self):
-            return self.getTypedRuleContext(EALParser.FormalDirectiveContext,0)
+        def argumentationDirective(self):
+            return self.getTypedRuleContext(EALParser.ArgumentationDirectiveContext,0)
 
 
         def getRuleIndex(self):
@@ -494,7 +494,7 @@ class EALParser ( Parser ):
             elif token in [3, 5, 6]:
                 self.enterOuterAlt(localctx, 11)
                 self.state = 75
-                self.formalDirective()
+                self.argumentationDirective()
                 pass
             else:
                 raise NoViableAltException(self)
@@ -508,7 +508,7 @@ class EALParser ( Parser ):
         return localctx
 
 
-    class FormalDirectiveContext(ParserRuleContext):
+    class ArgumentationDirectiveContext(ParserRuleContext):
         __slots__ = 'parser'
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
@@ -529,21 +529,21 @@ class EALParser ( Parser ):
             return self.getToken(EALParser.NUMBER, 0)
 
         def getRuleIndex(self):
-            return EALParser.RULE_formalDirective
+            return EALParser.RULE_argumentationDirective
 
         def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitFormalDirective" ):
-                return visitor.visitFormalDirective(self)
+            if hasattr( visitor, "visitArgumentationDirective" ):
+                return visitor.visitArgumentationDirective(self)
             else:
                 return visitor.visitChildren(self)
 
 
 
 
-    def formalDirective(self):
+    def argumentationDirective(self):
 
-        localctx = EALParser.FormalDirectiveContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 4, self.RULE_formalDirective)
+        localctx = EALParser.ArgumentationDirectiveContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 4, self.RULE_argumentationDirective)
         try:
             self.state = 99
             self._errHandler.sync(self)

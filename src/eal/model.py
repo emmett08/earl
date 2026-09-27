@@ -147,8 +147,8 @@ class SourceSpan:
 
 
 @dataclass(frozen=True)
-class FormalDirective:
-    """Reviewed EAL formal relation, never inferred from prose.
+class ArgumentationDirective:
+    """Reviewed EAL argumentation directive, never inferred from prose.
 
     ``other`` is the target claim of a directed contrary; ``rank`` is an
     integer from 0 through 1000. Exactly one is set when applicable.
@@ -186,7 +186,7 @@ class Program:
     objections: dict[str, Objection] = field(default_factory=dict)
     patterns: dict[str, Pattern] = field(default_factory=dict)
     applications: dict[str, Application] = field(default_factory=dict)
-    formal: tuple[FormalDirective, ...] = ()
+    argumentation_directives: tuple[ArgumentationDirective, ...] = ()
     duplicates: tuple[str, ...] = ()
     declaration_count: int = 0
     locations: dict[str, SourceSpan] = field(default_factory=dict)

@@ -3,8 +3,8 @@ grammar EAL;
 program : 'language' STRING ';' declaration* EOF ;
 declaration : environmentDecl | toolDecl | evidenceDecl | assumptionDecl
             | reasoningDecl | claimDecl | argumentDecl | objectionDecl
-            | patternDecl | applicationDecl | formalDirective ;
-formalDirective : 'strict' identifier 'reviewed' STRING ';'
+            | patternDecl | applicationDecl | argumentationDirective ;
+argumentationDirective : 'strict' identifier 'reviewed' STRING ';'
                 | 'rank' identifier NUMBER 'reviewed' STRING ';'
                 | 'contrary' identifier 'to' identifier 'reviewed' STRING ';' ;
 environmentDecl : 'environment' identifier '{' predicate+ '}' ;

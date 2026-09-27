@@ -105,6 +105,10 @@ Claims and arguments report `supported`, `contested`, `unsupported` or `out_of_s
 
 ## Formatting, discovery and host integration
 
+EAL/2 has one source language. The parser groups `strict`, `rank` and `contrary` as `argumentationDirective`; the Python model stores `ArgumentationDirective` values in `Program.argumentation_directives`. These names describe declarations within EAL. Both assessment operations validate them. `compile-aspic` applies their inference effects, while `reason` computes the authored EAL assessment without those effects.
+
+The structured interfaces name these declarations independently of the Python model: `semantic_ir` uses `formal`, discovery uses `formal_relations`, and compiled source maps use `formal_directives`. The `aspic-view/1` export uses `formal_review` for strict/rank review metadata and `relation_origin.annotation` for contrary review metadata. These wire fields retain their defined shapes. The source contract remains EAL/2, the compiled profile remains `/4`, and the reasoning-method, observation and view schema versions are unchanged.
+
 `format_source(source)` parses, validates and emits canonical source; `format_program(program)` emits canonical source from checked IR. `semantic_ir(program)` excludes source digests and locations for round-trip comparisons. Formatting preserves declarations and applications. Exact source identity remains distinct from meaning: changed source bytes require recollecting observations.
 
 `ReasoningService.describe()` returns language syntax, executable examples, method/binding contracts and opt-in compiler metadata. `format(source)` returns canonical `source`, `source_digest` and `observation_recollection_required`. MCP exposes `eal_describe`, `eal_format`, `eal_validate`, `eal_collect`, `eal_reason`, `eal_compile_aspic`, `eal_explain` and `eal_grounded` through the shared service. The CLI provides `compile-aspic SOURCE --context JSON --collection COLLECTION_ID --goal CLAIM [--now TIME]`; compilation requires the same source bytes and context as the stored collection and does not overwrite an ordinary `reason` assessment.
