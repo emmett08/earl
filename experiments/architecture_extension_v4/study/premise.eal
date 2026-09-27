@@ -1,0 +1,41 @@
+// Bounded source-structure premise for the architecture-extension v4 packets.
+// A declared method is inspectable. A directly visible stub defeats the
+// tentative route. Neither status establishes the method's runtime behaviour.
+language "EAL/2";
+
+environment current_source {
+  require "study" == "architecture-extension-v4";
+}
+
+tool source_probe { version "1"; }
+
+evidence declared_method {
+  tool source_probe; kind inspection; environment current_source; max_age 3600;
+  input {"check_id":"method_declaration"}; require "present" == true;
+}
+evidence direct_stub {
+  tool source_probe; kind inspection; environment current_source; max_age 3600;
+  input {"check_id":"direct_stub"}; require "stub" == true;
+}
+
+reasoning structural_inspection {
+  method "structured/1";
+  rationale "The pinned Python source declares the named method. This is a source-structure finding, not a behavioural verification of the method.";
+}
+reasoning stub_challenge {
+  method "structured/1";
+  rationale "A direct pass, ellipsis or NotImplementedError body defeats treating a method declaration as a usable inspection route. Other failures remain possible even without this stub.";
+}
+
+claim probe_candidate {
+  statement "The named public source method is a candidate for inspecting a reconciliation path; its operational correctness is unverified.";
+  environment current_source;
+}
+
+argument declared_route {
+  conclusion probe_candidate; reasoning structural_inspection; evidence declared_method;
+}
+
+objection stubbed_route {
+  target argument declared_route; evidence direct_stub;
+}

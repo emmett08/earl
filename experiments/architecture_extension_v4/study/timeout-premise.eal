@@ -1,0 +1,36 @@
+// The source-order result concerns only direct AST patterns, not dynamic
+// control-flow, external effects or actual outcome of an issuer request.
+language "EAL/2";
+
+environment current_source {
+  require "study" == "architecture-extension-v4";
+}
+
+tool source_probe { version "1"; }
+
+evidence after_effect_timeout {
+  tool source_probe; kind inspection; environment current_source; max_age 3600;
+  input {"check_id":"after_effect_timeout"}; require "positive" == true;
+}
+evidence before_effect_timeout {
+  tool source_probe; kind inspection; environment current_source; max_age 3600;
+  input {"check_id":"before_effect_timeout"}; require "counter" == true;
+}
+
+reasoning source_order {
+  method "structured/1";
+  rationale "A direct append to the named effect collection appears before a subsequent direct TimeoutError raise in the inspected method source. This is a source-order observation, not proof of an external commit.";
+}
+
+claim probe_candidate {
+  statement "The inspected method contains an after-effect timeout source path relevant to reconciliation. This conclusion is qualified if the method also has a pre-effect timeout path.";
+  environment current_source;
+}
+
+argument declared_route {
+  conclusion probe_candidate; reasoning source_order; evidence after_effect_timeout;
+}
+
+objection stubbed_route {
+  target argument declared_route; evidence before_effect_timeout;
+}

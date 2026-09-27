@@ -1,0 +1,16 @@
+{
+  "case_id": "defeated",
+  "origin": "synthetic public finite-state decision fixture",
+  "provider": {
+    "key": "return-order-1",
+    "recorded_refunds": [],
+    "status": "unknown"
+  },
+  "provider_status_basis": "Synthetic status permitted by the public D brief; the baseline adapter has no refund_status operation. The clean refund effect is independently replayed against baseline source.",
+  "request": {
+    "key": "return-order-1",
+    "same_request": true
+  },
+  "schema": "architecture-v4-decision-state/1",
+  "system": "fulfilment"
+}

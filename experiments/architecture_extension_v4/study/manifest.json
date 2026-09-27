@@ -1,0 +1,438 @@
+{
+  "agent": {
+    "cli_version": "0.154.0",
+    "effort": "medium",
+    "model": "gpt-6-sol"
+  },
+  "allocation_algorithm": "Python random.Random(int(seed_hex, 16)); iterate systems in manifest systems order then replicate 1..3; shuffle a fresh ['P0','P1','P2'] for each block; map list positions 1..3 to clone IDs <system>-<replicate:02d>-K<position>",
+  "blocks": [
+    {
+      "assignments": [
+        {
+          "arm": "P1",
+          "clone": "fulfilment-01-K1"
+        },
+        {
+          "arm": "P0",
+          "clone": "fulfilment-01-K2"
+        },
+        {
+          "arm": "P2",
+          "clone": "fulfilment-01-K3"
+        }
+      ],
+      "id": "fulfilment-01",
+      "system": "fulfilment"
+    },
+    {
+      "assignments": [
+        {
+          "arm": "P1",
+          "clone": "fulfilment-02-K1"
+        },
+        {
+          "arm": "P2",
+          "clone": "fulfilment-02-K2"
+        },
+        {
+          "arm": "P0",
+          "clone": "fulfilment-02-K3"
+        }
+      ],
+      "id": "fulfilment-02",
+      "system": "fulfilment"
+    },
+    {
+      "assignments": [
+        {
+          "arm": "P1",
+          "clone": "fulfilment-03-K1"
+        },
+        {
+          "arm": "P2",
+          "clone": "fulfilment-03-K2"
+        },
+        {
+          "arm": "P0",
+          "clone": "fulfilment-03-K3"
+        }
+      ],
+      "id": "fulfilment-03",
+      "system": "fulfilment"
+    },
+    {
+      "assignments": [
+        {
+          "arm": "P1",
+          "clone": "entitlement-01-K1"
+        },
+        {
+          "arm": "P0",
+          "clone": "entitlement-01-K2"
+        },
+        {
+          "arm": "P2",
+          "clone": "entitlement-01-K3"
+        }
+      ],
+      "id": "entitlement-01",
+      "system": "entitlement"
+    },
+    {
+      "assignments": [
+        {
+          "arm": "P1",
+          "clone": "entitlement-02-K1"
+        },
+        {
+          "arm": "P2",
+          "clone": "entitlement-02-K2"
+        },
+        {
+          "arm": "P0",
+          "clone": "entitlement-02-K3"
+        }
+      ],
+      "id": "entitlement-02",
+      "system": "entitlement"
+    },
+    {
+      "assignments": [
+        {
+          "arm": "P1",
+          "clone": "entitlement-03-K1"
+        },
+        {
+          "arm": "P0",
+          "clone": "entitlement-03-K2"
+        },
+        {
+          "arm": "P2",
+          "clone": "entitlement-03-K3"
+        }
+      ],
+      "id": "entitlement-03",
+      "system": "entitlement"
+    },
+    {
+      "assignments": [
+        {
+          "arm": "P0",
+          "clone": "reservation-01-K1"
+        },
+        {
+          "arm": "P1",
+          "clone": "reservation-01-K2"
+        },
+        {
+          "arm": "P2",
+          "clone": "reservation-01-K3"
+        }
+      ],
+      "id": "reservation-01",
+      "system": "reservation"
+    },
+    {
+      "assignments": [
+        {
+          "arm": "P0",
+          "clone": "reservation-02-K1"
+        },
+        {
+          "arm": "P2",
+          "clone": "reservation-02-K2"
+        },
+        {
+          "arm": "P1",
+          "clone": "reservation-02-K3"
+        }
+      ],
+      "id": "reservation-02",
+      "system": "reservation"
+    },
+    {
+      "assignments": [
+        {
+          "arm": "P1",
+          "clone": "reservation-03-K1"
+        },
+        {
+          "arm": "P2",
+          "clone": "reservation-03-K2"
+        },
+        {
+          "arm": "P0",
+          "clone": "reservation-03-K3"
+        }
+      ],
+      "id": "reservation-03",
+      "system": "reservation"
+    }
+  ],
+  "calibration_system": "fulfilment",
+  "created_utc": "2026-09-27T18:31:37.848253+00:00",
+  "critical_check_ids": {
+    "entitlement": {
+      "B": [
+        "baseline.identity-and-capacity",
+        "B.atomic-full-seat-exchange",
+        "B.invalid-exchange-no-effects",
+        "B.account-scoped-replay"
+      ],
+      "C": [
+        "baseline.identity-and-capacity",
+        "B.atomic-full-seat-exchange",
+        "B.invalid-exchange-no-effects",
+        "B.account-scoped-replay",
+        "C.exact-ordered-displacement",
+        "C.invalid-shrink-no-effects",
+        "C.prior-exchange-replay-after-shrink"
+      ],
+      "D": [
+        "baseline.identity-and-capacity",
+        "B.atomic-full-seat-exchange",
+        "B.invalid-exchange-no-effects",
+        "B.account-scoped-replay",
+        "C.exact-ordered-displacement",
+        "C.invalid-shrink-no-effects",
+        "C.prior-exchange-replay-after-shrink",
+        "D.issued-token-identity-and-replay",
+        "D.acknowledgement-loss-reconciliation",
+        "D.pre-effect-timeout-remains-retryable",
+        "D.conflicting-issuer-user-rejected",
+        "D.multiple-issuer-tokens-rejected",
+        "D.rejected-issue-no-effects"
+      ]
+    },
+    "fulfilment": {
+      "B": [
+        "baseline_event_retry",
+        "baseline_failure",
+        "baseline_idempotency",
+        "baseline_save_failure",
+        "baseline_success",
+        "partial_return",
+        "return_event_retry",
+        "return_idempotency",
+        "return_refund_failure",
+        "return_rejection",
+        "split_event_retry",
+        "split_idempotency",
+        "split_insufficient",
+        "split_later_dispatch_failure",
+        "split_priority_and_event"
+      ],
+      "C": [
+        "baseline_event_retry",
+        "baseline_failure",
+        "baseline_idempotency",
+        "baseline_save_failure",
+        "baseline_success",
+        "cancel_after_return",
+        "cancel_event_retry",
+        "cancel_idempotency_and_rejection",
+        "cancel_partial_carrier_failure_retry",
+        "partial_return",
+        "return_event_retry",
+        "return_idempotency",
+        "return_refund_failure",
+        "return_rejection",
+        "split_dispatch_save_failure",
+        "split_event_retry",
+        "split_idempotency",
+        "split_insufficient",
+        "split_later_dispatch_failure",
+        "split_priority_and_event"
+      ],
+      "D": [
+        "applied_refund_status_unknown",
+        "baseline_event_retry",
+        "baseline_failure",
+        "baseline_idempotency",
+        "baseline_save_failure",
+        "baseline_success",
+        "cancel_acknowledgement_loss",
+        "cancel_after_return",
+        "cancel_event_retry",
+        "cancel_idempotency_and_rejection",
+        "cancel_partial_carrier_failure_retry",
+        "checkout_rollback_acknowledgement_loss",
+        "not_applied_refund_retry",
+        "partial_return",
+        "return_acknowledgement_loss",
+        "return_event_retry",
+        "return_idempotency",
+        "return_refund_failure",
+        "return_rejection",
+        "split_dispatch_save_failure",
+        "split_event_retry",
+        "split_idempotency",
+        "split_insufficient",
+        "split_later_dispatch_failure",
+        "split_priority_and_event",
+        "unknown_before_refund_request"
+      ]
+    },
+    "reservation": {
+      "B": [
+        "baseline.half-open-availability-and-identity",
+        "B.all-or-none-cross-room-conflict",
+        "B.invalid-bundle-no-effects",
+        "B.historical-replay-and-customer-scope"
+      ],
+      "C": [
+        "baseline.half-open-availability-and-identity",
+        "B.all-or-none-cross-room-conflict",
+        "B.invalid-bundle-no-effects",
+        "B.historical-replay-and-customer-scope",
+        "C.self-exclusion-and-stable-booking-ids",
+        "C.other-conflict-rejection-and-rollback",
+        "C.move-replay-after-later-move"
+      ],
+      "D": [
+        "baseline.half-open-availability-and-identity",
+        "B.all-or-none-cross-room-conflict",
+        "B.invalid-bundle-no-effects",
+        "B.historical-replay-and-customer-scope",
+        "C.self-exclusion-and-stable-booking-ids",
+        "C.other-conflict-rejection-and-rollback",
+        "C.move-replay-after-later-move",
+        "D.cancel-moved-bundle-and-historical-replay",
+        "D.partial-bundle-and-identity-rejections"
+      ]
+    }
+  },
+  "decision_probes": {
+    "case_ids": [
+      "clean",
+      "defeated"
+    ],
+    "case_manifest_sha256": "d63add0450d620e171a19d294ee4e5813fe572dfda467431129ab75d8795985c",
+    "wall_cap_seconds": 120
+  },
+  "evidence_schema": {
+    "entitlement": {
+      "B": {
+        "guidance": "Use the account store as the current capacity and assignment authority; review atomic exchange and stable request keys against tests.",
+        "mode": "method_inspectability",
+        "statement": "The account assignment method is an inspectable source route; seat-capacity behaviour remains unverified.",
+        "target": {
+          "class": "EntitlementService",
+          "method": "assign",
+          "path": "service.py"
+        }
+      },
+      "C": {
+        "guidance": "Inspect current assignments under the account store, exact ordered displacement and effects of prior exchange history.",
+        "mode": "method_inspectability",
+        "statement": "The account release method is an inspectable source route; capacity-shrink behaviour remains unverified.",
+        "target": {
+          "class": "EntitlementService",
+          "method": "release",
+          "path": "service.py"
+        }
+      },
+      "D": {
+        "action_if_contested": "Both pre-effect and after-effect timeout routes appear; distinguish them and reconcile each before retry.",
+        "action_if_supported": "The source shows an after-effect timeout route; reconcile issuer.lookup before another issue call.",
+        "action_if_unknown": "The source does not establish effect ordering; inspect outcome semantics and issuer.lookup before any retry.",
+        "effect_attribute": "issued",
+        "guidance": "The issuer may commit a token before the acknowledgement times out. Use issuer.lookup with the stable account and request ID before retrying, reject conflicting outcomes and avoid duplicate issuance.",
+        "mode": "effect_before_timeout",
+        "statement": "A direct append to issuer.issued before a direct TimeoutError appears in source order; dynamic reachability and external durability remain unverified.",
+        "target": {
+          "class": "InMemoryIssuer",
+          "method": "issue",
+          "path": "service.py"
+        }
+      }
+    },
+    "fulfilment": {
+      "B": {
+        "guidance": "Inspect refund amount, stable request key and compensation against the current service and visible tests; validate effects before acceptance.",
+        "mode": "method_inspectability",
+        "statement": "A refund method is a source-declared candidate effect route; stable-key and amount behaviour remain unverified.",
+        "target": {
+          "class": "InMemoryPayments",
+          "method": "refund",
+          "path": "fulfilment/memory.py"
+        }
+      },
+      "C": {
+        "guidance": "Inspect cancellation key, remaining shipped units and refund/stock/event compensation together; validate retry effects.",
+        "mode": "method_inspectability",
+        "statement": "A shipping cancellation method is a source-declared candidate effect route; carrier outcome remains unverified.",
+        "target": {
+          "class": "InMemoryShipping",
+          "method": "cancel",
+          "path": "fulfilment/memory.py"
+        }
+      },
+      "D": {
+        "action_if_unknown": "The method is absent or source status is unresolved; add or inspect an explicit refund-status route and never infer not_applied from silence.",
+        "guidance": "Treat a lost refund acknowledgement as an unknown outcome. Inspect a current stable-key provider status and reconcile other effects before marking complete or retrying; source syntax is not outcome evidence.",
+        "mode": "method_inspectability",
+        "statement": "The source may expose a refund-status inspection route; method presence does not establish applied, unapplied or unknown provider outcomes.",
+        "target": {
+          "class": "InMemoryPayments",
+          "method": "refund_status",
+          "path": "fulfilment/memory.py"
+        }
+      }
+    },
+    "reservation": {
+      "B": {
+        "guidance": "Inspect the active calendar booking index when reserving a bundle and reject the whole request if any room conflicts.",
+        "mode": "method_inspectability",
+        "statement": "The calendar conflict method is a source-declared availability route; bundle atomicity remains unverified.",
+        "target": {
+          "class": "InMemoryCalendar",
+          "method": "conflicts",
+          "path": "service.py"
+        }
+      },
+      "C": {
+        "guidance": "Use current active calendar bookings for availability after a move, excluding only the bundle own booking IDs; the historical BundleReceipt cannot determine current availability.",
+        "mode": "method_inspectability",
+        "statement": "The calendar conflict method is an inspectable source route; current-index authority and move correctness remain unverified.",
+        "target": {
+          "class": "InMemoryCalendar",
+          "method": "conflicts",
+          "path": "service.py"
+        }
+      },
+      "D": {
+        "action_if_unknown": "A current bundle cancellation path is not established by source inspection; inspect live booking index and implement coherent cancellation before relying on a receipt.",
+        "guidance": "After a move, cancel the current active bundle bookings and preserve historical request replay; use current booking IDs from the calendar rather than only an old receipt.",
+        "mode": "method_inspectability",
+        "statement": "The source may expose a cancellation route; method presence does not verify which current bookings it cancels.",
+        "target": {
+          "class": "ReservationService",
+          "method": "cancel",
+          "path": "service.py"
+        }
+      }
+    }
+  },
+  "max_block_high_scenario_usd": "15.00",
+  "protocol_id": "INV-001",
+  "protocol_version": "0.1.0",
+  "registration_status": "specified; no v4 coding outcome observed and not preregistered",
+  "replicate_blocks_per_system": 3,
+  "resources": {
+    "maximum_agent_invocation_seconds": 152280,
+    "monetary_budget_ceiling": "135.00 conditional high scenario USD across nine blocks; 15.00 per block",
+    "monetary_budget_status": "Operational Standard API list-rate scenario guard only; actual billed USD remains unverified and cannot be guaranteed capped.",
+    "planned_coding_episodes": 81,
+    "planned_decision_sessions": 54,
+    "rate_card_path": "experiments/architecture_extension_v4/study/rate-card.json"
+  },
+  "schema": "architecture-extension-v4/manifest/1",
+  "seed_hex": "5e4dea3f17b5790a47f3ec2ff266a5a82080b1a4c8d6494d24165e97e00ce11a",
+  "systems": [
+    "fulfilment",
+    "entitlement",
+    "reservation"
+  ],
+  "wall_cap_seconds": 1800
+}

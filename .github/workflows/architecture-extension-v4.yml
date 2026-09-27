@@ -1,0 +1,167 @@
+name: Architecture extension v4 three-system study
+
+on:
+  workflow_dispatch:
+    inputs:
+      live:
+        description: 'Run the frozen 27 B-C-D lineages and registered decision probes.'
+        type: boolean
+        default: false
+  push:
+    branches:
+      - study/architecture-v4-live
+    paths:
+      - .github/workflows/architecture-extension-v4.yml
+      - experiments/architecture_extension_v4/**
+      - experiments/architecture_extension_v3/study/assess.py
+      - experiments/architecture_extension_v2/materials/assessor/probe.py
+      - src/eal/**
+      - grammar/**
+      - pyproject.toml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: architecture-v4-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install frozen study dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Verify freeze, decision packets and behavioural controls
+        run: |
+          python experiments/architecture_extension_v4/study/freeze.py verify
+          python -m pytest -q \
+            experiments/architecture_extension_v4/study/test_packets.py \
+            experiments/architecture_extension_v4/study/test_decision_probe.py \
+            experiments/architecture_extension_v4/study/runner_test.py
+          python -m unittest discover -s experiments/architecture_extension_v4/study -p 'test_*.py' -v
+          python -m unittest discover -s experiments/architecture_extension_v4/systems/entitlement/host -p 'test_*.py' -v
+          python -m unittest discover -s experiments/architecture_extension_v4/systems/reservation/host -p 'test_*.py' -v
+          (cd experiments/architecture_extension_v4/systems/fulfilment/source && python -m unittest discover -s tests -p 'test_*.py' -v)
+      - name: Exercise one complete nine-episode smoke block without a provider call
+        run: |
+          python experiments/architecture_extension_v4/study/runner.py \
+            --manifest experiments/architecture_extension_v4/study/manifest.json \
+            --block entitlement-01 --agent stub --output "$RUNNER_TEMP/v4-smoke"
+          python experiments/architecture_extension_v4/study/freeze.py verify
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+      - name: Install pinned CLI and mount-namespace support for credential-free preflight
+        run: |
+          sudo npm install -g --prefix /usr/local '@openai/codex@0.154.0'
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          case "$(readlink -f "$(command -v codex)")" in
+            /usr/*) ;;
+            *) echo 'Codex executable is outside the read-only tool mount' >&2; exit 1 ;;
+          esac
+      - name: Check writable and read-only outer and nested sandboxes before live calls
+        run: |
+          python - <<'PY'
+          import sys, tempfile
+          from pathlib import Path
+          sys.path.insert(0, 'experiments/architecture_extension_v4/study')
+          from runner_capture import codex_preflight
+          with tempfile.TemporaryDirectory() as location:
+              root = Path(location)
+              (root / 'trial').mkdir()
+              (root / 'trial' / 'FEATURE.md').write_text('Credential-free sandbox preflight')
+              (root / 'home').mkdir()
+              codex_preflight(root / 'trial', root / 'home')
+              codex_preflight(root / 'trial', root / 'home', read_only_trial=True)
+          PY
+      - name: Retain validation evidence and any stopped smoke attempt
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: architecture-v4-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/v4-smoke/
+          if-no-files-found: warn
+          retention-days: 90
+
+  live:
+    if: ${{ needs.validate.result == 'success' && (github.event_name == 'push' || inputs.live == true) && github.run_attempt == 1 }}
+    needs: validate
+    strategy:
+      fail-fast: false
+      max-parallel: 9
+      matrix:
+        block:
+          - fulfilment-01
+          - fulfilment-02
+          - fulfilment-03
+          - entitlement-01
+          - entitlement-02
+          - entitlement-03
+          - reservation-01
+          - reservation-02
+          - reservation-03
+    runs-on: ubuntu-latest
+    timeout-minutes: 330
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install study and pinned coding CLI
+        run: |
+          python -m pip install -e '.[dev]'
+          python experiments/architecture_extension_v4/study/freeze.py verify
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+      - name: Install exact Codex CLI revision
+        run: |
+          sudo npm install -g --prefix /usr/local '@openai/codex@0.154.0'
+          codex --version
+          case "$(readlink -f "$(command -v codex)")" in
+            /usr/*) ;;
+            *) echo 'Codex executable is outside the read-only tool mount' >&2; exit 1 ;;
+          esac
+      - name: Install and enable host mount-namespace isolation
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bubblewrap apparmor-profiles apparmor-utils
+          if [ -f /usr/share/apparmor/extra-profiles/bwrap-userns-restrict ]; then
+            sudo install -m 0644 /usr/share/apparmor/extra-profiles/bwrap-userns-restrict /etc/apparmor.d/bwrap-userns-restrict
+          fi
+          test -f /etc/apparmor.d/bwrap-userns-restrict
+          sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
+          test "$(command -v bwrap)" = /usr/bin/bwrap
+      - name: Execute one preallocated triad, retaining every assigned attempt
+        env:
+          CODEX_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BLOCK: ${{ matrix.block }}
+        run: |
+          test -n "$CODEX_API_KEY"
+          python experiments/architecture_extension_v4/study/runner.py \
+            --manifest experiments/architecture_extension_v4/study/manifest.json \
+            --block "$BLOCK" --agent codex --output "$RUNNER_TEMP/v4-$BLOCK"
+      - name: Retain immutable source, packet, assessor, usage and trace evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: architecture-v4-${{ matrix.block }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/v4-${{ matrix.block }}/
+          if-no-files-found: warn
+          retention-days: 90

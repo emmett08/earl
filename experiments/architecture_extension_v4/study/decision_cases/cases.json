@@ -1,0 +1,125 @@
+{
+  "schema": "architecture-v4-decision-cases/1",
+  "systems": {
+    "entitlement": {
+      "clean": {
+        "allowed_actions": [
+          "RETRY_SAME_KEY",
+          "RECONCILE_NO_REISSUE"
+        ],
+        "brief_sha256": "323eaccafd694642a53292a4d5119bf33c5f8f5c0f5166feb73cac842d41dda9",
+        "evidence_schema": {
+          "public_method": "InMemoryIssuer.issue",
+          "public_source_path": "service.py",
+          "scenario": "issuer-timeout"
+        },
+        "expected_action": "RETRY_SAME_KEY",
+        "guidance": "An issuer timeout can occur before or after an effect. Use the stable account/request key and the authoritative lookup result before considering another issue call.",
+        "provisional_action": "Retry the issue operation under the same account/request key.",
+        "public_source_path": "service.py",
+        "public_source_sha256": "14abf5c53460dd105e9b18cbef86df50b1c9a479b3d574dbb8f94d0d09365a96",
+        "source_tree_sha256": "54fcc516cef4d55af63b34d64da96724732da88624b2045598283332fe837498",
+        "state_sha256": "9b983714902d0acc15db78a4a6f11d24ab3de1dda93acca25dfd5c479672399b"
+      },
+      "defeated": {
+        "allowed_actions": [
+          "RETRY_SAME_KEY",
+          "RECONCILE_NO_REISSUE"
+        ],
+        "brief_sha256": "323eaccafd694642a53292a4d5119bf33c5f8f5c0f5166feb73cac842d41dda9",
+        "evidence_schema": {
+          "public_method": "InMemoryIssuer.issue",
+          "public_source_path": "service.py",
+          "scenario": "issuer-timeout"
+        },
+        "expected_action": "RECONCILE_NO_REISSUE",
+        "guidance": "An issuer timeout can occur before or after an effect. Use the stable account/request key and the authoritative lookup result before considering another issue call.",
+        "provisional_action": "Retry the issue operation under the same account/request key.",
+        "public_source_path": "service.py",
+        "public_source_sha256": "14abf5c53460dd105e9b18cbef86df50b1c9a479b3d574dbb8f94d0d09365a96",
+        "source_tree_sha256": "54fcc516cef4d55af63b34d64da96724732da88624b2045598283332fe837498",
+        "state_sha256": "92ab1ea77d68c0a2e87e66d34c6220ae1fc680e7a4a81a636654dde4f421463d"
+      }
+    },
+    "fulfilment": {
+      "clean": {
+        "allowed_actions": [
+          "RECONCILE_COMPLETE",
+          "HOLD_UNRESOLVED"
+        ],
+        "brief_sha256": "c818247b05e8e03b00143c14e62d335ea0540968538498671c9521218fcf8852",
+        "evidence_schema": {
+          "public_method": "InMemoryPayments.refund",
+          "public_source_path": "fulfilment/memory.py",
+          "scenario": "refund-status"
+        },
+        "expected_action": "RECONCILE_COMPLETE",
+        "guidance": "Use the stable refund key and the current provider status. An unknown status does not establish either application or non-application.",
+        "provisional_action": "Complete the return through the same refund key without another refund effect.",
+        "public_source_path": "fulfilment/memory.py",
+        "public_source_sha256": "88324167b0bc5e9ef0dedd9ad9dbb518d92d01e79a8b0d2d5ede18e5b77f0767",
+        "source_tree_sha256": "31502f00d48bc59d4c8b14ecdab2aafb3d4b9f4521c8b1a522e03e61189b2e37",
+        "state_sha256": "701d38d57a8eb3f0c27b7d6c3935413a36be4cd21c9829696b4073adf75de42a"
+      },
+      "defeated": {
+        "allowed_actions": [
+          "RECONCILE_COMPLETE",
+          "HOLD_UNRESOLVED"
+        ],
+        "brief_sha256": "c818247b05e8e03b00143c14e62d335ea0540968538498671c9521218fcf8852",
+        "evidence_schema": {
+          "public_method": "InMemoryPayments.refund",
+          "public_source_path": "fulfilment/memory.py",
+          "scenario": "refund-status"
+        },
+        "expected_action": "HOLD_UNRESOLVED",
+        "guidance": "Use the stable refund key and the current provider status. An unknown status does not establish either application or non-application.",
+        "provisional_action": "Complete the return through the same refund key without another refund effect.",
+        "public_source_path": "fulfilment/memory.py",
+        "public_source_sha256": "88324167b0bc5e9ef0dedd9ad9dbb518d92d01e79a8b0d2d5ede18e5b77f0767",
+        "source_tree_sha256": "31502f00d48bc59d4c8b14ecdab2aafb3d4b9f4521c8b1a522e03e61189b2e37",
+        "state_sha256": "6b56611a51945911b70770ed4775032beb703b9ee79a6086038c5c158974c14b"
+      }
+    },
+    "reservation": {
+      "clean": {
+        "allowed_actions": [
+          "MOVE_CURRENT_BUNDLE",
+          "REJECT_NO_EFFECT"
+        ],
+        "brief_sha256": "8f6e09604ab341900f6497d85ea4ade4c747a8ab5b63de7f8abd40fd06aba71f",
+        "evidence_schema": {
+          "public_method": "InMemoryCalendar.conflicts",
+          "public_source_path": "service.py",
+          "scenario": "current-booking-conflict"
+        },
+        "expected_action": "MOVE_CURRENT_BUNDLE",
+        "guidance": "Use current active booking records to decide a move. The historical bundle receipt identifies the original request but does not establish current availability.",
+        "provisional_action": "Move the two currently active bundle bookings to the new interval.",
+        "public_source_path": "service.py",
+        "public_source_sha256": "1479b3f0e346d2edabf9426f48201e12f08ee1bb6eb8c5889f11f2db59ece369",
+        "source_tree_sha256": "75909ec04cf036b78b311210a57187c960546a4c27f1912798389f44039b276c",
+        "state_sha256": "88c3f1420adebd4821f9eafcf42cf9514542464aeaed3d685e0a5b550beb19f2"
+      },
+      "defeated": {
+        "allowed_actions": [
+          "MOVE_CURRENT_BUNDLE",
+          "REJECT_NO_EFFECT"
+        ],
+        "brief_sha256": "8f6e09604ab341900f6497d85ea4ade4c747a8ab5b63de7f8abd40fd06aba71f",
+        "evidence_schema": {
+          "public_method": "InMemoryCalendar.conflicts",
+          "public_source_path": "service.py",
+          "scenario": "current-booking-conflict"
+        },
+        "expected_action": "REJECT_NO_EFFECT",
+        "guidance": "Use current active booking records to decide a move. The historical bundle receipt identifies the original request but does not establish current availability.",
+        "provisional_action": "Move the two currently active bundle bookings to the new interval.",
+        "public_source_path": "service.py",
+        "public_source_sha256": "1479b3f0e346d2edabf9426f48201e12f08ee1bb6eb8c5889f11f2db59ece369",
+        "source_tree_sha256": "75909ec04cf036b78b311210a57187c960546a4c27f1912798389f44039b276c",
+        "state_sha256": "3f37692e00e82040257aaf2c41018bb6428fb9b53cdfccf525784da06d274697"
+      }
+    }
+  }
+}

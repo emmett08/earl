@@ -1,0 +1,33 @@
+{
+  "schema": "architecture-v4-rate-card/1",
+  "model": "gpt-6-sol",
+  "billing_channel": "openai_api_key",
+  "service_tier": "standard",
+  "currency": "USD",
+  "denominator_tokens": 1000000,
+  "long_context_if_input_tokens_greater_than": 272000,
+  "rates_usd_per_million": {
+    "short": {
+      "uncached_input_tokens": "2.00",
+      "cached_input_tokens": "0.20",
+      "cache_write_input_tokens": "2.50",
+      "output_tokens": "10.00"
+    },
+    "long": {
+      "uncached_input_tokens": "4.00",
+      "cached_input_tokens": "0.40",
+      "cache_write_input_tokens": "5.00",
+      "output_tokens": "15.00"
+    }
+  },
+  "region_multipliers": {
+    "global": "1.00",
+    "regional": "1.10"
+  },
+  "price_source": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+  "full_rate_source": "https://developers.openai.com/api/docs/pricing",
+  "recorded_at_utc": "2026-09-27",
+  "study_effective_from_utc": "2026-09-27",
+  "provider_rate_effective_date_utc": null,
+  "interpretation": "Published Standard API list-price estimate, not a provider invoice. Request-level tier, context length, region and mutually exclusive usage classes must be verified. Regional processing uplift applies where available; a custom contract, included credits, taxes and discounts are not represented."
+}

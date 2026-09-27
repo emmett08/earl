@@ -1,0 +1,37 @@
+// Decision-probe premise over a frozen, finite public scenario observation.
+// Source provenance and state-record typing are checked by the host probe.
+// Neither this argument nor a model answer verifies production behaviour.
+language "EAL/2";
+
+environment public_case {
+  require "study" == "architecture-extension-v4-decision-probe";
+}
+
+tool case_probe { version "1"; }
+
+evidence eligible_request {
+  tool case_probe; kind inspection; environment public_case; max_age 3600;
+  input {"check_id":"eligible_request"}; require "eligible" == true;
+}
+evidence blocking_state {
+  tool case_probe; kind inspection; environment public_case; max_age 3600;
+  input {"check_id":"blocking_state"}; require "blocker" == true;
+}
+
+reasoning state_inspection {
+  method "structured/1";
+  rationale "The finite public case has a matching request and the provisional action is eligible, conditional on no defeating state observation.";
+}
+
+claim provisional_action {
+  statement "The case's provisional action is eligible subject to the recorded defeating condition.";
+  environment public_case;
+}
+
+argument eligible_route {
+  conclusion provisional_action; reasoning state_inspection; evidence eligible_request;
+}
+
+objection defeating_condition {
+  target argument eligible_route; evidence blocking_state;
+}

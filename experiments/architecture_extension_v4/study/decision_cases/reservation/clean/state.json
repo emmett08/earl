@@ -1,0 +1,44 @@
+{
+  "case_id": "clean",
+  "current_bookings": [
+    {
+      "active": true,
+      "booking_id": "booking-1",
+      "customer_id": "customer-1",
+      "end": 20,
+      "room_id": "room-a",
+      "start": 10
+    },
+    {
+      "active": true,
+      "booking_id": "booking-2",
+      "customer_id": "customer-1",
+      "end": 20,
+      "room_id": "room-b",
+      "start": 10
+    }
+  ],
+  "historical_receipt": {
+    "booking_ids": [
+      "booking-1",
+      "booking-2"
+    ],
+    "end": 20,
+    "request_id": "bundle-1",
+    "start": 10
+  },
+  "origin": "synthetic public finite-state decision fixture",
+  "request": {
+    "bundle_request_id": "bundle-1",
+    "customer_id": "customer-1",
+    "move_request_id": "move-1",
+    "new_end": 40,
+    "new_start": 30,
+    "own_booking_ids": [
+      "booking-1",
+      "booking-2"
+    ]
+  },
+  "schema": "architecture-v4-decision-state/1",
+  "system": "reservation"
+}

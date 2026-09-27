@@ -1,0 +1,1590 @@
+{
+  "analysis": {
+    "contrasts": [
+      "Primary P2-P1 matched representation assignment effect for correctness and contested action.",
+      "Secondary P2-P0 package comparison.",
+      "System-specific and independent-new-systems-only contrasts, fulfilment calibration separately.",
+      "Standalone fixed-case P2-P1 decision response separate from source-modifying B-C-D implementation effect."
+    ],
+    "exclusion_lock": "No assigned lineage is dropped for timeout, missing packet, assessor failure or bad behaviour. Label corrupted measurement and limit the corresponding identifiable contrast rather than replacing a record.",
+    "inconclusive_handling": "Mixed systems, imprecise contrast, invalid assessor, review disagreement, unavailable charges or failed parity remain distinct inconclusive/unresolved dispositions.",
+    "missing_data": "Unknown token class/rate leaves money missing; missing review leaves architecture unresolved; invalid assessor leaves conformance unknown; delivery/matching failures suspend clean representation contrast. Preserve all ITT records. Case source/state mismatch or missing strict response leaves probe accuracy invalid; never infer a coding-agent action from the packet alone.",
+    "models": [
+      {
+        "assumptions": [
+          "Fixed oracle and matched acquisition.",
+          "No cross-lineage interference."
+        ],
+        "diagnostics": [
+          "Positive/negative reference probes.",
+          "Invalid and missing by arm, system and stage."
+        ],
+        "estimand_ids": [
+          "EST-001",
+          "EST-002",
+          "EST-006"
+        ],
+        "id": "MOD-001",
+        "model_or_procedure": "Tabulate every probe and paired decision; compute system-balanced within-triad P2-P1 and secondary P2-P0 differences; randomisation inference permutes labels only within actual triads if gates pass. Aggregate the two independent post-D probe sessions as a pair per assigned arm/block; analyse their correct action-change contrast separately from coded implementation outcomes.",
+        "outputs": [
+          "ordered_findings",
+          "critical_completion_diff",
+          "contested_pair_correct_diff",
+          "probe_pair_correct_diff"
+        ]
+      },
+      {
+        "assumptions": [
+          "Cap enforcement and monotonic clocks.",
+          "The score's failure penalty is a stated decision convention."
+        ],
+        "diagnostics": [
+          "Clock/cap manifest.",
+          "Score replay and penalty sensitivity."
+        ],
+        "estimand_ids": [
+          "EST-003"
+        ],
+        "id": "MOD-002",
+        "model_or_procedure": "Compute Q=min(T,1800) on complete stages and 1800 otherwise; sum C+D plus host acquisition once; report actual elapsed and failure apart from score and equal-system-weighted block differences.",
+        "outputs": [
+          "time_score_diff",
+          "time_score_ratio",
+          "actual_elapsed_by_arm",
+          "completion_by_arm"
+        ]
+      },
+      {
+        "assumptions": [
+          "Review forms sealed before unmasking.",
+          "Common system-specific rubric anchors."
+        ],
+        "diagnostics": [
+          "Unmasking audit and inter-rater disagreement."
+        ],
+        "estimand_ids": [
+          "EST-004"
+        ],
+        "id": "MOD-003",
+        "model_or_procedure": "Tabulate each masked rubric finding and disagreement, then a frozen critical no-worse rule after adjudication; preserve unresolved verdicts.",
+        "outputs": [
+          "architecture_findings",
+          "architecture_no_worse_status"
+        ]
+      },
+      {
+        "assumptions": [
+          "Complete class and model SKU attribution.",
+          "Valid rate snapshot or bill."
+        ],
+        "diagnostics": [
+          "Coverage table, trace hash, invoice discrepancy and nested-time check."
+        ],
+        "estimand_ids": [
+          "EST-005"
+        ],
+        "id": "MOD-004",
+        "model_or_procedure": "Apply dated tariff classes once to uncached input, cache read, cache write, output and attributable host/runner units; reconcile observed bill; no imputed zero.",
+        "outputs": [
+          "priced_cost_diff_or_missing",
+          "physical_resources_by_arm",
+          "billing_coverage"
+        ]
+      }
+    ],
+    "multiplicity": "Do not declare a broad benefit from whichever endpoint looks best. Any formal simultaneous claim needs pre-specified familywise rule and justified thresholds in a successor registered version.",
+    "preprocessing_lock": "Verify source, brief, assignment, packet, assessor and rate hashes, parse all current-run artifacts, classify invalid separately and compute lineage-level vectors before arm mapping is revealed to reviewers. Verify each decision probe source-state digest, fixed action menu, paired case identity and response parser before comparing arms.",
+    "robustness_checks": [
+      "Alternative failure penalties and actual coding elapsed alongside completion.",
+      "Exclude fulfilment only for a labelled independent-systems analysis, not as an outcome-chosen exclusion.",
+      "Packet length/access sensitivity and full parity audit.",
+      "Case-oracle perturbations fixed before outcomes."
+    ],
+    "software_and_versions": [
+      "Pin repository commit, Python dependencies, EAL parser/server, model/agent CLI and workflow revision in the pre-run manifest; exact provider backend revision may be unknown and must be reported."
+    ],
+    "stopping_rule": "Target all 81 coding episodes and 54 120-second decision sessions irrespective of signs. Stop each nine-episode/six-probe block if the cumulative conditional high Standard API list-rate scenario is unavailable or exceeds USD 15.00 after an invocation; nine parallel blocks have USD 135.00 aggregate conditional caps, not a guaranteed invoice ceiling. Maximum model invocation 152280 seconds (42.3 hours); no efficacy stopping.",
+    "uncertainty": "Finite-block randomisation intervals when design and measurement gates pass, exact counts and system-level heterogeneity; no asymptotic three-system population interval. Undetermined effect remains undetermined."
+  },
+  "assumptions": [
+    {
+      "failure_consequence": "The presentation-only contrast is unidentified; describe the broader content-and-presentation package.",
+      "id": "ASM-001",
+      "role": "identification",
+      "statement": "P1 and P2 convey the same source facts, qualified propositions, defeaters, status meaning, recommendations and available follow-up information; rendering is the assigned difference.",
+      "status": "untested",
+      "test_or_justification": "Canonical FactSet/DecisionContent digest, proposition-level parity audit and adversarial packet cases before allocation and on all delivered episodes."
+    },
+    {
+      "failure_consequence": "Cross-arm interference or leakage can account for observed contrasts.",
+      "id": "ASM-002",
+      "role": "identification",
+      "statement": "Isolated lineages do not see another clone, later brief, hidden test, arm packet or outcome-bearing conversation.",
+      "status": "untested",
+      "test_or_justification": "Verify mounts, permitted tools, egress, trial inventory and read traces in every assignment."
+    },
+    {
+      "failure_consequence": "Conformance and contested-action claims are suspended for affected systems.",
+      "id": "ASM-003",
+      "role": "measurement",
+      "statement": "The corrected and independent sealed assessors validly distinguish required behaviour, prohibited side effects and their own execution errors.",
+      "status": "untested",
+      "test_or_justification": "Pre-freeze brief/probe reconciliation, clean and deliberately faulty reference implementations, independent oracle review and assessor replay against exact snapshots."
+    },
+    {
+      "failure_consequence": "Assignment or reviewer expectations can confound the contrast.",
+      "id": "ASM-004",
+      "role": "identification",
+      "statement": "Random arm permutation is concealed until reviewers seal reports, and agent/model/runner profiles match within each triad and stage.",
+      "status": "untested",
+      "test_or_justification": "Validate seed-to-allocation replay, block manifest, invocation metadata and reviewer access; log possible arm-identifying source changes."
+    },
+    {
+      "failure_consequence": "Financial totals remain missing or scenario-valued; physical resource observations remain reportable.",
+      "id": "ASM-005",
+      "role": "measurement",
+      "statement": "Provider usage classes and dated rates or bills cover every relevant charge without double-counting cache or nested host work.",
+      "status": "untested",
+      "test_or_justification": "Reconcile raw event fields with provider billing rules, rate snapshots and host-runner metering; preserve unknown values."
+    },
+    {
+      "failure_consequence": "A renamed fixture cannot be counted as an independent system.",
+      "id": "ASM-006",
+      "role": "sampling",
+      "statement": "The two new systems have distinct source histories and domain architectures, are eligible by frozen pre-outcome rules, and have no dependence on the fulfilment fixture.",
+      "status": "untested",
+      "test_or_justification": "Review source provenance, licences, original interfaces, dependencies, assessor ownership and selection log before the freeze."
+    }
+  ],
+  "bias_assessment": {
+    "falsification_checks": [
+      "Deliberately mismatched source hash, omitted objection and stale facts must fail parity or delivery validation."
+    ],
+    "negative_controls": [
+      "Defeated source state with explicit adverse premise must block unsafe completion."
+    ],
+    "positive_controls": [
+      "Clean admissible state must allow the correct action, preventing an all-BLOCK solution."
+    ],
+    "reporting_controls": [
+      "Durable manifest and artifacts retain every assigned attempt, invalid result, source hash, reviewer form and missing cost class."
+    ],
+    "researcher_degrees_of_freedom": [
+      "System selection, task wording, case oracle, packet verbosity, status wording, critical probe set, penalty cap and architecture thresholds require freezing before acquisition."
+    ],
+    "residual_limitations": [
+      "Three finite systems do not represent an identified population distribution; agent attention to packet is unobserved, even when delivered."
+    ],
+    "risks": [
+      {
+        "detection": "Audit selection and edit chronology.",
+        "id": "BIAS-001",
+        "mechanism": "Known fulfilment failures inform task and oracle choice.",
+        "prevention": "Label it calibration; select new systems and cases by pre-outcome criteria.",
+        "residual_risk": "Two new systems provide weak transport evidence.",
+        "risk_type": "selection",
+        "sensitivity_or_correction": "Report new-systems-only contrast and do not fold old v3 outcomes into estimates."
+      },
+      {
+        "detection": "Read/access traces and source inventory audit.",
+        "id": "BIAS-002",
+        "mechanism": "Public source or shared workspace reveals hidden probes, future briefs or other clones.",
+        "prevention": "Isolated staged trial, separate credentials and controlled egress.",
+        "residual_risk": "Agent network access may expose published host material.",
+        "risk_type": "leakage",
+        "sensitivity_or_correction": "Report compromised blocks; suspend clean causal interpretation."
+      },
+      {
+        "detection": "Positive and negative fixtures with replay of every status.",
+        "id": "BIAS-003",
+        "mechanism": "Assessor rejects a valid architecture or counts its own exception as code failure.",
+        "prevention": "Independent brief/probe oracle review and reference implementations.",
+        "residual_risk": "Finite probes cannot establish all desired behaviour.",
+        "risk_type": "measurement",
+        "sensitivity_or_correction": "Classify invalid separately and version correction before acquisition."
+      },
+      {
+        "detection": "Ask reviewer to record suspected arm and reason before reveal.",
+        "id": "BIAS-004",
+        "mechanism": "Reviewer infers arm from EAL-named code or transcript and interprets source differently.",
+        "prevention": "Remove sidecars and agent report; blind source IDs and seal independent forms.",
+        "residual_risk": "Some edits intrinsically reveal provided guidance.",
+        "risk_type": "expectancy",
+        "sensitivity_or_correction": "Report broken masking and adjudicator disagreements."
+      }
+    ]
+  },
+  "claims": [
+    {
+      "claim_type": "causal",
+      "failure_consequence": "Weaken the bounded advantage claim, or suspend it if parity or measurement fails.",
+      "id": "CLM-001",
+      "role": "primary",
+      "scope_limit": "A finite-system assignment effect of the argument presentation under the registered agent, task, model and runner configuration; not an intrinsic language effect or population effect.",
+      "statement": "For the registered task sequences, assigning the EAL/2 presentation rather than matched prose changes verified contested decisions and implementation outcomes while preserving critical behaviour.",
+      "success_consequence": "Strengthen only the bounded differential-presentation claim if parity, correct decision changes, behavioural integrity and measurement gates pass."
+    },
+    {
+      "claim_type": "causal",
+      "failure_consequence": "Report slower or more costly outcomes, or missing price, without replacing them with token counts.",
+      "id": "CLM-002",
+      "role": "secondary",
+      "scope_limit": "Time score is a declared decision metric, not observed remediation labour; price is a measured bill or qualified estimate, not debt principal.",
+      "statement": "The EAL/2 presentation may alter the failure-penalised change-time score and priced resource expenditure.",
+      "success_consequence": "Report exact time and money contrasts with uncertainty and separate components."
+    },
+    {
+      "claim_type": "causal",
+      "failure_consequence": "Report worse architecture or unresolved review as such.",
+      "id": "CLM-003",
+      "role": "secondary",
+      "scope_limit": "Source review describes identified paths and obligations; it is not observed future maintenance cost.",
+      "statement": "Condition-masked reviewers can assess whether the EAL/2 presentation yields no worse specified architecture findings in the registered changes.",
+      "success_consequence": "Report the reviewer findings and bounded no-worse contrast if both reviews and adjudication are complete."
+    }
+  ],
+  "confounds": [
+    {
+      "causal_or_measurement_path": "Task and assessor refinement may preferentially fit the known R/W difficulty.",
+      "control_or_adjustment": "Label fulfilment calibration and report independently new-system results separately.",
+      "description": "Prior exposure to observed fulfilment outcome and correction.",
+      "diagnostic": "Compare result signs and mechanisms across prior-observed and new systems.",
+      "id": "CF-001",
+      "residual_risk": "Only two unobserved systems in first acquisition cannot justify external validity."
+    },
+    {
+      "causal_or_measurement_path": "Different run settings or timing may mimic packet effects.",
+      "control_or_adjustment": "Matched version/model/effort within triad-stage, balanced start order and full manifests.",
+      "description": "Provider model revision, run order, load or CLI drift.",
+      "diagnostic": "Audit actual version labels, start times and failed invocations.",
+      "id": "CF-002",
+      "residual_risk": "Provider backend revision may be undisclosed."
+    },
+    {
+      "causal_or_measurement_path": "Attention, latency or affordance may account for contrast independently of EAL structure.",
+      "control_or_adjustment": "Content parity, matched explanation access, length target and sensitivity analysis.",
+      "description": "Packet word count or access differences.",
+      "diagnostic": "Compare tokenised lengths, tool calls, packet and source hashes.",
+      "id": "CF-003",
+      "residual_risk": "Equivalent wording cannot guarantee equal salience."
+    }
+  ],
+  "constructs": [
+    {
+      "definition": "Pass/fail/invalid status of independent source-bound functional probes and all-critical completion across a lineage.",
+      "id": "CON-001",
+      "name": "Verified implementation behaviour",
+      "proxy_for_claim_ids": [
+        "CLM-001"
+      ],
+      "role": "outcome",
+      "scope": "Frozen deterministic sequential behaviours and stated critical invariants; not concurrent or live-provider behaviour.",
+      "validity_evidence": [
+        "Independent sealed probes with positive and negative reference implementations are required before freeze."
+      ],
+      "validity_threats": [
+        "Incorrect brief-probe correspondence, harness exceptions, finite-case coverage."
+      ]
+    },
+    {
+      "definition": "Correct decision and executable effect under a clean premise and a matched defeated premise, including the required change between them.",
+      "id": "CON-002",
+      "name": "Contested action response",
+      "proxy_for_claim_ids": [
+        "CLM-001"
+      ],
+      "role": "outcome",
+      "scope": "Prespecified scenario pairs with an independently reviewed action oracle.",
+      "validity_evidence": [
+        "Independent oracle adjudication and concealed effect probes are required."
+      ],
+      "validity_threats": [
+        "A blanket BLOCK strategy, scenario leakage, or a verbal answer differing from code."
+      ]
+    },
+    {
+      "definition": "Six source-located rubric findings and reviewer disagreement; no scalar debt estimate.",
+      "id": "CON-003",
+      "name": "Specified architecture findings",
+      "proxy_for_claim_ids": [
+        "CLM-003"
+      ],
+      "role": "outcome",
+      "scope": "Registered system-specific state, effect and event boundaries at each snapshot.",
+      "validity_evidence": [
+        "Two masked reviewers and adjudicator with source locations are required."
+      ],
+      "validity_threats": [
+        "Review unmasking, subjective disagreement, distinct valid architectures."
+      ]
+    },
+    {
+      "definition": "For each episode Q=min(actual coding seconds,1800) if all due probes pass, otherwise Q=1800; sum C+D plus host packet wall time.",
+      "id": "CON-004",
+      "name": "Failure-penalised change-time decision score",
+      "proxy_for_claim_ids": [
+        "CLM-002"
+      ],
+      "role": "outcome",
+      "scope": "Registered cap and clock start/stop only; not remediation labour or survival restricted mean.",
+      "validity_evidence": [
+        "Monotonic host clock and enforced invocation timeout required."
+      ],
+      "validity_threats": [
+        "Cap penalty dominates a failure, queue time omitted, time does not measure human effort."
+      ]
+    },
+    {
+      "definition": "Provider model/tool charges plus attributable host/runner charges under a dated rate card or bill, with missing classes preserved.",
+      "id": "CON-005",
+      "name": "Priced resource expenditure",
+      "proxy_for_claim_ids": [
+        "CLM-002"
+      ],
+      "role": "outcome",
+      "scope": "The registered B-C-D acquisition and coding process; future debt excluded.",
+      "validity_evidence": [
+        "Raw token classes and dated provider and runner rates or billing reconciliation required."
+      ],
+      "validity_threats": [
+        "Unavailable price or cache-write class, client estimates differing from bill, nested cost double count."
+      ]
+    },
+    {
+      "definition": "Equality of all agent-relevant facts, qualifiers, statuses, defeaters, guidance and access, with only prose versus EAL/2 rendering varied.",
+      "id": "CON-006",
+      "name": "Representation parity",
+      "proxy_for_claim_ids": [
+        "CLM-001"
+      ],
+      "role": "diagnostic",
+      "scope": "P1/P2 packets prepared for identical source state within a triad and stage.",
+      "validity_evidence": [
+        "Canonical content hashes and independent semantic parity review required."
+      ],
+      "validity_threats": [
+        "Extra P2 status, length, route labels, tool access or source timing."
+      ]
+    },
+    {
+      "definition": "Agent selects one predeclared enum action after reading a fixed public source and one clean or defeated finite-state scenario, in a fresh session after D coding.",
+      "id": "CON-007",
+      "name": "Standalone source-state decision response",
+      "proxy_for_claim_ids": [
+        "CLM-001"
+      ],
+      "role": "outcome",
+      "scope": "The registered six case sources and action oracles, repeated across independent assigned model sessions; unrelated to the candidate D code output.",
+      "validity_evidence": [
+        "Typed source-state fixtures and independent action oracle reviewed before freeze, with positive and defeated cases."
+      ],
+      "validity_threats": [
+        "Textual cue leakage, arbitrary action menu, response parsing, repeated identical scenarios, and no behavioural implementation in this probe."
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "control_type": "active-comparator",
+      "description": "P1 matched semantic content in prose.",
+      "diagnostic_consequence": "Failure reclassifies P2-P1 as a mixed-content comparison or invalidates clean representation inference.",
+      "failure_mode_addressed": "An information difference being misattributed to formal EAL representation.",
+      "id": "CTRL-001",
+      "implementation": "Canonical common content and independent proposition audit before every exposure."
+    },
+    {
+      "control_type": "baseline",
+      "description": "P0 ordinary source and current brief.",
+      "diagnostic_consequence": "Report secondary package contrast separately from representation effect.",
+      "failure_mode_addressed": "Both packets performing no better than ordinary agent reasoning.",
+      "id": "CTRL-002",
+      "implementation": "Run third randomised lineage in every triad."
+    },
+    {
+      "control_type": "positive",
+      "description": "Clean source-backed premise supports provisional action in each contested pair.",
+      "diagnostic_consequence": "A BLOCK-everything implementation fails the paired outcome.",
+      "failure_mode_addressed": "Blanket refusal being misclassified as sound defeat handling.",
+      "id": "CTRL-003",
+      "implementation": "Independently sealed oracle checks correct action and side effects in clean cases."
+    },
+    {
+      "control_type": "negative",
+      "description": "Defeated premise with independent unreconciled or revoked evidence.",
+      "diagnostic_consequence": "Unsafe completion or duplicate external effect is a critical failure.",
+      "failure_mode_addressed": "Agent continuing a once-plausible action after an active attacker.",
+      "id": "CTRL-004",
+      "implementation": "Matched clean/defeated source-backed pair and recovery probe per system."
+    }
+  ],
+  "critical_check_contract": {
+    "amendment": "Any brief or assessor change after registration requires a new version and fresh assignments; no outcome-selected check removal.",
+    "rule": "Every listed due check is critical. Each stage must have exactly these named results; candidate import failures and missing/extra findings are not silent noncritical cases.",
+    "source": "Exact due check IDs from corrected host-only assessors at this draft cut; recompute and freeze with source hashes before any coding result."
+  },
+  "critical_check_ids": {
+    "entitlement": {
+      "B": [
+        "baseline.identity-and-capacity",
+        "B.atomic-full-seat-exchange",
+        "B.invalid-exchange-no-effects",
+        "B.account-scoped-replay"
+      ],
+      "C": [
+        "baseline.identity-and-capacity",
+        "B.atomic-full-seat-exchange",
+        "B.invalid-exchange-no-effects",
+        "B.account-scoped-replay",
+        "C.exact-ordered-displacement",
+        "C.invalid-shrink-no-effects",
+        "C.prior-exchange-replay-after-shrink"
+      ],
+      "D": [
+        "baseline.identity-and-capacity",
+        "B.atomic-full-seat-exchange",
+        "B.invalid-exchange-no-effects",
+        "B.account-scoped-replay",
+        "C.exact-ordered-displacement",
+        "C.invalid-shrink-no-effects",
+        "C.prior-exchange-replay-after-shrink",
+        "D.issued-token-identity-and-replay",
+        "D.acknowledgement-loss-reconciliation",
+        "D.pre-effect-timeout-remains-retryable",
+        "D.conflicting-issuer-user-rejected",
+        "D.multiple-issuer-tokens-rejected",
+        "D.rejected-issue-no-effects"
+      ]
+    },
+    "fulfilment": {
+      "B": [
+        "baseline_event_retry",
+        "baseline_failure",
+        "baseline_idempotency",
+        "baseline_save_failure",
+        "baseline_success",
+        "partial_return",
+        "return_event_retry",
+        "return_idempotency",
+        "return_refund_failure",
+        "return_rejection",
+        "split_event_retry",
+        "split_idempotency",
+        "split_insufficient",
+        "split_later_dispatch_failure",
+        "split_priority_and_event"
+      ],
+      "C": [
+        "baseline_event_retry",
+        "baseline_failure",
+        "baseline_idempotency",
+        "baseline_save_failure",
+        "baseline_success",
+        "cancel_after_return",
+        "cancel_event_retry",
+        "cancel_idempotency_and_rejection",
+        "cancel_partial_carrier_failure_retry",
+        "partial_return",
+        "return_event_retry",
+        "return_idempotency",
+        "return_refund_failure",
+        "return_rejection",
+        "split_dispatch_save_failure",
+        "split_event_retry",
+        "split_idempotency",
+        "split_insufficient",
+        "split_later_dispatch_failure",
+        "split_priority_and_event"
+      ],
+      "D": [
+        "applied_refund_status_unknown",
+        "baseline_event_retry",
+        "baseline_failure",
+        "baseline_idempotency",
+        "baseline_save_failure",
+        "baseline_success",
+        "cancel_acknowledgement_loss",
+        "cancel_after_return",
+        "cancel_event_retry",
+        "cancel_idempotency_and_rejection",
+        "cancel_partial_carrier_failure_retry",
+        "checkout_rollback_acknowledgement_loss",
+        "not_applied_refund_retry",
+        "partial_return",
+        "return_acknowledgement_loss",
+        "return_event_retry",
+        "return_idempotency",
+        "return_refund_failure",
+        "return_rejection",
+        "split_dispatch_save_failure",
+        "split_event_retry",
+        "split_idempotency",
+        "split_insufficient",
+        "split_later_dispatch_failure",
+        "split_priority_and_event",
+        "unknown_before_refund_request"
+      ]
+    },
+    "reservation": {
+      "B": [
+        "baseline.half-open-availability-and-identity",
+        "B.all-or-none-cross-room-conflict",
+        "B.invalid-bundle-no-effects",
+        "B.historical-replay-and-customer-scope"
+      ],
+      "C": [
+        "baseline.half-open-availability-and-identity",
+        "B.all-or-none-cross-room-conflict",
+        "B.invalid-bundle-no-effects",
+        "B.historical-replay-and-customer-scope",
+        "C.self-exclusion-and-stable-booking-ids",
+        "C.other-conflict-rejection-and-rollback",
+        "C.move-replay-after-later-move"
+      ],
+      "D": [
+        "baseline.half-open-availability-and-identity",
+        "B.all-or-none-cross-room-conflict",
+        "B.invalid-bundle-no-effects",
+        "B.historical-replay-and-customer-scope",
+        "C.self-exclusion-and-stable-booking-ids",
+        "C.other-conflict-rejection-and-rollback",
+        "C.move-replay-after-later-move",
+        "D.cancel-moved-bundle-and-historical-replay",
+        "D.partial-bundle-and-identity-rejections"
+      ]
+    }
+  },
+  "decision_matrix": [
+    {
+      "analysis_outputs": [
+        "contested_pair_correct_diff",
+        "critical_completion_diff",
+        "architecture_no_worse_status",
+        "probe_pair_correct_diff"
+      ],
+      "assumption_failure_response": "Any failed parity, hidden oracle or leak gate supersedes this region with DM-004.",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Matched information and assigned representation distinguish the local rival if validity gates hold.",
+          "scope_limit": "The finite registered systems; fulfilment calibration separately and no population/debt inference."
+        }
+      ],
+      "decision_rule": "Report finite-system advantage with exact uncertainty; practical benefit requires separately justified margin and precision rather than favourable signs alone.",
+      "discrimination_result": "favours-hypothesis",
+      "hypothesis_effects": [
+        "H-001 locally favoured; H-002 weakened subject to information and attention parity."
+      ],
+      "id": "DM-001",
+      "next_action": "Replicate on new untouched systems with precision justified by first-wave variance.",
+      "observation_region": "Parity and scoring valid; P2 has more correct contested-pair changes than P1 across the registered systems without lower critical conformance; architecture has a sealed no-worse verdict.",
+      "prediction_ids": [
+        "PRED-001"
+      ]
+    },
+    {
+      "analysis_outputs": [
+        "contested_pair_correct_diff",
+        "critical_completion_diff",
+        "probe_pair_correct_diff"
+      ],
+      "assumption_failure_response": "Validity failures use DM-004.",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "no-change",
+          "rationale": "Shared correct action is predicted by explicit information as well as formal presentation.",
+          "scope_limit": "Only the observed pairs and finite systems."
+        }
+      ],
+      "decision_rule": "Report shared success and inconclusive differential; equivalence only if a prespecified margin lies entirely outside the uncertainty interval.",
+      "discrimination_result": "fails-to-discriminate",
+      "hypothesis_effects": [
+        "H-002 remains live; no evidence of a unique H-001 advantage from a descriptive tie."
+      ],
+      "id": "DM-002",
+      "next_action": "Seek cases where the rival packages imply different actions, or increase registered information for equivalence.",
+      "observation_region": "Both P1 and P2 correctly revise clean/defeated decisions and have compatible conformance; interval does not resolve a material difference.",
+      "prediction_ids": [
+        "PRED-002"
+      ]
+    },
+    {
+      "analysis_outputs": [
+        "ordered_findings",
+        "contested_pair_correct_diff",
+        "architecture_findings",
+        "time_score_diff",
+        "priced_cost_diff_or_missing"
+      ],
+      "assumption_failure_response": "If assessor or review invalid, use DM-004 or DM-005 rather than calling harm.",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001",
+            "CLM-003"
+          ],
+          "disposition": "weaken",
+          "rationale": "The tested differential representation trades against protected behaviour or structure.",
+          "scope_limit": "Registered systems and case pairs; no general absence claim."
+        }
+      ],
+      "decision_rule": "Classify critical behavioural harm or worse reviewed structure as adverse; report time/money components separately and do not average harm away.",
+      "discrimination_result": "contradicts-hypothesis",
+      "hypothesis_effects": [
+        "H-003 gains local support; H-001 weakened."
+      ],
+      "id": "DM-003",
+      "next_action": "Inspect exact failed premise and source path before another versioned test.",
+      "observation_region": "Valid parity/scoring and P2 causes more unsafe action or critical failure, or sealed reviewers find a worse critical architecture issue; time or priced cost may improve or worsen.",
+      "prediction_ids": [
+        "PRED-003"
+      ]
+    },
+    {
+      "analysis_outputs": [
+        "ordered_findings",
+        "critical_completion_diff",
+        "contested_pair_correct_diff"
+      ],
+      "assumption_failure_response": "Record the failed gate, version a repair and start new assignments, never overwrite a failed attempt.",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001",
+            "CLM-002",
+            "CLM-003"
+          ],
+          "disposition": "suspend",
+          "rationale": "The intended intervention or outcome contrast is not established.",
+          "scope_limit": "Affected units and endpoints; retain any unaffected descriptive measurements."
+        }
+      ],
+      "decision_rule": "Retain all assignments and deviations; withhold clean presentation-effect inference for affected blocks.",
+      "discrimination_result": "assumption-failure",
+      "hypothesis_effects": [
+        "No differential mechanism adjudication in compromised blocks."
+      ],
+      "id": "DM-004",
+      "next_action": "Repair and re-freeze apparatus, then run a separate acquisition.",
+      "observation_region": "Semantic packet parity, source isolation, model match, timeout attestation or assessor calibration fails for a block.",
+      "prediction_ids": [
+        "PRED-001",
+        "PRED-002",
+        "PRED-003"
+      ]
+    },
+    {
+      "analysis_outputs": [
+        "critical_completion_diff",
+        "contested_pair_correct_diff",
+        "architecture_no_worse_status",
+        "billing_coverage",
+        "time_score_ratio",
+        "probe_pair_correct_diff"
+      ],
+      "assumption_failure_response": "If invalidity rather than mere missing ancillary endpoint, use DM-004.",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001",
+            "CLM-002",
+            "CLM-003"
+          ],
+          "disposition": "no-change",
+          "rationale": "Missing or discordant evidence leaves the joint bounded benefit unresolved.",
+          "scope_limit": "No claim for unmeasured review, cost or population."
+        }
+      ],
+      "decision_rule": "Report valid endpoint estimates and each unresolved dimension separately; do not promote a local point estimate to the full practical claim.",
+      "discrimination_result": "inconclusive",
+      "hypothesis_effects": [
+        "H-001, H-002 and H-003 retain distinct system-specific possibilities."
+      ],
+      "id": "DM-005",
+      "next_action": "Complete masked review/billing if possible without altering outcomes; design a separately registered higher-information study.",
+      "observation_region": "Valid behaviour but review remains unresolved, charges incomplete, system effects conflict, or observed intervals are too wide for the practical threshold.",
+      "prediction_ids": [
+        "PRED-001",
+        "PRED-002",
+        "PRED-003"
+      ]
+    }
+  ],
+  "decision_probe_plan": {
+    "case_ids": [
+      "clean",
+      "defeated"
+    ],
+    "case_pairs": {
+      "entitlement": {
+        "clean": {
+          "case_id": "clean",
+          "expected_action": "RETRY_SAME_KEY",
+          "forbidden_effect": "No duplicate token or conflicting account event.",
+          "public_fact": "Issuer timeout occurred before its append and lookup for the stable account/request key returns no token.",
+          "source_oracle_ids": [
+            "D.pre-effect-timeout-remains-retryable"
+          ]
+        },
+        "defeated": {
+          "case_id": "defeated",
+          "expected_action": "RECONCILE_NO_REISSUE",
+          "forbidden_effect": "No second issue call or duplicate AccessIssued event.",
+          "public_fact": "Issuer appended a token before TimeoutError and lookup returns the matching committed token for this account/request ID.",
+          "source_oracle_ids": [
+            "D.acknowledgement-loss-reconciliation"
+          ]
+        },
+        "mechanism": "After adding a pre-effect branch to issuer source before freeze, the D EAL source-order premise becomes contested in live coding; the probe states require different decisions."
+      },
+      "fulfilment": {
+        "clean": {
+          "case_id": "clean",
+          "expected_action": "RECONCILE_COMPLETE",
+          "forbidden_effect": "No new refund for the same applied key.",
+          "public_fact": "The same stable return request has provider status applied and one recorded refund effect under that key; remaining transitions can be reconciled without another refund.",
+          "source_oracle_ids": [
+            "return_acknowledgement_loss"
+          ]
+        },
+        "defeated": {
+          "case_id": "defeated",
+          "expected_action": "HOLD_UNRESOLVED",
+          "forbidden_effect": "No repeat refund, conflicting request, stock restoration or completion event until status resolves.",
+          "public_fact": "Acknowledgement is unresolved, provider status for the stable key is unknown and the synthetic record contains no confirmed refund; neither application nor non-application can be inferred.",
+          "source_oracle_ids": [
+            "applied_refund_status_unknown",
+            "unknown_before_refund_request"
+          ]
+        },
+        "mechanism": "An explicit unknown status defeats a provisional completion inference; independent sealed D tests exercise actual behaviour."
+      },
+      "reservation": {
+        "clean": {
+          "case_id": "clean",
+          "expected_action": "MOVE_CURRENT_BUNDLE",
+          "forbidden_effect": "No new booking IDs or duplicate event on replay.",
+          "public_fact": "Current active calendar bookings have no other-booking conflict for the requested bundle move; exclude only this bundle own IDs.",
+          "source_oracle_ids": [
+            "C.self-exclusion-and-stable-booking-ids"
+          ]
+        },
+        "defeated": {
+          "case_id": "defeated",
+          "expected_action": "REJECT_NO_EFFECT",
+          "forbidden_effect": "No mutation of bookings, commands or events.",
+          "public_fact": "The historical bundle receipt suggests a former interval, but current active calendar index contains another booking overlapping the requested destination.",
+          "source_oracle_ids": [
+            "C.other-conflict-rejection-and-rollback",
+            "D.cancel-moved-bundle-and-historical-replay"
+          ]
+        },
+        "mechanism": "Current active index defeats using a historical receipt as the availability authority; method-presence AST alone does not adjudicate runtime conflict."
+      }
+    },
+    "dry_mechanism_probe": "The release-gate and AST-injection tests validate EAL mechanics only. The 54 live agent responses are on separately frozen, synthetic labelled finite-state source-linked cases, not production observations or candidate D implementation outcomes.",
+    "exposure": "Each session receives a registered host-only case source tree and a labelled synthetic public finite-state record constrained by its source/brief hashes, a common action menu, and the P1/P2 matched argument packet over that exact record; P0 sees source and the same record without argument packet. No D candidate or conversation enters the probe.",
+    "manifest_contract": {
+      "case_root": "study/decision_cases/<system>/<case_id>/source",
+      "decision_probes": {
+        "case_ids": [
+          "clean",
+          "defeated"
+        ],
+        "wall_cap_seconds": 120
+      },
+      "metadata": "study/decision_cases/cases.json with typed state path/digest, baseline source+brief SHA and host-only expected action"
+    },
+    "oracle_handling": "cases.json freezes IDs, typed public state path/hash, public source/brief SHA, allowed actions and a host-only expected action. The agent sees source/state/menu but not the exact expected_action field; a typed independent finite-state rule verifies that the frozen action follows the record. Strict final JSON enum scorer. This tests a decision on synthetic labelled input, not live provider behaviour or execution of the candidate D code.",
+    "readiness_blockers": [
+      "Exact case source trees and typed public state records with baseline source/brief digests and independently reviewed hidden action oracle need to be frozen.",
+      "Runner must retain 54 isolated read-only 120-second sessions and classify timeout/parse failure.",
+      "Entitlement live coding source should contain both direct pre- and post-effect timeout branches before freeze so its actual D packet is contested; static decision probes remain a separate endpoint."
+    ],
+    "schedule": "After each D coding source seals, run two fresh read-only agent decision sessions on separate, registered host-owned case sources at study/decision_cases/<system>/{clean,defeated}/source. These case sources and state records are independent of the lineage D output; no transcript, modification or state carries between probes or back into coding.",
+    "scope": "Three systems x three triads x three arms x two cases = 54 agent decision-probe sessions; 120-second invocation cap each (6480 seconds = 1.8 hours maximum extra model invocation). Coding remains 81 B-C-D episodes.",
+    "status": "specified; live implementation and case-data parity gates pending",
+    "wall_cap_seconds": 120
+  },
+  "design": {
+    "allocation_concealment": "Versioned seed commitment and manifest before coding; reviewer mapping sealed until both architecture forms and adjudication are filed. Host operator may know treatment while constructing packets.",
+    "assignment_method": "A precommitted seed yields a uniform P0/P1/P2 permutation over three masked clone IDs independently for each system-replicate triad.",
+    "comparator": "Primary P2 EAL/2 rendering versus equally current and semantically matched P1 prose; P0 ordinary source/brief secondary.",
+    "control_ids": [
+      "CTRL-001",
+      "CTRL-002",
+      "CTRL-003",
+      "CTRL-004"
+    ],
+    "design_type": "controlled-experiment",
+    "masking": "Assessor and architecture reviewers arm-masked where source content permits; agents cannot be masked to packet form. Record any identifier leakage.",
+    "rationale": "Block each fresh B-C-D lineage by source system, task sequence and replicate; randomly assign three cloned instances to P0/P1/P2 and retain all attempts.",
+    "setting": "Versioned offline software systems on isolated coding runners with host-only evidence and scoring.",
+    "temporal_structure": "Sequential B to C to D within a clone, then two independently forked clean/defeated decision sessions without carry-over; three separately randomised triads per system."
+  },
+  "estimands": [
+    {
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "comparator": "Assign P1 under semantic parity.",
+      "estimand_type": "causal",
+      "id": "EST-001",
+      "interpretation": "Bounded assignment effect on verified behaviour; an unsafe critical failure overrides a faster score.",
+      "intervention_or_exposure": "Assign P2 for the entire B-C-D lineage.",
+      "outcome_measurement_ids": [
+        "M-001"
+      ],
+      "population_or_system": "The three registered finite codebases, fulfilment reported separately as calibration.",
+      "summary_measure": "Equal-system-weighted mean of within-triad P2-minus-P1 all-critical completion differences and full ordered status vectors.",
+      "time": "At sealed B/C/D and whole-lineage completion."
+    },
+    {
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "comparator": "Assign P1.",
+      "estimand_type": "causal",
+      "id": "EST-002",
+      "interpretation": "Whether EAL rendering alters correct withdrawal of a defeated provisional decision under matched content.",
+      "intervention_or_exposure": "Assign P2 across lineage.",
+      "outcome_measurement_ids": [
+        "M-002"
+      ],
+      "population_or_system": "Frozen contested pairs across the three registered systems, calibration stratum distinct.",
+      "summary_measure": "Equal-system-weighted within-triad difference in paired correct-action-and-effect indicator, with clean and defeated components shown.",
+      "time": "At due C/D candidate implementation assessments; independent standalone response effect is EST-006."
+    },
+    {
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "comparator": "Assign P1; P0 secondary.",
+      "estimand_type": "causal",
+      "id": "EST-003",
+      "interpretation": "Change-time decision score only, not causal future maintenance labour.",
+      "intervention_or_exposure": "Assign P2 across lineage.",
+      "outcome_measurement_ids": [
+        "M-004"
+      ],
+      "population_or_system": "The same finite triads.",
+      "summary_measure": "Equal-system-weighted within-triad difference in failure-penalised seconds and ratio of system-standardised totals, with actual time and completion separately.",
+      "time": "C and D, plus separate B-D lifecycle diagnostic."
+    },
+    {
+      "claim_ids": [
+        "CLM-003"
+      ],
+      "comparator": "Assign P1.",
+      "estimand_type": "causal",
+      "id": "EST-004",
+      "interpretation": "Bounded reviewer-observed architecture contrast; unresolved review gives unresolved endpoint.",
+      "intervention_or_exposure": "Assign P2.",
+      "outcome_measurement_ids": [
+        "M-003"
+      ],
+      "population_or_system": "Source snapshots from the same finite systems and triads.",
+      "summary_measure": "Per-issue within-triad difference and registered critical no-worse disposition, preserving reviewer disagreement.",
+      "time": "After each sealed change and before arm unblinding."
+    },
+    {
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "comparator": "Assign P1.",
+      "estimand_type": "causal",
+      "id": "EST-005",
+      "interpretation": "Priced study expenditure, not debt value; incomplete billing cannot establish a money contrast.",
+      "intervention_or_exposure": "Assign P2.",
+      "outcome_measurement_ids": [
+        "M-005"
+      ],
+      "population_or_system": "The same finite triads when price and usage are complete.",
+      "summary_measure": "Per-component, equal-system-weighted within-triad GBP difference and complete-case coverage; missing charges remain missing.",
+      "time": "Host preparation and B-D coding through sealed output."
+    },
+    {
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "comparator": "Assign P1 matched prose presentation in the corresponding clean and defeated sessions.",
+      "estimand_type": "causal",
+      "id": "EST-006",
+      "interpretation": "Local assignment effect of argument presentation on explicit choices in these source-linked synthetic finite states; this does not establish candidate implementation behaviour or live-system decisions.",
+      "intervention_or_exposure": "Assign P2 presentation in two fresh post-D case sessions.",
+      "outcome_measurement_ids": [
+        "M-007"
+      ],
+      "population_or_system": "Six frozen synthetic labelled decision-case records linked to three registered source trees, repeated in nine allocated triads; fulfilment is calibration.",
+      "summary_measure": "Equal-system-weighted within-triad difference in correctness of both case actions and pairwise action change; individual clean and defeated accuracies and invalid responses shown.",
+      "time": "Two 120-second read-only post-D sessions, independent of D candidate source and one another."
+    }
+  ],
+  "ethics_and_safety": {
+    "applicable": true,
+    "mitigations": [
+      "Short-lived scoped provider credential and artifact redaction with post-run audit.",
+      "Predeclared USD 15.00 conditional high list-rate scenario stop per block (USD 135.00 across nine); billed charges are not capped or inferred from CLI turns.",
+      "Offline fake adapters and deny-list/egress controls for production endpoints."
+    ],
+    "monitoring": [
+      "Live job count, elapsed cap and accrued usage/estimated spend monitored per assignment.",
+      "Credential and external-effect log checked during acquisition."
+    ],
+    "post_stop_actions": [
+      "Preserve immutable partial ledger and deviations.",
+      "Revoke affected credential, inspect effects and version any resumed study separately."
+    ],
+    "rationale": "Provider keys, paid coding-agent executions and simulated payment/entitlement decisions require bounded credential, spend and no-live-effects controls; no human participants or customer records are planned.",
+    "review_status": "planned",
+    "risks": [
+      "Credential exposure in coding runner or artifacts.",
+      "Unbounded API charges.",
+      "Unintended live external effect if a fixture escapes its offline adapter."
+    ],
+    "stop_authority": "Study operator with authority to cancel the workflow and revoke credentials; exact identity recorded in pre-run manifest.",
+    "stopping_rules": [
+      "Stop new launches on credential exposure or external-effect breach; retain completed and pending assignments as incomplete study.",
+      "Stop the affected block when conditional high list-rate scenario is unavailable or exceeds USD 15.00 after an invocation; retain crossing call and every previous assignment. This cannot cap actual invoice charges."
+    ]
+  },
+  "evidence_schema": {
+    "entitlement": {
+      "B": {
+        "guidance": "Use the account store as the current capacity and assignment authority; review atomic exchange and stable request keys against tests.",
+        "mode": "method_inspectability",
+        "statement": "The account assignment method is an inspectable source route; seat-capacity behaviour remains unverified.",
+        "target": {
+          "class": "EntitlementService",
+          "method": "assign",
+          "path": "service.py"
+        }
+      },
+      "C": {
+        "guidance": "Inspect current assignments under the account store, exact ordered displacement and effects of prior exchange history.",
+        "mode": "method_inspectability",
+        "statement": "The account release method is an inspectable source route; capacity-shrink behaviour remains unverified.",
+        "target": {
+          "class": "EntitlementService",
+          "method": "release",
+          "path": "service.py"
+        }
+      },
+      "D": {
+        "action_if_contested": "Both pre-effect and after-effect timeout routes appear; distinguish them and reconcile each before retry.",
+        "action_if_supported": "The source shows an after-effect timeout route; reconcile issuer.lookup before another issue call.",
+        "action_if_unknown": "The source does not establish effect ordering; inspect outcome semantics and issuer.lookup before any retry.",
+        "effect_attribute": "issued",
+        "guidance": "The issuer may commit a token before the acknowledgement times out. Use issuer.lookup with the stable account and request ID before retrying, reject conflicting outcomes and avoid duplicate issuance.",
+        "mode": "effect_before_timeout",
+        "statement": "A direct append to issuer.issued before a direct TimeoutError appears in source order; dynamic reachability and external durability remain unverified.",
+        "target": {
+          "class": "InMemoryIssuer",
+          "method": "issue",
+          "path": "service.py"
+        }
+      }
+    },
+    "fulfilment": {
+      "B": {
+        "guidance": "Inspect refund amount, stable request key and compensation against the current service and visible tests; validate effects before acceptance.",
+        "mode": "method_inspectability",
+        "statement": "A refund method is a source-declared candidate effect route; stable-key and amount behaviour remain unverified.",
+        "target": {
+          "class": "InMemoryPayments",
+          "method": "refund",
+          "path": "fulfilment/memory.py"
+        }
+      },
+      "C": {
+        "guidance": "Inspect cancellation key, remaining shipped units and refund/stock/event compensation together; validate retry effects.",
+        "mode": "method_inspectability",
+        "statement": "A shipping cancellation method is a source-declared candidate effect route; carrier outcome remains unverified.",
+        "target": {
+          "class": "InMemoryShipping",
+          "method": "cancel",
+          "path": "fulfilment/memory.py"
+        }
+      },
+      "D": {
+        "action_if_unknown": "The method is absent or source status is unresolved; add or inspect an explicit refund-status route and never infer not_applied from silence.",
+        "guidance": "Treat a lost refund acknowledgement as an unknown outcome. Inspect a current stable-key provider status and reconcile other effects before marking complete or retrying; source syntax is not outcome evidence.",
+        "mode": "method_inspectability",
+        "statement": "The source may expose a refund-status inspection route; method presence does not establish applied, unapplied or unknown provider outcomes.",
+        "target": {
+          "class": "InMemoryPayments",
+          "method": "refund_status",
+          "path": "fulfilment/memory.py"
+        }
+      }
+    },
+    "reservation": {
+      "B": {
+        "guidance": "Inspect the active calendar booking index when reserving a bundle and reject the whole request if any room conflicts.",
+        "mode": "method_inspectability",
+        "statement": "The calendar conflict method is a source-declared availability route; bundle atomicity remains unverified.",
+        "target": {
+          "class": "InMemoryCalendar",
+          "method": "conflicts",
+          "path": "service.py"
+        }
+      },
+      "C": {
+        "guidance": "Use current active calendar bookings for availability after a move, excluding only the bundle own booking IDs; the historical BundleReceipt cannot determine current availability.",
+        "mode": "method_inspectability",
+        "statement": "The calendar conflict method is an inspectable source route; current-index authority and move correctness remain unverified.",
+        "target": {
+          "class": "InMemoryCalendar",
+          "method": "conflicts",
+          "path": "service.py"
+        }
+      },
+      "D": {
+        "action_if_unknown": "A current bundle cancellation path is not established by source inspection; inspect live booking index and implement coherent cancellation before relying on a receipt.",
+        "guidance": "After a move, cancel the current active bundle bookings and preserve historical request replay; use current booking IDs from the calendar rather than only an old receipt.",
+        "mode": "method_inspectability",
+        "statement": "The source may expose a cancellation route; method presence does not verify which current bookings it cancels.",
+        "target": {
+          "class": "ReservationService",
+          "method": "cancel",
+          "path": "service.py"
+        }
+      }
+    }
+  },
+  "execution": {
+    "code_location": null,
+    "completed_at": null,
+    "data_location": null,
+    "deviations": [],
+    "interpretation_status": "not-started",
+    "observed_results": [],
+    "protocol_version_used": null,
+    "started_at": null
+  },
+  "feasibility": {
+    "access": "Local deterministic fixtures and GitHub repository connection are available. Live model credential is expected from the repository Actions secret but must be checked by CI; provider invoice access and two independent masked reviewers are unverified.",
+    "apparatus_or_data": [
+      "v3 host, EAL/2 evaluator, six cloned B-C-D lineages, synthetic release-gate cases and retained 63-artifact successful acquisition provide a starting harness.",
+      "v4 entitlement and reservation fixtures, hidden controls, corrected fulfilment assessor, packet parity and six finite-state decision cases are implemented and have passed local deterministic tests. A frozen inventory and CI preflight are still required before live coding."
+    ],
+    "blockers": [
+      "Live credential, nested sandbox and GitHub Actions launch validation have not yet been observed for this v4 revision.",
+      "Independent masked architecture reviewers are not yet assigned; retain that endpoint as pending if none complete forms.",
+      "The conditional list-rate cap does not guarantee a billed-currency ceiling."
+    ],
+    "current_status": "partially-feasible",
+    "dependencies": [
+      "Corrected and versioned refund assessor and brief.",
+      "Two genuine further systems with frozen source, briefs, collectors, EAL argument, visible tests and sealed oracles.",
+      "Common FactSet/DecisionContent parity renderer and multi-system runner/assembler/analyser.",
+      "Two masked reviewers plus adjudicator, tariff/billing source and live credential checks.",
+      "Host-only paired public source-state facts, exact action-menu oracle and isolated after-D decision-probe runner with 120-second cap."
+    ],
+    "fallback": "Run deterministic dry apparatus checks without model calls; retain the v3 analysis as exploratory until all independent-system and live gates pass.",
+    "resources": [
+      "81 x 1800 = 145800 coding-invocation seconds (40.5 hours) plus 54 x 120 = 6480 decision-probe seconds (1.8 hours), maximum 42.3 model-invocation hours; excludes host, queue, install, scoring and review.",
+      "Operational guard: USD 15.00 per block, USD 135.00 nine-block aggregate under the upper conditional Standard API list-rate scenario; actual billed USD and billing contract remain unknown.",
+      "Thirty-minute cap per episode; nominal token target is advisory unless technically enforced."
+    ],
+    "skills": [
+      "System-specific assessor construction and adversarial oracle review.",
+      "EAL/2 argument rendering and content parity validation.",
+      "Blocked randomisation, cost accounting and masked architecture review."
+    ]
+  },
+  "hypotheses": [
+    {
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-003",
+        "ASM-004"
+      ],
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "id": "H-001",
+      "kind": "substantive",
+      "label": "Formal defeater presentation helps",
+      "scope": "Frozen clean/defeated case pairs in the registered B-C-D tasks.",
+      "statement": "With matched semantic content, P2 more often changes a defeated provisional action to the correct safe action than P1 without losing sealed conformance."
+    },
+    {
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-003"
+      ],
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "id": "H-002",
+      "kind": "rival",
+      "label": "Explicit information suffices",
+      "scope": "The same matched case pairs and agent/runner configuration.",
+      "statement": "An equally explicit plain account of the same defeater and recommendation causes the same verified safe decision and implementation as formal presentation."
+    },
+    {
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-003",
+        "ASM-004"
+      ],
+      "claim_ids": [
+        "CLM-001",
+        "CLM-002",
+        "CLM-003"
+      ],
+      "id": "H-003",
+      "kind": "rival",
+      "label": "Formal presentation friction",
+      "scope": "The registered treatment, resources and review horizon.",
+      "statement": "Formal status and routes lead to more unsafe deference, mistakes or work than the matched plain account on contested cases."
+    }
+  ],
+  "identification": {
+    "assumption_ids": [
+      "ASM-001",
+      "ASM-002",
+      "ASM-003",
+      "ASM-004",
+      "ASM-005",
+      "ASM-006"
+    ],
+    "causal_and_measurement_structure": "Conditional randomisation identifies finite-triad assignment effects once systems, interventions, source oracles and acquisition exist. Present apparatus lacks complete distinct anchors, packet parity, sealed review and price coverage; presentation-only, architecture and monetary estimands are not identified at this knowledge cut. B/C source states mediate the lineage assignment effect and must not be adjusted away.",
+    "diagnostics": [
+      "Three distinct source-provenance reports.",
+      "Packet semantic parity and access traces.",
+      "Assessor positive/negative calibration.",
+      "Model/cap manifests and time traces.",
+      "Masked reviewer completion and charge coverage."
+    ],
+    "identified_parameters": [
+      "After gates pass, within-triad intention-to-treat contrasts for included lineages can be estimated from all assigned outcomes."
+    ],
+    "nonidentified_alternatives": [
+      "Information advantage when P2 contains statuses absent from P1.",
+      "Model/runner drift, leakage or source-selected tasks.",
+      "Population-of-systems effect beyond the chosen finite codebases.",
+      "Financial totals with absent rate or token classes."
+    ],
+    "rescue_actions": [
+      "Build and independently check two more genuine systems and reference implementations.",
+      "Implement common FactSet/DecisionContent renderers and parity rejection gate.",
+      "Freeze brief/assessor reconciliation, reviewers, tariffs and allocation before coding."
+    ],
+    "status": "nonidentified",
+    "target_estimand_ids": [
+      "EST-001",
+      "EST-002",
+      "EST-003",
+      "EST-004",
+      "EST-005",
+      "EST-006"
+    ],
+    "threats": [
+      "Only one v3 source anchor exists at initial design cut.",
+      "Current P1 omits P2 statuses.",
+      "Masked architecture review and full billed cost were not acquired in v3.",
+      "Assessor requirements may mismatch task briefs until separately corrected."
+    ]
+  },
+  "interventions_or_exposures": [
+    {
+      "admissibility": "conditional",
+      "description": "P2: source-bound EAL/2 argument with explicit premises, objections, grounded status and decision guidance.",
+      "dose_or_intensity": "One current packet before each B/C/D stage; matched retrieval affordance if used.",
+      "id": "INT-001",
+      "implementation": "Render canonical DecisionContent as EAL/2 via host MCP, bound to exact current source and selected brief; retain request/response and delivery digest.",
+      "kind": "intervention",
+      "manipulation_checks": [
+        "Source and fact digest match candidate input.",
+        "P1/P2 semantic parity and access equivalence pass."
+      ],
+      "off_target_checks": [
+        "Model/prompt/tool/cap equality, length and timing differences recorded.",
+        "No hidden/future material reachable by agent."
+      ],
+      "recovery_checks": [
+        "Fresh revised source causes re-evaluation rather than stale packet reuse."
+      ],
+      "target": "Argument representation in the agent's decision context.",
+      "timing": "Before each stage's coding starts, following the prior stage's sealed source carry-over."
+    },
+    {
+      "admissibility": "conditional",
+      "description": "P1: equally current plain account of all source facts, defeaters, statuses and selected guidance.",
+      "dose_or_intensity": "One packet per stage with the same facts and ability to inspect explanations as P2.",
+      "id": "INT-002",
+      "implementation": "Render the same canonical DecisionContent in complete prose, including qualified conclusion and blocking reason.",
+      "kind": "intervention",
+      "manipulation_checks": [
+        "P1 conveys every relevant proposition and recommended action.",
+        "No EAL-only status information survives parity audit."
+      ],
+      "off_target_checks": [
+        "Token-length sensitivity and shared common preamble.",
+        "Tool capabilities matched."
+      ],
+      "recovery_checks": [
+        "Rescored after each prior stage's source change."
+      ],
+      "target": "Information-matched non-formal representation.",
+      "timing": "Immediately before each B/C/D coding stage on that lineage's current source."
+    },
+    {
+      "admissibility": "conditional",
+      "description": "P0: ordinary cloned source, visible tests, architecture document and current brief without an additional evidence packet.",
+      "dose_or_intensity": "One ordinary brief per stage.",
+      "id": "INT-003",
+      "implementation": "Stage only normal candidate-visible repository materials.",
+      "kind": "intervention",
+      "manipulation_checks": [
+        "No P1/P2 packet staged."
+      ],
+      "off_target_checks": [
+        "Same source anchor, visible tests, model class and wall cap."
+      ],
+      "recovery_checks": [
+        "Continue same lineage after nonpassing stage where safely possible."
+      ],
+      "target": "Secondary ordinary-material comparator.",
+      "timing": "B/C/D sequentially."
+    }
+  ],
+  "investigation_id": "INV-001",
+  "measurements": [
+    {
+      "blinding": "Assessor receives source with arm sidecars removed; reviewers do not see automated findings before sealing.",
+      "calibration": "Brief-oracle reconciliation and positive/negative implementations before dispatch.",
+      "construct_ids": [
+        "CON-001"
+      ],
+      "error_model": "Import/assessor failures marked invalid; missing snapshot is acquisition failure, never zero failures.",
+      "id": "M-001",
+      "instrument_or_procedure": "Versioned host-only system assessor replayed on candidate snapshot and independent reference fixtures.",
+      "measurement_invariance": "System-specific tests differ, but pass policy and critical categorisation are registered and applied to all arms.",
+      "observable": "Ordered due probe status, critical-failure count, invalid count and all-stage completion for each immutable candidate.",
+      "preprocessing": "Freeze probe IDs and due-stage vector; invalid stays invalid rather than fail or pass.",
+      "reactivity": "Sealed probes are hidden; visible tests are common across arms.",
+      "reliability": "Byte-identical assessor replay and repeated clean/faulty fixture controls.",
+      "scale_or_units": "Categorical pass/fail/invalid and binary lineage completion; probes are dependent within lineage.",
+      "timing": "After B, C and D coding seals a source digest; no feedback to the agent.",
+      "validity": "Bounded functional conformance only for listed cases."
+    },
+    {
+      "blinding": "The sealed executable oracle and scoring remain host-only; agent sees the public brief but not cases.",
+      "calibration": "Independent oracle adjudication of contrasting premises and recovery cases.",
+      "construct_ids": [
+        "CON-002"
+      ],
+      "error_model": "Missing answer or executable path is recorded separately from a wrong action; assessor error invalid.",
+      "id": "M-002",
+      "instrument_or_procedure": "Frozen independent action oracle and sealed executable scenario rig on the candidate source; this is distinct from the static synthetic probe state in M-007.",
+      "measurement_invariance": "Same case pair within each triad, with domain-specific oracle registered per system.",
+      "observable": "Sealed implementation effects in each coded B-C-D candidate on clean and defeated states; standalone agent decisions are measured separately in M-007.",
+      "preprocessing": "Score both clean and defeated states; blanket BLOCK is incorrect on admissible clean states.",
+      "reactivity": "Cases remain host-only; current public facts are delivered identically to P1/P2.",
+      "reliability": "Replay oracle rig against positive and intentionally wrong reference sources.",
+      "scale_or_units": "Correct/incorrect/invalid for each scenario and pairwise decision change per lineage.",
+      "timing": "Due C or D implementation assessor after sealed candidate code.",
+      "validity": "Action selection in these declared source states; no evidence of live-provider decisions."
+    },
+    {
+      "blinding": "Random candidate IDs without packets, agent reports, arm labels or sealed assessor results.",
+      "calibration": "Review common baseline and marked example before coding; freeze rubric anchors.",
+      "construct_ids": [
+        "CON-003"
+      ],
+      "error_model": "Unresolved or unmasked review leaves architecture endpoint unresolved.",
+      "id": "M-003",
+      "instrument_or_procedure": "Two independent condition-masked reviewers using a frozen six-issue system-adapted rubric; third adjudicator.",
+      "measurement_invariance": "Same abstract issue rubric with explicit system-specific responsibilities, all arms blind.",
+      "observable": "Per-finding source locations, present/absent/unresolved status, alternatives, reviewer disagreement and adjudication.",
+      "preprocessing": "Preserve originals and disagreement; determine prespecified critical no-worse only after adjudication.",
+      "reactivity": "Reviewer cannot influence already sealed code; agent source may contain arm-identifying language.",
+      "reliability": "Report per-issue agreement and disagreement, including unresolved findings.",
+      "scale_or_units": "Categorical findings; no unvalidated composite score.",
+      "timing": "After immutable snapshot, before arm key release or automated outcome disclosure.",
+      "validity": "Source structure and identified effect routes, not future maintenance labour."
+    },
+    {
+      "blinding": "Timestamps collected automatically before arm-unmasked analysis.",
+      "calibration": "Runner clock and cap probe in dry run; verify start/stop records and no overlapping double counts.",
+      "construct_ids": [
+        "CON-004"
+      ],
+      "error_model": "Unknown elapsed or unenforced cap invalidates time contrast for affected block; failure penalty shown in sensitivity analysis.",
+      "id": "M-004",
+      "instrument_or_procedure": "Host monotonic timestamps and enforced 1800-second coding-invocation timeout.",
+      "measurement_invariance": "Same cap and score across arms and systems; systems retain their separate elapsed components.",
+      "observable": "Actual coding wall time, cap event, host acquisition wall, queue and assessor wall separately.",
+      "preprocessing": "Q=min(T,1800) only for complete episode, otherwise Q=1800; add C+D host preparation once.",
+      "reactivity": "Timeout may prevent completion; same limit applied to all arms.",
+      "reliability": "Replay score from retained immutable event ledger.",
+      "scale_or_units": "Seconds per stage and summed failure-penalised score per lineage.",
+      "timing": "Start coding action to sealed source; host packet preparation immediately before each stage.",
+      "validity": "Decision score and actual process interval; excludes future hidden-defect remediation."
+    },
+    {
+      "blinding": "Tariff and accounting rule registered before outcome unmasking.",
+      "calibration": "Compare a known-usage trace and independently billed sample; verify cache-write billing definition.",
+      "construct_ids": [
+        "CON-005"
+      ],
+      "error_model": "Absent usage/rate class yields missing total and optional bounded scenario, never an imputed zero.",
+      "id": "M-005",
+      "instrument_or_procedure": "Raw CLI events, dated tariff snapshot or bill and measured host/runner resources.",
+      "measurement_invariance": "Same rate convention for arms in a block, with observed SKU drift retained.",
+      "observable": "Raw uncached input, cache-read, cache-write, output and reasoning token classes, call counts, model SKU, provider bill/estimate and runner/collector use.",
+      "preprocessing": "Subtract cached-read subset from total input before uncached rate; apply class prices once; preserve unknown separately from zero.",
+      "reactivity": "Collection does not feed an agent; rate choices can alter interpretation, so freeze them.",
+      "reliability": "Replay arithmetic from trace digest, rate source and selected tariff class.",
+      "scale_or_units": "Tokens and resource seconds; GBP only when rate/currency coverage is complete.",
+      "timing": "Every assigned attempt including failure and packet acquisition; rate snapshot before dispatch.",
+      "validity": "Observed or transparently priced expenditure for this study, not debt cost."
+    },
+    {
+      "blinding": "Content reviewers inspect packets before coding outcomes; coding agents see only their assigned rendering.",
+      "calibration": "Known mismatched-status, stale-source and missing-defeater adversarial fixtures must be rejected.",
+      "construct_ids": [
+        "CON-006"
+      ],
+      "error_model": "Unresolved equivalence or different access suspends representation-only inference.",
+      "id": "M-006",
+      "instrument_or_procedure": "One FactSet and DecisionContent rendered into P1 prose and P2 EAL/2; parity verifier and independent review.",
+      "measurement_invariance": "Same parity criteria across all systems and stage families.",
+      "observable": "Canonical normalised-content digest, proposition-equivalence verdict, packet token length and access/delivery trace.",
+      "preprocessing": "Strip only arm-specific syntax, reorder/normalise source identities, compare all semantically relevant fields and record differences.",
+      "reactivity": "Parity check occurs before agent exposure and may prevent dispatch of invalid packet.",
+      "reliability": "Deterministic renderer/normaliser digest replay and dual-review agreement.",
+      "scale_or_units": "Equivalent/non-equivalent/unresolved and byte/token counts per paired source state.",
+      "timing": "Dry validation and every current B/C/D input snapshot before coding.",
+      "validity": "Tests semantic information parity, not whether an agent attended to it."
+    },
+    {
+      "blinding": "Expected action is host-only; agent sees only public source, state record and common action menu.",
+      "calibration": "Independent review of typed public case records and oracle, positive/defeated pairs, source/brief digest checks and fixed scorer examples.",
+      "construct_ids": [
+        "CON-007"
+      ],
+      "error_model": "Timeout, absent final JSON and invalid enum are separate; source/state mismatch suspends probe contrast.",
+      "id": "M-007",
+      "instrument_or_procedure": "Host-owned synthetic labelled finite-state records and registered case source under study/decision_cases/<system>/<case_id>/source, a typed rule cross-checking the frozen oracle, decision_probe.generate and strict decision_probe.score; 120-second fresh read-only agent session per case.",
+      "measurement_invariance": "Same case source/state/action menu for three arms within each system block; domain-specific action oracles kept separate.",
+      "observable": "Strict JSON action enum for clean and defeated registered case sources, response validity, timeout and pairwise action change per assigned arm.",
+      "preprocessing": "Score exact predeclared enum; keep missing/invalid response separate from wrong action; aggregate two cases as one paired arm/block outcome.",
+      "reactivity": "Explicit action request can focus attention differently from unconstrained coding; identical prompt across arms.",
+      "reliability": "Replay state-source derivation, prompt/hash generation and strict response parsing from raw trace.",
+      "scale_or_units": "Correct/incorrect/invalid per probe and correct pair indicator; 54 attempts across 27 coding lineages.",
+      "timing": "Two fresh isolated probes after D candidate seals, with no D source or conversation carried into the probes.",
+      "validity": "Direct agent decision over labelled synthetic source-linked cases, not executable D implementation, a live provider or future maintenance."
+    }
+  ],
+  "predictions": [
+    {
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004"
+      ],
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "direction": "Positive P2-minus-P1 decision accuracy with no adverse critical-behaviour contrast.",
+      "discriminates_from_hypothesis_ids": [
+        "H-002",
+        "H-003"
+      ],
+      "estimand_ids": [
+        "EST-001",
+        "EST-002",
+        "EST-006"
+      ],
+      "expected_pattern": "P2 has more correct clean-to-defeated decision changes than P1 while its critical-conformance rate is not lower in the registered systems.",
+      "hypothesis_ids": [
+        "H-001"
+      ],
+      "id": "PRED-001",
+      "magnitude_or_range": "Report observed system-weighted difference and interval; a meaningful threshold and conformance noninferiority margin require pre-run justification and freeze.",
+      "measurement_ids": [
+        "M-001",
+        "M-002",
+        "M-007"
+      ],
+      "shared_prediction": false,
+      "time_window": "At the due B, C or D sealed assessor and post-run decision check. The separate two 120-second agent decision responses occur after D.",
+      "tolerance": "Exact oracle actions and effects; assessor invalidity is never a pass."
+    },
+    {
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-003"
+      ],
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "direction": "Near-zero differential decision accuracy subject to a declared equivalence tolerance.",
+      "discriminates_from_hypothesis_ids": [
+        "H-001",
+        "H-003"
+      ],
+      "estimand_ids": [
+        "EST-001",
+        "EST-002",
+        "EST-006"
+      ],
+      "expected_pattern": "P1 and P2 both change correctly on the contested pair and have compatible sealed conformance; shared success cannot isolate an EAL advantage.",
+      "hypothesis_ids": [
+        "H-002"
+      ],
+      "id": "PRED-002",
+      "magnitude_or_range": "No equivalence claim until an action-risk-based tolerance and adequate interval precision are registered.",
+      "measurement_ids": [
+        "M-001",
+        "M-002",
+        "M-007"
+      ],
+      "shared_prediction": false,
+      "time_window": "At each due sealed decision and implementation check. The separate two 120-second agent decision responses occur after D.",
+      "tolerance": "An observed tie is descriptive unless its uncertainty excludes meaningful differences."
+    },
+    {
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-003",
+        "ASM-004"
+      ],
+      "claim_ids": [
+        "CLM-001",
+        "CLM-002",
+        "CLM-003"
+      ],
+      "direction": "Adverse P2-minus-P1 sign on at least one prespecified endpoint.",
+      "discriminates_from_hypothesis_ids": [
+        "H-001",
+        "H-002"
+      ],
+      "estimand_ids": [
+        "EST-001",
+        "EST-002",
+        "EST-003",
+        "EST-004",
+        "EST-006"
+      ],
+      "expected_pattern": "P2 has more unsafe actions, critical failures, adverse architecture findings or a larger failure-penalised time score than matched P1.",
+      "hypothesis_ids": [
+        "H-003"
+      ],
+      "id": "PRED-003",
+      "magnitude_or_range": "Report endpoint-specific magnitude and uncertainty; no composite architecture or money score substitutes for critical behaviour.",
+      "measurement_ids": [
+        "M-001",
+        "M-002",
+        "M-003",
+        "M-004",
+        "M-007"
+      ],
+      "shared_prediction": false,
+      "time_window": "B-C-D completion and sealed post-run review. The separate two 120-second agent decision responses occur after D.",
+      "tolerance": "An additional critical unsafe effect is materially adverse even if elapsed time is lower."
+    }
+  ],
+  "primary_claim_id": "CLM-001",
+  "provenance": {
+    "authors": [
+      "EARL study design collaboration"
+    ],
+    "change_log": [
+      "0.1.0: specified draft with finite-system estimands, calibration stratum and explicit readiness blockers; no live acquisition or preregistration.",
+      "0.1.0: exact per-system/stage source-inspection target and predeclared critical check IDs added before new coding acquisition.",
+      "0.1.0: 54 additional isolated live decision-probe sessions and exact paired action-oracle drafts added; case validation still blocks live acquisition.",
+      "0.1.0: separated fixed-case post-D explicit decision-response estimand EST-006/M-007 from coded candidate behaviour; probe source is registered static case source, not D output.",
+      "0.1.0: refreshed due critical-check IDs after entitlement pre-effect, conflicting-lookup and duplicate-token checks were added; D now has 13 cumulative checks.",
+      "0.1.0: reconciled six frozen case sources and allowed-action oracles with decision_cases/cases.json; explicitly labelled the state records synthetic and source-linked rather than source-executed.",
+      "0.1.0: predeclared USD 15.00 upper conditional Standard API list-rate stop per block, preserving actual billed amount as unknown; 18 v3 turn aggregates yielded USD 7.17 total and USD 0.64 maximum per-episode high scenario in a retrospective calibration."
+    ],
+    "created_at": "2026-09-27T19:09:54+01:00",
+    "knowledge_cut": "The v3 outputs were observed before design version 0.1.0; new systems and v4 coding outcomes have not been observed for this protocol.",
+    "sources": [
+      "experiments/architecture_extension_v3/study/PROTOCOL.md and task-bank.json at 42e0381f21e73f436a0de0462544ec7b052bc49b",
+      "experiments/architecture_extension_v3/host.py and study/analyse.py at 42e0381f21e73f436a0de0462544ec7b052bc49b",
+      "https://github.com/emmett08/earl/actions/runs/36334071057",
+      "run-36334071057/review/new-study-design.md (design analysis; outside repository)"
+    ],
+    "updated_at": "2026-09-27T18:37:05.570560+00:00"
+  },
+  "question": "In three registered software systems, does presenting matched current source facts, defeaters and guidance as an EAL/2 argument rather than semantically equivalent prose improve agents' verified later-change decisions and implementations without worse architecture, time or priced resource use?",
+  "reproducibility": {
+    "code_plan": "Pin Git tree, lockfile, dependencies, assessor and EAL tool bindings; replay assemblers, assessors, cost calculation and finite-system summaries from retained immutable snapshots.",
+    "data_plan": "Retain exact trial source trees, input/output hashes, packet digests, delivery and CLI traces, assessor vectors, independent reviewer forms, invoices/rate snapshots and all deviations; copy expiring CI artifacts to durable storage. Retain all 54 post-D probe prompts, source/state facts and digests, responses, usage, timeout and parse statuses.",
+    "deviation_and_amendment_plan": "Append versioned amendments and all failed attempts; never overwrite the v3 freeze or reclassify repaired R/W as unseen independent confirmation.",
+    "immutable_materials": [
+      "System source anchors and provenance/licence.",
+      "B/C/D briefs, visible and sealed tests, clean/defeated cases, assessor and expected action oracles.",
+      "EAL argument, common facts/decision-content renderers, parity validator, rubric, analysis, allocation seed commitment and model/price/cap manifest.",
+      "Two source-linked synthetic clean/defeated decision records per system, their common action menu, host-only action oracle and 120-second cap.",
+      "study/decision_cases/cases.json, per-case public source trees and typed state records with source/brief digests and host-only action oracle."
+    ],
+    "preregistration_status": "planned",
+    "provenance_plan": "Record source revision, git blob and tree digests, case/brief authorship, timestamps, model/CLI versions, unknown backend revisions, price-source date and all raw response IDs.",
+    "randomisation_or_seed_plan": "Record independent seed commitments and uniform P0/P1/P2 permutations for each of nine system-replicate triads; reveal full allocation after reviewer seal; preserve scheduling order.",
+    "registration": "This version is a specified draft in repository; no immutable preregistration exists. Freeze a new version with timestamped digests before coding.",
+    "replication_plan": "The first three-system wave estimates finite-system patterns; a separately registered unseen-system sample and simulation-based information target are required for confirmation."
+  },
+  "sampling": {
+    "attrition_or_loss": "All assigned failures, partial episodes, delivery errors and early stops remain in the ledger; do not replace them with successful retries.",
+    "dependence_structure": "Stages and probes nest inside a lineage; three lineages form one randomised triad; triads nest within independently developed systems. Resample/randomise only assignment units respecting blocks.",
+    "inputs": [
+      "Within-system stochastic session variability and stage carry-over to measure in the new calibration wave.",
+      "System heterogeneity and correlation across task families.",
+      "Critical failure and timeout frequency.",
+      "Cost cap and a justified practical effect and correctness margin before confirmatory sample sizing."
+    ],
+    "method": "Fixed feasibility replication followed by a separately registered precision/power simulation for any confirmation.",
+    "multiplicity": "Behaviour and contested decision are co-primary interpretive endpoints; time, architecture and money are separately reported with no composite win count. Predeclare any formal multiplicity correction before confirmation.",
+    "result": "The fixed first wave can bound mechanisms and estimate finite-system contrasts; three systems cannot calibrate a reliable population variance or establish a 25% improvement with narrow confidence bounds by fiat.",
+    "sample_size_or_information_target": "Three systems x three independently randomised three-arm triads x three stages = 27 coding lineages and 81 episodes, plus 54 isolated post-D paired decision-probe sessions (two per lineage). Fulfilment is a prior-observed calibration stratum; this is a bounded information target, not a power claim.",
+    "sensitivity_analysis": "Vary failure-penalty cap in declared alternatives; inspect outcomes by system and model drift and missing billing bounds; do not condition on post-treatment pass.",
+    "stopping_implications": "Stop after 81 coding episodes and 54 registered 120-second decision-probe attempts unless a predeclared budget/safety or validity gate stops acquisition; retain incomplete study if stopped early."
+  },
+  "schema_version": "1.0",
+  "scope": {
+    "conditions": "Fresh isolated coding-agent sessions, matched model and tool profile within each three-arm block and stage, current source-bound packets and a 30-minute invocation cap per episode.",
+    "exclusions": [
+      "The prior v3 R/W outcomes do not enter the new effect estimate.",
+      "The synthetic release-gate replay is an apparatus check, not an independent coding system.",
+      "General software-system, human-engineer, future-debt and live-provider effects are outside scope."
+    ],
+    "knowledge_cut": "2026-09-27: run 36334071057 and v3 source commit 42e0381f21e73f436a0de0462544ec7b052bc49b observed before this design",
+    "spatial_scope": "Isolated cloned source trees, host-only packet and assessor processes, and the registered CI or equivalent runner; no live payment, cloud deployment or customer state.",
+    "system_or_population": "The three eventual registered codebases and their frozen B-C-D task banks; fulfilment is a previously observed calibration stratum, and two additional systems are independent-system development replications.",
+    "temporal_scope": "Each assigned B-C-D coding lineage, then two independent 120-second decision probes after D on clean and defeated states, plus sealed assessment, masked review and cost accounting; no future maintenance horizon."
+  },
+  "status": "specified",
+  "title": "Matched EAL/2 argument presentation across independently assigned software-change sequences",
+  "units": {
+    "analysis_unit": "One whole-lineage outcome per arm, differenced within triad, summarised first by system and then equally across the finite systems. For standalone decisions, one clean/defeated pair per system/block/arm is the analysis unit; repeated same case across blocks is model-session variation, not extra systems.",
+    "assignment_unit": "The whole lineage, randomised within a system-task-replicate triad; three stages never count as separate assignments.",
+    "exclusion_criteria": [
+      "Renamed or copied fulfilment fixture presented as another system.",
+      "Task bank selected or assessor corrected after its own treatment outcome has been inspected without a new version and status label."
+    ],
+    "experimental_unit": "One independently cloned B-C-D lineage receiving one assigned arm throughout.",
+    "inclusion_criteria": [
+      "Exact frozen source anchor and B/C/D briefs, runnable offline baseline and hidden assessor.",
+      "Three independent clean clone/agent sessions and matched tool/model configuration.",
+      "Current-snapshot source facts and registered clean/defeated action oracle."
+    ],
+    "observational_unit": "Stage snapshot and its assessor vector, packet/cost/time records, contested case pair and masked review finding. Each standalone post-D probe response is an additional observational unit; two probes are paired by system/block and assigned arm.",
+    "recruitment_or_selection": "Register the systems by source history, domain independence, licence, deterministic offline testability and feasible 30-minute tasks before any new coding result; do not select successful clones.",
+    "sampling_frame": "The known fulfilment A snapshot plus new independently sourced systems meeting frozen pre-outcome executable eligibility criteria; no random sample of all software.",
+    "target_population_or_system": "Exactly the three prospectively registered codebases; fulfilment analysed as prior-observed calibration, two independent new systems separately."
+  },
+  "version": "0.1.0"
+}
