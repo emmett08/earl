@@ -70,7 +70,7 @@ def describe_language(*, registry=None) -> dict:
         "aspic_export": {
             "cli": "export-aspic RESULT.json --output VIEW.json",
             "input": "A previously computed compiled result, or an explicit theory and matching formal solver result",
-            "output": "aspic-view/1 JSON for the separate Vue/TypeScript visualisation app: arguments, direct derivations, grounded labels, defeat witnesses, unavailable evidence and supplied source locations",
+            "output": "aspic-view/2 JSON for the separate Vue/TypeScript visualisation app: arguments, direct derivations, grounded labels, defeat witnesses, typed unavailable-evidence issues and supplied source locations",
             "meaning": "Recompute the bounded formal result and require exact agreement before exporting. The separate app imports JSON locally; neither export nor viewing collects evidence or authenticates supplied provenance",
         },
         "typed_bindings": describe_bindings(registry=registry),

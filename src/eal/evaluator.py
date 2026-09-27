@@ -136,11 +136,15 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
     """Check a record once, independently of explanation wording."""
     evidence = program.evidence[name]
     reasons = []
+    issues = set()
     if not environment_matched:
         reasons.append(f"Environment {evidence.environment!r} does not match supplied context")
+        issues.add("out_of_scope")
     if not isinstance(record, Mapping):
         reasons.append("No evidence record is available")
-        return EvidenceVerdict(_entry("unavailable", reasons), False)
+        issues.add("missing_observation")
+        return EvidenceVerdict(_entry("unavailable", reasons,
+                                      availability_issues=sorted(issues)), False)
     tool = program.tools[evidence.tool]
     expected = {"evidence_id": name, "source_digest": program.source_digest,
                 "tool": tool.name, "tool_version": tool.version,
@@ -151,37 +155,50 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
     for key, wanted in expected.items():
         if record.get(key) != wanted:
             reasons.append(f"Record {key} does not match the declared evidence request")
+            issues.add("invalid_observation")
     binding_digest = record.get("tool_binding_digest")
     if not isinstance(binding_digest, str) or re.fullmatch(r"[0-9a-f]{64}", binding_digest) is None:
         reasons.append("Record requires a tool binding configuration digest")
+        issues.add("invalid_observation")
     if check_current_binding and binding_digest != expected_tool_binding_digest:
         reasons.append("Current operator tool binding differs from the collected binding")
+        issues.add("invalid_observation")
     acquisition = {"tool": tool.name, "tool_version": tool.version,
                    "input": evidence.input, "context": dict(context)}
     full_request = {"evidence_id": name, "environment": evidence.environment, **acquisition}
     if not _same_json(record.get("input"), evidence.input):
         reasons.append("Record input differs from the declared evidence input")
+        issues.add("invalid_observation")
     if not _same_json(record.get("context"), dict(context)):
         reasons.append("Record context differs from the supplied assessment context")
+        issues.add("invalid_observation")
     if not _same_json(record.get("acquisition_request"), acquisition):
         reasons.append("Record acquisition request differs from the declared request")
+        issues.add("invalid_observation")
     if record.get("acquisition_request_digest") != canonical_digest(acquisition):
         reasons.append("Record acquisition request digest does not match the declared request")
+        issues.add("invalid_observation")
     if record.get("request_digest") != canonical_digest(full_request):
         reasons.append("Record request digest does not match the declared evidence request")
+        issues.add("invalid_observation")
     if record.get("status") != "ok":
         reasons.append("Tool execution did not produce an ok observation")
+        issues.add("tool_error")
     if not isinstance(record.get("run_id"), str) or not record["run_id"].strip():
         reasons.append("Record requires a nonempty run_id")
+        issues.add("invalid_observation")
     try:
         collected = parse_time(record.get("collected_at"))
         age = (instant - collected).total_seconds()
         if age < 0:
             reasons.append("Observation is dated after the assessment time")
+            issues.add("invalid_observation")
         elif age > evidence.max_age:
             reasons.append(f"Observation age {age:g}s exceeds max_age {evidence.max_age:g}s")
+            issues.add("stale_observation")
     except (ValueError, TypeError, OverflowError):
         reasons.append("Record collected_at must be an ISO-8601 timestamp with timezone")
+        issues.add("invalid_observation")
     try:
         if "value" not in record:
             raise ValueError("Record has no JSON value")
@@ -190,17 +207,24 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
             raise ValueError("Record value exceeds byte limit")
         if hashlib.sha256(encoded).hexdigest() != record.get("data_digest"):
             reasons.append("Record data_digest does not match its JSON value")
+            issues.add("invalid_observation")
     except (ValueError, TypeError, RecursionError, UnicodeError) as exc:
         reasons.append(f"Invalid observation value: {exc}")
+        issues.add("invalid_observation")
     complete = not reasons
     if complete:
         outcomes = [_check_predicate(p, record["value"]) for p in evidence.predicates]
         reasons = [outcome.reason for outcome in outcomes]
         complete = all(outcome.comparable for outcome in outcomes)
         available = all(outcome.holds for outcome in outcomes)
+        if any(not outcome.comparable for outcome in outcomes):
+            issues.add("invalid_observation")
+        if any(outcome.comparable and not outcome.holds for outcome in outcomes):
+            issues.add("predicate_not_met")
     else:
         available = False
     return EvidenceVerdict(_entry("available" if available else "unavailable", reasons,
+                                  availability_issues=sorted(issues),
                                   tool=tool.name, tool_version=tool.version,
                                   tool_binding_digest=binding_digest, run_id=record.get("run_id")), complete)
 

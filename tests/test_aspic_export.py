@@ -51,9 +51,27 @@ def test_missing_observation_stays_unresolved_and_never_becomes_a_premise():
     missing = next(item for item in view["unavailable_evidence"]
                    if item["name"] == "primary_data")
     assert missing["reasons"]
+    assert missing["availability_issues"] == ["missing_observation"]
     assert missing["span"]
     assert not any(arg["origin"]["name"] == "primary_data" for arg in view["arguments"])
     assert result["routes"]["primary_route"]["status"] == "unconstructed"
+
+
+def test_previous_compiled_result_is_unclassified_without_guessing_from_prose():
+    result = compiled_view(missing=("primary_data",))
+    del result["source_map"]["evidence"]["primary_data"]["availability_issues"]
+    view = export_aspic_view(result)
+    item = next(item for item in view["unavailable_evidence"]
+                if item["name"] == "primary_data")
+    assert item["availability_issues"] == ["unclassified_legacy"]
+
+
+def test_rejects_untyped_or_forged_availability_issue_codes():
+    result = compiled_view(missing=("primary_data",))
+    item = result["source_map"]["evidence"]["primary_data"]
+    item["availability_issues"] = ["probably_absent"]
+    with pytest.raises(ValueError, match="source map structure"):
+        export_aspic_view(result)
 
 
 def test_explicit_theory_without_source_map_has_formal_origin():
@@ -88,7 +106,7 @@ def test_supplied_prose_is_preserved_without_authentication_claim():
     dangerous = '</script><script>alert("bad")</script><img src=x onerror=alert(2)>'
     result["source_map"]["claims"]["run_passes"]["statement"] = dangerous
     view = export_aspic_view(result)
-    assert view["schema"] == "aspic-view/1"
+    assert view["schema"] == "aspic-view/2"
     assert view["validation"] == {"formal_result": "recomputed", "provenance": "supplied"}
     assert view["theory_digest"] == result["formal"]["theory_sha256"]
     assert view["evaluated_at"] == result["source_map"]["assessed_at"]

@@ -1,0 +1,253 @@
+{
+  "analysis": {
+    "b_control_passed": 9,
+    "b_eal_passed": 9,
+    "descriptive_difference_pass_count": 0,
+    "fixed_checks_b": [
+      "all_tests",
+      "baseline_contract",
+      "email_regression",
+      "feature_behaviour",
+      "payload_cap",
+      "reachable_code",
+      "registry_extension",
+      "single_dispatch_path",
+      "single_format_path"
+    ],
+    "interpretation": "Both B sessions passed the same nine reported checks; no observed EAL advantage on these checks. This one nonrandomised pair does not identify a causal or longitudinal effect."
+  },
+  "cases": {
+    "a_no_eal": {
+      "candidate_suite_output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+      "case": "a",
+      "checks": {
+        "all_tests": {
+          "command": "python -m unittest discover -s tests -p 'test*.py'",
+          "detail": "candidate suite rc=0; fixed probe rc=0; ...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+          "passed": true,
+          "source": "candidate tests plus fixed assessor"
+        },
+        "baseline_contract": {
+          "command": "ARCH_CASE=a python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "feature_behaviour": {
+          "command": "ARCH_CASE=a python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "reachable_code": {
+          "command": null,
+          "detail": "Production modules imported by fixed behavioural probes; unimported: []. Import coverage does not rule out unreachable functions or unused branches.",
+          "passed": true,
+          "source": "sys.modules after fixed probes"
+        },
+        "registry_extension": {
+          "command": null,
+          "detail": "register/send AST unchanged; expected channels ['console', 'email']; observed ['console', 'email']",
+          "passed": true,
+          "source": "NotificationService AST and fixed runtime probe"
+        },
+        "single_dispatch_path": {
+          "command": null,
+          "detail": "NotificationService.send AST matches frozen baseline; package-wide .deliver() calls: [('notification_service/service.py', 'deliver', 22)]",
+          "passed": true,
+          "source": "AST of production Python files"
+        },
+        "single_format_path": {
+          "command": null,
+          "detail": "Dispatch continues to call one Channel.prepare; package-wide .prepare() calls: [('notification_service/service.py', 'prepare', 22)]. This syntax check cannot exclude semantically duplicate formatters.",
+          "passed": true,
+          "source": "AST of production Python files"
+        }
+      },
+      "condition": "A request without EAL",
+      "probe_exit": 0,
+      "probe_stderr": "",
+      "prompt_sha256": "c07d67b7827b9e972f74cdd4b090470d1c58463bb50f86dfbaa6946482158898",
+      "source_sha256": "c3cadf104da48df83a1558857f133fc629137649346e095e4304102a806531d2",
+      "start_sha256": "5456a8a711f60d467e868a8116f865a8d5c1fdade79f900767908429198b5a46",
+      "suite_exit": 0
+    },
+    "b_eal": {
+      "candidate_suite_output": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+      "case": "b",
+      "checks": {
+        "all_tests": {
+          "command": "python -m unittest discover -s tests -p 'test*.py'",
+          "detail": "candidate suite rc=0; fixed probe rc=0; ......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+          "passed": true,
+          "source": "candidate tests plus fixed assessor"
+        },
+        "baseline_contract": {
+          "command": "ARCH_CASE=b python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "email_regression": {
+          "command": "ARCH_CASE=b python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "feature_behaviour": {
+          "command": "ARCH_CASE=b python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "payload_cap": {
+          "command": "ARCH_CASE=b python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "reachable_code": {
+          "command": null,
+          "detail": "Production modules imported by fixed behavioural probes; unimported: []. Import coverage does not rule out unreachable functions or unused branches.",
+          "passed": true,
+          "source": "sys.modules after fixed probes"
+        },
+        "registry_extension": {
+          "command": null,
+          "detail": "register/send AST unchanged; expected channels ['console', 'email', 'sms']; observed ['console', 'email', 'sms']",
+          "passed": true,
+          "source": "NotificationService AST and fixed runtime probe"
+        },
+        "single_dispatch_path": {
+          "command": null,
+          "detail": "NotificationService.send AST matches frozen baseline; package-wide .deliver() calls: [('notification_service/service.py', 'deliver', 22)]",
+          "passed": true,
+          "source": "AST of production Python files"
+        },
+        "single_format_path": {
+          "command": null,
+          "detail": "Dispatch continues to call one Channel.prepare; package-wide .prepare() calls: [('notification_service/service.py', 'prepare', 22)]. This syntax check cannot exclude semantically duplicate formatters.",
+          "passed": true,
+          "source": "AST of production Python files"
+        }
+      },
+      "condition": "B request plus EAL/2 source",
+      "probe_exit": 0,
+      "probe_stderr": "",
+      "prompt_sha256": "3bc2a9d262f7871e500d8bcc171910b368172b9cc21ad2b4613629bf5b49b2b6",
+      "source_sha256": "54a12ba119e72d3ccbba395a3c7ee536ff01b663a22618c0197185ac1dc75c58",
+      "start_sha256": "c3cadf104da48df83a1558857f133fc629137649346e095e4304102a806531d2",
+      "suite_exit": 0
+    },
+    "b_no_eal": {
+      "candidate_suite_output": ".......\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n",
+      "case": "b",
+      "checks": {
+        "all_tests": {
+          "command": "python -m unittest discover -s tests -p 'test*.py'",
+          "detail": "candidate suite rc=0; fixed probe rc=0; .......\n----------------------------------------------------------------------\nRan 7 tests in 0.000s\n\nOK\n",
+          "passed": true,
+          "source": "candidate tests plus fixed assessor"
+        },
+        "baseline_contract": {
+          "command": "ARCH_CASE=b python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "email_regression": {
+          "command": "ARCH_CASE=b python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "feature_behaviour": {
+          "command": "ARCH_CASE=b python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "payload_cap": {
+          "command": "ARCH_CASE=b python materials/assessor/probe.py",
+          "detail": "fixed behavioural assertions passed",
+          "passed": true,
+          "source": "materials/assessor/probe.py"
+        },
+        "reachable_code": {
+          "command": null,
+          "detail": "Production modules imported by fixed behavioural probes; unimported: []. Import coverage does not rule out unreachable functions or unused branches.",
+          "passed": true,
+          "source": "sys.modules after fixed probes"
+        },
+        "registry_extension": {
+          "command": null,
+          "detail": "register/send AST unchanged; expected channels ['console', 'email', 'sms']; observed ['console', 'email', 'sms']",
+          "passed": true,
+          "source": "NotificationService AST and fixed runtime probe"
+        },
+        "single_dispatch_path": {
+          "command": null,
+          "detail": "NotificationService.send AST matches frozen baseline; package-wide .deliver() calls: [('notification_service/service.py', 'deliver', 22)]",
+          "passed": true,
+          "source": "AST of production Python files"
+        },
+        "single_format_path": {
+          "command": null,
+          "detail": "Dispatch continues to call one Channel.prepare; package-wide .prepare() calls: [('notification_service/service.py', 'prepare', 22)]. This syntax check cannot exclude semantically duplicate formatters.",
+          "passed": true,
+          "source": "AST of production Python files"
+        }
+      },
+      "condition": "B request without EAL",
+      "probe_exit": 0,
+      "probe_stderr": "",
+      "prompt_sha256": "1a02e45c8a77406874f420e6b464a12b93ef353b7e8327a01e1eb8670515bcf9",
+      "source_sha256": "3214010d44da83141efe11c09df198d925b95a63d482af841ecd5ab5ab73f6fe",
+      "start_sha256": "c3cadf104da48df83a1558857f133fc629137649346e095e4304102a806531d2",
+      "suite_exit": 0
+    }
+  },
+  "design": {
+    "comparison_blinded_review": {
+      "detail": "Operator could observe condition and diff; fixed probes were authored before outcomes.",
+      "passed": false
+    },
+    "longitudinal_followup": {
+      "detail": "One A change followed by one B change, without later maintenance episodes.",
+      "passed": false
+    },
+    "randomised_assignment": {
+      "detail": "Conditions were assigned to distinct fresh agents; no randomisation.",
+      "passed": false
+    },
+    "same_feature_control": {
+      "detail": "Both B agents received the identical feature B acceptance text.",
+      "passed": true
+    },
+    "same_start_snapshot": {
+      "detail": "Both B working directories were copied from A digest c3cadf104da48df83a1558857f133fc629137649346e095e4304102a806531d2",
+      "passed": true
+    }
+  },
+  "deviations": [
+    "After A launch, assessor error handling was amended to return machine-readable failure on timeout or malformed output; no acceptance assertions/success predicates changed. The original and revised hashes are retained in freeze-a and freeze-b. Both B runs used the revised frozen assessor."
+  ],
+  "provenance": {
+    "a_sha256": "c3cadf104da48df83a1558857f133fc629137649346e095e4304102a806531d2",
+    "assessor_sha256": "24c4691f4f5f8e97676ca0eab989427545e20e1a89108d5c7c1c6c1479d342e4",
+    "assessor_version": "architecture-assessor/1",
+    "b_eal_sha256": "54a12ba119e72d3ccbba395a3c7ee536ff01b663a22618c0197185ac1dc75c58",
+    "b_no_eal_sha256": "3214010d44da83141efe11c09df198d925b95a63d482af841ecd5ab5ab73f6fe",
+    "baseline_sha256": "5456a8a711f60d467e868a8116f865a8d5c1fdade79f900767908429198b5a46",
+    "eal_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53",
+    "freeze_a_sha256": "fe49fb6db20de910c8a2094a16e00a5a59c82e2ecaafc359ad315737f335f220",
+    "freeze_b_sha256": "96562383981479c14020a98b4e267c8fa836553b1a63eeaad7fa999c748e2947",
+    "model_identifier": "not exposed by agent orchestration",
+    "observed_at": "2026-09-27T12:30:47.826508+00:00",
+    "operator": "assistant-managed fixture and assessor",
+    "probe_sha256": "e5735174ca626e9dcc7c0e30ee7741d22ff63e3bca3dde623c454fb8a369f2cd",
+    "repository_base_commit": "fc7919c2b8f9c9faa840d8ba96461a4b6aa78c5e",
+    "session_interface": "fresh collaboration agents (fork_turns:none); complete internal tool traces unavailable"
+  },
+  "schema": "architecture-extension-observations/1"
+}

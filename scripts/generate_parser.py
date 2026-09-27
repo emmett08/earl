@@ -6,7 +6,6 @@ import argparse
 import hashlib
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 import urllib.request
@@ -14,6 +13,14 @@ import urllib.request
 VERSION = "4.13.2"
 SHA256 = "eae2dfa119a64327444672aff63e9ec35a20180dc5b8090b7a6ab85125df4d76"
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def generated_bytes(path: Path) -> bytes:
+    """Give the three text outputs a final newline in the repository."""
+    data = path.read_bytes()
+    if path.name in {"EAL.interp", "EALLexer.interp", "EALVisitor.py"} and not data.endswith(b"\n"):
+        return data + b"\n"
+    return data
 
 
 def main() -> None:
@@ -39,13 +46,13 @@ def main() -> None:
         if not any(file.suffix == ".py" for file in files):
             raise SystemExit("ANTLR generated no Python sources")
         if args.check:
-            differing = [f.name for f in files if not (target / f.name).exists() or f.read_bytes() != (target / f.name).read_bytes()]
+            differing = [f.name for f in files if not (target / f.name).exists() or generated_bytes(f) != (target / f.name).read_bytes()]
             if differing:
                 raise SystemExit("Generated sources differ: " + ", ".join(differing))
         else:
             target.mkdir(parents=True, exist_ok=True)
             for file in files:
-                shutil.copyfile(file, target / file.name)
+                (target / file.name).write_bytes(generated_bytes(file))
             (target / "__init__.py").touch()
     print(f"ANTLR {VERSION} generated sources {'verified' if args.check else 'updated'}")
 

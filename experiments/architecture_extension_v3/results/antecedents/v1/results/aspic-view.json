@@ -1,0 +1,859 @@
+{
+  "arguments": [
+    {
+      "conclusion": "e5e3258b0f32396dc49ef",
+      "direct_subarguments": [],
+      "display_conclusion": "all_tests",
+      "id": "A0",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "all_tests",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "92e69865adda04fd23b98fc7b6a014a6e103e907ae62a0208852649d50d44b05",
+          "request_digest": "c78d5a91bad5efdcbc6a04b73c7ce782d1f923d4b9321329655a88eedc67789d",
+          "run_id": "03309a30-81d1-4f54-a4cf-5764d34a3561",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 62,
+          "line": 58
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e3f9f4819a9d0abf3a4de",
+      "direct_subarguments": [],
+      "display_conclusion": "baseline_contract",
+      "id": "A1",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "baseline_contract",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "0c664a2f370fa44a38ffaa2767ffb8720ec3aaea23930b3872657e4ba1093c61",
+          "request_digest": "233d9de7e6e0997bbd7378eabefb0bc57ca5bccbb4c7acabecdc7b94775fe3ae",
+          "run_id": "7f7c956a-8d8f-4e19-907b-beb8146b4af7",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 20,
+          "line": 16
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "eaa5a727dc60b8eeb6700",
+      "direct_subarguments": [],
+      "display_conclusion": "control_all_tests",
+      "id": "A2",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "control_all_tests",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "1bad5c91429daac9ee1af736d0a99e205b987301402f85218a837ac1e4cd1a92",
+          "request_digest": "5b0c9078cf3bb520023a2f6ad6df1c451d3cd97330a8db1a9b9ea2906699e7d6",
+          "run_id": "b3c0a17c-445e-4b9c-b807-dd9d38d82a64",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 84,
+          "line": 80
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e882503952450f3fef446",
+      "direct_subarguments": [],
+      "display_conclusion": "control_dispatch_pass",
+      "id": "A3",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "control_dispatch_pass",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "302b328b0f56d00ac97cb4e2820423164b276146172b21074760ed069aed081e",
+          "request_digest": "2ba3b6e5e0b99dc78b536efb552ef432fca5b937a42761912ae997e8d53c6e65",
+          "run_id": "af4f7843-eb00-46c7-b0c9-7ccc49af798f",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 74,
+          "line": 70
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e90e6acf8d4ff85c8a27d",
+      "direct_subarguments": [],
+      "display_conclusion": "feature_behaviour",
+      "id": "A4",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "feature_behaviour",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "f7770d3ef4404fa310a37516fb496ed4e1990b9f85289dba433dc6e43cf51464",
+          "request_digest": "e43ae56b0687b8010cd4110b273b807289c27cf61034c587a87c27583987b090",
+          "run_id": "d29c24a1-5fc1-4f8d-b54b-f177eec5353d",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 25,
+          "line": 21
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e8bd1cd27a80982c4fb6c",
+      "direct_subarguments": [],
+      "display_conclusion": "no_blinded_review",
+      "id": "A5",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "no_blinded_review",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "fe3253dd9e9cd2b346fba4f426b9551e93770db40f1a21f53a0a8c39dd4c1c86",
+          "request_digest": "e624b720ce5fbbd821dff5cf6b7a5c43105c8b7dc093e15203460d0523123b94",
+          "run_id": "acd594da-1a75-4f40-bbca-490013e41c81",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 104,
+          "line": 100
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "ed2c7519c886f84a15b3d",
+      "direct_subarguments": [],
+      "display_conclusion": "no_followup",
+      "id": "A6",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "no_followup",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "0bfb5b7cf773a81a05a567076c738e1747c200edf9553f1fa566522adb429609",
+          "request_digest": "8f193321667001b37e98a21b64307f24fd04ba86d3358b889de0e0a9937e6457",
+          "run_id": "912975e1-0cf4-44c4-bbcd-462bcd3d7a68",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 69,
+          "line": 65
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e36c4579a342aefd49afd",
+      "direct_subarguments": [],
+      "display_conclusion": "no_random_assignment",
+      "id": "A7",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "no_random_assignment",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "854e2848fac51fdf1d44f6ae7e3f4f02dff32ebd10796349946421888455ee08",
+          "request_digest": "879c881e6b189363ef37dc3644556ffd098fe3b8f962a8ab1c8cabb0d973a883",
+          "run_id": "e26a7dc0-6915-4dca-9d44-ccdfd0d43f01",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 99,
+          "line": 95
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e1d67830b9effd979ce87",
+      "direct_subarguments": [],
+      "display_conclusion": "payload_cap",
+      "id": "A8",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "payload_cap",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "f6a0322c509122dc3178600dbe9afa2f438a88ec25bb715cb4fee3e286da19d5",
+          "request_digest": "d424a5a0de035271fa57fef1fc31ed8a8ddc46e238d33e1fbf7d344a875e7950",
+          "run_id": "c9332002-b7ab-4f90-899d-3c662bb864d3",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 30,
+          "line": 26
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e8c569aa9d8351d09fd38",
+      "direct_subarguments": [],
+      "display_conclusion": "reachable_code",
+      "id": "A9",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "reachable_code",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "994a362618c736305150f166235e4955e867dd08d1a726690e8a7a3902141eb8",
+          "request_digest": "4df4eee4e0222a80b8bbb0edb4a6fc8e1ebf7ca6b897cf6f7e6d37de0629a551",
+          "run_id": "e3509b48-5fc3-4976-982a-f7511d6364c2",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 57,
+          "line": 53
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e9c6d40b8ae5b02ca0d97",
+      "direct_subarguments": [],
+      "display_conclusion": "registry_extension",
+      "id": "A10",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "registry_extension",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "ce1c69cdd60175ba8d8ff1cea79115a76722e28ecafc7b5acbab048fc4bba2d5",
+          "request_digest": "a9eeada80ad87901497b2f81843aba8de70779069cceaff236770c32b47f613f",
+          "run_id": "311ad878-080a-4242-948e-a8d3c16e6501",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 35,
+          "line": 31
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "eadbdf6be455195df74ab",
+      "direct_subarguments": [],
+      "display_conclusion": "same_feature_control",
+      "id": "A11",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "same_feature_control",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "d38f8e1907dc7983c0fbca29699ed99314c94c2e44a4e1cce22bbbc073d43054",
+          "request_digest": "629afbba37b5d1190a4aa787102e06bc7fa3edbd2274252f2b9f653fe7675fff",
+          "run_id": "7b0d6186-b78a-4142-af92-76450c208ddc",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 89,
+          "line": 85
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "e998820aa363919c57939",
+      "direct_subarguments": [],
+      "display_conclusion": "same_start_snapshot",
+      "id": "A12",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "same_start_snapshot",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "f3eee93ad0378ce9f38e936e0e03fbda9a587e0fa93c9de28c34e6ec11c1c7ba",
+          "request_digest": "4256e01840229c3e28989d370e8fb34c49d4a8029e69cde00467205a9c36b760",
+          "run_id": "b55b5667-b3e0-4c81-aaa3-8eee10a2e9fd",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 94,
+          "line": 90
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "eaf162ec96e6d620c6065",
+      "direct_subarguments": [],
+      "display_conclusion": "single_dispatch_path",
+      "id": "A13",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "single_dispatch_path",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "1f14592b4e906cedfbe0eade5d83a7e1fd978b7fdf40cc4c5a3ec919fc83e2a6",
+          "request_digest": "125f215ae047046493b85a55b27cf19b820e3b998c07c89480accfe3b23c01dd",
+          "run_id": "5d64033f-0cae-40be-b596-82f22a2031e8",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 40,
+          "line": 36
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "conclusion": "ea268b22e11ee52242650",
+      "direct_subarguments": [],
+      "display_conclusion": "single_format_path",
+      "id": "A14",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "evidence",
+        "name": "single_format_path",
+        "observation": {
+          "collected_at": "2026-09-27T12:30:47.826508+00:00",
+          "data_digest": "fed135a0eb820a77d5ed1ff1b4657c2e3c4adcc4488560c9dec7a1b4bdb2d572",
+          "request_digest": "ab41b31e650f15ba33d4dc4d823877ee48d488e7d9d9c1cd7748d564d1325eee",
+          "run_id": "4f010ff1-a5dc-48b6-8efc-477ece9e10e4",
+          "tool_binding_digest": "f99b5e469f0fe4d17b7f5dbf73211eb3e294568ec134c2612fd5c875498892ef"
+        },
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 52,
+          "line": 48
+        }
+      },
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary"
+    },
+    {
+      "authored_statement": "The baseline uses a Channel strategy selected through a registry; medium preparation, dispatch and Gateway delivery have separate responsibilities. Feature B should extend this path when its requirements fit and refactor the shared contract when they do not.",
+      "conclusion": "c5a63cf05c5bf5ff7fc89",
+      "direct_subarguments": [
+        "A1"
+      ],
+      "display_conclusion": "extension_point",
+      "id": "A15",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "argument",
+        "name": "baseline_design",
+        "rationale": "The baseline separates medium preparation in Channel strategies, dispatch in NotificationService, and delivery behind Gateway; these are the applicable single-responsibility and dependency-inversion choices. Registering a new Channel in the composition root extends behaviour without altering send when the requirement fits the protocol. If it does not fit, refactor the shared boundary and dependent implementations rather than add an independent dispatcher.",
+        "reasoning": "existing_extension",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 182,
+          "line": 180
+        }
+      },
+      "rank": 500,
+      "rule_id": "rd6f80a97fbb5bc7c80cf",
+      "rule_name": "x8c3ba92db7618037d087",
+      "strength": 500,
+      "subarguments": [
+        "A1"
+      ],
+      "top": "defeasible"
+    },
+    {
+      "authored_statement": "The B control report marks its single-dispatch-path check as passed.",
+      "conclusion": "cfa828a3693d8672efb4a",
+      "direct_subarguments": [
+        "A3"
+      ],
+      "display_conclusion": "control_dispatch_check_passed",
+      "id": "A16",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "argument",
+        "name": "observed_control_pass",
+        "rationale": "The named checker recorded the Boolean single-dispatch-path result on the identified snapshot. This reports its local verdict rather than a universal property of the repository or an identified duplicate path.",
+        "reasoning": "recorded_check",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 207,
+          "line": 204
+        }
+      },
+      "rank": 500,
+      "rule_id": "rfcf9fbc6d4532e933153",
+      "rule_name": "xb01e58c38ff4fdbadcd4",
+      "strength": 500,
+      "subarguments": [
+        "A3"
+      ],
+      "top": "defeasible"
+    },
+    {
+      "authored_statement": "The B EAL report records passing baseline, feature, payload, registry, single dispatch, single formatting, production-module import and complete-suite checks.",
+      "conclusion": "c8d51f273f6e5ba299f30",
+      "direct_subarguments": [
+        "A1",
+        "A4",
+        "A8",
+        "A10",
+        "A13",
+        "A14",
+        "A9",
+        "A0"
+      ],
+      "display_conclusion": "reported_checks_pass",
+      "id": "A17",
+      "label": "in",
+      "origin": {
+        "formal_review": {
+          "kind": "strict",
+          "name": "conjunction_of_reported_findings",
+          "other": null,
+          "rank": null,
+          "review": "architecture-study/report-conjunction-v1",
+          "span": {
+            "column": 1,
+            "end_column": 93,
+            "end_line": 240,
+            "line": 240
+          },
+          "target_kind": "argument"
+        },
+        "kind": "argument",
+        "name": "conjunction_of_reported_findings",
+        "rationale": "The conclusion enumerates exactly the eight Boolean findings in the identified report. The inference is conjunction over those recorded findings, not a claim that the checks are complete or sound.",
+        "reasoning": "report_conjunction",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 187,
+          "line": 183
+        }
+      },
+      "rule_id": "r08488ae9a2001b11cba3",
+      "strength": 500,
+      "subarguments": [
+        "A1",
+        "A4",
+        "A8",
+        "A10",
+        "A13",
+        "A14",
+        "A9",
+        "A0"
+      ],
+      "top": "strict"
+    },
+    {
+      "authored_statement": "For the same starting A snapshot and B brief, both B branches passed every predeclared fixed check and the candidate suite; there is no difference on those recorded Boolean outcomes.",
+      "conclusion": "cb4ae3033d7456a690fa1",
+      "direct_subarguments": [
+        "A11",
+        "A12",
+        "A2",
+        "A17",
+        "A16"
+      ],
+      "display_conclusion": "local_check_tie",
+      "id": "A18",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "argument",
+        "name": "paired_tie",
+        "rationale": "The same B brief and starting A snapshot allow a descriptive comparison of the recorded check vectors. Each all_tests result is the conjunction of its fixed findings and candidate suite; passing in both branches means parity on those measured checks, not absence of every possible difference or a causal no-effect result.",
+        "reasoning": "paired_check",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 221,
+          "line": 217
+        }
+      },
+      "rank": 500,
+      "rule_id": "rcd2c7f94c822d082dfc2",
+      "rule_name": "xc2522b7ffb10175f7f68",
+      "strength": 500,
+      "subarguments": [
+        "A11",
+        "A12",
+        "A2",
+        "A1",
+        "A4",
+        "A8",
+        "A10",
+        "A13",
+        "A14",
+        "A9",
+        "A0",
+        "A17",
+        "A3",
+        "A16"
+      ],
+      "top": "defeasible"
+    },
+    {
+      "authored_statement": "The B EAL report marks its single-dispatch-path check as passed at the treated snapshot.",
+      "conclusion": "cdd051b030ad9157d6866",
+      "direct_subarguments": [
+        "A13"
+      ],
+      "display_conclusion": "treated_dispatch_check_passed",
+      "id": "A19",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "argument",
+        "name": "observed_dispatch_pass",
+        "rationale": "The named checker recorded the Boolean single-dispatch-path result on the identified snapshot. This reports its local verdict rather than a universal property of the repository or an identified duplicate path.",
+        "reasoning": "recorded_check",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 195,
+          "line": 192
+        }
+      },
+      "rank": 500,
+      "rule_id": "r5d515cf35125b7f6e61d",
+      "rule_name": "xb7236dc08d9e52ddd92e",
+      "strength": 500,
+      "subarguments": [
+        "A13"
+      ],
+      "top": "defeasible"
+    },
+    {
+      "authored_statement": "On the recorded B EAL snapshot, the fixed registry, dispatch, preparation-call and module-import checks pass under their stated syntactic and probe limits.",
+      "conclusion": "c6692dde1dd1b68193d71",
+      "direct_subarguments": [
+        "A15",
+        "A17",
+        "A19"
+      ],
+      "display_conclusion": "architecture_within_fixture",
+      "id": "A20",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "argument",
+        "name": "treated_architecture",
+        "rationale": "The declared registry, dispatch and formatting checks, plus module imports by the fixed probes, support a scoped architecture assessment. Import coverage does not establish function reachability or the absence of all dead code or divergent paths.",
+        "reasoning": "scoped_architecture",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 191,
+          "line": 188
+        }
+      },
+      "rank": 500,
+      "rule_id": "r96eacfecca7279b1398c",
+      "rule_name": "xef2cdb6a71cdffa90793",
+      "strength": 500,
+      "subarguments": [
+        "A1",
+        "A15",
+        "A4",
+        "A8",
+        "A10",
+        "A13",
+        "A14",
+        "A9",
+        "A0",
+        "A17",
+        "A19"
+      ],
+      "top": "defeasible"
+    },
+    {
+      "authored_statement": "Keeping this architecture argument in context may reduce duplicate maintenance paths and architectural drift over later comparable changes, conditional on repeated adherence and review.",
+      "conclusion": "c6d43459c9ab881226978",
+      "direct_subarguments": [
+        "A20",
+        "A15"
+      ],
+      "display_conclusion": "future_debt_reduced",
+      "id": "A21",
+      "label": "out",
+      "origin": {
+        "formal_review": null,
+        "kind": "argument",
+        "name": "debt_prediction",
+        "rationale": "Using one protocol and registry for successive changes can reduce duplicate maintenance sites and drift. A single exercise does not measure subsequent debt, and the prediction depends on future tasks, review and repeated adherence.",
+        "reasoning": "debt_forecast",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 203,
+          "line": 200
+        }
+      },
+      "rank": 500,
+      "rule_id": "r4292f5a2567a23159388",
+      "rule_name": "x2318ff36c538d10f9026",
+      "strength": 500,
+      "subarguments": [
+        "A1",
+        "A15",
+        "A4",
+        "A8",
+        "A10",
+        "A13",
+        "A14",
+        "A9",
+        "A0",
+        "A17",
+        "A19",
+        "A20"
+      ],
+      "top": "defeasible"
+    },
+    {
+      "conclusion": "o776fc335a2ca8fa68099",
+      "direct_subarguments": [
+        "A5"
+      ],
+      "display_conclusion": "unblinded_comparison",
+      "id": "A22",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "objection",
+        "name": "unblinded_comparison",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 236,
+          "line": 234
+        }
+      },
+      "rank": 500,
+      "rule_id": "j776fc335a2ca8fa68099",
+      "rule_name": "x07abb4676b359565f294",
+      "strength": 500,
+      "subarguments": [
+        "A5"
+      ],
+      "top": "defeasible"
+    },
+    {
+      "conclusion": "od294c54793337a4b839b",
+      "direct_subarguments": [
+        "A6"
+      ],
+      "display_conclusion": "debt_not_measured",
+      "id": "A23",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "objection",
+        "name": "debt_not_measured",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 230,
+          "line": 228
+        }
+      },
+      "rank": 500,
+      "rule_id": "jd294c54793337a4b839b",
+      "rule_name": "x192239228da3b9d41859",
+      "strength": 500,
+      "subarguments": [
+        "A6"
+      ],
+      "top": "defeasible"
+    },
+    {
+      "conclusion": "odd382e3386f9e5a6ab34",
+      "direct_subarguments": [
+        "A7"
+      ],
+      "display_conclusion": "allocation_confound",
+      "id": "A24",
+      "label": "in",
+      "origin": {
+        "formal_review": null,
+        "kind": "objection",
+        "name": "allocation_confound",
+        "span": {
+          "column": 1,
+          "end_column": 2,
+          "end_line": 233,
+          "line": 231
+        }
+      },
+      "rank": 500,
+      "rule_id": "jdd382e3386f9e5a6ab34",
+      "rule_name": "xcb2a395c1d884342886f",
+      "strength": 500,
+      "subarguments": [
+        "A7"
+      ],
+      "top": "defeasible"
+    }
+  ],
+  "authored_claim_status": "supported",
+  "claim_status": "supported",
+  "defeats": [
+    {
+      "attacker": "A23",
+      "kind": "undercut",
+      "relation_origin": {
+        "annotation": null,
+        "objection": "debt_not_measured"
+      },
+      "subargument": "A21",
+      "target": "A21"
+    }
+  ],
+  "evaluated_at": "2026-09-27T12:30:48.826508Z",
+  "formal_status": "accepted",
+  "goal": "cb4ae3033d7456a690fa1",
+  "goal_claim": "local_check_tie",
+  "profile": "EAL/2-compiled-aspic/4",
+  "schema": "aspic-view/1",
+  "snapshot_digest": "646377611e61428dccc4a87255fca6797f2a8b28c114b9dee574b8468ed54687",
+  "source_digest": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7",
+  "theory_digest": "746ca873b31d250d43e78524b9694093d596b6d5be9219c99fa756e6c72b5a37",
+  "unavailable_evidence": [
+    {
+      "name": "control_dispatch_fail",
+      "reasons": [
+        "Field 'passed' == False does not hold (observed True)"
+      ],
+      "span": {
+        "column": 1,
+        "end_column": 2,
+        "end_line": 79,
+        "line": 75
+      }
+    },
+    {
+      "name": "treated_dispatch_failure",
+      "reasons": [
+        "Field 'passed' == False does not hold (observed True)"
+      ],
+      "span": {
+        "column": 1,
+        "end_column": 2,
+        "end_line": 47,
+        "line": 43
+      }
+    }
+  ],
+  "validation": {
+    "formal_result": "recomputed",
+    "provenance": "supplied"
+  }
+}

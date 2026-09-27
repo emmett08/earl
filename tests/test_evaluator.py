@@ -109,7 +109,8 @@ def test_record_diagnostic_entry_and_order_are_preserved():
     program = parse(SOURCE)
     missing = evaluate(program, {}, now=NOW, context=CONTEXT)
     assert missing['evidence']['observed'] == {
-        'status': 'unavailable', 'reasons': ['No evidence record is available']}
+        'status': 'unavailable', 'reasons': ['No evidence record is available'],
+        'availability_issues': ['missing_observation']}
 
     item = record(program, 'observed', {'passed': True})
     item.update(source_digest='other', status='error', run_id='',
@@ -118,6 +119,7 @@ def test_record_diagnostic_entry_and_order_are_preserved():
     assert entry == {
         'status': 'unavailable', 'tool': 'runner', 'tool_version': '1',
         'tool_binding_digest': '0' * 64, 'run_id': '',
+        'availability_issues': ['invalid_observation', 'tool_error'],
         'reasons': [
             'Record source_digest does not match the declared evidence request',
             'Tool execution did not produce an ok observation',
@@ -163,19 +165,29 @@ def test_structural_evidence_verdict_distinguishes_false_from_invalid():
 
     false = check(record(program, 'observed', {'passed': False}))
     assert false.complete and false.entry['status'] == 'unavailable'
+    assert false.entry['availability_issues'] == ['predicate_not_met']
     assert false.entry == run(values={'observed': {'passed': False}})['evidence']['observed']
     true = check(record(program, 'observed', {'passed': True}))
     assert true.complete and true.entry['status'] == 'available'
+    assert true.entry['availability_issues'] == []
     for value in ({}, {'passed': 1}):
         invalid = check(record(program, 'observed', value))
         assert not invalid.complete and invalid.entry['status'] == 'unavailable'
+        assert invalid.entry['availability_issues'] == ['invalid_observation']
     stale = check(record(program, 'observed', {'passed': True}, '2026-09-23T11:58:59Z'))
     assert not stale.complete
+    assert stale.entry['availability_issues'] == ['stale_observation']
     out_of_scope = check(record(program, 'observed', {'passed': True}), in_scope=False)
     assert not out_of_scope.complete
+    assert out_of_scope.entry['availability_issues'] == ['out_of_scope']
     mismatched = record(program, 'observed', {'passed': True})
     mismatched['input_digest'] = 'other'
     assert not check(mismatched).complete
+    assert check(mismatched).entry['availability_issues'] == ['invalid_observation']
+    assert check(None).entry['availability_issues'] == ['missing_observation']
+    failed = record(program, 'observed', {'passed': True})
+    failed['status'] = 'error'
+    assert check(failed).entry['availability_issues'] == ['tool_error']
 
 
 def test_active_claim_objection_propagates_through_nested_subarguments():

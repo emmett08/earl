@@ -1,0 +1,64 @@
+{
+  "assessed_at": "2026-09-27T12:30:48.826508+00:00",
+  "context": {
+    "dataset": "local-fixture",
+    "experiment": "architecture-extension-v1"
+  },
+  "outputs": {
+    "comparison": {
+      "argument_count": 25,
+      "assessment_id": "3a103018-a8bc-42e1-b6d6-75079d07738c",
+      "authored_claim_status": "supported",
+      "claim_statuses": {
+        "architecture_within_fixture": "supported",
+        "control_dispatch_check_failed": "unsupported",
+        "control_dispatch_check_passed": "supported",
+        "eal_caused_check_advantage": "unsupported",
+        "extension_point": "supported",
+        "future_debt_reduced": "contested",
+        "local_check_advantage": "unsupported",
+        "local_check_tie": "supported",
+        "reported_checks_pass": "supported",
+        "treated_dispatch_check_failed": "unsupported",
+        "treated_dispatch_check_passed": "supported"
+      },
+      "collection_id": "e98a7f62-246b-4257-9153-230ce59fd06e",
+      "compiled_profile": "EAL/2-compiled-aspic/4",
+      "defeat_count": 1,
+      "formal_claim_status": "supported",
+      "formal_goal_status": "accepted",
+      "route_statuses": {
+        "baseline_design": "accepted",
+        "causal_interpretation": "unconstructed",
+        "conjunction_of_reported_findings": "accepted",
+        "debt_prediction": "rejected",
+        "observed_control_fail": "unconstructed",
+        "observed_control_pass": "accepted",
+        "observed_dispatch_pass": "accepted",
+        "observed_treated_path": "unconstructed",
+        "paired_advantage": "unconstructed",
+        "paired_tie": "accepted",
+        "treated_architecture": "accepted"
+      },
+      "snapshot_digest": "646377611e61428dccc4a87255fca6797f2a8b28c114b9dee574b8468ed54687",
+      "source_sha256": "abdbe61fa7ff300ea01a841ad97a61ded47b3233ff1b03b8eed595cfe07a21b7"
+    },
+    "treatment": {
+      "assessment_id": "f06d27ac-64fd-4d87-8307-8769a13c02d0",
+      "claim_statuses": {
+        "architecture_within_fixture": "supported",
+        "extension_point": "supported",
+        "future_debt_reduced": "contested",
+        "reported_checks_pass": "supported",
+        "treated_dispatch_check_failed": "unsupported",
+        "treated_dispatch_check_passed": "supported"
+      },
+      "collection_id": "a9ae787d-e8aa-4463-b5da-6e019134c0ba",
+      "source_sha256": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53"
+    }
+  },
+  "report_sha256": "d1c1b16d4af01fcd81e2c4bda27ff2569f6d1d36ee4f3490d23e30ffa1db1daf",
+  "schema": "architecture-eal-run/1",
+  "treatment_source_sha256_in_report": "00b36bcd1704eeb4532c01cac357cfb7b97ab604a97cd040d44515d7969d8a53",
+  "visualisation_input": "results/aspic-view.json"
+}

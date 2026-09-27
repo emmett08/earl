@@ -246,6 +246,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
         mapping["evidence"][name] = {"atom": evidence[name], "available": available,
                                       "identity": identity, "record_digest": record_digest,
                                       "reasons": verdict["reasons"],
+                                      "availability_issues": verdict["availability_issues"],
                                       "rank": rank(name),
                                       "rank_annotation": annotated("rank", name),
                                       "span": _location(program, name)}

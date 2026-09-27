@@ -75,6 +75,8 @@ def test_missing_or_stale_primary_observation_preserves_probe_route():
         assert projection["routes"]["probe_route"]["status"] == "accepted"
         assert projection["source_map"]["evidence"]["primary_data"]["available"] is False
         assert projection["source_map"]["evidence"]["primary_data"]["reasons"]
+        assert projection["source_map"]["evidence"]["primary_data"]["availability_issues"] == (
+            ["missing_observation"] if "missing" in omission else ["stale_observation"])
         assert projection["source_map"]["evidence"]["primary_data"]["atom"] not in {
             premise["atom"] for premise in projection["theory"]["premises"]}
     assert len(digests) == 2

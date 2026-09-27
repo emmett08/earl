@@ -1,0 +1,9 @@
+[tools.snapshot_probe]
+kind = "command"
+argv = ["python3", "snapshot_probe.py"]
+version = "1"
+timeout_seconds = 150
+max_output_bytes = 65536
+pinned_files = [
+  {path = "snapshot_probe.py", sha256 = "b9ca81484e3c88d5ff77b4615e9e1bb3d35a0747143f54cac3f33f80224947b1"},
+]
