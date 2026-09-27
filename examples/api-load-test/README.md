@@ -46,6 +46,25 @@ For n recorded requests, the nearest-rank p95 is the sorted latency at one-based
 
 The collector returns the report's original `observed_at`. Reading the file again does not make its measurements newer. The demonstration deliberately assesses the report at its stated time, `2026-09-25T10:00:00Z`; a current-time assessment beyond the 24-hour limit returns `unsupported`.
 
+## Reconstruct an abbreviated performance argument
+
+Consider this **synthetic authoring example**, separate from the executable claim:
+
+> The API passed the load test, so it will meet production demand.
+
+The report and criteria establish only the scoped sample result described above. Interpreting the broader sentence requires the production workload, relevant configuration and a justified relation between the sampled result and future performance. [Contextual reconstruction](../../docs/argument-reconstruction.md) first searches the surrounding text for those dependencies.
+
+| Surrounding text | Appropriate treatment |
+| --- | --- |
+| An earlier passage states workload correspondence and the applicable configuration | Link that passage and check its scope. The dependency is locally omitted but contextually explicit; the assertion still needs empirical support. |
+| The text supports reading workload correspondence as an assumption, but supplies no validation | Record a plausible implicit dependency and its outstanding evidence obligation. Attribution to the author does not establish the condition. |
+| The text supplies no grounds for attributing correspondence | Identify it as a possible repair, or propose a narrower conclusion while preserving the original. Do not invent a premise and call it recovered. |
+| A later qualification limits the conclusion to the recorded run | Preserve that limit when interpreting the earlier sentence. Do not silently promote a sample finding into a production prediction. |
+
+Workload correspondence alone would still not guarantee future performance. Preserve the intended uncertainty and select an appropriate inferential method. The bundled claim `performance_criteria_met` remains the descriptive result for the identified synthetic report; sample p95 is 180 ms and one failed request out of 100 is 1%, meeting the inclusive 200 ms and 1% limits. These facts do not establish population bounds or production reliability.
+
+In a separately authored production argument, a recovered proposition could be a named `claim` listed in `premises`. Without a supporting route it remains `unsupported`. Using `assumption` requires its named validation evidence; the model's suggestion cannot act as that validation. The optional argument-host demonstration below already leaves an unreviewed production question unresolved before collection. That demonstrates its reviewed-form boundary, not automatic detection of this enthymeme.
+
 ## Inspect each operation
 
 The following commands retain records in the default `.eal/runs.sqlite3` database:

@@ -6,9 +6,16 @@ The implemented methods form a bounded computational vocabulary, rather than an 
 
 ## Contents
 
-1. [Composition and result requirements](#composition-and-result-requirements)
-2. [Evidence value schemas](#evidence-value-schemas)
-3. [Bounds, failure behaviour and extensions](#bounds-failure-behaviour-and-extensions)
+1. [Contextual interpretation and enthymemes](#contextual-interpretation-and-enthymemes)
+2. [Composition and result requirements](#composition-and-result-requirements)
+3. [Evidence value schemas](#evidence-value-schemas)
+4. [Bounds, failure behaviour and extensions](#bounds-failure-behaviour-and-extensions)
+
+## Contextual interpretation and enthymemes
+
+Before selecting a method, identify the argument that the source actually expresses. An enthymeme can leave a premise, conclusion or inferential connection implicit; a local omission may be supplied elsewhere. [Contextual interpretation and reconstruction](argument-reconstruction.md) uses whole–part reading to recover such dependencies, retain alternative readings and distinguish reconstruction from a proposed repair. An invalid inference need not have a faithful completion. The reconstructed argument still needs a method appropriate to its intended support and evidence for its empirical dependencies.
+
+This is an authoring procedure, not an additional executable reasoning mode. A reasoning-capable, long-context LLM can be evaluated as an implementation for proposing readings; EAL has no installed whole-document reconstruction operation. In particular, `abductive/1` ranks supplied hypotheses rather than discovering missing premises, and a solver's successful entailment check cannot establish fidelity to the prose. See the [worked load-test reading](../examples/api-load-test/README.md#reconstruct-an-abbreviated-performance-argument).
 
 ## Composition and result requirements
 
