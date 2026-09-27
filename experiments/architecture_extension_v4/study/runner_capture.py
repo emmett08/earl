@@ -245,14 +245,16 @@ else:
     executable = shutil.which("codex")
     if not executable or not Path(executable).resolve().is_relative_to(Path("/usr")):
         raise RuntimeError("pinned Codex executable is missing from the isolated tool mount")
-    mode = "read-only" if read_only_trial else "workspace-write"
-    # The nested CLI sandbox itself must work inside the closed host mount.
-    # This command performs no model request and consumes no provider tokens.
-    nested = prefix + [executable, "-c", f'sandbox_mode="{mode}"',
-                       "sandbox", "--", "/usr/bin/python3", "-c", probe]
-    result = subprocess.run(nested, env=clean_env, capture_output=True, timeout=45, check=False)
+    # The outer mount is the sole filesystem boundary.  CI permits this
+    # namespace but refuses a second namespace inside it.  Check that the
+    # pinned CLI starts within that boundary without a credential or request.
+    # The live command uses danger-full-access *inside* this closed mount to
+    # avoid Codex creating a second sandbox; the trial bind above determines
+    # whether source is writable or read-only.
+    result = subprocess.run(prefix + [executable, "exec", "--help"],
+                            env=clean_env, capture_output=True, timeout=45, check=False)
     if result.returncode != 0:
-        raise RuntimeError("nested Codex sandbox preflight failed: " +
+        raise RuntimeError("isolated Codex CLI preflight failed: " +
                            result.stderr.decode("utf-8", "replace")[:600])
 
 
@@ -263,5 +265,5 @@ def codex_command(trial: Path, home: Path, model: str, effort: str,
         raise RuntimeError("live Codex executable must be installed under /usr")
     return bwrap_prefix(trial, home, read_only_trial=read_only_trial) + [
         binary, "exec", "--skip-git-repo-check", "--ephemeral", "--json",
-                                       "--sandbox", "read-only" if read_only_trial else "workspace-write", "--model", model,
-                                       "-c", f"model_reasoning_effort={effort}", "-"]
+        "--sandbox", "danger-full-access", "--model", model,
+        "-c", f"model_reasoning_effort={effort}", "-"]

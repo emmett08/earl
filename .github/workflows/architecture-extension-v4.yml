@@ -9,7 +9,7 @@ on:
         default: false
   push:
     branches:
-      - study/architecture-v4-live
+      - study/architecture-v4-1-live
     paths:
       - .github/workflows/architecture-extension-v4.yml
       - experiments/architecture_extension_v4/**
@@ -73,7 +73,7 @@ jobs:
             /usr/*) ;;
             *) echo 'Codex executable is outside the read-only tool mount' >&2; exit 1 ;;
           esac
-      - name: Check writable and read-only outer and nested sandboxes before live calls
+      - name: Check outer isolation and CLI start in writable and read-only modes
         run: |
           python - <<'PY'
           import sys, tempfile

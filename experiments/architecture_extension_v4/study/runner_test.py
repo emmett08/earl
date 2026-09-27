@@ -219,7 +219,7 @@ class RunnerTests(unittest.TestCase):
         self.assertFalse((output / "blocks/fulfilment-01/fulfilment-01-K1/B/agent-visible").exists())
         self.assertEqual(result["episodes"][1]["stage"], "C")
 
-    def test_preflight_probes_nested_codex_sandbox_without_provider_key(self):
+    def test_preflight_probes_outer_mount_and_cli_without_provider_key(self):
         trial = self.root / "trial"
         trial.mkdir()
         (trial / "FEATURE.md").write_text("prompt")
@@ -240,9 +240,25 @@ class RunnerTests(unittest.TestCase):
         self.assertEqual(len(calls), 2)
         self.assertIn("--unshare-pid", calls[0][0])
         self.assertIn("--ro-bind", calls[0][0])
-        self.assertIn("sandbox", calls[1][0])
-        self.assertIn('sandbox_mode="read-only"', calls[1][0])
+        self.assertEqual(calls[1][0][-2:], ["exec", "--help"])
+        self.assertIn("--ro-bind", calls[1][0])
         self.assertNotIn("CODEX_API_KEY", calls[1][1]["env"])
+
+    def test_live_command_runs_cli_only_inside_outer_mount(self):
+        trial = self.root / "trial"
+        home = self.root / "private-home"
+        with patch.object(runner_capture.shutil, "which",
+                          side_effect=lambda name: "/usr/bin/bwrap" if name == "bwrap"
+                          else "/usr/local/bin/codex"):
+            writable = runner_capture.codex_command(trial, home, "gpt-6-sol", "medium")
+            readonly = runner_capture.codex_command(trial, home, "gpt-6-sol", "medium",
+                                                     read_only_trial=True)
+        for command in (writable, readonly):
+            self.assertEqual(command[0], "bwrap")
+            self.assertIn("--unshare-pid", command)
+            self.assertEqual(command[command.index("--sandbox") + 1], "danger-full-access")
+        self.assertIn("--bind", writable)
+        self.assertEqual(readonly[readonly.index(str(trial)) - 1], "--ro-bind")
 
     def test_allocation_rejects_missing_arm_and_insufficient_blocks(self):
         original = self.manifest["blocks"][0]["assignments"][0]["arm"]
