@@ -56,6 +56,7 @@ The implementation provides finite, explicit support and attack reasoning with v
 | [Argument model](docs/argument-model.md) | Composed support, objections and propagation |
 | [Grounded reasoning](docs/grounded-reasoning.md) | Explicit Dung graph solver |
 | [Reasoning modes](docs/reasoning-modes.md) | Computational method inputs, outputs and bounds |
+| [Argument reconstruction](docs/argument-reconstruction.md) | Enthymemes, contextual interpretation and requirements for optional LLM assistance |
 | [ASPIC+ method](docs/aspic-method.md) | Optional finite formal-theory solver and evidence boundary |
 | [MCP and tools](docs/mcp-and-tools.md) | Tool acquisition, persistence and model hosts |
 | [Executable argument host](docs/executable-argument-host.md) | Reviewed argument forms, adequacy checks and action preflight |

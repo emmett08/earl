@@ -4,6 +4,9 @@ This glossary defines what the authored terms denote. [Language](language.md) gi
 
 | Term | Denotation | Distinction that changes an assessment |
 |---|---|---|
+| Enthymeme | An argument with a premise, conclusion or inferential connection implicit relative to an identified passage and context | Locally omitted content may be explicit elsewhere. Omission alone establishes neither invalidity nor the truth of a proposed completion. |
+| Reconstruction and repair | Reconstruction proposes content attributable to the source in context; repair adds or changes content to improve the argument | Preserve the original argument and proposed changes separately. Textual fidelity and empirical support require separate assessment. |
+| Hermeneutic analysis | In this authoring procedure, iterative interpretation of passages through the work's definitions, scope and argument, revising that interpretation when passages warrant it | It is a contextual reading procedure, not an installed EAL method or proof of the author's private intention. See [argument reconstruction](argument-reconstruction.md). |
 | `claim` | A named conclusion with a prose `statement`, environment and optional typed `proposition` | The statement is authored explanation, never interpreted as a formula. The optional proposition is a separately checked mathematical condition. |
 | `argument` | One declared route from required sources through `reasoning` to a conclusion | Sources within a route are conjunctive. Other arguments for the same claim are alternative routes, preserving their separate identities. |
 | `premises` | Named claims on which an argument or objection depends | Each has its own support graph. A `deductive/1` payload's `premises` are separate propositional formulae; the interpreter does not translate claim text into them. |
