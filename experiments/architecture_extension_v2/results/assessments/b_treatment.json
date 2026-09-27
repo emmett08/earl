@@ -1,0 +1,347 @@
+{
+  "architecture": {
+    "effect_call_sites": {
+      "cancel": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.checkout",
+          "line": 92
+        }
+      ],
+      "capture": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.checkout",
+          "line": 58
+        }
+      ],
+      "dispatch": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.checkout",
+          "line": 59
+        }
+      ],
+      "publish": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.retry_events",
+          "line": 116
+        }
+      ],
+      "refund": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.checkout",
+          "line": 97
+        },
+        {
+          "file": "service.py",
+          "function": "CheckoutService.return_items",
+          "line": 175
+        }
+      ],
+      "release": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.checkout",
+          "line": 102
+        }
+      ],
+      "reserve": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.checkout",
+          "line": 57
+        }
+      ],
+      "restore": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.return_items",
+          "line": 177
+        }
+      ],
+      "save": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.checkout",
+          "line": 83
+        }
+      ]
+    },
+    "effects_with_multiple_static_sites": {
+      "refund": [
+        {
+          "file": "service.py",
+          "function": "CheckoutService.checkout",
+          "line": 97
+        },
+        {
+          "file": "service.py",
+          "function": "CheckoutService.return_items",
+          "line": 175
+        }
+      ]
+    },
+    "functions_declared": 36,
+    "functions_executed_by_fixed_probes": 35,
+    "functions_not_executed_by_fixed_probes": [
+      "domain.py:CompensationFailure.__init__"
+    ],
+    "import_cycles_for_review": [],
+    "import_edges": {
+      "fulfilment.__init__": [
+        "fulfilment.domain",
+        "fulfilment.memory",
+        "fulfilment.service"
+      ],
+      "fulfilment.memory": [
+        "fulfilment.domain"
+      ],
+      "fulfilment.ports": [
+        "fulfilment.domain"
+      ],
+      "fulfilment.service": [
+        "fulfilment.domain",
+        "fulfilment.ports"
+      ]
+    },
+    "import_out_degree": {
+      "fulfilment.__init__": 3,
+      "fulfilment.memory": 1,
+      "fulfilment.ports": 1,
+      "fulfilment.service": 2
+    },
+    "interpretation": "Call sites and probe execution guide review; neither proves duplicate paths or dead code.",
+    "source_parse_errors": [],
+    "status": "diagnostic_only"
+  },
+  "arm": "b_treatment",
+  "candidate_suite": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "status": "pass",
+    "stderr": "test_atomic_out_of_stock_rejects_whole_order (test_baseline.BaselineTest.test_atomic_out_of_stock_rejects_whole_order) ... ok\ntest_carrier_failure_injection_contract (test_baseline.BaselineTest.test_carrier_failure_injection_contract) ... ok\ntest_carrier_failure_refunds_and_releases_then_retry_recaptures (test_baseline.BaselineTest.test_carrier_failure_refunds_and_releases_then_retry_recaptures) ... ok\ntest_failed_event_delivery_keeps_order_and_preserves_event_order (test_baseline.BaselineTest.test_failed_event_delivery_keeps_order_and_preserves_event_order) ... ok\ntest_input_validation_and_canonical_request_scope (test_baseline.BaselineTest.test_input_validation_and_canonical_request_scope) ... ok\ntest_multi_depot_configuration_allocates_across_warehouses (test_baseline.BaselineTest.test_multi_depot_configuration_allocates_across_warehouses) ... ok\ntest_payment_failure_releases_inventory_then_retry_uses_new_attempt (test_baseline.BaselineTest.test_payment_failure_releases_inventory_then_retry_uses_new_attempt) ... ok\ntest_quote_reserve_capture_dispatch_and_event (test_baseline.BaselineTest.test_quote_reserve_capture_dispatch_and_event) ... ok\ntest_successful_replay_has_no_duplicate_effects_and_conflict_is_rejected (test_baseline.BaselineTest.test_successful_replay_has_no_duplicate_effects_and_conflict_is_rejected) ... ok\ntest_transaction_failure_cancels_dispatch_refunds_and_releases (test_baseline.BaselineTest.test_transaction_failure_cancels_dispatch_refunds_and_releases) ... ok\ntest_unreconciled_refund_failure_is_explicit (test_baseline.BaselineTest.test_unreconciled_refund_failure_is_explicit) ... ok\ntest_invalid_returns_have_no_effects (test_returns.ReturnTest.test_invalid_returns_have_no_effects) ... ok\ntest_partial_return_restores_origin_and_replay_does_not_repeat_effects (test_returns.ReturnTest.test_partial_return_restores_origin_and_replay_does_not_repeat_effects) ... ok\ntest_refund_failure_and_later_step_failure (test_returns.ReturnTest.test_refund_failure_and_later_step_failure) ... ok\ntest_stock_failure_and_event_delivery_retry (test_returns.ReturnTest.test_stock_failure_and_event_delivery_retry) ... ok\ntest_aggregate_shortage_does_not_mutate_effects (test_split_fulfilment.SplitFulfilmentTest.test_aggregate_shortage_does_not_mutate_effects) ... ok\ntest_event_failure_is_retried_without_refulfilment (test_split_fulfilment.SplitFulfilmentTest.test_event_failure_is_retried_without_refulfilment) ... ok\ntest_second_dispatch_failure_cancels_first_and_refunds_once (test_split_fulfilment.SplitFulfilmentTest.test_second_dispatch_failure_cancels_first_and_refunds_once) ... ok\ntest_shipment_order_follows_priority_even_when_first_sku_is_only_in_south (test_split_fulfilment.SplitFulfilmentTest.test_shipment_order_follows_priority_even_when_first_sku_is_only_in_south) ... ok\ntest_split_dispatch_groups_every_sku_by_warehouse_and_event_matches_order (test_split_fulfilment.SplitFulfilmentTest.test_split_dispatch_groups_every_sku_by_warehouse_and_event_matches_order) ... ok\n\n----------------------------------------------------------------------\nRan 20 tests in 0.003s\n\nOK\n",
+    "stdout": "",
+    "tests_run": 20
+  },
+  "case_effect_calls": {
+    "baseline_event_retry": {
+      "memory.py:InMemoryEventSink.publish": 2,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1
+    },
+    "baseline_failure": {
+      "memory.py:InMemoryEventSink.publish": 1,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 2,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.release": 1,
+      "memory.py:InMemoryStock.reserve": 3
+    },
+    "baseline_idempotency": {
+      "memory.py:InMemoryEventSink.publish": 1,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1
+    },
+    "baseline_save_failure": {
+      "memory.py:InMemoryEventSink.publish": 1,
+      "memory.py:InMemoryOrderStore.save": 2,
+      "memory.py:InMemoryPayments.capture": 2,
+      "memory.py:InMemoryPayments.refund": 1,
+      "memory.py:InMemoryShipping.cancel": 1,
+      "memory.py:InMemoryShipping.dispatch": 2,
+      "memory.py:InMemoryStock.release": 1,
+      "memory.py:InMemoryStock.reserve": 2
+    },
+    "baseline_success": {
+      "memory.py:InMemoryEventSink.publish": 1,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1
+    },
+    "partial_return": {
+      "memory.py:InMemoryEventSink.publish": 3,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryPayments.refund": 2,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1,
+      "memory.py:InMemoryStock.restore": 2
+    },
+    "return_event_retry": {
+      "memory.py:InMemoryEventSink.publish": 3,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryPayments.refund": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1,
+      "memory.py:InMemoryStock.restore": 1
+    },
+    "return_idempotency": {
+      "memory.py:InMemoryEventSink.publish": 2,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryPayments.refund": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1,
+      "memory.py:InMemoryStock.restore": 1
+    },
+    "return_refund_failure": {
+      "memory.py:InMemoryEventSink.publish": 2,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryPayments.refund": 2,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1,
+      "memory.py:InMemoryStock.restore": 1
+    },
+    "return_rejection": {
+      "memory.py:InMemoryEventSink.publish": 2,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryPayments.refund": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1,
+      "memory.py:InMemoryStock.restore": 1
+    },
+    "split_event_retry": {
+      "memory.py:InMemoryEventSink.publish": 2,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1
+    },
+    "split_idempotency": {
+      "memory.py:InMemoryEventSink.publish": 1,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1
+    },
+    "split_insufficient": {
+      "memory.py:InMemoryStock.reserve": 1
+    },
+    "split_later_dispatch_failure": {
+      "memory.py:InMemoryEventSink.publish": 1,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 2,
+      "memory.py:InMemoryPayments.refund": 1,
+      "memory.py:InMemoryShipping.cancel": 1,
+      "memory.py:InMemoryShipping.dispatch": 2,
+      "memory.py:InMemoryStock.release": 1,
+      "memory.py:InMemoryStock.reserve": 2
+    },
+    "split_priority_and_event": {
+      "memory.py:InMemoryEventSink.publish": 1,
+      "memory.py:InMemoryOrderStore.save": 1,
+      "memory.py:InMemoryPayments.capture": 1,
+      "memory.py:InMemoryShipping.dispatch": 1,
+      "memory.py:InMemoryStock.reserve": 1
+    }
+  },
+  "findings": {
+    "baseline_event_retry": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "baseline_failure": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "baseline_idempotency": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "baseline_save_failure": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "baseline_success": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "partial_return": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "return_event_retry": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "return_idempotency": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "return_refund_failure": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "return_rejection": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "split_event_retry": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "split_idempotency": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "split_insufficient": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "split_later_dispatch_failure": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    },
+    "split_priority_and_event": {
+      "detail": "independent probe passed",
+      "status": "pass"
+    }
+  },
+  "observed_at": "2026-09-27T13:26:01.615274+00:00",
+  "probe_execution": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+      "/workspace/scratch/557793348dc3/earl/experiments/architecture_extension_v2/materials/assessor/probe.py",
+      "--candidate",
+      "/workspace/scratch/557793348dc3/earl/experiments/architecture_extension_v2/results/snapshots/b_treatment",
+      "--stage",
+      "b"
+    ],
+    "exit_code": 0,
+    "status": "pass",
+    "stderr": ""
+  },
+  "schema_version": "architecture-extension-assessment/2",
+  "source_digest": "7e0c5afcbe7b523b8257511b3f51e13f01b3fc763a3ab7505d6a21c2d5af6aea",
+  "source_files": [
+    "ARCHITECTURE.md",
+    "fulfilment/__init__.py",
+    "fulfilment/domain.py",
+    "fulfilment/memory.py",
+    "fulfilment/ports.py",
+    "fulfilment/service.py",
+    "tests/test_baseline.py",
+    "tests/test_returns.py",
+    "tests/test_split_fulfilment.py"
+  ],
+  "stage": "b"
+}

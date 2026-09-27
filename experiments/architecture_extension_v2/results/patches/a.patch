@@ -1,0 +1,300 @@
+--- a/ARCHITECTURE.md
++++ b/ARCHITECTURE.md
+@@ -1,13 +1,13 @@
+-# Baseline order fulfilment architecture
++# Order fulfilment architecture
+ 
+-The customer submits a purchase request containing distinct SKUs, whole-unit quantities, a delivery address and an opaque payment token. `CheckoutService` quotes each unit, reserves all stock, captures the full amount, dispatches the reservation, then stores the order and its event in one order-store transaction. The baseline has one warehouse (`main`) and one shipment per order. The immutable `Order` retains the quoted unit price and unit tax, stock allocations, captured charge, and shipment allocations. These records establish which units were paid for and where each unit came from.
++The customer submits a purchase request containing distinct SKUs, whole-unit quantities, a delivery address and an opaque payment token. `CheckoutService` quotes each unit, reserves all stock, captures the full amount once, dispatches the reservation, then stores the order and its event in one order-store transaction. Flat inventory uses one warehouse (`main` by default); nested inventory may span warehouses. The immutable `Order` retains the quoted unit price and unit tax, stock allocations, captured charge, and shipments with their warehouse IDs and allocations. These records establish which units were paid for and where each unit came from.
+ 
+ `ports.py` defines pricing, inventory, payment, carrier, order storage and event delivery contracts. The application workflow depends on those contracts; `memory.py` provides deterministic adapters for the experiment. An adapter may replace a contract implementation, or a materially new requirement may justify revising a contract and every affected caller. A new feature must keep one coherent path for each side effect. In particular, all inventory changes must pass through the stock boundary, all financial changes through payment, and shipment operations through shipping. The application should use the same order and outbox model for any new order events.
+ 
+-The pricing adapter applies tax per unit with half-up rounding to a penny. A line's pre-tax amount and tax are the respective unit amounts multiplied by its quantity. The quote totals sum the line amounts. This gives a deterministic amount for each selected unit if a later requirement changes an order. The stock adapter checks the full demand before reducing any SKU. It accepts flat single-warehouse inventory or nested depot inventory with an explicit priority tuple, but baseline reservation uses only the first depot. A reservation lists immutable `Allocation(sku, quantity, warehouse_id)` values. The carrier receives the reservation and returns immutable shipments whose allocations can be compared with reserved units.
++The pricing adapter applies tax per unit with half-up rounding to a penny. A line's pre-tax amount and tax are the respective unit amounts multiplied by its quantity. The quote totals sum the line amounts. This gives a deterministic amount for each selected unit if a later requirement changes an order. The stock adapter plans the full demand before reducing any SKU. It accepts flat single-warehouse inventory or nested depot inventory with a priority tuple; each SKU is allocated in priority order across warehouses until satisfied. A reservation lists immutable `Allocation(sku, quantity, warehouse_id)` values in warehouse priority order. The carrier receives the reservation and creates one immutable shipment per contributing warehouse, grouping its allocated SKUs. The order event records the final allocations and shipments.
+ 
+ The request ID identifies a purchase. Repeating it with identical inputs returns the stored order and retries pending events; changing any customer, line, address or payment token rejects the key. The order store also fixes the request fingerprint after a failed attempt. Each attempt obtains a fresh operation key, so a fully refunded charge from one failed attempt cannot satisfy a later attempt. The in-memory implementation is sequential: concurrent requests and durable storage across processes are outside this fixture's current guarantees.
+ 
+-If capture, dispatch or order storage fails, the service reverses completed shipment, charge and reservation operations in that order. A failed compensation raises `CompensationFailure` with the original failure and the failed compensations for explicit reconciliation. The current carrier dispatch is atomic for one shipment. The carrier contract permits either an atomic failure or a `DispatchFailure` containing every shipment completed before a later failure; the service cancels those receipts. The in-memory carrier has a `fail_on_shipment_number` injection seam for testing this contract across extensions. Once the order and outbox event have been stored, event delivery failure does not undo the purchase. Pending events retain insertion order for later retry; the sink deduplicates event identifiers.
++If capture, dispatch or order storage fails, the service reverses completed shipment, charge and reservation operations in that order. A failed compensation raises `CompensationFailure` with the original failure and the failed compensations for explicit reconciliation. The carrier raises `DispatchFailure` containing every shipment completed before a later warehouse fails; the service cancels those receipts. The in-memory carrier has a `fail_on_shipment_number` injection seam for testing this contract. Once the order and outbox event have been stored, event delivery failure does not undo the purchase. Pending events retain insertion order for later retry; the sink deduplicates event identifiers.
+ 
+ Run the baseline from this directory with `python -m unittest discover -s tests -v`. The in-memory adapters deliberately expose effects and injectable failures for reproducible assessment; they are not production persistence, payment or carrier integrations.
+--- a/fulfilment/domain.py
++++ b/fulfilment/domain.py
+@@ -99,6 +99,7 @@
+     shipment_id: str
+     allocations: tuple[Allocation, ...]
+     address: str
++    warehouse_id: str = "main"
+ 
+ 
+ class DispatchFailure(FulfilmentError):
+@@ -122,6 +123,10 @@
+     shipments: tuple[Shipment, ...]
+     status: str
+ 
++    @property
++    def allocations(self) -> tuple[Allocation, ...]:
++        return self.reservation.allocations
++
+ 
+ @dataclass(frozen=True)
+ class Event:
+--- a/fulfilment/memory.py
++++ b/fulfilment/memory.py
+@@ -70,26 +70,35 @@
+         ):
+             raise ValueError("stock needs named warehouses and nonnegative whole-unit counts")
+         self.reservations: dict[str, Reservation] = {}
++        self.reservation_lines: dict[str, tuple[RequestedLine, ...]] = {}
+         self.fail_release = False
+ 
+     def reserve(self, lines: tuple[RequestedLine, ...], key: str) -> Reservation:
+         existing = self.reservations.get(key)
+         if existing is not None:
+-            expected = tuple((line.sku, line.quantity) for line in lines)
+-            actual = tuple((a.sku, a.quantity) for a in existing.allocations)
+-            if expected != actual:
++            if tuple(lines) != self.reservation_lines[key]:
+                 raise IdempotencyConflict(key)
+             return existing
+-        # Check the complete demand before mutating any SKU.
+-        primary = self.on_hand_by_warehouse[self.warehouse_id]
++        # Plan the entire reservation before changing any warehouse inventory.
++        planned: dict[str, list[Allocation]] = {name: [] for name in self.priorities}
+         for line in lines:
+-            if primary.get(line.sku, 0) < line.quantity:
++            remaining = line.quantity
++            for name in self.priorities:
++                available = self.on_hand_by_warehouse[name].get(line.sku, 0)
++                taken = min(available, remaining)
++                if taken:
++                    planned[name].append(Allocation(line.sku, taken, name))
++                    remaining -= taken
++                if not remaining:
++                    break
++            if remaining:
+                 raise OutOfStock(line.sku)
+-        allocations = tuple(Allocation(line.sku, line.quantity, self.warehouse_id) for line in lines)
++        allocations = tuple(a for name in self.priorities for a in planned[name])
+         reservation = Reservation(f"res:{key}", allocations)
+         for allocation in allocations:
+-            primary[allocation.sku] -= allocation.quantity
++            self.on_hand_by_warehouse[allocation.warehouse_id][allocation.sku] -= allocation.quantity
+         self.reservations[key] = reservation
++        self.reservation_lines[key] = tuple(lines)
+         return reservation
+ 
+     def release(self, reservation: Reservation) -> None:
+@@ -105,6 +114,7 @@
+             warehouse = self.on_hand_by_warehouse[allocation.warehouse_id]
+             warehouse[allocation.sku] += allocation.quantity
+         del self.reservations[key]
++        del self.reservation_lines[key]
+ 
+ 
+ class InMemoryPayments:
+@@ -152,6 +162,7 @@
+     def __init__(self) -> None:
+         self.shipments: dict[str, Shipment] = {}
+         self.dispatches: dict[str, tuple[str, Reservation, str]] = {}
++        self.dispatched_shipments: dict[str, tuple[Shipment, ...]] = {}
+         self.cancelled: set[str] = set()
+         self.fail_dispatch = False
+         self.fail_on_shipment_number: int | None = None
+@@ -163,14 +174,22 @@
+         if key in self.dispatches:
+             if parameters != self.dispatches[key]:
+                 raise IdempotencyConflict(key)
+-            return (self.shipments[f"shipment:{key}"],)
+-        self.shipment_attempts += 1
+-        if self.fail_dispatch or self.fail_on_shipment_number == self.shipment_attempts:
+-            raise DispatchFailure("carrier dispatch failed")
+-        shipment = Shipment(f"shipment:{key}", reservation.allocations, address)
+-        self.shipments[shipment.shipment_id] = shipment
++            return self.dispatched_shipments[key]
++        grouped: dict[str, list[Allocation]] = {}
++        for allocation in reservation.allocations:
++            grouped.setdefault(allocation.warehouse_id, []).append(allocation)
++        completed: list[Shipment] = []
++        for warehouse_id, allocations in grouped.items():
++            self.shipment_attempts += 1
++            if self.fail_dispatch or self.fail_on_shipment_number == self.shipment_attempts:
++                raise DispatchFailure("carrier dispatch failed", tuple(completed))
++            shipment_id = f"shipment:{key}" if len(grouped) == 1 else f"shipment:{key}:{warehouse_id}"
++            shipment = Shipment(shipment_id, tuple(allocations), address, warehouse_id)
++            self.shipments[shipment.shipment_id] = shipment
++            completed.append(shipment)
+         self.dispatches[key] = parameters
+-        return (shipment,)
++        self.dispatched_shipments[key] = tuple(completed)
++        return tuple(completed)
+ 
+     def cancel(self, shipment: Shipment, key: str) -> None:
+         if self.fail_cancel:
+--- a/fulfilment/service.py
++++ b/fulfilment/service.py
+@@ -64,7 +64,18 @@
+             )
+             event = Event(
+                 event_id=f"{order_id}:dispatched", name="OrderDispatched", order_id=order_id,
+-                data=(("customer_id", request.customer_id), ("shipment_count", str(len(shipments)))),
++                data=(
++                    ("customer_id", request.customer_id), ("shipment_count", str(len(shipments))),
++                    ("allocations", json.dumps([
++                        {"warehouse_id": a.warehouse_id, "sku": a.sku, "quantity": a.quantity}
++                        for a in order.allocations
++                    ])),
++                    ("shipments", json.dumps([
++                        {"shipment_id": shipment.shipment_id, "warehouse_id": shipment.warehouse_id,
++                         "allocations": [{"sku": a.sku, "quantity": a.quantity} for a in shipment.allocations]}
++                        for shipment in shipments
++                    ])),
++                ),
+             )
+             self.orders.save(order, (event,))
+         except Exception as original:
+--- a/tests/test_baseline.py
++++ b/tests/test_baseline.py
+@@ -1,6 +1,7 @@
+ """Business behaviour and failure boundaries that both continuation arms inherit."""
+ 
+ import unittest
++import json
+ from decimal import Decimal
+ 
+ from fulfilment import (
+@@ -122,15 +123,22 @@
+         self.assertEqual(self.shipping.shipment_attempts, 1)
+         self.assertEqual(self.stock.on_hand, {"lamp": 5, "cord": 3})
+ 
+-    def test_multi_depot_configuration_exposes_primary_only_in_baseline(self):
++    def test_multi_depot_configuration_allocates_across_warehouses(self):
+         stock = InMemoryStock(
+             {"north": {"lamp": 1}, "south": {"lamp": 2}},
+             priorities=("north", "south"),
+         )
+         self.assertEqual(stock.priorities, ("north", "south"))
+         self.assertEqual(stock.on_hand_by_warehouse["south"]["lamp"], 2)
+-        with self.assertRaises(OutOfStock):
+-            stock.reserve((RequestedLine("lamp", 2),), "multi")
++        reservation = stock.reserve((RequestedLine("lamp", 2),), "multi")
++        self.assertEqual([(a.warehouse_id, a.sku, a.quantity) for a in reservation.allocations],
++                         [("north", "lamp", 1), ("south", "lamp", 1)])
++        self.assertEqual(stock.on_hand["north"]["lamp"], 0)
++        self.assertEqual(stock.on_hand["south"]["lamp"], 1)
++        self.assertIs(stock.reserve((RequestedLine("lamp", 2),), "multi"), reservation)
++        with self.assertRaises(IdempotencyConflict):
++            stock.reserve((RequestedLine("lamp", 1),), "multi")
++        stock.release(reservation)
+         self.assertEqual(stock.on_hand["north"]["lamp"], 1)
+         self.assertEqual(stock.on_hand["south"]["lamp"], 2)
+ 
+--- a/tests/test_split_fulfilment.py
++++ b/tests/test_split_fulfilment.py
+@@ -0,0 +1,106 @@
++"""Split warehouse allocation and checkout failure boundaries."""
++
++import json
++import unittest
++from decimal import Decimal
++
++from fulfilment import (
++    CheckoutRequest, CheckoutService, DispatchFailure, IdempotencyConflict,
++    InMemoryEventSink, InMemoryOrderStore, InMemoryPayments, InMemoryPricing,
++    InMemoryShipping, InMemoryStock, OutOfStock, RequestedLine,
++)
++
++
++class SplitFulfilmentTest(unittest.TestCase):
++    def setUp(self):
++        self.stock = InMemoryStock(
++            {"north": {"lamp": 2, "cord": 1}, "south": {"lamp": 2, "cord": 3}},
++            priorities=("north", "south"),
++        )
++        self.payments = InMemoryPayments()
++        self.shipping = InMemoryShipping()
++        self.orders = InMemoryOrderStore()
++        self.events = InMemoryEventSink()
++        self.service = CheckoutService(
++            InMemoryPricing({"lamp": Decimal("10.00"), "cord": Decimal("2.00")}),
++            self.stock, self.payments, self.shipping, self.orders, self.events,
++        )
++
++    def request(self, key="split", lines=(RequestedLine("lamp", 3), RequestedLine("cord", 2))):
++        return CheckoutRequest(key, "customer", lines, "10 Test Street", "token")
++
++    def test_split_dispatch_groups_every_sku_by_warehouse_and_event_matches_order(self):
++        order = self.service.checkout(self.request())
++        self.assertEqual([(a.warehouse_id, a.sku, a.quantity) for a in order.allocations], [
++            ("north", "lamp", 2), ("north", "cord", 1),
++            ("south", "lamp", 1), ("south", "cord", 1),
++        ])
++        self.assertEqual([(s.warehouse_id, [(a.sku, a.quantity) for a in s.allocations])
++                          for s in order.shipments], [
++            ("north", [("lamp", 2), ("cord", 1)]),
++            ("south", [("lamp", 1), ("cord", 1)]),
++        ])
++        self.assertEqual(len(self.payments.charges), 1)
++        self.assertEqual(order.charge.amount, order.quote.total)
++        data = dict(next(iter(self.events.events.values())).data)
++        self.assertEqual(json.loads(data["allocations"]), [
++            {"warehouse_id": a.warehouse_id, "sku": a.sku, "quantity": a.quantity}
++            for a in order.allocations
++        ])
++        self.assertEqual([(s["warehouse_id"], s["allocations"]) for s in json.loads(data["shipments"])], [
++            ("north", [{"sku": "lamp", "quantity": 2}, {"sku": "cord", "quantity": 1}]),
++            ("south", [{"sku": "lamp", "quantity": 1}, {"sku": "cord", "quantity": 1}]),
++        ])
++        self.assertIs(self.service.checkout(self.request()), order)
++        self.assertEqual(self.shipping.shipment_attempts, 2)
++        with self.assertRaises(IdempotencyConflict):
++            self.service.checkout(self.request(lines=(RequestedLine("lamp", 2),)))
++
++    def test_aggregate_shortage_does_not_mutate_effects(self):
++        before = {name: dict(stock) for name, stock in self.stock.on_hand.items()}
++        with self.assertRaises(OutOfStock):
++            self.service.checkout(self.request(lines=(RequestedLine("lamp", 3), RequestedLine("cord", 5))))
++        self.assertEqual(self.stock.on_hand, before)
++        self.assertFalse(self.stock.reservations)
++        self.assertFalse(self.payments.charges)
++        self.assertFalse(self.shipping.shipments)
++        self.assertFalse(self.orders.orders)
++        self.assertFalse(self.events.events)
++
++    def test_shipment_order_follows_priority_even_when_first_sku_is_only_in_south(self):
++        self.stock.on_hand["north"]["lamp"] = 0
++        order = self.service.checkout(self.request(lines=(RequestedLine("lamp", 1), RequestedLine("cord", 1))))
++        self.assertEqual([shipment.warehouse_id for shipment in order.shipments], ["north", "south"])
++        self.assertEqual([a.sku for a in order.shipments[0].allocations], ["cord"])
++
++    def test_second_dispatch_failure_cancels_first_and_refunds_once(self):
++        self.shipping.fail_on_shipment_number = 2
++        before = {name: dict(stock) for name, stock in self.stock.on_hand.items()}
++        with self.assertRaises(DispatchFailure) as raised:
++            self.service.checkout(self.request())
++        self.assertEqual(len(raised.exception.partial_shipments), 1)
++        self.assertEqual(self.shipping.cancelled, set(self.shipping.shipments))
++        self.assertEqual(self.stock.on_hand, before)
++        charge = next(iter(self.payments.charges.values()))
++        self.assertEqual(self.payments.refunded[charge.charge_id], charge.amount)
++        self.assertEqual(len(self.payments.refunds), 1)
++        self.assertFalse(self.orders.orders)
++        self.assertFalse(self.events.events)
++        self.shipping.fail_on_shipment_number = None
++        order = self.service.checkout(self.request())
++        self.assertEqual(len(order.shipments), 2)
++        self.assertEqual(len(self.payments.charges), 2)
++
++    def test_event_failure_is_retried_without_refulfilment(self):
++        self.events.fail_publish = True
++        order = self.service.checkout(self.request())
++        self.assertEqual(len(self.orders.pending_events()), 1)
++        self.events.fail_publish = False
++        self.assertIs(self.service.checkout(self.request()), order)
++        self.assertEqual(self.shipping.shipment_attempts, 2)
++        self.assertEqual(len(self.payments.charges), 1)
++        self.assertEqual(len(self.events.events), 1)
++
++
++if __name__ == "__main__":
++    unittest.main()

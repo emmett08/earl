@@ -1,0 +1,375 @@
+name: Architecture extension EAL/2 experiment
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/architecture-extension-v2.yml
+      - experiments/architecture_extension_v2/**
+      - src/eal/**
+      - grammar/**
+  workflow_dispatch:
+    inputs:
+      live:
+        description: 'Run fresh agents; selected classes require OPENAI_API_KEY or ANTHROPIC_API_KEY. False replays checks.'
+        type: boolean
+        default: false
+      model_blocks:
+        description: 'JSON blocks: a_class/b_class codex_action or claude_code; A/B may differ; each B pair matches.'
+        type: string
+        default: '[{"id":"same","a_class":"codex_action","b_class":"codex_action","a_model":"gpt-5.4","b_model":"gpt-5.4","a_effort":"high","b_effort":"high"}]'
+      codex_version:
+        description: 'Exact Codex CLI and Responses proxy package version'
+        type: string
+        default: '0.154.0'
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Install EAL and test dependencies
+        run: python -m pip install -e '.[dev]'
+      - name: Validate the language and frozen fixture
+        run: |
+          python -m pytest tests/test_eal2_frontend.py tests/test_aspic_compiler.py
+          python -m pytest experiments/architecture_extension_v2/test_workflow_harness.py
+          PYTHONPATH=experiments/architecture_extension_v2/materials/base \
+            python -m unittest discover -s experiments/architecture_extension_v2/materials/base/tests -v
+          python -m py_compile experiments/architecture_extension_v2/mcp_roundtrip.py experiments/architecture_extension_v2/prepare_trial.py
+      - name: Replay the retained local A and paired B trial
+        run: python experiments/architecture_extension_v2/replay.py --json > "$RUNNER_TEMP/local-replay.json"
+      - name: Exercise actual EAL MCP stdio exchange for Engineer 2
+        run: |
+          python experiments/architecture_extension_v2/mcp_roundtrip.py \
+            --source experiments/architecture_extension_v2/argument.eal \
+            --registry experiments/architecture_extension_v2/eal-tools.toml \
+            --context '{"experiment":"architecture-extension-v2","stage":"pre-A"}' \
+            --goal extension_guidance \
+            --output "$RUNNER_TEMP/pre-a-mcp.json" \
+            --packet "$RUNNER_TEMP/pre-a-packet.json" --compile-aspic
+          python experiments/architecture_extension_v2/metrics/cognitive_complexity.py \
+            experiments/architecture_extension_v2/materials/base/fulfilment \
+            > "$RUNNER_TEMP/baseline-cognitive-complexity.json"
+      - name: Retain the exact MCP messages
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: architecture-v2-pr-mcp-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/pre-a-mcp.json
+            ${{ runner.temp }}/pre-a-packet.json
+            ${{ runner.temp }}/baseline-cognitive-complexity.json
+            ${{ runner.temp }}/local-replay.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  live-a:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.live }}
+    needs: replay
+    strategy:
+      fail-fast: false
+      matrix:
+        block: ${{ fromJSON(inputs.model_blocks) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Check selected model block and credentials
+        env:
+          BLOCK: ${{ toJSON(matrix.block) }}
+          CODEX_VERSION: ${{ inputs.codex_version }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, re
+          block = json.loads(os.environ['BLOCK'])
+          assert set(block) == {'id', 'a_class', 'b_class', 'a_model', 'b_model', 'a_effort', 'b_effort'}
+          assert re.fullmatch(r'[A-Za-z0-9_-]{1,40}', block['id'])
+          classes = {'codex_action', 'claude_code'}
+          assert block['a_class'] in classes and block['b_class'] in classes
+          assert all(isinstance(block[k], str) and re.fullmatch(r'[A-Za-z0-9_.-]{1,80}', block[k])
+                     for k in ('a_model', 'b_model'))
+          assert all(block[k] in {'low', 'medium', 'high', 'xhigh'}
+                     for k in ('a_effort', 'b_effort'))
+          assert re.fullmatch(r'\d+\.\d+\.\d+', os.environ['CODEX_VERSION'])
+          for stage in ('a', 'b'):
+              secret = ('OPENAI_API_KEY' if block[f'{stage}_class'] == 'codex_action'
+                        else 'ANTHROPIC_API_KEY')
+              assert os.environ[secret], f'{secret} is required for the {stage.upper()} stage'
+          PY
+      - name: Install EAL and prepare A with pre-A MCP context
+        run: |
+          python -m pip install -e '.[dev]'
+          mkdir -p "$RUNNER_TEMP/architecture-a"
+          python experiments/architecture_extension_v2/mcp_roundtrip.py \
+            --source experiments/architecture_extension_v2/argument.eal \
+            --registry experiments/architecture_extension_v2/eal-tools.toml \
+            --context '{"experiment":"architecture-extension-v2","stage":"pre-A"}' \
+            --goal extension_guidance \
+            --output "$RUNNER_TEMP/architecture-a/pre-a-mcp.json" \
+            --packet "$RUNNER_TEMP/architecture-a/pre-a-packet.json" --compile-aspic
+          python experiments/architecture_extension_v2/prepare_trial.py prepare \
+            --source experiments/architecture_extension_v2/materials/base \
+            --destination "$RUNNER_TEMP/architecture-a/trial" \
+            --packet "$RUNNER_TEMP/architecture-a/pre-a-packet.json" \
+            --record "$RUNNER_TEMP/architecture-a/preparation.json"
+      - name: Engineer 2 implements feature A (Codex Action)
+        id: codex
+        if: ${{ matrix.block.a_class == 'codex_action' }}
+        uses: openai/codex-action@86365089eb2b84e0a8fb0717b304f8bdcb13b20e # v1
+        continue-on-error: true
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          codex-version: ${{ inputs.codex_version }}
+          model: ${{ matrix.block.a_model }}
+          effort: ${{ matrix.block.a_effort }}
+          permission-profile: ':workspace'
+          codex-args: '["--ephemeral","--json"]'
+          working-directory: ${{ runner.temp }}/architecture-a/trial
+          prompt-file: experiments/architecture_extension_v2/materials/features/feature_a.md
+          output-file: ${{ runner.temp }}/architecture-a/agent-final.txt
+      - name: Engineer 2 implements feature A (Claude Code base action)
+        id: claude
+        if: ${{ matrix.block.a_class == 'claude_code' }}
+        uses: anthropics/claude-code-action/base-action@756cc22e19660d20e8cc9496b4f242475a7f7790 # v1.0.235, Claude Code 2.1.283
+        continue-on-error: true
+        env:
+          CLAUDE_WORKING_DIR: ${{ runner.temp }}/architecture-a/trial
+          ANTHROPIC_MODEL: ${{ matrix.block.a_model }}
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt_file: ${{ github.workspace }}/experiments/architecture_extension_v2/materials/features/feature_a.md
+          claude_args: >-
+            --model ${{ matrix.block.a_model }} --effort ${{ matrix.block.a_effort }}
+            --max-turns 40 --restricted --permission-mode acceptEdits --permission-prompts none
+            --tools Read,Edit,Write,Glob,Grep
+            --allowedTools Read,Edit,Write,Glob,Grep
+            --disallowedTools 'mcp__*'
+            --no-session-persistence
+            --append-system-prompt-file ${{ runner.temp }}/architecture-a/trial/AGENTS.md
+      - name: Retain the Claude Code execution log for A
+        if: ${{ always() && steps.claude.outputs.execution_file != '' }}
+        env:
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+        run: cp "$EXECUTION_FILE" "$RUNNER_TEMP/architecture-a/agent-execution.json"
+      - name: Freeze A source and measure it
+        id: measure
+        if: ${{ always() && (steps.codex.outcome != 'skipped' || steps.claude.outcome != 'skipped') }}
+        run: |
+          python experiments/architecture_extension_v2/prepare_trial.py snapshot \
+            --trial "$RUNNER_TEMP/architecture-a/trial" \
+            --record "$RUNNER_TEMP/architecture-a/preparation.json" \
+            --destination "$RUNNER_TEMP/architecture-a/snapshot" \
+            --manifest "$RUNNER_TEMP/architecture-a/manifest.json"
+          python experiments/architecture_extension_v2/materials/assessor/assess.py \
+            --candidate "$RUNNER_TEMP/architecture-a/snapshot" --stage a --arm a_eal \
+            --output "$RUNNER_TEMP/architecture-a/assessment.json"
+          python experiments/architecture_extension_v2/metrics/cognitive_complexity.py \
+            "$RUNNER_TEMP/architecture-a/snapshot/fulfilment" \
+            --compare-before experiments/architecture_extension_v2/materials/base/fulfilment \
+            > "$RUNNER_TEMP/architecture-a/cognitive-complexity.json"
+          mkdir -p "$RUNNER_TEMP/a-shared"
+          cp -a "$RUNNER_TEMP/architecture-a/snapshot" "$RUNNER_TEMP/a-shared/snapshot"
+          cp "$RUNNER_TEMP/architecture-a/manifest.json" "$RUNNER_TEMP/a-shared/manifest.json"
+        continue-on-error: true
+      - name: Share only A code and its manifest with both B arms
+        if: ${{ steps.measure.outcome == 'success' }}
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: architecture-a-source-${{ matrix.block.id }}
+          path: ${{ runner.temp }}/a-shared/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Retain A attempt, including failures
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: architecture-a-${{ matrix.block.id }}
+          path: ${{ runner.temp }}/architecture-a/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Stop if A or its measurement failed
+        if: >-
+          ${{ (matrix.block.a_class == 'codex_action' && steps.codex.outcome != 'success') ||
+              (matrix.block.a_class == 'claude_code' &&
+                (steps.claude.outcome != 'success' || steps.claude.outputs.conclusion != 'success')) ||
+              steps.measure.outcome != 'success' }}
+        run: exit 1
+
+  live-b:
+    if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.live && needs.replay.result == 'success' }}
+    needs: [replay, live-a]
+    strategy:
+      fail-fast: false
+      matrix:
+        block: ${{ fromJSON(inputs.model_blocks) }}
+        arm: [control, treatment]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Retrieve exact A snapshot
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: architecture-a-source-${{ matrix.block.id }}
+          path: ${{ runner.temp }}/architecture-b/a-artifact
+      - name: Prepare identical B starts and record MCP acquisition
+        env:
+          ARM: ${{ matrix.arm }}
+        run: |
+          python -m pip install -e '.[dev]'
+          mkdir -p "$RUNNER_TEMP/architecture-b/preflight"
+          python experiments/architecture_extension_v2/mcp_roundtrip.py \
+            --source experiments/architecture_extension_v2/argument.eal \
+            --registry experiments/architecture_extension_v2/eal-tools.toml \
+            --context '{"experiment":"architecture-extension-v2","stage":"pre-A"}' \
+            --goal extension_guidance \
+            --output "$RUNNER_TEMP/architecture-b/preflight/pre-b-mcp.json" \
+            --packet "$RUNNER_TEMP/architecture-b/preflight/pre-b-packet.json" --compile-aspic
+          if [ "$ARM" = treatment ]; then
+            python experiments/architecture_extension_v2/prepare_trial.py prepare \
+              --source "$RUNNER_TEMP/architecture-b/a-artifact/snapshot" \
+              --expected-source "$RUNNER_TEMP/architecture-b/a-artifact/manifest.json" \
+              --destination "$RUNNER_TEMP/architecture-b/trial" \
+              --packet "$RUNNER_TEMP/architecture-b/preflight/pre-b-packet.json" \
+              --record "$RUNNER_TEMP/architecture-b/preparation.json"
+          else
+            python experiments/architecture_extension_v2/prepare_trial.py prepare \
+              --source "$RUNNER_TEMP/architecture-b/a-artifact/snapshot" \
+              --expected-source "$RUNNER_TEMP/architecture-b/a-artifact/manifest.json" \
+              --destination "$RUNNER_TEMP/architecture-b/trial" \
+              --record "$RUNNER_TEMP/architecture-b/preparation.json"
+          fi
+      - name: Retain host MCP preflight separately
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: architecture-b-preflight-${{ matrix.block.id }}-${{ matrix.arm }}
+          path: ${{ runner.temp }}/architecture-b/preflight/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Remove host transcript from coding agent's local tree
+        run: rm -rf "$RUNNER_TEMP/architecture-b/preflight"
+      - name: Engineer 3 implements feature B (Codex Action)
+        id: codex
+        if: ${{ matrix.block.b_class == 'codex_action' }}
+        uses: openai/codex-action@86365089eb2b84e0a8fb0717b304f8bdcb13b20e # v1
+        continue-on-error: true
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          codex-version: ${{ inputs.codex_version }}
+          model: ${{ matrix.block.b_model }}
+          effort: ${{ matrix.block.b_effort }}
+          permission-profile: ':workspace'
+          codex-args: '["--ephemeral","--json"]'
+          working-directory: ${{ runner.temp }}/architecture-b/trial
+          prompt-file: experiments/architecture_extension_v2/materials/features/feature_b.md
+          output-file: ${{ runner.temp }}/architecture-b/agent-final.txt
+      - name: Engineer 3 implements feature B (Claude Code base action)
+        id: claude
+        if: ${{ matrix.block.b_class == 'claude_code' }}
+        uses: anthropics/claude-code-action/base-action@756cc22e19660d20e8cc9496b4f242475a7f7790 # v1.0.235, Claude Code 2.1.283
+        continue-on-error: true
+        env:
+          CLAUDE_WORKING_DIR: ${{ runner.temp }}/architecture-b/trial
+          ANTHROPIC_MODEL: ${{ matrix.block.b_model }}
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt_file: ${{ github.workspace }}/experiments/architecture_extension_v2/materials/features/feature_b.md
+          claude_args: >-
+            --model ${{ matrix.block.b_model }} --effort ${{ matrix.block.b_effort }}
+            --max-turns 40 --restricted --permission-mode acceptEdits --permission-prompts none
+            --tools Read,Edit,Write,Glob,Grep
+            --allowedTools Read,Edit,Write,Glob,Grep
+            --disallowedTools 'mcp__*'
+            --no-session-persistence
+            --append-system-prompt-file ${{ runner.temp }}/architecture-b/trial/AGENTS.md
+      - name: Retain the Claude Code execution log for B
+        if: ${{ always() && steps.claude.outputs.execution_file != '' }}
+        env:
+          EXECUTION_FILE: ${{ steps.claude.outputs.execution_file }}
+        run: cp "$EXECUTION_FILE" "$RUNNER_TEMP/architecture-b/agent-execution.json"
+      - name: Freeze B source and measure it
+        id: measure
+        if: ${{ always() && (steps.codex.outcome != 'skipped' || steps.claude.outcome != 'skipped') }}
+        run: |
+          python experiments/architecture_extension_v2/prepare_trial.py snapshot \
+            --trial "$RUNNER_TEMP/architecture-b/trial" \
+            --record "$RUNNER_TEMP/architecture-b/preparation.json" \
+            --destination "$RUNNER_TEMP/architecture-b/snapshot" \
+            --manifest "$RUNNER_TEMP/architecture-b/manifest.json"
+          python experiments/architecture_extension_v2/materials/assessor/assess.py \
+            --candidate "$RUNNER_TEMP/architecture-b/snapshot" --stage b --arm '${{ matrix.arm }}' \
+            --output "$RUNNER_TEMP/architecture-b/assessment.json"
+          python experiments/architecture_extension_v2/metrics/cognitive_complexity.py \
+            "$RUNNER_TEMP/architecture-b/snapshot/fulfilment" \
+            --compare-before "$RUNNER_TEMP/architecture-b/a-artifact/snapshot/fulfilment" \
+            > "$RUNNER_TEMP/architecture-b/cognitive-complexity.json"
+        continue-on-error: true
+      - name: Retain the complete B attempt
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: architecture-b-${{ matrix.block.id }}-${{ matrix.arm }}
+          path: ${{ runner.temp }}/architecture-b/
+          if-no-files-found: error
+          retention-days: 30
+      - name: Stop if model invocation failed
+        if: >-
+          ${{ (matrix.block.b_class == 'codex_action' && steps.codex.outcome != 'success') ||
+              (matrix.block.b_class == 'claude_code' &&
+                (steps.claude.outcome != 'success' || steps.claude.outputs.conclusion != 'success')) ||
+              steps.measure.outcome != 'success' }}
+        run: exit 1
+
+  compare:
+    if: ${{ always() && github.event_name == 'workflow_dispatch' && inputs.live && needs.replay.result == 'success' }}
+    needs: [replay, live-b]
+    strategy:
+      fail-fast: false
+      matrix:
+        block: ${{ fromJSON(inputs.model_blocks) }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          pattern: architecture-b-${{ matrix.block.id }}-*
+          path: ${{ runner.temp }}/paired
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          pattern: architecture-b-preflight-${{ matrix.block.id }}-*
+          path: ${{ runner.temp }}/preflight
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        with:
+          name: architecture-a-${{ matrix.block.id }}
+          path: ${{ runner.temp }}/a-artifact
+      - name: Verify common B start and assemble observed pair
+        env:
+          BLOCK: ${{ toJSON(matrix.block) }}
+          CODEX_VERSION: ${{ inputs.codex_version }}
+        run: |
+          python experiments/architecture_extension_v2/compare_live.py \
+            --directory "$RUNNER_TEMP/paired" \
+            --preflight-directory "$RUNNER_TEMP/preflight" \
+            --a-artifact "$RUNNER_TEMP/a-artifact" \
+            --block "$BLOCK" --codex-version "$CODEX_VERSION" \
+            --output "$RUNNER_TEMP/pair.json"
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: architecture-pair-${{ matrix.block.id }}
+          path: ${{ runner.temp }}/pair.json
+          retention-days: 30

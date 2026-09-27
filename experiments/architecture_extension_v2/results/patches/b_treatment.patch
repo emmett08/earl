@@ -1,0 +1,404 @@
+--- a/ARCHITECTURE.md
++++ b/ARCHITECTURE.md
+@@ -11,3 +11,5 @@
+ If capture, dispatch or order storage fails, the service reverses completed shipment, charge and reservation operations in that order. A failed compensation raises `CompensationFailure` with the original failure and the failed compensations for explicit reconciliation. The carrier raises `DispatchFailure` containing every shipment completed before a later warehouse fails; the service cancels those receipts. The in-memory carrier has a `fail_on_shipment_number` injection seam for testing this contract. Once the order and outbox event have been stored, event delivery failure does not undo the purchase. Pending events retain insertion order for later retry; the sink deduplicates event identifiers.
+ 
+ Run the baseline from this directory with `python -m unittest discover -s tests -v`. The in-memory adapters deliberately expose effects and injectable failures for reproducible assessment; they are not production persistence, payment or carrier integrations.
++
++After dispatch, `return_items` validates each requested shipment and SKU against the immutable order, including aggregate quantities when a request repeats a shipment line. It calculates the refund from the original quoted unit price and tax. The order store tracks returned quantities by order, shipment and SKU; it also counts successful refunds awaiting final return storage so another request cannot claim those units. The payment refund and warehouse restoration use a stable return operation key, making retries safe after either stock restoration or order storage fails. A failed refund leaves stock and completed returns alone. The return record and `ItemsReturned` event enter the order store together, and event publication uses the same ordered outbox as checkout. These in-memory operations assume sequential calls; a concurrent or distributed implementation must enforce the returned-quantity claim and transaction boundary atomically.
+--- a/fulfilment/__init__.py
++++ b/fulfilment/__init__.py
+@@ -3,7 +3,7 @@
+ from .domain import (
+     Allocation, Charge, CheckoutRequest, CompensationFailure, DispatchFailure, Event,
+     FulfilmentError, IdempotencyConflict, Order, OutOfStock, Quote, QuotedLine,
+-    RequestedLine, Reservation, Shipment,
++    RequestedLine, Reservation, ReturnLine, ReturnReceipt, Shipment,
+ )
+ from .memory import (
+     InMemoryEventSink, InMemoryOrderStore, InMemoryPayments, InMemoryPricing,
+@@ -16,5 +16,5 @@
+     "Event", "FulfilmentError", "IdempotencyConflict", "InMemoryEventSink",
+     "InMemoryOrderStore", "InMemoryPayments", "InMemoryPricing", "InMemoryShipping",
+     "InMemoryStock", "Order", "OutOfStock", "Quote", "QuotedLine", "RequestedLine",
+-    "Reservation", "Shipment",
++    "Reservation", "ReturnLine", "ReturnReceipt", "Shipment",
+ ]
+--- a/fulfilment/domain.py
++++ b/fulfilment/domain.py
+@@ -129,6 +129,24 @@
+ 
+ 
+ @dataclass(frozen=True)
++class ReturnLine:
++    shipment_id: str
++    sku: str
++    quantity: int
++
++    def __post_init__(self) -> None:
++        if not self.shipment_id or not self.sku or type(self.quantity) is not int or self.quantity <= 0:
++            raise ValueError("a return line needs a shipment, SKU and positive integer quantity")
++
++
++@dataclass(frozen=True)
++class ReturnReceipt:
++    return_request_id: str
++    refunded_amount: Decimal
++    lines: tuple[ReturnLine, ...]
++
++
++@dataclass(frozen=True)
+ class Event:
+     event_id: str
+     name: str
+--- a/fulfilment/memory.py
++++ b/fulfilment/memory.py
+@@ -7,7 +7,7 @@
+ 
+ from .domain import (
+     CENT, Allocation, Charge, DispatchFailure, Event, IdempotencyConflict, Order, OutOfStock,
+-    Quote, QuotedLine, RequestedLine, Reservation, Shipment,
++    Quote, QuotedLine, RequestedLine, Reservation, ReturnLine, ReturnReceipt, Shipment,
+ )
+ 
+ 
+@@ -72,6 +72,8 @@
+         self.reservations: dict[str, Reservation] = {}
+         self.reservation_lines: dict[str, tuple[RequestedLine, ...]] = {}
+         self.fail_release = False
++        self.fail_restore = False
++        self.restorations: dict[str, tuple[Allocation, ...]] = {}
+ 
+     def reserve(self, lines: tuple[RequestedLine, ...], key: str) -> Reservation:
+         existing = self.reservations.get(key)
+@@ -116,6 +118,22 @@
+         del self.reservations[key]
+         del self.reservation_lines[key]
+ 
++    def restore(self, allocations: tuple[Allocation, ...], key: str) -> None:
++        previous = self.restorations.get(key)
++        if previous is not None:
++            if previous != allocations:
++                raise IdempotencyConflict(key)
++            return
++        if self.fail_restore:
++            raise RuntimeError("stock restoration failed")
++        if any(a.warehouse_id not in self.on_hand_by_warehouse or a.quantity <= 0
++               or a.sku not in self.on_hand_by_warehouse[a.warehouse_id] for a in allocations):
++            raise ValueError("unknown stock allocation")
++        for allocation in allocations:
++            warehouse = self.on_hand_by_warehouse[allocation.warehouse_id]
++            warehouse[allocation.sku] += allocation.quantity
++        self.restorations[key] = allocations
++
+ 
+ class InMemoryPayments:
+     def __init__(self) -> None:
+@@ -152,8 +170,8 @@
+             return
+         if charge.charge_id not in self.charges:
+             raise ValueError("unknown charge")
+-        if amount <= 0 or amount != amount.quantize(CENT) or self.refunded[charge.charge_id] + amount > charge.amount:
+-            raise ValueError("refund exceeds captured amount or is not whole-cent positive")
++        if amount < 0 or amount != amount.quantize(CENT) or self.refunded[charge.charge_id] + amount > charge.amount:
++            raise ValueError("refund exceeds captured amount or is not a nonnegative whole-cent amount")
+         self.refunded[charge.charge_id] += amount
+         self.refunds[key] = (charge.charge_id, amount)
+ 
+@@ -206,6 +224,11 @@
+         self.attempts: dict[str, int] = {}
+         self.outbox: OrderedDict[str, Event] = OrderedDict()
+         self.fail_save = False
++        self.fail_save_return = False
++        self.returns: dict[str, tuple[str, str, ReturnReceipt]] = {}
++        self.return_intents: dict[str, tuple[str, str, tuple[ReturnLine, ...]]] = {}
++        self.refunded_returns: set[str] = set()
++        self.returned_quantities: dict[tuple[str, str, str], int] = {}
+ 
+     def get(self, request_id: str) -> Order | None:
+         return self.orders.get(request_id)
+@@ -228,6 +251,54 @@
+         self.orders[order.request_id] = order
+         self.outbox.update((event.event_id, event) for event in events)
+ 
++    def get_return(self, return_request_id: str) -> tuple[str, str, ReturnReceipt] | None:
++        return self.returns.get(return_request_id)
++
++    def begin_return(self, order_request_id: str, return_request_id: str,
++                     lines: tuple[ReturnLine, ...], fingerprint: str) -> None:
++        current = self.return_intents.get(return_request_id)
++        if current is not None:
++            if current != (order_request_id, fingerprint, lines):
++                raise IdempotencyConflict(return_request_id)
++            return
++        self.return_intents[return_request_id] = (order_request_id, fingerprint, lines)
++
++    def returned_quantity(self, order_request_id: str, shipment_id: str, sku: str,
++                          excluding_request_id: str = "") -> int:
++        key = (order_request_id, shipment_id, sku)
++        committed = self.returned_quantities.get(key, 0)
++        pending = sum(
++            line.quantity
++            for request_id in self.refunded_returns
++            if request_id not in self.returns and request_id != excluding_request_id
++            for intent_order, _, lines in (self.return_intents[request_id],)
++            if intent_order == order_request_id
++            for line in lines if (line.shipment_id, line.sku) == (shipment_id, sku)
++        )
++        return committed + pending
++
++    def mark_refunded(self, return_request_id: str) -> None:
++        self.refunded_returns.add(return_request_id)
++
++    def save_return(self, order_request_id: str, fingerprint: str, receipt: ReturnReceipt,
++                    event: Event) -> None:
++        if self.fail_save or self.fail_save_return:
++            raise RuntimeError("return transaction failed")
++        request_id = receipt.return_request_id
++        if (self.return_intents.get(request_id) != (order_request_id, fingerprint, receipt.lines)
++                or request_id not in self.refunded_returns or request_id in self.returns
++                or event.event_id in self.outbox):
++            raise IdempotencyConflict(request_id)
++        increments: dict[tuple[str, str, str], int] = {}
++        for line in receipt.lines:
++            key = (order_request_id, line.shipment_id, line.sku)
++            increments[key] = increments.get(key, 0) + line.quantity
++        for key, quantity in increments.items():
++            self.returned_quantities[key] = self.returned_quantities.get(key, 0) + quantity
++        self.returns[request_id] = (order_request_id, fingerprint, receipt)
++        self.refunded_returns.remove(request_id)
++        self.outbox[event.event_id] = event
++
+     def pending_events(self) -> tuple[Event, ...]:
+         return tuple(self.outbox.values())
+ 
+--- a/fulfilment/ports.py
++++ b/fulfilment/ports.py
+@@ -5,7 +5,7 @@
+ from decimal import Decimal
+ from typing import Protocol
+ 
+-from .domain import Charge, Event, Order, Quote, RequestedLine, Reservation, Shipment
++from .domain import Allocation, Charge, Event, Order, Quote, RequestedLine, Reservation, ReturnLine, ReturnReceipt, Shipment
+ 
+ 
+ class PricingPort(Protocol):
+@@ -15,6 +15,7 @@
+ class StockPort(Protocol):
+     def reserve(self, lines: tuple[RequestedLine, ...], key: str) -> Reservation: ...
+     def release(self, reservation: Reservation) -> None: ...
++    def restore(self, allocations: tuple[Allocation, ...], key: str) -> None: ...
+ 
+ 
+ class PaymentPort(Protocol):
+@@ -33,6 +34,14 @@
+     def get(self, request_id: str) -> Order | None: ...
+     def begin_attempt(self, request_id: str, fingerprint: str) -> int: ...
+     def save(self, order: Order, events: tuple[Event, ...]) -> None: ...
++    def get_return(self, return_request_id: str) -> tuple[str, str, ReturnReceipt] | None: ...
++    def begin_return(self, order_request_id: str, return_request_id: str,
++                     lines: tuple[ReturnLine, ...], fingerprint: str) -> None: ...
++    def returned_quantity(self, order_request_id: str, shipment_id: str, sku: str,
++                          excluding_request_id: str = "") -> int: ...
++    def mark_refunded(self, return_request_id: str) -> None: ...
++    def save_return(self, order_request_id: str, fingerprint: str, receipt: ReturnReceipt,
++                    event: Event) -> None: ...
+     def pending_events(self) -> tuple[Event, ...]: ...
+     def ack(self, event_id: str) -> None: ...
+ 
+--- a/fulfilment/service.py
++++ b/fulfilment/service.py
+@@ -4,6 +4,9 @@
+ 
+ import hashlib
+ import json
++from collections import defaultdict
++
++from .domain import Allocation, ReturnLine, ReturnReceipt
+ 
+ from .domain import (
+     CheckoutRequest, CompensationFailure, DispatchFailure, Event, IdempotencyConflict, Order,
+@@ -116,3 +119,73 @@
+             self.orders.ack(event.event_id)
+             count += 1
+         return count
++
++    def return_items(
++        self, order_request_id: str, return_request_id: str, lines: tuple[ReturnLine, ...],
++    ) -> ReturnReceipt:
++        if not order_request_id or not return_request_id or not isinstance(lines, tuple) or not lines:
++            raise ValueError("return needs an order, request ID and nonempty tuple of lines")
++        if any(not isinstance(line, ReturnLine) or type(line.quantity) is not int or line.quantity <= 0
++               for line in lines):
++            raise ValueError("return quantities must be positive whole units")
++        fingerprint = hashlib.sha256(json.dumps(
++            [order_request_id, [(line.shipment_id, line.sku, line.quantity) for line in lines]],
++            separators=(",", ":"), ensure_ascii=False,
++        ).encode("utf-8")).hexdigest()
++        previous = self.orders.get_return(return_request_id)
++        if previous is not None:
++            if previous[:2] != (order_request_id, fingerprint):
++                raise IdempotencyConflict(return_request_id)
++            self.retry_events()
++            return previous[2]
++
++        order = self.orders.get(order_request_id)
++        if order is None or order.status != "dispatched":
++            raise ValueError("unknown or unfulfilled order")
++        shipments = {shipment.shipment_id: shipment for shipment in order.shipments}
++        quoted = {line.sku: line for line in order.quote.lines}
++        requested: dict[tuple[str, str], int] = defaultdict(int)
++        for line in lines:
++            shipment = shipments.get(line.shipment_id)
++            if shipment is None:
++                raise ValueError("unknown shipment")
++            if line.sku not in {a.sku for a in shipment.allocations}:
++                raise ValueError("SKU does not match shipment")
++            requested[(line.shipment_id, line.sku)] += line.quantity
++        for (shipment_id, sku), quantity in requested.items():
++            shipped = sum(a.quantity for a in shipments[shipment_id].allocations if a.sku == sku)
++            returned = self.orders.returned_quantity(
++                order_request_id, shipment_id, sku, excluding_request_id=return_request_id,
++            )
++            if returned + quantity > shipped:
++                raise ValueError("return exceeds shipped quantity")
++
++        amount = sum(
++            ((quoted[line.sku].unit_price + quoted[line.sku].unit_tax) * line.quantity
++             for line in lines),
++            start=order.quote.total * 0,
++        )
++        receipt = ReturnReceipt(return_request_id, amount, lines)
++        allocations = tuple(Allocation(sku, quantity, shipments[shipment_id].warehouse_id)
++                            for (shipment_id, sku), quantity in requested.items())
++        self.orders.begin_return(order_request_id, return_request_id, lines, fingerprint)
++        operation_key = "return:" + hashlib.sha256(return_request_id.encode("utf-8")).hexdigest()
++        # Each port deduplicates this operation key. In particular, a later stock
++        # or store failure must never lead to a second payment refund.
++        self.payments.refund(order.charge, amount, operation_key)
++        self.orders.mark_refunded(return_request_id)
++        self.stock.restore(allocations, operation_key)
++        event = Event(
++            event_id=f"{order.order_id}:return:{hashlib.sha256(return_request_id.encode()).hexdigest()}",
++            name="ItemsReturned", order_id=order.order_id,
++            data=(("return_request_id", return_request_id), ("refunded_amount", str(amount)),
++                  ("allocations", json.dumps([
++                      {"shipment_id": shipment_id,
++                       "warehouse_id": shipments[shipment_id].warehouse_id,
++                       "sku": sku, "quantity": quantity}
++                      for (shipment_id, sku), quantity in requested.items()
++                  ]))),
++        )
++        self.orders.save_return(order_request_id, fingerprint, receipt, event)
++        self.retry_events()
++        return receipt
+--- a/tests/test_returns.py
++++ b/tests/test_returns.py
+@@ -0,0 +1,107 @@
++"""Partial returns across shipments and retry boundaries."""
++
++import json
++import unittest
++from decimal import Decimal
++
++from fulfilment import (
++    CheckoutRequest, CheckoutService, IdempotencyConflict, InMemoryEventSink,
++    InMemoryOrderStore, InMemoryPayments, InMemoryPricing, InMemoryShipping,
++    InMemoryStock, RequestedLine, ReturnLine,
++)
++
++
++class ReturnTest(unittest.TestCase):
++    def setUp(self):
++        self.stock = InMemoryStock({"north": {"lamp": 2}, "south": {"lamp": 1}},
++                                   priorities=("north", "south"))
++        self.payments = InMemoryPayments()
++        self.orders = InMemoryOrderStore()
++        self.events = InMemoryEventSink()
++        self.service = CheckoutService(InMemoryPricing({"lamp": Decimal("10.00")}),
++                                       self.stock, self.payments, InMemoryShipping(),
++                                       self.orders, self.events)
++        self.order = self.service.checkout(CheckoutRequest(
++            "purchase", "customer", (RequestedLine("lamp", 3),), "address", "token"))
++        self.north, self.south = (s.shipment_id for s in self.order.shipments)
++
++    def test_partial_return_restores_origin_and_replay_does_not_repeat_effects(self):
++        lines = (ReturnLine(self.north, "lamp", 1), ReturnLine(self.south, "lamp", 1))
++        receipt = self.service.return_items("purchase", "return-1", lines)
++        self.assertEqual(receipt.refunded_amount, Decimal("24.00"))
++        self.assertEqual(self.stock.on_hand, {"north": {"lamp": 1}, "south": {"lamp": 1}})
++        self.assertEqual(self.payments.refunded[self.order.charge.charge_id], Decimal("24.00"))
++        self.assertIs(self.service.return_items("purchase", "return-1", lines), receipt)
++        self.assertEqual(len(self.payments.refunds), 1)
++        self.assertEqual(len(self.stock.restorations), 1)
++        event = list(self.events.events.values())[-1]
++        self.assertEqual(event.name, "ItemsReturned")
++        self.assertEqual(dict(event.data)["return_request_id"], "return-1")
++        self.assertEqual([a["warehouse_id"] for a in json.loads(dict(event.data)["allocations"])],
++                         ["north", "south"])
++        self.assertIs(self.orders.get("purchase"), self.order)
++        self.service.return_items("purchase", "return-2", (ReturnLine(self.north, "lamp", 1),))
++        self.assertEqual(self.payments.refunded[self.order.charge.charge_id], self.order.charge.amount)
++        self.assertEqual(self.orders.returned_quantities[("purchase", self.north, "lamp")], 2)
++
++    def test_invalid_returns_have_no_effects(self):
++        bad = (("absent", "x", (ReturnLine(self.north, "lamp", 1),)),
++               ("purchase", "x", (ReturnLine("missing", "lamp", 1),)),
++               ("purchase", "x", (ReturnLine(self.north, "cord", 1),)),
++               ("purchase", "x", (ReturnLine(self.north, "lamp", 2),
++                                  ReturnLine(self.north, "lamp", 1))))
++        for args in bad:
++            with self.subTest(args=args), self.assertRaises(ValueError):
++                self.service.return_items(*args)
++        self.assertEqual(self.stock.on_hand, {"north": {"lamp": 0}, "south": {"lamp": 0}})
++        self.assertFalse(self.payments.refunds)
++        self.assertFalse(self.orders.returns)
++        self.assertEqual(len(self.events.events), 1)
++        with self.assertRaises(ValueError):
++            ReturnLine(self.north, "lamp", 0)
++
++    def test_refund_failure_and_later_step_failure(self):
++        line = (ReturnLine(self.north, "lamp", 1),)
++        self.payments.fail_refund = True
++        with self.assertRaisesRegex(RuntimeError, "refund failed"):
++            self.service.return_items("purchase", "return-1", line)
++        self.assertFalse(self.orders.returns)
++        self.assertFalse(self.stock.restorations)
++        self.assertEqual(self.stock.on_hand["north"]["lamp"], 0)
++        self.payments.fail_refund = False
++        self.orders.fail_save_return = True
++        with self.assertRaisesRegex(RuntimeError, "return transaction failed"):
++            self.service.return_items("purchase", "return-1", line)
++        self.assertEqual(self.stock.on_hand["north"]["lamp"], 1)
++        self.assertFalse(self.orders.returns)
++        with self.assertRaises(ValueError):
++            self.service.return_items("purchase", "return-2", (ReturnLine(self.north, "lamp", 2),))
++        self.orders.fail_save_return = False
++        self.assertEqual(self.service.return_items("purchase", "return-1", line).refunded_amount,
++                         Decimal("12.00"))
++        self.assertEqual(len(self.payments.refunds), 1)
++        self.assertEqual(self.stock.on_hand["north"]["lamp"], 1)
++        with self.assertRaises(IdempotencyConflict):
++            self.service.return_items("purchase", "return-1", (ReturnLine(self.south, "lamp", 1),))
++
++    def test_stock_failure_and_event_delivery_retry(self):
++        line = (ReturnLine(self.south, "lamp", 1),)
++        self.stock.fail_restore = True
++        with self.assertRaisesRegex(RuntimeError, "restoration failed"):
++            self.service.return_items("purchase", "return-1", line)
++        self.assertEqual(self.stock.on_hand["south"]["lamp"], 0)
++        self.assertEqual(len(self.payments.refunds), 1)
++        self.stock.fail_restore = False
++        self.events.fail_publish = True
++        self.service.return_items("purchase", "return-1", line)
++        self.assertEqual(len(self.orders.pending_events()), 1)
++        self.events.fail_publish = False
++        self.service.return_items("purchase", "return-1", line)
++        self.assertEqual(len(self.payments.refunds), 1)
++        self.assertEqual(len(self.stock.restorations), 1)
++        self.assertFalse(self.orders.pending_events())
++        self.assertEqual(len(self.events.events), 2)
++
++
++if __name__ == "__main__":
++    unittest.main()

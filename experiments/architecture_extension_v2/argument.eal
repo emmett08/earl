@@ -1,0 +1,181 @@
+// Engineer 1's pre-A argument. Its context and observations identify only the
+// frozen baseline. Engineer 3 receives the same source after A and must inspect
+// the then-current code; no claim below certifies the unobserved A snapshot.
+// "Should" states a defeasible design recommendation, not a universal rule.
+language "EAL/2";
+
+environment fulfilment_baseline {
+  require "experiment" == "architecture-extension-v2";
+  require "stage" == "pre-A";
+}
+
+tool baseline_probe { version "1"; }
+tool cognitive_complexity { version "1"; }
+
+// Opposed predicates use one observation identity. A failed check is a
+// recorded negative finding, never inferred from a missing observation.
+evidence stage_pass {
+  tool baseline_probe; kind test; environment fulfilment_baseline; max_age 2592000;
+  input {"check_id":"stage_contract"};
+  require "passed" == true;
+}
+evidence stage_fail {
+  tool baseline_probe; kind test; environment fulfilment_baseline; max_age 2592000;
+  input {"check_id":"stage_contract"};
+  require "passed" == false;
+}
+evidence ports_pass {
+  tool baseline_probe; kind inspection; environment fulfilment_baseline; max_age 2592000;
+  input {"check_id":"ports"};
+  require "passed" == true;
+}
+evidence ports_fail {
+  tool baseline_probe; kind inspection; environment fulfilment_baseline; max_age 2592000;
+  input {"check_id":"ports"};
+  require "passed" == false;
+}
+evidence rollback_idempotency_pass {
+  tool baseline_probe; kind test; environment fulfilment_baseline; max_age 2592000;
+  input {"check_id":"rollback_idempotency"};
+  require "passed" == true;
+}
+evidence complexity_baseline {
+  tool cognitive_complexity; kind metric; environment fulfilment_baseline; max_age 2592000;
+  input {"path":"experiments/architecture_extension_v2/materials/base/fulfilment","max_function_score":15};
+  require "schema" == "python-cognitive-complexity/1";
+  require "function_count" >= 1;
+}
+// The protocol does not include a subsequent maintenance episode at pre-A.
+// This is a design limitation, not a negative future outcome.
+evidence no_longitudinal_observation {
+  tool baseline_probe; kind study_design; environment fulfilment_baseline; max_age 2592000;
+  input {"design_flag":"longitudinal_followup"};
+  require "passed" == false;
+}
+
+reasoning recorded_verdict {
+  method "structured/1";
+  rationale "The claim reports exactly the matching Boolean result from the pinned baseline probe. It does not assert that a syntactic check proves all architecture properties.";
+}
+reasoning observed_metric {
+  method "structured/1";
+  rationale "A measured Python control-flow score exists for the baseline production package. Per-function scores and threshold breaches are descriptive; a total can change when functions are split or moved, and no score here measures coupling, duplication, dead code, change effort or future debt.";
+}
+reasoning extension_decision {
+  method "structured/1";
+  rationale "The baseline has one CheckoutService coordinating quote, stock reservation, capture, shipment, atomic order-and-outbox save, and event retry through explicit ports. For a functional or non-functional change, first compare its requirements with those boundaries and invariants. Preserve the single business lifecycle where applicable; if a material requirement does not fit, change the shared domain/port contract and its dependent implementations together. SOLID principles and strategy/adapter patterns help separate varying effects and responsibilities only where that separation earns its complexity. Verify failure, compensation, idempotency, event delivery, performance and other affected qualities for the changed scope; search for redundant routes and unreachable remnants. Reinspect the current code at each later session because this baseline may become stale.";
+}
+reasoning maintenance_mechanism {
+  method "structured/1";
+  rationale "Repeatedly using one maintained lifecycle and reviewed extension seams can reduce duplicated maintenance sites, conflicting behaviour and architectural drift during comparable later changes. This is a conditional mechanism, not an observed causal effect. It depends on later agents retrieving and applying current guidance, reviewers finding inappropriate abstractions, suitable tests, and repeated tasks; a single implementation does not measure future debt.";
+}
+reasoning uncertainty_scope {
+  method "structured/1";
+  rationale "The experiment's pre-A design has no follow-up maintenance episode. Absence of such an observation blocks an empirical debt conclusion while leaving a conditional design hypothesis open.";
+}
+reasoning diagnostic_use {
+  method "structured/1";
+  rationale "Cognitive complexity records control-flow burden for this Python scope. Compare pinned per-function distributions and changed functions across snapshots as a diagnostic alongside path duplication, unused-code review, coupling, invariant regressions and later rework; do not use a score threshold as a pass/fail architecture or debt verdict.";
+}
+
+claim stage_report_pass {
+  statement "The identified pre-A baseline probe records the declared checkout stage contract as passed.";
+  environment fulfilment_baseline;
+}
+claim stage_report_fail {
+  statement "The identified pre-A baseline probe records the declared checkout stage contract as failed.";
+  environment fulfilment_baseline;
+}
+claim ports_report_pass {
+  statement "The identified pre-A baseline probe records the six declared ports as present.";
+  environment fulfilment_baseline;
+}
+claim ports_report_fail {
+  statement "The identified pre-A baseline probe records the six declared ports as absent or mismatched.";
+  environment fulfilment_baseline;
+}
+claim rollback_report_pass {
+  statement "The pre-A baseline's designated rollback and idempotency tests passed.";
+  environment fulfilment_baseline;
+}
+claim complexity_measured {
+  statement "The Python production-package cognitive complexity baseline has been measured, with per-function records; the score is a partial control-flow descriptor.";
+  environment fulfilment_baseline;
+}
+claim extension_guidance {
+  statement "For subsequent functional and non-functional changes to this fulfilment system, inspect the current architecture and affected invariants; extend suitable existing ports and the one order lifecycle, or refactor shared contracts and all dependent paths when requirements materially exceed them. Apply SOLID and design patterns where they simplify change, test the affected qualities, and remove bypasses or unreachable remnants. Reassess this guidance against the current code each time.";
+  environment fulfilment_baseline;
+}
+claim debt_risk_may_fall {
+  statement "If later comparable changes repeatedly follow an appropriate shared lifecycle with current-code review, duplicate maintenance sites, drift and associated future debt may be reduced relative to independent paths; this experiment has not measured that outcome.";
+  environment fulfilment_baseline;
+}
+claim metric_diagnostic_only {
+  statement "Cognitive complexity is a bounded supplementary diagnostic for this Python package; it alone neither establishes the extension architecture nor measures future technical debt.";
+  environment fulfilment_baseline;
+}
+claim followup_absent {
+  statement "At pre-A there is no later maintenance episode from which to estimate future debt, change effort or longitudinal drift.";
+  environment fulfilment_baseline;
+}
+
+argument observed_stage_pass {
+  conclusion stage_report_pass; reasoning recorded_verdict; evidence stage_pass;
+}
+argument observed_stage_fail {
+  conclusion stage_report_fail; reasoning recorded_verdict; evidence stage_fail;
+}
+argument observed_ports_pass {
+  conclusion ports_report_pass; reasoning recorded_verdict; evidence ports_pass;
+}
+argument observed_ports_fail {
+  conclusion ports_report_fail; reasoning recorded_verdict; evidence ports_fail;
+}
+argument observed_rollback {
+  conclusion rollback_report_pass; reasoning recorded_verdict; evidence rollback_idempotency_pass;
+}
+argument observed_complexity {
+  conclusion complexity_measured; reasoning observed_metric; evidence complexity_baseline;
+}
+argument guidance_from_baseline {
+  conclusion extension_guidance; reasoning extension_decision;
+  premises stage_report_pass, ports_report_pass, rollback_report_pass;
+}
+argument conditional_debt_forecast {
+  conclusion debt_risk_may_fall; reasoning maintenance_mechanism;
+  premises extension_guidance, stage_report_pass;
+}
+argument bounded_metric_use {
+  conclusion metric_diagnostic_only; reasoning diagnostic_use;
+  premises complexity_measured;
+}
+argument observed_followup_gap {
+  conclusion followup_absent; reasoning uncertainty_scope;
+  evidence no_longitudinal_observation;
+}
+
+// A failed contract/port observation undercuts applying this baseline design.
+// It need not prove an alternative architecture better. A different or now
+// unsuitable architecture is a live possibility requiring current-code review.
+objection stage_mismatch {
+  target argument guidance_from_baseline; premises stage_report_fail;
+}
+objection ports_mismatch {
+  target argument guidance_from_baseline; premises ports_report_fail;
+}
+// The missing follow-up undercuts an empirical reading of the forecast; it
+// does not prove that the conditional mechanism is false.
+objection debt_not_observed {
+  target argument conditional_debt_forecast; premises followup_absent;
+}
+
+// Reviewed strict rules are only the Boolean report implications. The probes
+// and their interpretation remain ordinary fallible premises.
+strict observed_stage_pass reviewed "architecture-extension-v2/baseline-report-implication";
+strict observed_stage_fail reviewed "architecture-extension-v2/baseline-report-implication";
+strict observed_ports_pass reviewed "architecture-extension-v2/baseline-report-implication";
+strict observed_ports_fail reviewed "architecture-extension-v2/baseline-report-implication";
+contrary stage_report_pass to stage_report_fail reviewed "architecture-extension-v2/opposed-stage-verdicts";
+contrary stage_report_fail to stage_report_pass reviewed "architecture-extension-v2/opposed-stage-verdicts";
+contrary ports_report_pass to ports_report_fail reviewed "architecture-extension-v2/opposed-port-verdicts";
+contrary ports_report_fail to ports_report_pass reviewed "architecture-extension-v2/opposed-port-verdicts";
