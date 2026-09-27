@@ -1,6 +1,7 @@
 # EAL/2 inference comparison, pilot 1.1
 
-**Status: specified corrected calibration pilot.** Version 1.0 run
+**Status: completed corrected calibration pilot.** [Results](RESULTS.md)
+are from run 36354664940. Version 1.0 run
 36354451977 had a delivery defect: its raw prompt omitted `ok=true`, although
 the host supplied that value to EAL. The 12/12 versus 3/12 result is invalid
 as an arm comparison. This version exposes every listed observation as
