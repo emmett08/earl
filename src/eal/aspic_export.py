@@ -14,7 +14,10 @@ from .aspic import ASPIC_CONTRACT, OUTPUT_SCHEMA
 from .evaluator import canonical_digest
 from .methods import execute_extension, schema_errors
 
-VIEW_VERSION = "aspic-view/1"
+VIEW_VERSION = "aspic-view/2"
+AVAILABILITY_ISSUES = ("predicate_not_met", "missing_observation",
+                       "stale_observation", "tool_error", "invalid_observation",
+                       "out_of_scope", "unclassified_legacy")
 MAX_INPUT_BYTES = 4 * 1024 * 1024
 
 
@@ -123,8 +126,13 @@ def export_aspic_view(result: dict) -> dict:
                         or any(not isinstance(reason, str)
                                for reason in item.get("reasons", []))):
                     raise ValueError("Unavailable evidence reasons must be text")
+                # Results compiled before typed evidence issues were introduced
+                # remain exportable, but their free-form reasons are not parsed.
+                issues = item.get("availability_issues", ["unclassified_legacy"])
+                if not issues:
+                    raise ValueError("Unavailable evidence must have availability issues")
                 missing.append({"name": name, "reasons": item.get("reasons", []),
-                                "span": item.get("span")})
+                                "availability_issues": issues, "span": item.get("span")})
         basis = source.get("structural_basis")
         if basis is not None:
             if (basis["atom"] not in premises or premises[basis["atom"]]["kind"] != "axiom"
@@ -244,6 +252,9 @@ VIEW_SCHEMA = {
         "defeats": {"type": "array", "items": _DEFEAT, "maxItems": 4096},
         "unavailable_evidence": {"type": "array", "maxItems": 64, "items": _object({
             "name": _NAME, "reasons": {"type": "array", "items": _TEXT},
+            "availability_issues": {"type": "array", "minItems": 1,
+                                    "uniqueItems": True,
+                                    "items": {"enum": list(AVAILABILITY_ISSUES)}},
             "span": _nullable(_SPAN)})},
     }),
 }
@@ -259,6 +270,8 @@ _SOURCE_ENTRY = {
         "span": _nullable(_SPAN), "rank_annotation": _nullable(_REVIEW),
         "strict_annotation": _nullable(_REVIEW), "identity": _nullable(_OBSERVATION),
         "reasons": {"type": "array", "items": _TEXT},
+        "availability_issues": {"type": "array", "uniqueItems": True,
+                                "items": {"enum": list(AVAILABILITY_ISSUES)}},
     },
 }
 _SOURCE_SCHEMA = {"type": "object", "properties": {

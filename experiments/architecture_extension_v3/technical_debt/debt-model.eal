@@ -1,0 +1,93 @@
+// An executable observation about model calculability. A synthetic calculation
+// does not supply empirical evidence about the fulfilment candidate's debt.
+language "EAL/2";
+
+environment fulfilment_v3 {
+  require "experiment" == "architecture-extension-v3";
+  require "stage" == "post-B";
+}
+
+tool technical_debt { version "1"; }
+
+// Both empirical declarations ask the identical pinned question. They are
+// opposed observations; failure to satisfy one does not establish the other.
+evidence empirical_estimate_present {
+  tool technical_debt; kind metric; environment fulfilment_v3; max_age 2592000;
+  input {"scenario_path":"experiments/architecture_extension_v3/technical_debt/scenarios/incomplete-empirical.json","expected_sha256":"aabe0a9d914e292e2ddac09ff1429b509035775a2d080533f3a8d93ebe8bc03c"};
+  require "schema" == "technical-debt-result/1";
+  require "basis" == "empirical";
+  require "status" == "estimated";
+}
+evidence empirical_inputs_missing {
+  tool technical_debt; kind metric; environment fulfilment_v3; max_age 2592000;
+  input {"scenario_path":"experiments/architecture_extension_v3/technical_debt/scenarios/incomplete-empirical.json","expected_sha256":"aabe0a9d914e292e2ddac09ff1429b509035775a2d080533f3a8d93ebe8bc03c"};
+  require "schema" == "technical-debt-result/1";
+  require "basis" == "empirical";
+  require "status" == "not_estimable";
+}
+evidence synthetic_calculation {
+  tool technical_debt; kind metric; environment fulfilment_v3; max_age 2592000;
+  input {"scenario_path":"experiments/architecture_extension_v3/technical_debt/scenarios/attached-synthetic.json","expected_sha256":"7774f2d5a0404795e3a33ca6df263d84e5ec04781aa3968d0dcc33893df6d3f0"};
+  require "schema" == "technical-debt-result/1";
+  require "basis" == "synthetic";
+  require "status" == "estimated";
+}
+
+reasoning report_implication {
+  method "structured/1";
+  rationale "A successful, pinned tool observation supports only its reported calculation status. A not_estimable result with enumerated missing fields is a positive observation of input incompleteness, not a zero valuation, a false debt-reduction outcome, or an execution failure.";
+}
+reasoning conditional_arithmetic {
+  method "structured/1";
+  rationale "The verified calculation is conditional on stipulated demand, work propagation, unit costs, service-equivalent reference, horizon and remedy. Its synthetic inputs do not measure a real candidate or validate forecast accuracy.";
+}
+reasoning empirical_projection {
+  method "structured/1";
+  rationale "A field-based debt projection requires identified input values and a service-equivalent reference. Even complete inputs provide a conditional model output whose empirical predictive adequacy needs later validation; the route does not assert that the candidate reduced debt.";
+}
+
+claim empirical_estimate_available {
+  statement "The identified fulfilment candidate has a complete, conditional empirical debt estimate under the declared model.";
+  environment fulfilment_v3;
+}
+claim empirical_estimate_unavailable {
+  statement "The empirical model input record is incomplete; no numeric future-debt estimate for this candidate follows from it.";
+  environment fulfilment_v3;
+}
+claim synthetic_example_computed {
+  statement "The attached synthetic work-propagation example has a conditional numeric calculation under its stipulated inputs.";
+  environment fulfilment_v3;
+}
+claim empirical_projection_ready {
+  statement "The declared empirical inputs are complete enough to compute a conditional candidate-specific debt projection; no reduction or field validity is implied.";
+  environment fulfilment_v3;
+}
+
+argument observed_empirical_estimate {
+  conclusion empirical_estimate_available; reasoning report_implication;
+  evidence empirical_estimate_present;
+}
+argument observed_empirical_gap {
+  conclusion empirical_estimate_unavailable; reasoning report_implication;
+  evidence empirical_inputs_missing;
+}
+argument observed_synthetic_arithmetic {
+  conclusion synthetic_example_computed; reasoning conditional_arithmetic;
+  evidence synthetic_calculation;
+}
+argument projection_from_empirical_report {
+  conclusion empirical_projection_ready; reasoning empirical_projection;
+  premises empirical_estimate_available;
+}
+
+// The gap can defeat an empirical claim whose required estimate is absent.
+// It does not attack a separate conditional architecture mechanism.
+objection estimate_missing {
+  target argument projection_from_empirical_report; premises empirical_estimate_unavailable;
+}
+
+strict observed_empirical_estimate reviewed "technical-debt/recorded-status-implication/1";
+strict observed_empirical_gap reviewed "technical-debt/recorded-status-implication/1";
+strict observed_synthetic_arithmetic reviewed "technical-debt/recorded-status-implication/1";
+contrary empirical_estimate_available to empirical_estimate_unavailable reviewed "technical-debt/opposed-statuses/1";
+contrary empirical_estimate_unavailable to empirical_estimate_available reviewed "technical-debt/opposed-statuses/1";

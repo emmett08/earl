@@ -1,0 +1,138 @@
+// A synthetic, operation-key-specific decision. No observation here describes
+// a live provider or proves a change in software technical debt.
+language "EAL/2";
+
+environment refund_case {
+  require "experiment" == "architecture-extension-v3-release-gate";
+}
+
+tool refund_status { version "1"; }
+
+evidence provider_applied {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"provider"}; require "status" == "applied";
+}
+evidence provider_not_applied {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"provider"}; require "status" == "not_applied";
+}
+evidence provider_unknown {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"provider"}; require "status" == "unknown";
+}
+evidence provider_unavailable {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"provider"}; require "status" == "unavailable";
+}
+evidence provider_fresh {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"freshness"}; require "fresh" == true;
+}
+evidence provider_stale {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"freshness"}; require "fresh" == false;
+}
+evidence inventory_ready {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"ledger"}; require "inventory_reconciled" == true;
+}
+evidence inventory_unready {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"ledger"}; require "inventory_reconciled" == false;
+}
+evidence event_ready {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"ledger"}; require "event_reconciled" == true;
+}
+evidence event_unready {
+  tool refund_status; kind observation; environment refund_case; max_age 60;
+  input {"record":"ledger"}; require "event_reconciled" == false;
+}
+
+reasoning recorded_status {
+  method "structured/1";
+  rationale "The provider simulation reports one of four explicit states for the declared stable refund key. A missing or expired report does not establish not_applied.";
+}
+reasoning recorded_reconciliation {
+  method "structured/1";
+  rationale "A separate synthetic ledger record reports whether inventory and event obligations are reconciled for that key. A provider-applied report alone does not establish either obligation.";
+}
+reasoning conditional_completion {
+  method "structured/1";
+  rationale "Completion is allowed in this finite simulation only with a current applied report and affirmative separate inventory and event reconciliation. The rule is defeasible if an adverse state is established.";
+}
+reasoning conditional_retry {
+  method "structured/1";
+  rationale "A fresh not_applied report permits only a retry using the same operation key; it does not assert that the refund is complete or authorise a new conflicting request.";
+}
+reasoning hold_uncertainty {
+  method "structured/1";
+  rationale "Unknown, unavailable, stale or unreconciled status blocks completion until the named condition is resolved. This is a positive report of a bounded impediment, not falsity inferred from silence.";
+}
+
+claim refund_applied { statement "The declared provider simulation reports an applied refund for this key."; environment refund_case; }
+claim refund_not_applied { statement "The declared provider simulation reports no applied refund for this key."; environment refund_case; }
+claim refund_unknown { statement "The declared provider simulation explicitly reports an unknown refund outcome for this key."; environment refund_case; }
+claim refund_unavailable { statement "The declared provider status service is unavailable in this simulation."; environment refund_case; }
+claim refund_fresh { statement "The provider status report is within the declared freshness interval."; environment refund_case; }
+claim refund_stale { statement "The provider status report exceeds the declared freshness interval."; environment refund_case; }
+claim inventory_reconciled { statement "The separate ledger says inventory is reconciled for this refund."; environment refund_case; }
+claim inventory_unreconciled { statement "The separate ledger says inventory remains unreconciled for this refund."; environment refund_case; }
+claim event_reconciled { statement "The separate ledger says the completion event obligation is reconciled."; environment refund_case; }
+claim event_unreconciled { statement "The separate ledger says the event obligation remains unreconciled."; environment refund_case; }
+claim candidate_completion { statement "A fresh applied refund is a provisional candidate for completion, subject to separate reconciliation."; environment refund_case; }
+claim completion_safe { statement "The simulated refund may be marked complete for this operation key."; environment refund_case; }
+claim same_key_retry_allowed { statement "Retry only the same refund key and then reassess; do not mark complete yet."; environment refund_case; }
+claim completion_blocked { statement "The simulated operation must not be marked complete at this evidence cut."; environment refund_case; }
+
+argument observed_applied { conclusion refund_applied; reasoning recorded_status; evidence provider_applied; }
+argument observed_not_applied { conclusion refund_not_applied; reasoning recorded_status; evidence provider_not_applied; }
+argument observed_unknown { conclusion refund_unknown; reasoning recorded_status; evidence provider_unknown; }
+argument observed_unavailable { conclusion refund_unavailable; reasoning recorded_status; evidence provider_unavailable; }
+argument observed_fresh { conclusion refund_fresh; reasoning recorded_status; evidence provider_fresh; }
+argument observed_stale { conclusion refund_stale; reasoning recorded_status; evidence provider_stale; }
+argument observed_inventory { conclusion inventory_reconciled; reasoning recorded_reconciliation; evidence inventory_ready; }
+argument observed_inventory_gap { conclusion inventory_unreconciled; reasoning recorded_reconciliation; evidence inventory_unready; }
+argument observed_event { conclusion event_reconciled; reasoning recorded_reconciliation; evidence event_ready; }
+argument observed_event_gap { conclusion event_unreconciled; reasoning recorded_reconciliation; evidence event_unready; }
+
+argument provisional_completion {
+  conclusion candidate_completion; reasoning conditional_completion;
+  premises refund_applied, refund_fresh;
+}
+argument complete_operation {
+  conclusion completion_safe; reasoning conditional_completion;
+  premises candidate_completion, inventory_reconciled, event_reconciled;
+}
+argument retry_stable_key {
+  conclusion same_key_retry_allowed; reasoning conditional_retry;
+  premises refund_not_applied, refund_fresh;
+}
+argument hold_unknown { conclusion completion_blocked; reasoning hold_uncertainty; premises refund_unknown; }
+argument hold_unavailable { conclusion completion_blocked; reasoning hold_uncertainty; premises refund_unavailable; }
+argument hold_stale { conclusion completion_blocked; reasoning hold_uncertainty; premises refund_stale; }
+argument hold_inventory { conclusion completion_blocked; reasoning hold_uncertainty; premises inventory_unreconciled; }
+argument hold_event { conclusion completion_blocked; reasoning hold_uncertainty; premises event_unreconciled; }
+
+objection unknown_undercuts_completion { target argument provisional_completion; premises refund_unknown; }
+objection unavailable_undercuts_completion { target argument provisional_completion; premises refund_unavailable; }
+objection stale_undercuts_completion { target argument provisional_completion; premises refund_stale; }
+objection inventory_undercuts_completion { target argument provisional_completion; premises inventory_unreconciled; }
+objection event_undercuts_completion { target argument provisional_completion; premises event_unreconciled; }
+objection unknown_undercuts_retry { target argument retry_stable_key; premises refund_unknown; }
+objection unavailable_undercuts_retry { target argument retry_stable_key; premises refund_unavailable; }
+objection stale_undercuts_retry { target argument retry_stable_key; premises refund_stale; }
+
+strict observed_unknown reviewed "refund-gate/explicit-provider-state/1";
+strict observed_unavailable reviewed "refund-gate/explicit-provider-state/1";
+strict observed_stale reviewed "refund-gate/explicit-age-check/1";
+strict observed_inventory_gap reviewed "refund-gate/explicit-ledger-gap/1";
+strict observed_event_gap reviewed "refund-gate/explicit-ledger-gap/1";
+contrary refund_applied to refund_not_applied reviewed "refund-gate/opposed-provider-states/1";
+contrary refund_not_applied to refund_applied reviewed "refund-gate/opposed-provider-states/1";
+contrary refund_fresh to refund_stale reviewed "refund-gate/opposed-freshness/1";
+contrary refund_stale to refund_fresh reviewed "refund-gate/opposed-freshness/1";
+contrary inventory_reconciled to inventory_unreconciled reviewed "refund-gate/opposed-ledger-states/1";
+contrary inventory_unreconciled to inventory_reconciled reviewed "refund-gate/opposed-ledger-states/1";
+contrary event_reconciled to event_unreconciled reviewed "refund-gate/opposed-ledger-states/1";
+contrary event_unreconciled to event_reconciled reviewed "refund-gate/opposed-ledger-states/1";

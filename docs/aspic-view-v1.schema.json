@@ -6,7 +6,7 @@
   "type": "object",
   "properties": {
     "schema": {
-      "const": "aspic-view/2"
+      "const": "aspic-view/1"
     },
     "profile": {
       "type": "string",
@@ -622,22 +622,6 @@
               "maxLength": 100000
             }
           },
-          "availability_issues": {
-            "type": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": {
-              "enum": [
-                "predicate_not_met",
-                "missing_observation",
-                "stale_observation",
-                "tool_error",
-                "invalid_observation",
-                "out_of_scope",
-                "unclassified_legacy"
-              ]
-            }
-          },
           "span": {
             "anyOf": [
               {
@@ -677,7 +661,6 @@
         "required": [
           "name",
           "reasons",
-          "availability_issues",
           "span"
         ],
         "additionalProperties": false

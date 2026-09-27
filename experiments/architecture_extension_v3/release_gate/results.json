@@ -1,0 +1,353 @@
+{
+  "all_agree": true,
+  "cases": [
+    {
+      "action": "COMPLETE",
+      "agreement": true,
+      "aspic_defeats": [],
+      "assessment_id": "78536604-6522-418f-a0cb-e4067166aa92",
+      "basis": "synthetic",
+      "candidate_aspic_status": "accepted",
+      "case_id": "applied_ready",
+      "claim_status": {
+        "candidate_completion": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        },
+        "completion_blocked": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "completion_safe": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        },
+        "same_key_retry_allowed": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        }
+      },
+      "collection_errors": [],
+      "collection_id": "5b40734a-00bc-4eca-8aaf-1c3a1bcf2469",
+      "eal_action": "COMPLETE",
+      "evidence_status": {
+        "event_ready": "available",
+        "event_unready": "unavailable",
+        "inventory_ready": "available",
+        "inventory_unready": "unavailable",
+        "provider_applied": "available",
+        "provider_fresh": "available",
+        "provider_not_applied": "unavailable",
+        "provider_stale": "unavailable",
+        "provider_unavailable": "unavailable",
+        "provider_unknown": "unavailable"
+      },
+      "mcp_elapsed_seconds": 1.5058519890008029,
+      "plain_action": "COMPLETE",
+      "plain_elapsed_seconds": 0.00033332100065308623,
+      "plain_packet_bytes": 1200,
+      "plain_reason": "applied status and distinct inventory/event records reconciled"
+    },
+    {
+      "action": "BLOCK_COMPLETION",
+      "agreement": true,
+      "aspic_defeats": [
+        {
+          "attacker": "A10",
+          "kind": "undercut",
+          "subargument": "A9",
+          "target": "A9"
+        }
+      ],
+      "assessment_id": "a74ca2d0-f382-4431-b22c-a42d3e9ddfc6",
+      "basis": "synthetic",
+      "candidate_aspic_status": "rejected",
+      "case_id": "applied_unreconciled",
+      "claim_status": {
+        "candidate_completion": {
+          "grounded_label": "rejected",
+          "status": "contested"
+        },
+        "completion_blocked": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        },
+        "completion_safe": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "same_key_retry_allowed": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        }
+      },
+      "collection_errors": [],
+      "collection_id": "fecf8ab6-1c47-4d10-8cf9-1eadfe81cc82",
+      "eal_action": "BLOCK_COMPLETION",
+      "evidence_status": {
+        "event_ready": "available",
+        "event_unready": "unavailable",
+        "inventory_ready": "unavailable",
+        "inventory_unready": "available",
+        "provider_applied": "available",
+        "provider_fresh": "available",
+        "provider_not_applied": "unavailable",
+        "provider_stale": "unavailable",
+        "provider_unavailable": "unavailable",
+        "provider_unknown": "unavailable"
+      },
+      "mcp_elapsed_seconds": 1.5115748740026902,
+      "plain_action": "BLOCK_COMPLETION",
+      "plain_elapsed_seconds": 0.0003825450003205333,
+      "plain_packet_bytes": 1230,
+      "plain_reason": "unknown/unavailable status or incomplete reconciliation"
+    },
+    {
+      "action": "RETRY_SAME_KEY",
+      "agreement": true,
+      "aspic_defeats": [],
+      "assessment_id": "3fafd086-50ab-4439-be06-d45cf5056220",
+      "basis": "synthetic",
+      "candidate_aspic_status": "unconstructed",
+      "case_id": "not_applied",
+      "claim_status": {
+        "candidate_completion": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "completion_blocked": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        },
+        "completion_safe": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "same_key_retry_allowed": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        }
+      },
+      "collection_errors": [],
+      "collection_id": "d8c59902-cc70-40bf-9d65-766240c5febf",
+      "eal_action": "RETRY_SAME_KEY",
+      "evidence_status": {
+        "event_ready": "unavailable",
+        "event_unready": "available",
+        "inventory_ready": "unavailable",
+        "inventory_unready": "available",
+        "provider_applied": "unavailable",
+        "provider_fresh": "available",
+        "provider_not_applied": "available",
+        "provider_stale": "unavailable",
+        "provider_unavailable": "unavailable",
+        "provider_unknown": "unavailable"
+      },
+      "mcp_elapsed_seconds": 1.4349883569993835,
+      "plain_action": "RETRY_SAME_KEY",
+      "plain_elapsed_seconds": 0.000328373000229476,
+      "plain_packet_bytes": 1191,
+      "plain_reason": "provider reports no refund; retain the stable key"
+    },
+    {
+      "action": "BLOCK_COMPLETION",
+      "agreement": true,
+      "aspic_defeats": [],
+      "assessment_id": "6276bdf1-a9b4-4519-a109-2bf7509edee9",
+      "basis": "synthetic",
+      "candidate_aspic_status": "unconstructed",
+      "case_id": "unknown",
+      "claim_status": {
+        "candidate_completion": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "completion_blocked": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        },
+        "completion_safe": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "same_key_retry_allowed": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        }
+      },
+      "collection_errors": [],
+      "collection_id": "8990b306-3c98-4f31-81ac-ec797580af81",
+      "eal_action": "BLOCK_COMPLETION",
+      "evidence_status": {
+        "event_ready": "unavailable",
+        "event_unready": "available",
+        "inventory_ready": "unavailable",
+        "inventory_unready": "available",
+        "provider_applied": "unavailable",
+        "provider_fresh": "available",
+        "provider_not_applied": "unavailable",
+        "provider_stale": "unavailable",
+        "provider_unavailable": "unavailable",
+        "provider_unknown": "available"
+      },
+      "mcp_elapsed_seconds": 1.5033321699993394,
+      "plain_action": "BLOCK_COMPLETION",
+      "plain_elapsed_seconds": 0.00040601100045023486,
+      "plain_packet_bytes": 1179,
+      "plain_reason": "unknown/unavailable status or incomplete reconciliation"
+    },
+    {
+      "action": "BLOCK_COMPLETION",
+      "agreement": true,
+      "aspic_defeats": [],
+      "assessment_id": "f6aebb8d-2032-4047-ad37-89c3920bda00",
+      "basis": "synthetic",
+      "candidate_aspic_status": "unconstructed",
+      "case_id": "unavailable",
+      "claim_status": {
+        "candidate_completion": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "completion_blocked": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        },
+        "completion_safe": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "same_key_retry_allowed": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        }
+      },
+      "collection_errors": [],
+      "collection_id": "953792ea-d39b-4f66-ab95-6c9d3d5985bb",
+      "eal_action": "BLOCK_COMPLETION",
+      "evidence_status": {
+        "event_ready": "unavailable",
+        "event_unready": "available",
+        "inventory_ready": "unavailable",
+        "inventory_unready": "available",
+        "provider_applied": "unavailable",
+        "provider_fresh": "available",
+        "provider_not_applied": "unavailable",
+        "provider_stale": "unavailable",
+        "provider_unavailable": "available",
+        "provider_unknown": "unavailable"
+      },
+      "mcp_elapsed_seconds": 1.4161644759988121,
+      "plain_action": "BLOCK_COMPLETION",
+      "plain_elapsed_seconds": 0.0003601520002121106,
+      "plain_packet_bytes": 1199,
+      "plain_reason": "unknown/unavailable status or incomplete reconciliation"
+    },
+    {
+      "action": "BLOCK_COMPLETION",
+      "agreement": true,
+      "aspic_defeats": [],
+      "assessment_id": "6cece29a-43d2-4bfa-812b-955d02576058",
+      "basis": "synthetic",
+      "candidate_aspic_status": "unconstructed",
+      "case_id": "stale_applied",
+      "claim_status": {
+        "candidate_completion": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "completion_blocked": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        },
+        "completion_safe": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "same_key_retry_allowed": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        }
+      },
+      "collection_errors": [],
+      "collection_id": "b6ec59d3-55f6-4d61-b674-f6d50879dfa5",
+      "eal_action": "BLOCK_COMPLETION",
+      "evidence_status": {
+        "event_ready": "available",
+        "event_unready": "unavailable",
+        "inventory_ready": "available",
+        "inventory_unready": "unavailable",
+        "provider_applied": "unavailable",
+        "provider_fresh": "unavailable",
+        "provider_not_applied": "unavailable",
+        "provider_stale": "available",
+        "provider_unavailable": "unavailable",
+        "provider_unknown": "unavailable"
+      },
+      "mcp_elapsed_seconds": 1.4971094739994442,
+      "plain_action": "BLOCK_COMPLETION",
+      "plain_elapsed_seconds": 0.0003913389991794247,
+      "plain_packet_bytes": 1202,
+      "plain_reason": "provider observation stale; obtain a current status"
+    },
+    {
+      "action": "BLOCK_COMPLETION",
+      "agreement": true,
+      "aspic_defeats": [],
+      "assessment_id": "9f853749-c2a0-4db5-bd0e-1f907db1dd4c",
+      "basis": "synthetic",
+      "candidate_aspic_status": "unconstructed",
+      "case_id": "tool_error",
+      "claim_status": {
+        "candidate_completion": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "completion_blocked": {
+          "grounded_label": "accepted",
+          "status": "supported"
+        },
+        "completion_safe": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        },
+        "same_key_retry_allowed": {
+          "grounded_label": "rejected",
+          "status": "unsupported"
+        }
+      },
+      "collection_errors": [
+        "provider_applied",
+        "provider_fresh",
+        "provider_not_applied",
+        "provider_stale",
+        "provider_unavailable",
+        "provider_unknown"
+      ],
+      "collection_id": "190532e2-15ce-4cea-bb7e-1ac82670ad27",
+      "eal_action": "BLOCK_COMPLETION",
+      "evidence_status": {
+        "event_ready": "unavailable",
+        "event_unready": "available",
+        "inventory_ready": "unavailable",
+        "inventory_unready": "available",
+        "provider_applied": "unavailable",
+        "provider_fresh": "unavailable",
+        "provider_not_applied": "unavailable",
+        "provider_stale": "unavailable",
+        "provider_unavailable": "unavailable",
+        "provider_unknown": "unavailable"
+      },
+      "mcp_elapsed_seconds": 1.5012523919976957,
+      "plain_action": "BLOCK_COMPLETION",
+      "plain_elapsed_seconds": 0.0002019829989876598,
+      "plain_packet_bytes": 350,
+      "plain_reason": "provider acquisition failed; status unavailable"
+    }
+  ],
+  "interpretation": "Observed actions are agreement of two implemented rules on simulated inputs. No AI coding, live payment, cost saving, or future debt effect is observed.",
+  "registry_sha256": "cead904d05846a7fb8f428087e23ed603cbb834e3468843e534d46e28c4651fa",
+  "schema": "refund-release-gate-apparatus/1",
+  "scope": "synthetic finite decision table",
+  "source_sha256": "c76beb63f42a0727c847b32a4554bd6362957d436e25ad55386c0bf045ed3ad8"
+}

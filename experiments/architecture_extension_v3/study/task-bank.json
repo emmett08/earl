@@ -1,0 +1,36 @@
+{
+  "schema_version": "architecture-extension-v3/task-bank/1",
+  "status": "specified-development-feasibility",
+  "source_anchor": "experiments/architecture_extension_v2/results/snapshots/a",
+  "source_anchor_role": "Common completed split-fulfilment A source; no A treatment effect is estimated",
+  "family_order": ["R", "W"],
+  "families": {
+    "R": {
+      "provenance": "B repeats the v2 feature class; D is informed by the v2 post-run refund diagnostic. Development family, not independent confirmation.",
+      "stages": [
+        {"id": "R-B", "brief": "features/R-B.md", "scope": "partial returns"},
+        {"id": "R-C", "brief": "features/R-C.md", "scope": "post-dispatch cancellation after returns"},
+        {"id": "R-D", "brief": "features/R-D.md", "scope": "uncertain refund acknowledgement and reconciliation"}
+      ]
+    },
+    "W": {
+      "provenance": "Distinct pressure chosen before v3 output; shares the A fixture and therefore is not an independent codebase replication.",
+      "stages": [
+        {"id": "W-B", "brief": "features/W-B.md", "scope": "warehouse availability"},
+        {"id": "W-C", "brief": "features/W-C.md", "scope": "carrier rejection and substitute allocation"},
+        {"id": "W-D", "brief": "features/W-D.md", "scope": "bounded ordered event delivery"}
+      ]
+    }
+  },
+  "arms": ["P0", "P1", "P2"],
+  "pilot_replicates_per_family_arm": 1,
+  "expected_assignment_units": 6,
+  "expected_coding_episodes": 18,
+  "default_stage_profile": {"B": {"requested_model": "gpt-6-sol", "requested_reasoning": "medium", "agent_class": "local-coding-agent"}, "C": {"requested_model": "gpt-6-sol", "requested_reasoning": "medium", "agent_class": "local-coding-agent"}, "D": {"requested_model": "gpt-6-sol", "requested_reasoning": "medium", "agent_class": "local-coding-agent"}},
+  "stage_profile_rule": "Exact provider model/class and runner settings may vary between B,C,D when declared at workflow dispatch before coding; all three arms must match within each family-stage block. Record unavailable backend revision as unknown.",
+  "brief_visibility": "Only the current stage brief is copied into a candidate worktree; later briefs, assessor and other outputs are host-only.",
+  "assessor_interface": "python experiments/architecture_extension_v3/study/assess.py --candidate PATH --family R|W --stage B|C|D",
+  "primary_pass_policy": "Every due hidden finding must pass; invalid is reported separately and is never a pass.",
+  "resource_caps": {"per_episode_wall_minutes": 30, "per_episode_model_token_target_advisory": 200000, "note": "Enforce and record episode wall cap; token target is advisory unless a supported hard cap and complete usage trace are available."},
+  "decision_threshold": {"restricted_followup_elapsed_time_reduction": 0.25, "followup_stages": ["C", "D"], "critical_failure_tolerance": 0, "scope": "Local feasibility decision in each family, not a population inference or a financial saving"}
+}

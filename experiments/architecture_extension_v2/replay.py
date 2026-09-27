@@ -238,13 +238,15 @@ def check_visualisation() -> str:
         from jsonschema import Draft202012Validator, exceptions as schema_errors
     except ModuleNotFoundError:
         return "skipped: jsonschema is not installed"
-    schema = read(REPOSITORY / "docs" / "aspic-view.schema.json")
+    # The captured export predates the typed /2 availability issues. Preserve
+    # its original contract instead of reinterpreting free-form diagnostics.
+    schema = read(REPOSITORY / "docs" / "aspic-view-v1.schema.json")
     try:
         Draft202012Validator.check_schema(schema)
         Draft202012Validator(schema).validate(exported)
     except (schema_errors.SchemaError, schema_errors.ValidationError) as exc:
         raise ValueError(f"ASPIC+ export fails schema validation: {exc.message}") from exc
-    return "valid against docs/aspic-view.schema.json"
+    return "valid against docs/aspic-view-v1.schema.json"
 
 
 def replay() -> dict[str, Any]:
