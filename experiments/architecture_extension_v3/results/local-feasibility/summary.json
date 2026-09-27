@@ -1,0 +1,363 @@
+{
+  "archive_manifest_sha256": "633ef1bce5da35d4d4f1715f7582d2cc42db35308e3618ce870bf8944c3d48c8",
+  "archive_sha256": "dd59b904ed0722d2b1be333fd90b67cd13dc756bc55d53634ce04fbb12f00b31",
+  "attested_coding_elapsed_seconds": null,
+  "condition_masked_structural_review": null,
+  "empirical_debt_estimate": null,
+  "enforced_episode_cap": false,
+  "episodes": [
+    {
+      "arm": "P2",
+      "clone": "R-K1",
+      "family": "R",
+      "stages": [
+        {
+          "all_python_cognitive_complexity": 155,
+          "assessor_source_sha256": "f397a92d31e3fee6dbc23a6eb80e40ea18e46bd0b262fd8ec409f11b841ce135",
+          "failed": 0,
+          "host_child_cpu_seconds": 1.401222,
+          "host_wall_seconds": 1.4646147029998247,
+          "invalid": 0,
+          "mcp_exchange": true,
+          "nonpassing_findings": {},
+          "packet_bytes": 2335,
+          "passed": 15,
+          "production_cognitive_complexity": 150,
+          "snapshot_source_tree_sha256": "4b26df9a6e59d6065f3c8b6cd56d855d570bb44452c1ba5ecf50972fd2684fd2",
+          "stage": "B",
+          "tool_exchange_bytes": 10850
+        },
+        {
+          "all_python_cognitive_complexity": 190,
+          "assessor_source_sha256": "aa560d45ba8a08ec162d4bd2ddca0192e6a4bd1ed3e3bd6f0ee15a4af690c5cb",
+          "failed": 0,
+          "host_child_cpu_seconds": 1.390405,
+          "host_wall_seconds": 1.445441887997731,
+          "invalid": 0,
+          "mcp_exchange": true,
+          "nonpassing_findings": {},
+          "packet_bytes": 2474,
+          "passed": 19,
+          "production_cognitive_complexity": 184,
+          "snapshot_source_tree_sha256": "08a9a332146a620cd202791a987956818fff13ba7afe15ec54a2a56cf655ab9a",
+          "stage": "C",
+          "tool_exchange_bytes": 10850
+        },
+        {
+          "all_python_cognitive_complexity": 195,
+          "assessor_source_sha256": "1b668ca04627142587729e7f9cb79b3be84cdb3eb5c43e7a8e1082b08d79596f",
+          "failed": 1,
+          "host_child_cpu_seconds": 1.3456689999999998,
+          "host_wall_seconds": 1.39268769499904,
+          "invalid": 0,
+          "mcp_exchange": true,
+          "nonpassing_findings": {
+            "unknown_refund_outcome": "AssertionError: unknown outcome repeated financial effect or restored stock early"
+          },
+          "packet_bytes": 2600,
+          "passed": 22,
+          "production_cognitive_complexity": 188,
+          "snapshot_source_tree_sha256": "17410112157641218adc7b1345641bd7094286b261efa3c0df67a8e0fa7082fe",
+          "stage": "D",
+          "tool_exchange_bytes": 10850
+        }
+      ]
+    },
+    {
+      "arm": "P1",
+      "clone": "R-K2",
+      "family": "R",
+      "stages": [
+        {
+          "all_python_cognitive_complexity": 140,
+          "assessor_source_sha256": "0d022ee4e976298aa49b66371ceda19953ce0d39e212769b8e5bdd3297653db4",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.244788,
+          "host_wall_seconds": 0.25364016399907996,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 1794,
+          "passed": 15,
+          "production_cognitive_complexity": 135,
+          "snapshot_source_tree_sha256": "145045d3d6f8256a765acac9835a7bc33a6b94a00e1fa8cb87bb1a78cfac7f11",
+          "stage": "B",
+          "tool_exchange_bytes": 7118
+        },
+        {
+          "all_python_cognitive_complexity": 172,
+          "assessor_source_sha256": "32c0880e1f18249ff235728c761839ec7258f91365f661f0dfad36f7d7568c7b",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.29313799999999995,
+          "host_wall_seconds": 0.30840204500054824,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 1933,
+          "passed": 19,
+          "production_cognitive_complexity": 166,
+          "snapshot_source_tree_sha256": "02744f4b2ea716d7a8e78cfa3bc6e465dba44fb445d846293955ed4cb55e63e0",
+          "stage": "C",
+          "tool_exchange_bytes": 7241
+        },
+        {
+          "all_python_cognitive_complexity": 193,
+          "assessor_source_sha256": "280ec9a4a4d9a44a443fe832b040707b10834636620f71f57414d2a95ca4521b",
+          "failed": 2,
+          "host_child_cpu_seconds": 0.276594,
+          "host_wall_seconds": 0.2898903009991045,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {
+            "checkout_rollback_acknowledgement_loss": "AssertionError: rollback acknowledgement loss committed shipment, order or event",
+            "unknown_refund_outcome": "AssertionError: unknown outcome repeated financial effect or restored stock early"
+          },
+          "packet_bytes": 2059,
+          "passed": 21,
+          "production_cognitive_complexity": 186,
+          "snapshot_source_tree_sha256": "304c514997c525b93080ba703a8fe6daa00a2b9105dca8cd32cdb3cf47389849",
+          "stage": "D",
+          "tool_exchange_bytes": 7421
+        }
+      ]
+    },
+    {
+      "arm": "P0",
+      "clone": "R-K3",
+      "family": "R",
+      "stages": [
+        {
+          "all_python_cognitive_complexity": 145,
+          "assessor_source_sha256": "4bb3286668382a21166cbbeee887891badeb89c436e42d91047ec4e6ec5a4a75",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.0,
+          "host_wall_seconds": 0.0,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 0,
+          "passed": 15,
+          "production_cognitive_complexity": 140,
+          "snapshot_source_tree_sha256": "abf6d159756009a8e37809aeefedb6c49c0f123ac7e27a830d0940f6d6152648",
+          "stage": "B",
+          "tool_exchange_bytes": 0
+        },
+        {
+          "all_python_cognitive_complexity": 182,
+          "assessor_source_sha256": "adf095bef10cc6dc8af47d122bf460c70ebfcf4bd289bffb5bd8ecff711df903",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.0,
+          "host_wall_seconds": 0.0,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 0,
+          "passed": 19,
+          "production_cognitive_complexity": 176,
+          "snapshot_source_tree_sha256": "b0c26221c5565dadcff52241e467205b1cc747dc39094717a9532adb849e2034",
+          "stage": "C",
+          "tool_exchange_bytes": 0
+        },
+        {
+          "all_python_cognitive_complexity": 187,
+          "assessor_source_sha256": "5949b4d59dc0dc03b46b9591a4828606266c2768295ef0d48d373cc020916b21",
+          "failed": 2,
+          "host_child_cpu_seconds": 0.0,
+          "host_wall_seconds": 0.0,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {
+            "checkout_rollback_acknowledgement_loss": "AssertionError: rollback acknowledgement loss committed shipment, order or event",
+            "unknown_refund_outcome": "AssertionError: unknown outcome repeated financial effect or restored stock early"
+          },
+          "packet_bytes": 0,
+          "passed": 21,
+          "production_cognitive_complexity": 180,
+          "snapshot_source_tree_sha256": "6296a337de1d2662777bdb5ec180b9312857ee6582a1feeefbd610e1f2d7b9b2",
+          "stage": "D",
+          "tool_exchange_bytes": 0
+        }
+      ]
+    },
+    {
+      "arm": "P2",
+      "clone": "W-K1",
+      "family": "W",
+      "stages": [
+        {
+          "all_python_cognitive_complexity": 113,
+          "assessor_source_sha256": "3583e7f7dc09274218144f6fa571cd20ad68fff700972648ab34ee8727bb7de0",
+          "failed": 0,
+          "host_child_cpu_seconds": 1.38132,
+          "host_wall_seconds": 1.4461327850003727,
+          "invalid": 0,
+          "mcp_exchange": true,
+          "nonpassing_findings": {},
+          "packet_bytes": 2281,
+          "passed": 13,
+          "production_cognitive_complexity": 109,
+          "snapshot_source_tree_sha256": "0270cb60b0c38f6eff270446c92fd85092d46c130a774b0d74512b9eef6a4796",
+          "stage": "B",
+          "tool_exchange_bytes": 10850
+        },
+        {
+          "all_python_cognitive_complexity": 150,
+          "assessor_source_sha256": "7f395060fefb79e87f1df9f915bd42045cae753132fa308605bda57d1fa02b96",
+          "failed": 0,
+          "host_child_cpu_seconds": 1.3730989999999998,
+          "host_wall_seconds": 1.438655154001026,
+          "invalid": 0,
+          "mcp_exchange": true,
+          "nonpassing_findings": {},
+          "packet_bytes": 2390,
+          "passed": 16,
+          "production_cognitive_complexity": 145,
+          "snapshot_source_tree_sha256": "98fa6ed6ca50e213a7a77066364c4cdce52cdd9df7aba397f0f963a331bad373",
+          "stage": "C",
+          "tool_exchange_bytes": 10850
+        },
+        {
+          "all_python_cognitive_complexity": 167,
+          "assessor_source_sha256": "633fcb7c0604d28f866fc97ba339704482b293cac363b2604b59e2d99fddbda2",
+          "failed": 0,
+          "host_child_cpu_seconds": 1.259321,
+          "host_wall_seconds": 1.3080357700018794,
+          "invalid": 0,
+          "mcp_exchange": true,
+          "nonpassing_findings": {},
+          "packet_bytes": 2425,
+          "passed": 18,
+          "production_cognitive_complexity": 151,
+          "snapshot_source_tree_sha256": "f72421b3358db6dabf3eba8a8821d4353b5ceebc0554c5daf25a1a535903d886",
+          "stage": "D",
+          "tool_exchange_bytes": 10850
+        }
+      ]
+    },
+    {
+      "arm": "P0",
+      "clone": "W-K2",
+      "family": "W",
+      "stages": [
+        {
+          "all_python_cognitive_complexity": 113,
+          "assessor_source_sha256": "7a9116096c11feb7f796eac211767a00f95781b72bb3baba1153cf84791fa699",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.0,
+          "host_wall_seconds": 0.0,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 0,
+          "passed": 13,
+          "production_cognitive_complexity": 109,
+          "snapshot_source_tree_sha256": "c4ad777620c90ecd1347fd71ff5bcb8e9ab216df487b0d2b540fc1f58cd78362",
+          "stage": "B",
+          "tool_exchange_bytes": 0
+        },
+        {
+          "all_python_cognitive_complexity": 145,
+          "assessor_source_sha256": "899e492afdef6ed141edc2110ddad63c08064955d00578003271d716e5086fbd",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.0,
+          "host_wall_seconds": 0.0,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 0,
+          "passed": 16,
+          "production_cognitive_complexity": 140,
+          "snapshot_source_tree_sha256": "e3d8aedbfb26420b094a6c594f40324cfc0d003633ab4ff357b109f218fd0dca",
+          "stage": "C",
+          "tool_exchange_bytes": 0
+        },
+        {
+          "all_python_cognitive_complexity": 156,
+          "assessor_source_sha256": "d5e427a70ff401e71df1c72bb6513c6b4316189f0294f379548a350dee029c7c",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.0,
+          "host_wall_seconds": 0.0,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 0,
+          "passed": 18,
+          "production_cognitive_complexity": 146,
+          "snapshot_source_tree_sha256": "87407f613572b5528ab87b7350d5faa00cd832fe731ad619d4a5b91411f39c7d",
+          "stage": "D",
+          "tool_exchange_bytes": 0
+        }
+      ]
+    },
+    {
+      "arm": "P1",
+      "clone": "W-K3",
+      "family": "W",
+      "stages": [
+        {
+          "all_python_cognitive_complexity": 113,
+          "assessor_source_sha256": "a9e5b89cac5d6382abe4cd84b8d15ee4f2b7e79501675a885e9d92b6ebb23a06",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.265071,
+          "host_wall_seconds": 0.27458310700239963,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 1740,
+          "passed": 13,
+          "production_cognitive_complexity": 109,
+          "snapshot_source_tree_sha256": "17f471c4226bae149e4f11805e11a6a636fb9337891c6c037924beb1ffaa4398",
+          "stage": "B",
+          "tool_exchange_bytes": 7086
+        },
+        {
+          "all_python_cognitive_complexity": 149,
+          "assessor_source_sha256": "6e465c46a45c64fb663face0f169aa47cb1728e74072d0819c9898ea886d49f3",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.28245699999999996,
+          "host_wall_seconds": 0.2964148440005374,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 1849,
+          "passed": 16,
+          "production_cognitive_complexity": 144,
+          "snapshot_source_tree_sha256": "7600e40acdb29125ae2df810a63da01d3079845ce8d89cd99f540c6d01d80ded",
+          "stage": "C",
+          "tool_exchange_bytes": 7182
+        },
+        {
+          "all_python_cognitive_complexity": 165,
+          "assessor_source_sha256": "db4e7c8f68a1527056983fe08a4616c4595eb834ee41490fea9a53e6ba673c19",
+          "failed": 0,
+          "host_child_cpu_seconds": 0.27191899999999997,
+          "host_wall_seconds": 0.28606866400150466,
+          "invalid": 0,
+          "mcp_exchange": false,
+          "nonpassing_findings": {},
+          "packet_bytes": 1884,
+          "passed": 18,
+          "production_cognitive_complexity": 150,
+          "snapshot_source_tree_sha256": "3ed10c40a692878b33e13a21f96d3cafc53b8e341c98e7e99891e4df8f56f6f1",
+          "stage": "D",
+          "tool_exchange_bytes": 7136
+        }
+      ]
+    }
+  ],
+  "exact_provider_revision": null,
+  "freeze_tree_sha256": "22222134aa57cbea65bc5dc77ada3e54a8920e2f046e0e6580c84c59da5e41a5",
+  "limitations": [
+    "agents share a filesystem; hidden materials were instructionally withheld but not OS concealed",
+    "no complete agent traces, provider usage, hard 30-minute cap or comparable coding time ledger",
+    "pre-run allocation fixes one sequence per arm and family; it cannot estimate a population effect",
+    "all R-D candidates fail a critical unknown-refund invariant; no substantial local time or debt criterion is satisfied"
+  ],
+  "provider_prices_or_billed_cost": null,
+  "provider_tokens": null,
+  "requested_model": "gpt-6-sol",
+  "requested_reasoning": "medium",
+  "schema_version": "architecture-extension-v3/local-feasibility-results/1",
+  "selection_sha256": "472b052dfdcfa0fdd9dbef5d2c5fd31546576dcb5796d91fb7ec305156d9ead2",
+  "status": "complete exploratory collaboration exercise; not the credentialed registered workflow"
+}
