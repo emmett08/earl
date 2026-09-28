@@ -32,11 +32,11 @@ def specification():
 
 
 def configuration():
-    return {'schema': 'EAL/model-transfer-information-design/1', 'seed': 7301, 'simulations': 100,
-            'budget_usd': 2, 'practical_decision': specification(),
+    return {'schema': 'EAL/model-transfer-information-design/2', 'seed': 7301, 'simulations': 100,
+            'budget_usd': 2, 'minimum_pilot_repetitions': 3, 'validation_simulations': 1000, 'practical_decision': specification(),
             'information_target': {'method': 'precision', 'confidence': .95, 'correctness_half_width': .9,
                                    'token_reduction_half_width': .9, 'assurance': .8},
-            'candidates': [{'cases': 1, 'repetitions': 4}],
+            'candidates': [{'cases': 1, 'repetitions': 8}],
             'scenarios': [scenario(0), scenario(.3), scenario(.3, -.1)]}
 
 
@@ -57,12 +57,12 @@ def test_student_quantiles_match_analytic_cauchy_normal_and_published_t_values()
     assert student_t_quantile(.975, math.inf) == pytest.approx(1.9599639845401)
 
 
-def test_hoeffding_counts_sequences_not_serially_repeated_sessions():
+def test_bounded_inference_counts_sequences_not_serially_repeated_sessions():
     small = PracticalDecision(specification()).evaluate(pilot(horizon=2), study_role='pilot', independent_evaluation=False)
     long_spec = {**specification(), 'recipient_horizon': 10}
     long = PracticalDecision(long_spec).evaluate(pilot(horizon=10), study_role='pilot', independent_evaluation=False)
     assert small['quality_sampling_half_width'] == long['quality_sampling_half_width']
-    expected = math.sqrt(2 * math.log(120) / 24)
+    expected = 14 * math.log(240) / (3 * 23)
     assert small['quality_sampling_half_width'] == pytest.approx(expected)
     assert long['status'] == 'pilot_only'
 
@@ -112,7 +112,7 @@ def test_null_nonzero_and_adverse_simulation_calibration():
     assert coverage / repetitions >= .95
     assert nonzero_direction / repetitions >= .95
     assert adverse_rejections == repetitions
-    assert monte_carlo_interval(coverage, repetitions)['monte_carlo_95_interval'][0] > .9
+    assert monte_carlo_interval(coverage, repetitions)['mc_interval'][0] > .9
 
 
 def test_simulated_effect_does_not_recentre_every_trial_to_its_target():
@@ -194,8 +194,8 @@ def test_practical_precision_unattainable_is_reported_without_allocation():
     config['information_target']['correctness_half_width'] = .025
     result = AllocationPlanner(config).plan(pilot(), plan(), {'execution_kind': 'live', 'run_id': 'pilot'}, 'hash')
     assert result['status'] == 'no_supported_allocation'
-    assert result['quality_bound_minimum_pairs'] == math.ceil(2 * math.log(120) / .025 ** 2)
-    assert not result['candidates'][0]['precision_target_satisfied']
+    assert result['hoeffding_reference_minimum_pairs'] == math.ceil(2 * math.log(120) / .025 ** 2)
+    assert not result['candidates'][0]['precision_not_ruled_out']
     assert result['candidates'][0]['scenarios'][0]['quality_precision']['estimate'] == 0
 
 
@@ -213,7 +213,8 @@ def test_stress_failures_remain_visible_without_becoming_universal_design_requir
     config['scenarios'].append(scenario(name='unrecoverable_usage', purpose='stress', missing_probability=1, missing_usage=True))
     result = AllocationPlanner(config).plan(pilot(), plan(), {'execution_kind': 'live', 'run_id': 'pilot'}, 'hash')
     assert result['proposed_evaluation_plan'] is not None
-    assert result['candidates'][0]['failed_stress_scenarios'] == ['unrecoverable_usage']
+    assert result['candidates'][0]['failed_stress_scenarios'] == []
+    assert result['candidates'][0]['scenarios'][-1]['false_success']['estimate'] == 0
     assert result['candidates'][0]['scenarios'][-1]['token_interval_available']['estimate'] == 0
 
 
@@ -229,8 +230,8 @@ def test_precise_but_catastrophically_miscalibrated_tail_model_cannot_propose_ev
     report = AllocationPlanner(config).plan(data, source, {'execution_kind': 'live', 'run_id': 'pilot'}, 'hash')
     candidate = report['candidates'][0]
     assert candidate['scenarios'][0]['precision']['estimate'] > .8
-    assert candidate['scenarios'][0]['joint_coverage']['monte_carlo_95_interval'][1] < .5
-    assert not candidate['coverage_calibration_satisfied']
+    assert candidate['scenarios'][0]['joint_coverage']['mc_interval'][1] < .5
+    assert not candidate['calibration_not_ruled_out']
     assert report['proposed_evaluation_plan'] is None
 
 

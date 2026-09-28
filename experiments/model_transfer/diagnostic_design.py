@@ -8,7 +8,7 @@ from pathlib import Path
 import random
 
 from experiments.transfer_study.workspace import read_json
-from .cases import CALIBRATION_CASES
+from .task_manifest import cases_for_plan
 
 
 @dataclass(frozen=True)
@@ -18,12 +18,13 @@ class DiagnosticFactor:
 
 
 FACTORS = {
+    'reasoner': DiagnosticFactor('reasoner', ('facts', 'eal', 'conventional')),
     'projection': DiagnosticFactor('context_style', ('compact', 'full')),
     'notes': DiagnosticFactor('include_notes', (False, True)),
     'format': DiagnosticFactor('response_mode', ('prose', 'json_prompted', 'json_schema')),
     'reuse': DiagnosticFactor('reuse', ('compatible', 'fresh')),
 }
-BASELINE = {'context_style': 'compact', 'include_notes': False,
+BASELINE = {'reasoner': 'workflow', 'context_style': 'compact', 'include_notes': False,
             'response_mode': 'prose', 'reuse': 'compatible'}
 
 
@@ -33,14 +34,14 @@ def diagnostic_levels(plan: dict, factor: str) -> tuple:
 
 def load_diagnostic_plan(path: Path) -> dict:
     plan = read_json(path)
-    if plan.get('schema') != 'EAL/model-transfer-diagnostic-plan/1':
+    if plan.get('schema') != 'EAL/model-transfer-diagnostic-plan/2':
         raise ValueError('Invalid diagnostic plan')
     budget = plan.get('budget_usd')
     if type(budget) not in (int, float) or not math.isfinite(budget) or not 0 < budget <= 2:
         raise ValueError('The shared diagnostic API budget must be in (0, 2] USD')
     for field, maximum in (('max_calls_per_session', 3), ('max_output_tokens', 4096),
                            ('max_request_bytes', 32768), ('request_timeout_seconds', 90),
-                           ('repetitions', 3)):
+                           ('repetitions', 32)):
         if type(plan.get(field)) is not int or not 1 <= plan[field] <= maximum:
             raise ValueError(f'Invalid {field}')
     if type(plan.get('seed')) is not int:
@@ -65,7 +66,7 @@ def load_diagnostic_plan(path: Path) -> dict:
             rate = model.get(field)
             if type(rate) not in (int, float) or not math.isfinite(rate) or not 0 < rate <= 10:
                 raise ValueError('Positive finite model prices are required')
-    for field, permitted in (('recipients', set(models)), ('cases', {c.identifier for c in CALIBRATION_CASES})):
+    for field, permitted in (('recipients', set(models)), ('cases', {c.identifier for c in cases_for_plan(plan)})):
         values = plan.get(field)
         if (not isinstance(values, list) or not values or
                 any(not isinstance(v, str) for v in values) or
@@ -96,8 +97,8 @@ def load_diagnostic_plan(path: Path) -> dict:
             raise ValueError('Each factor must select distinct planned cases')
     if set().union(*(set(v) for v in contrasts.values())) != set(plan['cases']):
         raise ValueError('Every case must participate in a diagnostic contrast')
-    if len(DiagnosticSchedule(plan).allocations()) > 32:
-        raise ValueError('Diagnostic plans are limited to 32 donor blocks')
+    if len(DiagnosticSchedule(plan).allocations()) > 256:
+        raise ValueError('Diagnostic plans are limited to 256 donor blocks')
     return plan
 
 

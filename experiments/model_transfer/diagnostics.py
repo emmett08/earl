@@ -8,6 +8,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from experiments.transfer_study.workspace import read_json, write_json
+from .task_manifest import cases_for_plan
 from .cases import CASES
 from .diagnostic_design import BASELINE, DiagnosticSchedule, load_diagnostic_plan
 from .diagnostic_measurement import ProjectSnapshot
@@ -59,7 +60,7 @@ class DiagnosticPilot:
         return report
 
     def _run_block(self, row: dict, rows: list[dict], preparation: PreparationTimer) -> None:
-        case = next(case for case in CASES if case.identifier == row['case'])
+        case = next(case for case in cases_for_plan(self.plan) if case.identifier == row['case'])
         root = self.root / 'blocks' / row['block_id']
         with preparation.measure(row['preparation']['donor_setup']):
             donor = Project(root / 'donor', case, 'eal')

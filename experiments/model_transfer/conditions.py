@@ -34,7 +34,7 @@ class EALContext:
         start = time.monotonic()
         try:
             result = ModelContextAdapter(knowledge).prepare(
-                question, 'orders', 'criterion_evaluated', now=project.case.time(project.session), reuse=reuse)
+                question, 'orders', 'criterion_evaluated', now=project.case.time(project.session), reuse=reuse, context=project.registration_context())
             event['assessment'] = result['assessment']
             task = TaskContextBuilder(TaskContract.from_case(project.case),
                                       (project.workspace / 'argument.eal').read_text(),

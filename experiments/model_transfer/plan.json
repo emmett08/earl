@@ -1,6 +1,6 @@
 {
-  "schema": "EAL/model-transfer-plan/3",
-  "purpose": "Pilot for paired fixed-case precision planning over ten fresh recipient sessions",
+  "schema": "EAL/model-transfer-plan/4",
+  "purpose": "Nuisance-estimation pilot on six authored task cases; calibration cases excluded from the principal estimand",
   "seed": 20260928,
   "budget_usd": 2.0,
   "max_calls_per_session": 3,
@@ -28,21 +28,13 @@
     "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
     "https://developers.openai.com/api/docs/models/gpt-5-nano"
   ],
-  "repetitions": 2,
+  "repetitions": 4,
   "recipient_sessions": 10,
   "arms": [
     "ordinary",
     "eal"
   ],
   "cases": [
-    "fresh_positive",
-    "fresh_negative",
-    "refresh_positive",
-    "refresh_negative",
-    "missing_measurement",
-    "expired_assumption",
-    "capacity_boundary",
-    "capacity_drop",
     "release-three-obligations",
     "migration-cutover-obligations",
     "database-alternative-read-routes",
@@ -52,7 +44,7 @@
   ],
   "response_mode": "prose",
   "study_role": "pilot",
-  "study_id": "eal-model-transfer-pilot-4",
+  "study_id": "eal-model-transfer-pilot-5",
   "pilot_run_ids": [],
   "practical_decision": {
     "recipient_horizon": 10,
@@ -61,11 +53,13 @@
     "minimum_correctness": 0.9
   },
   "information_target": {
-    "method": "precision",
+    "method": "decision_and_precision",
     "confidence": 0.95,
     "correctness_half_width": 0.025,
     "token_reduction_half_width": 0.1,
-    "assurance": 0.8
+    "assurance": 0.8,
+    "quality_method": "empirical_bernstein",
+    "joint_power": 0.8
   },
   "time_limit_seconds": 7200
 }

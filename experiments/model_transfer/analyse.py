@@ -16,11 +16,12 @@ def main() -> None:
     parser.add_argument('run', type=Path)
     parser.add_argument('--output', type=Path)
     parser.add_argument('--rows', type=Path, help='Derived annotated rows; original rows are retained')
+    parser.add_argument('--cost-ledger', type=Path)
     args = parser.parse_args()
     output = args.output or args.run / 'analysis.json'
     if output.exists():
         raise ValueError('Use a new analysis output path; original records are retained')
-    diagnostic = read_json(args.run / 'plan.json').get('schema') == 'EAL/model-transfer-diagnostic-plan/1'
+    diagnostic = read_json(args.run / 'plan.json').get('schema') == 'EAL/model-transfer-diagnostic-plan/2'
     if diagnostic:
         from .diagnostics import load_diagnostic_plan
         from .diagnostic_reporting import DiagnosticReportBuilder
@@ -35,6 +36,11 @@ def main() -> None:
     provenance = read_json(provenance_path) if provenance_path.exists() else None
     report = (DiagnosticReportBuilder(plan).build(rows, calls, stop) if diagnostic else
               ReportBuilder(plan).build(rows, calls, stop, provenance))
+    if args.cost_ledger:
+        if diagnostic:
+            raise ValueError('Adoption costs belong to the principal workflow comparison')
+        from .adoption_costs import assess_costs
+        report['adoption_costs'] = assess_costs(report, read_json(args.cost_ledger), plan, (provenance or {}).get('run_id'))
     report['interpretation'] = 'Recomputed from retained scores and declared annotations; raw answers were not repaired.'
     report['rows_source'] = str(args.rows or args.run / 'rows.json')
     write_json(output, report)

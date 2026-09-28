@@ -1,0 +1,2059 @@
+{
+  "schema": "EAL/investigation-verification/1",
+  "base_commit": "86f2f13b6c57a78433c68529136e99d8d28756d1",
+  "execution_kind": "scripted",
+  "rehearsals": [
+    {
+      "annotated_answers": 4224,
+      "api_attempts": 6528,
+      "calibration_checks": 83,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_sequences": 384,
+      "planned_sessions": 4224,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed",
+      "plan": "principal",
+      "retained_file_sha256": {
+        "plan.json": "9268da8c350bd5b421aae28edf3045eae3dc0b5b54b07f087f191cd76f204d61",
+        "rows.json": "b5575a925ffeff9315f949f9b7b8e149c1779415a68b1a1be4601ff36db7aa97",
+        "annotated-rows.json": "2691ef932e3b1b5068362c244aaa9796582c7e78aabb58a40f9151e72881f0bd",
+        "calls.json": "0a82ba4c163f47efd5c7341c85613b24d1ab549e230cbda99862d194742945fa",
+        "report.json": "1c6446534ef6858526bea3881712522b4190b3b01f48151cce4f938bc3729a01",
+        "analysis.json": "682e4203095440a115b66c7f4827da3e1dce12d333041aad62e4e2b95a31db65"
+      },
+      "invalid_component_comparisons": 0,
+      "invalid_component_reasons": []
+    },
+    {
+      "annotated_answers": 48,
+      "api_attempts": 66,
+      "calibration_checks": 27,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_blocks": 10,
+      "planned_sessions": 56,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed",
+      "plan": "diagnostic",
+      "retained_file_sha256": {
+        "plan.json": "1b12e7ebabc94ebacee41ce6ab26103e1de53869d6a2cf017e66812e815e70ed",
+        "rows.json": "43060d64ee2c6122630786799e0edba9761ea1fa32ec182acbddae23f04769a4",
+        "annotated-rows.json": "886fa91fa07d277058f1bf50d94352eeb4cf43bddad6a67e36f76f659d439392",
+        "calls.json": "615a7909c7f4c1193953dbc92a92c079697e6633573afd37a1cbd667abb79527",
+        "report.json": "de97fa4dcb782db725f85d7b75aa06e4215878f863fdbe14637b38f2e6f421b7",
+        "analysis.json": "7c8feebe1358854e7b60fb51c49c35e68f651c7170855e335cd5f6237e45b489"
+      },
+      "invalid_component_comparisons": 0,
+      "invalid_component_reasons": []
+    },
+    {
+      "annotated_answers": 36,
+      "api_attempts": 42,
+      "calibration_checks": 23,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_blocks": 6,
+      "planned_sessions": 36,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed",
+      "plan": "cadence-diagnostic",
+      "retained_file_sha256": {
+        "plan.json": "74dfaf66541af86b42e57fa112fa3d2ebce76c1f07e41a790edc48d45513b293",
+        "rows.json": "b924fb27e76fc81bd9efcf5c01adee1ad73320962c919c2ed3e1aab9aa9503f5",
+        "annotated-rows.json": "49d95595aeb6d768aff25e57070ae6f8a298196282be7a7afafbed5821a491fb",
+        "calls.json": "ade5a8898e0e7571e28b5a6df4111ab99c23e34316e214df1660393c4e889a11",
+        "report.json": "31b2d0ec4e0a02cd57f111a879d8ca2f1a6b2954528699a458fa0598268d7397",
+        "analysis.json": "7542e3f041b65fd8123bef65a65ca366c6bf467751b251fcde71c765754183f9"
+      },
+      "invalid_component_comparisons": 2,
+      "invalid_component_reasons": [
+        {
+          "case": "conjunctive-release-frequent",
+          "factor": "reuse",
+          "failures": [
+            "acquisition_manipulation_not_delivered"
+          ]
+        },
+        {
+          "case": "conjunctive-release-frequent",
+          "factor": "reuse",
+          "failures": [
+            "acquisition_manipulation_not_delivered"
+          ]
+        }
+      ]
+    }
+  ],
+  "cadence_calibration": {
+    "checks": [
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 4
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "not_ready",
+        "case": "conjunctive-release-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 2
+      },
+      {
+        "actual": "not_ready",
+        "case": "conjunctive-release-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 3
+      },
+      {
+        "actual": "undetermined",
+        "case": "conjunctive-release-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "conjunctive-release-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "not_ready",
+        "case": "conjunctive-release-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 8
+      },
+      {
+        "actual": "not_ready",
+        "case": "conjunctive-release-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 9
+      },
+      {
+        "actual": "undetermined",
+        "case": "conjunctive-release-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "not_ready",
+        "case": "conjunctive-release-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 1
+      },
+      {
+        "actual": "undetermined",
+        "case": "conjunctive-release-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "not_ready",
+        "case": "conjunctive-release-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "conjunctive-release-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "not_ready",
+        "case": "conjunctive-release-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 7
+      },
+      {
+        "actual": "undetermined",
+        "case": "conjunctive-release-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "conjunctive-release-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "not_ready",
+        "case": "conjunctive-release-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 4
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "not_ready",
+        "case": "alternative-routes-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 2
+      },
+      {
+        "actual": "not_ready",
+        "case": "alternative-routes-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 3
+      },
+      {
+        "actual": "undetermined",
+        "case": "alternative-routes-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "alternative-routes-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "not_ready",
+        "case": "alternative-routes-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 8
+      },
+      {
+        "actual": "not_ready",
+        "case": "alternative-routes-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 9
+      },
+      {
+        "actual": "undetermined",
+        "case": "alternative-routes-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "not_ready",
+        "case": "alternative-routes-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 1
+      },
+      {
+        "actual": "undetermined",
+        "case": "alternative-routes-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "not_ready",
+        "case": "alternative-routes-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "alternative-routes-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "not_ready",
+        "case": "alternative-routes-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 7
+      },
+      {
+        "actual": "undetermined",
+        "case": "alternative-routes-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "alternative-routes-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "not_ready",
+        "case": "alternative-routes-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 4
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "not_ready",
+        "case": "version-applicability-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 2
+      },
+      {
+        "actual": "not_ready",
+        "case": "version-applicability-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 3
+      },
+      {
+        "actual": "undetermined",
+        "case": "version-applicability-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "version-applicability-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "not_ready",
+        "case": "version-applicability-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 8
+      },
+      {
+        "actual": "not_ready",
+        "case": "version-applicability-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 9
+      },
+      {
+        "actual": "undetermined",
+        "case": "version-applicability-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "not_ready",
+        "case": "version-applicability-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 1
+      },
+      {
+        "actual": "undetermined",
+        "case": "version-applicability-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "not_ready",
+        "case": "version-applicability-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "version-applicability-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "not_ready",
+        "case": "version-applicability-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 7
+      },
+      {
+        "actual": "undetermined",
+        "case": "version-applicability-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "version-applicability-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "not_ready",
+        "case": "version-applicability-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 4
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "not_ready",
+        "case": "conflicting-evidence-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 2
+      },
+      {
+        "actual": "not_ready",
+        "case": "conflicting-evidence-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 3
+      },
+      {
+        "actual": "undetermined",
+        "case": "conflicting-evidence-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "conflicting-evidence-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "not_ready",
+        "case": "conflicting-evidence-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 8
+      },
+      {
+        "actual": "not_ready",
+        "case": "conflicting-evidence-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 9
+      },
+      {
+        "actual": "undetermined",
+        "case": "conflicting-evidence-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "not_ready",
+        "case": "conflicting-evidence-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 1
+      },
+      {
+        "actual": "undetermined",
+        "case": "conflicting-evidence-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "not_ready",
+        "case": "conflicting-evidence-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "conflicting-evidence-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "not_ready",
+        "case": "conflicting-evidence-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 7
+      },
+      {
+        "actual": "undetermined",
+        "case": "conflicting-evidence-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "conflicting-evidence-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "not_ready",
+        "case": "conflicting-evidence-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 4
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "not_ready",
+        "case": "invalidated-assumption-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 2
+      },
+      {
+        "actual": "not_ready",
+        "case": "invalidated-assumption-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 3
+      },
+      {
+        "actual": "undetermined",
+        "case": "invalidated-assumption-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "invalidated-assumption-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "not_ready",
+        "case": "invalidated-assumption-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 8
+      },
+      {
+        "actual": "not_ready",
+        "case": "invalidated-assumption-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 9
+      },
+      {
+        "actual": "undetermined",
+        "case": "invalidated-assumption-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "not_ready",
+        "case": "invalidated-assumption-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 1
+      },
+      {
+        "actual": "undetermined",
+        "case": "invalidated-assumption-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "not_ready",
+        "case": "invalidated-assumption-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "invalidated-assumption-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "not_ready",
+        "case": "invalidated-assumption-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 7
+      },
+      {
+        "actual": "undetermined",
+        "case": "invalidated-assumption-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "invalidated-assumption-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "not_ready",
+        "case": "invalidated-assumption-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 4
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-stable",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 1
+      },
+      {
+        "actual": "not_ready",
+        "case": "unresolved-evidence-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 2
+      },
+      {
+        "actual": "not_ready",
+        "case": "unresolved-evidence-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 3
+      },
+      {
+        "actual": "undetermined",
+        "case": "unresolved-evidence-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "unresolved-evidence-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-periodic",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 7
+      },
+      {
+        "actual": "not_ready",
+        "case": "unresolved-evidence-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 8
+      },
+      {
+        "actual": "not_ready",
+        "case": "unresolved-evidence-periodic",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 9
+      },
+      {
+        "actual": "undetermined",
+        "case": "unresolved-evidence-periodic",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 10
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 0
+      },
+      {
+        "actual": "not_ready",
+        "case": "unresolved-evidence-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 1
+      },
+      {
+        "actual": "undetermined",
+        "case": "unresolved-evidence-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 2
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 3
+      },
+      {
+        "actual": "not_ready",
+        "case": "unresolved-evidence-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 4
+      },
+      {
+        "actual": "undetermined",
+        "case": "unresolved-evidence-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 5
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 6
+      },
+      {
+        "actual": "not_ready",
+        "case": "unresolved-evidence-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 7
+      },
+      {
+        "actual": "undetermined",
+        "case": "unresolved-evidence-frequent",
+        "expected": "undetermined",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "undetermined",
+        "session": 8
+      },
+      {
+        "actual": "ready",
+        "case": "unresolved-evidence-frequent",
+        "expected": "ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "ready",
+        "session": 9
+      },
+      {
+        "actual": "not_ready",
+        "case": "unresolved-evidence-frequent",
+        "expected": "not_ready",
+        "kind": "task_outcome",
+        "passed": true,
+        "reference": "not_ready",
+        "session": 10
+      },
+      {
+        "case": "reversed_criterion",
+        "correspondence_rejected": true,
+        "eal_status": "unsupported",
+        "kind": "source_mutation",
+        "passed": true
+      },
+      {
+        "case": "changed_threshold",
+        "correspondence_rejected": true,
+        "eal_status": "unsupported",
+        "kind": "source_mutation",
+        "passed": true
+      },
+      {
+        "case": "missing_admission_predicate",
+        "correspondence_rejected": true,
+        "eal_status": "supported",
+        "kind": "source_mutation",
+        "passed": true
+      },
+      {
+        "case": "changed_claim_statement",
+        "correspondence_rejected": true,
+        "eal_status": "supported",
+        "kind": "source_mutation",
+        "passed": true
+      },
+      {
+        "case": "changed_source_scope",
+        "correspondence_rejected": true,
+        "eal_status": "out_of_scope",
+        "kind": "source_mutation",
+        "passed": true
+      },
+      {
+        "case": "changed_source_unit",
+        "correspondence_rejected": true,
+        "eal_status": "unsupported",
+        "kind": "source_mutation",
+        "passed": true
+      },
+      {
+        "case": "changed_assumption_interval",
+        "correspondence_rejected": true,
+        "eal_status": "supported",
+        "kind": "source_mutation",
+        "passed": true
+      },
+      {
+        "actual": [
+          "ready",
+          "criterion_met"
+        ],
+        "case": "fresh_299_seconds",
+        "expected": [
+          "ready",
+          "criterion_met"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "ready",
+          "criterion_met"
+        ],
+        "case": "fresh_300_seconds",
+        "expected": [
+          "ready",
+          "criterion_met"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "undetermined",
+          "stale_measurement"
+        ],
+        "case": "stale_301_seconds",
+        "expected": [
+          "undetermined",
+          "stale_measurement"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "undetermined",
+          "stale_measurement"
+        ],
+        "case": "future_observation",
+        "expected": [
+          "undetermined",
+          "stale_measurement"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "undetermined",
+          "evidence_unavailable"
+        ],
+        "case": "wrong_measurement_scope",
+        "expected": [
+          "undetermined",
+          "evidence_unavailable"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "undetermined",
+          "evidence_unavailable"
+        ],
+        "case": "wrong_measurement_units",
+        "expected": [
+          "undetermined",
+          "evidence_unavailable"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "undetermined",
+          "measurement_missing"
+        ],
+        "case": "missing_reading",
+        "expected": [
+          "undetermined",
+          "measurement_missing"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "undetermined",
+          "assumption_not_started"
+        ],
+        "case": "assumption_before_start",
+        "expected": [
+          "undetermined",
+          "assumption_not_started"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "ready",
+          "criterion_met"
+        ],
+        "case": "assumption_at_start",
+        "expected": [
+          "ready",
+          "criterion_met"
+        ],
+        "kind": "boundary",
+        "passed": true
+      },
+      {
+        "actual": [
+          "undetermined",
+          "assumption_expired"
+        ],
+        "case": "assumption_at_end",
+        "expected": [
+          "undetermined",
+          "assumption_expired"
+        ],
+        "kind": "boundary",
+        "passed": true
+      }
+    ],
+    "scope": "Software, authored task/source correspondence and result preservation; not model performance.",
+    "status": "passed"
+  },
+  "scope": "Actual software checks. No model API was called; no observed model benefit or measured human adoption cost."
+}

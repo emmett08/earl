@@ -85,7 +85,7 @@ class ReportBuilder:
         pending = sum(s.get('score', {}).get('task_match') is None for s in all_sessions)
         incomplete = stop_reason is not None or any(r['status'] != 'complete' for r in rows)
         report = {
-            'schema': 'EAL/model-transfer-result/3',
+            'schema': 'EAL/model-transfer-result/4',
             'status': ('partial' if incomplete else 'incomplete_accounting' if not accounting['accounting_complete']
                        else 'pending_annotation' if pending else 'complete'),
             'execution_status': 'partial' if incomplete else 'complete', 'pending_task_annotations': pending,
@@ -103,6 +103,8 @@ class ReportBuilder:
             'known_cost_usd': accounting['known_cost_usd'],
             'unknown_cost_attempts': accounting['unknown_cost_attempts'],
             'charged_or_reserved_usd': sum(c['charged_or_reserved_usd'] for c in calls),
+            'adoption_costs': {'status': 'unmeasured', 'total_cost_usd': None,
+                'reason': 'Import a run-bound adoption cost ledger; pre-authored source is not zero authoring effort.'},
             'scope': 'Selected-case workflow comparison with ordinary prose and pre-authored EAL. '
                      'Task decision is primary; evidence citations and format are separate optional diagnostics. '
                      'Unknown annotations remain bounded; no population inference or unmeasured authoring savings. '
@@ -122,7 +124,8 @@ class ReportBuilder:
                 trajectories = PilotExtractor().extract(rows, calls, self.plan['recipient_sessions'])
                 report['practical_decision'] = PracticalDecision(specification).evaluate(trajectories,
                     study_role=self.plan.get('study_role', 'pilot'), independent_evaluation=independent,
-                    confidence=self.plan.get('information_target', {}).get('confidence', .95))
+                    confidence=self.plan.get('information_target', {}).get('confidence', .95),
+                    quality_method=self.plan.get('information_target', {}).get('quality_method', 'empirical_bernstein'))
                 report['practical_decision']['execution_kind'] = provenance.get('execution_kind', 'unverified')
                 report['practical_decision']['run_id'] = provenance.get('run_id')
                 report['practical_decision']['pilot_run_ids'] = pilot_ids

@@ -11,6 +11,7 @@ import time
 
 from experiments.transfer_study.workspace import read_json, utc_now, write_json
 from .calibration import ContractCalibration
+from .task_manifest import cases_for_plan
 from .cases import CASES
 from .design import AssignmentSchedule, load_plan
 from .project import Project
@@ -35,7 +36,7 @@ class Pilot:
         write_json(self.root / 'plan.json', self.plan)
         assignments = AssignmentSchedule(self.plan).allocations()
         write_json(self.root / 'assignments.json', assignments)
-        cases = {c.identifier: c for c in CASES}
+        cases = {c.identifier: c for c in cases_for_plan(self.plan)}
         rows = [{**a, 'cohort': cases[a['case']].cohort, 'status': 'not_run', 'sessions': []}
                 for a in assignments]
         records = SequenceRecords(self.root)
@@ -88,7 +89,7 @@ def main() -> None:
     cli.add_argument('--output', type=Path, required=True)
     cli.add_argument('--calibrate-only', action='store_true')
     args = cli.parse_args()
-    diagnostic = read_json(args.plan).get('schema') == 'EAL/model-transfer-diagnostic-plan/1'
+    diagnostic = read_json(args.plan).get('schema') == 'EAL/model-transfer-diagnostic-plan/2'
     if diagnostic:
         from .diagnostics import DiagnosticPilot, load_diagnostic_plan
         plan = load_diagnostic_plan(args.plan)
@@ -98,7 +99,7 @@ def main() -> None:
         raise ValueError('Use a new run directory; attempts must never be overwritten')
     args.output.mkdir(parents=True)
     write_json(args.output / 'plan.json', plan)
-    write_json(args.output / 'cases.json', [asdict(c) for c in CASES if c.identifier in plan['cases']])
+    write_json(args.output / 'cases.json', [asdict(c) for c in cases_for_plan(plan) if c.identifier in plan['cases']])
     protocol = read_json(Path(__file__).with_name('protocol.json'))
     write_json(args.output / 'protocol.json', protocol)
     try:

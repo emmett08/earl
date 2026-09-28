@@ -7,6 +7,7 @@ import statistics
 
 from .decision_statistics import SequenceOutcome
 from .pilot_data import PairedTrajectory
+from .nuisance import changed_quality, resource_multiplier
 
 
 class TrajectorySimulator:
@@ -33,6 +34,8 @@ class TrajectorySimulator:
         A fitting arm can be advanced at once. An arm that could cross either
         limit still uses the session/request loop, retaining partial outcomes.
         """
+        if len(self._complete_arm_cache) > 4096:
+            self._complete_arm_cache.clear()
         key = pair.pair_id, arm, factor, scenario['cost_multiplier'], scenario.get('elapsed_multiplier', 1)
         if key not in self._complete_arm_cache:
             sessions = getattr(pair, arm)
@@ -65,8 +68,10 @@ class TrajectorySimulator:
         observed_e = [s.correctness for p in reference for s in p.eal[1:] if s.correctness is not None]
         observed_o = [s.correctness for p in reference for s in p.ordinary[1:] if s.correctness is not None]
         base = statistics.mean(observed_e) if observed_e else None
-        desired = statistics.mean(observed_o) + scenario['correctness_difference'] if observed_o else None
-        attainable = scale is not None and base is not None and desired is not None and 0 <= desired <= 1
+        ordinary_base = statistics.mean(observed_o) if observed_o else None
+        ordinary_target = scenario.get('ordinary_correctness', ordinary_base)
+        desired = ordinary_target + scenario['correctness_difference'] if ordinary_target is not None else None
+        attainable = scale is not None and base is not None and desired is not None and 0 <= desired <= 1 and 0 <= ordinary_target <= 1
         spent, elapsed, stopped, output = 0., self.workflow_overhead_seconds, False, []
         budget_stopped = time_stopped = False
         timing_known = True
@@ -85,6 +90,11 @@ class TrajectorySimulator:
                     stopped = time_stopped = True
                 quality_draw, missing_draw = rng.random(), rng.random()
                 factor = scale if arm == 'eal' and scale is not None else 1
+                totals = [sum(s.tokens for s in getattr(p, arm)) for p in self.strata[pair.stratum]
+                          if all(s.tokens is not None for s in getattr(p, arm))]
+                factor *= resource_multiplier(totals, rng,
+                    variance_inflation=scenario.get('variance_inflation', 1),
+                    unseen_cv=scenario.get('unseen_resource_cv', 0))
                 if arm == 'eal':
                     probability = scenario.get('resource_tail_probability', 0)
                     multiplier = scenario.get('resource_tail_multiplier', 1)
@@ -96,11 +106,10 @@ class TrajectorySimulator:
                     elapsed += summary['elapsed']
                     timing_known &= summary['timing_known']
                     correct = summary['correct']
-                    if arm == 'eal' and attainable:
-                        if desired > base and quality_draw < (desired - base) / (1 - base):
-                            correct += summary['incorrect']
-                        elif desired < base and quality_draw < (base - desired) / base:
-                            correct = 0
+                    if attainable:
+                        correct = changed_quality(correct, summary['incorrect'],
+                            base if arm == 'eal' else ordinary_base,
+                            desired if arm == 'eal' else ordinary_target, quality_draw)
                     missing = missing_draw < scenario['missing_probability']
                     arms[arm] = (0 if missing else correct / summary['horizon'],
                         1 if missing else (correct + summary['unknown']) / summary['horizon'],
@@ -115,11 +124,10 @@ class TrajectorySimulator:
                         if elapsed > self.time_limit_seconds:
                             stopped = time_stopped = True
                     quality = session.correctness
-                    if arm == 'eal' and index and attainable and quality is not None:
-                        if desired > base and not quality and quality_draw < (desired - base) / (1 - base):
-                            quality = True
-                        elif desired < base and quality and quality_draw < (base - desired) / base:
-                            quality = False
+                    if index and attainable and quality is not None:
+                        quality = bool(changed_quality(int(quality), int(not quality),
+                            base if arm == 'eal' else ordinary_base,
+                            desired if arm == 'eal' else ordinary_target, quality_draw))
                     for reservation, charged in session.requests:
                         reservation *= max(1, factor) * scenario['cost_multiplier']
                         charged *= factor * scenario['cost_multiplier']

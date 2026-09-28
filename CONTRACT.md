@@ -1,6 +1,6 @@
 # EAL/2 integration contract
 
-EAL/2 is the supported source language. The package is `2.14.1`. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
+EAL/2 is the supported source language. The package is `2.17.0`. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
 
 Package 2.14.1 separates built-in strategy implementations without changing the source language, observation schemas, method identifiers, numerical contracts or recorded built-in implementation identities.
 
@@ -42,3 +42,28 @@ Collections bind exact source bytes and context. The evaluator reports `supporte
 ## Bounds and persistence
 
 Collection preflight bounds context JSON to 16 KiB, 128 evidence IDs and each request to 1 MiB. The sum of configured tool output allowances is at most 128 MiB, individual command outputs at most 16 MiB, and the final collection JSON at most 32 MiB. Packet output defaults to a 16 KiB bound with explicit omission counts; it excludes raw observation values, command streams and arbitrary extension outputs. SQLite stores immutable observations, collections and assessments under private files. Stored records remain historical results; a new assessment checks current source, method, binding and observation freshness. See [MCP and tools](docs/mcp-and-tools.md) for exact adapter envelopes and failure handling.
+
+## Investigation contracts
+
+Protocol 5.0.0 uses primary plan/report `/4`, diagnostic plan/report `/2`, and
+information-design configuration/result `/2`. These experiment contracts do not
+change EAL/2 semantics. The default population contains six evaluation cases;
+eight threshold cases serve calibration only. A frozen
+`EAL/evaluation-task-manifest/1` records independently supplied task provenance,
+reference-checked answer keys and explicit evidence revisions. Revisions enter
+assessment context so incompatible snapshots cannot be reused.
+
+Correctness inference uses independent paired trajectories and prospectively
+selected empirical Bernstein bounds. Unknown outcomes retain their planned
+units and completion envelopes. Simultaneous estimation and the one-sided
+intersection-union adoption decision are separate outputs. Resource inference
+is approximate; allocation requires declared nuisance scenarios and fresh-seed
+Monte Carlo calibration. Scripted runs cannot produce an empirical evaluation
+allocation.
+
+Matched-fact diagnostics independently vary withheld, EAL-derived and conventional
+conclusions. Failed manipulation checks retain observations and costs but block
+component attribution. The optional `EAL/adoption-cost-ledger/1` binds measured
+activity to a run and plan digest; missing rates or coverage remain unknown.
+See [methodology](docs/eal2-experiment-methodology.md) and
+[verification](experiments/model_transfer/verification.md).

@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sqlite3
+from datetime import datetime
 
 from .diagnostic_design import BASELINE, FACTORS
 from .project import Project
@@ -80,7 +81,34 @@ class ManipulationCheck:
                     if bool(request.get('tools')) != variant['native_tools']:
                         failures.append('native_tool_mask_changed')
         results = [variant['result'] for variant in variants if variant.get('result')]
-        facts = [_task_facts(result.get('task_context')) for result in results]
+        facts = [_task_facts(result.get('task_context', {}).get('inputs') if factor == 'reasoner'
+                             else result.get('task_context')) for result in results]
+        if factor == 'reasoner':
+            for result in results:
+                context = result.get('task_context') or {}
+                if not context.get('inputs') or ('decision' in context) != (result.get('reasoner') != 'facts'):
+                    failures.append('conclusion_manipulation_not_delivered')
+                events = [e for e in result.get('events', []) if e.get('kind') == 'reasoning_diagnostic']
+                if len(events) != 1 or events[0].get('reasoner') != result.get('reasoner'):
+                    failures.append('reasoner_not_delivered')
+                if result.get('reasoner') != 'eal' and any(e.get('kind') == 'eal_assess' for e in result.get('events', [])):
+                    failures.append('off_target_eal_computation')
+        acquisition = []
+        if factor == 'reuse':
+            # Acquisition time is part of this intervention. Keep all decision,
+            # scope, criterion and assessment-time fields equal; permit the
+            # acquisition clock to differ only while both observations are fresh.
+            for result, value in zip(results, facts):
+                if isinstance(value, dict) and value.get('observed_at') and value.get('assessed_at'):
+                    stamp = lambda text: datetime.fromisoformat(text.replace('Z', '+00:00'))
+                    age = (stamp(value['assessed_at']) - stamp(value['observed_at'])).total_seconds()
+                    if 0 <= age <= value.get('criterion', {}).get('max_age_seconds', -1):
+                        value.pop('observed_at')
+                assessments = [event['assessment'] for event in result.get('events', [])
+                               if event.get('kind') == 'eal_assess' and event.get('assessment')]
+                acquisition.append({'policy': result['reuse'],
+                    'reused_count': sum(a.get('reused_count', 0) for a in assessments),
+                    'collected_count': sum(a.get('collected_count', 0) for a in assessments)})
         if facts and any(item != facts[0] for item in facts[1:]):
             failures.append('current_task_information_differs')
         if factor in ('projection', 'notes') and len(results) == len(levels):
@@ -101,5 +129,7 @@ class ManipulationCheck:
         return {'status': 'passed' if not failures else 'invalid',
                 'failures': sorted(set(failures)),
                 'task_information_sha256': [_digest(item) for item in facts],
+                'acquisition': acquisition,
+                'acquisition_time_may_differ': factor == 'reuse',
                 'normalised_record_fields': ['assessment_id', 'observation_id', 'observation_ids']}
 

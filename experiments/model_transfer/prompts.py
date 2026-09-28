@@ -17,11 +17,11 @@ class PreparedPrompt:
 
 class SessionPromptBuilder:
     def prepare(self, project: Project, question: str, *, response_mode: str,
-                context_style: str, include_notes: bool, reuse: str) -> PreparedPrompt:
+                context_style: str, include_notes: bool, reuse: str, reasoner: str = 'workflow') -> PreparedPrompt:
         started = time.monotonic()
         messages = [{'role': 'system', 'content':
                      'Complete the engineering task using the supplied project information and available tools.'}]
-        messages.extend(project.context(question, style=context_style, reuse=reuse))
+        messages.extend(project.context(question, style=context_style, reuse=reuse, reasoner=reasoner))
         context_seconds = time.monotonic() - started
         task_context = next((event['task_context'] for event in reversed(project.events)
                              if event['session'] == project.session and 'task_context' in event), None)

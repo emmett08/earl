@@ -1,0 +1,498 @@
+{
+  "schema": "EAL/design-validation/1",
+  "execution_kind": "synthetic",
+  "seed": 20260929,
+  "paired_trajectories": 1200,
+  "results": [
+    {
+      "name": "benefit",
+      "truth": {
+        "ordinary_correctness": 0.97,
+        "eal_correctness": 0.97,
+        "token_reduction": 0.3,
+        "resource_cv": 0.15
+      },
+      "partial_null": false,
+      "replications": 1000,
+      "joint_success": {
+        "estimate": 0.988,
+        "mc_interval": [
+          0.9791427315245017,
+          0.9931223521935965
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.003443254274665176,
+        "successes": 988,
+        "replications": 1000
+      },
+      "joint_coverage": {
+        "estimate": 0.981,
+        "mc_interval": [
+          0.9705155440876868,
+          0.9878031142492091
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.004317290817167639,
+        "successes": 981,
+        "replications": 1000
+      },
+      "quality_coverage": {
+        "estimate": 1.0,
+        "mc_interval": [
+          0.996173241514445,
+          1
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 1000,
+        "replications": 1000
+      },
+      "token_coverage": {
+        "estimate": 0.981,
+        "mc_interval": [
+          0.9705155440876868,
+          0.9878031142492091
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.004317290817167639,
+        "successes": 981,
+        "replications": 1000
+      }
+    },
+    {
+      "name": "no_saving",
+      "truth": {
+        "ordinary_correctness": 0.97,
+        "eal_correctness": 0.97,
+        "token_reduction": 0.0,
+        "resource_cv": 0.15
+      },
+      "partial_null": true,
+      "replications": 1000,
+      "joint_success": {
+        "estimate": 0.0,
+        "mc_interval": [
+          2.168404344971009e-19,
+          0.0038267584855551217
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 0,
+        "replications": 1000
+      },
+      "joint_coverage": {
+        "estimate": 0.986,
+        "mc_interval": [
+          0.9766379658824644,
+          0.9916424248695761
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0037153734670958734,
+        "successes": 986,
+        "replications": 1000
+      },
+      "quality_coverage": {
+        "estimate": 1.0,
+        "mc_interval": [
+          0.996173241514445,
+          1
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 1000,
+        "replications": 1000
+      },
+      "token_coverage": {
+        "estimate": 0.986,
+        "mc_interval": [
+          0.9766379658824644,
+          0.9916424248695761
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0037153734670958734,
+        "successes": 986,
+        "replications": 1000
+      }
+    },
+    {
+      "name": "quality_boundary",
+      "truth": {
+        "ordinary_correctness": 0.99,
+        "eal_correctness": 0.94,
+        "token_reduction": 0.3,
+        "resource_cv": 0.15
+      },
+      "partial_null": true,
+      "replications": 1000,
+      "joint_success": {
+        "estimate": 0.0,
+        "mc_interval": [
+          2.168404344971009e-19,
+          0.0038267584855551217
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 0,
+        "replications": 1000
+      },
+      "joint_coverage": {
+        "estimate": 0.979,
+        "mc_interval": [
+          0.9681097049387625,
+          0.9862242604320758
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.00453420334788814,
+        "successes": 979,
+        "replications": 1000
+      },
+      "quality_coverage": {
+        "estimate": 1.0,
+        "mc_interval": [
+          0.996173241514445,
+          1
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 1000,
+        "replications": 1000
+      },
+      "token_coverage": {
+        "estimate": 0.979,
+        "mc_interval": [
+          0.9681097049387625,
+          0.9862242604320758
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.00453420334788814,
+        "successes": 979,
+        "replications": 1000
+      }
+    },
+    {
+      "name": "absolute_boundary",
+      "truth": {
+        "ordinary_correctness": 0.9,
+        "eal_correctness": 0.9,
+        "token_reduction": 0.3,
+        "resource_cv": 0.15
+      },
+      "partial_null": true,
+      "replications": 1000,
+      "joint_success": {
+        "estimate": 0.0,
+        "mc_interval": [
+          2.168404344971009e-19,
+          0.0038267584855551217
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 0,
+        "replications": 1000
+      },
+      "joint_coverage": {
+        "estimate": 0.979,
+        "mc_interval": [
+          0.9681097049387625,
+          0.9862242604320758
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.00453420334788814,
+        "successes": 979,
+        "replications": 1000
+      },
+      "quality_coverage": {
+        "estimate": 1.0,
+        "mc_interval": [
+          0.996173241514445,
+          1
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 1000,
+        "replications": 1000
+      },
+      "token_coverage": {
+        "estimate": 0.979,
+        "mc_interval": [
+          0.9681097049387625,
+          0.9862242604320758
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.00453420334788814,
+        "successes": 979,
+        "replications": 1000
+      }
+    },
+    {
+      "name": "saving_boundary",
+      "truth": {
+        "ordinary_correctness": 0.97,
+        "eal_correctness": 0.97,
+        "token_reduction": 0.2,
+        "resource_cv": 0.15
+      },
+      "partial_null": true,
+      "replications": 10000,
+      "joint_success": {
+        "estimate": 0.0507,
+        "mc_interval": [
+          0.0465700404698355,
+          0.05517502046605448
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.00219384388687983,
+        "successes": 507,
+        "replications": 10000
+      },
+      "joint_coverage": {
+        "estimate": 0.982,
+        "mc_interval": [
+          0.9792030528202682,
+          0.9844267727503995
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.001329511188369621,
+        "successes": 9820,
+        "replications": 10000
+      },
+      "quality_coverage": {
+        "estimate": 1.0,
+        "mc_interval": [
+          0.9996160016293234,
+          1
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 10000,
+        "replications": 10000
+      },
+      "token_coverage": {
+        "estimate": 0.982,
+        "mc_interval": [
+          0.9792030528202682,
+          0.9844267727503995
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.001329511188369621,
+        "successes": 9820,
+        "replications": 10000
+      }
+    },
+    {
+      "name": "harm",
+      "truth": {
+        "ordinary_correctness": 0.97,
+        "eal_correctness": 0.8,
+        "token_reduction": 0.3,
+        "resource_cv": 0.15
+      },
+      "partial_null": true,
+      "replications": 1000,
+      "joint_success": {
+        "estimate": 0.0,
+        "mc_interval": [
+          2.168404344971009e-19,
+          0.0038267584855551217
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 0,
+        "replications": 1000
+      },
+      "joint_coverage": {
+        "estimate": 0.983,
+        "mc_interval": [
+          0.9729440411597701,
+          0.9893593101431837
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.004087909000944127,
+        "successes": 983,
+        "replications": 1000
+      },
+      "quality_coverage": {
+        "estimate": 1.0,
+        "mc_interval": [
+          0.996173241514445,
+          1
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 1000,
+        "replications": 1000
+      },
+      "token_coverage": {
+        "estimate": 0.983,
+        "mc_interval": [
+          0.9729440411597701,
+          0.9893593101431837
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.004087909000944127,
+        "successes": 983,
+        "replications": 1000
+      }
+    },
+    {
+      "name": "high_variance",
+      "truth": {
+        "ordinary_correctness": 0.97,
+        "eal_correctness": 0.97,
+        "token_reduction": 0.3,
+        "resource_cv": 0.6
+      },
+      "partial_null": false,
+      "replications": 1000,
+      "joint_success": {
+        "estimate": 0.986,
+        "mc_interval": [
+          0.9766379658824644,
+          0.9916424248695761
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0037153734670958734,
+        "successes": 986,
+        "replications": 1000
+      },
+      "joint_coverage": {
+        "estimate": 0.98,
+        "mc_interval": [
+          0.9693099947702822,
+          0.987016317083585
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0044271887242357325,
+        "successes": 980,
+        "replications": 1000
+      },
+      "quality_coverage": {
+        "estimate": 1.0,
+        "mc_interval": [
+          0.996173241514445,
+          1
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 1000,
+        "replications": 1000
+      },
+      "token_coverage": {
+        "estimate": 0.98,
+        "mc_interval": [
+          0.9693099947702822,
+          0.987016317083585
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0044271887242357325,
+        "successes": 980,
+        "replications": 1000
+      }
+    },
+    {
+      "name": "rare_errors",
+      "truth": {
+        "ordinary_correctness": 0.999,
+        "eal_correctness": 0.949,
+        "token_reduction": 0.3,
+        "resource_cv": 0.15
+      },
+      "partial_null": true,
+      "replications": 1000,
+      "joint_success": {
+        "estimate": 0.0,
+        "mc_interval": [
+          2.168404344971009e-19,
+          0.0038267584855551217
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 0,
+        "replications": 1000
+      },
+      "joint_coverage": {
+        "estimate": 0.979,
+        "mc_interval": [
+          0.9681097049387625,
+          0.9862242604320758
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.00453420334788814,
+        "successes": 979,
+        "replications": 1000
+      },
+      "quality_coverage": {
+        "estimate": 1.0,
+        "mc_interval": [
+          0.996173241514445,
+          1
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.0,
+        "successes": 1000,
+        "replications": 1000
+      },
+      "token_coverage": {
+        "estimate": 0.979,
+        "mc_interval": [
+          0.9681097049387625,
+          0.9862242604320758
+        ],
+        "mc_confidence": 0.95,
+        "mcse": 0.00453420334788814,
+        "successes": 979,
+        "replications": 1000
+      }
+    }
+  ],
+  "analytic_method_comparison": [
+    {
+      "paired_trajectories": 224,
+      "sessions": 4928,
+      "zero_variance_quality_half_width": {
+        "empirical_bernstein": 0.1146919954062599,
+        "hoeffding": 0.20674975692639982
+      }
+    },
+    {
+      "paired_trajectories": 512,
+      "sessions": 11264,
+      "zero_variance_quality_half_width": {
+        "empirical_bernstein": 0.050051497016821836,
+        "hoeffding": 0.13675211011257693
+      }
+    },
+    {
+      "paired_trajectories": 1024,
+      "sessions": 22528,
+      "zero_variance_quality_half_width": {
+        "empirical_bernstein": 0.025001285411139745,
+        "hoeffding": 0.09669834440217259
+      }
+    },
+    {
+      "paired_trajectories": 1536,
+      "sessions": 33792,
+      "zero_variance_quality_half_width": {
+        "empirical_bernstein": 0.01666209444664232,
+        "hoeffding": 0.07895386758574563
+      }
+    },
+    {
+      "paired_trajectories": 15344,
+      "sessions": 337568,
+      "zero_variance_quality_half_width": {
+        "empirical_bernstein": 0.001666969626252751,
+        "hoeffding": 0.024980419189976382
+      }
+    }
+  ],
+  "scope": "Known synthetic generating processes and production decision analysis. No live performance, task-population generalisation or budget adequacy is established.",
+  "checks": {
+    "benefit_joint_success_lower_at_least_80_percent": true,
+    "partial_null_false_success_upper_at_most_6_percent": true,
+    "joint_coverage_lower_at_least_94_percent": true
+  },
+  "base_simulations_per_scenario": 1000,
+  "saving_boundary_simulations": 10000
+}

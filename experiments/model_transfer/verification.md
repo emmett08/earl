@@ -1,129 +1,120 @@
-# Model-session investigation verification
+# Investigation verification
 
-Protocol **4.0.0**, package **2.16.0**, EAL/2. Packet/model-context schemas remain
-`/2`; the primary plan/report use `/3`; the diagnostic and information-design contracts use `/1`.
-These records concern software and measurement instruments. Rehearsal labels
-were supplied from the deliberately scripted answer text; they are neither human
-annotation results nor model observations. No live model experiment has been run
-under this protocol.
+Protocol **5.0.0**, package **2.17.0**, EAL/2. Primary plan/result schemas are
+`/4`; diagnostic and information-design schemas are `/2`. The scientific
+protocol schema is **1.2** and the investigation remains **specified**.
+The baseline is GitHub commit `86f2f13b6c57a78433c68529136e99d8d28756d1`.
+No live model requests were made for this change.
+
+## Executed checks
 
 | Check | Actual result |
-| --- | --- |
-| Scientific protocol validator | VALID at specified status; zero errors and zero warnings. |
-| Integrated suite | `make check`: 872 passed, 1 skipped; generated parser and maintained CLI/MCP example passed. |
-| Actual-runtime calibration | 171 primary-plan checks and 21 diagnostic-plan checks passed, including the changed-threshold mutation; zero live requests. |
-| Answer/annotation checks | Whole-answer canonical coding and pending counterexamples pass within the integrated suite; derived decisions can change without changing resource records. |
-| Full-plan scripted rehearsals | 448 primary sequences/4,928 sessions and 4 diagnostic donors/28 recipients completed. Scripted transports received 7,616 and 36 requests respectively. |
-| Annotation and offline reconstruction | 4,928 primary and 24 diagnostic pending answers passed scripted annotation import and offline analysis; original rows unchanged and resource measurements reproduced. |
-| Independent acceptance review | All 66 additional-task decisions and 108 three-valued truth assignments agree with the separate reference. Simulated rare-tail miscoverage prevents allocation. Cached simulation matches the full request/session path across 300 scenarios. |
-| Statistical checks | 18 information-planning tests plus 10 reporting tests pass, covering dependence, missingness, calibration, finite budgets, deadlines, zero observed resource variance and synthetic-data exclusion. |
-| Allocation rehearsal | Six candidates × eight scenarios × 200 simulations completed using scripted trajectories. Report is `synthetic_rehearsal` / `no_supported_allocation`; no evaluation plan exported. Known scripted variance cannot establish empirical adequacy. |
-| Build and distribution | `make build` passed; 2.16.0 source archive includes the current repair modules and excludes run artefacts. |
-| Workflow and diff | Only manual workflow dispatch; live execution defaults off. `git diff --check` clean. |
+|---|---|
+| Baseline regression check | 35 existing information-design and diagnostic tests passed before implementation. |
+| Scientific protocol validator | VALID at specified status, zero errors and zero warnings. |
+| Integrated verification | `make check`: 884 passed, 1 skipped; ANTLR 4.13.2 generated sources and the maintained CLI/MCP example passed. |
+| Final statistical regression | 31 tests passed after the final screening-policy change, covering information planning and all new investigation components. |
+| Principal scripted rehearsal | 384 sequences, 4,224 sessions, 6,528 synthetic API attempts; 83 calibration checks passed. All 4,224 answers passed annotation import; original rows unchanged and resources reproduced by offline analysis. |
+| Component diagnostic rehearsal | 10 donors and 46 recipients, 66 synthetic attempts; 27 calibration checks. All 38 pairwise manipulation checks passed. Annotation and reconstruction passed. |
+| Cadence diagnostic rehearsal | Six donors and 30 recipients, 42 synthetic attempts; 23 calibration checks. Annotation and reconstruction passed. Two frequent-change reuse comparisons correctly remain invalid for actual-reuse attribution because both policies recollect. |
+| Complete cadence calibration | 215 checks passed across all 18 cases and eleven snapshots. No model requests. |
+| Statistical operating characteristics | Eight known generating processes, 1,200 independent paired trajectories per replication; 1,000 replications per scenario, except 10,000 at the saving boundary. All declared calibration checks passed. |
+| Distribution | `make build` produced the 2.17.0 wheel and source archive. |
+| Workflow and diff | Manual dispatch only; live execution defaults off. `git diff --check` clean. |
 
-The integrated checks cover the following properties. This list specifies the
-verification scope; the table records which checks have actually completed.
+The JSON records in [validation/rehearsals.json](validation/rehearsals.json)
+retain rehearsal summaries, raw/derived file fingerprints, invalid contrast
+reasons and the full cadence calibration results. These are software observations,
+not model performance evidence. Full generated request/session directories are
+reproducible outputs rather than repository source files.
 
-* Every primary assignment preserves the case, donor, receiver, native-tool
-  setting, repetition and recipient position. Diagnostic variants clone a common
-  donor state into independent directories.
-* The authored task contract rejects changed claim meaning, criterion, scope or
-  incompatible declarations. Actual EAL evaluation distinguishes measured negative
-  results, missing readings, out-of-scope observations and freshness/applicability
-  boundaries. The independent reference does not read EAL conclusions.
-* Generic context preserves claim statements and their `prose_verified`
-  qualification. Task context contains the current decision, meaning, scope and
-  supporting evidence without requiring the model to reconstruct omitted facts.
-* Primary prose responses do not require JSON. An unclassifiable or contradictory
-  answer remains pending annotation; empty output is observed no-answer.
-  Only complete standalone canonical prose decisions receive automatic labels.
-  Explanations, qualifications, volunteered JSON and unfinished tool-turn text
-  remain pending independent coding.
-  Secondary basis/citation/format measurements do not redefine primary task
-  correctness. Blind annotation adds derived labels without altering raw answers.
-* Both primary workflows retain the latest complete raw answer as a project note
-  under the same size rule. Ordinary prompts include their specification and
-  notes; compact EAL prompts receive the current standalone task context.
-* Diagnostic state, fixture and task-fact checks detect unintended variation.
-  Actual response mode, note inclusion and compatible/fresh collection are
-  recorded. A failed manipulation invalidates attribution while preserving its
-  answer, costs and denominator.
-* Resource accounting includes initial, each subsequent and cumulative work;
-  shared diagnostic donors and unique recipients count once, with separately
-  recorded shared and clone preparation. Session attempt receipts distinguish
-  missing accounting from confirmed zero requests. Unknown labels, interrupted requests and
-  incomplete token/cost records remain distinguishable from wrong answers and
-  measured zeroes.
+## Statistical evidence
 
-## Implementation responsibilities
+[design-validation.json](validation/design-validation.json) retains the actual
+simulation counts, generating truths, seeds, uncertainty and checks. In the
+beneficial reference scenario, joint success was 98.8% with a 95% Monte Carlo
+interval of 97.91–99.31%. At the token-saving boundary, false success was 5.07%
+(507/10,000; interval 4.66–5.52%). The other partial-null scenarios had no joint
+successes in 1,000 replications each. The lowest simultaneous-coverage lower
+Monte Carlo bound across scenarios was 96.81%.
 
-Context strategies encapsulate ordinary and EAL workflows. TaskContract checks
-this experiment's authored source; its task adapter translates an actual
-assessment into the declared task result. The generic model-context projection
-retains argument meaning and qualifications without claiming arbitrary prose is
-formally proved.
+These results support the declared numerical checks for the examined generating
+processes. They do not prove a uniform error guarantee for arbitrary resource
+populations. Resource inference remains approximate: the protocol declares 5%
+nominal false success and 95% nominal coverage, with a one-percentage-point
+numerical calibration tolerance. The practical effect thresholds are unchanged.
 
-Answer annotation, independent reference scoring and aggregate reporting are
-separate responsibilities. Manual annotation is a derived record joined through
-a separate mapping; it is not an answer-repair request sent to the model.
-Diagnostic orchestration owns donor snapshots, clone creation, factor delivery
-and manipulation checks. The existing provider transport, budget ledger and
-append-only attempt journal serve both investigations.
+The initial 1,000-replication screening result is retained in
+[design-validation-screening.json](validation/design-validation-screening.json).
+Its saving-boundary false-success interval extended above 6%; that check failed.
+Increasing boundary replication to 10,000 resolved simulation uncertainty without
+changing the test or thresholds. Both outcomes remain visible. Reproduce the
+screen using `--boundary-simulations 1000`; the default reproduces the refined
+run. These operating-characteristic checks are distinct from the allocation
+planner's independent, fresh-seed validation of screened candidates.
 
-Context and response-format classes use Strategy; the task context is an Adapter
-from checked assessment to application vocabulary. Transport is injected through
-a small protocol. Task correspondence, prompt preparation, annotation, outcome
-summaries, paired comparisons and manipulation checks have separate owners.
-The packet builder keeps bounded statement and omission helpers private because
-they maintain one projection invariant. Diagnostic block orchestration retains
-one donor-and-clones lifecycle; its assignment and measurement policies live in
-separate modules. AttemptReconciler owns request-receipt reconciliation.
-PreparationTimer owns timed operation records through an injected persistence
-callback; DiagnosticResources owns preparation coverage and resource contrasts.
-Session helpers retain text capture, tool-message handling and unfinished-answer
-classification within one response lifecycle, where they share message ordering
-and side-effect invariants. Adversarial calibration retains its fixture cases
-with the same actual-runtime check and pass criteria.
-These boundaries permit changes without a general-purpose
-framework or duplicated evaluation logic.
+At zero observed paired correctness variance, the simultaneous empirical
+Bernstein half-width is approximately 0.02500 at 1,024 pairs and 0.01666 at 1,536
+pairs. The Hoeffding comparison at those allocations is 0.09670 and 0.07895.
+Zero observed errors still yield nonzero uncertainty. These are conditional
+method comparisons, not required sample sizes for a real population.
 
-The production evaluator, observation repositories and collector interfaces
-remain shared. No general experiment framework or alternative EAL semantics is
-introduced. PilotExtractor owns paired retained-data extraction; DecisionStatistics owns
-interval calculations; TrajectorySimulator resamples and replays whole matched
-trajectories; AllocationPlanner selects an eligible prospective allocation.
-Configuration validators share the declared endpoint and precision contract with
-the executable plan. RunIdentity distinguishes live collection from scripted
-rehearsal, and SequenceRecords checkpoints a single sequence while retaining the
-complete planned denominator. These responsibilities reuse the existing provider,
-ledger, scoring and reporting contracts.
+Tests additionally cover exact binomial one-sided tail probabilities, all endpoint
+completions of a missing-outcome example, strict intersection-union boundaries,
+restoration of resampling variance, budget/request replay, rare-tail failure,
+missing usage, small pilots, fixed strata and exclusion of scripted allocation
+proposals. Screening only rules out demonstrably inadequate candidates. Final
+selection requires favourable adverse Monte Carlo bounds on new draws, adjusted
+across candidates, scenarios and four gates. The default final replication is
+10,000 per scenario.
 
-Scripted transports exercise integration and failure handling; their
-outputs are not observations of model capability or savings.
+## Task, mechanism and cost checks
 
-## Empirical limits
+The conventional reasoner agrees with the independent reference for all fourteen
+existing cases and eighteen new fixtures at all eleven positions. A test replaces
+both scoring entry points with failures and verifies that facts-only, conventional
+and EAL diagnostic contexts still work. Inputs are identical across variants;
+identical EAL/conventional conclusions produce identical model-facing messages.
 
-The historical run remains separately documented in
-[run-36432530106.md](results/run-36432530106.md), with its original observations
-and scores unchanged. It does not establish performance under protocol 4.0.0.
-Credentialed manual execution is required to observe actual answers, provider
-behaviour, tokens, latency and costs for the declared plans.
+Actual host tests confirm that an evidence revision invalidates reuse. Stable and
+periodic fixtures reuse at the first recipient while the frequent fixture collects
+again. Ordinary age limits still apply when a revision is unchanged. Cadence
+calibration verifies later snapshots, not merely the initial state. Reuse
+manipulations permit differing acquisition times only when both observations are
+fresh; other task fields must agree. Failed or absent manipulations remain in the
+report and denominator, with no component-effect attribution.
 
-The fourteen primary cases and two diagnostic cases are purposive synthetic tasks.
-Six primary cases across three additional families have separate AI authorship;
-this is not external human validation or random task sampling. The primary horizon
-includes the donor and ten fresh recipients. Allocation simulations preserve
-whole matched trajectories within the fixed case/model/tool cells. Their interval
-coverage and precision are checked separately, including adverse tails,
-annotation missingness, missing usage, budget limits and elapsed-time limits.
+Manifest checks reject false answer keys, silently changed evidence, duplicate or
+shadowed task identities, invalid scope/rules and nonmonotone revision records.
+The 18 included cases are labelled internal synthetic fixtures. Provenance fields
+are attestations, not authentication or evidence of external task validation.
 
-The default precision criterion uses conservative bounded correctness intervals.
-It requires at least 15,320 matched sequences; the balanced 137-repetition
-candidate contains 15,344. This candidate is a prospective possibility, not an
-affordable or empirically adequate allocation. The USD 2 and 7,200-second ceilings
-remain in force. Only complete live pilot evidence can support an evaluation
-proposal; scripted data cannot do so.
-EAL source authoring and human work are unmeasured. The diagnostic contrasts have
-one execution per variant and support observations of sensitivity, not equivalence
-or precise effect estimates. Generalisation requires independently selected tasks
-and an information-based design appropriate to that claim.
+Cost tests preserve unknown effort/rates, explicitly measured zero work, fixed
+initial cost counted once, complete coverage requirements and run/plan identity.
+The CLI writes new ledger versions and preserves earlier records. No human cost,
+labour rate or adoption saving is supplied as an empirical observation.
+
+## Reproduction and scope
+
+Run from the repository root:
+
+```bash
+make check
+make build
+python -m experiments.model_transfer.validate_design --output /tmp/design-validation.json
+python -m experiments.model_transfer.rehearse --plan experiments/model_transfer/plan.json --output /tmp/principal-rehearsal
+python -m experiments.model_transfer.rehearse --plan experiments/model_transfer/diagnostic-plan.json --output /tmp/diagnostic-rehearsal
+python -m experiments.model_transfer.rehearse --plan experiments/model_transfer/cadence-diagnostic-plan.json --output /tmp/cadence-diagnostic-rehearsal
+python -m experiments.model_transfer.runner --plan experiments/model_transfer/cadence-plan.json --calibrate-only --output /tmp/cadence-calibration
+```
+
+Use fresh output paths. The scientific validator belongs to the
+`design-scientific-investigations` skill; run its `validate_investigation.py`
+against `experiments/model_transfer/protocol.json` when that skill is installed.
+
+The full 12,672-session cadence comparison was calibrated, not executed. Actual
+allocation adequacy still requires complete live pilot observations and their
+fresh-seed simulation assessment. Independently authored tasks and measured
+adoption work must be supplied before making those broader claims. The USD 2 and
+7,200-second per-run limits remain in force. Historical results under earlier
+protocols are retained unchanged and are not evidence for protocol 5.0.0.

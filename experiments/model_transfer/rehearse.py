@@ -12,6 +12,7 @@ import sys
 from experiments.transfer_study.workspace import read_json, write_json
 from .annotations import AnnotationExchange
 from .calibration import ContractCalibration
+from .task_manifest import cases_for_plan
 from .cases import CASES, FIRST
 from .design import load_plan
 from .diagnostics import DiagnosticPilot, load_diagnostic_plan
@@ -45,11 +46,11 @@ class PipelineRehearsal:
     """Preserve raw records while checking the public annotation/analysis path."""
 
     def run(self, plan_path: Path, root: Path) -> dict:
-        diagnostic = read_json(plan_path).get('schema') == 'EAL/model-transfer-diagnostic-plan/1'
+        diagnostic = read_json(plan_path).get('schema') == 'EAL/model-transfer-diagnostic-plan/2'
         plan = (load_diagnostic_plan if diagnostic else load_plan)(plan_path)
         root.mkdir(parents=True, exist_ok=False)
         write_json(root / 'plan.json', plan)
-        write_json(root / 'cases.json', [asdict(case) for case in CASES if case.identifier in plan['cases']])
+        write_json(root / 'cases.json', [asdict(case) for case in cases_for_plan(plan) if case.identifier in plan['cases']])
         write_json(root / 'protocol.json', read_json(Path(__file__).with_name('protocol.json')))
         calibration = ContractCalibration().check(plan)
         write_json(root / 'calibration.json', calibration)

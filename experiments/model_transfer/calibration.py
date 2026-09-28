@@ -8,6 +8,7 @@ from tempfile import TemporaryDirectory
 
 from eal.knowledge import EALKnowledgeBase
 from experiments.transfer_study.workspace import read_json, write_json
+from .task_manifest import cases_for_plan
 from .cases import CASES, Case, FIRST, EARLY, LATE
 from .project import Project
 from .task_context import TaskContextBuilder, TaskContract, TaskCorrespondenceError
@@ -39,7 +40,7 @@ def assess_project(project: Project, *, now: str, source: str | None = None,
     knowledge = EALKnowledgeBase(project.workspace, project.workspace / 'tools.toml', method_registry=registry())
     knowledge.register('argument.eal', entry_id='orders', context=project.case.context(),
                        claims=['criterion_evaluated'])
-    return knowledge.assess('orders', 'criterion_evaluated', now=now)
+    return knowledge.assess('orders', 'criterion_evaluated', now=now, context=project.registration_context())
 
 
 class ContractCalibration:
@@ -49,7 +50,7 @@ class ContractCalibration:
         checks = []
         with TemporaryDirectory(prefix='eal-calibration-') as temporary:
             root = Path(temporary)
-            for case in CASES:
+            for case in cases_for_plan(plan):
                 if case.identifier not in plan['cases']:
                     continue
                 try:

@@ -1,6 +1,6 @@
 {
-  "schema": "EAL/model-transfer-diagnostic-plan/1",
-  "purpose": "Separate component contrasts from identical donor state; ordinary-workflow comparison remains a separate plan.",
+  "schema": "EAL/model-transfer-diagnostic-plan/2",
+  "purpose": "Exploratory matched-fact reasoning, interface and reuse pilot; simultaneous donor-level contrast bounds report unresolved effects",
   "seed": 20260928,
   "budget_usd": 2.0,
   "max_calls_per_session": 3,
@@ -8,7 +8,11 @@
   "max_request_bytes": 32768,
   "request_timeout_seconds": 90,
   "response_mode": "prose",
-  "response_modes": ["prose", "json_prompted", "json_schema"],
+  "response_modes": [
+    "prose",
+    "json_prompted",
+    "json_schema"
+  ],
   "models": {
     "plain": {
       "version": "gpt-4.1-nano-2025-04-14",
@@ -31,15 +35,41 @@
     "https://developers.openai.com/api/docs/models/gpt-5-nano"
   ],
   "donor": "plain",
-  "recipients": ["plain", "reasoning"],
-  "native_tools": [false],
+  "recipients": [
+    "plain",
+    "reasoning"
+  ],
+  "native_tools": [
+    false
+  ],
   "repetitions": 1,
   "recipient_sessions": 1,
-  "cases": ["fresh_positive", "refresh_negative"],
+  "cases": [
+    "fresh_positive",
+    "refresh_negative",
+    "release-three-obligations",
+    "migration-cutover-obligations",
+    "database-alternative-read-routes"
+  ],
   "contrasts": {
-    "projection": ["fresh_positive", "refresh_negative"],
-    "notes": ["refresh_negative"],
-    "format": ["fresh_positive", "refresh_negative"],
-    "reuse": ["fresh_positive"]
+    "projection": [
+      "fresh_positive",
+      "refresh_negative"
+    ],
+    "notes": [
+      "refresh_negative"
+    ],
+    "format": [
+      "fresh_positive",
+      "refresh_negative"
+    ],
+    "reuse": [
+      "fresh_positive"
+    ],
+    "reasoner": [
+      "release-three-obligations",
+      "migration-cutover-obligations",
+      "database-alternative-read-routes"
+    ]
   }
 }
