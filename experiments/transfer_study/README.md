@@ -1,5 +1,9 @@
 # Developer and model handover experiment
 
+For the automated comparison of cheap models with native tools enabled/disabled,
+see the [live model transfer pilot](../model_transfer/README.md). It tests reuse of
+already-authored knowledge and has a separate protocol and bounded conclusions.
+
 ## Research question
 
 Does EAL/2 help a developer reach the correct scoped engineering decision

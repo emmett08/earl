@@ -1,6 +1,11 @@
 name: EAL tests
 on:
   workflow_dispatch:
+    inputs:
+      model_transfer:
+        description: 'Run the live nano-model transfer pilot (API budget at most USD 2)'
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -20,3 +25,30 @@ jobs:
         run: make check
       - name: Build distribution
         run: make build
+  model-transfer:
+    if: ${{ inputs.model_transfer }}
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.12'
+      - name: Install package
+        run: python -m pip install -e .
+      - name: Run the bounded live pilot
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: python -m experiments.model_transfer.runner --output experiments/model_transfer/runs/live
+      - name: Retain every attempt and the report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: model-transfer-${{ github.run_id }}-${{ github.run_attempt }}
+          path: experiments/model_transfer/runs/live
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
