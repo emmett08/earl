@@ -33,8 +33,8 @@ def validate_information_design(config: dict) -> dict:
         raise ValueError('Use a seed and between 100 and 10000 simulation replications')
     if type(config['budget_usd']) not in (int, float) or not math.isfinite(config['budget_usd']) or not 0 < config['budget_usd'] <= 2:
         raise ValueError('Allocation simulations retain the USD 2 budget ceiling')
-    if type(config.get('time_limit_seconds', 7200)) not in (int, float) or not 0 < config.get('time_limit_seconds', 7200) <= 7200:
-        raise ValueError('Time limit must be at most the 7200-second workflow deadline')
+    if type(config.get('time_limit_seconds', 7200)) not in (int, float) or not 0 < config.get('time_limit_seconds', 7200) <= 21600:
+        raise ValueError('Time limit must be at most the 21600-second cumulative run allowance')
     if type(config.get('workflow_overhead_seconds', 0)) not in (int, float) or not 0 <= config.get('workflow_overhead_seconds', 0) < config.get('time_limit_seconds', 7200):
         raise ValueError('Declare a nonnegative workflow overhead allowance below the deadline')
     validate_decision_specification(config.get('practical_decision'))

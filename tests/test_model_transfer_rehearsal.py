@@ -37,3 +37,11 @@ def test_rehearsal_rejects_changed_cumulative_measurement(tmp_path):
     write_json(tmp_path / 'analysis.json', analysis)
     with pytest.raises(AssertionError, match='cumulative'):
         PipelineRehearsal().verify(tmp_path)
+
+
+def test_diagnostic_rehearsal_rejects_its_actual_pending_annotation_field(tmp_path):
+    analysis = completed_stages(tmp_path)
+    analysis.update(schema='EAL/model-transfer-diagnostic-report/2', pending_annotation_sessions=1)
+    write_json(tmp_path / 'analysis.json', analysis)
+    with pytest.raises(AssertionError, match='uncoded'):
+        PipelineRehearsal().verify(tmp_path)

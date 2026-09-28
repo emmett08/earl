@@ -1,32 +1,64 @@
 # Investigation verification
 
-Protocol **5.0.0**, package **2.17.0**, EAL/2. Primary plan/result schemas are
-`/4`; diagnostic and information-design schemas are `/2`. The scientific
-protocol schema is **1.2** and the investigation remains **specified**.
-The baseline is GitHub commit `86f2f13b6c57a78433c68529136e99d8d28756d1`.
-No live model requests were made for this change.
+Protocol **6.0.0**, package **2.18.0**, EAL/2. Primary plan/result schemas remain
+`/4`; diagnostic and information-design schemas remain `/2`. The new resumable
+execution contract is `EAL/execution-contract/1`; scientific protocol schema is
+**1.2** and investigation status remains **specified**. EAL syntax, observation
+schemas and reasoning-method contracts are unchanged.
+
+The implementation baseline is commit `810330d94946f5309acf785ee0906afef7f6aef5`.
+No paid model requests were made for these changes. Rehearsal answers, annotations,
+usage and dollar totals are deliberately scripted software inputs.
 
 ## Executed checks
 
 | Check | Actual result |
 |---|---|
-| Baseline regression check | 35 existing information-design and diagnostic tests passed before implementation. |
-| Scientific protocol validator | VALID at specified status, zero errors and zero warnings. |
-| Integrated verification | `make check`: 884 passed, 1 skipped; ANTLR 4.13.2 generated sources and the maintained CLI/MCP example passed. |
-| Final statistical regression | 31 tests passed after the final screening-policy change, covering information planning and all new investigation components. |
-| Principal scripted rehearsal | 384 sequences, 4,224 sessions, 6,528 synthetic API attempts; 83 calibration checks passed. All 4,224 answers passed annotation import; original rows unchanged and resources reproduced by offline analysis. |
-| Component diagnostic rehearsal | 10 donors and 46 recipients, 66 synthetic attempts; 27 calibration checks. All 38 pairwise manipulation checks passed. Annotation and reconstruction passed. |
-| Cadence diagnostic rehearsal | Six donors and 30 recipients, 42 synthetic attempts; 23 calibration checks. Annotation and reconstruction passed. Two frequent-change reuse comparisons correctly remain invalid for actual-reuse attribution because both policies recollect. |
-| Complete cadence calibration | 215 checks passed across all 18 cases and eleven snapshots. No model requests. |
-| Statistical operating characteristics | Eight known generating processes, 1,200 independent paired trajectories per replication; 1,000 replications per scenario, except 10,000 at the saving boundary. All declared calibration checks passed. |
-| Distribution | `make build` produced the 2.17.0 wheel and source archive. |
-| Workflow and diff | Manual dispatch only; live execution defaults off. `git diff --check` clean. |
+| Scientific validation | Pinned validator self-test passed; both maintained protocols valid with zero errors and warnings. Source digests verified by regression test. |
+| Integrated repository check | `make check`: 936 tests passed, one optional ASPIC reference test skipped. ANTLR 4.13.2 parser verification and the maintained CLI/MCP example passed. |
+| Final interruption accounting check | 50 execution/diagnostic tests passed after conservative timing and collector-coverage hardening. |
+| Full principal rehearsal | All 384 sequences, 4,224 sessions and 6,528 synthetic API attempts retained with four workers. All 4,224 answer codes imported; raw rows unchanged and resources reproduced offline. 83 calibration checks passed. |
+| Component diagnostic rehearsal | Ten donors, 46 recipients, 66 synthetic attempts; 27 calibration checks. All 56 answers passed the annotation roundtrip, including JSON explanations. |
+| Cadence diagnostic rehearsal | Six donors, 30 recipients, 42 synthetic attempts; 23 calibration checks. All 36 answers passed annotation and reconstruction. Frequent-change reuse can remain an invalid actual-reuse contrast because both policies recollect. |
+| Complete cadence calibration | 215 checks passed across all 18 cases and eleven snapshots; no model requests. |
+| Workflow inputs | New collection, resume, custom evaluation artefacts, annotation export/import, offline analysis, deadline margins and rejection of resume flags on offline actions tested. YAML parses with ten dispatch inputs and no automatic trigger. |
+| Distribution | `make build` produced the 2.18.0 wheel and source archive; runtime constraints and pinned validator are included in the source distribution. |
 
-The JSON records in [validation/rehearsals.json](validation/rehearsals.json)
-retain rehearsal summaries, raw/derived file fingerprints, invalid contrast
-reasons and the full cadence calibration results. These are software observations,
-not model performance evidence. Full generated request/session directories are
-reproducible outputs rather than repository source files.
+Current complete-pipeline summaries and fingerprints are retained in
+[validation/runtime-rehearsals.json](validation/runtime-rehearsals.json). The
+older `validation/rehearsals.json` remains a baseline software record. Neither
+file supplies empirical answers, human annotations or a supported evaluation
+allocation. Raw generated rehearsal directories are reproducible local outputs.
+
+Recovery tests cover bounded overlap, serial order within each matched pair,
+unique receipt IDs, atomic budget admission, cancellation/deadline stops, exact
+resume identity, exclusive run locks, retained hard-kill reservations, torn
+journal recovery, cumulative segment leases, unchanged donor state, unknown
+preparation duration and retirement of stale derived annotations. A finished
+request is never retried. A complete run can be reopened without new API calls.
+
+## Throughput and recovered observations
+
+[validation/throughput.json](validation/throughput.json) records three alternating
+one-worker/four-worker comparisons, Python/platform identity, code digest and
+individual elapsed times. Each run has 16 sequences, 48 sessions and 80 synthetic
+calls, with fixed 150 ms provider latency. Outcome, request-count and synthetic
+cost equivalence are checked. The control is the same implementation using one
+worker. The medians were 17.31 seconds with one worker and
+5.17 seconds with four: **3.35× faster** under this controlled
+load. This isolates scheduling without claiming a measured live-service speedup.
+
+The cancelled run `36469096727`, artefact `10990314626`, retained ten complete
+sequences, 116 sessions and 161 attempts. Offline reconstruction reports partial
+status, USD 0.01880995 known API expenditure, USD 0.02075715 charged/reserved, and
+one unfinished request with unknown final cost. API waiting accounted for about
+93% of retained session elapsed time. These are partial observations under its
+saved earlier protocol; they are not pooled into protocol 6.0.0. The archive
+SHA-256 is `c09942d759682a900d2995f3cde0040b83f43a1d7464444fd64de0c23226e773`.
+
+The run had no resumable execution contract. Its data can be analysed and coded,
+but its paid requests are not replayed under a fabricated new contract. New runs
+retain their actual contract, cumulative limits and previous segment reports.
 
 ## Statistical evidence
 
@@ -108,13 +140,14 @@ python -m experiments.model_transfer.rehearse --plan experiments/model_transfer/
 python -m experiments.model_transfer.runner --plan experiments/model_transfer/cadence-plan.json --calibrate-only --output /tmp/cadence-calibration
 ```
 
-Use fresh output paths. The scientific validator belongs to the
-`design-scientific-investigations` skill; run its `validate_investigation.py`
-against `experiments/model_transfer/protocol.json` when that skill is installed.
+Use fresh output paths. `make scientific` uses the pinned repository-local
+validator and is included in `make check`; no installed personal skill is needed.
+The [workflow guide](WORKFLOW.md) gives the stage order, inputs and resumption rules.
 
 The full 12,672-session cadence comparison was calibrated, not executed. Actual
 allocation adequacy still requires complete live pilot observations and their
 fresh-seed simulation assessment. Independently authored tasks and measured
 adoption work must be supplied before making those broader claims. The USD 2 and
-7,200-second per-run limits remain in force. Historical results under earlier
-protocols are retained unchanged and are not evidence for protocol 5.0.0.
+21,600-second cumulative per-run limits remain in force, with at most
+6,000 collection seconds per Actions segment. Historical results under earlier
+protocols are retained unchanged and are not evidence for protocol 6.0.0.

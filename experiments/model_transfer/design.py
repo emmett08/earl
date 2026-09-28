@@ -21,6 +21,8 @@ def load_plan(path: Path) -> dict:
         raise ValueError('Invalid model transfer plan')
     validate_decision_specification(plan.get('practical_decision'))
     validate_information_target(plan.get('information_target'))
+    from .execution import validate_execution
+    validate_execution(plan)
     budget = plan.get('budget_usd')
     if type(budget) not in (int, float) or not math.isfinite(budget) or not 0 < budget <= 2:
         raise ValueError('This pilot permits an API budget in (0, 2] USD')
@@ -31,9 +33,6 @@ def load_plan(path: Path) -> dict:
             raise ValueError(f'Invalid {field}')
     if type(plan.get('seed')) is not int or plan.get('response_mode') != 'prose':
         raise ValueError('Comparison requires an explicit seed and ordinary prose responses')
-    if (type(plan.get('time_limit_seconds', 7200)) is not int or
-            not 1 <= plan.get('time_limit_seconds', 7200) <= 7200):
-        raise ValueError('Declare an elapsed-time limit no longer than 7200 seconds')
     if plan.get('study_role') not in ('pilot', 'evaluation'):
         raise ValueError('Declare whether this is a pilot or an independent evaluation')
     if not isinstance(plan.get('study_id'), str) or not plan['study_id'].strip():

@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       model_transfer:
-        description: 'Run the selected live nano-model plan (API budget at most USD 2)'
+        description: 'Run an experiment stage after tests (only collect calls the API)'
         type: boolean
         default: false
       model_transfer_plan:
@@ -14,9 +14,44 @@ on:
           - diagnostics
           - cadence
           - cadence-diagnostics
+          - custom
         default: comparison
+      experiment_action:
+        description: 'Stage: collect/resume, free rehearsal/calibration, or offline processing'
+        type: choice
+        options: [collect, calibrate, rehearse, export-annotations, import-annotations, analyse, plan]
+        default: collect
+      plan_path:
+        description: 'Custom plan: repository path, or path within source artefact; ignored on resume'
+        type: string
+        default: ''
+      source_artifact_id:
+        description: 'Numeric artefact ID from this repository for resume or offline stages'
+        type: string
+        default: ''
+      resume_run:
+        description: 'Continue the frozen retained run; keep its cumulative budget and worker count'
+        type: boolean
+        default: false
+      segment_seconds:
+        description: 'Collection allowance for this job, 1–6000 seconds; remaining time saves artefacts'
+        type: number
+        default: 6000
+      annotation_labels:
+        description: 'Repository path to completed labels for import-annotations'
+        type: string
+        default: ''
+      information_config:
+        description: 'Optional repository path to prospective allocation configuration'
+        type: string
+        default: ''
+      workers:
+        description: '0 uses the plan (default 4); 1–8 overrides pilot workers; ignored for resume'
+        type: number
+        default: 0
 permissions:
   contents: read
+  actions: read
 jobs:
   test:
     runs-on: ubuntu-24.04
@@ -27,9 +62,9 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: '3.12'
+          python-version: '3.12.14'
       - name: Install package and test dependencies
-        run: python -m pip install -e '.[dev]'
+        run: python -m pip install -c experiments/model_transfer/requirements.lock -e '.[dev]'
       - name: Check parser, tests and maintained example
         run: make check
       - name: Build distribution
@@ -45,22 +80,23 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
-          python-version: '3.12'
+          python-version: '3.12.14'
       - name: Install package
-        run: python -m pip install -e .
-      - name: Run the bounded live pilot
+        run: python -m pip install -c experiments/model_transfer/requirements.lock -e .
+      - name: Run the selected experiment stage
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TRANSFER_PLAN: ${{ inputs.model_transfer_plan }}
-        run: |
-          case "$TRANSFER_PLAN" in
-            comparison) plan_file=experiments/model_transfer/plan.json ;;
-            diagnostics) plan_file=experiments/model_transfer/diagnostic-plan.json ;;
-            cadence) plan_file=experiments/model_transfer/cadence-plan.json ;;
-            cadence-diagnostics) plan_file=experiments/model_transfer/cadence-diagnostic-plan.json ;;
-            *) exit 2 ;;
-          esac
-          python -m experiments.model_transfer.runner --plan "$plan_file" --output experiments/model_transfer/runs/live
+          EXPERIMENT_ACTION: ${{ inputs.experiment_action }}
+          PLAN_PATH: ${{ inputs.plan_path }}
+          SOURCE_ARTIFACT_ID: ${{ inputs.source_artifact_id }}
+          RESUME_RUN: ${{ inputs.resume_run }}
+          SEGMENT_SECONDS: ${{ inputs.segment_seconds }}
+          ANNOTATION_LABELS: ${{ inputs.annotation_labels }}
+          INFORMATION_CONFIG: ${{ inputs.information_config }}
+          EXPERIMENT_WORKERS: ${{ inputs.workers }}
+          GH_TOKEN: ${{ github.token }}
+        run: python -m experiments.model_transfer.workflow
       - name: Retain every attempt and the report
         if: ${{ always() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

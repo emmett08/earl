@@ -46,14 +46,12 @@ class AnswerParser:
             raise ValueError('An answer must be a JSON object')
         format_valid = not any(Draft202012Validator(ANSWER_SCHEMA).iter_errors(value))
         # File schema/permission failure is a separately measured side effect.
-        decision = value.get('decision')
-        known = isinstance(decision, str) and decision in DECISIONS
         return {'answer': {key: value.get(key) for key in
                            ('decision', 'basis', 'reading', 'observed_at', 'explanation')},
                 'format_valid': format_valid, 'files': value.get('files', []),
-                'annotation': {'status': 'automatic' if known else 'pending',
-                               'reason': 'Explicit JSON decision' if known else 'Decision requires independent coding',
-                               'method': 'json-decision/1'}}
+                'annotation': {'status': 'pending',
+                               'reason': 'Code the whole JSON answer independently, including its explanation',
+                               'method': 'whole-answer-coding/2'}}
 
 
 class ResponseFormat(Protocol):

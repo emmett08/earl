@@ -44,7 +44,7 @@
   ],
   "response_mode": "prose",
   "study_role": "pilot",
-  "study_id": "eal-model-transfer-pilot-5",
+  "study_id": "eal-model-transfer-pilot-6",
   "pilot_run_ids": [],
   "practical_decision": {
     "recipient_horizon": 10,
@@ -61,5 +61,6 @@
     "quality_method": "empirical_bernstein",
     "joint_power": 0.8
   },
-  "time_limit_seconds": 7200
+  "time_limit_seconds": 21600,
+  "workers": 4
 }

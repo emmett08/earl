@@ -142,7 +142,7 @@ def test_controlled_diagnostics_record_real_manipulations_and_cloned_state(tmp_p
     labels = read_json(bundle / 'items.json')
     labels['annotator'] = 'independent-fixture-coder'
     for item in labels['items']:
-        item.update(decision='ready', quote='The service is ready.', note='Explicit present decision.')
+        item.update(decision='ready', quote=item['text'], note='Explicit present decision in the complete scripted response.')
     (bundle / 'labels.json').write_text(json.dumps(labels))
     derived = tmp_path / 'annotated-rows.json'
     AnnotationExchange().import_labels(tmp_path, bundle, bundle / 'labels.json', derived)
@@ -227,6 +227,7 @@ def test_failed_preparation_retains_elapsed_stage_and_unknown_remaining_work(tmp
 
     monkeypatch.setattr(diagnostics, 'Project', fail_construction)
     plan = load_diagnostic_plan(PLAN)
+    plan['workers'] = 1  # Isolate one failed preparation and its remaining denominator.
     report = DiagnosticPilot(plan, tmp_path, ScriptedTransport()).run()
     row = read_json(tmp_path / 'rows.json')[0]
     assert report['status'] == 'partial'
@@ -287,10 +288,14 @@ def test_preparation_timer_excludes_persistence_and_retains_failed_duration():
     with pytest.raises(RuntimeError, match='Preparation failed'):
         with timer.measure(record):
             raise RuntimeError('Preparation failed')
-    assert record == {'status': 'failed', 'elapsed_seconds': 0.25}
+    assert record == {'status': 'failed', 'elapsed_seconds': 1.75,
+                      'last_attempt_seconds': 0.25,
+                      'previous_attempts': [{'status': 'complete', 'elapsed_seconds': 1.5}]}
     assert persisted == [
         {'status': 'started', 'elapsed_seconds': None},
         {'status': 'complete', 'elapsed_seconds': 1.5},
-        {'status': 'started', 'elapsed_seconds': None},
-        {'status': 'failed', 'elapsed_seconds': 0.25},
+        {'status': 'started', 'elapsed_seconds': None,
+         'previous_attempts': [{'status': 'complete', 'elapsed_seconds': 1.5}]},
+        {'status': 'failed', 'elapsed_seconds': 1.75, 'last_attempt_seconds': 0.25,
+         'previous_attempts': [{'status': 'complete', 'elapsed_seconds': 1.5}]},
     ]

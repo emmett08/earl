@@ -63,7 +63,7 @@ class PipelineRehearsal:
             raise ValueError('Scripted collection did not complete')
         exchange = AnnotationExchange()
         bundle = root / 'annotation-bundle'
-        exchange.export(root, bundle)
+        exchange.export(root, bundle, include_all=True)
         labels = read_json(bundle / 'items.json')
         labels['annotator'] = 'scripted-pipeline-check-not-human-data'
         for item in labels['items']:
@@ -93,7 +93,9 @@ class PipelineRehearsal:
                 for key, value in measurements.items():
                     if key != 'recipient_outcomes' and value != reconstructed['cumulative_resources'][arm][horizon][key]:
                         raise AssertionError(f'Reconstruction changed cumulative {arm}/{horizon}/{key}')
-        if reconstructed.get('pending_task_annotations', 0):
+        pending_key = ('pending_annotation_sessions' if reconstructed.get('schema') == 'EAL/model-transfer-diagnostic-report/2'
+                       else 'pending_task_annotations')
+        if reconstructed.get(pending_key, 0):
             raise AssertionError('Scripted decisions remain uncoded')
         result = {'execution_kind': 'scripted', 'status': 'passed',
                   'calibration_checks': len(read_json(root / 'calibration.json')['checks']),

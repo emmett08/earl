@@ -36,6 +36,8 @@ def load_diagnostic_plan(path: Path) -> dict:
     plan = read_json(path)
     if plan.get('schema') != 'EAL/model-transfer-diagnostic-plan/2':
         raise ValueError('Invalid diagnostic plan')
+    from .execution import validate_execution
+    validate_execution(plan)
     budget = plan.get('budget_usd')
     if type(budget) not in (int, float) or not math.isfinite(budget) or not 0 < budget <= 2:
         raise ValueError('The shared diagnostic API budget must be in (0, 2] USD')

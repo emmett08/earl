@@ -54,7 +54,7 @@ class ScriptedTransport:
 
 def small_plan():
     return {**load_plan(PLAN), 'cases': ['fresh_positive', 'refresh_negative'],
-            'repetitions': 1, 'recipient_sessions': 2, 'arms': ['ordinary', 'eal']}
+            'repetitions': 1, 'recipient_sessions': 2, 'workers': 1, 'arms': ['ordinary', 'eal']}
 
 
 def test_schedule_crosses_donors_repeats_and_preserves_pairs():
@@ -187,6 +187,8 @@ def test_bad_optional_file_does_not_change_correct_answer(tmp_path):
                                             response_mode='json_schema')
     assert result['status'] == 'submitted'
     assert result['file_result']['status'] == 'rejected'
+    assert ReferenceScorer().score(CASES[0], 0, result)['task_match'] is None
+    result['annotation'] = {'status': 'human', 'annotator': 'fixture-coder'}
     assert ReferenceScorer().score(CASES[0], 0, result)['grounded_match']
     assert project.files()['specification.txt'] == original
 
@@ -468,6 +470,8 @@ def test_partial_content_is_scored_without_conflating_explanation_format():
     parsed = AnswerParser().parse(json.dumps({'decision': 'ready', 'basis': 'criterion_met',
                                             'reading': 180, 'observed_at': FIRST}))
     assert not parsed['format_valid']
+    assert parsed['annotation']['status'] == 'pending'
+    parsed['annotation'] = {'status': 'human', 'annotator': 'fixture-coder'}
     score = ReferenceScorer().score(CASES[0], 0, parsed)
     assert score['grounded_match']
     assert not score['no_answer']

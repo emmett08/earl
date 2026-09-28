@@ -1,7 +1,8 @@
 include README.md
 recursive-include grammar *.g4
 recursive-include examples *.eal *.json *.toml *.py *.md
-recursive-include experiments *.py *.json *.md *.eal *.toml
+recursive-include experiments *.py *.json *.md *.eal *.toml *.lock
+recursive-include tools/investigation-validator *.py *.json *.md
 prune experiments/transfer_study/runs
 prune experiments/model_transfer/runs
 recursive-include docs *.md *.json
