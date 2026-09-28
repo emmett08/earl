@@ -1,6 +1,9 @@
 # EAL/2 integration contract
 
-EAL/2 is the supported source language. The package is `2.14.0`. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
+EAL/2 is the supported source language. The package is `2.14.1`. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
+
+Package 2.14.1 separates built-in strategy implementations without changing the source language, observation schemas, method identifiers, numerical contracts or recorded built-in implementation identities.
+
 
 ## Authored source and observations
 

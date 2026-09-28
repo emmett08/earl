@@ -123,10 +123,11 @@ def _causal_input():
 
 
 def test_builtin_executes_the_registered_entrypoint_after_dispatch_table_changes(monkeypatch):
-    import eal.modes
+    from eal.reasoning import BUILTIN_STRATEGIES
     registry = default_registry()
     fingerprint = registry.fingerprint
-    monkeypatch.setitem(eal.modes._COMPUTATIONS, 'causal', _changed_builtin)
+    monkeypatch.setitem(BUILTIN_STRATEGIES, 'causal',
+                        replace(BUILTIN_STRATEGIES['causal'], compute=_changed_builtin))
     result = assess_mode('causal/1', _causal_input(), [], registry=registry)
     assert result['status'] == 'supported'
     assert result['details']['estimate'] == 1
@@ -134,11 +135,12 @@ def test_builtin_executes_the_registered_entrypoint_after_dispatch_table_changes
 
 
 def test_changed_registered_builtin_code_cannot_keep_its_old_identity(monkeypatch):
-    import eal.modes
+    from eal.reasoning import BUILTIN_STRATEGIES
     original = default_registry().get('causal/1')
     # Mutate a private function copy, keeping the actual built-in untouched.
     callback = FunctionType(original.implementation.__code__, original.implementation.__globals__)
-    monkeypatch.setitem(eal.modes._COMPUTATIONS, 'causal', callback)
+    monkeypatch.setitem(BUILTIN_STRATEGIES, 'causal',
+                        replace(BUILTIN_STRATEGIES['causal'], compute=callback))
     registry = MethodRegistry([replace(original, implementation=callback)])
     callback.__code__ = _changed_builtin.__code__
     result = assess_mode('causal/1', _causal_input(), [], registry=registry)

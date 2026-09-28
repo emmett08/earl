@@ -98,3 +98,79 @@ Evidence freshness, environment identity, assumption intervals, binding digests,
 ## Model host interface
 
 The [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) implements the local stdio protocol path used by EAL. The Python `ModelContextAdapter` produces bounded messages for an application-selected model without requiring native tool calling. Model capabilities, costs and availability belong to that application's selected deployment; they are not properties of EAL/2 source or argument semantics.
+
+### Model reasoning and tool use: applicability review, 28 September 2026
+
+The sources below inform component boundaries and evaluation requirements.
+They do not establish that EAL implements the latest solution for every task.
+Publication recency alone is insufficient reason to replace a calculation whose
+stated mathematical contract remains appropriate. The Wilson interval, for
+example, retains the sampling assumptions and reference case documented above.
+
+**Patil et al., “The Berkeley Function Calling Leaderboard (BFCL): From Tool Use
+to Agentic Evaluation of Large Language Models”, ICML 2025.**
+[Proceedings and abstract](https://proceedings.mlr.press/v267/patil25a.html).
+The benchmark distinguishes serial/parallel calls, abstention and stateful
+multi-step behaviour; its reported findings identify persistent memory and
+long-horizon reasoning difficulties. EAL adaptation: evaluate correct tool
+selection, valid arguments, observation use and final scoped conclusions
+separately. Successful MCP round trips test transport and execution, not model
+selection competence.
+
+**Choi et al., “ToolMATH: A Diagnostic Benchmark for Long-Horizon Tool Use under
+Systematic Tool-Catalog Constraints”, arXiv:2602.21265v2, 18 May 2026.**
+[Versioned abstract](https://arxiv.org/abs/2602.21265v2).
+This preprint varies tool availability and distractors and measures behaviour
+across dependent call chains. EAL adaptation: use task-scoped discovery and
+registered one-call assessment where the application already knows the claim;
+test missing capabilities, misleading alternatives and misuse of earlier
+outputs. The present tests verify declared dependency traversal and evidence
+reuse. They do not measure a model's robustness to those catalogue variations.
+
+**Anthropic, “Writing effective tools for AI agents”, 11 September 2025.**
+[Engineering guidance](https://www.anthropic.com/engineering/writing-tools-for-agents).
+The authors recommend distinct tool purposes, useful bounded responses and
+held-out evaluations recording errors, calls, tokens and runtime. EAL implements
+claim-scoped planning, combined assessment and bounded packets with omission
+markers and explanation references. Their effect on accuracy and total cost
+requires comparative trials. This is provider engineering guidance, rather than
+a theorem that shorter context improves every model.
+
+**OpenAI, “Reasoning best practices”, live documentation inspected
+28 September 2026.**
+[Official guidance](https://developers.openai.com/api/docs/guides/reasoning-best-practices).
+The guide recommends direct objectives and says explicit step-by-step prompts
+are unnecessary for its reasoning models. It also describes preservation of
+reasoning items around tool calls for applicable Responses API models. These are
+model/API-specific requirements for the calling application. EAL's current host
+dispatches one checked JSON request and its context adapter prepares messages;
+neither owns a provider conversation loop. A native-tool adapter must preserve
+the chosen provider's call IDs, required continuation items and tool results,
+handle failed or incomplete calls and account for reasoning-token costs.
+Applying one prompt or conversation format to every model needs evidence.
+
+**Wang and Brorsson, “Rethinking Scale: Deployment Trade-offs of Small Language
+Models under Agent Paradigms”, arXiv:2604.19299v1, 21 April 2026.**
+[Versioned abstract](https://arxiv.org/abs/2604.19299v1).
+The authors report a better performance/cost balance for single agents with
+tools than their tested multi-agent alternatives. This preprint supports
+including a single-agent condition; it does not establish a universal ranking
+of agent designs or model sizes. EAL does not require multiple agents to assess
+a registered argument.
+
+**Shemla et al., “Internalizing Tool Knowledge in Small Language Models via
+QLoRA Fine-Tuning”, arXiv:2605.17774v2, 26 May 2026.**
+[Versioned abstract](https://arxiv.org/abs/2605.17774v2).
+The authors report benefits from adapting small models to a fixed tool catalogue,
+alongside forgetting on general benchmarks. The reported planning and judge
+scores do not establish end-to-end EAL correctness. Fine-tuning is an application
+option after measuring a stable task distribution; it is not required for the
+interpreter or a general substitute for discovering current tool contracts.
+
+For each selected model, evaluate both native-tool and host-prepared context
+routes where supported. Pin model/version, reasoning effort, prompts, available
+tools and budgets. Measure incorrect selection, invalid requests, retries,
+unsupported conclusions, justified unresolved results, latency and total cost.
+Retain failed trials. The application supplies the provider interaction; EAL
+supplies the formal computation. Published model results and deterministic
+interpreter tests establish different properties.

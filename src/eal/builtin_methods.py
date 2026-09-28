@@ -1,6 +1,6 @@
 """Versioned specifications for the built-in reasoning methods.
 
-The algorithms live in ``modes``. This module owns their declared evidence,
+The algorithms live in ``reasoning`` strategy modules. This module owns their declared evidence,
 input, query, output and quantity contracts; public discovery is generated
 from these same specifications by ``methods.default_registry``.
 """
