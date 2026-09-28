@@ -84,6 +84,11 @@ def describe_language(*, registry=None) -> dict:
         },
         "workflow": ["describe", "validate", "plan", "collect_claim|collect", "reason", "packet|explain"],
         "registered_workflow": ["register", "sources|find", "assess_known", "operator_explain_if_needed"],
+        "model_context": {
+            "schema": "EAL/model-context/2",
+            "packet_schema": "EAL/assessment-packet/2",
+            "meaning": "A decision-focused projection retains bounded authored statements and explicit prose_verified qualifications for selected and premise claims, checked method outputs, assumption applicability times and bounded field-level evidence failures. Formal support does not verify authored prose. Statement truncation and other omissions mark the summary incomplete. Complete source, acquisition values and trace identities remain in host state. Numeric method results are exposed through declared output contracts, not by copying raw tool records.",
+        },
         "registered_assessment": "The developer registers exact EAL source and selected claims once. Later sessions identify an entry and claim; the host plans all relevant argument routes, reuses eligible observations at their original age, collects missing evidence, evaluates the declared methods and returns a bounded packet. Model-facing registered MCP calls require a trusted launcher --known-entry allowlist and use registered context. A text-only model can receive this packet from ModelContextAdapter without tool or native reasoning calls.",
         "acquisition_plan": "eal_plan(source, claim) computes the complete potentially decisive evidence closure, including alternative arguments, transitive premises, backing, assumption validation, objections and defences. eal_collect_claim runs that plan with operator-granted tools.",
         "tool_binding": "A sibling operator-owned TOML registry chooses command or json_file, bounded execution, optional parallel_safe and command environment inheritance. Registered claims use those bindings through the host. Only operator-declared independent read-only calls may overlap.",

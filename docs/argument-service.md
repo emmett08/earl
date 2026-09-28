@@ -20,7 +20,7 @@ packet = result["packet"]
 
 `kb.register_tree("arguments", context=...)` registers a bounded directory and reports rejected files. `kb.find(query=...)` returns advisory candidates; `kb.sources()` lists the current validated entries and claim IDs. `kb.history(entry_id)` retrieves collection and assessment identities from earlier sessions. `reuse="fresh"` requests new collection for every selected evidence ID. The CLI exposes `register`, `find`, `assess-known`, `history` and `model-context`; the lower-level CLI and MCP operations remain available for explicit `plan`, `collect_claim`, `reason`, `packet` and `explain`. See [MCP operations](mcp-and-tools.md#mcp-operations).
 
-For a model with no tools, `ModelContextAdapter(kb).prepare(question, entry_id, claim, *, context=None, now=None, reuse="compatible")` performs the same assessment and returns `EAL/model-context/1`: a checked `assessment` and bounded `messages` containing its packet. The application gives `messages` to the model and retains `assessment["status"]` as the host result; model prose cannot change that status. The application selects the entry and claim and must establish their correspondence to the question. A free-form question alone never authorises source selection or collection.
+For a model with no tools, `ModelContextAdapter(kb).prepare(question, entry_id, claim, *, context=None, now=None, reuse="compatible")` performs the same assessment and returns `EAL/model-context/2`: a checked `assessment`, a decision-focused `context`, and bounded `messages` containing that context. The application gives `messages` to the model and retains `assessment["status"]` as the host result; model prose cannot change that status. The application selects the entry and claim and must establish their correspondence to the question. A free-form question alone never authorises source selection or collection.
 
 ## Collection and argument closure
 
@@ -59,7 +59,9 @@ An evidence declaration's `max_age` bounds use of its original measurement time.
 
 ## Model-facing result
 
-`EAL/assessment-packet/1` exposes claim and premise statuses, bounded method outputs, typed-binding checks, relevant assumption and objection states, evidence availability, observation identifiers and recorded observation times, with source/context/method identities. It marks omitted material and refers to the stored explanation. It excludes raw observation values, credentials, process streams, formal input queries and arbitrary method-extension output. `ModelContextAdapter` passes the checked packet to a text-only model, while the application retains the host status. An operator can retrieve the full persisted trace through `eal_explain`.
+`EAL/assessment-packet/2` exposes claim and premise statements and statuses, bounded method outputs, typed-binding checks, relevant assumption and objection states, evidence availability, observation identifiers and recorded observation times, with source/context/method identities. Each statement retains its explicit `prose_verified` qualification: formal support does not verify authored prose. It marks omitted material and refers to the stored explanation. It excludes raw observation values, credentials from tool records, process streams, formal input queries and arbitrary method-extension output. Authored claim statements are model-visible task data and must contain only information intended for that recipient. `ModelContextAdapter` projects that packet into decision-focused context: claim identifiers remain distinct from support statuses, method outputs and qualifications remain visible, and repeated trace digests stay in host state. Evidence entries retain bounded `predicate_failures` with field paths and issue codes; assumptions retain `time_status` and their applicability dates. Missing fields, unmet predicates and expired assumptions therefore remain distinguishable without parsing prose. The application retains the full packet and host status. An operator can retrieve the full persisted trace through `eal_explain`.
+
+`PacketLimits.max_statement_bytes` bounds each selected or premise statement to 1024 UTF-8 bytes by default. A shortened statement carries `statement_truncated=true`; `omitted.claim_statement_bytes` counts omitted bytes and `summary_complete` becomes false. The prefix remains authored text, without a prose-verification assertion. A missing statement is `null` and contributes to `omitted.claim_statements`. If the complete packet exceeds its byte limit, the navigation fallback retains statuses and an explanation reference with `statement=null`, `prose_verified=false` and an explicit incomplete marker. Missing or shortened statements cannot establish complete claim meaning. The caller must retrieve the full explanation or report that interpretation remains unresolved.
 
 ## Acceptance properties
 
@@ -72,3 +74,29 @@ An evidence declaration's `max_age` bounds use of its original measurement time.
 | Performance and conclusion quality | Compare end-to-end latency, collector calls and cost separately from method choice, correct scoped conclusions, justified unresolved outcomes and unjustified assertions on mode-stratified paired tasks with equivalent evidence access. |
 
 Replaying a persisted assessment preserves its historical result. Recomputing from fixed source, context, observations, time and registry yields the same formal output when the installed method is deterministic. Scoped planning, concurrent independent collection, compatible reuse and compact packets provide mechanisms for reducing work; their effect on model accuracy, latency and cost is established by measured comparisons, not by the service's existence.
+
+The prompt adapter treats current `assessed_at` results as current information and dated project notes as potentially superseded. This instruction does not guarantee model compliance. A host should retain the exact assessment alongside the generated answer. Measured negative findings belong in explicit method outputs or negative claims; placing a success condition in evidence admission only establishes whether that evidence supports the selected argument. The [model-session investigation](../experiments/model_transfer/README.md) measures the complete model response separately from host calculations.
+
+### Model-context preservation contract
+
+The context projection serves questions about the selected claim's current
+support, checked computation and explicit qualifications. It retains bounded
+claim and premise statements with their prose-verification status, claim-to-
+evidence links, premise/argument relations, method outputs and bindings,
+objections, evidence failures, observation times, applicability intervals and
+omission indicators. It leaves opaque acquisition identifiers and repeated trace
+digests in the authoritative assessment. Questions about observation provenance,
+independence or source reconstruction require that full record.
+
+The accepted input is a completed bounded packet from the same assessment;
+`summary_complete=false` remains visible. Projection neither changes a support
+status nor converts absent support into a negative proposition. Opposite authored
+statements remain distinguishable even when their claim identifiers and formal
+support are identical. Claim identifiers alone cannot substitute for the authored
+proposition, and formal support cannot establish that its wording matches the
+task. Registered method
+outputs provide selected computed values; raw collector payloads and process
+streams are never copied automatically. Packet tests verify these distinctions,
+and the model-session calibration checks positive, negative, missing and expired
+threshold cases. Those checks establish the tested representation behaviour;
+model comprehension and engineering relevance remain empirical obligations.

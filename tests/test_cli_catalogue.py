@@ -77,7 +77,7 @@ def test_registered_cli_reuses_observations_across_processes_and_prepares_model_
     code, prepared = _cli(tmp_path, "model-context", "service", "--claim", "ready",
                           "--question", "Is the service ready?", registry=True)
     assert code == 0
-    assert prepared["schema"] == "EAL/model-context/1"
+    assert prepared["schema"] == "EAL/model-context/2"
     assert prepared["assessment"]["reused_count"] == 1
     assert prepared["messages"][1] == {"role": "user", "content": "Is the service ready?"}
     assert "not for the model" not in json.dumps(prepared)

@@ -1,71 +1,350 @@
 {
   "schema_version": "1.1",
   "investigation_id": "EAL-NANO-REUSE",
-  "title": "Automated low-cost model-session reuse pilot",
-  "version": "1.0.0",
+  "title": "EAL/2 cumulative reuse investigation: pilot-informed estimation and separate component diagnostics",
+  "version": "4.0.0",
   "status": "specified",
-  "question": "How do selected cheap model configurations perform in a fresh session with ordinary project artefacts or pre-authored EAL knowledge and persisted observations?",
+  "question": "At ten fresh recipient sessions, does the EAL workflow reduce cumulative input-plus-output tokens by at least 20% while preserving mean task correctness within five percentage points and achieving at least 90% EAL recipient correctness, conditional on the declared tasks and model configurations; what feasible allocation provides the specified precision?",
   "primary_claim_id": "CLM-001",
   "scope": {
-    "system_or_population": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
-    "conditions": "Each recipient has native function access enabled or disabled; ordinary and EAL arms share the specification and collector. Initial sessions have native tools.",
+    "system_or_population": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases.",
+    "conditions": "Primary: both donor models crossed with both recipient models and recipient native-tool access. EAL uses a task-specific checked host adapter and compact prompts. Separate diagnostics clone a common donor state and change one component per contrast.",
     "spatial_scope": "Isolated synthetic project directories and OpenAI Responses API.",
-    "temporal_scope": "One initial and one fresh recipient session per sequence.",
+    "temporal_scope": "Initial session plus ten fresh recipients; report cumulative trajectories and the predeclared horizon. A separate pilot estimates information requirements before a fresh evaluation. Diagnostics use one donor and independently cloned recipient variants per block.",
     "exclusions": [
-      "No human participants or authoring-effort estimate.",
-      "No population model-class or isolated reasoning effect.",
-      "Only structured/1 is exercised."
+      "No human participants, authoring-effort estimate or human handover effect.",
+      "No population model-class, isolated reasoning-capability or general EAL superiority claim.",
+      "The installed task contracts exercise declared finite evidence and reasoning dependencies; they do not validate every EAL reasoning mode or arbitrary engineering work.",
+      "Bundled snapshot reuse does not measure selective collection of individual evidence facts or general temporal logic."
     ],
     "knowledge_cut": "2026-09-28"
   },
   "claims": [
     {
       "id": "CLM-001",
-      "statement": "The selected model configurations produce measurable differences in reference-answer completion and resources when reusing ordinary project artefacts or EAL knowledge.",
+      "statement": "Cumulative resource differences and correctness preservation can be estimated jointly for the declared finite task and model pool at a specified reuse horizon.",
       "claim_type": "descriptive",
       "role": "primary",
-      "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions.",
-      "success_consequence": "Identify candidate benefits and failure modes for independent follow-up.",
-      "failure_consequence": "Retain ties, failures, partial results and unavailable evidence without a superiority claim."
+      "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases.",
+      "success_consequence": "Report whether all practical thresholds are supported by the declared uncertainty bounds, with initial and later resource trajectories.",
+      "failure_consequence": "Retain observed losses and inconclusive intervals; cheap incorrect answers do not satisfy the joint practical criterion."
+    },
+    {
+      "id": "CLM-002",
+      "statement": "One-factor recipient contrasts can describe sensitivity to projection, prior notes, answer-format requirements and evidence recollection within validated cloned states.",
+      "claim_type": "descriptive",
+      "role": "secondary",
+      "scope_limit": "Two specified diagnostic cases, one donor configuration, two recipient configurations and disabled recipient native tools.",
+      "success_consequence": "Report component-specific observed differences and candidate explanations for further testing.",
+      "failure_consequence": "Report invalid manipulations, unresolved annotation or non-discrimination without attributing the primary workflow contrast to a component."
     }
   ],
   "assumptions": [
     {
       "id": "ASM-001",
-      "statement": "The reference calculation and scoring labels implement the supplied task specification.",
+      "statement": "The task specification, authored EAL source, checked host decision adapter and independent reference distinguish the same evidence dependencies, decision rule, scope, missingness and validity conditions.",
       "role": "measurement",
-      "status": "tested",
-      "test_or_justification": "Boundary, missingness and assumption cases checked independently of EAL status.",
-      "failure_consequence": "Suspend affected scores and revise the scorer before interpreting live data."
+      "status": "untested",
+      "test_or_justification": "Before-API actual-runtime calibration and source mutations: changed claim meaning, reversed threshold direction, changed threshold, missing measurement, incompatible scope and freshness/assumption boundaries. New task rules independently check three-valued composition and scoped, dated fact selection against separately authored expectations.",
+      "failure_consequence": "Stop live collection for invalid correspondence; an authored argument failure is an instrument/source failure, not a model failure."
     },
     {
       "id": "ASM-002",
-      "statement": "The provider honours the pinned model and configured function/reasoning interface.",
+      "statement": "Provider responses use the declared snapshot and interface, and recorded usage describes the actual transmitted request.",
       "role": "operational",
       "status": "untested",
-      "test_or_justification": "Check reported snapshot and retain complete provider responses, usage and attempts.",
-      "failure_consequence": "Stop on model mismatch, missing access or invalid transport output."
+      "test_or_justification": "Snapshot checks and retained raw requests/responses; response mode and tool mask recorded per session. Schema enforcement is enabled only by the declared json_schema mode.",
+      "failure_consequence": "Retain failure and stop on access, budget or snapshot mismatch; do not substitute another model."
+    },
+    {
+      "id": "ASM-003",
+      "statement": "Each diagnostic contrast starts from identical donor artefacts and external fixture state, with only the declared input component changed.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Pre-session fingerprints, intervention manifests, unchanged-fixture checks, current task-fact equality and actual manipulation checks.",
+      "failure_consequence": "Keep the affected contrast and resources but mark it invalid for component attribution."
+    },
+    {
+      "id": "ASM-004",
+      "statement": "Automatic or human annotation represents the decision expressed in the retained answer, independently of whether that decision is correct.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Conservative annotation rules; known paraphrase, negation, contradiction and ambiguity cases; arm/case/oracle-masked manual coding and optional audit of all automatic labels.",
+      "failure_consequence": "Retain ambiguous decisions as pending and report bounds; preserve coding revisions and suspend claims sensitive to unresolved or discrepant labels."
+    },
+    {
+      "id": "ASM-005",
+      "statement": "Reduced prompt content preserves the task facts needed for the scoped host result; generic claim prose remains qualified by prose_verified rather than assumed formally proved.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Task-contract checks, statement-meaning mutations and claim text/qualification projection tests; full-versus-compact diagnostic has equal current task-fact fingerprints.",
+      "failure_consequence": "Reject the invalid contract or contrast before attributing quality or token differences to compression."
+    },
+    {
+      "id": "ASM-006",
+      "statement": "Pilot estimates and the declared sensitivity scenarios adequately represent repeated-sequence variation, missingness and resource use for the subsequent finite-pool evaluation.",
+      "role": "analysis",
+      "status": "untested",
+      "test_or_justification": "Use fresh evaluation executions; report sparse cells, paired variability, correctness discordance and session dependence. Simulate complete matched sequence trajectories under the declared resource reservation rule; inspect sensitivity and Monte Carlo uncertainty.",
+      "failure_consequence": "Label the proposed allocation inadequately informed or infeasible; retain conditional scenario results without an empirical power or population claim."
     }
   ],
-  "hypotheses": [],
-  "predictions": [],
+  "hypotheses": [
+    {
+      "id": "H-001",
+      "label": "Compact context is sufficient",
+      "kind": "mechanism",
+      "statement": "Given identical current task facts, removing repeated presentation reduces input tokens while retaining the same distribution of task decisions.",
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004",
+        "ASM-005"
+      ],
+      "scope": "Separate diagnostic contrasts only; packages are rival explanations, not an exhaustive set and not mutually exclusive across components."
+    },
+    {
+      "id": "H-002",
+      "label": "Explanatory context is needed",
+      "kind": "rival",
+      "statement": "Given identical current task facts, recipients need the fuller presentation to interpret them; compact presentation lowers task-decision accuracy.",
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004",
+        "ASM-005"
+      ],
+      "scope": "Separate diagnostic contrasts only; packages are rival explanations, not an exhaustive set and not mutually exclusive across components."
+    },
+    {
+      "id": "H-003",
+      "label": "Stale notes interfere",
+      "kind": "mechanism",
+      "statement": "Including a dated earlier positive conclusion alongside a current negative result increases erroneous positive decisions.",
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004",
+        "ASM-005"
+      ],
+      "scope": "Separate diagnostic contrasts only; packages are rival explanations, not an exhaustive set and not mutually exclusive across components."
+    },
+    {
+      "id": "H-004",
+      "label": "Current result dominates",
+      "kind": "rival",
+      "statement": "Recipients reliably qualify the dated earlier conclusion and prioritise the current checked result; including the stale note does not increase erroneous positive decisions.",
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004",
+        "ASM-005"
+      ],
+      "scope": "Separate diagnostic contrasts only; packages are rival explanations, not an exhaustive set and not mutually exclusive across components."
+    },
+    {
+      "id": "H-005",
+      "label": "Reporting requirements affect the task answer",
+      "kind": "mechanism",
+      "statement": "Requiring a JSON reporting contract changes the distribution of task decisions relative to prose under identical current task facts.",
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004",
+        "ASM-005"
+      ],
+      "scope": "Separate diagnostic contrasts only; packages are rival explanations, not an exhaustive set and not mutually exclusive across components."
+    },
+    {
+      "id": "H-006",
+      "label": "Reporting requirements affect only representation",
+      "kind": "rival",
+      "statement": "Requiring JSON changes formatting compliance and resources while leaving the distribution of task decisions unchanged under identical current task facts.",
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004",
+        "ASM-005"
+      ],
+      "scope": "Separate diagnostic contrasts only; packages are rival explanations, not an exhaustive set and not mutually exclusive across components."
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P-001",
+      "hypothesis_ids": [
+        "H-001"
+      ],
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "estimand_ids": [
+        "EST-002"
+      ],
+      "measurement_ids": [
+        "M-001",
+        "M-002",
+        "M-003"
+      ],
+      "expected_pattern": "Compact projection uses fewer input tokens with no systematic loss of decision accuracy; a compact-specific loss is more consistent with H-002 than H-001.",
+      "direction": "fewer tokens with preserved decision profile",
+      "magnitude_or_range": "Direction of observed paired token and decision differences; this small sample has no equivalence margin or precision claim.",
+      "time_window": "Recipient session after cloned donor state.",
+      "tolerance": "Token counts exact where provider usage is complete; decision equality alone in this small sample cannot establish distributional equivalence.",
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004",
+        "ASM-005"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-002"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-002",
+      "hypothesis_ids": [
+        "H-003"
+      ],
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "estimand_ids": [
+        "EST-002"
+      ],
+      "measurement_ids": [
+        "M-001",
+        "M-003"
+      ],
+      "expected_pattern": "Including the specified stale positive note increases positive errors on the current negative case relative to omitting it.",
+      "direction": "increase in erroneous positive decisions",
+      "magnitude_or_range": "Observed within-block decision differences; effect magnitude and repeatability require a later information design.",
+      "time_window": "Recipient session for refresh_negative.",
+      "tolerance": "One discordant pair identifies a possible sensitivity, not a reliable population effect; no discordance is non-discriminating at this sample size.",
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-004"
+      ],
+      "shared_prediction": false
+    },
+    {
+      "id": "P-003",
+      "hypothesis_ids": [
+        "H-005"
+      ],
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "estimand_ids": [
+        "EST-002"
+      ],
+      "measurement_ids": [
+        "M-001",
+        "M-002",
+        "M-003"
+      ],
+      "expected_pattern": "Prose, prompted JSON and schema-enforced JSON produce different task-decision profiles after annotation is separated from formatting.",
+      "direction": "difference in task decisions",
+      "magnitude_or_range": "Observed paired decisions/resources; prompted JSON versus enforced JSON separately varies provider enforcement.",
+      "time_window": "Independent cloned recipient sessions within a format block.",
+      "tolerance": "Format differences without decision differences are shared by both packages in a small sample; no significance or equivalence conclusion.",
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003",
+        "ASM-004"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-006"
+      ],
+      "shared_prediction": false
+    }
+  ],
   "constructs": [
     {
       "id": "CON-001",
-      "name": "Task completion with reusable knowledge",
-      "definition": "Agreement of the final decision and basis with a full-information reference calculation, plus recorded resources.",
+      "name": "Reference-task decision agreement",
+      "definition": "The answer expresses the same ready, not_ready or undetermined decision as an independent full-information task reference.",
       "role": "outcome",
-      "scope": "Selected cases and model configurations.",
+      "scope": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases.",
       "proxy_for_claim_ids": [
         "CLM-001"
       ],
       "validity_evidence": [
-        "Exact-label rubric checked against six explicit specifications."
+        "Known positive, negative, missing and expired decisions; actual-runtime/source calibration; independent answer annotation with unknown labels preserved."
       ],
       "validity_threats": [
-        "Closed labels omit explanation quality.",
-        "Recipient without tools may correctly report unavailable evidence while not completing the reference task.",
-        "Simple synthetic cases underrepresent engineering work."
+        "Decision agreement does not demonstrate that a model used a particular observation or argument.",
+        "Automatic prose annotation may miss paraphrases; ambiguous or contradictory expressions remain unclassified until blind review.",
+        "A justified abstention with inaccessible evidence can disagree with the full-information reference; its appropriateness is a separate outcome.",
+        "Selected synthetic task families underrepresent engineering work; separate AI authorship broadens construction but does not establish external validity or human authoring effort."
+      ]
+    },
+    {
+      "id": "CON-002",
+      "name": "Component sensitivity under a controlled donor state",
+      "definition": "Observed change in task decisions or resources after one declared component is varied between independently cloned recipient states.",
+      "role": "diagnostic",
+      "scope": "The declared diagnostic cases/configurations and cloned states.",
+      "proxy_for_claim_ids": [
+        "CLM-002"
+      ],
+      "validity_evidence": [
+        "Donor and fixture fingerprints, current task-fact equality, treatment manifests and checks of actual recollection/format/projection/notes."
+      ],
+      "validity_threats": [
+        "One execution per diagnostic variant has little information about stochastic distributions.",
+        "A manipulation may change unrecorded presentation details; failed equality checks invalidate component attribution.",
+        "A specified synthetic stale note tests sensitivity to that conflict, not prevalence of such notes in real projects."
+      ]
+    },
+    {
+      "id": "CON-003",
+      "name": "Cumulative machine expenditure at preserved task correctness",
+      "definition": "Initial plus ten subsequent sessions of measured input/output tokens, estimated API USD and elapsed seconds, interpreted jointly with the EAL-minus-ordinary mean correctness difference. The EAL mean recipient correctness must also be at least 0.90; relative preservation alone cannot qualify two uniformly poor workflows.",
+      "role": "outcome",
+      "scope": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases.",
+      "proxy_for_claim_ids": [
+        "CLM-001"
+      ],
+      "validity_evidence": [
+        "Complete request receipts, initial/subsequent accounting, separate quality outcomes and declared horizon."
+      ],
+      "validity_threats": [
+        "Human authoring time and host infrastructure prices are unmeasured.",
+        "A favourable resource ratio cannot compensate for correctness below the margin.",
+        "Pilot-calibrated simulation is conditional on selected tasks, model snapshots and the assumed missingness process."
       ]
     }
   ],
@@ -75,85 +354,126 @@
       "construct_ids": [
         "CON-001"
       ],
-      "observable": "Final JSON decision and basis",
-      "instrument_or_procedure": "cases.Case.oracle and runner.Pilot; oracle called after the answer and never used in prompting.",
+      "observable": "Unmodified task answer, independently annotated decision and optional basis/measurement/time citations; format and persistence outcomes recorded separately.",
+      "instrument_or_procedure": "Response-format strategies, ReferenceScorer and annotation export/import; automatic prose coding only for complete standalone canonical decisions, with blinded coding for all other non-empty prose.",
       "scale_or_units": "Binary reference match and counts",
-      "timing": "Every initial and later session; all attempts.",
-      "preprocessing": "Exact reference-label match and separately reported evidence_unavailable answers.",
-      "calibration": "Known ready/not_ready/undetermined cases; no EAL status in oracle calculation.",
-      "reliability": "Deterministic reference scoring; model output may vary across runs.",
-      "validity": "Task completion and recorded resource use only; free-text explanation quality and human effort are unmeasured.",
-      "measurement_invariance": "Same specification and reference in both arms; same donor/recipient configuration within each pair.",
-      "reactivity": "A fixed output schema constrains model answers.",
-      "error_model": "Retain malformed/incomplete replies, failed calls, unknown costs and unrun sequences.",
-      "blinding": "Oracle and collector state are hidden from prompts; the deterministic scorer does not inspect arm labels."
+      "timing": "Every initial and recipient session; every attempt retained.",
+      "preprocessing": "Primary task_match/decision_match compares an annotated decision with independent fixture arithmetic. Basis agreement, voluntary citation agreement, coded internal consistency, abstention, false assertion and format compliance are secondary dimensions; absent secondary content is unmeasured, not a primary failure. Empty/no response is observed no-answer; ambiguous prose or malformed JSON remains pending annotation. Automatic prose coding never selects a sentence from a longer response. Volunteered JSON in primary prose remains pending annotation. Text observed during tool turns remains available for annotation if the session ends before a final answer; it does not become a complete handoff.",
+      "calibration": "Known correct, wrong, negated, ambiguous and conflicting answers; independent numerical/time references; source mutation and real-host boundary checks. Include conditional or contradicted prose outside a word-list heuristic, mixed text/tool responses, call-limit exhaustion and later tool/request failures. Separately authored expected timelines cover conjunctions, alternative support routes, scope/version applicability and newest-dated-fact selection.",
+      "reliability": "Retain automatic labels, masked human labels, quotations and reasons; contradictory or ambiguous expressions remain pending. Pilot repetitions estimate stochastic variation; no stability claim follows from a single execution.",
+      "validity": "Measures the task decision expressed; citation agreement and reporting compliance are separate. Complete free-text argument quality and human effort remain outside scope.",
+      "measurement_invariance": "The same independent task rubric applies across arms, response modes, models and sessions; parser coverage is measured rather than assumed invariant.",
+      "reactivity": "The primary task requests ordinary prose without an experimental JSON contract. Diagnostic format variants deliberately change reporting burden.",
+      "error_model": "Unclassified decisions remain unknown with explicit bounds until blind annotation. Invalid optional side effects do not invalidate a known decision; unresolved secondary dimensions remain unknown.",
+      "blinding": "Automatic annotation never receives arm labels or the reference. Manual items hide case, model, arm, condition and reference metadata; quoted answer content may reveal treatment. The separate mapping joins codes only after annotation."
     },
     {
       "id": "M-002",
       "construct_ids": [
-        "CON-001"
+        "CON-003"
       ],
-      "observable": "Calls, usage, setup/initial/later time, tool access and EAL reuse",
-      "instrument_or_procedure": "provider.BudgetedClient, runner.SessionRunner and cases.Project.",
+      "observable": "Initial, each subsequent-session and cumulative API input/output/cached/reasoning tokens, request costs, wall time, native probes, host collections/reuses, setup time and prompt sizes.",
+      "instrument_or_procedure": "provider.BudgetedClient append-only ledger, session.SessionRunner, resources.ResourceSummary and reporting.ReportBuilder.",
       "scale_or_units": "Seconds, token/call counts and estimated USD",
-      "timing": "Every initial and later session; all attempts.",
-      "preprocessing": "Preserve attempts; unknown usage retains a reservation and is separately counted.",
-      "calibration": "Scripted provider responses, budget exhaustion, incomplete output and replay tests.",
-      "reliability": "Deterministic reference scoring; model output may vary across runs.",
-      "validity": "Task completion and recorded resource use only; free-text explanation quality and human effort are unmeasured.",
-      "measurement_invariance": "Same specification and reference in both arms; same donor/recipient configuration within each pair.",
-      "reactivity": "A fixed output schema constrains model answers.",
-      "error_model": "Retain malformed/incomplete replies, failed calls, unknown costs and unrun sequences.",
-      "blinding": "Oracle and collector state are hidden from prompts; the deterministic scorer does not inspect arm labels."
+      "timing": "Initial and each recipient session, then total per condition.",
+      "preprocessing": "Count every attempted request and both collection paths, including initial setup and diagnostic donor preparation. Keep token/collection/timing completeness flags and unknown amounts. Cost per task-correct decision requires complete outcomes and resource usage; pending labels retain bounds. Report each diagnostic donor once as shared preparation and recipient marginal costs separately. Reconcile each session's exact API attempt identifiers with the journal. Explicit empty receipts identify confirmed pre-request zero work; missing, duplicate or misattributed records leave accounting incomplete and suppress finite API/cost/token contrasts. Diagnostic shared-donor and unique-recipient subtotals include separately measured workflow preparation.",
+      "calibration": "Known/unknown ledger costs, interrupted requests, cumulative arithmetic and cloned-state compatible/fresh collection counts. Missing whole journals, missing attempts within one arm, explicit pre-request zero, preparation interruption and unique diagnostic aggregation.",
+      "reliability": "Recorded monotonic durations and provider usage; no assertion that local collector timing represents remote infrastructure.",
+      "validity": "All recorded machine/API resources count; API rates are estimates. Pre-authored EAL excludes authoring effort, and host infrastructure prices/human effort are unmeasured. Local fixture latency does not represent a remote evidence system. Diagnostic workflow preparation includes donor construction, current-state preparation and clone construction; preparation timing excludes fingerprinting and diagnostic serialisation/logging. Session timing retains the session-runner interval, including request journalling and input-file persistence; report computation and annotation are outside these intervals. Additional task families collect one bundled fact snapshot; savings concern snapshot reuse, not selective acquisition of individual facts.",
+      "measurement_invariance": "The same serial transport, budgeting and accounting applies; prompts may differ as an intended workflow component.",
+      "reactivity": "A reservation limit or execution timeout can stop a plan before all cells; no outcome-selected extension.",
+      "error_model": "Persist request starts before transmission; distinguish incomplete attempts, unobserved sessions and pending labels from measured zero or incorrect decisions.",
+      "blinding": "Mechanical aggregation does not use desired answer quality to select attempts."
+    },
+    {
+      "id": "M-003",
+      "construct_ids": [
+        "CON-002"
+      ],
+      "observable": "Donor-state and fixture fingerprints, current task-fact fingerprint, declared variant, actual projection/notes/response mode and collection events.",
+      "instrument_or_procedure": "DiagnosticPilot clones one donor state into independent variant directories; records intervention manifests and manipulation checks.",
+      "scale_or_units": "Exact fingerprint equality, categorical variants and collector counts.",
+      "timing": "Before each diagnostic recipient and after preparation/execution.",
+      "preprocessing": "A component contrast is interpretable only when shared-state, unchanged-fixture and relevant fact-equality checks pass and the assigned component is delivered. Keep invalid contrasts with their raw outcomes and costs.",
+      "calibration": "Clone independence, source/observation/note tampering, fixed fixture, one-factor variation and expected eligible reuse versus forced collection.",
+      "reliability": "Deterministic fingerprints and retained manifests can be inspected and replayed.",
+      "validity": "Controls recorded donor/history and current factual content for a component contrast; does not establish unobserved semantic equivalence.",
+      "measurement_invariance": "Identical checks within each declared diagnostic factor; equality requirements differ only where the factor intentionally changes a field.",
+      "reactivity": "Explicit diagnostic stale-note injection is labelled and confined to diagnostics; primary notes remain natural answers.",
+      "error_model": "Missing or unequal required fingerprints and absent manipulation records make attribution invalid, not a scored model loss.",
+      "blinding": "Mechanical checks use assigned factor but do not inspect whether its answer is favourable."
     }
   ],
   "design": {
     "design_type": "controlled-experiment",
-    "rationale": "Compare complete configured workflows on matched tasks and model transitions, with order randomised to reduce order effects.",
+    "rationale": "Estimate the complete ordinary/EAL workflow contrast with appropriate prompts; use a separate pilot to select a feasible evaluation allocation by joint precision. Component diagnostics manipulate one factor on cloned donors and remain separate.",
     "setting": "Automated live API calls on synthetic projects.",
-    "temporal_structure": "Two sessions; project artefacts persist and conversation history resets.",
-    "assignment_method": "Enumerate six cases x two recipient models x two tool settings x two arms; shuffle sequence order with the fixed seed.",
+    "temporal_structure": "Initial plus ten fresh recipient sessions with retained project state and empty provider conversation history. Facts may change at declared recipient positions; all earlier observations and failures remain represented. Additional-family snapshots change at positions 0, 2, 4, 6, 8 and 10; intervening odd positions keep the same observation identity and outcome under a 60-second inclusive TTL.",
+    "assignment_method": "Candidate pilot crosses fourteen cases, two donors, two recipients, two native-tool settings, two repetitions and both arms. Shuffle matched blocks and arm order with seed 20260928. The information-design procedure selects only from declared allocation candidates before fresh evaluation outcomes; record the selected plan and pilot run identities. All primary evaluation candidates retain the same fourteen tasks and model/tool cells; changing inclusion changes the estimand and requires a separate prospective declaration.",
     "allocation_concealment": "Not applicable: no human allocation; case oracle never enters a prompt.",
-    "masking": "Deterministic scorer reads only decision/basis and the case reference.",
-    "comparator": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+    "masking": "Task annotation receives no condition or oracle metadata; independent scorer compares codes with a task reference. Full answer text may reveal treatment.",
+    "comparator": "A fresh ordinary prompt session with the task specification and the latest complete answer naturally retained from earlier sessions as a project note; no supplied runbook, curated tool cache or previous conversation.",
     "control_ids": [
       "CTRL-001",
-      "CTRL-002"
+      "CTRL-002",
+      "CTRL-003",
+      "CTRL-004"
     ]
   },
   "units": {
-    "target_population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
-    "sampling_frame": "Six purposively selected reuse, expiry and assumption cases in cases.py.",
-    "experimental_unit": "One isolated two-session arm sequence.",
-    "observational_unit": "Session answer, provider request or acquisition event.",
-    "assignment_unit": "Sequence order only; model/tool/arm cells are exhaustively enumerated.",
-    "analysis_unit": "Case-level matched arm comparisons within each recipient configuration; calls are not independent cases.",
+    "target_population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases.",
+    "sampling_frame": "Eight retained calibration cases plus six synthetic tasks authored by a separate AI agent across three additional families; provenance and roles are recorded per case. This is purposive task coverage, not random sampling from developer work. New families are conjunctive_release, alternative_routes and version_applicability; cohort is separate_ai_authored.",
+    "experimental_unit": "Primary: one isolated initial-plus-ten-recipient arm sequence, paired with the corresponding other workflow. Diagnostic: one independently cloned recipient state within a common donor block.",
+    "observational_unit": "Task answer, API attempt, collector event, annotation or manipulation check.",
+    "assignment_unit": "Primary: matched block order and within-block arm order. Diagnostic: recipient variant order within each common donor block.",
+    "analysis_unit": "Primary: a matched pair of complete session trajectories retaining case, donor, recipient, tool access and repetition. Precision is conditional on the finite declared case/configuration mixture. Diagnostics: factor-specific recipient contrasts within donor blocks.",
     "inclusion_criteria": [
-      "All 48 planned sequences retained."
+      "Every planned sequence and session retained."
     ],
     "exclusion_criteria": [
-      "None after scheduling; failures and unrun rows remain."
+      "None after scheduling."
     ],
-    "recruitment_or_selection": "No people; two low-cost models selected for documented reasoning interface differences."
+    "recruitment_or_selection": "No people. Separate AI authorship provides a distinct construction process, not external investigator or human-developer independence. Evaluation uses fresh executions and is not pooled with pilot observations."
   },
   "interventions_or_exposures": [
     {
       "id": "INT-001",
       "kind": "intervention",
-      "description": "Pre-authored EAL source, stable TOML collector binding, initial registration and persisted evidence, runtime assessment before each model session.",
-      "target": "Offloaded evidence collection/reuse and scoped assessment.",
-      "implementation": "Existing EALKnowledgeBase and ModelContextAdapter; reinstantiate from persistent storage.",
-      "dose_or_intensity": "One host assessment per session; recipient function access enabled/disabled separately.",
-      "timing": "Initial and fresh later session.",
+      "description": "Pre-authored EAL source, task contract, typed task method, TOML collector and persisted observations. A host adapter derives a scoped decision from the actual assessment; the model receives compact current task context.",
+      "target": "Evidence reuse/acquisition, task evaluation and economical delivery of the checked task result.",
+      "implementation": "EALKnowledgeBase, ModelContextAdapter, TaskContract/task adapter and ContextStrategy implementations.",
+      "dose_or_intensity": "One host assessment per EAL session; two recipient sessions and two repetitions.",
+      "timing": "Initial and each recipient session.",
       "admissibility": "admissible",
       "manipulation_checks": [
-        "Record collected/reused counts and native function calls."
+        "Record host assessments, source-contract validation, collections/reuses and the delivered task context."
       ],
       "off_target_checks": [
-        "Same task specification and external collector in both arms."
+        "Hold the external task, model configuration, budget and recipient native-tool setting fixed. Prompt length, host computation and retained-information organisation are intended whole-workflow differences."
       ],
       "recovery_checks": [
-        "No previous model response or function-call history in recipient input."
+        "Empty conversation history each session; persist the latest complete raw answer as an ordinary project artefact in both arms, subject to the common 8192-byte limit; record oversized-note omissions. The compact EAL prompt uses the current checked task context rather than repeated specification and old notes."
+      ]
+    },
+    {
+      "id": "INT-002",
+      "kind": "intervention",
+      "description": "Separate one-factor cloned-donor recipient variants: compact/full presentation of equal current facts; prior notes omitted/included; prose/prompted JSON/schema JSON; compatible reuse/forced collection.",
+      "target": "Candidate presentation, conflict, reporting and evidence-acquisition pathways.",
+      "implementation": "diagnostics.DiagnosticPilot and diagnostic-plan.json.",
+      "dose_or_intensity": "Four donor blocks, four donor sessions and 28 recipient sessions; each factor is varied only in eligible declared cases.",
+      "timing": "Recipient after one recorded donor session and fixed external fixture transition.",
+      "admissibility": "admissible",
+      "manipulation_checks": [
+        "Hash shared state before each variant; preserve external fixture; validate equal task facts and actual intended variation.",
+        "Record a predeclared dated synthetic stale-note injection only in the notes diagnostic."
+      ],
+      "off_target_checks": [
+        "Independent clones prevent one recipient output changing another recipient input.",
+        "Factor-specific contrasts are not pooled into the primary workflow comparison."
+      ],
+      "recovery_checks": [
+        "Retain pristine donor snapshot and all cloned initial-state fingerprints; mark failed checks invalid."
       ]
     }
   ],
@@ -161,28 +481,52 @@
     {
       "id": "CTRL-001",
       "control_type": "active-comparator",
-      "description": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+      "description": "A fresh ordinary prompt session with the task specification and the latest complete answer naturally retained from earlier sessions as a project note; no supplied runbook, curated tool cache or previous conversation.",
       "failure_mode_addressed": "Curated baseline knowledge changing the intended comparator.",
-      "implementation": "Only model-emitted notes persist alongside original project files.",
-      "diagnostic_consequence": "Inspect retained initial messages and files; exclude unsupported interpretive claims if information was leaked."
+      "implementation": "Project files and fresh-session messages; the latest complete naturally generated answer is retained as a project note, subject to the common 8192-byte limit; omitted oversized notes are recorded without requiring the model to write a file or obey a reporting schema.",
+      "diagnostic_consequence": "Inspect raw session inputs and file snapshots; suspend claims if leaked current fixture/oracle data entered prompts."
     },
     {
       "id": "CTRL-002",
       "control_type": "calibration",
-      "description": "Independent fixture references and scripted transport checks.",
-      "failure_mode_addressed": "Oracle leakage, status-as-ground-truth, history leakage or budget omission.",
-      "implementation": "tests/test_model_transfer.py",
-      "diagnostic_consequence": "Repair failing checks before live execution."
+      "description": "Independent task arithmetic, actual EAL source-to-task calibration and adversarial source/statement mutations before API use.",
+      "failure_mode_addressed": "A defective authored argument, missing task meaning, wrong qualification or circular reference being attributed to model behaviour.",
+      "implementation": "TaskContract, ContractCalibration and production packet/context tests.",
+      "diagnostic_consequence": "Failed correspondence blocks live calls and remains an instrument/source defect, irrespective of the recipient model."
+    },
+    {
+      "id": "CTRL-003",
+      "control_type": "manipulation",
+      "description": "Separate cloned-donor diagnostics with declared one-factor recipient variants and equal current task facts where required.",
+      "failure_mode_addressed": "Attributing effects to reuse, compression, stale notes or reporting while donor history or external evidence also changes.",
+      "implementation": "diagnostics.DiagnosticPilot and diagnostic-plan.json: four shared donor blocks, 28 independent recipient variants and explicit manipulation checks.",
+      "diagnostic_consequence": "Report each factor separately. A failed manipulation invalidates its attribution but preserves attempts/resources. No claim of unique mechanism follows from a favourable primary result."
+    },
+    {
+      "id": "CTRL-004",
+      "control_type": "procedural",
+      "description": "Task-answer annotation is separate from API reporting format and correctness scoring.",
+      "failure_mode_addressed": "Counting a parseable but differently worded answer as wrong, or allowing the task reference to choose its interpretation.",
+      "implementation": "Conservative automatic annotation; blind export/import for pending answers and an all-answer audit; unchanged raw records and versioned derived rows.",
+      "diagnostic_consequence": "Keep pending decisions and disputed codes unknown; report the effect of annotation revisions and unresolved bounds."
     }
   ],
   "confounds": [
     {
       "id": "CF-001",
-      "description": "Dedicated reasoning varies with model family; external evidence access differs through the EAL workflow.",
-      "causal_or_measurement_path": "Observed differences combine these features with other model/workflow differences.",
-      "control_or_adjustment": "Match donor and recipient within arm pairs; describe the full configuration.",
-      "diagnostic": "Report exact versions, effort setting and native-tool access for every session.",
-      "residual_risk": "Cannot isolate reasoning or a single EAL component as the cause."
+      "description": "Reasoning setting varies with model family. The primary EAL treatment changes information access, host computation, prompt organisation and naturally generated notes together.",
+      "causal_or_measurement_path": "Whole-workflow differences cannot identify isolated reasoning, notation or every EAL component.",
+      "control_or_adjustment": "Cross donors with every task; retain all inputs and notes; analyse primary whole-workflow profiles and separate cloned-donor component contrasts.",
+      "diagnostic": "Exact snapshots, recipient tool masks, initial/later prompts, matched task/configuration cells, component checks and annotation coverage.",
+      "residual_risk": "No population, human or pure reasoning claim. Separate AI authorship broadens task construction without establishing external investigator independence or representative task sampling."
+    },
+    {
+      "id": "CF-002",
+      "description": "Answer-format and automatic annotation coverage can vary by condition/model.",
+      "causal_or_measurement_path": "Reporting burden can change the answer, and limited parsing can change its measured score without a task error.",
+      "control_or_adjustment": "Primary prose answers; record format separately; pending classifications remain unknown; blind manual review; separate three-mode diagnostic.",
+      "diagnostic": "Pending fraction and format compliance by condition; masked audit of automatic labels; decision contrasts before/after documented annotation.",
+      "residual_risk": "Manual coding can still infer treatment from content; small diagnostic samples do not establish format invariance."
     }
   ],
   "estimands": [
@@ -192,143 +536,295 @@
         "CLM-001"
       ],
       "estimand_type": "descriptive",
-      "population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
+      "population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases.",
       "intervention_or_exposure": "Configured EAL workflow",
-      "comparator": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+      "comparator": "A fresh ordinary prompt session with the task specification and the latest complete answer naturally retained from earlier sessions as a project note; no supplied runbook, curated tool cache or previous conversation.",
       "outcome_measurement_ids": [
         "M-001",
         "M-002"
       ],
-      "time": "Initial plus later session",
-      "summary_measure": "Reference match counts out of six planned sequences per arm/configuration, paired rows and resource totals.",
-      "interpretation": "Exploratory observed performance on the selected tasks; unknown costs and unrun rows remain explicit."
+      "time": "Initial and each of ten subsequent fresh sessions; cumulative totals at the declared horizon and trajectory at earlier positions.",
+      "summary_measure": "Equal-weighted declared case/configuration profiles, correctness per planned session, paired differences, initial and marginal resources; cumulative input-plus-output tokens, USD and seconds including the donor; explicit unknown bounds.",
+      "interpretation": "Finite-pool whole-workflow profiles. Workflow-appropriate prompt differences and host computations form the treatment. Repeated sessions and API calls do not create independent tasks."
+    },
+    {
+      "id": "EST-002",
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "estimand_type": "descriptive",
+      "population_or_system": "The declared two-case diagnostic subset with one donor configuration, both recipients and disabled native tools.",
+      "intervention_or_exposure": "One declared component variant on a cloned donor state.",
+      "comparator": "Its paired baseline variant with the same donor snapshot and fixed fixture.",
+      "outcome_measurement_ids": [
+        "M-001",
+        "M-002",
+        "M-003"
+      ],
+      "time": "One fresh recipient session per variant; donor preparation counted once separately.",
+      "summary_measure": "Per-block paired task decisions and initial/shared versus marginal recipient resources; manipulation validity and annotation completeness.",
+      "interpretation": "Exploratory component sensitivity under inspected manipulations. Directional patterns motivate further testing; small samples cannot establish equivalence, unique mechanism or population effects."
+    },
+    {
+      "id": "EST-003",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "estimand_type": "descriptive",
+      "population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases.",
+      "intervention_or_exposure": "Configured EAL workflow over one initial and ten recipient sessions.",
+      "comparator": "A fresh ordinary prompt session with the task specification and the latest complete answer naturally retained from earlier sessions as a project note; no supplied runbook, curated tool cache or previous conversation.",
+      "outcome_measurement_ids": [
+        "M-001",
+        "M-002"
+      ],
+      "time": "H=10 fresh recipients, including initial expenditure.",
+      "summary_measure": "Delta_Q = mean(Q_EAL - Q_ordinary), where Q is mean task correctness over the ten recipients (initial correctness reported separately); R_T = 1 - mean(T_EAL)/mean(T_ordinary), where T is cumulative input plus output tokens. The practical target is Delta_Q >= -0.05, mean(Q_EAL) >= 0.90 and R_T >= 0.20 jointly. Mean costs in USD and elapsed seconds remain separate secondary outcomes.",
+      "interpretation": "Conditional expected performance for the declared finite task/configuration mixture, estimated on fresh evaluation executions. Practical support requires all three relevant uncertainty bounds to satisfy their thresholds; these are prospective operating defaults, not empirically established universal margins."
     }
   ],
   "identification": {
     "target_estimand_ids": [
-      "EST-001"
+      "EST-001",
+      "EST-002",
+      "EST-003"
     ],
-    "status": "identified",
-    "causal_and_measurement_structure": "Direct descriptive mapping from retained outputs and usage to counts and totals; no population causal effect is targeted.",
+    "status": "partially-identified",
+    "causal_and_measurement_structure": "Primary workflow changes source/host computation, evidence availability, prompt organisation and persisted artefacts together; observed decision and resource differences describe that package. Diagnostics copy one donor state and hold current fixture/facts fixed while varying a declared component. Raw answer -> arm/oracle-independent annotation -> independent task reference -> decision agreement. Pending annotation or incomplete execution leaves bounded task rates.",
     "assumption_ids": [
       "ASM-001",
-      "ASM-002"
+      "ASM-002",
+      "ASM-003",
+      "ASM-004",
+      "ASM-005",
+      "ASM-006"
     ],
     "identified_parameters": [
-      "Observed reference matches and known resource totals in executed cells."
+      "Observed fixed-case decision/resource profiles where annotation and usage are known.",
+      "Best/worst task-completion bounds with pending or unobserved decisions.",
+      "Descriptive paired component differences where all declared manipulation checks pass.",
+      "Conditional finite-pool quality and cumulative token contrast under the declared repeated-sequence sampling and measurement assumptions; incomplete outcomes remain bounded."
     ],
     "nonidentified_alternatives": [
-      "Intrinsic tool incapacity",
-      "Isolated reasoning effect",
-      "Human transfer or authoring benefit",
-      "General engineering task performance"
+      "Primary workflow differences cannot identify isolated notation, native reasoning or individual host mechanisms.",
+      "Ties with small samples do not establish equivalence or absence of a reporting/notes effect.",
+      "Model-family versus dedicated-reasoning effects remain confounded.",
+      "Pre-authored arguments do not identify source-authoring effort or real developer productivity.",
+      "Simulation-based precision assurance does not establish achieved power, transport to new task families or live model effectiveness."
     ],
     "threats": [
-      "Provider mismatch",
-      "Invalid references",
-      "Unrecorded failed calls"
+      "Incorrect task formalisation or source meaning.",
+      "Missing meaning or qualification in model context.",
+      "Unequal donor states or external facts in component comparisons.",
+      "Condition-dependent annotation errors or post-outcome exclusions.",
+      "Incomplete usage and undercounted initial/shared setup."
     ],
     "diagnostics": [
-      "Pinned response verification",
-      "Independent fixture checks",
-      "Attempt reservation before send"
+      "Actual-runtime calibration and source mutations.",
+      "Blind answer annotation/audit and coverage reporting.",
+      "Snapshot/fact fingerprints and one-factor checks.",
+      "Full allocation, raw records and separate resource paths."
     ],
     "rescue_actions": [
-      "Stop and retain partial records; fix identified defects in a new recorded run."
+      "Keep invalid contrasts and pending outcomes, then repair the instrument or complete blind annotation before interpreting affected comparisons.",
+      "Use independently authored broader tasks and an information-based design for later confirmation."
     ]
   },
   "sampling": {
-    "method": "Fixed purposive six-case coverage pilot, with four recipient configurations and two arms.",
-    "sample_size_or_information_target": "48 sequences, 96 sessions, at most 288 requests; no optional extension based on scores.",
+    "method": "Pilot-informed finite-pool repeated-sequence estimation. A fourteen-case candidate pilot covers the declared donor/recipient/tools crossings; an information-design simulation chooses repetitions from declared evaluation candidates that retain all fourteen tasks and every model/tool cell. Diagnostics have their own four-donor plan.",
+    "sample_size_or_information_target": "Candidate coverage plan: 448 arm sequences and 4928 sessions with two repetitions and ten recipients; this is not an adequate-sample-size claim. Target 95% nominal joint intervals with correctness half-width <=0.025 and cumulative token-reduction half-width <=0.10, with the lower 95% Monte Carlo assurance bound at least 0.80 over 200 seeded replicates in each declared design scenario, subject to the USD 2 budget and 7200-second deadline; separate stress scenarios remain reported limitations. Export a selected evaluation plan only when the implementation information/feasibility checks pass. The Hoeffding quality-difference radius requires at least 15320 matched pairs for half-width 0.025. With 14 cases and 8 model/tool cells this requires 137 balanced repetitions (15344 pairs; 337568 sessions). The default candidate grid is 2, 4, 8, 16, 32 and 137 repetitions; smaller entries cannot meet this quality target. The 137-repetition candidate remains unestablished under budget/time and live-pilot conditions. Allocation also requires the lower pointwise 95% Wilson bound for joint interval coverage >= nominal confidence 0.95 in every design scenario. Candidate/scenario Monte Carlo intervals are pointwise, not simultaneous confidence across the candidate grid.",
     "inputs": [
-      "Two pinned nano models",
-      "Tools on/off for recipients",
-      "Six synthetic cases",
-      "USD 2 spend limit"
+      "Finite pool of fourteen selected cases, with calibration and separately authored roles retained",
+      "Two pinned donor/recipient model snapshots and native tools on/off",
+      "Ten recipients; evaluation repetitions chosen by the information-design procedure",
+      "Paired pilot token/cost variability, correctness disagreements, within-sequence dependence and incomplete outcomes",
+      "Prospective practical thresholds: at most five percentage points recipient correctness loss and at least 20% cumulative input-plus-output token reduction including initial expenditure; at least 90% absolute EAL recipient correctness",
+      "95% nominal joint confidence with Bonferroni error allocation across relative correctness, absolute EAL correctness and token reduction; half-width targets 2.5 percentage points recipient correctness and 10 percentage points cumulative token reduction; assurance target 0.80; 200 simulation replicates",
+      "USD 2 per-run reservation limit; incomplete plans remain incomplete",
+      "At least two completed pilot matched trajectories in every included case/model/tool stratum; incomplete or sparse pilot information cannot certify an evaluation allocation",
+      "7200-second elapsed-time ceiling including a 300-second prospective workflow-overhead allowance",
+      "Design scenarios: null, worthwhile, adverse quality, doubled cost and doubled elapsed time; separate stress scenarios: missing annotations, missing usage and rare resource tails",
+      "Joint-coverage calibration: known simulated truths; lower pointwise Wilson 95% bound >=0.95 for each design scenario; unavailable intervals count as no coverage"
     ],
-    "dependence_structure": "Cases recur across cells; prompts and repeated calls are not independent observations.",
-    "multiplicity": "All descriptive cell summaries reported; no tests or significance claims.",
-    "attrition_or_loss": "Retain failed, stopped and unrun sequences in the planned denominator.",
-    "result": "Operational coverage and observed differences, not precise model-class estimates.",
-    "sensitivity_analysis": "Separate decision-only agreement, basis agreement and qualified unavailable-evidence responses.",
-    "stopping_implications": "Stop on access/quota/model failure, budget exhaustion or the external job time limit; report partial coverage."
+    "dependence_structure": "Resample/simulate complete matched sequence trajectories, preserving arm pairing and correlated initial/subsequent observations. Cases/configurations define a finite purposive mixture. Report sparse cells and sensitivity to session dependence; request count is not sample size.",
+    "multiplicity": "One joint principal relative-quality/absolute-quality/token decision at H=10. Case/cohort/model/tool/earlier-horizon and diagnostic contrasts remain descriptive; no post hoc selection of the most favourable primary endpoint.",
+    "attrition_or_loss": "Retain every planned unit. Empty attempted responses are observed no-answer; failed sessions with retained text remain pending independent annotation. Unobserved or ambiguously annotated decisions remain unknown.",
+    "result": "The smaller 2/4/8/16/32-repetition default candidates are analytically inadequate for the conservative correctness precision target. The 137-repetition candidate can reach that bound in principle, but empirical precision and USD 2 / 7200-second feasibility remain unresolved. Report inadequate, unsupported or infeasible candidates explicitly; coverage and error-free pilot observations do not establish adequacy.",
+    "sensitivity_analysis": "Preserve empirical whole-trajectory dependence; perturb quality and missingness with shared trajectory-level draws. Design scenarios determine allocation eligibility; separately declared missing-annotation, missing-usage and rare-tail stresses retain explicit limitations and do not independently prevent proposal selection. Stress failures include insufficient precision, insufficient joint coverage and unattainable effects. Report simulated interval availability, marginal coverage and joint coverage and Monte Carlo uncertainty; these remain conditional on the pilot empirical distribution.",
+    "stopping_implications": "Reserve requests within the declared budget and preserve partial pairs/trajectories. Simulate the same truncation mechanism. Freeze the evaluation allocation before fresh outcomes; no favourable-outcome stopping or extension. Simulated deadlines include retained setup/session timing and a 300-second workflow-overhead allowance, with a doubled-elapsed-time design scenario. Unknown timing or request accounting prevents empirical allocation."
   },
   "analysis": {
-    "preprocessing_lock": "Record plan, seed and code revision before calls; no answer-dependent retries or model substitutions.",
-    "exclusion_lock": "No post-scheduling omissions.",
+    "preprocessing_lock": "Save protocol, plan, task definitions, allocation and code identities before live observations. Preserve raw answers. Predeclare annotation rules, pending cases and blind annotation interface; record every later coding revision separately.",
+    "exclusion_lock": "No post-scheduling omissions or replacement of failed units.",
     "models": [
       {
         "id": "MOD-001",
         "estimand_ids": [
           "EST-001"
         ],
-        "model_or_procedure": "Exact decision/basis agreement with direct task arithmetic and grouped resource counts.",
+        "model_or_procedure": "Independent annotation and task-reference scoring, separate cohort/session summaries, matched within-case differences, explicit pending/unobserved bounds and complete resource accounting.",
         "assumptions": [
-          "Valid specification oracle",
-          "Recorded provider attempts and usage"
+          "Valid task/source/reference correspondence",
+          "Recorded attempts and selected-case scope"
         ],
         "diagnostics": [
-          "Known scorer cases",
-          "Fresh-session replay tests",
-          "Failed-call and budget checks"
+          "Task-contract and actual-runtime source-mutation calibration",
+          "Conservative annotation and masked manual audit",
+          "Zero/nonzero paired arithmetic and pending-label bounds",
+          "Fresh-session, partial-run and cumulative-resource checks"
         ],
         "outputs": [
           "summaries",
-          "rows.json",
+          "paired_comparisons",
+          "case_summaries",
+          "resources",
           "report status",
+          "pending_annotations",
           "unknown_cost_attempts"
+        ]
+      },
+      {
+        "id": "MOD-002",
+        "estimand_ids": [
+          "EST-002"
+        ],
+        "model_or_procedure": "Within-donor one-factor recipient contrasts, condition on predeclared manipulation validity for attribution while retaining every raw unit and resource; report no pooled mechanism estimate.",
+        "assumptions": [
+          "Identical donor/fixture state and equal current task facts except the declared intervention",
+          "Valid independent annotation and complete request accounting where resources are compared"
+        ],
+        "diagnostics": [
+          "Shared-state/fixture/task-fact fingerprints",
+          "Assigned-versus-delivered variant and actual collector counts",
+          "Clone independence and pending annotation coverage"
+        ],
+        "outputs": [
+          "diagnostic paired contrasts",
+          "manipulation checks",
+          "shared donor resources",
+          "recipient resources",
+          "diagnostic status"
+        ]
+      },
+      {
+        "id": "MOD-003",
+        "estimand_ids": [
+          "EST-003"
+        ],
+        "model_or_procedure": "Extract matched pilot trajectories and diagnose variance, discordance, session dependence and missingness. Simulate declared allocation candidates with a fixed seed and budget rule. Correctness uses a Hoeffding bound for independent paired means over ten recipients, retaining within-sequence dependence; cumulative donor-plus-recipient token reduction uses a paired stratified delta approximation with numerically inverted Student critical values. Bonferroni allocates the nominal 0.05 error budget across relative correctness, absolute EAL correctness and token reduction. Report precision assurance and Monte Carlo uncertainty; joint coverage is approximate because the token-ratio interval is approximate. Evaluate practical thresholds only on fresh evaluation observations. Select the smallest candidate meeting both lower pointwise Wilson 95% bounds: precision assurance >=0.80 and joint interval coverage >=0.95 in every design scenario. Known simulated truths determine marginal and joint coverage; missing intervals count as no coverage. Pointwise candidate/scenario Monte Carlo intervals do not imply simultaneous confidence over the grid. Retain stress results separately. Report the 15320-pair analytic quality lower bound and conditional budget/deadline feasibility.",
+        "assumptions": [
+          "ASM-006 pilot-to-evaluation suitability and explicitly simulated sensitivity scenarios",
+          "Complete receipt reconciliation for finite resource comparisons",
+          "Separate pilot/evaluation identities and no shared observations",
+          "Independent complete matched sequences conditional on fixed task/configuration strata; finite resource variance, positive ordinary denominator and adequate delta-method approximation. Temporal observations within a sequence need not be independent.",
+          "Observed setup/session intervals plus the prospective 300-second workflow-overhead allowance represent execution within the 7200-second deadline; doubled elapsed-time sensitivity remains explicit."
+        ],
+        "diagnostics": [
+          "Seeded replay and known paired arithmetic",
+          "Zero-variance and sparse-cell safeguards",
+          "Complete-trajectory dependence and missing/budget-limited scenarios",
+          "Both quality and resources must pass; cheap incorrect outcomes cannot pass",
+          "Primary allocation candidates preserve all fourteen tasks and every model/tool stratum; repetition changes cannot alter the target mixture.",
+          "Joint interval coverage against known simulated truths; poor resource coverage cannot qualify solely through narrow intervals. Marginal/joint coverage and unavailable intervals remain reported."
+        ],
+        "outputs": [
+          "information_design",
+          "candidate_allocations",
+          "selected_plan",
+          "joint_practical_decision",
+          "precision_adequacy",
+          "pilot_provenance",
+          "precision_target_satisfied",
+          "coverage_calibration_satisfied",
+          "eligible_for_evaluation"
         ]
       }
     ],
     "contrasts": [
-      "EAL versus ordinary within each recipient model/tool setting; inspect matched case rows."
+      "Principal joint EAL-minus-ordinary correctness preservation and cumulative token reduction at H=10; include initial expenditure. Initial and each later marginal/cumulative cost, time and tokens remain separately reported.",
+      "Separate diagnostics: compact versus full; notes omitted versus included; prose versus prompted JSON and prompted versus schema JSON; compatible reuse versus forced collection."
     ],
-    "uncertainty": "No confidence intervals or hypothesis tests: small purposive repeated case set. Provider responses and all errors remain available for inspection.",
-    "multiplicity": "Descriptive exploratory summaries only.",
-    "missing_data": "Missing answers fail reference completion; unavailable-evidence qualifications separately reported; missing costs are unknown; unrun cases remain planned.",
-    "stopping_rule": "Fixed plan; three calls per session, 4096 output tokens per call, USD 2 conservative ledger and 45-minute manual workflow job.",
+    "uncertainty": "95% nominal joint confidence using Bonferroni allocation: bounded paired-sequence correctness-difference and absolute EAL correctness intervals and approximate paired stratified delta token-ratio interval. Preserve within-sequence dependence; intervals concern independent executions conditional on the finite task/configuration mixture. Report precision assurance, Monte Carlo uncertainty and pilot estimation uncertainty separately. Pending outcomes retain bounds; incomplete or insufficient observations remain inconclusive. These intervals do not describe a population of developers or randomly sampled task families. Planning also requires a lower pointwise 95% Wilson joint-coverage bound >= nominal confidence in each design scenario. Monte Carlo intervals are not simultaneous over the candidate grid; stress coverage failures remain explicit limitations.",
+    "multiplicity": "A single prospective joint correctness/token criterion at H=10; all other resource, model, tool, horizon and diagnostic summaries are explicitly secondary or exploratory.",
+    "missing_data": "Empty or absent attempted answers are observed no-answer. Unobserved sessions, ambiguous/contradictory text and unparseable JSON remain unknown pending annotation. Unknown usage blocks finite cost-per-correct-answer claims. Missing or inconsistent session-to-request accounting is incomplete measurement, even when task decisions are known. Known subtotals remain labelled; costs and token differences require reconciled coverage.",
+    "stopping_rule": "Fixed plan with at most three requests per session, 4096 output tokens, 32768 request bytes, 90-second request timeout and USD 2 reservation ledger; manual workflow has a 120-minute ceiling. Information planning includes a 300-second prospective workflow-overhead allowance and elapsed-time stress; planned units survive deadline truncation.",
     "robustness_checks": [
-      "Check decision and basis separately.",
-      "Report exact model/configuration and both session costs."
+      "Report individual cases, calibration/separately authored task cohorts, model transitions and session positions; retain family metadata in task definitions. No separate family-level estimator is implemented.",
+      "Report decision, optional basis/citations, false assertions, abstention, format and annotation coverage separately.",
+      "Audit all automatic labels with blind export when coding sensitivity could change interpretation.",
+      "Count host/native paths, initial preparation and cumulative work.",
+      "Inspect each diagnostic factor and any failed manipulation without pooling into the primary comparison."
     ],
     "software_and_versions": [
-      "Python >=3.11; repository revision in provenance.json; OpenAI Responses API."
+      "Python >=3.11; EAL/2; protocol 4.0.0; primary plan/report /3; diagnostic plan /1; information-design configuration and report schemas recorded with code/model identities."
     ],
-    "inconclusive_handling": "Report operational failures and partial cells; a later broader independent study is needed for inferential claims."
+    "inconclusive_handling": "Invalid task/source correspondence blocks calls. Partial execution, unresolved annotation, failed manipulation or conflicting outcomes remain explicitly inconclusive for the affected comparison. Insufficient pilot support, infeasible allocation, failed precision targets or intervals crossing practical thresholds remain inconclusive for practical support."
   },
   "decision_matrix": [
     {
       "id": "DM-001",
       "prediction_ids": [],
-      "observation_region": "All planned sequences executed with valid measurements.",
+      "observation_region": "Fresh evaluation has valid source/measurement correspondence, complete annotations and resource coverage, adequate pilot-informed precision, and all three lower uncertainty bounds meet the declared practical thresholds.",
       "analysis_outputs": [
-        "MOD-001 summaries"
+        "MOD-003 joint_practical_decision",
+        "MOD-003 precision_adequacy",
+        "MOD-001 resources"
       ],
-      "decision_rule": "Report observed differences without significance or superiority labels.",
+      "decision_rule": "Support the bounded practical criterion only if the lower bound for Delta_Q is at least -0.05, the lower bound for mean EAL recipient correctness is at least 0.90, and the lower bound for R_T is at least 0.20 at H=10. Report point estimates, intervals and secondary USD/seconds separately.",
       "discrimination_result": "parameter-estimated",
       "claim_effects": [
         {
           "claim_ids": [
             "CLM-001"
           ],
-          "disposition": "revise",
-          "rationale": "Use actual counts and resources to formulate follow-up questions.",
-          "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions."
+          "disposition": "strengthen",
+          "rationale": "Relative correctness preservation, adequate absolute EAL correctness and a meaningful cumulative token saving all satisfy the prospective rule under the declared conditional uncertainty model.",
+          "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases."
         }
       ],
-      "hypothesis_effects": [],
-      "assumption_failure_response": "Suspend interpretation of invalid measurements.",
-      "next_action": "Select broader independent cases targeting observed failure mechanisms."
+      "hypothesis_effects": [
+        "The primary whole-workflow result does not distinguish the diagnostic hypothesis packages."
+      ],
+      "assumption_failure_response": "A failed instrument check overrides outcome interpretation.",
+      "next_action": "Replicate on fresh executions and a broader independently sampled task set before extending the claim."
     },
     {
       "id": "DM-002",
       "prediction_ids": [],
-      "observation_region": "Access unavailable, budget or time stop, malformed outputs, measurement defects or unexpected results.",
+      "observation_region": "Task/source/context calibration fails before API collection.",
+      "analysis_outputs": [
+        "MOD-001 report status"
+      ],
+      "decision_rule": "Record invalid task formalisation or information delivery and send zero API requests.",
+      "discrimination_result": "invalid-measurement",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "suspend",
+          "rationale": "An inadequate measurement path cannot support the comparison.",
+          "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases."
+        }
+      ],
+      "hypothesis_effects": [
+        "The primary whole-workflow result does not distinguish the diagnostic hypothesis packages."
+      ],
+      "assumption_failure_response": "Repair and verify correspondence before a fresh run.",
+      "next_action": "Keep the failed calibration record and use a new output directory."
+    },
+    {
+      "id": "DM-003",
+      "prediction_ids": [],
+      "observation_region": "Calibration passes but primary execution, annotation or resource observation is incomplete, or an unanticipated instrument problem appears. This includes insufficient pilot information, an infeasible precision target, unresolved selection/provenance, or practical-threshold overlap.",
       "analysis_outputs": [
         "MOD-001 report status",
-        "MOD-001 unknown_cost_attempts"
+        "MOD-001 unknown_cost_attempts",
+        "MOD-003 information_design",
+        "MOD-003 precision_adequacy",
+        "MOD-003 joint_practical_decision"
       ],
-      "decision_rule": "Retain partial data and planned denominator; report the specific execution or measurement limitation.",
+      "decision_rule": "Report coverage, pending decisions and bounds; do not replace unknown decisions with failed tasks or claim a completed comparison.",
       "discrimination_result": "inconclusive",
       "claim_effects": [
         {
@@ -336,13 +832,162 @@
             "CLM-001"
           ],
           "disposition": "no-change",
-          "rationale": "Incomplete or invalid data do not establish comparative benefit.",
-          "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions."
+          "rationale": "Missing or invalid data leave the comparison unresolved.",
+          "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases."
         }
       ],
-      "hypothesis_effects": [],
-      "assumption_failure_response": "Repair the identified defect before any fresh run.",
-      "next_action": "Restore access or correct the instrument without recasting synthetic checks as live results."
+      "hypothesis_effects": [
+        "The primary whole-workflow result does not distinguish the diagnostic hypothesis packages."
+      ],
+      "assumption_failure_response": "Identify the failure and retain all attempts.",
+      "next_action": "Correct the identified cause before any new declared run."
+    },
+    {
+      "id": "DM-004",
+      "prediction_ids": [
+        "P-001",
+        "P-002",
+        "P-003"
+      ],
+      "observation_region": "Diagnostic state/fact/manipulation checks pass and an observed decision/resource pattern differs in a predicted direction.",
+      "analysis_outputs": [
+        "MOD-002 diagnostic paired contrasts",
+        "MOD-002 manipulation checks",
+        "MOD-002 recipient resources"
+      ],
+      "decision_rule": "Report factor-specific observations and which rival packages they are more consistent with; retain stochastic uncertainty and avoid unique-mechanism or population claims.",
+      "discrimination_result": "pattern-generated",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-002"
+          ],
+          "disposition": "revise",
+          "rationale": "Interpretation follows observed variation and the validity of the declared manipulation.",
+          "scope_limit": "Declared diagnostic cases, snapshots, donor states and variants only."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-001/H-002: presentation sensitivity; H-003/H-004: stale-note sensitivity; H-005/H-006: reporting sensitivity; no package is confirmed by this small exploratory diagnostic."
+      ],
+      "assumption_failure_response": "Failed correspondence, annotation or manipulation overrides any favourable directional pattern.",
+      "next_action": "Design repeated independent diagnostic blocks targeting the observed sensitivity."
+    },
+    {
+      "id": "DM-005",
+      "prediction_ids": [
+        "P-001",
+        "P-002",
+        "P-003"
+      ],
+      "observation_region": "Diagnostic checks pass but outcomes tie, remain ambiguous, vary inconsistently or show a pattern shared by the rival packages.",
+      "analysis_outputs": [
+        "MOD-002 diagnostic paired contrasts",
+        "MOD-002 manipulation checks",
+        "MOD-002 recipient resources"
+      ],
+      "decision_rule": "Report non-discrimination. Ties do not establish invariance or rule out a format/notes/presentation effect.",
+      "discrimination_result": "fails-to-discriminate",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-002"
+          ],
+          "disposition": "no-change",
+          "rationale": "Interpretation follows observed variation and the validity of the declared manipulation.",
+          "scope_limit": "Declared diagnostic cases, snapshots, donor states and variants only."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-001/H-002: presentation sensitivity; H-003/H-004: stale-note sensitivity; H-005/H-006: reporting sensitivity; no package is confirmed by this small exploratory diagnostic."
+      ],
+      "assumption_failure_response": "Failed correspondence, annotation or manipulation overrides any favourable directional pattern.",
+      "next_action": "Choose more diagnostic cases or additional independent blocks with a specified information target."
+    },
+    {
+      "id": "DM-006",
+      "prediction_ids": [
+        "P-001",
+        "P-002",
+        "P-003"
+      ],
+      "observation_region": "A diagnostic donor/fixture/fact-equality or delivery check fails.",
+      "analysis_outputs": [
+        "MOD-002 diagnostic paired contrasts",
+        "MOD-002 manipulation checks",
+        "MOD-002 recipient resources"
+      ],
+      "decision_rule": "Retain every variant and its cost; mark the affected contrast invalid for component attribution.",
+      "discrimination_result": "failed-manipulation",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-002"
+          ],
+          "disposition": "suspend",
+          "rationale": "Interpretation follows observed variation and the validity of the declared manipulation.",
+          "scope_limit": "Declared diagnostic cases, snapshots, donor states and variants only."
+        }
+      ],
+      "hypothesis_effects": [
+        "H-001/H-002: presentation sensitivity; H-003/H-004: stale-note sensitivity; H-005/H-006: reporting sensitivity; no package is confirmed by this small exploratory diagnostic."
+      ],
+      "assumption_failure_response": "Failed correspondence, annotation or manipulation overrides any favourable directional pattern.",
+      "next_action": "Repair the specific state or delivery defect and use a new run directory."
+    },
+    {
+      "id": "DM-007",
+      "prediction_ids": [],
+      "observation_region": "Valid adequately informed fresh evaluation intervals lie wholly below any practical threshold.",
+      "analysis_outputs": [
+        "MOD-003 joint_practical_decision",
+        "MOD-003 precision_adequacy"
+      ],
+      "decision_rule": "Report that the declared joint practical criterion is not supported for this finite task/configuration mixture; distinguish inadequate absolute correctness, a correctness loss from insufficient token saving. Resource savings cannot compensate for failed correctness preservation.",
+      "discrimination_result": "parameter-estimated",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "revise",
+          "rationale": "A resolved failure of any threshold identifies the specific quality/resource trade-off.",
+          "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases."
+        }
+      ],
+      "hypothesis_effects": [
+        "This primary information/estimation result does not discriminate the diagnostic mechanism hypotheses."
+      ],
+      "assumption_failure_response": "Measurement, provenance or information failure overrides this interpretation and produces an inconclusive result.",
+      "next_action": "Investigate the observed loss or resource overhead through a specifically justified diagnostic; do not expand every diagnostic by default."
+    },
+    {
+      "id": "DM-008",
+      "prediction_ids": [],
+      "observation_region": "Pilot information is available and simulated candidates meet or fail the declared precision, joint-coverage, USD 2 reservation and 7200-second deadline requirements.",
+      "analysis_outputs": [
+        "MOD-003 information_design",
+        "MOD-003 candidate_allocations",
+        "MOD-003 selected_plan",
+        "MOD-003 pilot_provenance"
+      ],
+      "decision_rule": "Select the smallest eligible candidate satisfying empirical support, joint precision assurance, joint-coverage calibration and budget/deadline requirements across every predeclared design scenario. Retain stress failures as limitations. Otherwise report no adequate allocation and the candidate precision/feasibility results. Simulation provides conditional planning evidence, not observed EAL efficacy. Joint coverage uses known simulated truths and a lower pointwise 95% Wilson bound >=0.95; precision assurance requires its lower bound >=0.80. Narrow but under-covering intervals cannot produce an eligible allocation.",
+      "discrimination_result": "adequacy-assessed",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "no-change",
+          "rationale": "Pilot and simulation inform a subsequent evaluation without establishing its result.",
+          "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on a finite declared pool of fourteen synthetic tasks: eight retained calibration cases and six separately AI-authored transfer cases; component diagnostics use two retained cases."
+        }
+      ],
+      "hypothesis_effects": [
+        "This primary information/estimation result does not discriminate the diagnostic mechanism hypotheses."
+      ],
+      "assumption_failure_response": "Sparse, incompatible or scripted-only pilot support cannot certify live adequacy.",
+      "next_action": "Collect the declared additional pilot information or revise a future prospective budget/precision choice before fresh evaluation."
     }
   ],
   "bias_assessment": {
@@ -350,33 +995,52 @@
       {
         "id": "BIAS-001",
         "risk_type": "selection",
-        "mechanism": "Six simple cases and two cheap models underrepresent real work.",
-        "prevention": "State the bounded target and fixed case set.",
-        "detection": "Report every case/configuration and failure.",
-        "sensitivity_or_correction": "A follow-up needs independently authored broader tasks.",
-        "residual_risk": "No generalisation to all engineering questions or models."
+        "mechanism": "Purposive synthetic task selection, model selection and common investigation authorship limit transport beyond the declared finite mixture.",
+        "prevention": "Keep calibration and separately AI-authored cohorts distinct; record authorship and prevent pilot/evaluation outcome pooling.",
+        "detection": "Retain every case/configuration and failure.",
+        "sensitivity_or_correction": "Report every declared stratum, vary sampling and missingness assumptions in information planning, and use a separate broader task selection process for population claims.",
+        "residual_risk": "No general engineering, human or model-class claim."
+      },
+      {
+        "id": "BIAS-002",
+        "risk_type": "researcher-flexibility",
+        "mechanism": "Selecting a favourable reuse horizon, treating scripted data as live pilot information or pooling pilot/evaluation outcomes can overstate practical support.",
+        "prevention": "Declare H=10 and separate outcomes; record run/transport provenance, candidate simulations and selected plans; require fresh evaluation identities.",
+        "detection": "Verify run provenance and plan identities; inspect all candidate results and record incomplete pairs.",
+        "sensitivity_or_correction": "Report earlier horizons as secondary; reject incompatible pilot inputs and retain inconclusive results when information or coverage fails.",
+        "residual_risk": "Sparse pilot estimates and approximate resource intervals can still give inaccurate planning assurance; report their assumptions and simulation scope."
       }
     ],
     "researcher_degrees_of_freedom": [
-      "Fixed prompts, cases, code and plan before live responses."
+      "Eight retained calibration cases and six separately AI-authored cases have recorded roles; the same investigation owns their inclusion.",
+      "The plan fixes cases, models, repetitions, session structure, response mode, prompts and resource bounds before live responses.",
+      "Manual annotations remain linked to raw answers; revisions are retained without replacing original records.",
+      "Diagnostic factors, eligible cases, stale-note content and state/fact checks are specified before their responses.",
+      "Practical margins, primary H=10 horizon, allocation candidates and precision target are fixed before evaluation. Pilot-based allocation and later amendments retain explicit identities."
     ],
     "negative_controls": [
-      "Missing evidence must not imply measured failure."
+      "Missing measurement cannot become a measured negative; an ended assumption cannot become ready."
     ],
     "positive_controls": [
-      "Fresh valid observation and expired refreshed observations."
+      "Positive and negative computed threshold results, inclusive threshold boundaries."
     ],
     "falsification_checks": [
-      "EAL negative evidence reuse and expired assumption cases."
+      "Changed claim meaning remains visible and invalid task/source meaning is rejected.",
+      "Reversed threshold direction, wrong threshold/scope, missing measurement and exact time boundaries.",
+      "Current negative result with and without the declared dated positive note.",
+      "Identical donor state before every diagnostic recipient and unchanged external fixture.",
+      "Ambiguous or contradictory text remains pending rather than forced into a convenient task label."
     ],
     "reporting_controls": [
-      "Every attempt and unrun allocation retained."
+      "All planned units, attempts and separate measurement dimensions retained."
     ],
     "residual_limitations": [
-      "Pre-authored EAL",
-      "Dedicated reasoning/model-family confounding",
-      "Explanation prose ungraded",
-      "Unavailable evidence can prevent task completion without a false claim"
+      "Pre-authored EAL and excluded authoring costs",
+      "Simple selected tasks",
+      "Model-family/reasoning confounding",
+      "Synthetic collector timing",
+      "Automatic annotation coverage and possible content-based unblinding",
+      "One execution per diagnostic variant and no independent confirmatory task sample"
     ]
   },
   "ethics_and_safety": {
@@ -391,7 +1055,7 @@
       "Reserve cost before requests; no hidden retries."
     ],
     "monitoring": [
-      "Durable request ledger and fixed workflow timeout."
+      "Append-only request journal and resource ceilings."
     ],
     "stopping_rules": [
       "Access failure, snapshot mismatch, unavailable model, quota or budget limit."
@@ -405,37 +1069,45 @@
   "feasibility": {
     "current_status": "partially-feasible",
     "apparatus_or_data": [
-      "Implemented runner and six cases",
-      "Manual workflow using repository OPENAI_API_KEY"
+      "Primary runner, independent references, fourteen task cases and conservative/manual annotation interfaces",
+      "Pilot-information and prospective allocation procedures",
+      "Separate cloned-donor diagnostics and manual workflow with OPENAI_API_KEY"
     ],
-    "access": "Local OPENAI_API_KEY absent; GitHub connector lacks workflow dispatch. Live account model access unverified.",
+    "access": "The previously used snapshots must be checked at execution. Primary prose requires no provider JSON-schema capability; schema diagnostics require the declared serving-interface support.",
     "skills": [
       "Existing EAL implementation and provider adapter"
     ],
     "resources": [
-      "USD 2 maximum planned API budget",
-      "Up to 45 minutes of optional manual runner time"
+      "USD 2 maximum estimated API reservation budget per run",
+      "120-minute manual workflow ceiling",
+      "300-second prospective allowance for workflow overhead inside the 7200-second job ceiling"
     ],
     "dependencies": [
-      "Credentialed execution and workflow dispatch access"
+      "Eligible completed pilot observations and annotation for precision planning",
+      "Credentialed manual execution of a feasible selected evaluation plan"
     ],
     "blockers": [
-      "An authorised execution route must start the credentialed workflow."
+      "Eligible complete live pilot observations, timing, annotation and request accounting have not established an empirical allocation.",
+      "Default candidates below 137 repetitions cannot meet the conservative correctness precision target; the 137-repetition candidate has no established USD 2 or 7200-second feasibility."
     ],
-    "fallback": "Deliver the verified run command and retain blocked-access status; request the necessary browser fallback authorisation."
+    "fallback": "Retain calibration or blocked/partial status accurately; no fabricated live results."
   },
   "reproducibility": {
     "preregistration_status": "not-planned",
-    "registration": "Dated local protocol and Git revision before calls; exploratory pilot.",
+    "registration": "Versioned prospective estimation protocol; no external preregistration claimed.",
     "immutable_materials": [
-      "Per-run plan, assignments, provenance and raw request records."
+      "Per-run protocol, plan, cases, assignments, code identity, API journal, raw answers, project notes and EAL state.",
+      "Diagnostic pristine donor snapshots, cloned-state fingerprints, intervention manifests and manipulation checks.",
+      "Blind annotation items, separate mapping, attributed code decisions/quotes/reasons and derived annotated rows.",
+      "Pilot identities, observation provenance, information-design settings, simulation seed/scenarios, candidate allocation results and selected evaluation plan.",
+      "Per-sequence checkpoints, retained allocation identities, live/scripted transport provenance and fresh evaluation run identities."
     ],
-    "data_plan": "Retain synthetic project state, raw responses, costs, errors and derived scores as a workflow artifact; no credentials.",
+    "data_plan": "Preserve raw runs and code annotations separately; write new derived rows/reports without overwriting originals. Workflow artefacts retained for 90 days subject to repository limits; archive important evidence before expiry.",
     "code_plan": "Existing Git repository and PR; no automatic workflow trigger.",
-    "randomisation_or_seed_plan": "Fixed seed 20260928 for sequence order.",
-    "provenance_plan": "Pin model snapshots, pricing source/date, code revision, plan digest and timestamps.",
-    "deviation_and_amendment_plan": "New directory for each run; document defects or changes; do not overwrite attempts.",
-    "replication_plan": "New independent cases and repeated live runs under separately declared resources."
+    "randomisation_or_seed_plan": "Seed 20260928 for primary matched-block/arm ordering and declared diagnostic order. Separate requests remain stochastic; no deterministic provider seed claim. Diagnostic contrast-map keys are sorted before seeded shuffling.",
+    "provenance_plan": "Snapshot protocol and fixture definitions; record Git revision, dirty state, implementation hashes, models, pricing, prompts, attempts and timestamps.",
+    "deviation_and_amendment_plan": "New protocol version and output directory for changes; preserve prior raw data and scores.",
+    "replication_plan": "Keep calibration cases; evaluate fresh runs under a prospectively selected allocation. Broader independent task selection and human-developer studies are separate steps for stronger generalisation."
   },
   "execution": {
     "protocol_version_used": null,
@@ -452,157 +1124,248 @@
       "EAL experiment implementation"
     ],
     "created_at": "2026-09-28T13:35:01.056299+00:00",
-    "updated_at": "2026-09-28T13:35:01.056299+00:00",
+    "updated_at": "2026-09-28T16:42:31.793260+00:00",
     "sources": [
-      "User request for cheaper model configurations",
-      "Official OpenAI model and function-calling documentation",
-      "design-scientific-investigations skill"
+      "User goal: reliable economical knowledge reuse across new sessions/models",
+      "design-scientific-investigations skill",
+      "Recorded run 36432530106: diagnostic evidence",
+      "Official OpenAI structured-output and reasoning contracts",
+      "McKenzie (2025), DOI 10.1111/1475-5890.70003",
+      "Dovetail experimental research design guide"
     ],
     "knowledge_cut": "2026-09-28",
     "change_log": [
-      "1.0.0: automated reuse protocol specified before live calls."
+      "4.0.0: cumulative reuse estimands, prospective practical thresholds, pilot-informed precision allocation, ten-recipient horizon and separately authored task families."
     ]
   },
   "method_selection": {
-    "primary_purpose": "exploration",
+    "primary_purpose": "estimation",
     "secondary_purposes": [
-      "estimation",
+      "measurement-validation",
+      "mechanism-discrimination",
       "feasibility"
     ],
-    "rationale": "A low-cost, bounded configuration pilot can expose operational differences and failures before a broader developer investigation.",
-    "inference_framework": "Descriptive fixed-case comparison; no population sampling or isolated mechanism inference.",
+    "rationale": "Estimate a practical joint quality/resource contrast over a declared reuse horizon; use pilot-calibrated simulation to allocate information within the budget. Separate component perturbations investigate specific uncertainties.",
+    "inference_framework": "Conditional finite-pool estimation with prospective practical margins, complete-trajectory dependence and missingness bounds; precision-based allocation rather than an unsupported fixed-N power assertion. Exploratory component diagnostics remain separate.",
     "alternatives_considered": [
-      "Human developer trial measures handover and effort but requires recruitment and independent assessors.",
-      "An ablation using a single model with reasoning on/off could isolate configuration effects; selected cheap families differ beyond reasoning."
+      "A human study measures same/different-developer effort and source authoring; this automated investigation cannot substitute for it.",
+      "Identical prompts would constrain a workflow whose purpose includes reducing repeated input; use the same task with workflow-appropriate prompts.",
+      "A curated runbook/tool-cache comparator changes the requested ordinary new-session practice; equal-fact comparisons are confined to component diagnostics.",
+      "Mandatory JSON gives convenient automatic scoring but can alter task behaviour; use prose and separate annotation, with JSON as a diagnostic intervention.",
+      "Independent donor sessions serve the whole-workflow comparison; copied donor states are required to isolate a recipient component."
     ],
     "sources": [
       {
         "citation": "John W. Tukey (1980), We Need Both Exploratory and Confirmatory, The American Statistician 34, 23-25.",
         "url": "https://doi.org/10.1080/00031305.1980.10482706",
-        "design_consequence": "Keep this exploratory pilot separate from an independent confirmatory study."
+        "design_consequence": "Keep exploratory pilot observations and fresh prospective evaluation outcomes separate; selection does not create confirmation."
+      },
+      {
+        "citation": "Cronbach, L. J. and Meehl, P. E. (1955), Construct validity in psychological tests, Psychological Bulletin 52, 281\u2013302.",
+        "url": "https://psychclassics.yorku.ca/Cronbach/construct.htm",
+        "design_consequence": "Validate the intended answer-quality measurement and separate format/file side effects from its interpretation."
+      },
+      {
+        "citation": "John R. Platt (1964), Strong Inference, Science 146, 347-353.",
+        "url": "https://doi.org/10.1126/science.146.3642.347",
+        "design_consequence": "State rival diagnostic explanations and vary one component on a common donor state; shared or sparse outcomes remain non-discriminating."
+      },
+      {
+        "citation": "David McKenzie (2025), Designing and analysing powerful experiments: practical tips for applied researchers, Fiscal Studies 46, 305\u2013322. DOI 10.1111/1475-5890.70003.",
+        "url": "https://ifs.org.uk/sites/default/files/2025-12/FISCAL~3.PDF",
+        "design_consequence": "Define outcome-specific information requirements, preserve repeated-measure dependence, improve measurement and use pilot-calibrated allocation rather than treating session counts as power."
+      },
+      {
+        "citation": "Dovetail, Guide to experimental research design. Accessed 28 September 2026.",
+        "url": "https://dovetail.com/research/what-is-experimental-design/",
+        "design_consequence": "Make treatment, comparator, assignment, measurement and analysis explicit. This general design guide does not establish quantitative power for this investigation."
+      },
+      {
+        "citation": "Hoeffding, W. (1963), Probability Inequalities for Sums of Bounded Random Variables, JASA 58(301), 13\u201330, Theorem 2.",
+        "url": "https://doi.org/10.1080/01621459.1963.10500830",
+        "design_consequence": "Bound independent whole-sequence correctness means and paired differences without assuming independent sessions or zero error variance from an error-free pilot."
+      },
+      {
+        "citation": "Deng, A., Knoblich, U. and Lu, J. (2018), Applying the Delta Method in Metric Analytics: A Practical Guide with Novel Ideas, KDD, 233\u2013242.",
+        "url": "https://alexdeng.github.io/public/files/kdd2018-dm.pdf",
+        "design_consequence": "Approximate uncertainty of the ratio of cumulative token means while retaining paired covariance; adapt to fixed strata and state the finite-variance and asymptotic limitations."
       }
     ],
-    "information_criterion": "Cover all four recipient configurations and six temporal/evidence cases within USD 2.",
+    "information_criterion": "Candidate coverage plan: 448 arm sequences and 4928 sessions with two repetitions and ten recipients; this is not an adequate-sample-size claim. Target 95% nominal joint intervals with correctness half-width <=0.025 and cumulative token-reduction half-width <=0.10, with the lower 95% Monte Carlo assurance bound at least 0.80 over 200 seeded replicates in each declared design scenario, subject to the USD 2 budget and 7200-second deadline; separate stress scenarios remain reported limitations. Export a selected evaluation plan only when the implementation information/feasibility checks pass. The Hoeffding quality-difference radius requires at least 15320 matched pairs for half-width 0.025. With 14 cases and 8 model/tool cells this requires 137 balanced repetitions (15344 pairs; 337568 sessions). The default candidate grid is 2, 4, 8, 16, 32 and 137 repetitions; smaller entries cannot meet this quality target. The 137-repetition candidate remains unestablished under budget/time and live-pilot conditions. Allocation also requires the lower pointwise 95% Wilson bound for joint interval coverage >= nominal confidence 0.95 in every design scenario. Candidate/scenario Monte Carlo intervals are pointwise, not simultaneous confidence across the candidate grid.",
     "permitted_conclusions": [
-      "Observed reference-task completion and resources for executed cells.",
-      "Specific operation and integration failures."
+      "Conditional finite-pool quality and initial/subsequent/cumulative resource estimates, with the joint practical result only when the declared information, provenance and measurement requirements hold.",
+      "Specific task-formalisation, interface, annotation or manipulation defects.",
+      "Exploratory component sensitivity where cloned-state and fact checks pass."
     ],
     "excluded_conclusions": [
-      "Human developer effects",
-      "Authoring efficiency",
-      "General superiority",
-      "Pure causal effect of reasoning or native tooling"
+      "Human developer productivity or authoring efficiency",
+      "General EAL superiority or model-class effect",
+      "Pure reasoning, notation or intrinsic tool-capability effect",
+      "Equivalence from tied small-sample results or unique mechanism from a workflow advantage",
+      "Achieved statistical power or live efficacy inferred from scripted runs or uncalibrated simulation"
     ],
-    "discovery_confirmation_separation": "Record this pilot as exploratory; independent follow-up cases are required for confirmation."
+    "discovery_confirmation_separation": "Pilot observations inform allocation and nuisance estimates only. Fresh evaluation executions use the selected prospective plan and separate study identity; pilot outcomes are never pooled into evaluation. Eight calibration cases and six separately AI-authored tasks have distinct recorded roles. Separate AI authorship is not external human validation; task-population confirmation requires a broader independent sampling design."
   },
   "implementation": {
     "status": "implemented",
     "assignment": {
-      "procedure": "Enumerate six cases x two recipient models x two tool settings x two arms; shuffle sequence order with the fixed seed.",
-      "artifact": "runner.Pilot",
-      "failure_response": "Retain schedule before any calls; unrun sequences remain explicit."
+      "procedure": "Candidate pilot crosses fourteen cases, two donors, two recipients, two native-tool settings, two repetitions and both arms. Shuffle matched blocks and arm order with seed 20260928. The information-design procedure selects only from declared allocation candidates before fresh evaluation outcomes; record the selected plan and pilot run identities. All primary evaluation candidates retain the same fourteen tasks and model/tool cells; changing inclusion changes the estimand and requires a separate prospective declaration.",
+      "artifact": "design.AssignmentSchedule",
+      "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "collection": {
-      "procedure": "Bounded provider calls, complete within-session item replay and fresh later input.",
-      "artifact": "provider.BudgetedClient; runner.SessionRunner; cases.Project",
-      "failure_response": "Stop on fatal access/budget mismatch; retain every attempt."
+      "procedure": "Fresh sessions with workflow-specific prompts and ordinary prose; persist the latest complete unmodified answer as a project note under the common size limit. For diagnostics clone a donor state and change one recipient factor; retain starts, responses and actual manipulations. Retain ordered provider text before tool processing, record exact session attempt receipts and measure shared/clone preparation.",
+      "artifact": "provider.BudgetedClient; session.SessionRunner; project.Project; conditions; journal.AttemptJournal; diagnostics.DiagnosticPilot; records.SequenceRecords; provenance.RunIdentity",
+      "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "scoring": {
-      "procedure": "Compare returned labels with Case.oracle after model completion.",
-      "artifact": "cases.py and runner.py",
-      "failure_response": "Suspend scoring on oracle defects; never use EAL status as reference."
+      "procedure": "Code only complete standalone canonical prose decisions automatically. Blindly annotate other non-empty prose, including volunteered JSON and unfinished tool-turn text, before independent reference scoring. Preserve raw output and separate optional basis/citation/format dimensions.",
+      "artifact": "answers.AnswerParser; annotations; scoring.ReferenceScorer; calibration.ContractCalibration; task_context.TaskContract",
+      "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "analysis": {
-      "procedure": "Descriptive counts and resources for every arm/configuration.",
-      "artifact": "runner.Pilot",
-      "failure_response": "Report partial coverage and unknown costs."
+      "procedure": "Retain complete matched trajectory estimates and initial/cumulative resources; fit pilot information summaries and simulate precision/feasibility; apply joint quality/token criteria only to fresh eligible evaluation runs. Keep diagnostic factors separate.",
+      "artifact": "reporting.ReportBuilder; resources.ResourceSummary; analyse.py; information_config; pilot_data; decision_statistics; statistical_quantiles; trajectory_simulation; information_design; plan_information; diagnostics.DiagnosticPilot",
+      "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "verification": [
       {
         "id": "V-ASSIGN",
         "stage": "assignment",
-        "case": "48 planned sequences and full denominator after provider failure",
-        "expected_result": "48 rows retained even after the first failed request.",
+        "case": "Primary crossed allocation and diagnostic cloned-state allocation",
+        "expected_result": "448 unique candidate primary sequences with ten recipient positions, plus independently selected evaluation allocation; diagnostic plan remains four donors and 28 recipients.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "The candidate pilot contains 448 unique arm sequences and 4,928 sessions. Saved-plan key order preserves allocation. Candidate 137 remains within the executable cap; no empirical evaluation allocation was selected.",
+        "evidence": "tests/test_model_transfer_design.py; verification.md"
       },
       {
         "id": "V-COLLECT",
         "stage": "collection",
-        "case": "Budget, incomplete replies, tool masks and reasoning-item replay",
-        "expected_result": "Failures retained, cost reserved before send and declared tool availability respected.",
+        "case": "Actual source/task calibration, fresh messages, raw-note persistence, tool masks and interrupted requests",
+        "expected_result": "Task distinctions survive runtime/context; invalid sources fail before API; every planned unit and unknown resource retained.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "171 primary and 21 diagnostic actual-runtime calibration checks passed with zero live requests. Corpus reference/context review covers 66 authored outcomes,108 three-valued assignments and 30 reuse intervals.",
+        "evidence": "tests/test_model_transfer_corpus.py; tests/test_model_transfer_task.py; verification.md"
       },
       {
         "id": "V-SCORE",
         "stage": "scoring",
-        "case": "Six independent oracle calculations",
-        "expected_result": "Ready/not_ready/undetermined and basis labels match the specification.",
+        "case": "Natural prose, negation, ambiguity, malformed JSON, separate secondary dimensions and blind annotation",
+        "expected_result": "Known task decisions survive incidental reporting differences; ambiguous text remains pending; imported codes are linked to unchanged raw answers without oracle exposure.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "48 dedicated answer/annotation tests pass. Conditional, contradicted and explanatory primary prose remains pending; standalone canonical decisions remain automatically codable.",
+        "evidence": "tests/test_model_transfer_answers.py"
       },
       {
         "id": "V-ANALYSE",
         "stage": "analysis",
-        "case": "Scripted constant answers across every cell",
-        "expected_result": "Expected reference-match counts, resource counts and no significance inference.",
+        "case": "Known paired effects, pending-label bounds, initial/later/cumulative accounting and incomplete usage",
+        "expected_result": "Correct paired signs and denominators; unknown outcomes/resources distinct from failures/zero; shared diagnostic donor counted once.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "Missing whole/selective journals suppress finite expenditure claims; contradictory zero receipts and incomplete preparation are detected. Unique donor/recipient groups reconcile to totals.",
+        "evidence": "tests/test_model_transfer_reporting.py; tests/test_model_transfer_diagnostics.py"
       },
       {
         "id": "V-PIPELINE",
         "stage": "pipeline",
-        "case": "Both arms and all recipient configurations with scripted transport and real EAL runtime",
-        "expected_result": "Fresh recipient transcripts, natural notes, persistent observations and expected reuse/recollection.",
+        "case": "Scripted primary and diagnostic pipelines with actual EAL and manual-annotation roundtrip",
+        "expected_result": "Complete retained assignments/raw responses/reports; one-factor checks and offline reconstruction work without making an empirical model claim.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "Full scripted pipelines completed:448 primary sequences/4,928 sessions/7,616 requests and 4 diagnostic donors/28 recipients/36 requests. Annotation of 4,928 and 24 responses retained raw rows and reproduced resource measurements.",
+        "evidence": "rehearse.py; tests/test_model_transfer_rehearsal.py; verification.md"
+      },
+      {
+        "id": "V-DIAGNOSTIC",
+        "stage": "collection",
+        "case": "Clone equality, fixture and fact fingerprints, one-factor manipulation and tamper detection",
+        "expected_result": "Valid component contrasts pass; state/fact/delivery defects remain visible and invalidate attribution.",
+        "status": "passed",
+        "observed_result": "17 diagnostic checks pass, including manipulation validity, unique resource groups, preparation transitions/failures, missing ledger and saved-plan replay.",
+        "evidence": "tests/test_model_transfer_diagnostics.py"
       },
       {
         "id": "V-LIVE",
         "stage": "collection",
-        "case": "Credentialed provider execution",
-        "expected_result": "Pinned real models return responses and usage; retained records available.",
+        "case": "Credentialed pilot and fresh evaluation under protocol 4.0.0",
+        "expected_result": "Pinned configurations produce actual task answers and usage under the selected primary or diagnostic plan.",
         "status": "planned",
         "observed_result": null,
         "evidence": null
+      },
+      {
+        "id": "V-INFORMATION",
+        "stage": "analysis",
+        "case": "Pilot information, dependence, feasibility and joint threshold simulation",
+        "expected_result": "Known paired variability/discordance recovered; seeded repeatability; correlated trajectories and missing/budget-limited runs retained; sparse or scripted evidence cannot establish live information adequacy; cheap incorrect results never satisfy the joint criterion. Known simulated truths support reported marginal/joint coverage; a narrow under-covering interval cannot make an allocation eligible. Stress failures remain separately labelled.",
+        "status": "passed",
+        "observed_result": "18 dedicated planning/statistical tests passed. The default six-candidate/eight-scenario/200-replication CLI rehearsal completed with no supported allocation and no exported evaluation plan. Independent review rejected a precise but miscalibrated interval counterexample and matched cached simulation to full request/session replay in 300 scenarios. These are implementation checks, not empirical adequacy evidence.",
+        "evidence": "tests/test_model_transfer_information_design.py; verification.md"
       }
     ],
     "traceability": [
       {
         "protocol_ref": "/design/assignment_method",
-        "artifact": "runner.py",
+        "artifact": "design.py; diagnostics.py; records.py; provenance.py",
         "check_ids": [
           "V-ASSIGN"
         ]
       },
       {
         "protocol_ref": "/measurements/0",
-        "artifact": "cases.py; runner.py",
+        "artifact": "answers.py; annotations.py; scoring.py; calibration.py",
         "check_ids": [
           "V-SCORE",
+          "V-COLLECT",
           "V-PIPELINE"
         ]
       },
       {
         "protocol_ref": "/measurements/1",
-        "artifact": "provider.py; runner.py",
+        "artifact": "provider.py; session.py; journal.py; resources.py; records.py",
         "check_ids": [
           "V-COLLECT",
+          "V-ANALYSE",
           "V-LIVE"
         ]
       },
       {
+        "protocol_ref": "/measurements/2",
+        "artifact": "diagnostics.py",
+        "check_ids": [
+          "V-DIAGNOSTIC",
+          "V-PIPELINE"
+        ]
+      },
+      {
         "protocol_ref": "/analysis/models/0",
-        "artifact": "runner.py",
+        "artifact": "reporting.py; resources.py; analyse.py",
         "check_ids": [
           "V-ANALYSE",
           "V-PIPELINE"
+        ]
+      },
+      {
+        "protocol_ref": "/analysis/models/1",
+        "artifact": "diagnostics.py",
+        "check_ids": [
+          "V-DIAGNOSTIC",
+          "V-ANALYSE",
+          "V-PIPELINE"
+        ]
+      },
+      {
+        "protocol_ref": "/analysis/models/2",
+        "artifact": "information_config.py; pilot_data.py; decision_statistics.py; statistical_quantiles.py; trajectory_simulation.py; information_design.py; plan_information.py; reporting.py; provenance.py",
+        "check_ids": [
+          "V-INFORMATION",
+          "V-PIPELINE"
+        ]
+      },
+      {
+        "protocol_ref": "/sampling",
+        "artifact": "information-design.json; information_config.py; information_design.py; trajectory_simulation.py; plan_information.py",
+        "check_ids": [
+          "V-INFORMATION"
         ]
       }
     ]

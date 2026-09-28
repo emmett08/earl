@@ -18,7 +18,7 @@ from .evaluator import canonical_digest
 from .semantics import parse_time
 
 
-PACKET_SCHEMA = "EAL/assessment-packet/1"
+PACKET_SCHEMA = "EAL/assessment-packet/2"
 _IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z_0-9]{0,127}\Z", re.ASCII)
 _METHOD = re.compile(r"(?:1|[A-Za-z_][A-Za-z_0-9./:-]{0,127})\Z", re.ASCII)
 _RECORD_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}\Z", re.ASCII)
@@ -79,10 +79,13 @@ class PacketLimits:
     max_outputs: int = 16
     max_availability_issues: int = 6
     max_observations_per_claim: int = 16
+    max_statement_bytes: int = 1024
 
     def __post_init__(self) -> None:
         if type(self.max_bytes) is not int or self.max_bytes < 4096:
             raise ValueError("Packet byte limit must be at least 4096")
+        if type(self.max_statement_bytes) is not int or not 1 <= self.max_statement_bytes <= 4096:
+            raise ValueError("Statement byte limit must be an integer between 1 and 4096")
         for field in ("max_claims", "max_arguments", "max_objections", "max_assumptions",
                       "max_evidence", "max_outputs", "max_availability_issues",
                       "max_observations_per_claim"):
@@ -170,6 +173,7 @@ class AssessmentPacketBuilder:
             proposition = entry.get("proposition")
             claim_packet: dict[str, Any] = {
                 "status": _state(entry.get("status"), _CLAIM_STATES),
+                **self._claim_meaning(entry, omitted),
                 "grounded_label": _bounded(entry.get("grounded_label")),
                 "supporting_arguments": support[:self.limits.max_arguments],
                 "contested_arguments": contested[:self.limits.max_arguments],
@@ -256,7 +260,10 @@ class AssessmentPacketBuilder:
         for name in sorted(premise_ids)[:self.limits.max_claims]:
             premise = entries.get(name)
             if isinstance(premise, Mapping):
-                packet["premise_claims"][name] = {"status": _state(premise.get("status"), _CLAIM_STATES)}
+                packet["premise_claims"][name] = {
+                    "status": _state(premise.get("status"), _CLAIM_STATES),
+                    **self._claim_meaning(premise, omitted),
+                }
         if len(premise_ids) > self.limits.max_claims:
             omitted["premise_claims"] = len(premise_ids) - self.limits.max_claims
         objection_premise_routes = {alternative for premise in premise_ids
@@ -293,6 +300,9 @@ class AssessmentPacketBuilder:
             missed = item.pop("issues_omitted", 0)
             if missed:
                 omitted["availability_issues"] = omitted.get("availability_issues", 0) + missed
+            failures_missed = item.pop("predicate_failures_omitted", 0)
+            if failures_missed:
+                omitted["predicate_failures"] = omitted.get("predicate_failures", 0) + failures_missed
             record = collection_records.get(name)
             if record is not None:
                 self._observation_time(item, assessment, evidence_entries[name], record)
@@ -303,11 +313,33 @@ class AssessmentPacketBuilder:
             packet_claims = packet["claims"]
             packet = {key: packet[key] for key in ("schema", "assessment_id", "collection_id", "source_digest",
                        "context_fingerprint", "method_registry_fingerprint", "full_explanation")}
-            packet["claims"] = {name: {"status": entry["status"]} for name, entry in packet_claims.items()}
+            packet["claims"] = {name: {"status": entry["status"], "statement": None,
+                                       "prose_verified": False}
+                                for name, entry in packet_claims.items()}
             packet.update(summary_complete=False, omitted={"details": "packet_byte_limit"})
             if self._size(packet) > self.limits.max_bytes:
                 raise ValueError("Requested claims exceed the packet byte limit; request fewer claims")
         return packet
+
+    def _claim_meaning(self, item: Mapping[str, Any], omitted: dict[str, Any]) -> dict[str, Any]:
+        """Retain authored wording without converting formal support into prose truth."""
+        statement = item.get("statement")
+        result: dict[str, Any] = {"statement": None, "prose_verified": False}
+        if not isinstance(statement, str):
+            omitted["claim_statements"] = omitted.get("claim_statements", 0) + 1
+            return result
+        result["prose_verified"] = item.get("prose_verified") is True
+        encoded = statement.encode("utf-8")
+        bounded = encoded[:self.limits.max_statement_bytes].decode("utf-8", errors="ignore")
+        result["statement"] = bounded
+        missed = len(encoded) - len(bounded.encode("utf-8"))
+        if missed:
+            result["statement_truncated"] = True
+            # Verification of a complete authored statement cannot be transferred
+            # to a prefix, which may omit its negation or qualification.
+            result["prose_verified"] = False
+            omitted["claim_statement_bytes"] = omitted.get("claim_statement_bytes", 0) + missed
+        return result
 
     @staticmethod
     def _collection_records(assessment: Mapping[str, Any], collection: Mapping[str, Any] | None) -> Mapping[str, Any]:
@@ -535,9 +567,16 @@ class AssessmentPacketBuilder:
 
     @staticmethod
     def _assumption(item: Mapping[str, Any]) -> dict[str, Any]:
-        return {"status": _state(item.get("status"), _ARGUMENT_STATES),
-                "validation": _identifier(item["validation"])
-                if isinstance(item.get("validation"), str) else None}
+        result = {"status": _state(item.get("status"), _ARGUMENT_STATES),
+                  "validation": _identifier(item["validation"])
+                  if isinstance(item.get("validation"), str) else None}
+        if item.get("time_status") in {"not_started", "expired", "within_interval"}:
+            result["time_status"] = item["time_status"]
+            for key in ("valid_from", "valid_until"):
+                value = item.get(key)
+                if value is not None:
+                    result[key] = parse_time(value).isoformat()
+        return result
 
     def _evidence(self, item: Mapping[str, Any]) -> dict[str, Any]:
         issues = item.get("availability_issues", [])
@@ -545,8 +584,18 @@ class AssessmentPacketBuilder:
             raise ValueError("Evidence availability issues must be a list")
         known = sorted({issue for issue in issues if isinstance(issue, str) and issue in _EVIDENCE_ISSUES})
         shown = known[:self.limits.max_availability_issues]
-        return {"status": _state(item.get("status"), frozenset({"available", "unavailable"})),
+        result = {"status": _state(item.get("status"), frozenset({"available", "unavailable"})),
                 "availability_issues": shown,
                 "issues_omitted": len(issues) - len(shown),
                 "observation_id": _record_identifier(item.get("run_id")),
                 "age_status": "unknown"}
+        failures = item.get("predicate_failures", [])
+        if not isinstance(failures, list):
+            raise ValueError("Predicate failures must be a list")
+        safe = [{"path": _bounded(f.get("path")), "issue": f["issue"]}
+                for f in failures if isinstance(f, Mapping) and _bounded(f.get("path")) is not None
+                and f.get("issue") in {"missing_field", "incompatible_type", "non_finite", "incomparable", "not_met"}]
+        if safe:
+            result["predicate_failures"] = safe[:self.limits.max_availability_issues]
+        result["predicate_failures_omitted"] = len(failures) - min(len(safe), self.limits.max_availability_issues)
+        return result

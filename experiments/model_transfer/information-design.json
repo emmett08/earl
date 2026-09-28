@@ -1,0 +1,117 @@
+{
+  "schema": "EAL/model-transfer-information-design/1",
+  "seed": 20260928,
+  "simulations": 200,
+  "budget_usd": 2.0,
+  "practical_decision": {
+    "recipient_horizon": 10,
+    "correctness_margin": 0.05,
+    "minimum_token_reduction": 0.2,
+    "minimum_correctness": 0.9
+  },
+  "information_target": {
+    "method": "precision",
+    "confidence": 0.95,
+    "correctness_half_width": 0.025,
+    "token_reduction_half_width": 0.1,
+    "assurance": 0.8
+  },
+  "candidates": [
+    {
+      "cases": 14,
+      "repetitions": 2
+    },
+    {
+      "cases": 14,
+      "repetitions": 4
+    },
+    {
+      "cases": 14,
+      "repetitions": 8
+    },
+    {
+      "cases": 14,
+      "repetitions": 16
+    },
+    {
+      "cases": 14,
+      "repetitions": 32
+    },
+    {
+      "cases": 14,
+      "repetitions": 137
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "null",
+      "token_reduction": 0.0,
+      "correctness_difference": 0.0,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "purpose": "design"
+    },
+    {
+      "name": "worthwhile",
+      "token_reduction": 0.3,
+      "correctness_difference": 0.0,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "purpose": "design"
+    },
+    {
+      "name": "adverse_quality",
+      "token_reduction": 0.3,
+      "correctness_difference": -0.1,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "purpose": "design"
+    },
+    {
+      "name": "missing_outcomes",
+      "token_reduction": 0.3,
+      "correctness_difference": 0.0,
+      "missing_probability": 0.1,
+      "cost_multiplier": 1.0,
+      "purpose": "stress"
+    },
+    {
+      "name": "higher_expenditure",
+      "token_reduction": 0.3,
+      "correctness_difference": 0.0,
+      "missing_probability": 0.0,
+      "cost_multiplier": 2.0,
+      "purpose": "design"
+    },
+    {
+      "name": "resource_tail",
+      "token_reduction": 0.3,
+      "correctness_difference": 0.0,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "resource_tail_probability": 0.01,
+      "resource_tail_multiplier": 10.0,
+      "purpose": "stress"
+    },
+    {
+      "name": "missing_usage",
+      "purpose": "stress",
+      "token_reduction": 0.3,
+      "correctness_difference": 0.0,
+      "missing_probability": 0.1,
+      "missing_usage": true,
+      "cost_multiplier": 1.0
+    },
+    {
+      "name": "slower_execution",
+      "purpose": "design",
+      "token_reduction": 0.3,
+      "correctness_difference": 0.0,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "elapsed_multiplier": 2.0
+    }
+  ],
+  "time_limit_seconds": 7200,
+  "workflow_overhead_seconds": 300
+}

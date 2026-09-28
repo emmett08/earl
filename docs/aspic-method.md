@@ -2,7 +2,7 @@
 
 `argumentation/aspic/1` is a bounded, host-installed ASPIC+ instantiation. It constructs arguments from an explicit finite theory, derives undermining, rebutting and undercutting defeats, and computes the grounded extension of that defeat graph. The separate, opt-in `EAL/2-compiled-aspic/4` operation translates authored EAL routes at a checked observation snapshot. EAL/2 admits reviewed `strict`, `rank` and `contrary` relations with targets resolved through its own declaration namespace. The default authored evaluator validates these directives without applying their inference effects. The [ASPIC+ tutorial](sources.md#argument-and-reasoning-models) supplies the framework's argument, attack and defeat definitions; the restrictions and ranking below are this implementation's choices.
 
-The Python package is 2.14.1. The compiled profile is `/4`, while the installed ASPIC method is `argumentation/aspic/1` with implementation `eal-aspic-grounded-4`. Stored observations retain acquisition identities and original measurement times; returned records contain output digests and byte counts without raw process streams.
+The Python package is 2.16.0. The compiled profile is `/4`, while the installed ASPIC method is `argumentation/aspic/1` with implementation `eal-aspic-grounded-4`. Stored observations retain acquisition identities and original measurement times; returned records contain output digests and byte counts without raw process streams.
 
 ## Run the synthetic engineering case
 
