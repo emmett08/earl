@@ -38,6 +38,19 @@ class Project:
             knowledge.register('argument.eal', entry_id='orders', context=case.context(),
                                claims=['criterion_evaluated'])
 
+    @classmethod
+    def attach(cls, root: Path, case: TaskCase, arm: str):
+        """Open the same persistent project; never reinitialise its observations."""
+        project = object.__new__(cls)
+        project.root, project.case, project.arm = root, case, arm
+        project.strategy = CONDITIONS[arm]
+        project.workspace = root / 'project'
+        project.state = root / 'collector-state.json'
+        project.events, project.session = [], 0
+        if not project.workspace.is_dir() or not project.state.is_file():
+            raise ValueError('Retained project is incomplete')
+        return project
+
     def explain(self, assessment_id: str) -> dict:
         knowledge = EALKnowledgeBase(self.workspace, self.workspace / 'tools.toml', method_registry=registry())
         return knowledge.explain(assessment_id)

@@ -123,7 +123,7 @@ def test_complete_final_answer_overrides_earlier_text_and_is_the_only_file_effec
     result = runner.run(project, plan['models']['plain'], True, 'complete-final', response_mode='json_schema')
     assert result['status'] == 'submitted' and result['raw_answer'] == final
     assert result['answer']['decision'] == 'not_ready'
-    assert result['annotation']['status'] == 'automatic'
+    assert result['annotation']['status'] == 'pending'
     assert result['response_texts'] == [first, final] and result['api_attempt_ids'] == [0, 1]
     assert not (project.workspace / 'unfinished.md').exists()
     assert (project.workspace / 'final.md').read_text() == 'Keep only a complete final response.'

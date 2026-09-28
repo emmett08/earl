@@ -1,0 +1,77 @@
+{
+  "delay_per_request_seconds": 0.15,
+  "execution_kind": "scripted",
+  "implementation_sha256": "dcd14a0c70a424fb0d138789595080f341c032873f70364fb2ce695e2b9152bd",
+  "median_elapsed_seconds": {
+    "1": 17.312539773000026,
+    "4": 5.17384464800034
+  },
+  "outcome_and_resource_equivalence": true,
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "python": "3.12.14",
+  "samples": [
+    {
+      "api_attempts": 80,
+      "elapsed_seconds": 17.278962291000425,
+      "peak_inflight_requests": 1,
+      "repetition": 0,
+      "sequences": 16,
+      "sessions": 48,
+      "synthetic_cost_usd": 0.00144,
+      "workers": 1
+    },
+    {
+      "api_attempts": 80,
+      "elapsed_seconds": 5.237817875000474,
+      "peak_inflight_requests": 4,
+      "repetition": 0,
+      "sequences": 16,
+      "sessions": 48,
+      "synthetic_cost_usd": 0.00144,
+      "workers": 4
+    },
+    {
+      "api_attempts": 80,
+      "elapsed_seconds": 5.107639306000237,
+      "peak_inflight_requests": 4,
+      "repetition": 1,
+      "sequences": 16,
+      "sessions": 48,
+      "synthetic_cost_usd": 0.00144,
+      "workers": 4
+    },
+    {
+      "api_attempts": 80,
+      "elapsed_seconds": 17.31463665299998,
+      "peak_inflight_requests": 1,
+      "repetition": 1,
+      "sequences": 16,
+      "sessions": 48,
+      "synthetic_cost_usd": 0.00144,
+      "workers": 1
+    },
+    {
+      "api_attempts": 80,
+      "elapsed_seconds": 17.312539773000026,
+      "peak_inflight_requests": 1,
+      "repetition": 2,
+      "sequences": 16,
+      "sessions": 48,
+      "synthetic_cost_usd": 0.00144,
+      "workers": 1
+    },
+    {
+      "api_attempts": 80,
+      "elapsed_seconds": 5.17384464800034,
+      "peak_inflight_requests": 4,
+      "repetition": 2,
+      "sequences": 16,
+      "sessions": 48,
+      "synthetic_cost_usd": 0.00144,
+      "workers": 4
+    }
+  ],
+  "schema": "EAL/harness-benchmark/1",
+  "scope": "Fixed synthetic provider latency; actual EAL preparation and durable persistence. One worker is the serial control in the same implementation. No live latency, rate-limit or quality claim.",
+  "speedup": 3.34616536654057
+}

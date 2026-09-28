@@ -1,4 +1,4 @@
-.PHONY: install test generate check-generated example build check
+.PHONY: install test generate check-generated example build check scientific
 PYTHON ?= python3
 
 install:
@@ -19,4 +19,9 @@ example:
 build:
 	$(PYTHON) -m build
 
-check: check-generated test example
+scientific:
+	$(PYTHON) tools/investigation-validator/scripts/validate_investigation.py --self-test
+	$(PYTHON) tools/investigation-validator/scripts/validate_investigation.py experiments/model_transfer/protocol.json
+	$(PYTHON) tools/investigation-validator/scripts/validate_investigation.py experiments/transfer_study/protocol.json
+
+check: check-generated scientific test example

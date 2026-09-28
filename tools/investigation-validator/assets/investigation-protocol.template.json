@@ -1,0 +1,217 @@
+{
+  "schema_version": "1.2",
+  "investigation_id": "INV-001",
+  "title": "Replace with a bounded investigation title",
+  "version": "0.1.0",
+  "status": "concept",
+  "question": "Replace with the exact scientific question",
+  "primary_claim_id": "CLM-001",
+  "scope": {
+    "system_or_population": "Replace with the target system or population",
+    "conditions": "Replace with the admissible conditions",
+    "spatial_scope": "Replace with the spatial boundary",
+    "temporal_scope": "Replace with the temporal boundary",
+    "exclusions": [
+      "Replace with explicit exclusions"
+    ],
+    "knowledge_cut": "Replace with the evidence cut or date"
+  },
+  "claims": [
+    {
+      "id": "CLM-001",
+      "statement": "Replace with a bounded proposition",
+      "claim_type": "descriptive",
+      "role": "primary",
+      "scope_limit": "Replace with the strongest permitted conclusion",
+      "success_consequence": "Replace with the permitted revision if supported",
+      "failure_consequence": "Replace with the permitted revision if contradicted"
+    }
+  ],
+  "assumptions": [],
+  "hypotheses": [],
+  "predictions": [],
+  "constructs": [],
+  "measurements": [],
+  "design": {
+    "design_type": "not yet selected",
+    "rationale": "Not yet specified",
+    "setting": "Not yet specified",
+    "temporal_structure": "Not yet specified",
+    "assignment_method": "Not yet specified",
+    "allocation_concealment": "Not yet specified",
+    "masking": "Not yet specified",
+    "comparator": "Not yet specified",
+    "control_ids": []
+  },
+  "units": {
+    "target_population_or_system": "Not yet specified",
+    "sampling_frame": "Not yet specified",
+    "experimental_unit": "Not yet specified",
+    "observational_unit": "Not yet specified",
+    "assignment_unit": "Not yet specified",
+    "analysis_unit": "Not yet specified",
+    "inclusion_criteria": [],
+    "exclusion_criteria": [],
+    "recruitment_or_selection": "Not yet specified"
+  },
+  "interventions_or_exposures": [],
+  "controls": [],
+  "confounds": [],
+  "estimands": [],
+  "identification": {
+    "target_estimand_ids": [],
+    "status": "not-assessed",
+    "causal_and_measurement_structure": "Not yet assessed",
+    "assumption_ids": [],
+    "identified_parameters": [],
+    "nonidentified_alternatives": [],
+    "threats": [],
+    "diagnostics": [],
+    "rescue_actions": []
+  },
+  "sampling": {
+    "method": "Not yet specified",
+    "sample_size_or_information_target": "Not yet specified",
+    "inputs": [],
+    "dependence_structure": "Not yet specified",
+    "multiplicity": "Not yet specified",
+    "attrition_or_loss": "Not yet specified",
+    "result": "Not yet specified",
+    "sensitivity_analysis": "Not yet specified",
+    "stopping_implications": "Not yet specified"
+  },
+  "analysis": {
+    "preprocessing_lock": "Not yet specified",
+    "exclusion_lock": "Not yet specified",
+    "models": [],
+    "contrasts": [],
+    "uncertainty": "Not yet specified",
+    "multiplicity": "Not yet specified",
+    "missing_data": "Not yet specified",
+    "stopping_rule": "Not yet specified",
+    "robustness_checks": [],
+    "software_and_versions": [],
+    "inconclusive_handling": "Not yet specified"
+  },
+  "decision_matrix": [],
+  "bias_assessment": {
+    "risks": [],
+    "researcher_degrees_of_freedom": [],
+    "negative_controls": [],
+    "positive_controls": [],
+    "falsification_checks": [],
+    "reporting_controls": [],
+    "residual_limitations": []
+  },
+  "ethics_and_safety": {
+    "applicable": false,
+    "rationale": "Replace with the safety and ethics applicability assessment",
+    "risks": [],
+    "mitigations": [],
+    "monitoring": [],
+    "stopping_rules": [],
+    "stop_authority": "Not applicable: concept only",
+    "review_status": "not-required",
+    "post_stop_actions": []
+  },
+  "feasibility": {
+    "current_status": "conceptual",
+    "apparatus_or_data": [],
+    "access": "Not yet assessed",
+    "skills": [],
+    "resources": [],
+    "dependencies": [],
+    "blockers": [],
+    "fallback": "Not yet specified"
+  },
+  "reproducibility": {
+    "preregistration_status": "not-planned",
+    "registration": "Not yet specified",
+    "immutable_materials": [],
+    "data_plan": "Not yet specified",
+    "code_plan": "Not yet specified",
+    "randomisation_or_seed_plan": "Not yet specified",
+    "provenance_plan": "Not yet specified",
+    "deviation_and_amendment_plan": "Not yet specified",
+    "replication_plan": "Not yet specified"
+  },
+  "execution": {
+    "protocol_version_used": null,
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": null,
+    "code_location": null,
+    "observed_results": [],
+    "interpretation_status": "not-started"
+  },
+  "provenance": {
+    "authors": [
+      "Replace with investigator or role"
+    ],
+    "created_at": "2026-07-31T00:00:00+01:00",
+    "updated_at": "2026-07-31T00:00:00+01:00",
+    "sources": [],
+    "knowledge_cut": "Replace with evidence cut or date",
+    "change_log": [
+      "0.1.0: concept created"
+    ]
+  },
+  "method_selection": {
+    "primary_purpose": "estimation",
+    "secondary_purposes": [],
+    "rationale": "Not yet selected: replace the default purpose to match the question",
+    "inference_framework": "Not yet specified",
+    "alternatives_considered": [],
+    "sources": [],
+    "information_criterion": "Not yet specified",
+    "permitted_conclusions": [],
+    "excluded_conclusions": [],
+    "discovery_confirmation_separation": "Not yet specified"
+  },
+  "implementation": {
+    "status": "planned",
+    "assignment": {
+      "procedure": "Not yet specified",
+      "artifact": "Not yet specified",
+      "failure_response": "Not yet specified"
+    },
+    "collection": {
+      "procedure": "Not yet specified",
+      "artifact": "Not yet specified",
+      "failure_response": "Not yet specified"
+    },
+    "scoring": {
+      "procedure": "Not yet specified",
+      "artifact": "Not yet specified",
+      "failure_response": "Not yet specified"
+    },
+    "analysis": {
+      "procedure": "Not yet specified",
+      "artifact": "Not yet specified",
+      "failure_response": "Not yet specified"
+    },
+    "verification": [],
+    "traceability": []
+  },
+  "design_assessment": {
+    "mode": "quantitative",
+    "status": "planned",
+    "decision_use": "Replace with the scientific revision or practical action",
+    "primary_estimand_ids": [],
+    "effect_or_precision_basis": "Replace with independently justified effects/margins/precision in natural units",
+    "pilot_basis": "Replace with applicable data or pilot and uncertain nuisance inputs",
+    "candidate_designs": [],
+    "single_design_reason": "",
+    "selected_design_id": null,
+    "selection_rationale": "Replace with an allocation comparison",
+    "budget_limit": null,
+    "budget_unit": "Replace with budget unit",
+    "scenario_coverage": "Replace with relevant effect, boundary, harm and adverse scenarios",
+    "scenarios": [],
+    "targets": [],
+    "results": [],
+    "nonstatistical_assessment": {},
+    "discrimination": {}
+  }
+}

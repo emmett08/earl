@@ -54,7 +54,7 @@ class AllocationPlanner:
             blockers.append('Pilot setup or session timing is missing; deadline feasibility is unidentified')
         target = config['information_target']
         simulator = TrajectorySimulator(pilot, config['budget_usd'], config.get('time_limit_seconds', 7200),
-                                        config.get('workflow_overhead_seconds', 0))
+                                        config.get('workflow_overhead_seconds', 0), source_plan.get('workers', 1))
         rng = random.Random(config['seed'])
         entries = []
         observed_cases = {p.case for p in pilot}
@@ -70,6 +70,9 @@ class AllocationPlanner:
             actual_cells = {p.stratum for p in pilot if p.case in case_ids}
             if len(actual_cells) != candidate['cases'] * expected_cells:
                 entries.append({**candidate, 'eligible': False, 'reason': 'Pilot is missing a planned model/tool cell'})
+                continue
+            if blockers and live:
+                entries.append({**candidate, 'eligible': False, 'reason': 'Resolve pilot measurement blockers before allocation simulation'})
                 continue
             assessment = ScenarioAssessment(config, simulator)
             outcomes = [assessment.run(case_ids, candidate['repetitions'], scenario, rng, config['simulations'], screening=True)
@@ -131,8 +134,8 @@ class AllocationPlanner:
                     'Hypothetical token effects rescale EAL usage at fixed token mix; cost sensitivity is explicit.',
                     'Retained request reservations never shrink when simulated token usage shrinks.',
                     'Rare-tail multipliers are conservative expenditure stresses, not claims of provider-feasible individual responses.',
-                    'Sequential elapsed time includes retained session and setup timing plus a declared workflow overhead '
-                        'allowance; deadline feasibility is conditional on that allowance.',
+                    'Batch elapsed time uses the maximum paired duration in each fixed worker batch; serial plans sum durations. '
+                        'Concurrent feasibility additionally reserves one maximum request per active pair; this is conservative, not an exact provider schedule.',
                     'Quality and missingness perturbations share one draw per arm trajectory, allowing perfect serial dependence.',
                     'Pilot missing measurements remain missing; incomplete budget-truncated sequences remain in denominators.',
                     'Every candidate retains the complete registered task pool; repetitions never create new task identities.'],

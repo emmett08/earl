@@ -1,9 +1,11 @@
 # Fresh-session EAL workflow experiment
 
-Protocol **5.0.0**, scientific schema **1.2**, status **specified**. The
+Protocol **6.0.0**, scientific schema **1.2**, status **specified**. The
 [methodology](../../docs/eal2-experiment-methodology.md) defines the practical
 decision, statistical assumptions, task populations and inference limits.
 Implementation checks and synthetic validation do not establish a live benefit.
+Start with the [ordered workflow and input guide](WORKFLOW.md) for local commands,
+GitHub Actions settings, resumption, annotation and evaluation.
 
 ## What the plans measure
 
@@ -14,7 +16,7 @@ Implementation checks and synthetic validation do not establish a live benefit.
 | `cadence-plan.json` | Separate finite synthetic population: six patterns × three cadences | 1,152 sequences, 12,672 sessions |
 | `cadence-diagnostic-plan.json` | Reasoner and reuse within stable, periodic and frequent regimes | Six donors, 30 recipients |
 
-These are scheduled counts. USD 2 and 7,200 seconds remain hard per-run ceilings;
+These are scheduled counts. USD 2 and 21,600 seconds are cumulative per-run ceilings;
 completion and statistical adequacy are not guaranteed. The principal comparison
 retains ordinary prompting with natural notes. It does not give the ordinary arm
 a curated runbook or tool cache. EAL receives its host-computed compact context.
@@ -24,13 +26,18 @@ boundaries: correctness difference -0.05, absolute EAL correctness 0.90, and tok
 reduction 0.20. Initial token expenditure is included. Two-sided simultaneous
 estimation intervals remain separate from this intersection-union decision.
 Whole paired trajectories, not individual answers, are independent observations.
+The plans use four concurrent paired blocks; sessions and both arms within each
+pair stay serial. Collection segments stop after at most 6,000 seconds in Actions,
+leaving 20 minutes of its two-hour job for setup, finalisation and upload. Resuming
+the same run continues its original budget and time allowance.
 
 ## Install, calibrate and rehearse
 
 From the repository root:
 
 ```bash
-python -m pip install -e '.[dev]'
+python -m pip install -c experiments/model_transfer/requirements.lock -e '.[dev]'
+make scientific
 python -m experiments.model_transfer.runner --calibrate-only --output /tmp/eal-calibration
 python -m experiments.model_transfer.rehearse --plan experiments/model_transfer/diagnostic-plan.json --output /tmp/eal-diagnostic-rehearsal
 python -m experiments.model_transfer.runner --plan experiments/model_transfer/cadence-plan.json --calibrate-only --output /tmp/eal-cadence-calibration
@@ -52,14 +59,14 @@ python -m experiments.model_transfer.annotations export experiments/model_transf
 
 The assessor receives the exported `items.json`, without reference answers or
 arm labels. Complete its decision, quote and note fields and annotator identity.
-The import command is available through:
+Save the completed assessor file as `/tmp/eal-labels.json`, then import it:
 
 ```bash
-python -m experiments.model_transfer.annotations --help
+python -m experiments.model_transfer.annotations import experiments/model_transfer/runs/pilot-001 /tmp/eal-annotation /tmp/eal-labels.json --output /tmp/annotated-rows.json
 ```
 
 Standalone canonical decisions can be coded automatically. Other nonempty prose
-remains pending independent annotation; malformed or contradictory text is not
+and every JSON answer, including its explanation, remain pending independent annotation; malformed or contradictory text is not
 silently repaired. Use `--all` when exporting to audit automatic labels as well.
 The independent reference evaluates task correctness separately from answer coding.
 
@@ -82,6 +89,9 @@ results. A paid run must not be enlarged merely because no allocation qualified.
 An exported plan uses a new study identity and fresh observations; pilot outcomes
 are never pooled into evaluation. Pass it to `runner --plan` with a new directory.
 `--allow-scripted` only rehearses planning and can never export evaluation.
+For the 18-case cadence population use `--config experiments/model_transfer/cadence-information-design.json`.
+Runtime feasibility uses the plan's worker count and conservatively admits whole
+concurrent batches. An evaluation must retain that scheduling choice.
 
 ## Independently supplied tasks
 

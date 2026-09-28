@@ -222,7 +222,7 @@ def test_precise_but_catastrophically_miscalibrated_tail_model_cannot_propose_ev
     data = [replace(p, ordinary=tuple(replace(s, tokens=100 + 5 * p.repeat) for s in p.ordinary),
                     eal=tuple(replace(s, tokens=100 - 5 * p.repeat) for s in p.eal)) for p in pilot(repetitions=2, horizon=1)]
     config = configuration()
-    config.update(simulations=200, candidates=[{'cases': 1, 'repetitions': 16}],
+    config.update(simulations=200, minimum_pilot_repetitions=2, candidates=[{'cases': 1, 'repetitions': 16}],
                   scenarios=[scenario(.1, resource_tail_probability=.001, resource_tail_multiplier=1000)])
     config['practical_decision']['recipient_horizon'] = 1
     config['information_target'].update(correctness_half_width=.99, token_reduction_half_width=.1)

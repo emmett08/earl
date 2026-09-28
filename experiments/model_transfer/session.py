@@ -40,6 +40,12 @@ class SessionRunner:
                   'response_texts': [],
                   'format_valid': None, 'annotation': {'status': 'empty', 'reason': 'No response'},
                   'file_result': {'status': 'not_requested', 'written': []}}
+        progress_path = project.root / f'session-{project.session}-progress.json'
+        def checkpoint():
+            result['events'] = [e for e in project.events if e['session'] == project.session]
+            result['elapsed_seconds'] = time.monotonic() - start
+            write_json(progress_path, result)
+
         try:
             prepared = self.prompts.prepare(project, question, response_mode=mode,
                                              context_style=context_style, include_notes=notes, reuse=reuse, reasoner=reasoner)
@@ -48,6 +54,7 @@ class SessionRunner:
                           initial_messages=copy.deepcopy(messages),
                           initial_message_bytes=len(json.dumps(messages, ensure_ascii=False).encode('utf-8')))
             write_json(project.root / f'input-files-{project.session}.json', prepared.visible_files)
+            checkpoint()
             for _ in range(self.plan['max_calls_per_session']):
                 response = self.client.request(model, messages, [TOOL] if native_tools else [], session_id,
                                                response_mode=mode)
@@ -62,6 +69,7 @@ class SessionRunner:
                 calls = [item for item in output if item.get('type') == 'function_call']
                 if calls:
                     self._execute_tools(project, calls, native_tools, messages)
+                    checkpoint()
                     continue
                 if not text.strip() and any(part.strip() for part in result['response_texts']):
                     result.update(status='incomplete', error={
@@ -92,8 +100,7 @@ class SessionRunner:
                 self._retain_unfinished_text(result)
             # This per-invocation list distinguishes an absent ledger from a
             # confirmed pre-request failure, even if a session ID was reused.
-            result['api_attempt_ids'] = [row['attempt'] for row in self.client.records[first_record:]
-                                         if row['session_id'] == session_id]
+            result['api_attempt_ids'] = self.client.receipts(session_id, first_record)
             result['elapsed_seconds'] = time.monotonic() - start
             result['events'] = [e for e in project.events if e['session'] == project.session]
             write_json(project.root / f'session-{project.session}.json', result)
@@ -125,6 +132,8 @@ class SessionRunner:
     @staticmethod
     def _response_text(response: dict) -> str:
         """Read only available text fragments, including a partly malformed response."""
+        if not isinstance(response, dict):
+            return ''
         output = response.get('output')
         if not isinstance(output, list):
             return ''

@@ -45,7 +45,7 @@ class ReferenceScorer:
         status = annotation.get('status')
         decision = answer.get('decision') if isinstance(answer.get('decision'), str) else None
         basis = answer.get('basis') if isinstance(answer.get('basis'), str) else None
-        pending = status in ('pending', 'ambiguous')
+        pending = status in ('pending', 'ambiguous', 'unobserved')
         no_answer = status == 'empty' or (not pending and decision not in ('ready', 'not_ready', 'undetermined'))
         if pending:
             return {'reference': reference, 'task_match': None, 'decision_match': None,

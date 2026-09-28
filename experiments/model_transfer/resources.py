@@ -27,8 +27,8 @@ class ResourceSummary:
         native = sum(e['kind'] == 'native_probe' for e in events)
         result = {
             'elapsed_seconds': sum(s['elapsed_seconds'] for s in sessions),
-            'timed_sessions': len(sessions),
-            'session_coverage_complete': accounting.session_coverage_complete,
+            'timed_sessions': sum(s.get('timing_complete', True) for s in sessions),
+            'session_coverage_complete': accounting.session_coverage_complete and all(s.get('timing_complete', True) for s in sessions),
             'api_accounting_complete': accounting.complete,
             'accounting_errors': accounting.errors,
             'expected_api_attempts': accounting.expected_attempts,
@@ -42,7 +42,8 @@ class ResourceSummary:
             'host_collections': sum(a['collected_count'] for a in host),
             'host_reuses': sum(a['reused_count'] for a in host),
             'unknown_host_assessments': len(host_events) - len(host),
-            'collection_counts_complete': len(host_events) == len(host) and accounting.session_coverage_complete,
+            'collection_counts_complete': (len(host_events) == len(host) and accounting.session_coverage_complete
+                                           and all(s.get('timing_complete', True) for s in sessions)),
         }
         result['cost_accounting_complete'] = accounting.complete and result['unknown_cost_attempts'] == 0
         result['total_collector_calls'] = native + result['host_collections']
@@ -58,6 +59,6 @@ class ResourceSummary:
                                       ('cached_usage_complete', 'input_tokens_details', 'cached_tokens')):
             values = [_mapping(u.get(container)).get(key) for u in usage]
             result[field] = accounting.complete and all(type(value) is int and value >= 0 for value in values)
-        result['accounting_complete'] = (result['api_accounting_complete'] and
+        result['accounting_complete'] = (result['session_coverage_complete'] and result['api_accounting_complete'] and
                                          result['cost_accounting_complete'] and result['token_usage_complete'])
         return result

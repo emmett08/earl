@@ -92,7 +92,7 @@ class DiagnosticReportBuilder:
         groups = {'shared_donors': self.resources.summarise(donor_sessions, calls, donor_ids, donor_preparation),
                   'recipients': self.resources.summarise(recipient_sessions, calls, recipient_ids, recipient_preparation)}
         accounting_complete = all(resources[field] for field in
-            ('api_accounting_complete', 'cost_accounting_complete', 'token_usage_complete',
+            ('session_coverage_complete', 'api_accounting_complete', 'cost_accounting_complete', 'token_usage_complete',
              'preparation_timing_complete'))
         execution = 'complete' if all(row['status'] == 'complete' for row in rows) else 'partial'
         invalid = sum(comparison['manipulation']['status'] != 'passed' for comparison in comparisons)

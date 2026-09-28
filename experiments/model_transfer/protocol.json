@@ -2,7 +2,7 @@
   "schema_version": "1.2",
   "investigation_id": "EAL-NANO-REUSE",
   "title": "EAL/2 cumulative reuse investigation: pilot-informed estimation and separate component diagnostics",
-  "version": "5.0.0",
+  "version": "6.0.0",
   "status": "specified",
   "question": "Does EAL preserve correctness within five percentage points, exceed 90% absolute correctness and save over 20% cumulative tokens at ten fresh recipients, with an affordable allocation that controls false success and has useful joint decision power; which matched-fact diagnostics distinguish host reasoning and reuse contributions?",
   "primary_claim_id": "CLM-001",
@@ -569,7 +569,7 @@
       "description": "Pre-authored EAL source, task contract, typed task method, TOML collector and persisted observations. A host adapter derives a scoped decision from the actual assessment; the model receives compact current task context.",
       "target": "Evidence reuse/acquisition, task evaluation and economical delivery of the checked task result.",
       "implementation": "EALKnowledgeBase, ModelContextAdapter, TaskContract/task adapter and ContextStrategy implementations.",
-      "dose_or_intensity": "One host assessment per EAL session; two recipient sessions and two repetitions.",
+      "dose_or_intensity": "One host assessment per EAL session; ten recipients per principal arm and four independent repetitions per stratum.",
       "timing": "Initial and each recipient session.",
       "admissibility": "admissible",
       "manipulation_checks": [
@@ -815,7 +815,7 @@
       "Actual complete annotated paired pilot trajectories",
       "Four complete repetitions per stratum as a nuisance-estimation floor",
       "USD 2 and 7200 seconds per run",
-      "200 screening simulations; 5000 fresh validation simulations per scenario",
+      "200 screening simulations; 10000 fresh validation simulations per scenario",
       "Prospective one-percentage-point calibration tolerance: nominal 95% coverage checked against 94%; nominal 5% false success checked against 6%",
       "Mean-one correction of empirical resampling variance, unobserved resource noise and required sixteen-fold variance sensitivity"
     ],
@@ -940,7 +940,7 @@
     "uncertainty": "Finite-sample empirical Bernstein correctness bounds under independent latent trajectories; approximate paired stratified delta token intervals. One-sided component alpha=0.05 for the conjunctive success decision; separate Bonferroni two-sided intervals for estimation. Numerical calibration tolerance is 0.01, not a relaxation of the scientific margins. Pilot-generating assumptions and Monte Carlo error remain distinct.",
     "multiplicity": "One intersection-union practical decision. Separate Bonferroni simultaneous estimation intervals; diagnostic contrasts have their own simultaneous family. Fresh validation adjusts Monte Carlo confidence across searched candidates, scenarios and acceptance criteria.",
     "missing_data": "Empty or absent attempted answers are observed no-answer. Unobserved sessions, ambiguous/contradictory text and unparseable JSON remain unknown pending annotation. Unknown usage blocks finite cost-per-correct-answer claims. Missing or inconsistent session-to-request accounting is incomplete measurement, even when task decisions are known. Known subtotals remain labelled; costs and token differences require reconciled coverage.",
-    "stopping_rule": "Fixed plan with at most three requests per session, 4096 output tokens, 32768 request bytes, 90-second request timeout and USD 2 reservation ledger; manual workflow has a 120-minute ceiling. Information planning includes a 300-second prospective workflow-overhead allowance and elapsed-time stress; planned units survive deadline truncation.",
+    "stopping_rule": "Fixed plan with at most three requests per session, 4096 output tokens, 32768 request bytes, 90-second request timeout, atomic USD 2 cumulative reservation ledger and 21600-second cumulative elapsed allowance. Four paired blocks run concurrently by default. Each manual workflow segment admits at most 6000 seconds of collection within a 120-minute job. Preserve every planned unit and uncertain attempt, including after interruption; no request replay or automatic paid dispatch. Allocation includes 300 seconds of prospective overhead and slower-execution sensitivity.",
     "robustness_checks": [
       "Inspect fixed cases, task families, model transitions and sessions descriptively; no task-population estimator is implied.",
       "Evaluate required adverse nuisance scenarios and each partial-null boundary.",
@@ -1253,7 +1253,8 @@
       "Append-only request journal and resource ceilings."
     ],
     "stopping_rules": [
-      "Access failure, snapshot mismatch, unavailable model, quota or budget limit."
+      "Access failure, snapshot mismatch, unavailable model, quota or budget limit.",
+      "Per-segment deadline or user cancellation; retain partial data and preserve cumulative limits when resuming."
     ],
     "stop_authority": "Runner or user",
     "review_status": "not-required",
@@ -1274,9 +1275,9 @@
       "Existing EAL implementation and provider adapter"
     ],
     "resources": [
-      "USD 2 maximum estimated API reservation budget per run",
-      "120-minute manual workflow ceiling",
-      "300-second prospective allowance for workflow overhead inside the 7200-second job ceiling"
+      "USD 2 cumulative reservation ceiling across all segments of a run",
+      "21600 seconds cumulative collection allowance; hard-killed segments consume their full declared lease",
+      "Manual workflow: 120-minute job with collection segments at most 6000 seconds, leaving 20 minutes for setup, finalisation and artefact upload"
     ],
     "dependencies": [
       "Eligible completed pilot observations and annotation for precision planning",
@@ -1296,10 +1297,11 @@
       "Diagnostic pristine donor snapshots, cloned-state fingerprints, intervention manifests and manipulation checks.",
       "Blind annotation items, separate mapping, attributed code decisions/quotes/reasons and derived annotated rows.",
       "Pilot identities, observation provenance, information-design settings, simulation seed/scenarios, candidate allocation results and selected evaluation plan.",
-      "Per-sequence checkpoints, retained allocation identities, live/scripted transport provenance and fresh evaluation run identities."
+      "Per-sequence checkpoints, retained allocation identities, live/scripted transport provenance and fresh evaluation run identities.",
+      "Execution contract and runtime constraints, cumulative segment leases, prior segment reports and preserved torn journal tails."
     ],
     "data_plan": "Preserve raw runs and code annotations separately; write new derived rows/reports without overwriting originals. Workflow artefacts retained for 90 days subject to repository limits; archive important evidence before expiry.",
-    "code_plan": "Existing Git repository and PR; no automatic workflow trigger.",
+    "code_plan": "Pinned repository-local scientific validator with source digests, manual CI gate and complete workflow runbook; no automatic experiment dispatch.",
     "randomisation_or_seed_plan": "Seed 20260928 for primary matched-block/arm ordering and declared diagnostic order. Separate requests remain stochastic; no deterministic provider seed claim. Diagnostic contrast-map keys are sorted before seeded shuffling.",
     "provenance_plan": "Snapshot protocol and fixture definitions; record Git revision, dirty state, implementation hashes, models, pricing, prompts, attempts and timestamps.",
     "deviation_and_amendment_plan": "New protocol version and output directory for changes; preserve prior raw data and scores.",
@@ -1320,7 +1322,7 @@
       "EAL experiment implementation"
     ],
     "created_at": "2026-09-28T13:35:01.056299+00:00",
-    "updated_at": "2026-09-28T19:00:00+00:00",
+    "updated_at": "2026-09-28T19:54:40.920897+00:00",
     "sources": [
       "User goal: reliable economical knowledge reuse across new sessions/models",
       "design-scientific-investigations skill",
@@ -1331,7 +1333,7 @@
     ],
     "knowledge_cut": "2026-09-28",
     "change_log": [
-      "5.0.0: variance-sensitive correctness, conjunctive decision allocation, nuisance uncertainty and independent simulation validation, matched-fact reasoning controls, separate evaluation task populations, cadence invalidation and optional measured adoption costs."
+      "6.0.0: bounded concurrent paired blocks, immutable resumable execution, cumulative time and budget accounting, whole-answer JSON annotation, pinned scientific validation and complete manual workflow."
     ]
   },
   "method_selection": {
@@ -1418,22 +1420,22 @@
   "implementation": {
     "status": "implemented",
     "assignment": {
-      "procedure": "Shuffle matched case/donor/recipient/tool/repetition blocks and arm order. Default 384 sequences and 4224 sessions; diagnostics 10 donors and 46 recipients. Preserve the declared population in every candidate.",
+      "procedure": "Shuffle matched case/donor/recipient/tool/repetition blocks and arm order. Default 384 sequences and 4224 sessions; diagnostics 10 donors and 46 recipients. Preserve the declared population in every candidate. Execute up to four independent paired blocks concurrently in saved-order batches. Keep each matched arm pair and its sessions serial; freeze workers in the plan.",
       "artifact": "design.AssignmentSchedule",
       "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "collection": {
-      "procedure": "Fresh sessions with workflow-specific prompts and ordinary prose; persist the latest complete unmodified answer as a project note under the common size limit. For diagnostics clone a donor state and change one recipient factor; retain starts, responses and actual manipulations. Retain ordered provider text before tool processing, record exact session attempt receipts and measure shared/clone preparation.",
-      "artifact": "provider.BudgetedClient; session.SessionRunner; project.Project; conditions; journal.AttemptJournal; diagnostics.DiagnosticPilot; records.SequenceRecords; provenance.RunIdentity; task_manifest; reasoning_context; conventional_reasoner; adoption_costs",
+      "procedure": "Fresh sessions with workflow-specific prompts and ordinary prose; persist the latest complete unmodified answer as a project note under the common size limit. For diagnostics clone a donor state and change one recipient factor; retain starts, responses and actual manipulations. Retain ordered provider text before tool processing, record exact session attempt receipts and measure shared/clone preparation. Lock the output directory and freeze plan, implementation, absolute paths, Python and runtime dependencies. Resume only unrecorded later sessions. Preserve terminal and interrupted sessions without replaying paid requests; retain uncertain charges and unknown timings. Deadline and signal stops finalise partial reports; write progress with throughput and cumulative spending.",
+      "artifact": "provider.BudgetedClient; session.SessionRunner; project.Project; conditions; journal.AttemptJournal; diagnostics.DiagnosticPilot; records.SequenceRecords; provenance.RunIdentity; task_manifest; reasoning_context; conventional_reasoner; adoption_costs; execution; run_state; session_recovery; progress; workflow; artifacts",
       "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "scoring": {
-      "procedure": "Code only complete standalone canonical prose decisions automatically. Blindly annotate other non-empty prose, including volunteered JSON and unfinished tool-turn text, before independent reference scoring. Preserve raw output and separate optional basis/citation/format dimensions.",
+      "procedure": "Automatically code only complete standalone canonical prose decisions. Independently code every other nonempty whole answer, including JSON in both formatting conditions, its explanation and unfinished tool-turn text. Preserve unknown or ambiguous outcomes, raw output, basis/citation/format dimensions and annotation provenance.",
       "artifact": "answers.AnswerParser; annotations; scoring.ReferenceScorer; calibration.ContractCalibration; task_context.TaskContract",
       "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "analysis": {
-      "procedure": "Maurer-Pontil Theorem 11 empirical Bernstein bounds for correctness, with unknown-completion variance envelopes; paired stratified delta resource ratio. Separate one-sided intersection-union decision from two-sided simultaneous intervals. Pilot simulation restores empirical variance and applies declared nuisance scenarios; require joint power, precision and false-success/coverage calibration. Fresh-seed validation precedes export.",
+      "procedure": "Maurer-Pontil Theorem 11 empirical Bernstein bounds for correctness, with unknown-completion variance envelopes; paired stratified delta resource ratio. Separate one-sided intersection-union decision from two-sided simultaneous intervals. Pilot simulation restores empirical variance and applies declared nuisance scenarios; require joint power, precision and false-success/coverage calibration. Fresh-seed validation precedes export. Concurrent allocation feasibility admits only complete saved-order batches using maximum paired duration and a conservative upper bound on simultaneous reservations. Incomplete batches retain full unknown-outcome bounds; latency scaling remains a prospective assumption.",
       "artifact": "reporting.ReportBuilder; resources.ResourceSummary; analyse.py; information_config; pilot_data; decision_statistics; statistical_quantiles; trajectory_simulation; information_design; plan_information; diagnostics.DiagnosticPilot; bounded_statistics; nuisance; allocation_assessment; diagnostic_inference; adoption_costs",
       "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
@@ -1495,7 +1497,7 @@
       {
         "id": "V-LIVE",
         "stage": "collection",
-        "case": "Credentialed pilot and fresh evaluation under protocol 5.0.0",
+        "case": "Credentialed pilot and fresh evaluation under protocol 6.0.0",
         "expected_result": "Pinned configurations produce actual task answers and usage under the selected primary or diagnostic plan.",
         "status": "planned",
         "observed_result": null,
@@ -1509,6 +1511,15 @@
         "status": "passed",
         "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification.md.",
         "evidence": "verification.md; validation/rehearsals.json; validation/design-validation.json"
+      },
+      {
+        "id": "V-RESUME",
+        "stage": "pipeline",
+        "case": "Concurrent requests, interrupted journals, resumable principal and diagnostic runs, immutable identities and offline workflow stages",
+        "expected_result": "No lost planned units, duplicate paid requests, overspent reservations or unqualified interrupted measurements; malformed plans fail before collection.",
+        "status": "passed",
+        "observed_result": "Targeted recovery tests verify cumulative reservations and elapsed leases, no paid request replay, diagnostic state preservation, stale annotation retirement, malformed limits and offline dispatch boundaries.",
+        "evidence": "tests/test_model_transfer_execution.py; tests/test_model_transfer_workflow.py; verification.md"
       }
     ],
     "traceability": [
@@ -1738,5 +1749,5 @@
       "evidence": "diagnostic_measurement.py; diagnostic_inference.py; verification.md"
     }
   },
-  "updated_at": "2026-09-28T18:23:56.455181+00:00"
+  "updated_at": "2026-09-28T19:54:40.920897+00:00"
 }

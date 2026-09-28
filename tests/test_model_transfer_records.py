@@ -60,7 +60,7 @@ def test_elapsed_deadline_stops_without_a_request_and_keeps_planned_rows(tmp_pat
             raise AssertionError('Deadline must stop before contacting the transport')
 
     plan = load_plan(Path('experiments/model_transfer/plan.json'))
-    plan.update(cases=['fresh_positive'], repetitions=1, recipient_sessions=2)
+    plan.update(cases=['fresh_positive'], repetitions=1, recipient_sessions=2, workers=1, time_limit_seconds=7200)
     clock = iter([0, 7200]).__next__
     report = Pilot(plan, tmp_path, NoRequests(), clock=clock).run()
     assert report['execution_status'] == 'partial'

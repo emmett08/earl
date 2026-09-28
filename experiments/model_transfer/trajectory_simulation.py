@@ -19,7 +19,7 @@ class TrajectorySimulator:
     """
 
     def __init__(self, pilot: list[PairedTrajectory], budget_usd: float, time_limit_seconds: float = 7200,
-                 workflow_overhead_seconds: float = 0):
+                 workflow_overhead_seconds: float = 0, workers: int = 1):
         self.strata = defaultdict(list)
         for pair in pilot:
             self.strata[pair.stratum].append(pair)
@@ -27,6 +27,7 @@ class TrajectorySimulator:
         self.time_limit_seconds = time_limit_seconds
         self.workflow_overhead_seconds = workflow_overhead_seconds
         self._complete_arm_cache = {}
+        self.workers = workers
 
     def _complete_arm(self, pair: PairedTrajectory, arm: str, factor: float, scenario: dict) -> dict:
         """Cache sufficient summaries; inspect every request when computing a peak.
@@ -49,6 +50,7 @@ class TrajectorySimulator:
                 'elapsed': sum(s.elapsed_seconds or 0 for s in sessions) * scenario.get('elapsed_multiplier', 1),
                 'timing_known': all(s.elapsed_seconds is not None for s in sessions),
                 'charged': charged, 'peak': max(peak, charged),
+                'max_reservation': max((r * max(1, factor) * scenario['cost_multiplier'] for session in sessions for r, c in session.requests), default=0),
                 'correct': sum(s.correctness is True for s in sessions[1:]),
                 'incorrect': sum(s.correctness is False for s in sessions[1:]),
                 'unknown': sum(s.correctness is None for s in sessions[1:]), 'horizon': len(sessions) - 1}
@@ -56,6 +58,9 @@ class TrajectorySimulator:
 
     def simulate(self, case_ids: list[str], repetitions: int, scenario: dict,
                  rng: random.Random) -> tuple[list[SequenceOutcome], dict]:
+        if self.workers > 1:
+            from .batch_simulation import simulate_batches
+            return simulate_batches(self, case_ids, repetitions, scenario, rng)
         cells = sorted(key for key in self.strata if key[0] in case_ids)
         selected = [rng.choice(self.strata[cell]) for cell in cells for _ in range(repetitions)]
         rng.shuffle(selected)
@@ -75,10 +80,12 @@ class TrajectorySimulator:
         spent, elapsed, stopped, output = 0., self.workflow_overhead_seconds, False, []
         budget_stopped = time_stopped = False
         timing_known = True
+        pair_executions = []
         for pair in selected:
             if stopped:
                 output.append(SequenceOutcome(pair.stratum, -1, 1, None, None, 0, 1))
                 continue
+            before_cost, before_time, max_reservation = spent, elapsed, 0.
             arms = {}
             arm_order = ['ordinary', 'eal']
             rng.shuffle(arm_order)
@@ -100,6 +107,7 @@ class TrajectorySimulator:
                     multiplier = scenario.get('resource_tail_multiplier', 1)
                     factor *= (multiplier if rng.random() < probability else 1) / (1 + probability * (multiplier - 1))
                 summary = self._complete_arm(pair, arm, factor, scenario)
+                max_reservation = max(max_reservation, summary["max_reservation"])
                 if (not stopped and spent + summary['peak'] <= self.budget_usd
                         and elapsed + summary['elapsed'] <= self.time_limit_seconds):
                     spent += summary['charged']
@@ -157,6 +165,8 @@ class TrajectorySimulator:
             eal, ordinary = arms['eal'], arms['ordinary']
             output.append(SequenceOutcome(pair.stratum, eal[0] - ordinary[1], eal[1] - ordinary[0],
                                           ordinary[2], eal[2], eal[0], eal[1]))
-        return output, {'charged_usd': spent, 'elapsed_seconds': elapsed, 'budget_stopped': budget_stopped,
+            pair_executions.append({'charged_usd': spent - before_cost, 'elapsed_seconds': elapsed - before_time,
+                                    'max_reservation_usd': max_reservation})
+        return output, {'pair_executions': pair_executions, 'charged_usd': spent, 'elapsed_seconds': elapsed, 'budget_stopped': budget_stopped,
                         'time_stopped': time_stopped, 'timing_known': timing_known,
                         'effect_attainable': attainable, 'eal_correctness_truth': desired}

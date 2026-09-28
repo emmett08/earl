@@ -98,6 +98,9 @@ def test_format_interventions_do_not_require_reasoning_or_tools():
 
 def test_partial_json_task_decision_is_independent_of_format_and_grounding():
     parsed = response_format('json_prompted').parse('{"decision":"ready"}')
+    assert parsed['annotation']['status'] == 'pending'
+    assert ReferenceScorer().score(CASES[0], 0, parsed)['task_match'] is None
+    parsed['annotation'] = {'status': 'human', 'annotator': 'fixture-coder'}
     score = ReferenceScorer().score(CASES[0], 0, parsed)
     assert not parsed['format_valid']
     assert score['task_match']

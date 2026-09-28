@@ -1,6 +1,6 @@
 # EAL/2 experiment methodology
 
-Protocol 5.0.0 uses scientific-protocol schema 1.2 and has status **specified**.
+Protocol 6.0.0 uses scientific-protocol schema 1.2 and has status **specified**.
 The implementation and synthetic operating characteristics are checked separately
 from empirical feasibility. No live result under this protocol is claimed.
 
@@ -76,7 +76,26 @@ interval. Unknown token usage also prevents a finite resource claim.
 The default pilot has four repetitions in each of 48 task/model/tool strata:
 192 matched pairs, 384 arm sequences and 4,224 sessions. These counts describe
 coverage and nuisance estimation, not sufficient statistical power. USD 2 and
-7,200 seconds remain hard per-run ceilings. A partial pilot remains partial.
+21,600 seconds are cumulative per-run ceilings. A partial pilot remains partial.
+
+Four independent matched blocks run concurrently in saved-order batches. The
+two arms within a block and the sessions within each arm remain serial. The
+worker count is frozen in the plan; observed latency is conditional on it and
+provider load. Concurrent execution reduces waiting time, not the number of
+planned calls or their token expenditure. Shared reservations are atomic.
+
+Actions collects for at most 6,000 seconds within each 120-minute job. Checkpoints,
+per-session terminal records and the append-only API journal support resumption
+of the same run with the same code, paths and runtime. Completed or interrupted
+sessions are retained without replaying requests. Unknown usage keeps its reserved
+cost and incomplete session timing blocks deadline-feasibility claims. Segment
+time and expenditure remain cumulative; a hard-killed segment consumes its full
+time lease. The workflow never automatically launches another paid segment.
+
+Correctness coding applies to the whole answer. Only standalone canonical prose
+decisions are automatically coded; all JSON explanations require independent
+annotation, including in provider-enforced JSON conditions. Formatting validity
+does not establish substantive correctness.
 
 The pilot supplies complete paired trajectories, correctness disagreements,
 within-stratum variation, serial dependence, reservations, charges and elapsed
@@ -121,6 +140,14 @@ four acceptance-criterion checks. Candidates that fail validation are retained i
 the report. Only a live, completely measured pilot can produce an evaluation
 plan. Synthetic runs can never do so. Evaluation uses a new study/run identity
 and never pools allocation-pilot outcomes.
+
+Concurrent feasibility uses complete paired trajectories in batches of the frozen
+worker count. A batch takes the maximum pair duration. Its admission uses the
+sum of charges plus one maximum request reservation per worker, a conservative
+upper bound on simultaneous reserved expenditure. If a batch cannot fit, that
+batch and later batches retain unknown-outcome bounds. This approximation does
+not predict provider rate limits or extra contention: slower-execution sensitivity
+remains necessary, and no evaluation worker override is permitted.
 
 The former 15,320-pair Hoeffding requirement is reported as a reference calculation.
 The empirical Bernstein requirement depends on observed variance; its zero-variance

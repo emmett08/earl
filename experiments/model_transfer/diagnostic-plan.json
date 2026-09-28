@@ -71,5 +71,7 @@
       "migration-cutover-obligations",
       "database-alternative-read-routes"
     ]
-  }
+  },
+  "workers": 4,
+  "time_limit_seconds": 21600
 }
