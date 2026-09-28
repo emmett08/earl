@@ -1,94 +1,52 @@
-# EAL/2 paper for the Journal of Systems and Software
+# JSS article: the retained EAL/2 workflow pilot
 
-[Read the manuscript PDF](manuscript.pdf) · [LaTeX source](manuscript.tex) · [Submission checklist](review/submission-status.md)
+Read **[manuscript.pdf](manuscript.pdf)**. The main source is [manuscript.tex](manuscript.tex); **[jss-submission.zip](jss-submission.zip)** is a separately compiled, flat Elsevier source bundle. This folder replaces the earlier API-load-test papers. Their observations are not pooled with this experiment; earlier versions remain in Git history.
 
-This author-review manuscript describes EAL/2's implemented evidence binding and defeasible assessment, and reanalyses two supplied API load-test experiments. It includes **four figures**, an exact excerpt of the tested EAL example, generated result tables and separately versioned reproducible datasets. The scientific conclusion is bounded to the recorded systems and development cases.
+The article reports the completed principal collection on 28 September 2026: 192 paired blocks, 384 sequences and 4,224 fresh sessions. Its subject is the whole workflow, including the EAL host's automatic delivery of a checked assessment. Thirty-one AI-coded answers remain ambiguous (28 recipients, three donors). Independent assessor validation and a supported prospective allocation are not complete. Neither the article nor the bundle claims a completed confirmatory study.
 
-The historical run assigned 1,200 trials: 628 completed, 131 failed and 441 were not attempted after model-level stops. Every assignment is retained. Replaying the original scorer reproduces every trial score and the full summary. GPT-4.1 full scored 40/40 with EAL/MCP and 36/40 with JSON; all four JSON errors concern failed-check enumeration, while its statuses were correct. GPT-4.1 mini scored 32/40 and 21/40. Different checker access and incomplete execution prevent an isolated notation or general model-capability conclusion.
+## Reproduction, in order
 
-The later nano-only run assigned 240 trials under plan 3.1.0: 141 completed, 43 failed and 56 were unattempted. Plain-validator scored 11/40 against EAL/MCP's 3/40. All 30 attempted EAL assignments obtained correct assessment packets; 13 final answers were incorrect, 14 conversations exhausted the six-call limit and ten assignments were never dispatched after a provider HTTP 503 stopped execution. The revised rubric and newly acquired observations require separate analysis. These pilots do not establish an EAL accuracy advantage over ordinary validation. Protocol-4 repairs are described as implementation changes checked offline, with no new model-performance result.
-
-## Build and reproduce
+Use the repository revision accompanying this paper. Numerical reproduction needs Python 3.11+ and the standard library. EAL validation additionally needs the repository installed (`python -m pip install -e .` from the repository root; installation may need network access). The builds need `latexmk`, pdfLaTeX, BibTeX, Latin Modern, TikZ/PGFPlots, standalone, listings, microtype, geometry, booktabs, tabularx, xurl and hyperref. The unmodified Elsevier class and numeric bibliography style are included.
 
 From the repository root:
 
-```sh
-# Recompute scores, case identities, token costs and generated numerical tables.
-python3 paper/analysis/reproduce.py
-python3 paper/analysis/reproduce_nano.py
+| Order | Command | Purpose and output |
+|---|---|---|
+| 1 | `make -C paper reproduce` | Verify input hashes; recompute references, correctness, usage, paired bounds and plot coordinates; derive the highlighted EAL excerpt. Produces `results/` and `.tikz.tex` files. |
+| 2 | `make -C paper check` | Detect changed data, stale generated outputs, broken pairing, unmatched API attempts, score discrepancies, EAL parse/format differences and highlighting-keyword drift. Writes no data. |
+| 3 | `make -C paper pdf` | Repeat checks, compile five natural-size vector figures, then compile `manuscript.pdf` with references. |
+| 4 | `make -C paper submission` | Build the article and make a flat source ZIP; compile that ZIP's source independently before packaging it. |
 
-# Regenerate all four vector figures and the manuscript PDF.
-make -C paper
+These commands never collect model responses, contact the API or change the frozen experiment budget. No workflow dispatch, annotation import or new labels are needed to reproduce the present article. `python paper/analysis/reproduce.py --check` runs the numerical audit without requiring the repository package or LaTeX. `make -C paper clean` removes only LaTeX intermediate files.
 
-# Also check references, overflow, fonts, result cells and error interpretations.
-make -C paper check
-```
+The flat submission ZIP contains the article, vector figures, tables, listing, bibliography, class and style sources, highlights and author-review notes. It is a manuscript source bundle, not the full research-data archive. The repository's `paper/data/`, `analysis/` and annotation records supply the replication materials.
 
-The two historical score replays require Python 3.11+ and only its standard library. The optional [finalisation optimisation analysis](../experiments/api_load_test/OPTIMISATION.md), run with `python paper/analysis/analyse_finalisation.py` from an installed checkout, also imports the current answer contract and requires the project dependencies. It partitions recorded calls after a checked packet and is separate from a new model-performance experiment. Building requires `make`, `latexmk`, `pdflatex`, BibTeX, and the LaTeX packages listed in `manuscript.tex` and `analysis/render_figures.py`, including TikZ, `standalone`, Latin Modern and `natbib`. PDF checks additionally use Poppler's `pdfinfo` and `pdffonts`. The build uses a fixed `SOURCE_DATE_EPOCH`; generated outputs are committed for readers without TeX. See [validation](review/validation.txt) for the tested environment.
+## Evidence and identities
 
-No command above makes network requests or provider calls. To run the separately described software tests, install the repository development dependencies and use `python -m pytest -q`; 846 tests passed for the inspected source snapshot.
+| Item | Identity |
+|---|---|
+| Frozen run | `984bd05d-6366-41c3-b9ae-ee8766835b08` |
+| Collection | [36477862213](https://github.com/emmett08/earl/actions/runs/36477862213), revision `d52e2bd0898ed519253aedbbc8e002e493dd64d2` |
+| Corrected annotation export | [36487342999](https://github.com/emmett08/earl/actions/runs/36487342999), artefact `10998924773` |
+| Successful offline finishing | [36492423435](https://github.com/emmett08/earl/actions/runs/36492423435), revision `31a3cba769948e123a59ca35c54c5135ad005f54` |
+| Finished artefact | [11001997190](https://github.com/emmett08/earl/actions/runs/36492423435/artifacts/11001997190), `experiment-finish-36492423435-1`; scheduled expiry 27 December 2026 |
+| Original ZIP SHA-256 | `0c1b8f5af0990f04c20564ffffee9c103ac47cbcab7ca940639225d80bb32d23` |
+| Completed-labels SHA-256 | `e0fdfa6aa0b1f37b72334d55a4bfec06c281198ce08483efb0c455b6a7bf43c4` |
 
-## Materials and version boundaries
+`data/manifest.json` identifies every source and retained file. The gzip files preserve the complete annotated rows, corpus, frozen plan/contracts, provenance, calibration, segments and saved reports. Decompressed copied files are byte-identical to their archive counterparts. `call-accounting.json.gz` is an explicit projection of all 5,453 calls: usage, timing, IDs, cost and request configuration remain; duplicated request text, tool definitions and opaque provider response payloads are omitted. Full initial prompts, final answers and session evidence events remain in the annotated rows. This package supports the article's analyses, but does not claim to preserve every byte of the original provider transcript.
 
-| Material | Location / identity | Meaning |
-| --- | --- | --- |
-| Software description and tests | Commit `8220e838a8d42922edc0496ff50927c672a1f87d`, package 2.5.0 | Current implementation evidence |
-| Historical experiment | Commit `3490076dd78404caa1326d9aae704f964910c4c8`, plan 2.0.0, run schema `/2` | Five conditions, six pinned models, 40 development cases |
-| Original archive | [Run 36163505801, attempt 1](https://github.com/emmett08/earl/actions/runs/36163505801), artefact 10879620453 | Actual HTTP observations and provider calls, partial execution |
-| Reproduction inputs | `data/` | Raw case rows, all assignments, answers, outcomes and token accounting |
-| Historical scorers | `analysis/v2_oracle.py`, `analysis/v2_summary.py` | Byte-identical copies of the run commit, checked against its manifest |
-| Nano follow-up | [Run 36176588712, attempt 1](https://github.com/emmett08/earl/actions/runs/36176588712), commit `8220e838a8d42922edc0496ff50927c672a1f87d`, plan 3.1.0 | Six conditions, one pinned model, 40 newly acquired case reports |
-| Follow-up inputs and source | `data/nano-v3/`, `analysis/nano_v3_original/` | All 240 assignments, raw cases, response text, host packets, full tool traces and hash-verified original source |
-| Regenerated results | `results/` | Full summary, dispositions, costs and component-level errors |
-| Figures | `figures/*.tikz.tex` and matching PDFs | Two explanatory figures, empirical paired outcomes and nano failure diagnosis |
-| Review records | `review/` | Claim/source map, references, figure choices, validation and submission status |
+If the original ZIP is available, `python paper/analysis/extract_archive.py PATH_TO_ZIP` reconstructs the compact snapshot after verifying the exact archive hash. This is an optional provenance check, not a prerequisite for normal reproduction. The archive path is the sole input; passing another run is rejected. Do not relabel or replace the data merely to satisfy a planner gate.
 
-The current [experiment protocol](../experiments/api_load_test/README.md) changes finalisation and transient-error handling. Its rules must not be substituted for either historical run. The [worked API example](../examples/api-load-test/README.md) contains synthetic teaching records and uses a different freshness limit. It is not an additional pilot observation.
+The annotation procedure and manual semantic decisions are in [AI-CODING.md](../annotations/AI-CODING.md), [the committed labels](../annotations/pilot-36477862213-ai-labels.json) and [the adjudications](../annotations/pilot-36477862213-ai-adjudications.json). The article snapshot also retains per-answer assessor provenance and quotations. These are AI-assisted codes, not independent human labels.
 
-The archive SHA-256 is `bf5b59c340b1c11c85a3e39679bc9cc1bc4521af741f45d9dc5cc1c65cbd8547`, matching GitHub's artefact metadata. `data/provenance.json` contains source-member and curated-file digests. To regenerate the curated files from the exact supplied ZIP:
+## What the analysis verifies
 
-```sh
-python3 paper/analysis/extract_archive.py /path/to/api-experiment-36163505801-1.zip
-```
+All expected decisions are recomputed from dated facts and requirement scopes, separately from both saved scores and the host. The script checks 48 strata with four paired repetitions, eleven ordered sessions per sequence, donor tool availability, the model used for each attempt, complete and unique attempt coverage, and recorded usage/cost. It reconstructs all point counts, correctness envelopes, paired token distributions, horizon profiles and resource tables, and compares totals with the frozen report. It independently recalculates the two empirical Bernstein radii. The approximate stratified delta-method resource interval is preserved from the revision-bound report and explicitly attributed to that implementation; it is not claimed to have an independent second estimator here.
 
-The first extraction retains every assignment and all fields needed for score/cost reproduction, while omitting full provider responses, replay handles and per-call transcripts. Those remain in the original archive, whose Actions retention expires on 25 October 2026. A durable full-archive deposit remains a submission task.
+The source example is the actual retained cutover argument. The printed excerpt is derived by the current formatter using the experiment's registered reasoning method. Validation checks parse–format–parse semantic identity, exact excerpt equality and equality of the highlighting keyword set with `grammar/EAL.g4`. No EAL/6.1 or EARL grammar is substituted.
 
-The nano archive SHA-256 is `186adeb144ccaf4c77f5e36165999f3ad203a98bcfc24a7119c68d5c5eb206c5`. Its extraction preserves provider response text once per call, all protocol errors, every model-visible host packet and the complete tool traces. It omits duplicate provider objects and replay handles. Its frozen reference and summary are verified against the original manifest before execution:
+## Figures and review
 
-```sh
-python3 paper/analysis/reproduce_nano.py --extract /path/to/api-experiment-36176588712-1.zip
-```
+Five figures have include-ready `.tikz.tex` source and vector PDFs under `figures/`. They use retained data except the explicitly assumption-based coding-sensitivity region. Natural-size text is at least 8.5 pt. Colour is supplemented by marker shape and dash pattern. [The figure design record](review/figure-design.md) documents alternatives, semantic decisions and selection scores. [The verification record](review/verification.md) records numerical, syntax and visual checks.
 
-`results/nano-diagnosis.json` supplies the fourth figure and regenerates the counts behind the failure analysis. `results/nano-summary.json` must match the archived summary exactly. The known follow-up cost is USD 0.1146428 over 689 recorded calls; one call has unknown cost, retained separately. Keeping that uncertainty avoids treating an HTTP failure as a known zero charge.
-
-## Journal preparation
-
-Target: Elsevier's *Journal of Systems and Software*. The [official Guide for Authors](https://www.sciencedirect.com/journal/journal-of-systems-and-software/publish/guide-for-authors) is the authority for article type, manuscript preparation, declarations and submission files. Its full text could not be retrieved during this task; the paper does not impose an unverified page limit or claim exact journal-format compliance.
-
-The manuscript uses a single-column review layout. Four highlights are provided in `highlights.txt`. Author metadata, funding, competing interests, contribution statements, AI-assistance disclosure and current journal requirements need author confirmation before submission. [Submission status](review/submission-status.md) records these decisions without inventing declarations. The PR is ready for manuscript review; no journal submission has been made.
-
-## Relevant skills
-
-The following are exact skill names in this project's Codex environment. The first two have repository copies; the others are installed skills discoverable by name. Use them when the corresponding work is done, and distinguish their methods from measured results.
-
-| Work | Skill | Where to find it |
-| --- | --- | --- |
-| EAL/2 source, semantics, MCP contracts and comparisons | `engineer-argumentation-languages` | [`../skills/engineer-argumentation-languages/SKILL.md`](../skills/engineer-argumentation-languages/SKILL.md) |
-| Registered assessment routing and checked status communication | `eal-assessment-routing` | [`../skills/eal-assessment-routing/SKILL.md`](../skills/eal-assessment-routing/SKILL.md) |
-| Competing hypotheses, measures, controls and predeclared decisions | `design-scientific-investigations` | Installed Codex skill |
-| Estimands, assignment units, uncertainty and model heterogeneity | `analyse-software-engineering-statistics` | Installed Codex skill |
-| Explicit dependencies and failure tests for engineering assumptions | `engineering-assumptions` | Installed Codex skill |
-| Bounded claims, evidence, warrant and counterevidence | `assess-engineering-epistemic-entitlement` | Installed Codex skill |
-| Root claim and rival argument discovery | `argument-discovery` | Installed Codex skill |
-| Toulmin reconstruction and local argument repair | `toulmin-argument-reconstruction`, `toulmin-refinement` | Installed Codex skills |
-| Verifiable MCP and provider interaction | `verify-live-integrations` | Installed Codex skill |
-| Runtime design and maintainable experiment code | `evolve-codebase-architecture` | Installed Codex skill |
-| Formal definitions, proofs and computational claims | `write-mathematical-papers`, `formalise-proofs-and-algorithms` | Installed Codex skills |
-| Accurate claim-to-source and release review | `assure-first-publication` | Installed Codex skill |
-| Evidence-linked figures | `design-evidence-visualisation` | Installed Codex skill |
-| Clear technical prose and final wording audit | `write-engineering-analysis`, `audit-engineering-wording`, `humanise-agentic-writing` | Installed Codex skills |
-| Rendered manuscript inspection | `pdf` | Installed Codex skill |
-
-## Evidence boundary
-
-The pilots are descriptive reanalyses of existing development runs. No retrospective protocol is represented as preregistered. Keep each run's case pairing, assignment denominator, failure outcomes, provider snapshots and token rates when reproducing its results. Reused case identifiers do not make changed observations and rubrics interchangeable. A confirmatory follow-up needs a frozen question and analysis plan, independent cases, matched validation access and predefined execution rules. Direct host finalisation changes the evaluated system and must remain separate from model-finalised answers.
+The manuscript uses the official Elsevier `elsarticle` 3.4 class and numeric bibliography style, distributed with their source under LPPL; see [vendor/SOURCE.md](vendor/SOURCE.md). This is a review manuscript prepared for JSS, not a claim of acceptance or verified compliance with every current submission requirement. [Author-review notes](review/author-review.md) list the remaining authorship, declarations, availability and scientific decisions. No journal submission or public release is performed by these build commands.
