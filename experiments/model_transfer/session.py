@@ -23,23 +23,26 @@ class SessionRunner:
 
     def run(self, project: Project, model: dict, native_tools: bool, session_id: str, *,
             response_mode: str | None = None, context_style: str = 'compact',
-            include_notes: bool | None = None, reuse: str = 'compatible') -> dict:
+            include_notes: bool | None = None, reuse: str = 'compatible', reasoner: str = 'workflow') -> dict:
         start = time.monotonic()
         first_record = len(self.client.records)
         mode = response_mode or self.plan['response_mode']
         formatter = response_format(mode)
         notes = not project.strategy.requires_source if include_notes is None else include_notes
         question = f'Assess task readiness now at {project.case.time(project.session)}. '
+        revision = project.registration_context().get('evidence_revision')
+        if revision is not None:
+            question += f'Public evidence revision: {revision}. Earlier revisions have been invalidated. '
         result = {'session_id': session_id, 'session': project.session, 'model': model['version'],
                   'reasoning_effort': model['reasoning_effort'], 'native_tools': native_tools,
                   'response_mode': mode, 'context_style': context_style, 'include_notes': notes,
-                  'reuse': reuse, 'task_context': None, 'status': 'no_answer', 'answer': None,
+                  'reuse': reuse, 'reasoner': reasoner, 'task_context': None, 'status': 'no_answer', 'answer': None,
                   'response_texts': [],
                   'format_valid': None, 'annotation': {'status': 'empty', 'reason': 'No response'},
                   'file_result': {'status': 'not_requested', 'written': []}}
         try:
             prepared = self.prompts.prepare(project, question, response_mode=mode,
-                                             context_style=context_style, include_notes=notes, reuse=reuse)
+                                             context_style=context_style, include_notes=notes, reuse=reuse, reasoner=reasoner)
             messages = prepared.messages
             result.update(context_seconds=prepared.context_seconds, task_context=prepared.task_context,
                           initial_messages=copy.deepcopy(messages),

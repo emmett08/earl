@@ -7,6 +7,7 @@ from pathlib import Path
 import random
 
 from experiments.transfer_study.workspace import read_json
+from .task_manifest import cases_for_plan
 from .cases import CASES
 from .conditions import CONDITIONS
 from .information_config import validate_decision_specification, validate_information_target
@@ -16,7 +17,7 @@ MAX_SEQUENCES = 65536
 
 def load_plan(path: Path) -> dict:
     plan = read_json(path)
-    if plan.get('schema') != 'EAL/model-transfer-plan/3':
+    if plan.get('schema') != 'EAL/model-transfer-plan/4':
         raise ValueError('Invalid model transfer plan')
     validate_decision_specification(plan.get('practical_decision'))
     validate_information_target(plan.get('information_target'))
@@ -43,7 +44,7 @@ def load_plan(path: Path) -> dict:
         raise ValueError('Invalid pilot_run_ids or reused study identity')
     if plan['study_role'] == 'evaluation' and not pilot_ids:
         raise ValueError('An evaluation must identify its allocation pilot runs')
-    for key, allowed in (('cases', {case.identifier for case in CASES}), ('arms', set(CONDITIONS))):
+    for key, allowed in (('cases', {case.identifier for case in cases_for_plan(plan)}), ('arms', set(CONDITIONS))):
         values = plan.get(key)
         if (not isinstance(values, list) or not values or any(not isinstance(v, str) for v in values)
                 or len(values) != len(set(values)) or not set(values) <= allowed):

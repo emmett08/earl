@@ -1,5 +1,5 @@
 {
-  "schema": "EAL/model-transfer-information-design/1",
+  "schema": "EAL/model-transfer-information-design/2",
   "seed": 20260928,
   "simulations": 200,
   "budget_usd": 2.0,
@@ -10,36 +10,34 @@
     "minimum_correctness": 0.9
   },
   "information_target": {
-    "method": "precision",
+    "method": "decision_and_precision",
     "confidence": 0.95,
     "correctness_half_width": 0.025,
     "token_reduction_half_width": 0.1,
-    "assurance": 0.8
+    "assurance": 0.8,
+    "quality_method": "empirical_bernstein",
+    "joint_power": 0.8
   },
   "candidates": [
     {
-      "cases": 14,
-      "repetitions": 2
-    },
-    {
-      "cases": 14,
+      "cases": 6,
       "repetitions": 4
     },
     {
-      "cases": 14,
+      "cases": 6,
       "repetitions": 8
     },
     {
-      "cases": 14,
+      "cases": 6,
       "repetitions": 16
     },
     {
-      "cases": 14,
+      "cases": 6,
       "repetitions": 32
     },
     {
-      "cases": 14,
-      "repetitions": 137
+      "cases": 6,
+      "repetitions": 64
     }
   ],
   "scenarios": [
@@ -49,7 +47,11 @@
       "correctness_difference": 0.0,
       "missing_probability": 0.0,
       "cost_multiplier": 1.0,
-      "purpose": "design"
+      "purpose": "design",
+      "ordinary_correctness": 0.97,
+      "unseen_resource_cv": 0.05,
+      "decision_role": "null",
+      "require_information": true
     },
     {
       "name": "worthwhile",
@@ -57,7 +59,11 @@
       "correctness_difference": 0.0,
       "missing_probability": 0.0,
       "cost_multiplier": 1.0,
-      "purpose": "design"
+      "purpose": "design",
+      "ordinary_correctness": 0.97,
+      "unseen_resource_cv": 0.05,
+      "decision_role": "benefit",
+      "require_information": true
     },
     {
       "name": "adverse_quality",
@@ -65,15 +71,23 @@
       "correctness_difference": -0.1,
       "missing_probability": 0.0,
       "cost_multiplier": 1.0,
-      "purpose": "design"
+      "purpose": "design",
+      "ordinary_correctness": 0.97,
+      "unseen_resource_cv": 0.05,
+      "decision_role": "null",
+      "require_information": true
     },
     {
       "name": "missing_outcomes",
       "token_reduction": 0.3,
       "correctness_difference": 0.0,
-      "missing_probability": 0.1,
+      "missing_probability": 0.005,
       "cost_multiplier": 1.0,
-      "purpose": "stress"
+      "purpose": "stress",
+      "ordinary_correctness": 0.97,
+      "unseen_resource_cv": 0.05,
+      "decision_role": "estimation",
+      "require_information": true
     },
     {
       "name": "higher_expenditure",
@@ -81,7 +95,11 @@
       "correctness_difference": 0.0,
       "missing_probability": 0.0,
       "cost_multiplier": 2.0,
-      "purpose": "design"
+      "purpose": "design",
+      "ordinary_correctness": 0.97,
+      "unseen_resource_cv": 0.05,
+      "decision_role": "estimation",
+      "require_information": true
     },
     {
       "name": "resource_tail",
@@ -90,8 +108,12 @@
       "missing_probability": 0.0,
       "cost_multiplier": 1.0,
       "resource_tail_probability": 0.01,
-      "resource_tail_multiplier": 10.0,
-      "purpose": "stress"
+      "resource_tail_multiplier": 3,
+      "purpose": "stress",
+      "ordinary_correctness": 0.97,
+      "unseen_resource_cv": 0.05,
+      "decision_role": "estimation",
+      "require_information": true
     },
     {
       "name": "missing_usage",
@@ -100,7 +122,11 @@
       "correctness_difference": 0.0,
       "missing_probability": 0.1,
       "missing_usage": true,
-      "cost_multiplier": 1.0
+      "cost_multiplier": 1.0,
+      "ordinary_correctness": 0.97,
+      "unseen_resource_cv": 0.05,
+      "decision_role": "estimation",
+      "require_information": false
     },
     {
       "name": "slower_execution",
@@ -109,9 +135,65 @@
       "correctness_difference": 0.0,
       "missing_probability": 0.0,
       "cost_multiplier": 1.0,
-      "elapsed_multiplier": 2.0
+      "elapsed_multiplier": 2.0,
+      "ordinary_correctness": 0.97,
+      "unseen_resource_cv": 0.05,
+      "decision_role": "estimation",
+      "require_information": true
+    },
+    {
+      "name": "quality_boundary",
+      "token_reduction": 0.3,
+      "correctness_difference": -0.05,
+      "ordinary_correctness": 0.99,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "purpose": "design",
+      "decision_role": "null",
+      "require_information": true,
+      "unseen_resource_cv": 0.05
+    },
+    {
+      "name": "absolute_quality_boundary",
+      "token_reduction": 0.3,
+      "correctness_difference": 0.0,
+      "ordinary_correctness": 0.9,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "purpose": "design",
+      "decision_role": "null",
+      "require_information": true,
+      "unseen_resource_cv": 0.05
+    },
+    {
+      "name": "saving_boundary",
+      "token_reduction": 0.2,
+      "correctness_difference": 0.0,
+      "ordinary_correctness": 0.97,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "purpose": "design",
+      "decision_role": "null",
+      "require_information": true,
+      "unseen_resource_cv": 0.05
+    },
+    {
+      "name": "uncertain_variance",
+      "token_reduction": 0.3,
+      "correctness_difference": 0.0,
+      "ordinary_correctness": 0.97,
+      "missing_probability": 0.0,
+      "cost_multiplier": 1.0,
+      "purpose": "design",
+      "decision_role": "benefit",
+      "require_information": true,
+      "variance_inflation": 16.0,
+      "unseen_resource_cv": 0.2
     }
   ],
   "time_limit_seconds": 7200,
-  "workflow_overhead_seconds": 300
+  "workflow_overhead_seconds": 300,
+  "minimum_pilot_repetitions": 4,
+  "validation_simulations": 10000,
+  "calibration_tolerance": 0.01
 }

@@ -31,6 +31,13 @@ class CorpusCase:
     def context(self) -> dict:
         return {'task_id': self.identifier}
 
+    def context_at(self, session: int) -> dict:
+        context = self.context()
+        revision = self.timeline[session].get('evidence_revision')
+        if revision is not None:
+            context['evidence_revision'] = revision
+        return context
+
     def target_identity(self) -> dict:
         return {key: self.task_specification['scope'][key]
                 for key in self.task_specification['identity_scope_keys']}

@@ -5,24 +5,12 @@ import copy
 import itertools
 import math
 import random
-import statistics
 
-from .decision_statistics import DecisionStatistics
+from .allocation_assessment import ScenarioAssessment, monte_carlo_interval
 from .design import MAX_SEQUENCES
 from .information_config import validate_information_design
 from .trajectory_simulation import TrajectorySimulator
 from .pilot_data import PairedTrajectory, PilotSummary
-
-
-def monte_carlo_interval(successes: int, count: int) -> dict:
-    """Pointwise Wilson 95% interval; uncertainty about one simulation cell only."""
-    z = statistics.NormalDist().inv_cdf(.975)
-    rate = successes / count
-    denominator = 1 + z * z / count
-    centre = (rate + z * z / (2 * count)) / denominator
-    radius = z / denominator * math.sqrt(rate * (1 - rate) / count + z * z / (4 * count * count))
-    return {'estimate': rate, 'monte_carlo_95_interval': [max(0, centre - radius), min(1, centre + radius)],
-            'successes': successes, 'replications': count}
 
 
 class AllocationPlanner:
@@ -53,8 +41,8 @@ class AllocationPlanner:
             blockers.append('Pilot run identity is missing')
         if provenance.get('pilot_accounting_complete') is False:
             blockers.append('Pilot-wide API receipt reconciliation failed; unassigned attempts cannot be excluded')
-        if not summary['within_cell_variance_identified']:
-            blockers.append('Within-cell variability requires at least two independent pilot repetitions in every cell')
+        if summary['minimum_complete_repetitions_per_stratum'] < config.get('minimum_pilot_repetitions', 4):
+            blockers.append('Pilot replication is below the declared minimum for nuisance estimation')
         if any(s.tokens is None or s.cost_usd is None for p in pilot for arm in (p.eal, p.ordinary) for s in arm):
             blockers.append('Incomplete pilot resource measurements cannot identify the empirical cost distribution')
         if any(s.correctness is None for p in pilot for arm in (p.eal, p.ordinary) for s in arm[1:]):
@@ -83,71 +71,37 @@ class AllocationPlanner:
             if len(actual_cells) != candidate['cases'] * expected_cells:
                 entries.append({**candidate, 'eligible': False, 'reason': 'Pilot is missing a planned model/tool cell'})
                 continue
-            outcomes = []
-            for scenario in config['scenarios']:
-                counters = {key: 0 for key in ('precision', 'quality_precision', 'token_precision', 'practical_support',
-                                              'budget_complete', 'deadline_complete', 'effect_attainable', 'quality_coverage', 'absolute_quality_coverage', 'token_coverage', 'joint_coverage',
-                                              'token_interval_available')}
-                spends, elapsed = [], []
-                for _ in range(config['simulations']):
-                    trial, execution = simulator.simulate(case_ids, candidate['repetitions'], scenario, rng)
-                    result = DecisionStatistics(target['confidence']).calculate(trial)
-                    qi, ti = result['quality_interval'], result['token_reduction_interval']
-                    quality_bounds = result['quality_difference_bounds']
-                    quality_precision = (qi is not None and result['quality_sampling_half_width']
-                        + (quality_bounds[1] - quality_bounds[0]) / 2 <= target['correctness_half_width'])
-                    token_precision = (ti is not None and result['token_sampling_half_width']
-                                       <= target['token_reduction_half_width'])
-                    counters['quality_precision'] += quality_precision
-                    counters['token_precision'] += token_precision
-                    counters['precision'] += (quality_precision and token_precision and not execution['budget_stopped']
-                                              and not execution['time_stopped'] and execution['timing_known'])
-                    counters['practical_support'] += bool(qi and ti and qi[0] >= -config['practical_decision']['correctness_margin']
-                                                          and result['eal_correctness_interval'][0] >= config['practical_decision']['minimum_correctness']
-                                                          and ti[0] >= config['practical_decision']['minimum_token_reduction'])
-                    counters['budget_complete'] += not execution['budget_stopped']
-                    counters['deadline_complete'] += not execution['time_stopped'] and execution['timing_known']
-                    counters['effect_attainable'] += execution['effect_attainable']
-                    truth_known = (execution['effect_attainable'] and not summary['missing_paired_recipient_fraction'])
-                    counters['quality_coverage'] += bool(truth_known and qi and qi[0] <= scenario['correctness_difference'] <= qi[1])
-                    ai = result['eal_correctness_interval']
-                    counters['absolute_quality_coverage'] += bool(truth_known and ai and ai[0] <= execution['eal_correctness_truth'] <= ai[1])
-                    counters['token_coverage'] += bool(ti and ti[0] <= scenario['token_reduction'] <= ti[1])
-                    counters['joint_coverage'] += bool(truth_known and qi and ai and ti
-                        and qi[0] <= scenario['correctness_difference'] <= qi[1]
-                        and ai[0] <= execution['eal_correctness_truth'] <= ai[1]
-                        and ti[0] <= scenario['token_reduction'] <= ti[1])
-                    counters['token_interval_available'] += ti is not None
-                    spends.append(execution['charged_usd'])
-                    elapsed.append(execution['elapsed_seconds'])
-                outcomes.append({'scenario': scenario, **{key: monte_carlo_interval(value, config['simulations'])
-                    for key, value in counters.items()}, 'mean_charged_usd': statistics.mean(spends),
-                    'mean_elapsed_seconds': statistics.mean(elapsed),
-                    'coverage_truth_available': not summary['missing_paired_recipient_fraction'],
-                    'coverage_denominator': 'All simulated trials; unavailable intervals count as no coverage. '
-                        'Quality coverage requires fully annotated pilot outcomes.'})
-                if summary['missing_paired_recipient_fraction']:
-                    outcomes[-1]['quality_coverage'] = None
-                    outcomes[-1]['absolute_quality_coverage'] = None
-                    outcomes[-1]['joint_coverage'] = None
-            required = [s for s in outcomes if s['scenario'].get('purpose', 'design') == 'design']
-            precise = all(s['precision']['monte_carlo_95_interval'][0] >= target['assurance'] for s in required)
-            calibrated = all(s['joint_coverage'] is not None
-                           and s['joint_coverage']['monte_carlo_95_interval'][0] >= target['confidence']
-                           and s['effect_attainable']['successes'] == config['simulations']
-                           for s in required)
+            assessment = ScenarioAssessment(config, simulator)
+            outcomes = [assessment.run(case_ids, candidate['repetitions'], scenario, rng, config['simulations'], screening=True)
+                        for scenario in config['scenarios']]
+            precise = all('precision_or_feasibility' not in s['calibration_failures'] for s in outcomes)
+            calibrated = all(not s['calibration_failures'] for s in outcomes)
             entries.append({**candidate, 'case_ids': case_ids, 'paired_sequences': pairs,
-                            'planned_sessions': pairs * 2 * (horizon + 1), 'eligible': True,
-                            'precision_target_satisfied': precise, 'coverage_calibration_satisfied': calibrated,
-                            'eligible_for_evaluation': precise and calibrated, 'scenarios': outcomes,
-                            'failed_stress_scenarios': [s['scenario']['name'] for s in outcomes
-                                if s['scenario'].get('purpose') == 'stress'
-                                and (s['precision']['monte_carlo_95_interval'][0] < target['assurance']
-                                     or s['joint_coverage'] is None
-                                     or s['joint_coverage']['monte_carlo_95_interval'][0] < target['confidence']
-                                     or s['effect_attainable']['successes'] != config['simulations'])]})
-        feasible = [entry for entry in entries if entry.get('eligible_for_evaluation')]
-        chosen = min(feasible, key=lambda e: e['planned_sessions']) if feasible and not blockers else None
+                'planned_sessions': pairs * 2 * (horizon + 1), 'eligible': True,
+                'precision_not_ruled_out': precise, 'calibration_not_ruled_out': calibrated,
+                'eligible_for_validation': calibrated, 'evaluation_validated': False, 'scenarios': outcomes,
+                'failed_stress_scenarios': [s['scenario']['name'] for s in outcomes
+                    if s['scenario'].get('purpose') == 'stress' and s['calibration_failures']]})
+        feasible = [entry for entry in entries if entry.get('eligible_for_validation')]
+        chosen = None
+        validation = []
+        # Screening never certifies a selected candidate. Spend new simulation
+        # draws on validation; multiplicity is controlled across all attempted
+        # candidate/scenario validations by a Bonferroni MC confidence level.
+        mc_confidence = 1 - .05 / max(1, len(entries) * len(config['scenarios']) * 4)
+        if not blockers:
+            for entry in sorted(feasible, key=lambda item: item['planned_sessions']):
+                fresh = random.Random(config['seed'] + 104729 + entry['repetitions'])
+                assessment = ScenarioAssessment(config, simulator)
+                checked = [assessment.run(entry['case_ids'], entry['repetitions'], scenario, fresh,
+                    config.get('validation_simulations', 10000), mc_confidence=mc_confidence)
+                    for scenario in config['scenarios']]
+                validation.append({'repetitions': entry['repetitions'], 'scenarios': checked,
+                    'seed': config['seed'] + 104729 + entry['repetitions'], 'mc_confidence': mc_confidence})
+                if all(not s['calibration_failures'] for s in checked):
+                    entry['evaluation_validated'] = True
+                    chosen = entry
+                    break
         proposal = None
         if chosen:
             proposal = copy.deepcopy(source_plan)
@@ -158,24 +112,22 @@ class AllocationPlanner:
                 seed=config['seed'] + 1, budget_usd=config['budget_usd'],
                 time_limit_seconds=config.get('time_limit_seconds', 7200),
                 workflow_overhead_seconds=config.get('workflow_overhead_seconds', 0))
-        return {'schema': 'EAL/model-transfer-information-result/1',
+        return {'schema': 'EAL/model-transfer-information-result/2',
                 'status': 'allocation_identified' if proposal else 'no_supported_allocation',
                 'execution_kind': 'empirical_planning' if live else 'synthetic_rehearsal',
                 'pilot_run_id': provenance.get('run_id'), 'pilot_data_sha256': fingerprint,
                 'configuration': config, 'pilot_summary': summary, 'blockers': blockers,
-                'quality_bound_minimum_pairs': math.ceil(2 * math.log(6 / (1 - target['confidence']))
+                'hoeffding_reference_minimum_pairs': math.ceil(2 * math.log(6 / (1 - target['confidence']))
                                                         / target['correctness_half_width'] ** 2),
+                'empirical_bernstein_zero_variance_minimum_pairs': math.ceil(14 * math.log(12 / (1 - target['confidence'])) / (3 * target['correctness_half_width']) + 1),
                 'executable_maximum_pairs': MAX_SEQUENCES // 2,
-                'quality_bound_minimum_repetitions': math.ceil(2 * math.log(6 / (1 - target['confidence']))
+                'hoeffding_reference_minimum_repetitions': math.ceil(2 * math.log(6 / (1 - target['confidence']))
                     / target['correctness_half_width'] ** 2 / (len(source_plan['cases']) * expected_cells)),
-                'candidates': entries, 'proposed_evaluation_plan': proposal,
-                'selection_rule': 'Smallest executable allocation whose Monte Carlo lower precision-assurance '
-                    'bound reaches the target and whose lower joint-coverage bound reaches nominal confidence '
-                    'in every predeclared design scenario; stress failures remain explicit limitations; no synthetic proposal.',
-                'monte_carlo_scope': 'Intervals are pointwise for each candidate/scenario cell, not simultaneous '
-                    'confidence statements across the selected grid. Allocation remains conditional on the simulated distributions.',
+                'candidates': entries, 'fresh_seed_validation': validation, 'proposed_evaluation_plan': proposal,
+                'selection_rule': 'Smallest allocation passing precision, joint decision assurance, false-success and coverage checks, followed by fresh-seed validation. No synthetic proposal.',
+                'monte_carlo_scope': 'Screening intervals are pointwise. Fresh validation adjusts MC confidence across candidate/scenario/criterion checks. Calibration tolerance qualifies approximate resource inference, not the practical effect thresholds.',
                 'assumptions': ['Independent matched sequence executions conditional on fixed task/model/tool cells.',
-                    'Within-cell empirical whole-trajectory resampling represents rerun variation; unseen tails are not identified.',
+                    'Whole-trajectory resampling is supplemented by mean-one variance correction and declared unseen-variation/tail scenarios; these remain assumptions.',
                     'Hypothetical token effects rescale EAL usage at fixed token mix; cost sensitivity is explicit.',
                     'Retained request reservations never shrink when simulated token usage shrinks.',
                     'Rare-tail multipliers are conservative expenditure stresses, not claims of provider-feasible individual responses.',

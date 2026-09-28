@@ -45,10 +45,10 @@ def test_plan_and_schedule_preserve_single_factor_and_replay():
     # not alter randomisation when that exact plan is reloaded for analysis.
     saved_plan = json.loads(json.dumps(plan, sort_keys=True))
     assert schedule == DiagnosticSchedule(saved_plan).allocations()
-    assert len(schedule) == 4
-    assert sum(1 + len(block['variants']) for block in schedule) == 32
+    assert len(schedule) == 10
+    assert sum(1 + len(block['variants']) for block in schedule) == 56
     ids = [variant['session_id'] for block in schedule for variant in block['variants']]
-    assert len(ids) == len(set(ids)) == 28
+    assert len(ids) == len(set(ids)) == 46
     for block in schedule:
         for variant in block['variants']:
             changed = {key for key, value in variant['options'].items() if BASELINE[key] != value}
@@ -89,15 +89,15 @@ def test_controlled_diagnostics_record_real_manipulations_and_cloned_state(tmp_p
     report = DiagnosticPilot(plan, tmp_path, transport).run()
     rows = read_json(tmp_path / 'rows.json')
     assert report['execution_status'] == 'complete' and report['status'] == 'pending_annotation'
-    assert report['planned_blocks'] == 4 and report['planned_sessions'] == 32
-    assert report['api_attempts'] == 32 and report['charged_or_reserved_usd'] <= 2
-    assert len(report['comparisons']) == 20
+    assert report['planned_blocks'] == 10 and report['planned_sessions'] == 56
+    assert report['api_attempts'] == 56 and report['charged_or_reserved_usd'] <= 2
+    assert len(report['comparisons']) == 38
     assert report['resource_accounting_complete'] is True
     groups = report['resource_groups']
-    assert groups['shared_donors']['api_attempts'] == 4
-    assert groups['recipients']['api_attempts'] == 28
-    assert len(report['blocks']) == 4
-    assert sum(len(block['recipients']) for block in report['blocks']) == 28
+    assert groups['shared_donors']['api_attempts'] == 10
+    assert groups['recipients']['api_attempts'] == 46
+    assert len(report['blocks']) == 10
+    assert sum(len(block['recipients']) for block in report['blocks']) == 46
     for block in report['blocks']:
         donor = block['shared_donor']
         assert set(donor['preparation']) == {'donor_setup', 'shared_state'}
@@ -115,8 +115,8 @@ def test_controlled_diagnostics_record_real_manipulations_and_cloned_state(tmp_p
         assert group['elapsed_with_preparation_seconds'] > group['elapsed_seconds']
     # Format variants occur in several pairwise contrasts. Those repeated entries
     # are useful comparisons but are deliberately absent from unique aggregation.
-    assert sum(r['api_attempts'] for c in report['comparisons'] for r in c['resources']) == 40
-    assert report['resources']['api_attempts'] == 32
+    assert sum(r['api_attempts'] for c in report['comparisons'] for r in c['resources']) == 76
+    assert report['resources']['api_attempts'] == 56
     assert 'must not be summed' in report['interpretation']
     assert all(c['manipulation']['status'] == 'passed' for c in report['comparisons'])
     assert all(variant['input_snapshot'] == row['donor_snapshot']
@@ -150,7 +150,7 @@ def test_controlled_diagnostics_record_real_manipulations_and_cloned_state(tmp_p
                     '--rows', str(derived)], check=True)
     analysed = read_json(tmp_path / 'analysis.json')
     assert analysed['status'] == 'complete' and analysed['pending_annotation_sessions'] == 0
-    assert analysed['api_attempts'] == 32
+    assert analysed['api_attempts'] == 56
     assert read_json(tmp_path / 'rows.json') == rows
 
 
@@ -189,10 +189,10 @@ def test_fatal_donor_failure_keeps_planned_sessions_and_unknown_cost(tmp_path):
     plan = load_diagnostic_plan(PLAN)
     report = DiagnosticPilot(plan, tmp_path, Failure()).run()
     assert report['status'] == 'partial'
-    assert report['planned_sessions'] == 32 and report['api_attempts'] == 1
+    assert report['planned_sessions'] == 56 and report['api_attempts'] == 1
     assert report['unknown_cost_attempts'] == 1
     assert all(c['decision_difference_right_minus_left'] is None for c in report['comparisons'])
-    assert len(read_json(tmp_path / 'rows.json')) == 4
+    assert len(read_json(tmp_path / 'rows.json')) == 10
 
 
 def test_prompted_format_contrast_requires_neither_reasoning_nor_native_tools(tmp_path):
@@ -235,7 +235,7 @@ def test_failed_preparation_retains_elapsed_stage_and_unknown_remaining_work(tmp
     assert row['preparation']['shared_state'] == {'status': 'not_run', 'elapsed_seconds': None}
     assert report['resources']['preparation_timing_complete'] is False
     assert report['resources']['preparation_operations_complete'] is False
-    assert report['resources']['unknown_preparation_operations'] == 35
+    assert report['resources']['unknown_preparation_operations'] == 65
     assert report['resources']['elapsed_with_preparation_complete'] is False
 
 

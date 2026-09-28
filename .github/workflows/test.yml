@@ -7,11 +7,13 @@ on:
         type: boolean
         default: false
       model_transfer_plan:
-        description: 'Ten-session allocation pilot; separate 32-session diagnostics'
+        description: 'Principal, reasoning or evidence-cadence pilot; each has a USD 2 ceiling'
         type: choice
         options:
           - comparison
           - diagnostics
+          - cadence
+          - cadence-diagnostics
         default: comparison
 permissions:
   contents: read
@@ -54,6 +56,8 @@ jobs:
           case "$TRANSFER_PLAN" in
             comparison) plan_file=experiments/model_transfer/plan.json ;;
             diagnostics) plan_file=experiments/model_transfer/diagnostic-plan.json ;;
+            cadence) plan_file=experiments/model_transfer/cadence-plan.json ;;
+            cadence-diagnostics) plan_file=experiments/model_transfer/cadence-diagnostic-plan.json ;;
             *) exit 2 ;;
           esac
           python -m experiments.model_transfer.runner --plan "$plan_file" --output experiments/model_transfer/runs/live

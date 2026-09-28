@@ -46,6 +46,9 @@ class Project:
         self.session = session
         write_json(self.state, self.case.measurement(session))
 
+    def registration_context(self) -> dict:
+        return self.case.context_at(self.session) if hasattr(self.case, 'context_at') else self.case.context()
+
     def probe(self) -> dict:
         start = time.monotonic()
         result = read_json(self.state)
@@ -53,7 +56,10 @@ class Project:
                             'elapsed_seconds': time.monotonic() - start})
         return result
 
-    def context(self, question: str, *, style: str = 'full', reuse: str = 'compatible') -> list[dict]:
+    def context(self, question: str, *, style: str = 'full', reuse: str = 'compatible', reasoner: str = 'workflow') -> list[dict]:
+        if reasoner != 'workflow':
+            from .reasoning_context import prepare_reasoning_context
+            return prepare_reasoning_context(self, question, reasoner=reasoner, reuse=reuse)
         return self.strategy.prepare(self, question, style=style, reuse=reuse)
 
     def fork(self, root: Path, session: int) -> Project:

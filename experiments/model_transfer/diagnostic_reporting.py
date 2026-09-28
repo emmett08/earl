@@ -6,6 +6,7 @@ import itertools
 from .diagnostic_design import DiagnosticSchedule, diagnostic_levels
 from .diagnostic_measurement import ManipulationCheck
 from .diagnostic_resources import DiagnosticResources
+from .diagnostic_inference import summarise
 
 
 class DiagnosticReportBuilder:
@@ -99,7 +100,7 @@ class DiagnosticReportBuilder:
         status = ('partial' if execution == 'partial' else 'invalid_manipulation' if invalid else
                   'incomplete_accounting' if not accounting_complete else
                   'pending_annotation' if pending else 'complete')
-        return {'schema': 'EAL/model-transfer-diagnostic-report/1',
+        return {'schema': 'EAL/model-transfer-diagnostic-report/2',
                 'status': status, 'execution_status': execution,
                 'stop_reason': stop, 'planned_blocks': len(rows), 'planned_sessions': len(ids),
                 'invalid_comparisons': invalid, 'pending_annotation_sessions': pending,
@@ -110,7 +111,7 @@ class DiagnosticReportBuilder:
                 'charged_or_reserved_usd': sum(call['charged_or_reserved_usd'] for call in calls),
                 'resource_accounting_complete': accounting_complete,
                 'resources': resources, 'resource_groups': groups, 'blocks': blocks,
-                'comparisons': comparisons,
+                'comparisons': comparisons, 'contrast_intervals': summarise(comparisons),
                 'timing_scope': 'Session execution plus donor construction, shared-state preparation and clone construction. '
                     'Preparation timing excludes snapshot validation and diagnostic serialisation/logging; session timing covers the session-runner interval. '
                     'Report construction and annotation are outside these intervals. '
