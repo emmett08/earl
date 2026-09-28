@@ -37,6 +37,9 @@ class TaskContract:
     def from_case(cls, case) -> 'TaskContract':
         # Only task metadata enter this binding. Neither current nor expected
         # measurements, reference answers or model answers are read here.
+        if getattr(case, 'task_kind', 'threshold') == 'task_rules':
+            from .corpus_context import CorpusTaskContract
+            return CorpusTaskContract.from_case(case)
         return cls(case.metric, case.unit, case.threshold, case.direction,
                    case.assumption_from, case.assumption_until)
 
@@ -100,11 +103,15 @@ class TaskContextBuilder:
     time, unavailable evidence and the limits of authored interpretation.
     """
 
-    def __init__(self, contract: TaskContract, source: str):
+    def __init__(self, contract: TaskContract, source: str, *, explain=None):
         self.contract = contract
         self.program = contract.validate(source)
+        self.explain = explain
 
     def build(self, assessment: dict) -> dict:
+        custom = getattr(self.contract, 'build', None)
+        if custom is not None:
+            return custom(assessment, self.program, self.explain)
         contract = self.contract
         packet = assessment['packet']
         if (assessment.get('source_digest') != self.program.source_digest or

@@ -31,4 +31,5 @@ CONTRACT = MethodContract(
 
 
 def registry():
-    return default_registry().with_method(CONTRACT)
+    from .corpus_logic import CONTRACT as corpus_contract
+    return default_registry().with_method(CONTRACT).with_method(corpus_contract)

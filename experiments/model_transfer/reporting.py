@@ -9,6 +9,8 @@ from .comparisons import PairedComparisons
 from .design import AssignmentSchedule
 from .outcomes import OutcomeSummary
 from .resources import ResourceSummary
+from .decision_statistics import PracticalDecision
+from .pilot_data import PilotExtractor
 
 
 class ReportBuilder:
@@ -17,7 +19,8 @@ class ReportBuilder:
         self.resources = ResourceSummary()
         self.outcomes = OutcomeSummary()
 
-    def build(self, rows: list[dict], calls: list[dict], stop_reason: str | None) -> dict:
+    def build(self, rows: list[dict], calls: list[dict], stop_reason: str | None,
+              provenance: dict | None = None) -> dict:
         expected = {r['sequence_id']: r for r in AssignmentSchedule(self.plan).allocations()}
         if len(rows) != len(expected) or {r['sequence_id'] for r in rows} != set(expected):
             raise ValueError('Report must retain exactly the planned sequence denominator')
@@ -81,7 +84,7 @@ class ReportBuilder:
         accounting = self.resources.summarise(all_sessions, calls, session_ids=all_ids, include_unassigned=True)
         pending = sum(s.get('score', {}).get('task_match') is None for s in all_sessions)
         incomplete = stop_reason is not None or any(r['status'] != 'complete' for r in rows)
-        return {
+        report = {
             'schema': 'EAL/model-transfer-result/3',
             'status': ('partial' if incomplete else 'incomplete_accounting' if not accounting['accounting_complete']
                        else 'pending_annotation' if pending else 'complete'),
@@ -107,3 +110,26 @@ class ReportBuilder:
                      'API attempt counts and known costs are recorded subtotals; complete totals require receipt reconciliation. '
                      'API prices exclude cached discounts, host infrastructure and human costs.',
         }
+        specification = self.plan.get('practical_decision')
+        if specification is not None:
+            if specification['recipient_horizon'] != self.plan['recipient_sessions']:
+                report['practical_decision'] = {'status': 'declared_horizon_not_observed', 'specification': specification}
+            else:
+                provenance = provenance or {}
+                pilot_ids = self.plan.get('pilot_run_ids', [])
+                independent = bool(provenance.get('execution_kind') == 'live' and provenance.get('run_id')
+                    and pilot_ids and provenance['run_id'] not in pilot_ids and accounting['accounting_complete'])
+                trajectories = PilotExtractor().extract(rows, calls, self.plan['recipient_sessions'])
+                report['practical_decision'] = PracticalDecision(specification).evaluate(trajectories,
+                    study_role=self.plan.get('study_role', 'pilot'), independent_evaluation=independent,
+                    confidence=self.plan.get('information_target', {}).get('confidence', .95))
+                report['practical_decision']['execution_kind'] = provenance.get('execution_kind', 'unverified')
+                report['practical_decision']['run_id'] = provenance.get('run_id')
+                report['practical_decision']['pilot_run_ids'] = pilot_ids
+                report['practical_decision']['measurement_status'] = ('complete' if accounting['accounting_complete']
+                                                                       else 'incomplete_accounting')
+                if not accounting['accounting_complete']:
+                    report['practical_decision']['interval_criteria_met'] = False
+                    report['practical_decision']['practical_point_criteria_met'] = False
+                    report['practical_decision']['status'] = 'measurement_incomplete'
+        return report

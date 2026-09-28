@@ -23,6 +23,9 @@ class Case:
     direction: str = 'at_most'
     cohort: str = 'diagnostic'
 
+    def context(self) -> dict:
+        return {'service': 'orders'}
+
     def time(self, session: int) -> str:
         if session == 0:
             return FIRST
@@ -73,7 +76,7 @@ argument result {{ conclusion criterion_evaluated; reasoning threshold; evidence
 '''
 
 
-CASES = (
+CALIBRATION_CASES = (
     Case('fresh_positive', 180, 180, EARLY),
     Case('fresh_negative', 240, 240, EARLY),
     Case('refresh_positive', 240, 180, LATE),
@@ -85,3 +88,15 @@ CASES = (
     Case('capacity_drop', 25, 15, LATE, metric='free storage', unit='GB',
          threshold=20, direction='at_least', cohort='additional'),
 )
+
+
+def case_from_record(record: dict):
+    """Reconstruct retained cases for annotation without changing their fixture."""
+    from .corpus_cases import CorpusCase
+    factories = {'threshold': Case, 'task_rules': CorpusCase}
+    return factories[record.get('task_kind', 'threshold')](**record)
+
+
+from .corpus_cases import load_cases
+
+CASES = (*CALIBRATION_CASES, *load_cases())

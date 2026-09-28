@@ -12,7 +12,7 @@ from experiments.model_transfer.resources import ResourceSummary
 
 def fixture():
     plan = load_plan(Path('experiments/model_transfer/plan.json'))
-    plan.update(cases=['fresh_positive'], repetitions=1)
+    plan.update(cases=['fresh_positive'], repetitions=1, recipient_sessions=2)
     rows, calls = [], []
     for allocation in AssignmentSchedule(plan).allocations():
         sessions = []

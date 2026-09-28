@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from .cases import Case
+from .task_case import TaskCase
 
 
 def instant(value: str) -> datetime:
@@ -13,7 +13,10 @@ def instant(value: str) -> datetime:
 class ReferenceScorer:
     """Use fixture facts and specification arithmetic; never read EAL statuses."""
 
-    def reference(self, case: Case, session: int) -> dict:
+    def reference(self, case: TaskCase, session: int) -> dict:
+        if getattr(case, 'task_kind', 'threshold') == 'task_rules':
+            from .corpus_reference import CorpusReference
+            return CorpusReference().reference(case, session)
         now = instant(case.time(session))
         measurement = case.measurement(session)
         reading = measurement['value'].get('reading')
@@ -22,10 +25,10 @@ class ReferenceScorer:
             decision, basis = 'undetermined', 'assumption_expired'
         elif case.assumption_until and now < instant(case.assumption_from):
             decision, basis = 'undetermined', 'assumption_not_started'
-        elif reading is None:
-            decision, basis = 'undetermined', 'measurement_missing'
         elif not 0 <= (now - observed).total_seconds() <= 300:
             decision, basis = 'undetermined', 'stale_measurement'
+        elif reading is None:
+            decision, basis = 'undetermined', 'measurement_missing'
         else:
             # Deliberately separate from the installed EAL comparison function.
             failure = reading > case.threshold if case.direction == 'at_most' else reading < case.threshold
@@ -33,7 +36,7 @@ class ReferenceScorer:
         return {'decision': decision, 'basis': basis, 'reading': reading,
                 'observed_at': measurement['observed_at']}
 
-    def score(self, case: Case, session: int, result: dict) -> dict:
+    def score(self, case: TaskCase, session: int, result: dict) -> dict:
         reference = self.reference(case, session)
         answer = result.get('answer') or {}
         if not isinstance(answer, dict):

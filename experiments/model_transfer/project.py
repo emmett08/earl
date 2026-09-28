@@ -11,13 +11,13 @@ import time
 
 from eal.knowledge import EALKnowledgeBase
 from experiments.transfer_study.workspace import read_json, write_json
-from .cases import Case
+from .task_case import TaskCase
 from .conditions import CONDITIONS
 from .threshold_method import registry
 
 
 class Project:
-    def __init__(self, root: Path, case: Case, arm: str):
+    def __init__(self, root: Path, case: TaskCase, arm: str):
         self.root, self.case, self.arm = root, case, arm
         self.strategy = CONDITIONS[arm]
         self.workspace = root / 'project'
@@ -32,11 +32,15 @@ class Project:
             (self.workspace / 'tools.toml').write_text(
                 '[tools.probe]\nkind="command"\nversion="1"\n' +
                 'argv=' + json.dumps([sys.executable, str(collector), str(self.state.resolve())]) +
-                '\ntimeout_seconds=10\nmax_output_bytes=4096\ninherit_env=[]\n')
+                '\ntimeout_seconds=10\nmax_output_bytes=65536\ninherit_env=[]\n')
             knowledge = EALKnowledgeBase(self.workspace, self.workspace / 'tools.toml',
                                          method_registry=registry())
-            knowledge.register('argument.eal', entry_id='orders', context={'service': 'orders'},
+            knowledge.register('argument.eal', entry_id='orders', context=case.context(),
                                claims=['criterion_evaluated'])
+
+    def explain(self, assessment_id: str) -> dict:
+        knowledge = EALKnowledgeBase(self.workspace, self.workspace / 'tools.toml', method_registry=registry())
+        return knowledge.explain(assessment_id)
 
     def set_session(self, session: int) -> None:
         self.session = session

@@ -37,7 +37,8 @@ class EALContext:
                 question, 'orders', 'criterion_evaluated', now=project.case.time(project.session), reuse=reuse)
             event['assessment'] = result['assessment']
             task = TaskContextBuilder(TaskContract.from_case(project.case),
-                                      (project.workspace / 'argument.eal').read_text()).build(result['assessment'])
+                                      (project.workspace / 'argument.eal').read_text(),
+                                      explain=knowledge.explain).build(result['assessment'])
             event['task_context'] = task
             messages = [{'role': 'system', 'content':
                          'Current host-computed task result and its applicability:\n' +

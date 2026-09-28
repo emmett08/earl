@@ -14,8 +14,9 @@ from pathlib import Path
 import random
 import uuid
 
-from .cases import Case
+from .cases import case_from_record
 from .scoring import ReferenceScorer
+from .records import SequenceRecords
 
 SCHEMA = 'EAL/model-transfer-annotations/1'
 LABELS = {'ready', 'not_ready', 'undetermined', 'no_answer', 'ambiguous'}
@@ -61,7 +62,7 @@ class AnnotationExchange:
     """Separate masked semantic coding from reference-based outcome scoring."""
 
     def export(self, run: Path, output: Path, *, include_all: bool = False) -> dict:
-        rows_text = (run / 'rows.json').read_text(encoding='utf-8')
+        rows_text = SequenceRecords(run).text()
         rows = json.loads(rows_text)
         items, mapping, seen = [], [], set()
         for row in rows:
@@ -93,7 +94,7 @@ class AnnotationExchange:
     def import_labels(self, run: Path, bundle: Path, labels: Path, output: Path) -> dict:
         if output.exists():
             raise ValueError('Use a new annotated output; original records are retained')
-        rows_text = (run / 'rows.json').read_text(encoding='utf-8')
+        rows_text = SequenceRecords(run).text()
         mapping, supplied = _read(bundle / 'mapping.json'), _read(labels)
         if mapping.get('schema') != SCHEMA or supplied.get('schema') != SCHEMA:
             raise ValueError('Unsupported annotation schema')
@@ -139,7 +140,7 @@ class AnnotationExchange:
             answer = answer if isinstance(answer, dict) else {}
             answer['decision'] = decision if decision in ('ready', 'not_ready', 'undetermined') else None
             session['answer'] = answer
-        cases = {case['identifier']: Case(**case) for case in _read(run / 'cases.json')}
+        cases = {case['identifier']: case_from_record(case) for case in _read(run / 'cases.json')}
         scorer = ReferenceScorer()
         for row in rows:
             for session in _sessions(row):

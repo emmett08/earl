@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
+from datetime import datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -36,7 +37,7 @@ def assess_project(project: Project, *, now: str, source: str | None = None,
     if report is not None:
         write_json(project.state, report)
     knowledge = EALKnowledgeBase(project.workspace, project.workspace / 'tools.toml', method_registry=registry())
-    knowledge.register('argument.eal', entry_id='orders', context={'service': 'orders'},
+    knowledge.register('argument.eal', entry_id='orders', context=project.case.context(),
                        claims=['criterion_evaluated'])
     return knowledge.assess('orders', 'criterion_evaluated', now=now)
 
@@ -53,12 +54,22 @@ class ContractCalibration:
                     continue
                 try:
                     project = Project(root / case.identifier, case, 'eal')
-                    binding = TaskContextBuilder(TaskContract.from_case(case), case.source())
+                    binding = TaskContextBuilder(TaskContract.from_case(case), case.source(), explain=project.explain)
                     for session in range(1 + plan['recipient_sessions']):
                         project.set_session(session)
                         assessment = assess_project(project, now=case.time(session))
                         context = binding.build(assessment)
-                        expected = EXPECTED[case.identifier][int(session > 0)]
+                        if getattr(case, 'task_kind', 'threshold') == 'task_rules':
+                            from .corpus_reference import CorpusReference
+                            authored = case.expected_decisions[session]
+                            oracle = CorpusReference().reference(case, session)['decision']
+                            actual = context['decision']
+                            checks.append({'kind': 'task_outcome', 'case': case.identifier,
+                                           'session': session, 'passed': actual == authored == oracle and
+                                           assessment['packet']['summary_complete'] is True,
+                                           'expected': authored, 'reference': oracle, 'actual': actual})
+                            continue
+                        expected = self._threshold_expected(case, session)
                         criterion = ({'metric': 'free storage', 'unit': 'GB', 'direction': 'at_least', 'threshold': 20}
                                      if case.identifier.startswith('capacity_') else
                                      {'metric': 'latency', 'unit': 'ms', 'direction': 'at_most', 'threshold': 200})
@@ -75,6 +86,15 @@ class ContractCalibration:
         return {'status': 'passed' if checks and all(c['passed'] for c in checks) else 'failed',
                 'checks': checks,
                 'scope': 'Software, authored task/source correspondence and result preservation; not model performance.'}
+
+    @staticmethod
+    def _threshold_expected(case: Case, session: int) -> tuple:
+        expected = EXPECTED[case.identifier][int(session > 0)]
+        now = datetime.fromisoformat(case.time(session).replace('Z', '+00:00'))
+        observed = datetime.fromisoformat(expected[3].replace('Z', '+00:00'))
+        if expected[1] != 'assumption_expired' and (now - observed).total_seconds() > 300:
+            return ('undetermined', 'stale_measurement', None, expected[3])
+        return expected
 
     @staticmethod
     def _failure(name: str, error: Exception) -> dict:

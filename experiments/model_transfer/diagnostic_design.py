@@ -8,7 +8,7 @@ from pathlib import Path
 import random
 
 from experiments.transfer_study.workspace import read_json
-from .cases import CASES
+from .cases import CALIBRATION_CASES
 
 
 @dataclass(frozen=True)
@@ -65,7 +65,7 @@ def load_diagnostic_plan(path: Path) -> dict:
             rate = model.get(field)
             if type(rate) not in (int, float) or not math.isfinite(rate) or not 0 < rate <= 10:
                 raise ValueError('Positive finite model prices are required')
-    for field, permitted in (('recipients', set(models)), ('cases', {c.identifier for c in CASES})):
+    for field, permitted in (('recipients', set(models)), ('cases', {c.identifier for c in CALIBRATION_CASES})):
         values = plan.get(field)
         if (not isinstance(values, list) or not values or
                 any(not isinstance(v, str) for v in values) or

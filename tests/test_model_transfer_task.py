@@ -7,7 +7,7 @@ import pytest
 
 from eal.knowledge import EALKnowledgeBase
 from experiments.model_transfer.calibration import ContractCalibration, assess_project
-from experiments.model_transfer.cases import CASES, FIRST
+from experiments.model_transfer.cases import CASES, CALIBRATION_CASES, FIRST
 from experiments.model_transfer.project import Project
 from experiments.model_transfer.task_context import TaskContract, TaskContextBuilder, TaskCorrespondenceError
 from experiments.model_transfer.threshold_method import registry
@@ -77,7 +77,7 @@ def test_source_digest_and_incomplete_projection_cannot_supply_definite_answer(t
 
 
 def test_independent_calibration_covers_all_task_and_adversarial_cases():
-    result = ContractCalibration().check({'cases': [case.identifier for case in CASES], 'recipient_sessions': 2})
+    result = ContractCalibration().check({'cases': [case.identifier for case in CALIBRATION_CASES], 'recipient_sessions': 2})
     assert result['status'] == 'passed', [check for check in result['checks'] if not check['passed']]
     assert len(result['checks']) == 41
     assert {check['kind'] for check in result['checks']} == {'task_outcome', 'source_mutation', 'boundary'}

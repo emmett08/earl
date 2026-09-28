@@ -7,7 +7,7 @@ on:
         type: boolean
         default: false
       model_transfer_plan:
-        description: 'Comparison: 256 sequences; diagnostics: 32 sessions'
+        description: 'Ten-session allocation pilot; separate 32-session diagnostics'
         type: choice
         options:
           - comparison

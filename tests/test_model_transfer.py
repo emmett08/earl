@@ -9,7 +9,7 @@ import pytest
 from experiments.model_transfer.answers import AnswerParser, response_format
 from experiments.model_transfer.annotations import AnnotationExchange
 from experiments.model_transfer.calibration import ContractCalibration
-from experiments.model_transfer.cases import CASES, Case, FIRST, EARLY
+from experiments.model_transfer.cases import CASES, CALIBRATION_CASES, Case, FIRST, EARLY
 from experiments.model_transfer.design import AssignmentSchedule, load_plan
 from experiments.model_transfer.project import Project
 from experiments.model_transfer.prompts import SessionPromptBuilder
@@ -54,13 +54,13 @@ class ScriptedTransport:
 
 def small_plan():
     return {**load_plan(PLAN), 'cases': ['fresh_positive', 'refresh_negative'],
-            'repetitions': 1, 'arms': ['ordinary', 'eal']}
+            'repetitions': 1, 'recipient_sessions': 2, 'arms': ['ordinary', 'eal']}
 
 
 def test_schedule_crosses_donors_repeats_and_preserves_pairs():
     plan = load_plan(PLAN)
     allocations = AssignmentSchedule(plan).allocations()
-    assert len(allocations) == 256
+    assert len(allocations) == len(plan['cases']) * 2 * 2 * 2 * plan['repetitions'] * 2
     assert allocations == AssignmentSchedule(plan).allocations()
     assert len({r['sequence_id'] for r in allocations}) == len(allocations)
     for case in plan['cases']:
@@ -73,9 +73,10 @@ def test_schedule_crosses_donors_repeats_and_preserves_pairs():
 
 def test_independent_oracles_and_complete_context_calibration():
     scorer = ReferenceScorer()
-    assert [scorer.reference(c, 1)['decision'] for c in CASES] == [
+    assert [scorer.reference(c, 1)['decision'] for c in CALIBRATION_CASES] == [
         'ready', 'not_ready', 'ready', 'not_ready', 'undetermined', 'undetermined', 'ready', 'not_ready']
-    check = ContractCalibration().check(load_plan(PLAN))
+    check = ContractCalibration().check({**load_plan(PLAN), 'recipient_sessions': 2,
+                                        'cases': [case.identifier for case in CALIBRATION_CASES]})
     assert check['status'] == 'passed'
     assert len([c for c in check['checks'] if c['kind'] == 'task_outcome']) == 24
     assert len([c for c in check['checks'] if c['kind'] == 'source_mutation']) == 7

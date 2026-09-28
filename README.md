@@ -2,7 +2,7 @@
 
 EAL/2 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
 
-The package is **2.15.0** and requires Python **3.11 or later**. The supported source language is `EAL/2`. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
+The package is **2.16.0** and requires Python **3.11 or later**. The supported source language is `EAL/2`. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
 
 ## Install and check
 
@@ -71,6 +71,7 @@ The [developer and model handover experiment](experiments/transfer_study/README.
 | [MCP and tools](docs/mcp-and-tools.md) | Host adapters, persistence and operation schemas |
 | [ASPIC+ method](docs/aspic-method.md) | Optional formal method and compiler |
 | [Integration contract](CONTRACT.md) | Python, CLI, MCP and record interfaces |
+| [EAL/2 experiment methodology](docs/eal2-experiment-methodology.md) | Practical thresholds, pilot-informed allocation and cumulative fresh-session evaluation |
 | [Handover experiment](experiments/transfer_study/README.md) | New-session developer and model comparison protocol |
 
 Correctness of an authored question and its tool's real-world measurements remains the developer's responsibility. Collector-call reduction is tested; improvements in model accuracy, latency and cost need paired trials across model sizes and sessions.

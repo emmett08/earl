@@ -11,7 +11,7 @@ from .prompts import SessionPromptBuilder
 from .provider import BudgetedClient, ExecutionStopped, ProviderResponseError
 from .project import Project
 
-TOOL = {'type': 'function', 'name': 'probe', 'description': 'Read the current service measurement report.',
+TOOL = {'type': 'function', 'name': 'probe', 'description': 'Read the current task evidence snapshot.',
         'strict': True, 'parameters': {'type': 'object', 'properties': {}, 'required': [],
                                         'additionalProperties': False}}
 
@@ -29,7 +29,7 @@ class SessionRunner:
         mode = response_mode or self.plan['response_mode']
         formatter = response_format(mode)
         notes = not project.strategy.requires_source if include_notes is None else include_notes
-        question = f'Assess the service readiness now at {project.case.time(project.session)}. '
+        question = f'Assess task readiness now at {project.case.time(project.session)}. '
         result = {'session_id': session_id, 'session': project.session, 'model': model['version'],
                   'reasoning_effort': model['reasoning_effort'], 'native_tools': native_tools,
                   'response_mode': mode, 'context_style': context_style, 'include_notes': notes,

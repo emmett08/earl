@@ -1,10 +1,33 @@
 # Model-session workflow investigation
 
-Protocol **3.1.0**, schema **1.1**, status **specified**. The primary investigation
-compares task decisions and resources across fresh ordinary and EAL sessions.
+Protocol **4.0.0**, schema **1.1**, status **specified**. The primary investigation
+estimates recipient correctness and cumulative expenditure across an initial
+session and ten fresh recipients. Pilot observations inform a prospective
+precision-based evaluation allocation; adequate live information remains unestablished.
 A separate diagnostic investigation varies individual components on cloned donor
 states. The [human developer study](../transfer_study/README.md) addresses
 human handover and authoring effort separately.
+
+## EAL/2 experiment methodology
+
+The [methodology](../../docs/eal2-experiment-methodology.md) defines the
+scientific question, estimands, task provenance and inference limits. The practical
+criterion is **at least 20% less cumulative input-plus-output tokens**, counting
+the initial session and ten recipients, with mean recipient correctness no more
+than **five percentage points lower** and **at least 90% EAL recipient
+correctness**. Initial correctness is reported separately. All three uncertainty
+bounds must satisfy their thresholds; cheap failures
+cannot count as success. Estimated USD and elapsed seconds remain separate
+secondary outcomes. These are prospective configurable operating thresholds.
+
+The allocation target is 95% nominal joint confidence, correctness half-width at
+most 2.5 percentage points and token-reduction half-width at most 10 percentage
+points. The lower 95% Monte Carlo assurance bound must reach 80% over 200
+seeded replications in each declared design scenario. The lower 95% Wilson bound
+for joint interval coverage must also reach the nominal 95% level. Monte Carlo
+intervals are pointwise per candidate/scenario, not simultaneous across the grid.
+This is conditional precision planning, not a claim of achieved statistical power.
+Pilot and fresh evaluation runs remain separate.
 
 ## Primary comparison
 
@@ -37,22 +60,34 @@ The full raw requests preserve exactly what each recipient received.
 
 Every case crosses both donor models with both recipient models and both native
 tool settings. Initial sessions have native tools. Each sequence contains an
-initial session and **two fresh recipient sessions**, with two executions per
-configuration. Persisted artefacts and EAL observations continue within a
+initial session and **ten fresh recipient sessions**, with two pilot executions
+per configuration. Persisted artefacts and EAL observations continue within a
 sequence. Provider conversation history does not.
 
-The standard plan has **256 sequences, 768 sessions and at most 2,304 API
-requests**, with a **USD 2 request-reservation limit**. Matched arm sequences are
+The candidate pilot plan has **448 sequences, 4,928 sessions and at most 14,784
+API requests**, with a **USD 2 request-reservation limit**. These counts specify
+coverage; the budget may truncate the plan, and no adequate precision or complete
+execution is asserted. Evaluation allocation is selected from eligible pilot
+information before new evaluation outcomes. Matched arm sequences are
 adjacent within shuffled blocks; their order is randomised. Their initial
 sessions execute independently, so natural notes may differ. The paired primary
 contrast describes this complete workflow difference.
 
-Six diagnostic latency cases cover fresh positive/negative measurements,
-refresh to positive/negative findings, missing measurements and assumption expiry.
-Two additional free-storage cases exercise an inclusive lower threshold and a
-changed negative finding. The cohorts are reported separately. The additional
-cases are prospectively specified but are not an independently authored sample.
-Sessions and requests within a case remain dependent observations.
+Eight retained calibration cases cover fresh positive/negative measurements,
+refresh to positive/negative findings, missing measurements, assumption expiry
+and inclusive storage thresholds. Six separately AI-authored synthetic cases
+add conjunctions of obligations (`conjunctive_release`), alternative support
+routes (`alternative_routes`) and version/scope applicability
+(`version_applicability`). `task_corpus.json` records the six task definitions and
+separate `separate_ai_authored` provenance. The installed
+`experiment/task-rules/1` method uses three-valued rules and applicable dated
+facts. Each tool acquisition is a bundled fact snapshot. Updates at positions
+0, 2, 4, 6, 8 and 10 alternate with unchanged snapshots at odd recipient positions,
+under a 60-second inclusive lifetime. Selective acquisition of individual facts
+and general temporal logic are outside this experiment. The case definitions retain family, authorship and cohort metadata.
+Separate AI construction is not external investigator or human authorship.
+Reports separate cases and cohorts; retained case definitions identify each family. The finite task pool is
+purposively selected; sessions and requests are not independent task replications.
 
 Both selected models can call functions; the off condition restricts access.
 Dedicated reasoning varies with model family. EAL host collection and evaluation
@@ -62,11 +97,12 @@ capability effect.
 
 ## Task meaning and independent calibration
 
-Evidence admission requires a usable nonnegative measurement and the specified
-threshold/direction. `experiment/threshold/2` returns the reading, threshold,
-`meets` and `fails`. Positive and negative comparisons are both usable results.
-The claim `criterion_evaluated` concerns a completed comparison; its support
-status alone is not a readiness decision. The task adapter interprets the checked
+The eight threshold calibration cases admit usable nonnegative measurements
+under their specified threshold/direction. `experiment/threshold/2` returns the
+reading, threshold, `meets` and `fails`. Positive and negative comparisons are
+both usable results. The claim `criterion_evaluated` concerns a completed
+comparison; its support status alone is not a readiness decision. Additional
+families have task-specific evidence and decision contracts. The task adapter interprets the checked
 method result with the applicable scope and evidence status. It has no access to
 the scorer's reference answer.
 
@@ -180,7 +216,9 @@ workflow comparison.
 The protocol specifies rival explanations: compact context may preserve task
 meaning or remove needed explanation; stale notes may interfere or be correctly
 qualified; reporting requirements may alter task decisions or only representation.
-Observed differences generate candidate explanations. Few stochastic observations
+Observed differences generate candidate explanations. Expand a diagnostic only
+when a concrete uncertainty justifies its cases, repetitions and information
+target; the main observation allocation remains with the whole-workflow question. Few stochastic observations
 cannot establish equivalence, absence of interference or a unique mechanism.
 Forced collection also checks whether reuse actually removes collection work;
 local fixture timings do not establish savings for remote infrastructure.
@@ -213,10 +251,56 @@ Prices are recorded estimates rather than invoices. Source authoring, human effo
 and host infrastructure prices are unmeasured. These limits qualify any claimed
 saving. The experiment does not charge pre-authored EAL as measured authoring work.
 
-Every planned unit remains visible. Report observed paired differences and ranges,
-annotation coverage, failures and unknown bounds. No population confidence
-intervals or significance tests are claimed. Budget exhaustion or timeout leaves
-a partial run; ties in a small diagnostic sample do not establish equivalence.
+Every planned unit remains visible. Reports retain paired differences,
+annotation coverage, failures and unknown bounds. The information procedure
+conditions precision on the finite case/configuration mixture and independent
+matched sequences. It uses a conservative Hoeffding bound for recipient
+correctness and an approximate paired, stratified delta interval for cumulative
+token reduction, with Bonferroni allocation across the three criteria. Resource and joint
+coverage remain approximate. No developer-population inference is claimed.
+Budget exhaustion or timeout leaves a partial run; ties in a small diagnostic
+sample do not establish equivalence.
+
+## Pilot-informed allocation
+
+At least two pilot repetitions per included case/model/tool cell provide estimates
+of paired token variability and correctness disagreements. The planner retains
+complete matched session trajectories, including their within-sequence dependence,
+when simulating candidate repetition allocations. Every primary candidate retains
+all fourteen tasks and every declared model/tool cell, preserving the estimand. It evaluates declared beneficial, null, adverse, higher-cost and slower-execution
+design scenarios. Separate missing-data and rare-tail stresses expose limitations. A single error-free
+pair cannot establish zero stochastic error or adequate correctness precision.
+
+The [information settings](information-design.json) record practical thresholds,
+precision targets, candidate allocations, design/stress roles and simulation seed.
+The default grid keeps fourteen tasks and tests 2, 4, 8, 16, 32 and 137 repetitions.
+The conservative quality bound requires at least 15,320 matched sequences for a
+2.5-percentage-point half-width: the balanced 137-repetition candidate supplies
+15,344 pairs and 337,568 sessions. All smaller default candidates are inadequate
+for that target even with an error-free pilot. The large candidate remains subject
+to observed variability, the USD 2 reservation cap and execution time.
+
+Planning uses the 7,200-second deadline, a prospective 300-second workflow-overhead
+allowance, retained setup/session timing and a twice-slower design scenario.
+Allocation must meet both precision assurance and joint-coverage calibration in
+each declared design scenario. Coverage is calculated against known simulated
+truths; its lower 95% Wilson bound must reach nominal confidence.
+Missing-annotation, missing-usage and rare-tail scenarios are separate stress
+reports; failures of precision, coverage or effect attainability remain
+limitations without independently blocking a proposal. The planner reports
+candidate precision, marginal/joint coverage, expenditure, pointwise Monte Carlo
+uncertainty and limiting conditions. Candidate flags distinguish
+`precision_target_satisfied`, `coverage_calibration_satisfied` and
+`eligible_for_evaluation`.
+It exports an evaluation plan only when empirical support, precision, joint
+coverage and both the USD 2 budget and execution deadline permit one. Sparse data or an infeasible target produces an
+explicit unresolved result, with no adequate sample-size claim.
+
+Pilot and evaluation use distinct `study_id` and `study_role` values. Evaluation
+records its `pilot_run_ids`, uses fresh executions and never pools the pilot's
+outcomes into its own answer. Scripted records can verify calculation and delivery,
+but do not supply live model variability. Keep real annotation decisions separate
+from scripted rehearsal labels.
 
 ## Run and retained artefacts
 
@@ -234,17 +318,22 @@ python -m experiments.model_transfer.runner --output experiments/model_transfer/
 python -m experiments.model_transfer.runner --plan experiments/model_transfer/diagnostic-plan.json --output experiments/model_transfer/runs/diagnostic-001
 ```
 
-These are separate API-funded investigations. The manual **EAL tests** workflow
+The default comparison is a pilot. Evaluation uses the prospectively selected
+plan from the information procedure and a new directory. Primary and diagnostic
+runs are separate API-funded investigations. The manual **EAL tests** workflow
 has a live-run toggle and `comparison`/`diagnostics` plan choice. It uses the existing `OPENAI_API_KEY`
 repository secret. Workflows run only by manual dispatch. The live job has a
 120-minute ceiling; the budget can stop it sooner while preserving partial data.
 
-Each run retains protocol/plan/case snapshots, allocation, code identity,
+Each run retains protocol/plan/case snapshots, study role/identity, allocation, code identity,
 calibration, raw inputs/answers, natural notes, EAL state, outcomes and reports.
 Diagnostics also retain donor snapshots, clone fingerprints and manipulation
 checks. `calls.jsonl` records request starts before transmission and completions
 afterwards; `calls.json` is written at orderly completion. Interrupted attempts
-remain distinguishable from zero work.
+remain distinguishable from zero work. Per-sequence checkpoints reconstruct
+interrupted runs against the saved assignment. `provenance.json` distinguishes
+live transport from scripted rehearsal and records the run identity; an evaluation
+cannot reuse a pilot run identity.
 
 ```bash
 python -m experiments.model_transfer.analyse RUN_DIRECTORY
@@ -256,6 +345,33 @@ See [verification](verification.md) for implementation checks and
 [the historical run analysis](results/run-36432530106.md) for unchanged earlier
 observations.
 
+A full scripted rehearsal uses the actual EAL runtime, annotation roundtrip and
+offline report reconstruction without paid API calls:
+
+```bash
+python -m experiments.model_transfer.rehearse \
+  --plan experiments/model_transfer/plan.json --output /tmp/eal-primary-rehearsal
+python -m experiments.model_transfer.rehearse \
+  --plan experiments/model_transfer/diagnostic-plan.json --output /tmp/eal-diagnostic-rehearsal
+```
+
+After collecting and annotating an eligible pilot, estimate information with:
+
+```bash
+python -m experiments.model_transfer.plan_information PILOT_RUN_DIRECTORY \
+  --config experiments/model_transfer/information-design.json \
+  --rows annotated-rows.json --output information-report.json \
+  --evaluation-plan evaluation-plan.json
+```
+
+The report records whether a runnable allocation exists. `evaluation-plan.json`
+is written only when an eligible empirical allocation qualifies; no file is
+created when the report is `no_supported_allocation`. Use a new output path for
+every report. The presence of a scripted or incomplete pilot, inadequate precision
+or infeasible resources can each prevent an export. A qualifying plan can then
+be passed to the experiment runner in a new run directory. A scripted rehearsal requires the explicit `--allow-scripted` option; its report remains
+labelled as scripted and cannot establish live precision or efficacy.
+
 ## Method and responsibilities
 
 [Tukey (1980)](https://doi.org/10.1080/00031305.1980.10482706) informs the separation
@@ -263,7 +379,11 @@ of exploratory findings from confirmation. [Cronbach and Meehl (1955)](https://p
 informs independent validation of the task-decision measure.
 [Platt (1964)](https://doi.org/10.1126/science.146.3642.347) informs the rival
 explanations and discriminating component comparisons. These choices support
-bounded interpretation; they do not establish an EAL performance benefit.
+bounded interpretation. [McKenzie (2025)](https://doi.org/10.1111/1475-5890.70003)
+informs outcome-specific information requirements, measurement and dependent
+follow-ups. The [Dovetail experimental-design guide](https://dovetail.com/research/what-is-experimental-design/)
+informs explicit treatment, comparator, assignment and measurement. These sources
+do not evaluate EAL or establish its performance.
 
 Allocation, project persistence, context preparation, task contracts, provider
 interaction, annotation, independent scoring and resource aggregation have

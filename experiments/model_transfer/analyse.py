@@ -8,6 +8,7 @@ from experiments.transfer_study.workspace import read_json, write_json
 from .design import load_plan
 from .journal import AttemptJournal
 from .reporting import ReportBuilder
+from .records import SequenceRecords
 
 
 def main() -> None:
@@ -26,11 +27,14 @@ def main() -> None:
         plan = load_diagnostic_plan(args.run / 'plan.json')
     else:
         plan = load_plan(args.run / 'plan.json')
-    rows = read_json(args.rows or args.run / 'rows.json')
+    rows = read_json(args.rows) if args.rows else SequenceRecords(args.run).load()
     calls = AttemptJournal(args.run).read()
     incomplete = any(r['status'] != 'complete' for r in rows)
     stop = 'Execution incomplete; retain unobserved outcomes and unknown request costs' if incomplete else None
-    report = (DiagnosticReportBuilder if diagnostic else ReportBuilder)(plan).build(rows, calls, stop)
+    provenance_path = args.run / 'provenance.json'
+    provenance = read_json(provenance_path) if provenance_path.exists() else None
+    report = (DiagnosticReportBuilder(plan).build(rows, calls, stop) if diagnostic else
+              ReportBuilder(plan).build(rows, calls, stop, provenance))
     report['interpretation'] = 'Recomputed from retained scores and declared annotations; raw answers were not repaired.'
     report['rows_source'] = str(args.rows or args.run / 'rows.json')
     write_json(output, report)

@@ -18,22 +18,29 @@ from .provider import BudgetedClient, ExecutionStopped, OpenAITransport, Transpo
 from .reporting import ReportBuilder
 from .scoring import ReferenceScorer
 from .session import SessionRunner
+from .provenance import RunIdentity
+from .records import SequenceRecords
 
 
 class Pilot:
-    def __init__(self, plan: dict, root: Path, transport: Transport):
+    def __init__(self, plan: dict, root: Path, transport: Transport, *, clock=time.monotonic):
         self.plan, self.root = plan, root
+        self.clock = clock
+        self.provenance = RunIdentity.record(root, plan, transport)
         self.client = BudgetedClient(root, plan, transport)
         self.sessions = SessionRunner(self.client, plan)
         self.scorer = ReferenceScorer()
 
     def run(self) -> dict:
+        write_json(self.root / 'plan.json', self.plan)
         assignments = AssignmentSchedule(self.plan).allocations()
         write_json(self.root / 'assignments.json', assignments)
         cases = {c.identifier: c for c in CASES}
         rows = [{**a, 'cohort': cases[a['case']].cohort, 'status': 'not_run', 'sessions': []}
                 for a in assignments]
-        write_json(self.root / 'rows.json', rows)
+        records = SequenceRecords(self.root)
+        records.begin(rows)
+        deadline = self.clock() + self.plan.get('time_limit_seconds', 7200)
         stop = None
         try:
             for index, row in enumerate(rows):
@@ -47,13 +54,15 @@ class Pilot:
                     project = Project(self.root / 'sequences' / row['sequence_id'], case, row['arm'])
                     row['setup_seconds'] = time.monotonic() - start
                     for session in range(1 + self.plan['recipient_sessions']):
+                        if self.clock() >= deadline:
+                            raise ExecutionStopped('Experiment elapsed-time limit reached')
                         project.set_session(session)
                         model = self.plan['models'][row['donor'] if session == 0 else row['receiver']]
                         result = self.sessions.run(project, model, True if session == 0 else row['native_tools'],
                                                    f"{row['sequence_id']}.session-{session}")
                         result['score'] = self.scorer.score(case, session, result)
                         row['sessions'].append(result)
-                        write_json(self.root / 'rows.json', rows)
+                        records.record(row)
                         if result.get('stop_reason'):
                             raise ExecutionStopped(result['stop_reason'])
                     row['status'] = 'complete'
@@ -62,12 +71,12 @@ class Pilot:
                     # post-treatment deletion or substitution of failed units.
                     stop = f'{type(exc).__name__}: {exc}'
                     row.update(status='stopped', reason=stop)
-                write_json(self.root / 'rows.json', rows)
+                records.record(row)
                 print(f'{index + 1}/{len(rows)} sequences recorded', flush=True)
         finally:
-            write_json(self.root / 'rows.json', rows)
+            records.finish(rows)
             self.client.finish()
-        report = ReportBuilder(self.plan).build(rows, self.client.records, stop)
+        report = ReportBuilder(self.plan).build(rows, self.client.records, stop, provenance=self.provenance)
         report['created_at'] = utc_now().isoformat()
         write_json(self.root / 'report.json', report)
         return report
@@ -113,7 +122,9 @@ def main() -> None:
         return
     try:
         implementation = DiagnosticPilot if diagnostic else Pilot
-        result = implementation(plan, args.output, OpenAITransport()).run()
+        transport = OpenAITransport()
+        RunIdentity.record(args.output, plan, transport)
+        result = implementation(plan, args.output, transport).run()
     except ExecutionStopped as exc:
         write_json(args.output / 'report.json', {'status': 'blocked', 'reason': str(exc), 'api_attempts': 0})
         raise SystemExit(str(exc)) from exc
