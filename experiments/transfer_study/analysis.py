@@ -61,6 +61,9 @@ def resolve_scores(run: StudyRun, ratings: dict) -> dict[str, dict[str, Any]]:
             raise ValueError("Adjudication is reserved for disagreement")
         if not agree and identifier not in adjudicated:
             raise ValueError(f"Unadjudicated disagreement for {identifier}")
+        if not agree and adjudicated[identifier]["rater"] in {
+                entries[0]["rater"], entries[1]["rater"]}:
+            raise ValueError("Adjudicator must be a third assessor")
         selected = entries[0] if agree else adjudicated[identifier]
         scores[identifier] = {"correct": selected["correct"],
                               "material_error": selected["material_error"],
@@ -77,6 +80,8 @@ def _rating(row: Any, known: set[str]) -> None:
             type(row.get("material_error")) is not bool or
             not isinstance(row.get("reason"), str) or not row["reason"].strip()):
         raise ValueError("Invalid blind rating")
+    if row["correct"] and row["material_error"]:
+        raise ValueError("A materially wrong assertion cannot receive a correct rating")
 
 
 def save_ratings(run: StudyRun, source: str | Path) -> dict:

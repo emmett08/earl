@@ -78,6 +78,11 @@ def test_allocation_and_handover_preserve_only_project_artifacts(tmp_path):
     # Opening a session does not copy the unreleased later question or the other arm.
     assert first["question"] not in (Path(first["workspace"]) / "README.md").read_text()
     assert not (Path(first["workspace"]) / "source.eal").exists()
+    run.submit(first["session_id"], "Initial fixture answer", 1)
+    (Path(first["workspace"]) / "measurement.json").write_text(
+        '{"ready": false, "observed_at": "2026-09-28T10:00:00Z"}', encoding="utf-8")
+    later = run.open("orders_fixture", "A", "later")
+    assert read_json(Path(later["workspace"]) / "measurement.json")["ready"] is True
 
 
 def test_full_paired_study_uses_independent_scores_and_fresh_context(tmp_path):
@@ -143,6 +148,9 @@ def test_disagreement_requires_independent_adjudication(tmp_path):
                                  "correct": True, "material_error": False,
                                  "reason": "Resolved against oracle"} for answer in answers]
     assert all(value["adjudicated"] for value in resolve_scores(run, ratings).values())
+    ratings["adjudications"][0]["rater"] = "r1"
+    with pytest.raises(ValueError, match="third assessor"):
+        resolve_scores(run, ratings)
 
 
 def test_failed_model_call_is_retained(tmp_path):

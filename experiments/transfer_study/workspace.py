@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import shutil
 from pathlib import Path
 from typing import Any
@@ -99,7 +100,7 @@ class StudyRun:
             initial_id = self.session_id(case_id, slot_id, "initial")
             if not (self.root / "submissions" / f"{initial_id}.json").is_file():
                 raise ValueError("Initial session must be submitted before the handover")
-            source = self.root / "workspaces" / initial_id
+            source = self.root / "handoffs" / initial_id
             developer = assignment["recipient"]
             model_id = assignment["later_model"]
             question = case.later_question
@@ -132,10 +133,26 @@ class StudyRun:
         import math
         if not math.isfinite(effort_minutes):
             raise ValueError("effort_minutes must be finite")
+        snapshot_digest = None
+        if packet["stage"] == "initial":
+            project = Path(packet["workspace"])
+            if any(path.is_symlink() for path in project.rglob("*")):
+                raise ValueError("Handover project contains a symlink")
+            snapshot = self.root / "handoffs" / session_id
+            if snapshot.exists():
+                raise ValueError("Handover snapshot already exists")
+            shutil.copytree(project, snapshot)
+            digest = hashlib.sha256()
+            for item in sorted(path for path in snapshot.rglob("*") if path.is_file()):
+                data = item.read_bytes()
+                digest.update(str(item.relative_to(snapshot)).encode("utf-8") + b"\0")
+                digest.update(hashlib.sha256(data).digest())
+            snapshot_digest = digest.hexdigest()
         from datetime import datetime, timezone
         record = {"schema": "EAL/transfer-submission/1", "session_id": session_id,
                   "answer": answer, "effort_minutes": effort_minutes,
                   "submitted_at": datetime.now(timezone.utc).isoformat(),
+                  "handoff_sha256": snapshot_digest,
                   "model_calls": len(read_json(self.root / "calls" / f"{session_id}.json"))
                   if (self.root / "calls" / f"{session_id}.json").exists() else 0}
         write_json(path, record)

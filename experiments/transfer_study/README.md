@@ -11,6 +11,8 @@ files. Seeded random allocation assigns one slot to ordinary practice and the
 other to EAL/2. The later question is released only after the first session is
 submitted. A copy of the resulting project travels to the next session; the
 earlier model conversation does not.
+The first project is snapshotted at submission; subsequent edits to that
+workspace cannot change the later developer's handover.
 
 | Arm | First session | New session |
 | --- | --- | --- |
