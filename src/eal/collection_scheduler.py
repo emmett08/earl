@@ -8,7 +8,7 @@ overlap. Serial acquisitions form barriers in the requested order.
 from __future__ import annotations
 
 from collections.abc import Callable, Sequence
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from typing import TypeVar
 
 
@@ -44,14 +44,21 @@ class CollectionScheduler:
                 for name in independent:
                     results[name] = collect_one(name)
             else:
-                # Submit only max_workers at a time, including queued tasks.
-                # The executor is drained before the next serial acquisition.
+                # Keep a fixed number of calls in flight. Refill each freed
+                # slot without waiting for a slower call in the same group.
                 with ThreadPoolExecutor(max_workers=min(self.max_workers, len(independent))) as executor:
-                    for start in range(0, len(independent), self.max_workers):
-                        batch = independent[start:start + self.max_workers]
-                        futures = {executor.submit(collect_one, name): name for name in batch}
-                        for future in as_completed(futures):
-                            results[futures[future]] = future.result()
+                    remaining = iter(independent)
+                    in_flight = {}
+                    for _ in range(min(self.max_workers, len(independent))):
+                        name = next(remaining)
+                        in_flight[executor.submit(collect_one, name)] = name
+                    while in_flight:
+                        finished, _ = wait(in_flight, return_when=FIRST_COMPLETED)
+                        for future in finished:
+                            results[in_flight.pop(future)] = future.result()
+                            name = next(remaining, None)
+                            if name is not None:
+                                in_flight[executor.submit(collect_one, name)] = name
             independent.clear()
 
         for name in names:

@@ -85,9 +85,10 @@ def test_later_oversized_request_does_not_execute_earlier_request(tmp_path):
 
 
 def test_aggregate_declared_output_budget_refuses_collection_before_executing(tmp_path):
-    service, marker = _service(tmp_path, output_limit=MAX_COLLECTION_OUTPUT_BYTES // 2 + 1)
+    service, marker = _service(tmp_path, output_limit=16 * 1024 * 1024)
     with pytest.raises(ValueError, match='Collection output allowance exceeds'):
-        service.collect(_source(2), {'site': 'bench'}, model_access=True)
+        service.collect(_source(MAX_COLLECTION_OUTPUT_BYTES // (16 * 1024 * 1024) + 1),
+                        {'site': 'bench'}, model_access=True)
     _assert_no_effects(service, marker)
 
 

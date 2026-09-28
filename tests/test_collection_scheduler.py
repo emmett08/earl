@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from threading import Barrier, Lock, get_ident
+from threading import Barrier, Event, Lock, get_ident
 import sys
 
 import pytest
 
 from eal.collection_scheduler import CollectionScheduler
-from eal.tool_acquisition import MAX_REQUEST_BYTES, ToolBinding, ToolRegistry
+from eal.tool_acquisition import MAX_REQUEST_BYTES, ToolBinding, ToolRegistry, strict_json
 
 
 def test_unapproved_collectors_run_serially_in_requested_order():
@@ -75,13 +75,32 @@ def test_only_max_workers_acquisitions_are_in_flight():
     assert maximum == 2
 
 
+def test_free_parallel_slot_starts_next_call_while_another_remains_active():
+    slow_started = Event()
+    third_started = Event()
+
+    def collect_one(name):
+        if name == "slow":
+            slow_started.set()
+            assert third_started.wait(2)
+        elif name == "fast":
+            assert slow_started.wait(2)
+        else:
+            third_started.set()
+        return name
+
+    names = ["slow", "fast", "third"]
+    assert CollectionScheduler(2).run(names, lambda _: True, collect_one) == {
+        name: name for name in names}
+
+
 @pytest.mark.parametrize("max_workers", [0, 33, True, 2.5, "2"])
 def test_worker_limit_must_be_a_bounded_integer(max_workers):
     with pytest.raises(ValueError, match="max_workers"):
         CollectionScheduler(max_workers)
 
 
-def test_operator_grants_change_binding_identity_and_defaults_preserve_it(tmp_path):
+def test_operator_access_and_scheduling_leave_acquisition_identity_unchanged(tmp_path):
     base = '[tools.reader]\nkind="command"\nversion="1"\nargv=["true"]\n'
     path = tmp_path / "tools.toml"
 
@@ -94,8 +113,41 @@ def test_operator_grants_change_binding_identity_and_defaults_preserve_it(tmp_pa
     assert original.model_access == "reviewed"
     assert binding('parallel_safe=false\nmodel_access="reviewed"\n').binding_digest(
         b"x" * 32) == original.binding_digest(b"x" * 32)
-    assert binding("parallel_safe=true\n").binding_digest(b"x" * 32) != original.binding_digest(b"x" * 32)
-    assert binding('model_access="general"\n').binding_digest(b"x" * 32) != original.binding_digest(b"x" * 32)
+    assert binding("parallel_safe=true\n").binding_digest(b"x" * 32) == original.binding_digest(b"x" * 32)
+    assert binding('model_access="general"\n').binding_digest(b"x" * 32) == original.binding_digest(b"x" * 32)
+    assert binding('inherit_env=[]\n').binding_digest(b"x" * 32) != original.binding_digest(b"x" * 32)
+    projected = binding('inherit_env=["PATH", "HOME"]\n').binding_digest(b"x" * 32)
+    assert binding('inherit_env=["HOME", "PATH"]\n').binding_digest(b"x" * 32) == projected
+
+
+def test_allowlisted_command_environment_is_exact_and_stable(tmp_path, monkeypatch):
+    monkeypatch.setenv("EAL_ALLOWED", "cluster-a")
+    monkeypatch.setenv("EAL_IRRELEVANT", "first")
+    script = tmp_path / "collector.py"
+    script.write_text(
+        "import json, os\n"
+        "print(json.dumps({'value': {'allowed': os.environ.get('EAL_ALLOWED'), "
+        "'irrelevant': os.environ.get('EAL_IRRELEVANT'), "
+        "'configured': os.environ.get('EAL_CONFIGURED')}}))\n"
+    )
+    path = tmp_path / "tools.toml"
+    path.write_text(
+        '[tools.reader]\nkind="command"\nversion="1"\n'
+        f'argv=[{sys.executable!r}, {str(script)!r}]\n'
+        'inherit_env=["EAL_ALLOWED"]\n'
+        '[tools.reader.env]\nEAL_CONFIGURED="from-operator"\n'
+    )
+    binding = ToolRegistry.load(path).binding_for("reader", version="1")
+    identity = binding.process_environment_digest(b"x" * 32)
+    result = ToolRegistry().acquire(binding, {"input": {}}, tmp_path, secret=b"x" * 32)
+    assert result.error is None
+    assert strict_json(result.stdout.decode())["value"] == {
+        "allowed": "cluster-a", "irrelevant": None, "configured": "from-operator"}
+    assert result.metadata["process_environment_digest"] == identity
+    monkeypatch.setenv("EAL_IRRELEVANT", "second")
+    assert binding.process_environment_digest(b"x" * 32) == identity
+    monkeypatch.setenv("EAL_ALLOWED", "cluster-b")
+    assert binding.process_environment_digest(b"x" * 32) != identity
 
 
 @pytest.mark.parametrize("extra, expected", [
@@ -103,11 +155,22 @@ def test_operator_grants_change_binding_identity_and_defaults_preserve_it(tmp_pa
     ('parallel_safe=1\n', "parallel_safe"),
     ('model_access="admin"\n', "model_access"),
     ('model_access=true\n', "model_access"),
+    ('inherit_env="PATH"\n', "inherit_env"),
+    ('inherit_env=["PATH", "PATH"]\n', "inherit_env"),
+    ('inherit_env=["INVALID-NAME"]\n', "inherit_env"),
 ])
 def test_operator_binding_rejects_untyped_or_unknown_grants(tmp_path, extra, expected):
     path = tmp_path / "tools.toml"
     path.write_text('[tools.reader]\nkind="command"\nversion="1"\nargv=["true"]\n' + extra)
     with pytest.raises(ValueError, match=expected):
+        ToolRegistry.load(path)
+
+
+def test_file_import_cannot_declare_process_environment(tmp_path):
+    path = tmp_path / "tools.toml"
+    path.write_text('[tools.reader]\nkind="json_file"\nversion="1"\n'
+                    'path="value.json"\ninherit_env=[]\n')
+    with pytest.raises(ValueError, match="inherit_env"):
         ToolRegistry.load(path)
 
 

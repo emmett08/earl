@@ -19,6 +19,8 @@ from .families import FamilyRegistry
 from .retrieval import CandidateIndex
 from .routing import TaskFamilyHost
 from .argument_host import ArgumentHost
+from .catalogue import WorkspaceKnowledgeCatalogue
+from .registered_assessment import RegisteredAssessmentHost
 
 
 class StrictFastMCP(FastMCP):
@@ -44,12 +46,31 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
                   recipient_grants: Mapping[str, Collection[str]] | None = None,
                   reviewed_task_host: TaskFamilyHost | None = None,
                   argument_host: ArgumentHost | None = None,
-                  bound_prose: str | None = None) -> FastMCP:
+                  bound_prose: str | None = None,
+                  known_entries: Collection[str] | None = None) -> FastMCP:
     """Create an operator server or a separate, principal-bound recipient server.
 
     The launcher authenticates the principal before constructing the latter.
     A client request never supplies or changes that identity or its grants.
     """
+    if (known_entries is not None and
+            (isinstance(known_entries, (str, bytes)) or
+             not isinstance(known_entries, Collection))):
+        raise ValueError("Known entries must be a bounded collection of registered IDs")
+    selected_known = tuple(known_entries or ())
+    if (len(selected_known) > 128
+            or any(not isinstance(identifier, str) or not identifier for identifier in selected_known)
+            or len(set(selected_known)) != len(selected_known)):
+        raise ValueError("Known entries must contain up to 128 unique registered IDs")
+    if recipient_only and selected_known:
+        raise ValueError("Known source routes require an operator server")
+    if selected_known and any((artifacts, reviewed_task_host, argument_host)):
+        raise ValueError("Known source routes require a dedicated registered-source server")
+    catalogue = WorkspaceKnowledgeCatalogue(service) if selected_known else None
+    for identifier in selected_known:
+        catalogue.get(identifier)
+    known = RegisteredAssessmentHost(service, catalogue) if catalogue else None
+
     checked_grants: dict[str, frozenset[str]] = {}
     if recipient_only and artifacts is not None and artifacts.historical_evaluator:
         raise ValueError("Historical evaluator cannot serve recipient claims")
@@ -98,7 +119,47 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
         log_level="WARNING",
     )
 
-    if not recipient_only:
+    if selected_known:
+        def source_summary(entry: dict[str, Any]) -> dict[str, Any]:
+            """Expose discoverable claim metadata without the registered context or source."""
+            return {"entry_id": entry["entry_id"], "path": entry["path"],
+                    "label": entry["label"], "source_digest": entry["source_digest"],
+                    "claims": entry["claims"], "claim_metadata": entry["claim_metadata"]}
+
+        @server.tool(structured_output=True)
+        def eal_sources(limit: int = 50, offset: int = 0) -> dict[str, Any]:
+            """List developer-registered EAL sources and their selectable claims."""
+            if type(limit) is not int or not 1 <= limit <= 100:
+                raise ValueError("limit must be an integer from 1 through 100")
+            if type(offset) is not int or not 0 <= offset <= 10_000:
+                raise ValueError("offset must be an integer from 0 through 10000")
+            visible = sorted((catalogue.get(identifier) for identifier in selected_known),
+                             key=lambda item: item["path"])
+            return {"sources": [source_summary(item) for item in visible[offset:offset + limit]],
+                    "limit": limit, "offset": offset}
+
+        @server.tool(structured_output=True)
+        def eal_find_claims(query: str | None = None, claim: str | None = None,
+                            limit: int = 50) -> dict[str, Any]:
+            """Find registered claim metadata; use an exact entry ID and claim to assess."""
+            if type(limit) is not int or not 1 <= limit <= 100:
+                raise ValueError("limit must be an integer from 1 through 100")
+            matches = []
+            for identifier in selected_known:
+                entry = catalogue.get(identifier)
+                matches.extend(catalogue.find(query, claim=claim, path=entry["path"], limit=1))
+            return {"matches": [source_summary(item) for item in
+                                sorted(matches, key=lambda item: item["path"])[:limit]]}
+
+        @server.tool(structured_output=True)
+        def eal_assess_known(entry_id: str, claim: str) -> dict[str, Any]:
+            """Reuse compatible observations or collect missing evidence for a registered claim."""
+            if entry_id not in selected_known:
+                raise ValueError("Registered source is not exposed by this server")
+            return known.assess(entry_id, claim)
+
+    if not recipient_only and not selected_known:
+
         @server.tool(structured_output=True)
         def eal_describe() -> dict[str, Any]:
             """Discover supported language versions, syntax, method contracts and interpretation limits."""
@@ -277,6 +338,8 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
+    parser.add_argument("--known-entry", action="append", default=[], metavar="ENTRY_ID",
+                        help="Expose a pre-registered source to the model; may be repeated")
     parser.add_argument("--artifacts", type=Path, help="Host-pinned EAL artifact catalogue TOML")
     parser.add_argument("--families", type=Path, help="Reviewed finite task-family catalogue TOML")
     parser.add_argument("--tasks", type=Path, help="Reviewed exact-question applicability catalogue TOML")
@@ -302,6 +365,8 @@ def main() -> None:
     args = parser.parse_args()
     if args.recipient_grant and not args.recipient_only:
         parser.error("--recipient-grant requires --recipient-only")
+    if args.known_entry and args.recipient_only:
+        parser.error("--known-entry requires the operator server")
     if args.schemes and (not args.recipient_principal or not args.session_id):
         parser.error("Argument forms require a host-assigned principal and session ID")
     if (args.session_id or args.scheme_grant) and not args.schemes:
@@ -372,7 +437,8 @@ def main() -> None:
                   principal=args.recipient_principal,
                   recipient_grants=grants if args.recipient_only else None,
                   reviewed_task_host=task_host,
-                  argument_host=argument_host, bound_prose=bound_prose).run(transport="stdio")
+                  argument_host=argument_host, bound_prose=bound_prose,
+                  known_entries=args.known_entry).run(transport="stdio")
 
 
 if __name__ == "__main__":

@@ -21,6 +21,11 @@ from eal.host import dispatch_request, parse_request
     '{"operation":"plan","source":""}',
     '{"operation":"collect_claim","source":"", "context":{}, "claim":""}',
     '{"operation":"packet","claim":"works"}',
+    '{"operation":"assess_known","entry_id":"source.eal","claim":""}',
+    '{"operation":"assess_known","entry_id":"","claim":"ready"}',
+    '{"operation":"assess_known","entry_id":"source.eal","claim":"ready","context":{}}',
+    '{"operation":"sources","limit":true}',
+    '{"operation":"find_claims","query":[]}',
     '{"operation":"grounded","arguments":[], "attacks":[["a"]]}',
     '{"operation":"grounded","arguments":null, "attacks":[]}',
 ])
@@ -33,6 +38,8 @@ def test_strict_host_request_rejects_unstructured_and_extra_fields(request_text)
     ({"operation": "plan", "source": "source", "claim": "works"}, "eal_plan"),
     ({"operation": "collect_claim", "source": "source", "context": {}, "claim": "works"}, "eal_collect_claim"),
     ({"operation": "packet", "assessment_id": "assessment-1", "claim": "works"}, "eal_packet"),
+    ({"operation": "sources"}, "eal_sources"),
+    ({"operation": "assess_known", "entry_id": "source.eal", "claim": "ready"}, "eal_assess_known"),
 ])
 def test_host_exposes_claim_scoped_operations(payload, expected):
     tool, arguments = parse_request(json.dumps(payload))

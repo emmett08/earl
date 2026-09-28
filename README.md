@@ -15,6 +15,20 @@ make test
 
 The generated ANTLR parser is included. Regenerating it requires Java; `make check-generated` checks that the committed output matches the grammar.
 
+## Reuse a known argument across sessions
+
+Register a developer-authored EAL file once with its assessment context and selected claim. A later process can find that claim by name or statement and assess it without sending the source to a model:
+
+```bash
+eal --workspace . --registry tools.toml register arguments/readiness.eal \
+  --entry-id readiness --claim service_ready --context '{"cluster":"staging"}'
+eal --workspace . --registry tools.toml assess-known readiness --claim service_ready
+eal --workspace . --registry tools.toml model-context readiness --claim service_ready \
+  --question 'Is the service ready?'
+```
+
+The last command supplies a checked claim packet and prompt messages for a model with no tool or native reasoning API. The host plans the claim's full support and objection graph, reuses compatible stored observations from earlier sessions, collects missing ones with the TOML-configured tools and evaluates the declared reasoning mode. A valid source edit becomes a new revision; a changed tool request, expired observation or different context requires a new read. The equivalent Python interface is `EALKnowledgeBase` and `ModelContextAdapter`; the [argument service design](docs/argument-service.md) describes the identities and method contracts. A model-facing MCP server exposes selected registered entries only when its launcher names them with `--known-entry`.
+
 ## One engineering example
 
 [Review an API load-test result](examples/api-load-test/README.md) checks a familiar engineering question: does a particular build meet agreed latency and error-rate criteria in the supplied report? The example includes one EAL/2 source, a labelled synthetic report, a collector that computes statistics from individual request results, a trusted tool registry and a CLI/MCP walkthrough.
@@ -36,6 +50,7 @@ The [coolant-loop composition example](experiments/composition_revision/README.m
 ## Interfaces and boundaries
 
 - `eal validate` checks parsing, references, types and method contracts without collecting evidence.
+- `eal register`, `sources`, `find`, `assess-known`, `history` and `model-context` give developers a persistent file/claim catalogue, current assessment with automatic eligible reuse, and bounded context for a text-only model.
 - `eal plan SOURCE --claim CLAIM` selects every decisive support and objection route; `eal collect SOURCE --context JSON --claim CLAIM` acquires that closure. `eal collect` also accepts explicit evidence IDs or the full source set.
 - `eal reason` computes method and argument statuses over a source-and-context-matched collection; `eal packet ASSESSMENT_ID --claim CLAIM` returns a bounded summary and `eal explain` retrieves the full trace. `eal rebind SOURCE --context JSON --from-collection ID` explicitly reuses matching stored observations at their original age. Operator-only `eal invalidate` excludes affected observations from later reuse after a source event or reconnect gap.
 - `eal compile-aspic` uses a matching stored collection and a declared goal claim to derive and solve an opt-in ASPIC+ snapshot; it reports the formal and authored EAL results separately.

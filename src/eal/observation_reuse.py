@@ -101,6 +101,38 @@ class ObservationRebinder:
             compatible.append(record)
         return compatible
 
+    def prepare_record(self, program: Any, context: Mapping[str, Any], evidence_id: str,
+                       original: Mapping[str, Any], *, current_binding_digest: str | None,
+                       current_execution_digest: str | None = None,
+                       from_collection_id: str | None = None) -> dict[str, Any]:
+        """Prepare one exact-identity source-bound reuse, without writing it.
+
+        A caller may combine independently collected evidence in one new
+        collection. ``RunStore.put_rebound_batch`` performs the final
+        invalidation check atomically with persistence.
+        """
+        expected = self._expected(program, evidence_id, context, current_binding_digest,
+                                  current_execution_digest)
+        if not isinstance(original, Mapping) or not isinstance(original.get("run_id"), str):
+            raise ValueError(f"Observation {evidence_id!r} has no run_id")
+        stored = self.store.get(original["run_id"], kind="observation")
+        if stored != original:
+            raise ValueError(f"Observation {evidence_id!r} differs from stored acquisition")
+        self._verify(original, expected)
+        if self.store.reuse_invalidated(stored):
+            raise ValueError(f"Observation {original['run_id']!r} was invalidated for reuse")
+        copy = deepcopy(stored)
+        copy.pop("stdout", None)
+        copy.pop("stderr", None)
+        copy["run_id"] = str(uuid4())
+        copy["source_digest"] = program.source_digest
+        copy["origin_run_id"] = stored.get("origin_run_id", stored["run_id"])
+        copy["reused_from_run_id"] = stored["run_id"]
+        if from_collection_id is not None:
+            copy["reused_from_collection_id"] = from_collection_id
+        copy["rebound_at"] = utc_now()
+        return copy
+
     def rebind_collection(self, program: Any, context: Mapping[str, Any], *,
                           from_collection_id: str,
                           current_binding_digests: Mapping[str, str | None],
@@ -128,34 +160,16 @@ class ObservationRebinder:
         for name in names:
             if name not in old.get("records", {}):
                 raise ValueError(f"Collection has no observation for {name!r}")
-            expected = self._expected(
-                program, name, context, current_binding_digests.get(name),
-                None if current_execution_digests is None else current_execution_digests.get(name),
-            )
             original = old["records"][name]
-            if not isinstance(original, dict) or not isinstance(original.get("run_id"), str):
-                raise ValueError(f"Collection observation {name!r} has no run_id")
-            if self.store.get(original["run_id"], kind="observation") != original:
-                raise ValueError(f"Collection observation {name!r} differs from stored acquisition")
-            if original.get("source_digest") != old.get("source_digest"):
+            if not isinstance(original, Mapping) or original.get("source_digest") != old.get("source_digest"):
                 raise ValueError("Original observation source differs from its collection")
-            self._verify(original, expected)
-            if self.store.reuse_invalidated(original):
-                raise ValueError(f"Observation {original['run_id']!r} was invalidated for reuse")
-            copy = deepcopy(original)
-            # Older successful records may contain raw process output. Reuse
-            # retains its digest and size, never the raw bytes in a new record.
-            copy.pop("stdout", None)
-            copy.pop("stderr", None)
-            copy["run_id"] = str(uuid4())
-            copy["source_digest"] = program.source_digest
-            copy["origin_run_id"] = original.get("origin_run_id", original["run_id"])
-            copy["reused_from_run_id"] = original["run_id"]
-            copy["reused_from_collection_id"] = from_collection_id
-            copy["rebound_at"] = utc_now()
-            # The original collected_at, optional observed_at and tool metadata
-            # describe the measurement; they must never be reset by rebinding.
-            rebound[name] = copy
+            rebound[name] = self.prepare_record(
+                program, context, name, original,
+                current_binding_digest=current_binding_digests.get(name),
+                current_execution_digest=(None if current_execution_digests is None
+                                          else current_execution_digests.get(name)),
+                from_collection_id=from_collection_id,
+            )
         collection = {"source_digest": program.source_digest, "context": dict(context),
                       "records": rebound, "reused_from_collection_id": from_collection_id}
         entries: list[tuple[str, dict[str, Any], str | None]] = [

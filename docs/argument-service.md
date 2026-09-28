@@ -1,123 +1,74 @@
 # EAL argument service
 
-EAL/2 describes a bounded engineering argument. A host reads its declarations,
-collects evidence through operator-configured tools, evaluates an exact
-reasoning-method contract, and stores an assessment that any model or later
-prompt session can inspect. The source language, package and stored observation
-record have distinct versions: `EAL/2`, Python package `2.14.0`, and
-`EAL/observation-record/1`. The compact model projection is
-`EAL/assessment-packet/1`.
+EAL/2 defines claims, evidence, reasoning methods, premises, assumptions and objections. The service connects those declarations to operator-configured collectors, computes an assessment and stores it for later models and prompt sessions. A registered claim can be assessed through one call: the host selects its complete evidence plan, reuses eligible observations, collects the remainder, evaluates the argument and returns a bounded result.
 
-## Components and ownership
+## Developer workflow
 
-| Component | Responsibility | Boundary |
-| --- | --- | --- |
-| Parser and semantic validator | Expand typed patterns; check names, kinds, method contracts, graph references and source locations | Pure EAL/2 source; no tools run |
-| `EvidencePlanner` | Traverse the requested claim's alternatives, premises, backing, assumption validations, objections and defences | Immutable plan in source order |
-| `ToolRegistry` and acquisition adapters | Resolve a declared tool/version to operator TOML; run a bounded command or import a JSON observation | EAL cannot install a command, choose a path or supply credentials |
-| `CollectionScheduler` | Overlap only consecutive calls marked independent and read-only by the operator | Serial barriers, bounded workers, ordered records |
-| `RunStore` and `ObservationRebinder` | Persist individual observations, collections, assessments, reuse identities and invalidation events | Explicit rebinding creates new source-bound records; original times survive |
-| Method registry and evaluator | Apply an exact installed method to checked evidence and compose support/attack routes | Finite method contracts; no implicit collection |
-| `AssessmentPacketBuilder` | Project an assessed claim into bounded model-facing fields | Full result remains available by assessment ID |
+The developer writes a `.eal` file containing the claim and its supporting and opposing routes. Each `tool NAME { version "..."; }` selects an interface; a sibling TOML registry supplies the executable command or observation file, input limits and credentials available to the host. A collector may authenticate, query Kubernetes, run tests and transform several results before returning a scoped JSON observation. EAL predicates state which returned fields make the evidence usable; the `reasoning` declaration names the exact versioned method that interprets it.
 
-The registry selects command and file adapter strategies. The planner, scheduler,
-rebinder, evaluator and packet builder each have one decision to make and are
-composed by `ReasoningService`. The store is the repository for immutable run
-records. Both CLI and MCP use the same service; model-facing collection applies
-an explicit operator access policy before acquisition. New reasoning methods
-are installed through typed registry contracts without changing the collection
-or graph traversal components.
+The host registers validated source files and their claims under stable entry IDs. A changed file creates a new source revision with its own digest. Search by claim ID, statement or label helps a developer find a candidate, but an assessment names an exact entry and claim. The registered context supplies defaults for the one-call path; trusted Python and CLI callers can supply a different context explicitly. Model-facing calls use the registered context and a launcher-permitted entry/claim pair.
 
-## Declared collection
+```python
+from eal.knowledge import EALKnowledgeBase
 
-An EAL source names `tool NAME { version "..."; }` and evidence with `tool`,
-`kind`, `environment`, `max_age`, optional `input` and predicates over the
-returned `value`. The sibling TOML binds that name and version to `command`
-with an argv or `json_file` with a workspace path. The operator owns execution
-limits, file pins and credentials. A command receives JSON containing
-`evidence_id`, `environment`, `tool`, `tool_version`, `input` and `context` on
-stdin. It can authenticate, query a Kubernetes resource, run tests or transform
-several upstream results before returning a bounded observation. The adapter
-must expose the target, source revision/time and completeness constraints
-needed to interpret the result. Credentials remain outside EAL and the returned
-observation.
+kb = EALKnowledgeBase(".", "tools.toml")
+kb.register("arguments/payments.eal", entry_id="payments_readiness",
+            context={"cluster": "prod-eu"})
+result = kb.assess("payments_readiness", "pod_ready", reuse="compatible")
+packet = result["packet"]
+```
 
-`model_access = "reviewed"` is the default TOML policy. The general MCP
-collection operations need `model_access = "general"` for every configured
-tool in the selected plan. Reviewed artefact and recipient routes use their
-separate source and principal grants. `parallel_safe = true` is an operator
-assertion that calls are independent and read-only; other calls execute
-serially. These operational choices are absent from EAL source and contribute
-to the binding identity.
+`kb.register_tree("arguments", context=...)` registers a bounded directory and reports rejected files. `kb.find(query=...)` returns advisory candidates; `kb.sources()` lists the current validated entries and claim IDs. `kb.history(entry_id)` retrieves collection and assessment identities from earlier sessions. `reuse="fresh"` requests new collection for every selected evidence ID. The CLI exposes `register`, `find`, `assess-known`, `history` and `model-context`; the lower-level CLI and MCP operations remain available for explicit `plan`, `collect_claim`, `reason`, `packet` and `explain`. See the [integration contract](../CONTRACT.md) and [MCP operations](mcp-and-tools.md#mcp-operations).
 
-Collection checks the entire selected plan before starting tools: context JSON
-at most 16 KiB, at most 128 evidence IDs, each request at most 1 MiB and at
-most 16 MiB of aggregate configured output allowance. Each adapter has its own
-timeout and output limit. A command failure, authentication error, incomplete
-read, malformed response or identity mismatch becomes an error observation;
-it cannot establish the contrary claim. Stored records retain original
-observation time, ingestion time, source/context/request and binding identities,
-output digests and byte counts. Raw process streams are excluded. The SQLite
-store and its keyed binding identity are private host files.
+For a model with no tools, `ModelContextAdapter(kb).prepare(question, entry_id, claim, *, context=None, now=None, reuse="compatible")` performs the same assessment and returns `EAL/model-context/1`: a checked `assessment` and bounded `messages` containing its packet. The application gives `messages` to the model and retains `assessment["status"]` as the host result; model prose cannot change that status. The application selects the entry and claim and must establish their correspondence to the question. A free-form question alone never authorises source selection or collection.
 
-## Planning and assessment
+## Collection and argument closure
 
-`eal_plan(source, claim)` finds every declared route capable of changing the
-claim's status. `eal_collect_claim` collects that plan once per evidence ID;
-`eal_collect` accepts an explicit subset. The assessment takes exact source,
-context, a collection ID and an explicit or current time. It rejects a stored
-collection from another source or context. The evaluator rechecks evidence
-identity, current operator binding, environment, original age and value
-predicates, then runs the declared versioned method and evaluates the argument
-graph. Optional `eal_compile_aspic` uses the same checked observation cut but
-reports a separate formal profile.
+For one target claim, `EvidencePlanner` traverses every declared alternative derivation, transitive premise, reasoning backing record, assumption validation, objection and objection-to-objection defence that could affect its status. Each evidence ID appears once in source order. The plan exposes its calls before acquisition. `CollectionScheduler` overlaps only consecutive calls that the operator has marked independent and read-only; serial calls form barriers. Collection preserves each command's `evidence_id`, request, original observation time and source identity.
 
-The method registry specifies each input kind, schema, formal query, result
-schema and resource bound. A computational method consumes exactly one usable
-observation of its designated kind from direct evidence, backing and
-assumption-validation evidence. A valid negative result can support an
-explicitly authored negative route; a failed collection or invalid input
-cannot. Typed propositions additionally require the argument's `binding` to
-correspond to the formal subject, quantity, unit, scope, interval, query and
-result criterion. Premise claims and objections remain graph dependencies.
-The authored rationale and any real-world modelling obligation remain visible
-as such; a calculation alone does not establish prose or physical adequacy.
+An EAL evidence declaration selects `tool`, `kind`, `environment`, `max_age`, optional `input` and `require` predicates over the returned `value`. The configured command receives `evidence_id`, `environment`, `tool`, `tool_version`, `input` and `context` as JSON. A successful command run produces an observation, not a conclusion. Authentication failure, timeout, malformed output, wrong identity and incomplete lookup produce an error or unusable observation; they do not establish the opposite engineering claim. `max_age` is measured in seconds from the original observation time to the assessment time. A file import must preserve its original time and matching request and context.
 
-## Persistence and reuse
+The operator-owned TOML binds tool versions to commands or files. General model-authored collection requires an explicit `model_access = "general"` binding. Developer-selected Python and CLI assessments of registered sources use their trusted host path, including bindings marked `reviewed`. Model-facing registered MCP assessment is confined to entry IDs allowed by the trusted launcher's `--known-entry` settings and their registered context; it cannot register source, supply new tool arguments or override context. The collector contract excludes credentials from the returned observation; the operator configures and checks the collector's output. The precise execution, grant and size limits are specified in [MCP and tools](mcp-and-tools.md#tool-registry-and-observation-identity).
 
-The SQLite store persists immutable individual observations, collections and
-assessments. `collection_id` and `assessment_id` let different models and
-sessions share the same checked computation. Reasoning over a frozen collection
-does not rerun its tools. A revised source needs a new collection. The operator
-can explicitly rebind a named earlier collection when each successful
-observation has the same evidence ID, request, input, context, environment,
-evidence kind, current TOML binding and, for commands, effective process
-environment identity. The rebinder records origin and derived IDs, preserves
-the original time, and makes no new physical measurement. Freshness and the
-revised predicates are checked at the next assessment. A changed inherited
-credential, endpoint or kubeconfig refuses command rebinding.
+## Method-specific evidence and inference
 
-An operator can record a source event or reconnect gap with `eal invalidate`.
-Origin-level invalidation excludes that observation lineage; scoped binding
-or request invalidation excludes older and in-flight measurements from future
-reuse. A fresh authoritative read makes a new observation cut. Historical
-assessments remain available with their original identities and time. An
-external watch or event source is responsible for invoking the invalidation
-hook; reconnect gaps require a broad invalidation before reuse resumes.
+`reasoning NAME { method "name/version"; rationale "..."; ... }` selects one installed method contract. Direct argument evidence, `reasoning.backing` and assumption-validation evidence supply its candidate inputs. Each computational method requires exactly one usable observation of its designated kind; multiple such observations are ambiguous unless an authored preprocessing tool has made one defined aggregate. Premise claims remain assessed graph dependencies. `evidence require` checks observation values; `reasoning require` checks computed method results. A typed `claim proposition` additionally binds its formal query and result criterion to the designated evidence ID through the argument's `binding` clause.
+
+| Method | Designated input | Bounded computation | Additional obligation for the engineering claim |
+| --- | --- | --- | --- |
+| `structured/1` | No designated kind; evidence or a usable premise | Availability of authored grounds and dependencies | Adequacy of the prose rationale; no mechanical proof |
+| `deductive/1` | `logical_case` | Finite propositional entailment or countermodel from consistent premises | Empirical premises and formula-to-claim correspondence |
+| `inductive/1` | `sample` | Binomial estimate and Wilson interval | Sampling, independence, stopping rule and target population |
+| `abductive/1` | `hypotheses` | Posterior over supplied candidates | Candidate coverage, exclusivity, priors and whole-observation likelihoods |
+| `causal/1` | `experiment` | Two-arm mean contrast and standard error | Actual assignment, estimand, consistency, interference and missing outcomes |
+| `counterfactual/1` | `causal_model` | Intervention in a supplied acyclic affine structural model | Model graph, equations and realised exogenous values |
+| `analogical/1` | `analogy` | Correspondence of declared scalar features | Feature relevance, omitted differences and conclusion-transfer warrant |
+| `temporal/1` | `trace` | Predicate over samples with endpoint and maximum-gap coverage | Any continuous-time or out-of-interval conclusion |
+
+The optional installed `argumentation/aspic/1` method consumes `aspic_theory` and evaluates its bounded formal profile. The separate `eal_compile_aspic` operation derives a formal snapshot from checked EAL routes; neither changes the ordinary authored argument status. See [reasoning modes](reasoning-modes.md) and [ASPIC+](aspic-method.md).
+
+A valid negative computation can support an explicitly authored negative route. An inconsistent deductive case, incomplete temporal trace, malformed method input or failed collection supplies no negative finding. Method result, result predicate, accepted argument, claim status and empirical adequacy remain separate. The ordinary solver composes premise claims, alternatives, assumptions, targeted objections and defences into `supported`, `contested`, `unsupported` or `out_of_scope`. An optional reviewed adequacy contract checks declared applicability obligations; it cannot discover an omitted premise or prove that a formalisation matches its prose claim.
+
+## One-call assessment and reuse
+
+`RegisteredAssessmentHost.assess(entry_id, claim, *, context=None, now=None, reuse="compatible")` reads the current registered source, selects that claim's complete plan, builds a source-bound collection, reasons at the requested or current time and returns `EAL/registered-assessment/1`. The result carries entry and claim IDs, source and context identities, collection and assessment IDs, assessed time, claim status, counts of reused and freshly collected observations, a compact `packet` and a full-explanation reference. It performs a new assessment even when every required observation can be reused; a historical status is never substituted for a current result.
+
+Compatible reuse searches stored observations from earlier sessions by evidence ID and acquisition identity. It requires matching tool binding, command process environment, input, context, environment and evidence kind, along with original age eligibility. The host can assemble eligible observations from different collections and acquire only missing or invalidated evidence. Reused observations retain their original measured time and lineage while the new collection binds the current exact EAL source. A collector may depend on its `evidence_id`, so apparently identical requests under different IDs are not silently merged. A source edit produces a new revision and matching collection; it does not rewrite historical runs.
+
+An operator can invalidate reuse after an external source event or watch reconnect gap. The invalidation affects subsequent reuse, including relevant in-flight measurements, while retaining past collections and assessments for historical inspection. An authoritative new read creates a new observation cut. The `eal invalidate` CLI records these events; an external event source invokes it when applicable. See the [reuse and invalidation contract](mcp-and-tools.md#tool-registry-and-observation-identity).
 
 ## Model-facing result
 
-`eal_packet(assessment_id, claim?)` returns a bounded result with claim and
-premise states, relevant method outputs, typed-binding decisions, live
-objections, assumptions, evidence availability codes, observation IDs and
-original times where recorded. It includes source/context/method identities
-and a reference for `eal_explain`; it excludes raw observation values,
-credentials, arbitrary extension fields and process output. Omitted detail is
-marked explicitly. A model can request the full stored explanation when the
-packet is insufficient. The text agent's stateful assessment collects the
-requested claim's closure and feeds the compact packet back to the model.
+`EAL/assessment-packet/1` exposes claim and premise statuses, bounded method outputs, typed-binding checks, relevant assumption and objection states, evidence availability, observation identifiers and recorded observation times, with source/context/method identities. It marks omitted material and refers to the stored explanation. It excludes raw observation values, credentials, process streams, formal input queries and arbitrary method-extension output. The stateful `eal-agent` assesses a required claim's closure and passes this packet to the model; explicit reason or explain feedback is also projected into bounded fields. An operator can retrieve the full persisted trace through `eal_explain`.
 
-Formal statuses are reproducible for fixed source, context, collection,
-assessment time and method registry. Faster collection and smaller prompts
-follow from bounded concurrency, scoped work and projection; gains in model
-accuracy, token use or total latency require trials with retained outcomes.
+## Acceptance properties
+
+| Property | Observable criterion |
+| --- | --- |
+| Same question across sessions | An exact registered entry, claim, source revision and context can be resolved after process restart; the result identifies its collection, assessment, method registry and assessment time. |
+| Complete declared reasoning | The selected plan includes every authored support, alternative, premise, objection and defence route; the result distinguishes a valid negative computation from a failed or inapplicable input. |
+| Correct reuse | Reuse never refreshes original age or crosses evidence ID, acquisition, binding or context identities; an invalidated or expired record triggers fresh acquisition, with any collector failure reported separately. |
+| Bounded model context | Packets identify omissions and permit addressed explanation while excluding raw tool values; packet bytes, collector calls and total token use are observable. |
+| Performance and conclusion quality | Compare end-to-end latency, collector calls and cost separately from method choice, correct scoped conclusions, justified unresolved outcomes and unjustified assertions on mode-stratified paired tasks with equivalent evidence access. |
+
+Replaying a persisted assessment preserves its historical result. Recomputing from fixed source, context, observations, time and registry yields the same formal output when the installed method is deterministic. Scoped planning, concurrent independent collection, compatible reuse and compact packets provide mechanisms for reducing work; their effect on model accuracy, latency and cost is established by measured comparisons, not by the service's existence.

@@ -102,17 +102,24 @@ class ToolBinding:
     # General model-authored collection is an explicit operator grant. Reviewed
     # artifact and recipient routes retain their separately checked source.
     model_access: Literal["general", "reviewed"] = "reviewed"
+    # None preserves full host inheritance; an explicit list passes only the
+    # named variables that exist, plus the operator's configured env overlay.
+    inherit_env: tuple[str, ...] | None = None
+
+    def effective_environment(self) -> dict[str, str]:
+        if self.inherit_env is None:
+            current = dict(os.environ)
+        else:
+            current = {name: os.environ[name] for name in self.inherit_env if name in os.environ}
+        current.update(self.env)
+        return current
 
     def process_environment_digest(self, secret: bytes, *,
                                    effective_env: Mapping[str, str] | None = None) -> str | None:
         """Identity of the effective command environment without exposing secrets."""
         if self.kind != "command":
             return None
-        if effective_env is None:
-            current = dict(os.environ)
-            current.update(self.env)
-        else:
-            current = dict(effective_env)
+        current = self.effective_environment() if effective_env is None else dict(effective_env)
         return keyed_digest(secret, b"process-environment", current)
 
     def binding_digest(self, secret: bytes, *, workspace: Path | None = None) -> str:
@@ -140,12 +147,10 @@ class ToolBinding:
             "max_output_bytes": self.max_output_bytes,
             "env": dict(self.env), "pinned_files": [{"path": path, "sha256": digest}
                                                      for path, digest in self.pinned_files]}
-        # Preserve the identity of unchanged operator bindings in existing
-        # stored collections. Opting into concurrency changes the identity.
-        if self.parallel_safe:
-            identity["parallel_safe"] = True
-        if self.model_access != "reviewed":
-            identity["model_access"] = self.model_access
+        # Scheduling and model access are host permissions, not properties of
+        # a measurement. They therefore leave acquisition identity unchanged.
+        if self.inherit_env is not None:
+            identity["inherit_env"] = sorted(self.inherit_env)
         return keyed_digest(secret, b"tool-binding", identity)
 
 
@@ -168,7 +173,7 @@ class ToolRegistry:
         if set(document) - {"tools"} or not isinstance(document.get("tools", {}), dict):
             raise ValueError("The registry must contain only a [tools] table")
         bindings = {}
-        allowed = {"kind", "version", "argv", "path", "timeout_seconds", "max_output_bytes", "env", "pinned_files", "parallel_safe", "model_access"}
+        allowed = {"kind", "version", "argv", "path", "timeout_seconds", "max_output_bytes", "env", "pinned_files", "parallel_safe", "model_access", "inherit_env"}
         for name, raw in document.get("tools", {}).items():
             if not isinstance(raw, dict) or set(raw) - allowed:
                 raise ValueError(f"Unknown registry settings for {name}")
@@ -198,6 +203,15 @@ class ToolRegistry:
             model_access = raw.get("model_access", "reviewed")
             if model_access not in ("general", "reviewed") or type(model_access) is not str:
                 raise ValueError(f"{name}: model_access must be general or reviewed")
+            inherited = raw.get("inherit_env")
+            if inherited is not None:
+                if (raw["kind"] != "command" or not isinstance(inherited, list)
+                        or len(inherited) > 64 or any(
+                            not isinstance(item, str)
+                            or re.fullmatch(r"[A-Za-z_][A-Za-z_0-9]*", item, re.ASCII) is None
+                            for item in inherited)
+                        or len(set(inherited)) != len(inherited)):
+                    raise ValueError(f"{name}: inherit_env requires up to 64 distinct command environment variable names")
             pinned = raw.get("pinned_files", [])
             if (not isinstance(pinned, list) or len(pinned) > 32
                     or any(not isinstance(item, dict) or set(item) != {"path", "sha256"}
@@ -210,7 +224,8 @@ class ToolRegistry:
                 raise ValueError(f"{name}: only command bindings can pin executable files")
             bindings[name] = ToolBinding(
                 name, raw["kind"], raw["version"], tuple(argv), raw.get("path"), float(timeout), limit, env,
-                tuple((item["path"], item["sha256"]) for item in pinned), parallel_safe, model_access
+                tuple((item["path"], item["sha256"]) for item in pinned), parallel_safe, model_access,
+                None if inherited is None else tuple(inherited)
             )
         return cls(bindings)
 
@@ -246,8 +261,7 @@ def _execute(binding: ToolBinding, request: dict, workspace: Path, secret: bytes
     encoded_request = json.dumps(request, sort_keys=True, allow_nan=False).encode("utf-8") + b"\n"
     if len(encoded_request) > MAX_REQUEST_BYTES:
         raise ValueError(f"Tool request exceeds {MAX_REQUEST_BYTES} bytes")
-    effective_env = dict(os.environ)
-    effective_env.update(binding.env)
+    effective_env = binding.effective_environment()
     # Arguments may themselves contain credentials. The keyed binding digest
     # identifies the configured command without copying argv into a record.
     metadata = {"process_environment_digest": binding.process_environment_digest(

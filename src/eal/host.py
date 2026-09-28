@@ -32,6 +32,9 @@ OPERATIONS = {
     "reason": ({"source", "context"}, {"collection_id", "now"}),
     "explain": ({"assessment_id"}, {"claim"}),
     "packet": ({"assessment_id"}, {"claim"}),
+    "sources": (set(), {"limit", "offset"}),
+    "find_claims": (set(), {"query", "claim", "limit"}),
+    "assess_known": ({"entry_id", "claim"}, set()),
     "grounded": ({"arguments", "attacks"}, set()),
     "task_candidates": (set(), set()),
     "bound_task": (set(), set()),
@@ -57,14 +60,21 @@ def parse_request(text: str) -> tuple[str, dict[str, Any]]:
         raise ValueError(f"Missing request fields: {', '.join(sorted(missing))}")
     if unknown := set(arguments) - required - optional:
         raise ValueError(f"Unknown request fields: {', '.join(sorted(unknown))}")
-    for key in ("source", "assessment_id"):
+    for key in ("source", "assessment_id", "entry_id"):
         if key in arguments and not isinstance(arguments[key], str):
             raise ValueError(f"{key} must be a string")
+    if operation == "assess_known" and not arguments["entry_id"]:
+        raise ValueError("assess_known requires a non-empty registered entry ID")
     for key in ("claim", "collection_id", "now"):
         if key in arguments and arguments[key] is not None and not isinstance(arguments[key], str):
             raise ValueError(f"{key} must be a string or null")
-    if operation in {"plan", "collect_claim"} and not arguments["claim"]:
+    if operation in {"plan", "collect_claim", "assess_known"} and not arguments["claim"]:
         raise ValueError(f"{operation} requires a non-empty claim identifier")
+    if "query" in arguments and arguments["query"] is not None and not isinstance(arguments["query"], str):
+        raise ValueError("query must be a string or null")
+    for key in ("limit", "offset"):
+        if key in arguments and type(arguments[key]) is not int:
+            raise ValueError(f"{key} must be an integer")
     if "context" in arguments and not isinstance(arguments["context"], dict):
         raise ValueError("context must be an object")
     for key in ("evidence_ids", "arguments"):
@@ -173,6 +183,8 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
+    parser.add_argument("--known-entry", action="append", default=[], metavar="ENTRY_ID",
+                        help="Registered source selected by the trusted launcher; may be repeated")
     parser.add_argument("--artifacts", type=Path, help="Trusted pinned EAL artifact catalogue")
     parser.add_argument("--families", type=Path, help="Reviewed family catalogue for an exact task route")
     parser.add_argument("--tasks", type=Path, help="Reviewed task applicability catalogue")
@@ -198,12 +210,16 @@ def main() -> None:
         server_args.extend(["--database", str(args.database.resolve())])
     if args.methods:
         server_args.extend(["--methods", args.methods])
+    for identifier in args.known_entry:
+        server_args.extend(["--known-entry", identifier])
     reviewed = any((args.families, args.tasks, args.aliases, args.rag_catalogue,
                     args.recipient_task_file,
                     args.recipient_family_grant, args.recipient_task_grant, args.recipient_grant))
     pinned = not reviewed and any((args.artifacts, args.artifact_id, args.claim,
                                    args.recipient_principal, args.assessment_id))
     if reviewed:
+        if args.known_entry:
+            parser.error("--known-entry requires a generic text-model host")
         if (not all((args.artifacts, args.families, args.tasks, args.recipient_task_file,
                      args.recipient_principal, args.recipient_family_grant,
                      args.recipient_task_grant, args.recipient_grant))
@@ -225,6 +241,8 @@ def main() -> None:
         for grant in args.recipient_task_grant:
             server_args.extend(["--recipient-task-grant", grant])
     elif pinned:
+        if args.known_entry:
+            parser.error("--known-entry requires a generic text-model host")
         if not all((args.artifacts, args.artifact_id, args.claim, args.recipient_principal)):
             parser.error("Pinned host mode requires --artifacts, --artifact-id, --claim and --recipient-principal")
         server_args.extend(["--artifacts", str(args.artifacts.resolve()), "--recipient-only",
