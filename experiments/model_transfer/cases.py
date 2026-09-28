@@ -32,7 +32,8 @@ class Case:
     def measurement(self, session: int) -> dict:
         reading = self.initial_reading if session == 0 else self.later_reading
         observed_at = FIRST if session == 0 or self.later_at == EARLY else self.later_at
-        value = {'threshold': self.threshold, 'direction': self.direction}
+        value = {'threshold': self.threshold, 'direction': self.direction,
+                 'service': 'orders', 'metric': self.metric, 'unit': self.unit}
         if reading is not None:
             value['reading'] = reading
         return {'value': value, 'observed_at': observed_at}
@@ -44,7 +45,8 @@ class Case:
                       if self.assumption_until else 'No additional operating assumption applies. ')
         return (f'Assess readiness of the service. A measured {self.metric} {relation} '
                 f'{self.threshold} {self.unit} establishes ready; a measured failure of that '
-                'criterion establishes not_ready. The probe value\'s reading uses those units. '
+                'criterion establishes not_ready. The probe must identify service orders, '
+                'the named metric and those units. '
                 'Reports are usable for 300 seconds after observed_at, inclusively, and never '
                 'before observed_at. Missing, stale or unavailable measurements require '
                 'undetermined. An expired or not-yet-applicable operating assumption takes '
@@ -59,12 +61,13 @@ environment scope {{ require "service" == "orders"; }}
 tool probe {{ version "1"; }}
 evidence report {{ tool probe; kind threshold_measurement; environment scope; max_age 300;
   require "reading" >= 0; require "threshold" == {self.threshold};
-  require "direction" == "{self.direction}"; }}
+  require "direction" == "{self.direction}"; require "service" == "orders";
+  require "metric" == "{self.metric}"; require "unit" == "{self.unit}"; }}
 {assumption}
-reasoning threshold {{ method "experiment/threshold/1";
+reasoning threshold {{ method "experiment/threshold/2";
   rationale "Compare the measurement with the specified inclusive threshold. Positive and negative findings are completed calculations.";
   require "reading" >= 0; }}
-claim criterion_evaluated {{ statement "The measurement has been compared with the readiness criterion within its applicability conditions."; environment scope; }}
+claim criterion_evaluated {{ statement "For orders, the measured {self.metric} in {self.unit} has been compared with {self.direction} {self.threshold}; meets establishes ready and fails establishes not_ready within the declared applicability conditions."; environment scope; }}
 argument result {{ conclusion criterion_evaluated; reasoning threshold; evidence report;
   {'assumptions window;' if self.assumption_until else ''} }}
 '''

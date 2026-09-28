@@ -1,21 +1,21 @@
-"""Describe paired session outcomes and full resource use without population claims."""
+"""Report task outcomes and resource profiles with explicit annotation uncertainty."""
 from __future__ import annotations
 
 from collections import defaultdict
 from itertools import product
 import statistics
 
-from .resources import ResourceSummary
+from .comparisons import PairedComparisons
 from .design import AssignmentSchedule
-
-SCORES = ('decision_match', 'decision_and_basis_match', 'grounded_match',
-          'internally_consistent', 'false_definitive', 'abstention_when_reference_decisive', 'no_answer')
+from .outcomes import OutcomeSummary
+from .resources import ResourceSummary
 
 
 class ReportBuilder:
     def __init__(self, plan: dict):
         self.plan = plan
         self.resources = ResourceSummary()
+        self.outcomes = OutcomeSummary()
 
     def build(self, rows: list[dict], calls: list[dict], stop_reason: str | None) -> dict:
         expected = {r['sequence_id']: r for r in AssignmentSchedule(self.plan).allocations()}
@@ -33,39 +33,32 @@ class ReportBuilder:
             selected = [r for r in rows if (r['receiver'], r['native_tools'], r['arm'], r['cohort']) == (receiver, tools, arm, cohort)]
             for session in range(1, self.plan['recipient_sessions'] + 1):
                 observed = [s for r in selected for s in r['sessions'] if s['session'] == session]
-                known = [s for s in observed if 'score' in s]
-                correct = sum(s['score']['grounded_match'] for s in known)
+                outcomes = self.outcomes.summarise(observed, len(selected))
                 resources = self.resources.summarise(observed, calls, session_ids={
                     f"{r['sequence_id']}.session-{session}" for r in selected})
+                correct = outcomes['task_match']
+                complete = outcomes['task_unknown'] == 0
                 summaries.append({
                     'receiver': receiver, 'native_tools': tools, 'arm': arm, 'session': session, 'cohort': cohort,
-                    'planned': len(selected), 'observed': len(observed), 'scored': len(known),
-                    'unobserved': len(selected) - len(observed),
-                    **{key: sum(s['score'][key] for s in known) for key in SCORES},
-                    'format_failures': sum(not s.get('format_valid', False) for s in observed),
-                    'file_failures': sum(s.get('file_result', {}).get('status') == 'rejected' for s in observed),
-                    'grounded_rate_bounds': [correct / len(selected),
-                        (correct + len(selected) - len(known)) / len(selected)],
-                    'resources': resources,
-                    'cost_per_grounded_answer_usd': (resources['known_cost_usd'] / correct
-                        if correct and len(known) == len(selected) and not resources['unknown_cost_attempts'] else None),
-                    'seconds_per_grounded_answer': (resources['elapsed_seconds'] / correct
-                        if correct and len(known) == len(selected) else None),
+                    **outcomes, 'resources': resources,
+                    'cost_per_task_answer_usd': (resources['known_cost_usd'] / correct
+                        if correct and complete and not resources['unknown_cost_attempts'] else None),
+                    'seconds_per_task_answer': (resources['elapsed_seconds'] / correct if correct and complete else None),
                 })
-        paired = self.pairs(rows, calls)
+        paired, cumulative = PairedComparisons(self.plan).build(rows, calls)
         by_case = defaultdict(list)
         for pair in paired:
-            if pair['grounded_difference'] is not None:
-                by_case[(pair['case'], pair['cohort'], pair['contrast'], pair['session'])].append(pair['grounded_difference'])
-        case_summaries = [{'case': key[0], 'cohort': key[1], 'contrast': key[2], 'session': key[3],
-                           'observed_pairs': len(values), 'mean_grounded_difference': statistics.mean(values),
-                           'min_grounded_difference': min(values), 'max_grounded_difference': max(values)}
+            if pair['task_difference'] is not None:
+                by_case[(pair['case'], pair['cohort'], pair['session'])].append(pair['task_difference'])
+        case_summaries = [{'case': key[0], 'cohort': key[1], 'session': key[2],
+                           'observed_pairs': len(values), 'mean_task_difference': statistics.mean(values),
+                           'min_task_difference': min(values), 'max_task_difference': max(values)}
                           for key, values in sorted(by_case.items())]
-        stages = {}
+        stages, trajectories = {}, {}
         for arm in self.plan['arms']:
             selected = [r for r in rows if r['arm'] == arm]
             sessions = [s for r in selected for s in r['sessions']]
-            stages[arm] = {}
+            stages[arm], trajectories[arm] = {}, []
             for stage in ('initial', 'recipients', 'total'):
                 indices = [i for i in range(1 + self.plan['recipient_sessions'])
                            if stage == 'total' or (i == 0) == (stage == 'initial')]
@@ -73,52 +66,32 @@ class ReportBuilder:
                 stages[arm][stage] = self.resources.summarise(
                     [s for s in sessions if s['session'] in indices], calls, session_ids=ids)
             stages[arm]['setup_seconds'] = sum(r.get('setup_seconds', 0) for r in selected)
+            stages[arm]['total']['elapsed_with_setup_seconds'] = stages[arm]['total']['elapsed_seconds'] + stages[arm]['setup_seconds']
+            for last in range(1 + self.plan['recipient_sessions']):
+                ss = [s for s in sessions if s['session'] <= last]
+                ids = {f"{r['sequence_id']}.session-{i}" for r in selected for i in range(last + 1)}
+                resources = self.resources.summarise(ss, calls, session_ids=ids)
+                resources['elapsed_with_setup_seconds'] = resources['elapsed_seconds'] + stages[arm]['setup_seconds']
+                trajectories[arm].append({'through_session': last, 'resources': resources,
+                    'recipient_outcomes': self.outcomes.summarise([s for s in ss if s['session'] > 0], len(selected) * last)})
+        all_sessions = [s for r in rows for s in r['sessions']]
+        pending = sum(s.get('score', {}).get('task_match') is None for s in all_sessions)
+        incomplete = stop_reason is not None or any(r['status'] != 'complete' for r in rows)
         return {
-            'schema': 'EAL/model-transfer-result/2', 'status': 'partial' if stop_reason else 'complete',
+            'schema': 'EAL/model-transfer-result/3',
+            'status': 'partial' if incomplete else 'pending_annotation' if pending else 'complete',
+            'execution_status': 'partial' if incomplete else 'complete', 'pending_task_annotations': pending,
             'stop_reason': stop_reason, 'planned_sequences': len(rows),
             'planned_sessions': len(rows) * (1 + self.plan['recipient_sessions']),
             'summaries': summaries, 'paired_comparisons': paired, 'case_summaries': case_summaries,
+            'cumulative_comparisons': cumulative, 'cumulative_resources': trajectories,
             'resources': stages, 'api_attempts': len(calls),
             'estimated_cost_usd': sum(c['cost_estimate_usd'] or 0 for c in calls),
             'unknown_cost_attempts': sum(c['cost_estimate_usd'] is None for c in calls),
             'charged_or_reserved_usd': sum(c['charged_or_reserved_usd'] for c in calls),
-            'scope': 'Fixed-case exploratory model-session comparison with pre-authored EAL. '
-                     'Report diagnostic and additional cases separately. Repetitions and sessions '
-                     'are dependent within cases. No human-developer, isolated reasoning, notation '
-                     'or population model-class effect. Timing includes local synthetic collectors; '
-                     'API prices ignore cached discounts and exclude host and human costs.',
+            'scope': 'Selected-case workflow comparison with ordinary prose and pre-authored EAL. '
+                     'Task decision is primary; evidence citations and format are separate optional diagnostics. '
+                     'Unknown annotations remain bounded; no population inference or unmeasured authoring savings. '
+                     'Cumulative profiles include initial model use; no extrapolated break-even. '
+                     'API prices exclude cached discounts, host infrastructure and human costs.',
         }
-
-    def pairs(self, rows: list[dict], calls: list[dict]) -> list[dict]:
-        blocks = defaultdict(dict)
-        for row in rows:
-            blocks[row['pair_id']][row['arm']] = row
-        contrasts = [('eal', 'ordinary')]
-        if 'eal_fresh' in self.plan['arms']:
-            contrasts.append(('eal', 'eal_fresh'))
-        paired = []
-        for pair_id, arms in sorted(blocks.items()):
-            for treatment, comparator in contrasts:
-                a, b = arms[treatment], arms[comparator]
-                for session in range(1, self.plan['recipient_sessions'] + 1):
-                    aa = next((s for s in a['sessions'] if s['session'] == session), None)
-                    bb = next((s for s in b['sessions'] if s['session'] == session), None)
-                    measured = aa is not None and bb is not None and 'score' in aa and 'score' in bb
-                    differences = {}
-                    if measured:
-                        ar = self.resources.summarise([aa], calls)
-                        br = self.resources.summarise([bb], calls)
-                        differences = {key: ar[key] - br[key] for key in
-                                       ('elapsed_seconds', 'api_attempts')}
-                        differences['total_collector_calls'] = (ar['total_collector_calls'] - br['total_collector_calls']
-                            if ar['collection_counts_complete'] and br['collection_counts_complete'] else None)
-                        differences['known_cost_usd'] = (ar['known_cost_usd'] - br['known_cost_usd']
-                            if not ar['unknown_cost_attempts'] and not br['unknown_cost_attempts'] else None)
-                    paired.append({**{key: a[key] for key in ('case', 'cohort', 'donor', 'receiver', 'native_tools', 'repeat')},
-                        'pair_id': pair_id, 'session': session, 'contrast': f'{treatment}-{comparator}',
-                        'transition': 'same_model' if a['donor'] == a['receiver'] else 'different_model',
-                        'observed_pair': measured,
-                        'grounded_difference': (int(aa['score']['grounded_match']) - int(bb['score']['grounded_match'])
-                                                if measured else None),
-                        'resource_differences': differences})
-        return paired

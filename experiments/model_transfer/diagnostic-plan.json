@@ -1,22 +1,26 @@
 {
-  "schema": "EAL/model-transfer-plan/2",
-  "purpose": "secondary forced-collection diagnostic; ordinary remains the primary comparator",
+  "schema": "EAL/model-transfer-diagnostic-plan/1",
+  "purpose": "Separate component contrasts from identical donor state; ordinary-workflow comparison remains a separate plan.",
   "seed": 20260928,
   "budget_usd": 2.0,
   "max_calls_per_session": 3,
   "max_output_tokens": 4096,
   "max_request_bytes": 32768,
   "request_timeout_seconds": 90,
+  "response_mode": "prose",
+  "response_modes": ["prose", "json_prompted", "json_schema"],
   "models": {
     "plain": {
       "version": "gpt-4.1-nano-2025-04-14",
       "reasoning_effort": null,
+      "supports_structured_output": true,
       "input_per_million": 0.1,
       "output_per_million": 0.4
     },
     "reasoning": {
       "version": "gpt-5-nano-2025-08-07",
       "reasoning_effort": "low",
+      "supports_structured_output": true,
       "input_per_million": 0.05,
       "output_per_million": 0.4
     }
@@ -26,16 +30,16 @@
     "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
     "https://developers.openai.com/api/docs/models/gpt-5-nano"
   ],
+  "donor": "plain",
+  "recipients": ["plain", "reasoning"],
+  "native_tools": [false],
   "repetitions": 1,
-  "recipient_sessions": 2,
-  "structured_output": true,
-  "arms": [
-    "ordinary",
-    "eal",
-    "eal_fresh"
-  ],
-  "cases": [
-    "fresh_positive",
-    "refresh_negative"
-  ]
+  "recipient_sessions": 1,
+  "cases": ["fresh_positive", "refresh_negative"],
+  "contrasts": {
+    "projection": ["fresh_positive", "refresh_negative"],
+    "notes": ["refresh_negative"],
+    "format": ["fresh_positive", "refresh_negative"],
+    "reuse": ["fresh_positive"]
+  }
 }

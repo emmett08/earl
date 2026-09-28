@@ -16,11 +16,14 @@ def _assessment():
         "context_fingerprint": digest, "method_registry_fingerprint": digest,
         "claims": {
             "pressure": {"status": "contested", "grounded_label": "undecided",
+                         "statement": "The treatment raises pressure by at least 2 kPa.",
+                         "prose_verified": False,
                          "supporting_arguments": [], "contested_arguments": ["experiment"],
                          "objections": ["sensor_fault"], "undecided_objections": [],
                          "proposition": {"unit": "kPa", "result": {
                              "path": "estimate", "operator": ">=", "expected": 2}}},
             "other": {"status": "supported", "supporting_arguments": ["other_argument"],
+                      "statement": "The independent claim holds.",
                       "contested_arguments": [], "objections": []},
         },
         "arguments": {
@@ -90,6 +93,10 @@ def test_packet_retains_method_binding_assumption_and_objection_status_without_t
         "age_status": "unknown"}
     assert set(packet["objections"]) == {"sensor_fault", "counter_fault", "calibration_fault"}
     assert packet["premise_claims"]["other"]["status"] == "supported"
+    assert packet["premise_claims"]["other"]["statement"] == result["claims"]["other"]["statement"]
+    assert packet["premise_claims"]["other"]["prose_verified"] is False
+    assert claim["statement"] == result["claims"]["pressure"]["statement"]
+    assert claim["prose_verified"] is False
     assert {"evidence_id": "other_probe", "observation_id": "1dcb2b72-2ee2-45fb-a4e2-201010101010"} in (
         packet["claims"]["pressure"]["observation_ids"])
     assert packet["evidence"]["other_probe"]["status"] == "available"
@@ -121,6 +128,8 @@ def test_output_is_bounded_and_oversize_summary_names_authoritative_explanation(
     assert packet["full_explanation"]["assessment_id"] == "assessment-123"
     assert packet["summary_complete"] is False
     assert packet["omitted"]["details"] == "packet_byte_limit"
+    assert packet["claims"]["pressure"]["statement"] is None
+    assert packet["claims"]["pressure"]["prose_verified"] is False
     assert "raw" not in json.dumps(packet)
 
 
@@ -159,8 +168,47 @@ def test_real_evaluator_packet_retains_premise_and_typed_method_decision():
                                               claims=["outcome"])
     assert packet["claims"]["outcome"]["status"] == "supported"
     assert packet["premise_claims"]["increase"]["status"] == "supported"
+    for group, name in (("claims", "outcome"), ("premise_claims", "increase")):
+        assert packet[group][name]["statement"] == assessed["claims"][name]["statement"]
+        assert packet[group][name]["prose_verified"] is False
     assert packet["arguments"]["measured"]["method_result"]["binding"]["actual"] == 7.5
     assert packet["arguments"]["measured"]["method_result"]["outputs"]["estimate"] == 7500
+
+
+def test_statement_truncation_preserves_utf8_and_counts_every_omitted_byte():
+    result = _assessment()
+    result["claims"]["pressure"].update(statement="€" * 9, prose_verified=True)
+    result["claims"]["other"].update(statement="é" * 5, prose_verified=True)
+    result["arguments"]["experiment"]["dependencies"]["premises"] = ["other"]
+    packet = AssessmentPacketBuilder(limits=PacketLimits(max_statement_bytes=7)).build(
+        result, claims=["pressure"])
+    assert packet["claims"]["pressure"]["statement"] == "€€"
+    assert packet["premise_claims"]["other"]["statement"] == "ééé"
+    assert packet["omitted"]["claim_statement_bytes"] == 21 + 4
+    assert packet["summary_complete"] is False
+    for group, name in (("claims", "pressure"), ("premise_claims", "other")):
+        assert packet[group][name]["statement_truncated"] is True
+        assert packet[group][name]["prose_verified"] is False
+
+
+@pytest.mark.parametrize("verification,expected", [(None, False), (False, False), (1, False),
+                                                   ("true", False), (True, True)])
+def test_prose_verification_requires_explicit_boolean_true(verification, expected):
+    result = _assessment()
+    result["claims"]["pressure"]["prose_verified"] = verification
+    packet = AssessmentPacketBuilder().build(result, claims=["pressure"])
+    assert packet["claims"]["pressure"]["prose_verified"] is expected
+
+
+def test_missing_statement_remains_an_explicit_incomplete_summary():
+    result = _assessment()
+    del result["claims"]["pressure"]["statement"]
+    result["claims"]["pressure"]["prose_verified"] = True
+    packet = AssessmentPacketBuilder().build(result, claims=["pressure"])
+    assert packet["claims"]["pressure"]["statement"] is None
+    assert packet["claims"]["pressure"]["prose_verified"] is False
+    assert packet["omitted"]["claim_statements"] == 1
+    assert packet["summary_complete"] is False
 
 
 @pytest.mark.parametrize("case,expected_issue,expected_age", [

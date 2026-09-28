@@ -1,5 +1,5 @@
 {
-  "schema": "EAL/model-transfer-plan/2",
+  "schema": "EAL/model-transfer-plan/3",
   "purpose": "exploratory fixed-case model-session transfer with pre-authored EAL",
   "seed": 20260928,
   "budget_usd": 2.0,
@@ -12,13 +12,15 @@
       "version": "gpt-4.1-nano-2025-04-14",
       "reasoning_effort": null,
       "input_per_million": 0.1,
-      "output_per_million": 0.4
+      "output_per_million": 0.4,
+      "supports_structured_output": true
     },
     "reasoning": {
       "version": "gpt-5-nano-2025-08-07",
       "reasoning_effort": "low",
       "input_per_million": 0.05,
-      "output_per_million": 0.4
+      "output_per_million": 0.4,
+      "supports_structured_output": true
     }
   },
   "pricing_checked_at": "2026-09-28",
@@ -28,7 +30,6 @@
   ],
   "repetitions": 2,
   "recipient_sessions": 2,
-  "structured_output": true,
   "arms": [
     "ordinary",
     "eal"
@@ -42,5 +43,6 @@
     "expired_assumption",
     "capacity_boundary",
     "capacity_drop"
-  ]
+  ],
+  "response_mode": "prose"
 }

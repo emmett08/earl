@@ -79,7 +79,12 @@ def main() -> None:
     cli.add_argument('--output', type=Path, required=True)
     cli.add_argument('--calibrate-only', action='store_true')
     args = cli.parse_args()
-    plan = load_plan(args.plan)
+    diagnostic = read_json(args.plan).get('schema') == 'EAL/model-transfer-diagnostic-plan/1'
+    if diagnostic:
+        from .diagnostics import DiagnosticPilot, load_diagnostic_plan
+        plan = load_diagnostic_plan(args.plan)
+    else:
+        plan = load_plan(args.plan)
     if args.output.exists():
         raise ValueError('Use a new run directory; attempts must never be overwritten')
     args.output.mkdir(parents=True)
@@ -107,12 +112,14 @@ def main() -> None:
             raise SystemExit(1)
         return
     try:
-        result = Pilot(plan, args.output, OpenAITransport()).run()
+        implementation = DiagnosticPilot if diagnostic else Pilot
+        result = implementation(plan, args.output, OpenAITransport()).run()
     except ExecutionStopped as exc:
         write_json(args.output / 'report.json', {'status': 'blocked', 'reason': str(exc), 'api_attempts': 0})
         raise SystemExit(str(exc)) from exc
-    print(json.dumps({k: result[k] for k in ('status', 'planned_sequences', 'api_attempts', 'estimated_cost_usd')}))
-    if result['status'] != 'complete':
+    print(json.dumps({k: result[k] for k in ('status', 'planned_sequences', 'planned_sessions',
+                                           'api_attempts', 'estimated_cost_usd') if k in result}))
+    if result['execution_status'] != 'complete':
         raise SystemExit(1)
 
 

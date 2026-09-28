@@ -1,24 +1,34 @@
-# Model-session transfer investigation
+# Model-session workflow investigation
 
-Protocol **2.0.0**, schema **1.1**, status **specified**. This exploratory
-investigation measures reference-task completion and resources when models
-start fresh sessions with ordinary project artefacts or existing EAL knowledge.
-The [human developer study](../transfer_study/README.md) addresses developer
-handover and authoring effort separately.
+Protocol **3.0.0**, schema **1.1**, status **specified**. The primary investigation
+compares task decisions and resources across fresh ordinary and EAL sessions.
+A separate diagnostic investigation varies individual components on cloned donor
+states. The [human developer study](../transfer_study/README.md) addresses
+human handover and authoring effort separately.
 
-## Conditions and scope
+## Primary comparison
 
-The primary comparator is a new ordinary prompt session with the project
-specification and notes naturally produced in earlier sessions. The experiment
-supplies neither a runbook nor selected previous tool results. Conversation
-history resets. Both arms can write the same bounded project notes.
+The comparator is a new ordinary prompt session with the task specification and
+naturally produced project notes. It receives no supplied runbook, curated tool
+cache or previous conversation. Every session has empty conversation history.
+Both workflows retain the latest complete model answer verbatim as an ordinary
+project note. This requires no file-writing instruction or answer schema.
+An answer exceeding the 8,192-byte note limit remains in the raw session record;
+the host records why it was not added to the project notes.
 
-EAL additionally supplies pre-authored source, a sibling TOML collector binding
+EAL additionally uses pre-authored EAL source, a sibling TOML collector binding
 and persisted observations. Its host opens the knowledge base anew each session,
-reuses eligible measurements and collects missing or expired evidence. The model
-receives the current checked context, without needing to read the EAL source.
-The interpreter computes the declared threshold comparison; the model supplies
-the task answer. Both components are measured separately.
+reuses eligible measurements and collects missing or expired evidence. A task
+contract validates the authored source against the task metadata. A task-specific
+adapter derives the scoped decision from the actual assessment and sends a
+standalone compact task context containing the current result, meaning, scope
+and evidence. The prompt omits the repeated full specification and older notes.
+
+The two workflows solve the same external task with appropriate prompts.
+Differences in prompt length, host computation and information organisation are
+part of the workflow treatment. The experiment measures whether these differences
+improve decisions or reduce work; it does not require like-for-like prompts.
+The full raw requests preserve exactly what each recipient received.
 
 | Model snapshot | Dedicated reasoning setting | Recipient native tools |
 | --- | --- | --- |
@@ -27,145 +37,223 @@ the task answer. Both components are measured separately.
 
 Every case crosses both donor models with both recipient models and both native
 tool settings. Initial sessions have native tools. Each sequence contains an
-initial session and **two fresh recipient sessions**, with two independently
-executed repetitions per configuration. Persisted files and EAL observations
-continue within a sequence; conversations and model responses do not.
+initial session and **two fresh recipient sessions**, with two executions per
+configuration. Persisted artefacts and EAL observations continue within a
+sequence. Provider conversation history does not.
 
 The standard plan has **256 sequences, 768 sessions and at most 2,304 API
 requests**, with a **USD 2 request-reservation limit**. Matched arm sequences are
-adjacent within shuffled blocks; their order is randomised. Both arms execute
-independent initial sessions, so naturally produced notes may differ. Paired
-recipient observations share task, donor, receiver, tool setting and repetition.
+adjacent within shuffled blocks; their order is randomised. Their initial
+sessions execute independently, so natural notes may differ. The paired primary
+contrast describes this complete workflow difference.
 
-Six **diagnostic** latency cases cover fresh positive/negative measurements,
+Six diagnostic latency cases cover fresh positive/negative measurements,
 refresh to positive/negative findings, missing measurements and assumption expiry.
-Two **additional** free-storage cases exercise an inclusive lower threshold and a
-changed negative finding. They are prospectively specified additions authored
-with the implementation, not an independent confirmatory sample. The two cohorts
-are reported separately. Sessions within a case are dependent observations.
+Two additional free-storage cases exercise an inclusive lower threshold and a
+changed negative finding. The cohorts are reported separately. The additional
+cases are prospectively specified but are not an independently authored sample.
+Sessions and requests within a case remain dependent observations.
 
-This tests the full EAL workflow, including its information and computation
-advantage. It does not isolate notation or reasoning capability. Both selected
-models can call functions: the off condition restricts access. Dedicated
-reasoning varies with model family. The synthetic threshold tasks do not establish
-performance on all EAL methods, complex engineering work or human development.
+Both selected models can call functions; the off condition restricts access.
+Dedicated reasoning varies with model family. EAL host collection and evaluation
+remain available when recipient native tools are disabled. Results therefore
+concern these configurations, not an isolated reasoning or intrinsic-tooling
+capability effect.
 
-## Evidence and answers
+## Task meaning and independent calibration
 
 Evidence admission requires a usable nonnegative measurement and the specified
-threshold/direction. `experiment/threshold/1` returns the reading, threshold,
-`meets` and `fails`. Both positive and negative comparisons are usable computed
-results. The claim `criterion_evaluated` concerns successful evaluation within
-scope; its support status is not a readiness decision. Assumptions use
-`[valid_from, valid_until)`; observations remain usable through `max_age`
-inclusively. Re-ingesting an unchanged report preserves its observation time.
+threshold/direction. `experiment/threshold/2` returns the reading, threshold,
+`meets` and `fails`. Positive and negative comparisons are both usable results.
+The claim `criterion_evaluated` concerns a completed comparison; its support
+status alone is not a readiness decision. The task adapter interprets the checked
+method result with the applicable scope and evidence status. It has no access to
+the scorer's reference answer.
 
-A preflight calibration runs each selected case and session through the real EAL
-host and model-context projection, comparing visible distinctions with the
-independent reference. Calibration failure stops before any API request. This is
-an instrument check, not evidence of model effectiveness.
+The task contract checks the authored source's claim meaning, threshold,
+direction, measurement and scope before accepting that mapping. Generic EAL
+context retains claim statements and `prose_verified`; formal support does not
+silently become proof of arbitrary natural-language text. Assumptions use
+`[valid_from, valid_until)` and observations remain usable through `max_age`
+inclusively. An unchanged report preserves its observation time.
 
-Both arms use the same structured answer contract and provider output schema.
-The primary descriptive outcome, `grounded_match`, requires the reference decision
-and basis, plus the measured value and observation timestamp for a definite
-answer. Any voluntarily cited value or time must also agree with the current
-reference. It measures agreement with the reference, not proof that the model
-consulted a particular observation. Free-text explanation quality is ungraded.
-The reference uses fixture facts and independent specification arithmetic; it
-never reads EAL conclusions and never enters a model prompt.
+Preflight calibration runs selected cases through the actual EAL host and task
+adapter and compares the results with independently authored expected outcomes.
+Additional checks exercise changed claim meaning, reversed criteria, changed
+thresholds, missing observations, scope errors and time boundaries. Invalid
+correspondence stops before any API request. A defective authored argument or
+information projection is thereby identified separately from a model error.
+These checks establish the exercised software behaviour, not model effectiveness.
 
-Decision agreement, decision/basis agreement, internal consistency, false definite
-answers, abstentions when the reference is decisive, no answer, format validity
-and optional file-write validity are separate outcomes. A valid decision survives
-an invalid file request. File validation precedes writes. Unparseable answers
-remain failures; no oracle-driven repair or permissive extraction occurs.
-An abstention without accessible evidence can be appropriate even when it does
-not complete the full-information reference task.
+## Answers and annotation
 
-## Resources and analysis
+The primary plan uses **ordinary prose**. The requested task answer carries no
+experimental JSON reporting contract. `task_match`/`decision_match` is the primary
+descriptive outcome: does the expressed decision agree with the independent
+full-information task reference? The reference is calculated from fixture facts
+and task arithmetic; it never reads EAL conclusions or enters a model prompt.
 
-The report separates initial and recipient costs, each recipient session index,
-setup time, API calls, tokens, reasoning tokens, native probes and host
-collections/reuses. Total collector calls include both paths. Completeness flags
-distinguish known subtotals from missing timing, token or host-collection records.
-End-to-end session
-time includes context preparation and file handling. API cost per grounded answer
-includes failed API attempts with known usage; unknown costs make the ratio
-unavailable. Prices are recorded estimates at uncached rates, not invoices.
-Human authoring time and host infrastructure costs are unmeasured. Synthetic local
-collector latency cannot estimate real Kubernetes or authentication costs.
+Answer annotation and correctness scoring are separate. Conservative automatic
+annotation recognises explicit decisions. Ambiguous or conflicting prose and
+malformed JSON remain pending until blind review; they do not become incorrect
+task decisions merely because the parser cannot classify them. Partial text from
+an incomplete provider response also remains pending; provider completion is a
+separate measurement. Partial responses produce no file effects or handoff notes.
+An empty or absent attempted answer is an observed no-answer. Unobserved sessions remain unknown.
+Reports retain best/worst bounds for pending and unobserved decisions.
 
-`paired_comparisons` retains case, cohort, repetition, same/different-model
-transition, session index, quality differences and resource differences.
-`case_summaries` shows means and observed ranges. These are descriptive results;
-repetition does not create new sampled tasks. There are no population confidence
-intervals or significance tests. Every planned unit remains in the denominator.
-Unobserved outcomes have explicit best/worst bounds, not fabricated zero cost or
-assumed failure. Partial runs cannot establish a completed comparative result.
+Basis agreement, voluntary measurement/time citations, coded internal consistency,
+false definite assertions, abstention, format compliance and optional file-writing
+outcomes are separate dimensions. Absent optional basis or citation content is
+unmeasured, not a primary task failure. Complete free-text argument quality is
+outside the automatic rubric. An appropriate abstention without accessible
+evidence may disagree with the full-information task reference; this distinction
+is reported rather than hidden inside a single grounding score.
 
-An optional [ablation plan](ablation-plan.json) adds `eal_fresh`, which forces
-collection while retaining the same source and context machinery. It has
-48 sequences and 144 sessions. The EAL-versus-forced-collection contrast diagnoses
-reuse costs under the fixture's unchanged underlying measurements. Ordinary
-prompting remains the primary comparator. This contrast does not isolate every
-EAL component, and independently generated notes can differ between arms.
+For pending decisions or an audit of all automatic labels:
 
-## Run
+```bash
+python -m experiments.model_transfer.annotations export RUN_DIRECTORY --output ANNOTATION_BUNDLE
+python -m experiments.model_transfer.annotations export RUN_DIRECTORY --output AUDIT_BUNDLE --all
+```
 
-From the repository root, install the package and first verify the instrument:
+The assessor receives only the bundle's `items.json`, with shuffled identifiers
+and raw answers. Keep `mapping.json` with the analyst. The assessor copies the
+items into a labels file, supplies an `annotator`, and records each `decision`,
+an exact supporting `quote` and a coding `note`. Permitted decisions are
+`ready`, `not_ready`, `undetermined`, `no_answer` and `ambiguous`.
+The last remains pending. Case, model, arm and oracle metadata are hidden;
+answer wording can still reveal treatment.
+
+```bash
+python -m experiments.model_transfer.annotations import RUN_DIRECTORY ANNOTATION_BUNDLE LABELS_JSON --output annotated-rows.json
+python -m experiments.model_transfer.analyse RUN_DIRECTORY --rows annotated-rows.json --output annotated-analysis.json
+```
+
+Imported annotations create derived rows and preserve the original raw answers
+and scores. Independent assessors can produce separate imports; discrepant
+interpretations and adjudications should remain inspectable. Manual coding
+identifies the answer expressed, not which answer the task should have produced.
+
+## Component diagnostics
+
+The separate [diagnostic plan](diagnostic-plan.json) prepares one real prose EAL
+donor session per block, fixes the recipient-time external fixture and copies
+that complete donor state into independent recipient directories. No recipient
+can change another recipient's notes or observations.
+
+| Component | Recipient variants | Required equality |
+| --- | --- | --- |
+| Projection | Compact; full | Current task facts, donor state and fixture |
+| Prior notes | Omitted; included | Current task context, donor state and fixture |
+| Reporting | Prose; prompted JSON; schema-enforced JSON | Current task context, donor state and fixture |
+| Collection | Compatible reuse; forced collection | Authored source, donor state and unchanged underlying measurement |
+
+The projection and reporting contrasts use `fresh_positive` and
+`refresh_negative`. The notes contrast uses `refresh_negative` with a declared,
+dated synthetic stale positive note added before cloning. This deliberate
+perturbation is labelled and remains confined to diagnostics. The collection
+contrast uses `fresh_positive`, where the retained observation is eligible.
+
+Four donor blocks cross these two cases with both recipient models, using the
+plain donor model and disabled recipient native tools. The plan has **four donor
+sessions and 28 recipient sessions**, at most **96 API requests**, and its own
+**USD 2 reservation limit**. The shared donor is counted once per block; marginal
+recipient resources are reported separately.
+
+Fingerprints and intervention manifests check shared state, unchanged fixture,
+required task-fact equality and actual variant delivery. Failed checks preserve
+the raw responses and costs while invalidating component attribution. Comparisons
+remain separate by component and donor block; they are not pooled with the primary
+workflow comparison.
+
+The protocol specifies rival explanations: compact context may preserve task
+meaning or remove needed explanation; stale notes may interfere or be correctly
+qualified; reporting requirements may alter task decisions or only representation.
+Observed differences generate candidate explanations. Few stochastic observations
+cannot establish equivalence, absence of interference or a unique mechanism.
+Forced collection also checks whether reuse actually removes collection work;
+local fixture timings do not establish savings for remote infrastructure.
+
+`prose` requests an ordinary task response. `json_prompted` requests the reporting
+contract without constrained decoding. `json_schema` adds provider schema
+enforcement. Reasoning and native tool access are separate settings. The primary
+workflow requires no provider JSON-schema facility; schema diagnostics require a
+serving interface that supports it. Structured decoding constrains representation,
+not factual correctness.
+
+## Resources and interpretation
+
+Reports separate initial, each recipient and cumulative API input/output/cached/
+reasoning tokens, requests, estimated cost, wall time, host collections/reuses,
+native probes and setup time. Every attempted request counts. Completeness flags
+distinguish known subtotals from unknown resources. End-to-end session time
+includes context preparation and note handling. Cost per correct decision is
+available only with complete outcome and resource coverage.
+
+Initial overhead may be recovered by later savings. The relevant comparison is
+cumulative cost/tokens at each observed session position together with task
+success, as well as each later session's marginal usage. This finite investigation
+does not extrapolate a break-even point beyond the observed sessions.
+Prices are recorded estimates rather than invoices. Source authoring, human effort
+and host infrastructure prices are unmeasured. These limits qualify any claimed
+saving. The experiment does not charge pre-authored EAL as measured authoring work.
+
+Every planned unit remains visible. Report observed paired differences and ranges,
+annotation coverage, failures and unknown bounds. No population confidence
+intervals or significance tests are claimed. Budget exhaustion or timeout leaves
+a partial run; ties in a small diagnostic sample do not establish equivalence.
+
+## Run and retained artefacts
+
+From the repository root:
 
 ```bash
 python -m pip install -e '.[dev]'
 python -m experiments.model_transfer.runner --calibrate-only --output /tmp/eal-calibration
 ```
 
-With `OPENAI_API_KEY` configured, choose a new output directory:
+With `OPENAI_API_KEY` configured, select one plan and a new directory:
 
 ```bash
 python -m experiments.model_transfer.runner --output experiments/model_transfer/runs/comparison-001
-python -m experiments.model_transfer.runner --plan experiments/model_transfer/ablation-plan.json --output experiments/model_transfer/runs/ablation-001
+python -m experiments.model_transfer.runner --plan experiments/model_transfer/diagnostic-plan.json --output experiments/model_transfer/runs/diagnostic-001
 ```
 
-Run only the intended plan; these are separate API-funded investigations. The
-manual **EAL tests** workflow has a live-run toggle and comparison/ablation choice.
-It uses the existing `OPENAI_API_KEY` repository secret. No workflow runs
-on push, pull request or a schedule. The live job has a 120-minute ceiling;
-the request budget can stop it earlier, retaining partial results.
+These are separate API-funded investigations. The manual **EAL tests** workflow
+has a live-run toggle and `comparison`/`diagnostics` plan choice. It uses the existing `OPENAI_API_KEY`
+repository secret. Workflows run only by manual dispatch. The live job has a
+120-minute ceiling; the budget can stop it sooner while preserving partial data.
 
-Artifacts include plan/protocol/case snapshots, assignment, code identity,
-calibration, raw session inputs/responses, project notes, EAL state, scored rows
-and the report. `calls.jsonl` appends request starts before transmission and
-completion records afterwards. `calls.json` is written once at orderly completion;
-an interrupted job may have only the journal. Recompute retained scores without
-changing them using `python -m experiments.model_transfer.analyse RUN_DIRECTORY`;
-this writes a new `analysis.json` and keeps interrupted attempts unknown. Never
-overwrite a run directory.
-GitHub retains uploaded artifacts for 90 days, subject to repository limits.
+Each run retains protocol/plan/case snapshots, allocation, code identity,
+calibration, raw inputs/answers, natural notes, EAL state, outcomes and reports.
+Diagnostics also retain donor snapshots, clone fingerprints and manipulation
+checks. `calls.jsonl` records request starts before transmission and completions
+afterwards; `calls.json` is written at orderly completion. Interrupted attempts
+remain distinguishable from zero work.
 
-See [verification](verification.md) for software checks and
-[the original run analysis](results/run-36432530106.md) for the historical result.
+```bash
+python -m experiments.model_transfer.analyse RUN_DIRECTORY
+```
 
-## Method and implementation
+Offline analysis writes a new report from retained records without overwriting the
+run. GitHub retains uploaded artefacts for 90 days, subject to repository limits.
+See [verification](verification.md) for implementation checks and
+[the historical run analysis](results/run-36432530106.md) for unchanged earlier
+observations.
 
-The investigation follows the distinction between instrument validation,
-exploration and confirmation in the design-scientific-investigations skill.
-[Tukey (1980)](https://doi.org/10.1080/00031305.1980.10482706) motivates reporting
-these observations as exploratory and reserving confirmation for independently
-selected cases. [Cronbach and Meehl (1955)](https://psychclassics.yorku.ca/Cronbach/construct.htm)
-motivates separating answer correctness from formatting and file side effects.
-These methodological choices do not establish an EAL performance benefit.
+## Method and responsibilities
 
-`AssignmentSchedule` owns allocation; `Project` owns files and fixture state;
-context strategies implement ordinary, compatible-reuse and forced-collection
-conditions. `SessionRunner` handles the provider interaction, `AnswerParser`
-handles the answer contract, `ReferenceScorer` handles task arithmetic,
-`ResourceSummary` handles accounting and `ReportBuilder` composes comparisons.
-The injected provider `Transport` permits independent scripted verification.
-These boundaries separate changing scientific procedures from transport details.
+[Tukey (1980)](https://doi.org/10.1080/00031305.1980.10482706) informs the separation
+of exploratory findings from confirmation. [Cronbach and Meehl (1955)](https://psychclassics.yorku.ca/Cronbach/construct.htm)
+informs independent validation of the task-decision measure.
+[Platt (1964)](https://doi.org/10.1126/science.146.3642.347) informs the rival
+explanations and discriminating component comparisons. These choices support
+bounded interpretation; they do not establish an EAL performance benefit.
 
-The Responses implementation follows official
-[structured-output](https://developers.openai.com/api/docs/guides/structured-outputs)
-and [reasoning](https://developers.openai.com/api/docs/guides/reasoning)
-contracts. Structured decoding constrains format; it does not ensure correct facts.
-Reasoning response items are retained within a session and excluded from subsequent
-sessions. No provider response is fabricated or silently substituted.
+Allocation, project persistence, context preparation, task contracts, provider
+interaction, annotation, independent scoring and resource aggregation have
+separate modules/classes. Context strategies encapsulate the workflow variants;
+the injected provider transport permits scripted integration verification.
+The Responses adapter preserves reasoning items within a session and excludes
+provider history from later sessions. No provider answer is fabricated or replaced.

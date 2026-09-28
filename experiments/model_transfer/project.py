@@ -2,6 +2,9 @@
 from __future__ import annotations
 
 import json
+from contextlib import closing
+import shutil
+import sqlite3
 from pathlib import Path
 import sys
 import time
@@ -46,8 +49,32 @@ class Project:
                             'elapsed_seconds': time.monotonic() - start})
         return result
 
-    def context(self, question: str) -> list[dict]:
-        return self.strategy.prepare(self, question)
+    def context(self, question: str, *, style: str = 'full', reuse: str = 'compatible') -> list[dict]:
+        return self.strategy.prepare(self, question, style=style, reuse=reuse)
+
+    def fork(self, root: Path, session: int) -> Project:
+        """Clone donor artefacts while keeping the frozen collector binding identical."""
+        shutil.copytree(self.root, root, ignore=shutil.ignore_patterns('*-wal', '*-shm'))
+        for source in self.workspace.rglob('*.sqlite3'):
+            destination = root / source.relative_to(self.root)
+            with closing(sqlite3.connect(source)) as origin, closing(sqlite3.connect(destination)) as target:
+                origin.backup(target)
+        clone = object.__new__(Project)
+        clone.root, clone.case, clone.arm = root, self.case, self.arm
+        clone.strategy = self.strategy
+        clone.workspace = root / 'project'
+        clone.state, clone.session, clone.events = self.state, session, []
+        return clone
+
+    def remember_answer(self, text: str) -> dict:
+        """Retain the latest complete answer verbatim as an ordinary project note."""
+        if not text.strip():
+            return {'status': 'not_retained', 'reason': 'No answer text'}
+        if len(text.encode('utf-8')) > 8192:
+            return {'status': 'not_retained', 'reason': 'Complete answer exceeds the note byte limit'}
+        path = self.workspace / 'latest-answer.md'
+        path.write_text(text)
+        return {'status': 'retained', 'name': path.name, 'bytes': len(text.encode('utf-8'))}
 
     def files(self) -> dict[str, str]:
         # The host interprets EAL source. Models see the specification and natural
@@ -60,13 +87,14 @@ class Project:
         if not isinstance(files, list) or len(files) > 4:
             return {'status': 'rejected', 'reason': 'Use at most four file objects', 'written': []}
         names = set()
-        prospective = {name: value for name, value in self.files().items() if name != 'specification.txt'}
+        prospective = {name: value for name, value in self.files().items()
+                       if name not in ('specification.txt', 'latest-answer.md')}
         for item in files:
             if not isinstance(item, dict) or set(item) != {'name', 'content'}:
                 return {'status': 'rejected', 'reason': 'Each file needs name and content', 'written': []}
             name, content = item['name'], item['content']
             if (not isinstance(name, str) or name != Path(name).name or name in names or
-                    not name.endswith(('.md', '.txt')) or name == 'specification.txt' or
+                    not name.endswith(('.md', '.txt')) or name in ('specification.txt', 'latest-answer.md') or
                     not isinstance(content, str) or len(content) > 8000 or
                     (self.workspace / name).is_symlink()):
                 return {'status': 'rejected', 'reason': 'Invalid or protected project note', 'written': []}

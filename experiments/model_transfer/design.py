@@ -13,7 +13,7 @@ from .conditions import CONDITIONS
 
 def load_plan(path: Path) -> dict:
     plan = read_json(path)
-    if plan.get('schema') != 'EAL/model-transfer-plan/2':
+    if plan.get('schema') != 'EAL/model-transfer-plan/3':
         raise ValueError('Invalid model transfer plan')
     budget = plan.get('budget_usd')
     if type(budget) not in (int, float) or not math.isfinite(budget) or not 0 < budget <= 2:
@@ -23,14 +23,14 @@ def load_plan(path: Path) -> dict:
                            ('repetitions', 3), ('recipient_sessions', 3)):
         if type(plan.get(field)) is not int or not 1 <= plan[field] <= maximum:
             raise ValueError(f'Invalid {field}')
-    if type(plan.get('seed')) is not int or type(plan.get('structured_output')) is not bool:
-        raise ValueError('Seed and structured_output must be explicitly configured')
+    if type(plan.get('seed')) is not int or plan.get('response_mode') != 'prose':
+        raise ValueError('Comparison requires an explicit seed and ordinary prose responses')
     for key, allowed in (('cases', {case.identifier for case in CASES}), ('arms', set(CONDITIONS))):
         values = plan.get(key)
         if (not isinstance(values, list) or not values or any(not isinstance(v, str) for v in values)
                 or len(values) != len(set(values)) or not set(values) <= allowed):
             raise ValueError(f'Invalid {key}')
-    if not {'ordinary', 'eal'} <= set(plan['arms']):
+    if set(plan['arms']) != {'ordinary', 'eal'}:
         raise ValueError('Retain the ordinary comparator and EAL treatment')
     if set(plan['models']) != {'plain', 'reasoning'}:
         raise ValueError('Configure the plain and reasoning model families')
@@ -39,6 +39,8 @@ def load_plan(path: Path) -> dict:
             raise ValueError('Pinned model version is required')
         if model.get('reasoning_effort') != (None if name == 'plain' else 'low'):
             raise ValueError('Use no reasoning parameter for plain, low for reasoning')
+        if type(model.get('supports_structured_output')) is not bool:
+            raise ValueError('Declare provider/model schema-output capability explicitly')
         for key in ('input_per_million', 'output_per_million'):
             rate = model.get(key)
             if type(rate) not in (int, float) or not math.isfinite(rate) or not 0 < rate <= 10:

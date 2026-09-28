@@ -11,11 +11,14 @@ def compare_measurement(report: dict) -> dict:
 
 NUMBER = {'type': 'number', 'minimum': 0, 'maximum': 1e9}
 CONTRACT = MethodContract(
-    identifier='experiment/threshold/1', evidence_kind='threshold_measurement',
+    identifier='experiment/threshold/2', evidence_kind='threshold_measurement',
     input_schema={'type': 'object', 'properties': {
         'reading': NUMBER, 'threshold': NUMBER,
-        'direction': {'type': 'string', 'enum': ['at_most', 'at_least']}},
-        'required': ['reading', 'threshold', 'direction'], 'additionalProperties': False},
+        'direction': {'type': 'string', 'enum': ['at_most', 'at_least']},
+        'service': {'type': 'string', 'minLength': 1, 'maxLength': 128},
+        'metric': {'type': 'string', 'minLength': 1, 'maxLength': 128},
+        'unit': {'type': 'string', 'minLength': 1, 'maxLength': 32}},
+        'required': ['reading', 'threshold', 'direction', 'service', 'metric', 'unit'], 'additionalProperties': False},
     query_schema={'type': 'object', 'properties': {}, 'required': [], 'additionalProperties': False},
     output_schema={'type': 'object', 'properties': {
         'reading': NUMBER, 'threshold': NUMBER,
@@ -23,7 +26,7 @@ CONTRACT = MethodContract(
         'required': ['reading', 'threshold', 'meets', 'fails'], 'additionalProperties': False},
     outputs={'reading': 'basis', 'threshold': 'basis', 'meets': 'boolean', 'fails': 'boolean'},
     quantities=(), exact_unit=False, implementation=compare_measurement,
-    implementation_version='model-transfer-threshold-1',
+    implementation_version='model-transfer-threshold-2',
 )
 
 

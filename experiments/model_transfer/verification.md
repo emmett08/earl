@@ -1,69 +1,89 @@
 # Model-session investigation verification
 
-Recorded 2026-09-28 for protocol 2.0.0 and package 2.15.0. These are software
-and measurement-instrument checks. No live API experiment has been run with
-this revision.
+Protocol **3.0.0**, package **2.15.0**, EAL/2. Packet/model-context schemas remain
+`/2`; the primary plan/report use `/3`; the diagnostic plan uses `/1`.
+These records concern software and measurement instruments. No live model
+experiment has been run under this protocol.
 
 | Check | Actual result |
 | --- | --- |
-| `make check` | 702 passed, 1 skipped; generated ANTLR sources verified; maintained synthetic API example exercised through CLI/MCP. |
-| Real EAL calibration | All 24 case/session checks passed, with zero API requests. |
-| Scripted pipeline | 48 sequences and 144 sessions completed across both donors, recipients, native-tool settings and all three arms. |
-| Retained-result analysis | Append-only journal reconstructs the API records; the offline CLI reproduces all report measurements. |
-| Protocol validator | VALID, specified status, zero errors and zero warnings. |
-| `make build` | Source distribution and wheel built for 2.15.0. |
-| Distribution inspection | New runtime and experiment modules included; generated run directories excluded. |
-| Workflow parsing | Only `workflow_dispatch`; live execution defaults to false. |
-| `git diff --check` | Clean. |
+| Scientific protocol validator | VALID at specified status; zero errors and zero warnings. |
+| Actual EAL calibration | 40 primary-plan checks and 20 diagnostic-plan checks passed with no model requests, including task/source mutations and time boundaries. |
+| Annotation implementation | 32 dedicated checks passed, including a blind export/import roundtrip. |
+| Integrated suite and pipeline rehearsal | `make check`: 783 passed, 1 skipped; generated parser and maintained CLI/MCP example passed. Scripted primary: 32 sequences/96 sessions; diagnostic: 4 donors/28 recipients. |
+| Build and distribution contents | `make build` passed; 2.15.0 wheel and source archive inspected for current modules and plans; no run artefacts or removed ablation plan. |
+| Workflow and diff checks | Only `workflow_dispatch` triggers; live execution defaults off. `git diff --check` clean. |
 
-Assignment checks verify all 256 standard-plan sequences, matched arms, crossed
-donor/case coverage, repetitions and fixed-seed replay. The scripted pipeline
-checks fresh conversation histories, naturally produced notes, native-tool
-masks and reasoning-item continuation within a session. In its recipient
-sessions, compatible EAL reuse produces 24 reuses and eight collections;
-forced collection produces 32 collections. These figures describe the scripted
-fixtures, not observed model behaviour.
+The integrated checks cover the following properties. This list specifies the
+verification scope; the table records which checks have actually completed.
 
-Scoring checks independently cover inclusive threshold/freshness boundaries,
-exclusive assumption expiry, negative and missing measurements, incorrect
-citations, appropriate abstention labels, no answers, ambiguous JSON and rejected
-optional files. Analysis checks cover known zero and positive paired differences,
-all planned units after a fatal failure, incomplete provider usage, interrupted
-requests, lost session records and failed host assessments. Unknown resource
-amounts remain distinguishable from measured zeroes.
+* Every primary assignment preserves the case, donor, receiver, native-tool
+  setting, repetition and recipient position. Diagnostic variants clone a common
+  donor state into independent directories.
+* The authored task contract rejects changed claim meaning, criterion, scope or
+  incompatible declarations. Actual EAL evaluation distinguishes measured negative
+  results, missing readings, out-of-scope observations and freshness/applicability
+  boundaries. The independent reference does not read EAL conclusions.
+* Generic context preserves claim statements and their `prose_verified`
+  qualification. Task context contains the current decision, meaning, scope and
+  supporting evidence without requiring the model to reconstruct omitted facts.
+* Primary prose responses do not require JSON. An unclassifiable or contradictory
+  answer remains pending annotation; empty output is observed no-answer.
+  Questions, retractions and partial provider text remain pending independent coding.
+  Secondary basis/citation/format measurements do not redefine primary task
+  correctness. Blind annotation adds derived labels without altering raw answers.
+* Both primary workflows retain the latest complete raw answer as a project note
+  under the same size rule. Ordinary prompts include their specification and
+  notes; compact EAL prompts receive the current standalone task context.
+* Diagnostic state, fixture and task-fact checks detect unintended variation.
+  Actual response mode, note inclusion and compatible/fresh collection are
+  recorded. A failed manipulation invalidates attribution while preserving its
+  answer, costs and denominator.
+* Resource accounting includes initial, each subsequent and cumulative work;
+  shared diagnostic donors count once. Unknown labels, interrupted requests and
+  incomplete token/cost records remain distinguishable from wrong answers and
+  measured zeroes.
 
-Five maintained reasoning fixtures were also evaluated with the original and
-revised evaluator. After removing only the added assumption-time fields and
-predicate-failure diagnostics, complete results were identical and matched the
-original digests. Snapshot updates reflect those new fields; existing formal
-support semantics were retained. Packet/context checks verify bounded diagnostics,
-observation times, omitted-data indicators and claim-to-evidence links.
+## Implementation responsibilities
 
-## Implementation boundaries
+Context strategies encapsulate ordinary and EAL workflows. TaskContract checks
+this experiment's authored source; its task adapter translates an actual
+assessment into the declared task result. The generic model-context projection
+retains argument meaning and qualifications without claiming arbitrary prose is
+formally proved.
 
-The context strategies implement the Strategy pattern for ordinary, reuse and
-forced-collection conditions. The injected provider Transport separates API
-access from study orchestration. ModelContextBuilder owns the checked projection;
-ReferenceScorer owns independent task arithmetic; ReportBuilder composes scores
-and resource summaries. Existing collectors, repositories, method contracts and
-formal evaluation remain in use.
+Answer annotation, independent reference scoring and aggregate reporting are
+separate responsibilities. Manual annotation is a derived record joined through
+a separate mapping; it is not an answer-repair request sent to the model.
+Diagnostic orchestration owns donor snapshots, clone creation, factor delivery
+and manipulation checks. The existing provider transport, budget ledger and
+append-only attempt journal serve both investigations.
 
-Session execution, answer parsing, assignment, calibration, accounting and
-journal persistence are separate modules with one responsibility each. Durable
-attempt logging is extracted from the provider, avoiding full-log rewrites on
-every call. The packet evidence projection remains together because its bounded
-allowlist, omission count and state projection form one responsibility. No new
-plugin framework or general-purpose workflow abstraction is introduced.
+Context and response-format classes use Strategy; the task context is an Adapter
+from checked assessment to application vocabulary. Transport is injected through
+a small protocol. Task correspondence, prompt preparation, annotation, outcome
+summaries, paired comparisons and manipulation checks have separate owners.
+The packet builder keeps bounded statement and omission helpers private because
+they maintain one projection invariant. Diagnostic block orchestration retains
+one donor-and-clones lifecycle; its assignment and measurement policies live in
+separate modules. These boundaries permit changes without a general-purpose
+framework or duplicated evaluation logic.
 
-## Empirical status
+The production evaluator, observation repositories and collector interfaces
+remain shared. No general experiment framework or alternative EAL semantics is
+introduced. Scripted transports exercise integration and failure handling; their
+outputs are not observations of model capability or savings.
 
-The historical run is documented separately in
-[run-36432530106.md](results/run-36432530106.md); its original scores are unchanged.
-It does not validate the revised experiment. Credentialed manual execution is
-required to observe actual model answers, provider compatibility, latency and
-usage under the common structured-output contract.
+## Empirical limits
 
-The selected tasks are synthetic and the EAL sources are pre-authored. The revised
-model experiment cannot establish human authoring savings, population model-class
-effects, performance on general engineering tasks or isolated reasoning benefits.
-Its additional cases are prospective additions, not independent confirmation.
+The historical run remains separately documented in
+[run-36432530106.md](results/run-36432530106.md), with its original observations
+and scores unchanged. It does not establish performance under protocol 3.0.0.
+Credentialed manual execution is required to observe actual answers, provider
+behaviour, tokens, latency and costs for the declared plans.
+
+The eight primary cases and two diagnostic cases are purposive synthetic tasks.
+EAL source authoring and human work are unmeasured. The diagnostic contrasts have
+one execution per variant and support observations of sensitivity, not equivalence
+or precise effect estimates. Generalisation requires independently selected tasks
+and an information-based design appropriate to that claim.

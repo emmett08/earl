@@ -36,10 +36,22 @@ class ReferenceScorer:
     def score(self, case: Case, session: int, result: dict) -> dict:
         reference = self.reference(case, session)
         answer = result.get('answer') or {}
+        if not isinstance(answer, dict):
+            answer = {}
+        annotation = result.get('annotation') or {}
+        status = annotation.get('status')
         decision = answer.get('decision') if isinstance(answer.get('decision'), str) else None
         basis = answer.get('basis') if isinstance(answer.get('basis'), str) else None
+        pending = status in ('pending', 'ambiguous')
+        no_answer = status == 'empty' or (not pending and decision not in ('ready', 'not_ready', 'undetermined'))
+        if pending:
+            return {'reference': reference, 'task_match': None, 'decision_match': None,
+                    'assessment_status': 'pending_annotation',
+                    'decision_and_basis_match': None, 'grounded_match': None,
+                    'internally_consistent': None, 'false_definitive': None,
+                    'abstention_when_reference_decisive': None, 'no_answer': False}
         decision_match = decision == reference['decision']
-        basis_match = decision_match and basis == reference['basis']
+        basis_match = decision_match and basis == reference['basis'] if basis is not None else None
         decisive = reference['decision'] != 'undetermined'
         citation_match = True
         if decisive:
@@ -62,11 +74,17 @@ class ReferenceScorer:
                       (decision == 'not_ready' and basis == 'criterion_failed') or
                       (decision == 'undetermined' and basis in {
                           'measurement_missing', 'assumption_expired', 'assumption_not_started',
-                          'stale_measurement', 'evidence_unavailable'}))
-        return {'reference': reference, 'decision_match': decision_match,
+                          'stale_measurement', 'evidence_unavailable'})) if basis is not None else None
+        # Grounding is a secondary measurement. An absent optional citation is
+        # unassessed; it is never substituted for primary task correctness.
+        citations_supplied = answer.get('reading') is not None and answer.get('observed_at') is not None
+        grounded = (basis_match and citation_match
+                    if basis is not None and (not decisive or citations_supplied) else None)
+        return {'reference': reference, 'task_match': decision_match, 'decision_match': decision_match,
+                'assessment_status': 'no_answer' if no_answer else 'assessed',
                 'decision_and_basis_match': basis_match,
-                'grounded_match': basis_match and citation_match,
+                'grounded_match': grounded,
                 'internally_consistent': consistent,
                 'false_definitive': decision in ('ready', 'not_ready') and not decision_match,
                 'abstention_when_reference_decisive': decision == 'undetermined' and decisive,
-                'no_answer': decision not in ('ready', 'not_ready', 'undetermined')}
+                'no_answer': no_answer}

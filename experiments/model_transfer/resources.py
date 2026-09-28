@@ -1,6 +1,8 @@
 """Count model and collector resources without treating unknown usage as zero."""
 from __future__ import annotations
 
+from collections import Counter
+
 
 def _mapping(value: object) -> dict:
     return value if isinstance(value, dict) else {}
@@ -17,9 +19,11 @@ class ResourceSummary:
         result = {
             'elapsed_seconds': sum(s['elapsed_seconds'] for s in sessions),
             'timed_sessions': len(sessions),
+            'session_coverage_complete': len(sessions) == len(ids),
             'attempted_sessions': len({c['session_id'] for c in selected}),
             'context_seconds': sum(s.get('context_seconds', 0) for s in sessions),
             'api_attempts': len(selected),
+            'attempt_status_counts': dict(sorted(Counter(c.get('status', 'unreported') for c in selected).items())),
             'known_cost_usd': sum(c['cost_estimate_usd'] or 0 for c in selected),
             'unknown_cost_attempts': sum(c['cost_estimate_usd'] is None for c in selected),
             'native_tool_calls': native,
@@ -37,4 +41,8 @@ class ResourceSummary:
         result['cached_input_tokens'] = sum(count(_mapping(u.get('input_tokens_details')).get('cached_tokens')) for u in usage)
         result['token_usage_complete'] = all(type(u.get(k)) is int and u[k] >= 0
                                              for u in usage for k in ('input_tokens', 'output_tokens'))
+        for field, container, key in (('reasoning_usage_complete', 'output_tokens_details', 'reasoning_tokens'),
+                                      ('cached_usage_complete', 'input_tokens_details', 'cached_tokens')):
+            values = [_mapping(u.get(container)).get(key) for u in usage]
+            result[field] = all(type(value) is int and value >= 0 for value in values)
         return result

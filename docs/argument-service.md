@@ -59,7 +59,9 @@ An evidence declaration's `max_age` bounds use of its original measurement time.
 
 ## Model-facing result
 
-`EAL/assessment-packet/2` exposes claim and premise statuses, bounded method outputs, typed-binding checks, relevant assumption and objection states, evidence availability, observation identifiers and recorded observation times, with source/context/method identities. It marks omitted material and refers to the stored explanation. It excludes raw observation values, credentials, process streams, formal input queries and arbitrary method-extension output. `ModelContextAdapter` projects that packet into decision-focused context: claim identifiers remain distinct from support statuses, method outputs and qualifications remain visible, and repeated trace digests stay in host state. Evidence entries retain bounded `predicate_failures` with field paths and issue codes; assumptions retain `time_status` and their applicability dates. Missing fields, unmet predicates and expired assumptions therefore remain distinguishable without parsing prose. The application retains the full packet and host status. An operator can retrieve the full persisted trace through `eal_explain`.
+`EAL/assessment-packet/2` exposes claim and premise statements and statuses, bounded method outputs, typed-binding checks, relevant assumption and objection states, evidence availability, observation identifiers and recorded observation times, with source/context/method identities. Each statement retains its explicit `prose_verified` qualification: formal support does not verify authored prose. It marks omitted material and refers to the stored explanation. It excludes raw observation values, credentials from tool records, process streams, formal input queries and arbitrary method-extension output. Authored claim statements are model-visible task data and must contain only information intended for that recipient. `ModelContextAdapter` projects that packet into decision-focused context: claim identifiers remain distinct from support statuses, method outputs and qualifications remain visible, and repeated trace digests stay in host state. Evidence entries retain bounded `predicate_failures` with field paths and issue codes; assumptions retain `time_status` and their applicability dates. Missing fields, unmet predicates and expired assumptions therefore remain distinguishable without parsing prose. The application retains the full packet and host status. An operator can retrieve the full persisted trace through `eal_explain`.
+
+`PacketLimits.max_statement_bytes` bounds each selected or premise statement to 1024 UTF-8 bytes by default. A shortened statement carries `statement_truncated=true`; `omitted.claim_statement_bytes` counts omitted bytes and `summary_complete` becomes false. The prefix remains authored text, without a prose-verification assertion. A missing statement is `null` and contributes to `omitted.claim_statements`. If the complete packet exceeds its byte limit, the navigation fallback retains statuses and an explanation reference with `statement=null`, `prose_verified=false` and an explicit incomplete marker. Missing or shortened statements cannot establish complete claim meaning. The caller must retrieve the full explanation or report that interpretation remains unresolved.
 
 ## Acceptance properties
 
@@ -78,7 +80,8 @@ The prompt adapter treats current `assessed_at` results as current information a
 ### Model-context preservation contract
 
 The context projection serves questions about the selected claim's current
-support, checked computation and explicit qualifications. It retains claim-to-
+support, checked computation and explicit qualifications. It retains bounded
+claim and premise statements with their prose-verification status, claim-to-
 evidence links, premise/argument relations, method outputs and bindings,
 objections, evidence failures, observation times, applicability intervals and
 omission indicators. It leaves opaque acquisition identifiers and repeated trace
@@ -87,7 +90,11 @@ independence or source reconstruction require that full record.
 
 The accepted input is a completed bounded packet from the same assessment;
 `summary_complete=false` remains visible. Projection neither changes a support
-status nor converts absent support into a negative proposition. Registered method
+status nor converts absent support into a negative proposition. Opposite authored
+statements remain distinguishable even when their claim identifiers and formal
+support are identical. Claim identifiers alone cannot substitute for the authored
+proposition, and formal support cannot establish that its wording matches the
+task. Registered method
 outputs provide selected computed values; raw collector payloads and process
 streams are never copied automatically. Packet tests verify these distinctions,
 and the model-session calibration checks positive, negative, missing and expired
