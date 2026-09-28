@@ -1,123 +1,171 @@
-# Low-cost live model transfer pilot
+# Model-session transfer investigation
 
-This automated pilot measures fresh-session reuse of existing EAL/2 knowledge
-on six synthetic engineering cases. It uses real API model responses. It does
-not recruit or impersonate human developers. The separate
-[developer study](../transfer_study/README.md) measures developer workflows.
+Protocol **2.0.0**, schema **1.1**, status **specified**. This exploratory
+investigation measures reference-task completion and resources when models
+start fresh sessions with ordinary project artefacts or existing EAL knowledge.
+The [human developer study](../transfer_study/README.md) addresses developer
+handover and authoring effort separately.
 
-## Model and tool configurations
+## Conditions and scope
 
-| Recipient | Dedicated reasoning configuration | Native function calls |
+The primary comparator is a new ordinary prompt session with the project
+specification and notes naturally produced in earlier sessions. The experiment
+supplies neither a runbook nor selected previous tool results. Conversation
+history resets. Both arms can write the same bounded project notes.
+
+EAL additionally supplies pre-authored source, a sibling TOML collector binding
+and persisted observations. Its host opens the knowledge base anew each session,
+reuses eligible measurements and collects missing or expired evidence. The model
+receives the current checked context, without needing to read the EAL source.
+The interpreter computes the declared threshold comparison; the model supplies
+the task answer. Both components are measured separately.
+
+| Model snapshot | Dedicated reasoning setting | Recipient native tools |
 | --- | --- | --- |
-| `gpt-4.1-nano-2025-04-14` | No reasoning parameter; non-reasoning model family | Disabled |
-| `gpt-4.1-nano-2025-04-14` | No reasoning parameter; non-reasoning model family | Enabled |
-| `gpt-5-nano-2025-08-07` | `reasoning.effort: low` | Disabled |
-| `gpt-5-nano-2025-08-07` | `reasoning.effort: low` | Enabled |
+| `gpt-4.1-nano-2025-04-14` | No reasoning parameter | Off and on |
+| `gpt-5-nano-2025-08-07` | Low | Off and on |
 
-Both models support function calling; disabling it tests operation without
-native tool access, not an intrinsic incapacity. Reasoning is varied between
-model families, so the result cannot isolate a causal effect of reasoning.
-EAL collection and assessment remain available in the EAL arm in every cell:
-that is the offloading behaviour being tested.
+Every case crosses both donor models with both recipient models and both native
+tool settings. Initial sessions have native tools. Each sequence contains an
+initial session and **two fresh recipient sessions**, with two independently
+executed repetitions per configuration. Persisted files and EAL observations
+continue within a sequence; conversations and model responses do not.
 
-Each configuration runs both ordinary prompting and EAL-assisted prompting on
-six cases: fresh positive/negative evidence, expired evidence followed by a
-positive/negative measurement, missing measurement, and an ended assumption.
-The cases use `structured/1`; findings do not cover all EAL reasoning modes.
+The standard plan has **256 sequences, 768 sessions and at most 2,304 API
+requests**, with a **USD 2 request-reservation limit**. Matched arm sequences are
+adjacent within shuffled blocks; their order is randomised. Both arms execute
+independent initial sessions, so naturally produced notes may differ. Paired
+recipient observations share task, donor, receiver, tool setting and repetition.
 
-There are **48 sequences and 96 sessions** (24 EAL/ordinary matched
-comparisons). Three cases use the plain model as donor and three the reasoning
-model, giving both same-model and cross-model transfers. Initial sessions have
-native tool access in both arms. Native tools are varied in the recipient
-session. Sequence order is shuffled using the recorded seed.
+Six **diagnostic** latency cases cover fresh positive/negative measurements,
+refresh to positive/negative findings, missing measurements and assumption expiry.
+Two **additional** free-storage cases exercise an inclusive lower threshold and a
+changed negative finding. They are prospectively specified additions authored
+with the implementation, not an independent confirmatory sample. The two cohorts
+are reported separately. Sessions within a case are dependent observations.
 
-Both arms receive the same engineering specification and collector interface.
-The EAL arm additionally starts with a source expressing that specification
-and a TOML binding. Initial registration time is recorded, but authoring time
-is outside this already-authored-knowledge pilot. These bounds differ from the
-human study, which includes authoring effort.
+This tests the full EAL workflow, including its information and computation
+advantage. It does not isolate notation or reasoning capability. Both selected
+models can call functions: the off condition restricts access. Dedicated
+reasoning varies with model family. The synthetic threshold tasks do not establish
+performance on all EAL methods, complex engineering work or human development.
 
-The first model may persist project notes in either arm. The later model sees
-only project files, its question and, in the EAL arm, the runtime assessment.
-Earlier chat and function-call results are not copied into its conversation.
-No runbook or curated result cache is supplied to ordinary prompting. The
-collector state and oracle stay outside the model-visible project. EAL is
-reinstantiated from persistent storage when preparing each session.
+## Evidence and answers
 
-## Outcomes and limits
+Evidence admission requires a usable nonnegative measurement and the specified
+threshold/direction. `experiment/threshold/1` returns the reading, threshold,
+`meets` and `fails`. Both positive and negative comparisons are usable computed
+results. The claim `criterion_evaluated` concerns successful evaluation within
+scope; its support status is not a readiness decision. Assumptions use
+`[valid_from, valid_until)`; observations remain usable through `max_age`
+inclusively. Re-ingesting an unchanged report preserves its observation time.
 
-The primary descriptive score is exact agreement on both `decision` and
-`basis` against a direct calculation from the engineering specification.
-The oracle never reads EAL status. A missing measurement or expired assumption
-requires `undetermined`; an observed failing criterion gives `not_ready`.
-Decision-only agreement and qualified-unavailable answers are also reported.
-This is task completion against the full-information reference; a recipient
-reporting insufficient available evidence is not thereby making a false claim. Free-text explanations are retained
-but are not assessed by this closed-label scorer.
+A preflight calibration runs each selected case and session through the real EAL
+host and model-context projection, comparing visible distinctions with the
+independent reference. Calibration failure stops before any API request. This is
+an instrument check, not evidence of model effectiveness.
 
-Report every planned sequence, failed/incomplete attempt, unrun sequence,
-initial/later elapsed time, setup time, API tokens (including reported reasoning
-tokens), estimated cost, native tool calls and EAL reuse/recollection. A model
-without native tools may lack enough current evidence to resolve a refreshed
-case; report its qualified answer separately from exact task completion.
-The treatment effect includes EAL's external evidence access and assessment.
+Both arms use the same structured answer contract and provider output schema.
+The primary descriptive outcome, `grounded_match`, requires the reference decision
+and basis, plus the measured value and observation timestamp for a definite
+answer. Any voluntarily cited value or time must also agree with the current
+reference. It measures agreement with the reference, not proof that the model
+consulted a particular observation. Free-text explanation quality is ungraded.
+The reference uses fixture facts and independent specification arithmetic; it
+never reads EAL conclusions and never enters a model prompt.
 
-Six cases are reused across configurations. No significance test, independent
-sample count based on calls, human-effort claim, population model-class claim
-or superiority conclusion is justified. This pilot identifies operational
-failures and differences worth testing on more varied independent tasks.
+Decision agreement, decision/basis agreement, internal consistency, false definite
+answers, abstentions when the reference is decisive, no answer, format validity
+and optional file-write validity are separate outcomes. A valid decision survives
+an invalid file request. File validation precedes writes. Unparseable answers
+remain failures; no oracle-driven repair or permissive extraction occurs.
+An abstention without accessible evidence can be appropriate even when it does
+not complete the full-information reference task.
 
-## Execution and spending
+## Resources and analysis
 
-The default plan permits at most three API calls per session and 4,096 output
-tokens per request, with 32,768 request bytes. The ledger reserves a conservative
-input/output cost before each call, retains reservations when usage is unknown,
-and stops before the next reservation would exceed **USD 2**. Prices are
-recorded in `plan.json`; billing remains the provider's authoritative amount.
-All attempts, including incomplete reasoning output, count. There are no hidden
-retries or fallbacks to different models. Authentication, quota and unavailable
-model errors stop the run and retain the planned denominator.
+The report separates initial and recipient costs, each recipient session index,
+setup time, API calls, tokens, reasoning tokens, native probes and host
+collections/reuses. Total collector calls include both paths. Completeness flags
+distinguish known subtotals from missing timing, token or host-collection records.
+End-to-end session
+time includes context preparation and file handling. API cost per grounded answer
+includes failed API attempts with known usage; unknown costs make the ratio
+unavailable. Prices are recorded estimates at uncached rates, not invoices.
+Human authoring time and host infrastructure costs are unmeasured. Synthetic local
+collector latency cannot estimate real Kubernetes or authentication costs.
 
-Run from the repository root with `OPENAI_API_KEY` supplied securely:
+`paired_comparisons` retains case, cohort, repetition, same/different-model
+transition, session index, quality differences and resource differences.
+`case_summaries` shows means and observed ranges. These are descriptive results;
+repetition does not create new sampled tasks. There are no population confidence
+intervals or significance tests. Every planned unit remains in the denominator.
+Unobserved outcomes have explicit best/worst bounds, not fabricated zero cost or
+assumed failure. Partial runs cannot establish a completed comparative result.
 
-```sh
-python -m pip install -e .
-python -m experiments.model_transfer.runner \
-  --output experiments/model_transfer/runs/live
+An optional [ablation plan](ablation-plan.json) adds `eal_fresh`, which forces
+collection while retaining the same source and context machinery. It has
+48 sequences and 144 sessions. The EAL-versus-forced-collection contrast diagnoses
+reuse costs under the fixture's unchanged underlying measurements. Ordinary
+prompting remains the primary comparator. This contrast does not isolate every
+EAL component, and independently generated notes can differ between arms.
+
+## Run
+
+From the repository root, install the package and first verify the instrument:
+
+```bash
+python -m pip install -e '.[dev]'
+python -m experiments.model_transfer.runner --calibrate-only --output /tmp/eal-calibration
 ```
 
-Alternatively, manually dispatch the existing **EAL tests** workflow on the
-experiment branch with `model_transfer=true`. It uses the single repository
-secret `OPENAI_API_KEY`, runs repository checks first, then retains the complete
-experiment directory as a workflow artifact even if execution fails. The live
-job has a 45-minute limit; a timeout can leave a partial dataset. Ordinary
-manual test runs keep `model_transfer=false` and incur no API calls.
+With `OPENAI_API_KEY` configured, choose a new output directory:
 
-```sh
-gh workflow run test.yml --repo emmett08/earl \
-  --ref feature/cross-session-transfer-experiment -f model_transfer=true
+```bash
+python -m experiments.model_transfer.runner --output experiments/model_transfer/runs/comparison-001
+python -m experiments.model_transfer.runner --plan experiments/model_transfer/ablation-plan.json --output experiments/model_transfer/runs/ablation-001
 ```
 
-Inspect `report.json`, `rows.json`, `calls.json`, and each sequence's session
-records and `initial-files.json`. New runs require new directories. Credentials
-and HTTP authorisation headers are excluded from these records.
+Run only the intended plan; these are separate API-funded investigations. The
+manual **EAL tests** workflow has a live-run toggle and comparison/ablation choice.
+It uses the existing `OPENAI_API_KEY` repository secret. No workflow runs
+on push, pull request or a schedule. The live job has a 120-minute ceiling;
+the request budget can stop it earlier, retaining partial results.
 
-## Verification and sources
+Artifacts include plan/protocol/case snapshots, assignment, code identity,
+calibration, raw session inputs/responses, project notes, EAL state, scored rows
+and the report. `calls.jsonl` appends request starts before transmission and
+completion records afterwards. `calls.json` is written once at orderly completion;
+an interrupted job may have only the journal. Recompute retained scores without
+changing them using `python -m experiments.model_transfer.analyse RUN_DIRECTORY`;
+this writes a new `analysis.json` and keeps interrupted attempts unknown. Never
+overwrite a run directory.
+GitHub retains uploaded artifacts for 90 days, subject to repository limits.
 
-`tests/test_model_transfer.py` checks the six independent oracle outcomes,
-EAL reuse/expiry, native-tool masking, reasoning-item replay within a session,
-fresh later conversations, natural note persistence, budget reservations,
-incomplete responses and full denominators after a fatal provider error.
-A scripted transport is used only for these software checks.
+See [verification](verification.md) for software checks and
+[the original run analysis](results/run-36432530106.md) for the historical result.
 
-Provider capabilities, snapshots, pricing and continuation requirements were
-checked on 28 September 2026 against the official documentation:
+## Method and implementation
 
-- [GPT-4.1 nano](https://developers.openai.com/api/docs/models/gpt-4.1-nano): USD 0.10 input / 0.40 output per million tokens.
-- [GPT-5 nano](https://developers.openai.com/api/docs/models/gpt-5-nano): USD 0.05 input / 0.40 output per million tokens.
-- [Function calling](https://developers.openai.com/api/docs/guides/function-calling) and [reasoning](https://developers.openai.com/api/docs/guides/reasoning): preserve output reasoning items when returning tool results within a session.
-- [Deprecations](https://developers.openai.com/api/docs/deprecations): listed shutdown dates are 23 October 2026 for GPT-4.1 nano and 11 December 2026 for GPT-5 nano. Availability for this account still needs a live check; the runner never silently substitutes a model.
+The investigation follows the distinction between instrument validation,
+exploration and confirmation in the design-scientific-investigations skill.
+[Tukey (1980)](https://doi.org/10.1080/00031305.1980.10482706) motivates reporting
+these observations as exploratory and reserving confirmation for independently
+selected cases. [Cronbach and Meehl (1955)](https://psychclassics.yorku.ca/Cronbach/construct.htm)
+motivates separating answer correctness from formatting and file side effects.
+These methodological choices do not establish an EAL performance benefit.
 
-The [protocol](protocol.json) records the scope, measurement assumptions and
-implementation checks. No live comparative result is included until execution
-with a configured provider succeeds.
+`AssignmentSchedule` owns allocation; `Project` owns files and fixture state;
+context strategies implement ordinary, compatible-reuse and forced-collection
+conditions. `SessionRunner` handles the provider interaction, `AnswerParser`
+handles the answer contract, `ReferenceScorer` handles task arithmetic,
+`ResourceSummary` handles accounting and `ReportBuilder` composes comparisons.
+The injected provider `Transport` permits independent scripted verification.
+These boundaries separate changing scientific procedures from transport details.
+
+The Responses implementation follows official
+[structured-output](https://developers.openai.com/api/docs/guides/structured-outputs)
+and [reasoning](https://developers.openai.com/api/docs/guides/reasoning)
+contracts. Structured decoding constrains format; it does not ensure correct facts.
+Reasoning response items are retained within a session and excluded from subsequent
+sessions. No provider response is fabricated or silently substituted.

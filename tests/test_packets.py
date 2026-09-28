@@ -77,7 +77,7 @@ def test_packet_retains_method_binding_assumption_and_objection_status_without_t
     packet = AssessmentPacketBuilder().build(result, claims=["pressure"])
     claim = packet["claims"]["pressure"]
     method = packet["arguments"]["experiment"]["method_result"]
-    assert packet["schema"] == "EAL/assessment-packet/1"
+    assert packet["schema"] == "EAL/assessment-packet/2"
     assert packet["full_explanation"]["assessment_id"] == result["assessment_id"]
     assert claim["status"] == "contested"
     assert method["status"] == "supported" and method["evidence_id"] == "trial"
@@ -241,3 +241,25 @@ def test_collection_identity_and_issue_omission_fail_closed():
     with pytest.raises(ValueError, match="Observation ID differs"):
         AssessmentPacketBuilder().build(assessment, claims=["working"],
                                         collection={**collection, "records": {"observed": changed}})
+
+
+def test_packet_preserves_missing_field_and_expiry_without_raw_values():
+    result = _assessment()
+    result['evidence']['trial'].update(status='unavailable', availability_issues=['invalid_observation'],
+        predicate_failures=[{'path': 'reading', 'issue': 'missing_field', 'value': 'SECRET'}])
+    result['assumptions']['calibration'].update(time_status='expired', valid_from='2026-09-28T10:00:00Z',
+                                               valid_until='2026-09-28T10:00:30Z')
+    packet = AssessmentPacketBuilder().build(result, claims=['pressure'])
+    assert packet['evidence']['trial']['predicate_failures'] == [{'path': 'reading', 'issue': 'missing_field'}]
+    assert packet['assumptions']['calibration']['time_status'] == 'expired'
+    assert packet['assumptions']['calibration']['valid_until'] == '2026-09-28T10:00:30+00:00'
+    assert 'SECRET' not in json.dumps(packet)
+
+
+def test_packet_marks_omitted_predicate_diagnostics():
+    result = _assessment()
+    result['evidence']['trial']['predicate_failures'] = [{'path': f'field{i}', 'issue': 'missing_field'} for i in range(10)]
+    packet = AssessmentPacketBuilder().build(result, claims=['pressure'])
+    assert len(packet['evidence']['trial']['predicate_failures']) == 6
+    assert packet['omitted']['predicate_failures'] == 4
+    assert not packet['summary_complete']

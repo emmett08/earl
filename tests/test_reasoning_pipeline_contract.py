@@ -52,13 +52,13 @@ def _digest(value):
     return hashlib.sha256(encoded).hexdigest()
 
 
-# Full-result hashes include the typed evidence issue status added to evaluation.
+# Full-result hashes include typed evidence diagnostics and assumption applicability.
 @pytest.mark.parametrize('missing,stale,context,expected_digest', [
-    ((), (), CONTEXT, '1abd009cdfd90e9323ba1c95d08519288e8ef71537bfaf143c9eaaa5a8a49535'),
-    (('defence',), (), CONTEXT, 'a44cfc9498afc8d64ed88f47fa06d19cd114fc8365513fc2488c500472f4f517'),
-    (('positive',), (), CONTEXT, 'ed7096b055c366054271d45bb6c6ade44c38b388bbd45fb7c1359da12becbb7f'),
-    ((), ('negative',), CONTEXT, 'e34aa8977a6dc83e4057c24003c9fc539639335fd15e190b935f9c8d6d39b8a2'),
-    ((), (), {'site': 'elsewhere'}, '518bf74f46dfe0e3eee0fafe310f8eb35538e94d7919515da341f454b2d97dcf'),
+    ((), (), CONTEXT, '9605a9232bd20cc62ddd129d0b5f9035fe7d894e56dc53c2d3607917d7a84671'),
+    (('defence',), (), CONTEXT, 'a573169db6b409058f424196460ae99a24dcfb63563cc33c3eac22c5336ffdc5'),
+    (('positive',), (), CONTEXT, '5d1d3f2d40de9bbba930b028b17ab4019ea1cb39c4aea17098e25f18d8fef06b'),
+    ((), ('negative',), CONTEXT, '959a2f09830be203f8f6bfa2026df9833aba5a8b2309f38d8d9847d6147be4d9'),
+    ((), (), {'site': 'elsewhere'}, '53782626deb44a0e94939d9ba4b23401ed2a47b0fec30a65f753039de89beeee'),
 ])
 def test_full_result_is_stable_across_pipeline_stages(missing, stale, context, expected_digest):
     program = parse(SOURCE)

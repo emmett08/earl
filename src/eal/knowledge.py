@@ -15,6 +15,7 @@ from typing import Any, Literal
 from .catalogue import WorkspaceKnowledgeCatalogue
 from .registered_assessment import RegisteredAssessmentHost
 from .runtime import ReasoningService
+from .model_context import CONTEXT_INSTRUCTION, ModelContextBuilder
 
 
 class EALKnowledgeBase:
@@ -80,21 +81,13 @@ class ModelContextAdapter:
         assessment = self.knowledge.assess(
             entry_id, claim, context=context, now=now, reuse=reuse,
         )
-        packet = assessment["packet"]
-        host_context = {
-            "entry_id": assessment["entry_id"], "claim": assessment["claim"],
-            "assessment_id": assessment["assessment_id"],
-            "assessed_at": assessment["assessed_at"],
-            "status": assessment["status"], "packet": packet,
-        }
+        host_context = ModelContextBuilder().build(assessment)
         return {
-            "schema": "EAL/model-context/1", "assessment": assessment,
+            "schema": "EAL/model-context/2", "assessment": assessment,
+            "context": host_context,
             "messages": [
                 {"role": "system", "content": (
-                    "Use this host-assessed EAL/2 claim result to answer the question. "
-                    "Keep the stated status and scope, identify any unresolved evidence, "
-                    "and do not invent observations. The packet may omit detail; the host "
-                    "retains the full explanation by assessment ID.\n"
+                    CONTEXT_INSTRUCTION
                     + json.dumps(host_context, ensure_ascii=False, sort_keys=True,
                                  separators=(",", ":"), allow_nan=False)
                 )},

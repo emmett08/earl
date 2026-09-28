@@ -3,9 +3,16 @@ on:
   workflow_dispatch:
     inputs:
       model_transfer:
-        description: 'Run the live nano-model transfer pilot (API budget at most USD 2)'
+        description: 'Run the selected live nano-model plan (API budget at most USD 2)'
         type: boolean
         default: false
+      model_transfer_plan:
+        description: 'Comparison: 256 sequences; ablation: 48 sequences'
+        type: choice
+        options:
+          - comparison
+          - ablation
+        default: comparison
 permissions:
   contents: read
 jobs:
@@ -29,7 +36,7 @@ jobs:
     if: ${{ inputs.model_transfer }}
     needs: test
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -42,7 +49,14 @@ jobs:
       - name: Run the bounded live pilot
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: python -m experiments.model_transfer.runner --output experiments/model_transfer/runs/live
+          TRANSFER_PLAN: ${{ inputs.model_transfer_plan }}
+        run: |
+          case "$TRANSFER_PLAN" in
+            comparison) plan_file=experiments/model_transfer/plan.json ;;
+            ablation) plan_file=experiments/model_transfer/ablation-plan.json ;;
+            *) exit 2 ;;
+          esac
+          python -m experiments.model_transfer.runner --plan "$plan_file" --output experiments/model_transfer/runs/live
       - name: Retain every attempt and the report
         if: ${{ always() }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -51,4 +65,4 @@ jobs:
           path: experiments/model_transfer/runs/live
           include-hidden-files: true
           if-no-files-found: warn
-          retention-days: 14
+          retention-days: 90

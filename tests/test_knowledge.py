@@ -62,3 +62,29 @@ def test_prompt_adapter_reuses_compatible_measurements_across_sessions_and_sourc
     assert changed_request["collected_count"] == 1
     assert changed_request["reused_count"] == 0
     assert (tmp_path / "calls.txt").read_text() == "xx"
+
+
+def test_prompt_context_retains_omission_and_negative_evidence_distinctions():
+    from eal.model_context import ModelContextBuilder
+    assessment = {'claim': 'ready', 'status': 'unsupported', 'assessed_at': '2026-09-28T10:00:00Z',
+                  'assessment_id': 'current', 'packet': {'claims': {'ready': {'status': 'unsupported'}},
+                  'summary_complete': False, 'omitted': {'details': 'packet_byte_limit'}}}
+    context = ModelContextBuilder().build(assessment)
+    assert not context['summary_complete']
+    assert context['omitted'] == {'details': 'packet_byte_limit'}
+    assert context['claim_id'] == 'ready' and context['claim_status'] == 'unsupported'
+    assessment['packet']['evidence'] = {'report': {'status': 'unavailable', 'availability_issues': ['predicate_not_met']}}
+    context = ModelContextBuilder().build(assessment)
+    assert context['evidence']['report']['requirements'] == 'not_met'
+    assert 'requirements' not in assessment['packet']['evidence']['report']
+
+
+def test_context_compaction_keeps_claim_evidence_links():
+    from eal.model_context import ModelContextBuilder
+    assessment = {'claim': 'result', 'status': 'supported', 'assessed_at': '2026-09-28T10:00:00Z',
+                  'assessment_id': 'one', 'packet': {'claims': {'result': {'status': 'supported',
+                  'observation_ids': [{'evidence_id': 'reading', 'observation_id': 'opaque'}]}},
+                  'summary_complete': True, 'omitted': {}}}
+    context = ModelContextBuilder().build(assessment)
+    assert context['claims']['result']['evidence_ids'] == ['reading']
+    assert 'opaque' not in json.dumps(context)

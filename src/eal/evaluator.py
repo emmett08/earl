@@ -77,6 +77,7 @@ class _PredicateCheck:
     holds: bool
     comparable: bool
     reason: str
+    issue: str | None = None
 
 
 @dataclass(frozen=True)
@@ -95,24 +96,25 @@ def _check_predicate(predicate: Predicate, value) -> _PredicateCheck:
     actual = value
     for field in predicate.path.split("."):
         if not isinstance(actual, Mapping) or field not in actual:
-            return _PredicateCheck(False, False, f"Field {predicate.path!r} is missing")
+            return _PredicateCheck(False, False, f"Field {predicate.path!r} is missing", "missing_field")
         actual = actual[field]
     expected = predicate.expected
     numeric = lambda x: isinstance(x, (int, float)) and not isinstance(x, bool)
     same_type = type(actual) is type(expected) or (numeric(actual) and numeric(expected))
     if not same_type or isinstance(actual, (dict, list)):
-        return _PredicateCheck(False, False, f"Field {predicate.path!r} has an incompatible type")
+        return _PredicateCheck(False, False, f"Field {predicate.path!r} has an incompatible type", "incompatible_type")
     if isinstance(actual, float) and not math.isfinite(actual):
-        return _PredicateCheck(False, False, f"Field {predicate.path!r} is not finite")
+        return _PredicateCheck(False, False, f"Field {predicate.path!r} is not finite", "non_finite")
     comparison = {"==": operator.eq, "!=": operator.ne, "<": operator.lt,
                   "<=": operator.le, ">": operator.gt, ">=": operator.ge}[predicate.operator]
     try:
         satisfied = comparison(actual, expected)
     except TypeError:
-        return _PredicateCheck(False, False, f"Field {predicate.path!r} cannot use {predicate.operator}")
+        return _PredicateCheck(False, False, f"Field {predicate.path!r} cannot use {predicate.operator}", "incomparable")
     return _PredicateCheck(satisfied, True,
                            f"Field {predicate.path!r} {predicate.operator} {expected!r} "
-                           f"{'holds' if satisfied else 'does not hold'} (observed {actual!r})")
+                           f"{'holds' if satisfied else 'does not hold'} (observed {actual!r})",
+                           None if satisfied else "not_met")
 
 
 def _predicate(predicate: Predicate, value) -> tuple[bool, str]:
@@ -212,8 +214,11 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
         reasons.append(f"Invalid observation value: {exc}")
         issues.add("invalid_observation")
     complete = not reasons
+    predicate_failures = []
     if complete:
         outcomes = [_check_predicate(p, record["value"]) for p in evidence.predicates]
+        predicate_failures = [{"path": p.path, "issue": outcome.issue}
+                              for p, outcome in zip(evidence.predicates, outcomes) if outcome.issue]
         reasons = [outcome.reason for outcome in outcomes]
         complete = all(outcome.comparable for outcome in outcomes)
         available = all(outcome.holds for outcome in outcomes)
@@ -225,6 +230,7 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
         available = False
     return EvidenceVerdict(_entry("available" if available else "unavailable", reasons,
                                   availability_issues=sorted(issues),
+                                  **({"predicate_failures": predicate_failures} if predicate_failures else {}),
                                   tool=tool.name, tool_version=tool.version,
                                   tool_binding_digest=binding_digest, run_id=record.get("run_id")), complete)
 
@@ -352,6 +358,9 @@ def _assess_local_declarations(program, instant, result):
     # In particular, an attack cycle never makes a source available by itself.
     for name, assumption in program.assumptions.items():
         reasons = []
+        time_status = ("not_started" if assumption.valid_from and instant < parse_time(assumption.valid_from)
+                       else "expired" if assumption.valid_until and instant >= parse_time(assumption.valid_until)
+                       else "within_interval")
         if result["environments"][assumption.environment]["status"] != "matched":
             status = "out_of_scope"
             reasons.append(f"Environment {assumption.environment!r} does not match supplied context")
@@ -365,7 +374,10 @@ def _assess_local_declarations(program, instant, result):
             status = "unsupported" if reasons else "supported"
             if not reasons:
                 reasons.append(f"Validation evidence {assumption.validation!r} holds within the declared interval")
-        result["assumptions"][name] = _entry(status, reasons, validation=assumption.validation)
+        result["assumptions"][name] = _entry(
+            status, reasons, validation=assumption.validation,
+            time_status=time_status, valid_from=assumption.valid_from,
+            valid_until=assumption.valid_until)
     for name, reasoning in program.reasoning.items():
         reasons = [f"Method {reasoning.method}: backing evidence {e!r} is unavailable" for e in reasoning.backing
                    if result["evidence"][e]["status"] != "available"]

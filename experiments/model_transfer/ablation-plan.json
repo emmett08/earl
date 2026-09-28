@@ -1,6 +1,6 @@
 {
   "schema": "EAL/model-transfer-plan/2",
-  "purpose": "exploratory fixed-case model-session transfer with pre-authored EAL",
+  "purpose": "secondary forced-collection diagnostic; ordinary remains the primary comparator",
   "seed": 20260928,
   "budget_usd": 2.0,
   "max_calls_per_session": 3,
@@ -26,21 +26,16 @@
     "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
     "https://developers.openai.com/api/docs/models/gpt-5-nano"
   ],
-  "repetitions": 2,
+  "repetitions": 1,
   "recipient_sessions": 2,
   "structured_output": true,
   "arms": [
     "ordinary",
-    "eal"
+    "eal",
+    "eal_fresh"
   ],
   "cases": [
     "fresh_positive",
-    "fresh_negative",
-    "refresh_positive",
-    "refresh_negative",
-    "missing_measurement",
-    "expired_assumption",
-    "capacity_boundary",
-    "capacity_drop"
+    "refresh_negative"
   ]
 }

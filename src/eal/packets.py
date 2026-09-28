@@ -18,7 +18,7 @@ from .evaluator import canonical_digest
 from .semantics import parse_time
 
 
-PACKET_SCHEMA = "EAL/assessment-packet/1"
+PACKET_SCHEMA = "EAL/assessment-packet/2"
 _IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z_0-9]{0,127}\Z", re.ASCII)
 _METHOD = re.compile(r"(?:1|[A-Za-z_][A-Za-z_0-9./:-]{0,127})\Z", re.ASCII)
 _RECORD_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}\Z", re.ASCII)
@@ -293,6 +293,9 @@ class AssessmentPacketBuilder:
             missed = item.pop("issues_omitted", 0)
             if missed:
                 omitted["availability_issues"] = omitted.get("availability_issues", 0) + missed
+            failures_missed = item.pop("predicate_failures_omitted", 0)
+            if failures_missed:
+                omitted["predicate_failures"] = omitted.get("predicate_failures", 0) + failures_missed
             record = collection_records.get(name)
             if record is not None:
                 self._observation_time(item, assessment, evidence_entries[name], record)
@@ -535,9 +538,16 @@ class AssessmentPacketBuilder:
 
     @staticmethod
     def _assumption(item: Mapping[str, Any]) -> dict[str, Any]:
-        return {"status": _state(item.get("status"), _ARGUMENT_STATES),
-                "validation": _identifier(item["validation"])
-                if isinstance(item.get("validation"), str) else None}
+        result = {"status": _state(item.get("status"), _ARGUMENT_STATES),
+                  "validation": _identifier(item["validation"])
+                  if isinstance(item.get("validation"), str) else None}
+        if item.get("time_status") in {"not_started", "expired", "within_interval"}:
+            result["time_status"] = item["time_status"]
+            for key in ("valid_from", "valid_until"):
+                value = item.get(key)
+                if value is not None:
+                    result[key] = parse_time(value).isoformat()
+        return result
 
     def _evidence(self, item: Mapping[str, Any]) -> dict[str, Any]:
         issues = item.get("availability_issues", [])
@@ -545,8 +555,18 @@ class AssessmentPacketBuilder:
             raise ValueError("Evidence availability issues must be a list")
         known = sorted({issue for issue in issues if isinstance(issue, str) and issue in _EVIDENCE_ISSUES})
         shown = known[:self.limits.max_availability_issues]
-        return {"status": _state(item.get("status"), frozenset({"available", "unavailable"})),
+        result = {"status": _state(item.get("status"), frozenset({"available", "unavailable"})),
                 "availability_issues": shown,
                 "issues_omitted": len(issues) - len(shown),
                 "observation_id": _record_identifier(item.get("run_id")),
                 "age_status": "unknown"}
+        failures = item.get("predicate_failures", [])
+        if not isinstance(failures, list):
+            raise ValueError("Predicate failures must be a list")
+        safe = [{"path": _bounded(f.get("path")), "issue": f["issue"]}
+                for f in failures if isinstance(f, Mapping) and _bounded(f.get("path")) is not None
+                and f.get("issue") in {"missing_field", "incompatible_type", "non_finite", "incomparable", "not_met"}]
+        if safe:
+            result["predicate_failures"] = safe[:self.limits.max_availability_issues]
+        result["predicate_failures_omitted"] = len(failures) - min(len(safe), self.limits.max_availability_issues)
+        return result

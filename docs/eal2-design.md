@@ -14,7 +14,7 @@ This explains the design of the EAL/2 source language. Syntax, the argument solv
 
 ## Purpose and extension criterion
 
-EAL/2 is the source contract and the installed Python package declares version 2.14.1. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
+EAL/2 is the source contract and the installed Python package declares version 2.15.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts. Model summaries use `EAL/assessment-packet/2` and `EAL/model-context/2`; the observation-record schema remains `/1`.
 
 The service keeps validated EAL/2 source, claim identity, compatible tool observations and checked reasoning results available across sessions and model providers. A developer can request a registered claim without sending the source, reconstructing its dependency graph or rerunning unexpired observations. A gain in correctness, time or cost remains a **hypothesis** to measure. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data.
 

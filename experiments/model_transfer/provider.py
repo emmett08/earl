@@ -10,7 +10,9 @@ from typing import Protocol
 import urllib.error
 import urllib.request
 
-from experiments.transfer_study.workspace import utc_now, write_json
+from experiments.transfer_study.workspace import utc_now
+from .answers import ANSWER_SCHEMA
+from .journal import AttemptJournal
 
 
 class ExecutionStopped(RuntimeError):
@@ -48,13 +50,20 @@ class BudgetedClient:
     def __init__(self, root: Path, plan: dict, transport: Transport):
         self.root, self.plan, self.transport = root, plan, transport
         self.records: list[dict] = []
-        self.ledger = root / "calls.json"
+        self.journal = AttemptJournal(root)
+
+    def finish(self) -> None:
+        self.journal.finish(self.records)
 
     def request(self, profile: dict, messages: list[dict], tools: list[dict], session_id: str) -> dict:
         payload = {"model": profile["version"], "input": copy.deepcopy(messages), "store": False,
                    "max_output_tokens": self.plan["max_output_tokens"]}
         if profile["reasoning_effort"] is not None:
             payload["reasoning"] = {"effort": profile["reasoning_effort"]}
+            payload["include"] = ["reasoning.encrypted_content"]
+        if self.plan["structured_output"]:
+            payload["text"] = {"format": {"type": "json_schema", "name": "readiness_answer",
+                                          "strict": True, "schema": ANSWER_SCHEMA}}
         if tools:
             payload.update(tools=tools, parallel_tool_calls=False)
         encoded = json.dumps(payload, ensure_ascii=False).encode()
@@ -66,11 +75,11 @@ class BudgetedClient:
                     self.plan["max_output_tokens"] * profile["output_per_million"]) / 1e6
         if sum(row["charged_or_reserved_usd"] for row in self.records) + reserved > self.plan["budget_usd"]:
             raise ExecutionStopped("API budget exhausted before sending the next request")
-        row = {"session_id": session_id, "started_at": utc_now().isoformat(),
+        row = {"attempt": len(self.records), "session_id": session_id, "started_at": utc_now().isoformat(),
                "request": payload, "reserved_usd": reserved, "charged_or_reserved_usd": reserved,
                "cost_estimate_usd": None, "status": "started"}
         self.records.append(row)
-        write_json(self.ledger, self.records)
+        self.journal.append({"event": "started", **row})
         start = time.monotonic()
         try:
             response = self.transport.send(payload, self.plan["request_timeout_seconds"])
@@ -96,4 +105,4 @@ class BudgetedClient:
             raise
         finally:
             row["elapsed_seconds"] = time.monotonic() - start
-            write_json(self.ledger, self.records)
+            self.journal.append({"event": "finished", **{k: v for k, v in row.items() if k != "request"}})

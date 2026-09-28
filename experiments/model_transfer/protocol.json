@@ -1,50 +1,50 @@
 {
   "schema_version": "1.1",
   "investigation_id": "EAL-NANO-REUSE",
-  "title": "Automated low-cost model-session reuse pilot",
-  "version": "1.0.0",
+  "title": "Prospective model-session reuse and measurement-validity investigation",
+  "version": "2.0.0",
   "status": "specified",
-  "question": "How do selected cheap model configurations perform in a fresh session with ordinary project artefacts or pre-authored EAL knowledge and persisted observations?",
+  "question": "On the selected cases, how do EAL and ordinary workflows differ in grounded task completion and cumulative resources across fresh sessions, donor/recipient models and native-tool access?",
   "primary_claim_id": "CLM-001",
   "scope": {
-    "system_or_population": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
-    "conditions": "Each recipient has native function access enabled or disabled; ordinary and EAL arms share the specification and collector. Initial sessions have native tools.",
+    "system_or_population": "Pinned GPT-4.1 nano and GPT-5 nano configurations on eight selected synthetic threshold cases, including six diagnostic and two additional cases.",
+    "conditions": "Both donor models crossed with both recipient models and tool settings; EAL host collection remains available with native tools disabled.",
     "spatial_scope": "Isolated synthetic project directories and OpenAI Responses API.",
-    "temporal_scope": "One initial and one fresh recipient session per sequence.",
+    "temporal_scope": "Initial session plus two fresh recipient sessions, two repetitions per configuration.",
     "exclusions": [
       "No human participants or authoring-effort estimate.",
-      "No population model-class or isolated reasoning effect.",
-      "Only structured/1 is exercised."
+      "No population model-class, isolated reasoning or notation effect.",
+      "A host-installed threshold method only; no general reasoning-mode claim."
     ],
     "knowledge_cut": "2026-09-28"
   },
   "claims": [
     {
       "id": "CLM-001",
-      "statement": "The selected model configurations produce measurable differences in reference-answer completion and resources when reusing ordinary project artefacts or EAL knowledge.",
+      "statement": "The configured workflows have observable task-completion, failure and resource profiles on the selected repeated-session cases.",
       "claim_type": "descriptive",
       "role": "primary",
-      "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions.",
-      "success_consequence": "Identify candidate benefits and failure modes for independent follow-up.",
-      "failure_consequence": "Retain ties, failures, partial results and unavailable evidence without a superiority claim."
+      "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on eight selected synthetic threshold cases, including six diagnostic and two additional cases.",
+      "success_consequence": "Report the measured profiles and candidate follow-up questions.",
+      "failure_consequence": "Retain losses, ties, failed attempts and inconclusive measurements without a benefit claim."
     }
   ],
   "assumptions": [
     {
       "id": "ASM-001",
-      "statement": "The reference calculation and scoring labels implement the supplied task specification.",
+      "statement": "Independent reference arithmetic, EAL source and context preserve the same task distinctions.",
       "role": "measurement",
       "status": "tested",
-      "test_or_justification": "Boundary, missingness and assumption cases checked independently of EAL status.",
-      "failure_consequence": "Suspend affected scores and revise the scorer before interpreting live data."
+      "test_or_justification": "Boundary/adverse reference tests and 24 case/session source-to-context calibration checks.",
+      "failure_consequence": "Stop before API calls on failed calibration; suspend affected empirical interpretation."
     },
     {
       "id": "ASM-002",
-      "statement": "The provider honours the pinned model and configured function/reasoning interface.",
+      "statement": "Provider responses respect the pinned snapshot and declared interface.",
       "role": "operational",
       "status": "untested",
-      "test_or_justification": "Check reported snapshot and retain complete provider responses, usage and attempts.",
-      "failure_consequence": "Stop on model mismatch, missing access or invalid transport output."
+      "test_or_justification": "Snapshot verification, retained requests, within-session reasoning replay and common structured answer schema.",
+      "failure_consequence": "Record failure; stop on access, budget or snapshot mismatch. New configuration needs live verification."
     }
   ],
   "hypotheses": [],
@@ -52,20 +52,21 @@
   "constructs": [
     {
       "id": "CON-001",
-      "name": "Task completion with reusable knowledge",
-      "definition": "Agreement of the final decision and basis with a full-information reference calculation, plus recorded resources.",
+      "name": "Grounded reference-task completion",
+      "definition": "Decision and basis agree with an independent full-information reference; definite answers also cite the observed reading and time.",
       "role": "outcome",
-      "scope": "Selected cases and model configurations.",
+      "scope": "Pinned GPT-4.1 nano and GPT-5 nano configurations on eight selected synthetic threshold cases, including six diagnostic and two additional cases.",
       "proxy_for_claim_ids": [
         "CLM-001"
       ],
       "validity_evidence": [
-        "Exact-label rubric checked against six explicit specifications."
+        "Known positive, negative, missing and expired examples; source/context calibration; separate format and file-side-effect checks."
       ],
       "validity_threats": [
-        "Closed labels omit explanation quality.",
-        "Recipient without tools may correctly report unavailable evidence while not completing the reference task.",
-        "Simple synthetic cases underrepresent engineering work."
+        "Grounding is agreement with fixture facts, not proof that the model consulted a source.",
+        "Explanation prose is ungraded.",
+        "An appropriate abstention with unavailable evidence can miss full-information task completion.",
+        "Simple threshold tasks underrepresent engineering work."
       ]
     }
   ],
@@ -75,85 +76,86 @@
       "construct_ids": [
         "CON-001"
       ],
-      "observable": "Final JSON decision and basis",
-      "instrument_or_procedure": "cases.Case.oracle and runner.Pilot; oracle called after the answer and never used in prompting.",
+      "observable": "Decision, basis, reading, observed_at, explanation, format validity and independent file-write result",
+      "instrument_or_procedure": "answers.AnswerParser and scoring.ReferenceScorer; JSON parsing and side-effect validation are separate.",
       "scale_or_units": "Binary reference match and counts",
-      "timing": "Every initial and later session; all attempts.",
-      "preprocessing": "Exact reference-label match and separately reported evidence_unavailable answers.",
-      "calibration": "Known ready/not_ready/undetermined cases; no EAL status in oracle calculation.",
-      "reliability": "Deterministic reference scoring; model output may vary across runs.",
-      "validity": "Task completion and recorded resource use only; free-text explanation quality and human effort are unmeasured.",
-      "measurement_invariance": "Same specification and reference in both arms; same donor/recipient configuration within each pair.",
-      "reactivity": "A fixed output schema constrains model answers.",
-      "error_model": "Retain malformed/incomplete replies, failed calls, unknown costs and unrun sequences.",
-      "blinding": "Oracle and collector state are hidden from prompts; the deterministic scorer does not inspect arm labels."
+      "timing": "Every initial and recipient session; every attempt retained.",
+      "preprocessing": "Primary grounded_match plus decision_match, decision_and_basis_match, consistency, false definite answer, abstention, no-answer, format and file outcomes. Any voluntarily cited measurement or time must agree with the current reference even when the answer abstains.",
+      "calibration": "Hand-calculated references, inclusive measurement/threshold boundaries, exclusive assumption end, known adverse labels and real EAL context checks.",
+      "reliability": "Deterministic scoring and two API repetitions; model variability remains observable rather than erased by retries.",
+      "validity": "Measures reference agreement; human effort and free-text argument quality remain outside scope.",
+      "measurement_invariance": "Same outcome schema and arithmetic across arms, models and sessions.",
+      "reactivity": "Common provider schema constrains output format and prompts optional natural notes.",
+      "error_model": "Invalid optional files do not discard an answer. Malformed answer JSON is no-answer; missing API usage remains unknown. No answer-dependent repair.",
+      "blinding": "Oracle and current external fixture state are absent from initial prompts; references are calculated after responses and do not inspect arm labels."
     },
     {
       "id": "M-002",
       "construct_ids": [
         "CON-001"
       ],
-      "observable": "Calls, usage, setup/initial/later time, tool access and EAL reuse",
-      "instrument_or_procedure": "provider.BudgetedClient, runner.SessionRunner and cases.Project.",
+      "observable": "Per-session and cumulative API cost/tokens, timing, native probes, host collections/reuses and setup time",
+      "instrument_or_procedure": "provider.BudgetedClient append-only ledger, session.SessionRunner, resources.ResourceSummary and reporting.ReportBuilder.",
       "scale_or_units": "Seconds, token/call counts and estimated USD",
-      "timing": "Every initial and later session; all attempts.",
-      "preprocessing": "Preserve attempts; unknown usage retains a reservation and is separately counted.",
-      "calibration": "Scripted provider responses, budget exhaustion, incomplete output and replay tests.",
-      "reliability": "Deterministic reference scoring; model output may vary across runs.",
-      "validity": "Task completion and recorded resource use only; free-text explanation quality and human effort are unmeasured.",
-      "measurement_invariance": "Same specification and reference in both arms; same donor/recipient configuration within each pair.",
-      "reactivity": "A fixed output schema constrains model answers.",
-      "error_model": "Retain malformed/incomplete replies, failed calls, unknown costs and unrun sequences.",
-      "blinding": "Oracle and collector state are hidden from prompts; the deterministic scorer does not inspect arm labels."
+      "timing": "Initial and each recipient session, then total per condition.",
+      "preprocessing": "Count host and native collector calls separately and together; retain all known usage and unknown costs; cost per grounded answer only when usage is complete. Cost/time per grounded answer require complete outcome coverage; collection and token completeness flags qualify subtotals.",
+      "calibration": "Known-cost and unknown-cost ledger cases, forced-collection strategy and independent paired arithmetic.",
+      "reliability": "Recorded monotonic durations and provider usage; no assertion that local collector timing represents remote infrastructure.",
+      "validity": "Recorded machine/API resources only. Uncached price estimates exclude authoring, human effort and host infrastructure prices.",
+      "measurement_invariance": "Same serial provider transport, budgets, schema and accounting rules across arms.",
+      "reactivity": "Budget stops may leave partial cells; logging uses append-only call records.",
+      "error_model": "Started requests persist before transmission; interrupted journals and unobserved sessions remain distinguishable from zero work.",
+      "blinding": "Mechanical aggregation does not use desired answer quality to select attempts."
     }
   ],
   "design": {
     "design_type": "controlled-experiment",
-    "rationale": "Compare complete configured workflows on matched tasks and model transitions, with order randomised to reduce order effects.",
+    "rationale": "A matched, crossed exploratory comparison measures configured workflows; calibration checks instrument adequacy before live collection.",
     "setting": "Automated live API calls on synthetic projects.",
-    "temporal_structure": "Two sessions; project artefacts persist and conversation history resets.",
-    "assignment_method": "Enumerate six cases x two recipient models x two tool settings x two arms; shuffle sequence order with the fixed seed.",
+    "temporal_structure": "Initial plus two new recipient sessions with retained project state and empty conversation history.",
+    "assignment_method": "Cross eight cases, two donor models, two receiver models, two native-tool settings, two repetitions and ordinary/EAL arms. Shuffle matched blocks and arm order using seed 20260928.",
     "allocation_concealment": "Not applicable: no human allocation; case oracle never enters a prompt.",
     "masking": "Deterministic scorer reads only decision/basis and the case reference.",
-    "comparator": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+    "comparator": "Fresh ordinary prompt sessions with the same specification, native-tool setting and naturally produced project notes; no supplied runbook, curated prior tool results or previous conversation.",
     "control_ids": [
       "CTRL-001",
-      "CTRL-002"
+      "CTRL-002",
+      "CTRL-003"
     ]
   },
   "units": {
-    "target_population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
-    "sampling_frame": "Six purposively selected reuse, expiry and assumption cases in cases.py.",
-    "experimental_unit": "One isolated two-session arm sequence.",
-    "observational_unit": "Session answer, provider request or acquisition event.",
-    "assignment_unit": "Sequence order only; model/tool/arm cells are exhaustively enumerated.",
-    "analysis_unit": "Case-level matched arm comparisons within each recipient configuration; calls are not independent cases.",
+    "target_population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano configurations on eight selected synthetic threshold cases, including six diagnostic and two additional cases.",
+    "sampling_frame": "Eight purposively chosen cases: six diagnostic cases informed by a prior run and two additional lower-threshold storage cases.",
+    "experimental_unit": "One isolated three-session arm sequence.",
+    "observational_unit": "Session answer, API attempt or collector event.",
+    "assignment_unit": "Matched block order and within-block arm order; all declared configurations are enumerated.",
+    "analysis_unit": "Within-case matched workflow differences, retaining session, donor, receiver, native tools, repetition and cohort; repeated sessions and calls are dependent.",
     "inclusion_criteria": [
-      "All 48 planned sequences retained."
+      "Every planned sequence and session retained."
     ],
     "exclusion_criteria": [
-      "None after scheduling; failures and unrun rows remain."
+      "None after scheduling."
     ],
-    "recruitment_or_selection": "No people; two low-cost models selected for documented reasoning interface differences."
+    "recruitment_or_selection": "No people. Models and cases are selected for bounded operational coverage."
   },
   "interventions_or_exposures": [
     {
       "id": "INT-001",
       "kind": "intervention",
-      "description": "Pre-authored EAL source, stable TOML collector binding, initial registration and persisted evidence, runtime assessment before each model session.",
-      "target": "Offloaded evidence collection/reuse and scoped assessment.",
-      "implementation": "Existing EALKnowledgeBase and ModelContextAdapter; reinstantiate from persistent storage.",
-      "dose_or_intensity": "One host assessment per session; recipient function access enabled/disabled separately.",
-      "timing": "Initial and fresh later session.",
+      "description": "Pre-authored EAL source, typed threshold method, TOML collector and persisted observations, with host context prepared anew for each session.",
+      "target": "Host evidence acquisition/reuse and threshold evaluation, with task-sufficient output distinctions.",
+      "implementation": "EALKnowledgeBase, ModelContextAdapter and ContextStrategy implementations.",
+      "dose_or_intensity": "One host assessment per EAL session; two recipient sessions and two repetitions.",
+      "timing": "Initial and each recipient session.",
       "admissibility": "admissible",
       "manipulation_checks": [
-        "Record collected/reused counts and native function calls."
+        "Retain collected/reused counts, checked context and method outputs."
       ],
       "off_target_checks": [
-        "Same task specification and external collector in both arms."
+        "Common specification, native tool and answer schema; EAL adds host computation as part of the workflow treatment."
       ],
       "recovery_checks": [
-        "No previous model response or function-call history in recipient input."
+        "No previous provider response or tool transcript in new session input."
       ]
     }
   ],
@@ -161,28 +163,36 @@
     {
       "id": "CTRL-001",
       "control_type": "active-comparator",
-      "description": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+      "description": "Fresh ordinary prompt sessions with the same specification, native-tool setting and naturally produced project notes; no supplied runbook, curated prior tool results or previous conversation.",
       "failure_mode_addressed": "Curated baseline knowledge changing the intended comparator.",
-      "implementation": "Only model-emitted notes persist alongside original project files.",
-      "diagnostic_consequence": "Inspect retained initial messages and files; exclude unsupported interpretive claims if information was leaked."
+      "implementation": "Project.files and explicit new-session messages; only naturally produced notes persist.",
+      "diagnostic_consequence": "Inspect raw session inputs and file snapshots; suspend claims if leaked current fixture/oracle data entered prompts."
     },
     {
       "id": "CTRL-002",
       "control_type": "calibration",
-      "description": "Independent fixture references and scripted transport checks.",
+      "description": "Independent references, explicit positive/negative calculations and before-API source/context calibration.",
       "failure_mode_addressed": "Oracle leakage, status-as-ground-truth, history leakage or budget omission.",
-      "implementation": "tests/test_model_transfer.py",
-      "diagnostic_consequence": "Repair failing checks before live execution."
+      "implementation": "ContractCalibration and tests/test_model_transfer.py.",
+      "diagnostic_consequence": "Failed calibration blocks live calls and is reported as invalid measurement."
+    },
+    {
+      "id": "CTRL-003",
+      "control_type": "manipulation",
+      "description": "Optional separate ablation plan adds EAL with reuse=fresh, retaining the ordinary primary comparator.",
+      "failure_mode_addressed": "Mistaking reduced native calls for reduced total collection or attributing host benefits exclusively to reuse.",
+      "implementation": "conditions.EALContext and ablation-plan.json: two diagnostic cases, both donors/receivers/tool settings, one repetition, three arms and two recipients.",
+      "diagnostic_consequence": "Compare eal versus eal_fresh within the ablation run; count native and host calls. Do not pool plans or infer an isolated notation effect."
     }
   ],
   "confounds": [
     {
       "id": "CF-001",
-      "description": "Dedicated reasoning varies with model family; external evidence access differs through the EAL workflow.",
-      "causal_or_measurement_path": "Observed differences combine these features with other model/workflow differences.",
-      "control_or_adjustment": "Match donor and recipient within arm pairs; describe the full configuration.",
-      "diagnostic": "Report exact versions, effort setting and native-tool access for every session.",
-      "residual_risk": "Cannot isolate reasoning or a single EAL component as the cause."
+      "description": "Reasoning configuration varies with model family; EAL changes information availability and computation; initial notes arise independently.",
+      "causal_or_measurement_path": "Whole-workflow differences cannot identify isolated reasoning, notation or every EAL component.",
+      "control_or_adjustment": "Cross donors with every case, match recipient configuration and repetition, retain independent initial outputs, separate cohorts and resource paths.",
+      "diagnostic": "Report exact snapshots and settings, same/different model transition, actual messages, case and session effects.",
+      "residual_risk": "No population, human or pure reasoning claim. Two new cases are not independently authored confirmation."
     }
   ],
   "estimands": [
@@ -192,16 +202,16 @@
         "CLM-001"
       ],
       "estimand_type": "descriptive",
-      "population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
+      "population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano configurations on eight selected synthetic threshold cases, including six diagnostic and two additional cases.",
       "intervention_or_exposure": "Configured EAL workflow",
-      "comparator": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+      "comparator": "Fresh ordinary prompt sessions with the same specification, native-tool setting and naturally produced project notes; no supplied runbook, curated prior tool results or previous conversation.",
       "outcome_measurement_ids": [
         "M-001",
         "M-002"
       ],
-      "time": "Initial plus later session",
-      "summary_measure": "Reference match counts out of six planned sequences per arm/configuration, paired rows and resource totals.",
-      "interpretation": "Exploratory observed performance on the selected tasks; unknown costs and unrun rows remain explicit."
+      "time": "Initial and each of two subsequent new sessions; cumulative resources.",
+      "summary_measure": "Grounded task completion per planned session, paired within-case differences and observed ranges, false definite answers, abstentions, format/file outcomes and resource totals.",
+      "interpretation": "Fixed-case observed workflow profiles, conditional on calibration. Unobserved outcomes retain bounds; API calls are not independent cases."
     }
   ],
   "identification": {
@@ -209,102 +219,115 @@
       "EST-001"
     ],
     "status": "identified",
-    "causal_and_measurement_structure": "Direct descriptive mapping from retained outputs and usage to counts and totals; no population causal effect is targeted.",
+    "causal_and_measurement_structure": "Descriptive counts from retained answers and resource records; independent task arithmetic supplies the criterion. No population causal target.",
     "assumption_ids": [
       "ASM-001",
       "ASM-002"
     ],
     "identified_parameters": [
-      "Observed reference matches and known resource totals in executed cells."
+      "Observed reference-match and resource profiles for executed configurations and retained paired differences."
     ],
     "nonidentified_alternatives": [
-      "Intrinsic tool incapacity",
-      "Isolated reasoning effect",
-      "Human transfer or authoring benefit",
-      "General engineering task performance"
+      "Human developer effects",
+      "Intrinsic model incapacity",
+      "Isolated reasoning or notation effect",
+      "General engineering superiority",
+      "Unobserved outcomes after stops"
     ],
     "threats": [
-      "Provider mismatch",
-      "Invalid references",
-      "Unrecorded failed calls"
+      "Invalid source/reference correspondence",
+      "Loss of decisive context",
+      "Post-treatment removal of failed attempts",
+      "Misattribution of host calls or authoring cost"
     ],
     "diagnostics": [
-      "Pinned response verification",
-      "Independent fixture checks",
-      "Attempt reservation before send"
+      "Before-API calibration",
+      "Independent scorer cases",
+      "Full allocation and raw request records",
+      "Separate host/native resource accounting"
     ],
     "rescue_actions": [
-      "Stop and retain partial records; fix identified defects in a new recorded run."
+      "Stop invalid measurements; revise the protocol and run in a new directory; preserve historical results."
     ]
   },
   "sampling": {
-    "method": "Fixed purposive six-case coverage pilot, with four recipient configurations and two arms.",
-    "sample_size_or_information_target": "48 sequences, 96 sessions, at most 288 requests; no optional extension based on scores.",
+    "method": "Fixed purposive cases with crossed donors/recipients/tools, matched arms and two independent executions of each configuration.",
+    "sample_size_or_information_target": "Standard plan: 256 sequences, 768 sessions, at most 2304 requests. Separate ablation: 48 sequences, 144 sessions, at most 432 requests.",
     "inputs": [
-      "Two pinned nano models",
-      "Tools on/off for recipients",
-      "Six synthetic cases",
-      "USD 2 spend limit"
+      "Eight cases",
+      "Two model snapshots",
+      "Two donor and recipient configurations",
+      "Native tools on/off",
+      "Two repetitions and two recipient sessions",
+      "USD 2 per-run reservation limit"
     ],
-    "dependence_structure": "Cases recur across cells; prompts and repeated calls are not independent observations.",
-    "multiplicity": "All descriptive cell summaries reported; no tests or significance claims.",
-    "attrition_or_loss": "Retain failed, stopped and unrun sequences in the planned denominator.",
-    "result": "Operational coverage and observed differences, not precise model-class estimates.",
-    "sensitivity_analysis": "Separate decision-only agreement, basis agreement and qualified unavailable-evidence responses.",
-    "stopping_implications": "Stop on access/quota/model failure, budget exhaustion or the external job time limit; report partial coverage."
+    "dependence_structure": "Case clusters recur across arms, repetitions and sessions; no independent-sample count based on calls.",
+    "multiplicity": "All descriptive contrasts retained; no tests, confidence intervals or significance claims.",
+    "attrition_or_loss": "Retain all planned rows; no-answer for attempted failed sessions, unknown for unobserved sessions.",
+    "result": "Coverage and variability on selected cases; two repetitions do not justify model-class precision.",
+    "sensitivity_analysis": "Separate decisions, basis, citation agreement, false assertions, abstentions and side effects; provide bounds for unobserved completion.",
+    "stopping_implications": "Stop on invalid calibration, fatal access/snapshot/budget failure, or external 120-minute job ceiling. Partial results remain partial."
   },
   "analysis": {
-    "preprocessing_lock": "Record plan, seed and code revision before calls; no answer-dependent retries or model substitutions.",
-    "exclusion_lock": "No post-scheduling omissions.",
+    "preprocessing_lock": "Save plan, protocol, case specifications, assignments, source identities and raw messages before corresponding live observations; no answer-dependent retries.",
+    "exclusion_lock": "No post-scheduling omissions or replacement of failed units.",
     "models": [
       {
         "id": "MOD-001",
         "estimand_ids": [
           "EST-001"
         ],
-        "model_or_procedure": "Exact decision/basis agreement with direct task arithmetic and grouped resource counts.",
+        "model_or_procedure": "Independent reference scoring followed by separate cohort/session cells, case-level paired contrasts and complete resource counts.",
         "assumptions": [
-          "Valid specification oracle",
-          "Recorded provider attempts and usage"
+          "Valid task/source/reference correspondence",
+          "Recorded attempts and selected-case scope"
         ],
         "diagnostics": [
-          "Known scorer cases",
-          "Fresh-session replay tests",
-          "Failed-call and budget checks"
+          "ContractCalibration",
+          "Boundary and adverse scoring tests",
+          "Paired zero/nonzero synthetic arithmetic",
+          "Fresh-session and partial-run tests"
         ],
         "outputs": [
           "summaries",
-          "rows.json",
+          "paired_comparisons",
+          "case_summaries",
+          "resources",
           "report status",
           "unknown_cost_attempts"
         ]
       }
     ],
     "contrasts": [
-      "EAL versus ordinary within each recipient model/tool setting; inspect matched case rows."
+      "Primary EAL minus ordinary within case, donor, receiver, native tools, repetition and session.",
+      "Secondary EAL minus forced-fresh EAL in the separate ablation plan."
     ],
-    "uncertainty": "No confidence intervals or hypothesis tests: small purposive repeated case set. Provider responses and all errors remain available for inspection.",
-    "multiplicity": "Descriptive exploratory summaries only.",
-    "missing_data": "Missing answers fail reference completion; unavailable-evidence qualifications separately reported; missing costs are unknown; unrun cases remain planned.",
-    "stopping_rule": "Fixed plan; three calls per session, 4096 output tokens per call, USD 2 conservative ledger and 45-minute manual workflow job.",
+    "uncertainty": "Observed paired differences and ranges by case/cohort; no population intervals. Unobserved completion rates use best/worst bounds. Repetitions and sessions are not new sampled tasks.",
+    "multiplicity": "Exploratory descriptive reporting of all specified cells and contrasts.",
+    "missing_data": "Missing answers fail attempted completion; unobserved outcomes remain unknown; unknown API usage prevents finite cost-per-answer claims.",
+    "stopping_rule": "Fixed plan with at most three requests per session, 4096 output tokens, 32768 request bytes, 90-second request timeout and USD 2 reservation ledger; manual workflow has a 120-minute ceiling.",
     "robustness_checks": [
-      "Check decision and basis separately.",
-      "Report exact model/configuration and both session costs."
+      "Separate diagnostic and additional cases.",
+      "Separate model transitions and session indices.",
+      "Compare quality dimensions and all collector/API paths.",
+      "Retain historical scores and any sensitivity interpretation separately."
     ],
     "software_and_versions": [
-      "Python >=3.11; repository revision in provenance.json; OpenAI Responses API."
+      "Python >=3.11; package 2.15.0; EAL/2; packet/context /2; protocol 2.0.0; pinned snapshots and Git identity."
     ],
-    "inconclusive_handling": "Report operational failures and partial cells; a later broader independent study is needed for inferential claims."
+    "inconclusive_handling": "Invalid measurement blocks calls. Partial or conflicting results remain inconclusive for comparative benefit; additional independent tasks are needed for generalisation."
   },
   "decision_matrix": [
     {
       "id": "DM-001",
       "prediction_ids": [],
-      "observation_region": "All planned sequences executed with valid measurements.",
+      "observation_region": "Calibration passes and all planned observations are recorded.",
       "analysis_outputs": [
-        "MOD-001 summaries"
+        "MOD-001 summaries",
+        "MOD-001 paired_comparisons",
+        "MOD-001 resources"
       ],
-      "decision_rule": "Report observed differences without significance or superiority labels.",
+      "decision_rule": "Describe observed quality and resource trade-offs, including losses and ties. Do not promote the fixed-case profile to general superiority.",
       "discrimination_result": "parameter-estimated",
       "claim_effects": [
         {
@@ -312,23 +335,46 @@
             "CLM-001"
           ],
           "disposition": "revise",
-          "rationale": "Use actual counts and resources to formulate follow-up questions.",
-          "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions."
+          "rationale": "Replace conjectured profiles with recorded fixed-case differences.",
+          "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on eight selected synthetic threshold cases, including six diagnostic and two additional cases."
         }
       ],
       "hypothesis_effects": [],
-      "assumption_failure_response": "Suspend interpretation of invalid measurements.",
-      "next_action": "Select broader independent cases targeting observed failure mechanisms."
+      "assumption_failure_response": "A failed instrument check overrides outcome interpretation.",
+      "next_action": "Select independently authored tasks targeting remaining uncertainties."
     },
     {
       "id": "DM-002",
       "prediction_ids": [],
-      "observation_region": "Access unavailable, budget or time stop, malformed outputs, measurement defects or unexpected results.",
+      "observation_region": "Calibration or source/reference/context correspondence fails.",
+      "analysis_outputs": [
+        "MOD-001 report status"
+      ],
+      "decision_rule": "Record invalid measurement and send zero API requests.",
+      "discrimination_result": "invalid-measurement",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "suspend",
+          "rationale": "An inadequate measurement path cannot support the comparison.",
+          "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on eight selected synthetic threshold cases, including six diagnostic and two additional cases."
+        }
+      ],
+      "hypothesis_effects": [],
+      "assumption_failure_response": "Repair and verify correspondence before a fresh run.",
+      "next_action": "Keep the failed calibration record and use a new output directory."
+    },
+    {
+      "id": "DM-003",
+      "prediction_ids": [],
+      "observation_region": "Calibration passes but execution stops early, costs are unknown, or an unanticipated measurement problem appears.",
       "analysis_outputs": [
         "MOD-001 report status",
         "MOD-001 unknown_cost_attempts"
       ],
-      "decision_rule": "Retain partial data and planned denominator; report the specific execution or measurement limitation.",
+      "decision_rule": "Report partial coverage and bounds without a completed comparative conclusion.",
       "discrimination_result": "inconclusive",
       "claim_effects": [
         {
@@ -336,13 +382,13 @@
             "CLM-001"
           ],
           "disposition": "no-change",
-          "rationale": "Incomplete or invalid data do not establish comparative benefit.",
-          "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions."
+          "rationale": "Missing or invalid data leave the comparison unresolved.",
+          "scope_limit": "Pinned GPT-4.1 nano and GPT-5 nano configurations on eight selected synthetic threshold cases, including six diagnostic and two additional cases."
         }
       ],
       "hypothesis_effects": [],
-      "assumption_failure_response": "Repair the identified defect before any fresh run.",
-      "next_action": "Restore access or correct the instrument without recasting synthetic checks as live results."
+      "assumption_failure_response": "Identify the failure and retain all attempts.",
+      "next_action": "Correct the identified cause before any new declared run."
     }
   ],
   "bias_assessment": {
@@ -350,33 +396,39 @@
       {
         "id": "BIAS-001",
         "risk_type": "selection",
-        "mechanism": "Six simple cases and two cheap models underrepresent real work.",
-        "prevention": "State the bounded target and fixed case set.",
-        "detection": "Report every case/configuration and failure.",
-        "sensitivity_or_correction": "A follow-up needs independently authored broader tasks.",
-        "residual_risk": "No generalisation to all engineering questions or models."
+        "mechanism": "Selected simple tasks and models, plus repairs informed by earlier outcomes, limit generalisation.",
+        "prevention": "Separate diagnostic and additional cohorts and label all findings exploratory.",
+        "detection": "Retain every case/configuration and failure.",
+        "sensitivity_or_correction": "Independent future tasks and reference review are required for confirmation.",
+        "residual_risk": "No general engineering, human or model-class claim."
       }
     ],
     "researcher_degrees_of_freedom": [
-      "Fixed prompts, cases, code and plan before live responses."
+      "New protocol specified after inspecting a historical run; six diagnostic cases remain discovery material.",
+      "Two additional cases are authored prospectively but not independently.",
+      "Plan fixes structured output, cases, repetitions, order and resource bounds before new responses."
     ],
     "negative_controls": [
-      "Missing evidence must not imply measured failure."
+      "Missing measurement cannot become a measured negative; an ended assumption cannot become ready."
     ],
     "positive_controls": [
-      "Fresh valid observation and expired refreshed observations."
+      "Positive and negative computed threshold results, inclusive threshold boundaries."
     ],
     "falsification_checks": [
-      "EAL negative evidence reuse and expired assumption cases."
+      "Fresh negative evidence reuse",
+      "Current negative result alongside retained positive notes",
+      "Expired assumption with a still-fresh measurement"
     ],
     "reporting_controls": [
-      "Every attempt and unrun allocation retained."
+      "All planned units, attempts and separate measurement dimensions retained."
     ],
     "residual_limitations": [
-      "Pre-authored EAL",
-      "Dedicated reasoning/model-family confounding",
-      "Explanation prose ungraded",
-      "Unavailable evidence can prevent task completion without a false claim"
+      "Pre-authored EAL and excluded authoring costs",
+      "Simple finite tasks",
+      "Model-family/reasoning confounding",
+      "Synthetic collector times",
+      "Ungraded free-text explanations",
+      "No independent confirmatory sample"
     ]
   },
   "ethics_and_safety": {
@@ -391,7 +443,7 @@
       "Reserve cost before requests; no hidden retries."
     ],
     "monitoring": [
-      "Durable request ledger and fixed workflow timeout."
+      "Append-only request journal and resource ceilings."
     ],
     "stopping_rules": [
       "Access failure, snapshot mismatch, unavailable model, quota or budget limit."
@@ -403,39 +455,37 @@
     ]
   },
   "feasibility": {
-    "current_status": "partially-feasible",
+    "current_status": "feasible",
     "apparatus_or_data": [
-      "Implemented runner and six cases",
-      "Manual workflow using repository OPENAI_API_KEY"
+      "Implemented runner and eight cases",
+      "Manual workflow with existing OPENAI_API_KEY secret"
     ],
-    "access": "Local OPENAI_API_KEY absent; GitHub connector lacks workflow dispatch. Live account model access unverified.",
+    "access": "Prior workflow accessed both pinned snapshots. The revised provider/schema configuration still requires live execution.",
     "skills": [
       "Existing EAL implementation and provider adapter"
     ],
     "resources": [
-      "USD 2 maximum planned API budget",
-      "Up to 45 minutes of optional manual runner time"
+      "USD 2 maximum estimated API reservation budget per run",
+      "120-minute manual workflow ceiling"
     ],
     "dependencies": [
-      "Credentialed execution and workflow dispatch access"
+      "Credentialed manual execution of the selected branch/plan"
     ],
-    "blockers": [
-      "An authorised execution route must start the credentialed workflow."
-    ],
-    "fallback": "Deliver the verified run command and retain blocked-access status; request the necessary browser fallback authorisation."
+    "blockers": [],
+    "fallback": "Retain calibration or blocked/partial status accurately; no fabricated live results."
   },
   "reproducibility": {
     "preregistration_status": "not-planned",
-    "registration": "Dated local protocol and Git revision before calls; exploratory pilot.",
+    "registration": "Versioned prospective exploratory protocol; no external preregistration claimed.",
     "immutable_materials": [
-      "Per-run plan, assignments, provenance and raw request records."
+      "Per-run protocol, plan, cases, assignments, provenance, API journal and raw sessions."
     ],
-    "data_plan": "Retain synthetic project state, raw responses, costs, errors and derived scores as a workflow artifact; no credentials.",
+    "data_plan": "Retain all attempts and synthetic observations in new run directories; workflow artifacts retained for 90 days subject to repository limits; archive important run evidence before expiry.",
     "code_plan": "Existing Git repository and PR; no automatic workflow trigger.",
-    "randomisation_or_seed_plan": "Fixed seed 20260928 for sequence order.",
-    "provenance_plan": "Pin model snapshots, pricing source/date, code revision, plan digest and timestamps.",
-    "deviation_and_amendment_plan": "New directory for each run; document defects or changes; do not overwrite attempts.",
-    "replication_plan": "New independent cases and repeated live runs under separately declared resources."
+    "randomisation_or_seed_plan": "Seed 20260928 for matched-block and arm order. Repetitions are separate API executions; no deterministic provider seed claim.",
+    "provenance_plan": "Snapshot protocol and fixture definitions; record Git revision, dirty state, implementation hashes, models, pricing, prompts, attempts and timestamps.",
+    "deviation_and_amendment_plan": "New protocol version and output directory for changes; preserve prior raw data and scores.",
+    "replication_plan": "Repeat under declared resources and evaluate independently authored broader tasks before confirmation."
   },
   "execution": {
     "protocol_version_used": null,
@@ -452,122 +502,131 @@
       "EAL experiment implementation"
     ],
     "created_at": "2026-09-28T13:35:01.056299+00:00",
-    "updated_at": "2026-09-28T13:35:01.056299+00:00",
+    "updated_at": "2026-09-28T14:55:21.298705+00:00",
     "sources": [
-      "User request for cheaper model configurations",
-      "Official OpenAI model and function-calling documentation",
-      "design-scientific-investigations skill"
+      "User goal: reliable economical knowledge reuse across new sessions/models",
+      "design-scientific-investigations skill",
+      "Recorded run 36432530106: diagnostic evidence",
+      "Official OpenAI structured-output and reasoning contracts"
     ],
     "knowledge_cut": "2026-09-28",
     "change_log": [
-      "1.0.0: automated reuse protocol specified before live calls."
+      "2.0.0: crossed prospective session design, separate measurement dimensions and task-sufficient host context."
     ]
   },
   "method_selection": {
     "primary_purpose": "exploration",
     "secondary_purposes": [
-      "estimation",
+      "measurement-validation",
       "feasibility"
     ],
-    "rationale": "A low-cost, bounded configuration pilot can expose operational differences and failures before a broader developer investigation.",
-    "inference_framework": "Descriptive fixed-case comparison; no population sampling or isolated mechanism inference.",
+    "rationale": "Calibrate the instrument, then describe complete workflow profiles on selected repeated-session tasks within a small budget.",
+    "inference_framework": "Descriptive fixed-case paired comparison. No general causal, population or significance claim.",
     "alternatives_considered": [
-      "Human developer trial measures handover and effort but requires recruitment and independent assessors.",
-      "An ablation using a single model with reasoning on/off could isolate configuration effects; selected cheap families differ beyond reasoning."
+      "A human study measures same/different-developer effort and authoring; that remains a separate operator-led investigation.",
+      "An equal-information structured-tool comparator isolates notation/computation but changes the requested ordinary-session comparator; reserve it for a separate component study.",
+      "A single model with reasoning varied would address a different configuration question.",
+      "A forced-fresh EAL arm is an optional secondary collection diagnostic with the primary comparator retained."
     ],
     "sources": [
       {
         "citation": "John W. Tukey (1980), We Need Both Exploratory and Confirmatory, The American Statistician 34, 23-25.",
         "url": "https://doi.org/10.1080/00031305.1980.10482706",
         "design_consequence": "Keep this exploratory pilot separate from an independent confirmatory study."
+      },
+      {
+        "citation": "Cronbach, L. J. and Meehl, P. E. (1955), Construct validity in psychological tests, Psychological Bulletin 52, 281\u2013302.",
+        "url": "https://psychclassics.yorku.ca/Cronbach/construct.htm",
+        "design_consequence": "Validate the intended answer-quality measurement and separate format/file side effects from its interpretation."
       }
     ],
-    "information_criterion": "Cover all four recipient configurations and six temporal/evidence cases within USD 2.",
+    "information_criterion": "Cover crossed donor/recipient/tools, two fresh recipient positions and two repetitions on eight cases; report variability rather than pretend to precise population inference.",
     "permitted_conclusions": [
-      "Observed reference-task completion and resources for executed cells.",
-      "Specific operation and integration failures."
+      "Observed quality/resource profiles on executed configurations.",
+      "Specific instrument and integration failures.",
+      "Bounded evidence-reuse operation."
     ],
     "excluded_conclusions": [
-      "Human developer effects",
+      "Human developer productivity",
       "Authoring efficiency",
       "General superiority",
-      "Pure causal effect of reasoning or native tooling"
+      "Pure reasoning, notation or intrinsic tool-capability effect"
     ],
-    "discovery_confirmation_separation": "Record this pilot as exploratory; independent follow-up cases are required for confirmation."
+    "discovery_confirmation_separation": "Six cases remain diagnostic; two additional cases are prospective but not independently authored. Confirmation requires independently selected tasks."
   },
   "implementation": {
     "status": "implemented",
     "assignment": {
-      "procedure": "Enumerate six cases x two recipient models x two tool settings x two arms; shuffle sequence order with the fixed seed.",
-      "artifact": "runner.Pilot",
-      "failure_response": "Retain schedule before any calls; unrun sequences remain explicit."
+      "procedure": "Cross eight cases, two donor models, two receiver models, two native-tool settings, two repetitions and ordinary/EAL arms. Shuffle matched blocks and arm order using seed 20260928.",
+      "artifact": "design.AssignmentSchedule",
+      "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "collection": {
-      "procedure": "Bounded provider calls, complete within-session item replay and fresh later input.",
-      "artifact": "provider.BudgetedClient; runner.SessionRunner; cases.Project",
-      "failure_response": "Stop on fatal access/budget mismatch; retain every attempt."
+      "procedure": "Run fresh sessions with common schema, bounded provider calls and durable request starts; preserve host and native observations.",
+      "artifact": "provider.BudgetedClient; session.SessionRunner; project.Project; conditions; journal.AttemptJournal",
+      "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "scoring": {
-      "procedure": "Compare returned labels with Case.oracle after model completion.",
-      "artifact": "cases.py and runner.py",
-      "failure_response": "Suspend scoring on oracle defects; never use EAL status as reference."
+      "procedure": "Compare labels and numeric/time citations using independent arithmetic; record file and format outcomes separately.",
+      "artifact": "answers.AnswerParser; scoring.ReferenceScorer; calibration.ContractCalibration",
+      "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "analysis": {
-      "procedure": "Descriptive counts and resources for every arm/configuration.",
-      "artifact": "runner.Pilot",
-      "failure_response": "Report partial coverage and unknown costs."
+      "procedure": "Report every cohort/session/configuration, matched differences, unknown bounds and initial/recipient/total resources.",
+      "artifact": "reporting.ReportBuilder; resources.ResourceSummary; analyse.py",
+      "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "verification": [
       {
         "id": "V-ASSIGN",
         "stage": "assignment",
-        "case": "48 planned sequences and full denominator after provider failure",
-        "expected_result": "48 rows retained even after the first failed request.",
+        "case": "Crossed donor/case coverage, matched allocation and fixed-seed replay",
+        "expected_result": "256 unique standard sequences with all planned donor/recipient/tool/repetition combinations.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "Passed: 256 unique standard sequences, both donors per case, matched arms and fixed-seed replay.",
+        "evidence": "tests/test_model_transfer.py; experiments/model_transfer/verification.md"
       },
       {
         "id": "V-COLLECT",
         "stage": "collection",
-        "case": "Budget, incomplete replies, tool masks and reasoning-item replay",
-        "expected_result": "Failures retained, cost reserved before send and declared tool availability respected.",
+        "case": "Source/context calibration, fresh sessions, native masks, budget stops and incomplete provider replies",
+        "expected_result": "24 calibration checks; complete starts and raw outcomes retained; no session history leakage.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "Passed: 24 real EAL case/session calibrations; fresh message histories, native-tool masks, interrupted attempts and unknown costs retained.",
+        "evidence": "tests/test_model_transfer.py; experiments/model_transfer/verification.md"
       },
       {
         "id": "V-SCORE",
         "stage": "scoring",
-        "case": "Six independent oracle calculations",
-        "expected_result": "Ready/not_ready/undetermined and basis labels match the specification.",
+        "case": "Negative measurements, expiry boundaries, incorrect citations, abstentions and rejected files",
+        "expected_result": "Independent expected labels; invalid file effects do not change a valid answer score.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "Passed: threshold/freshness/assumption boundaries, adverse citations, partial answer fields and independent file-write outcomes.",
+        "evidence": "tests/test_model_transfer.py; experiments/model_transfer/verification.md"
       },
       {
         "id": "V-ANALYSE",
         "stage": "analysis",
-        "case": "Scripted constant answers across every cell",
-        "expected_result": "Expected reference-match counts, resource counts and no significance inference.",
+        "case": "Known zero/nonzero paired differences, unknown costs and full partial-run denominator",
+        "expected_result": "Correct difference direction, all collector calls and explicit unobserved bounds.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "Passed: known zero and +1 differences, complete planned denominators, missing session costs and unknown host/usage records.",
+        "evidence": "tests/test_model_transfer.py; experiments/model_transfer/verification.md"
       },
       {
         "id": "V-PIPELINE",
         "stage": "pipeline",
-        "case": "Both arms and all recipient configurations with scripted transport and real EAL runtime",
-        "expected_result": "Fresh recipient transcripts, natural notes, persistent observations and expected reuse/recollection.",
+        "case": "Scripted end-to-end execution using real EAL across both donors, recipients, tool masks and all three arms",
+        "expected_result": "48 sequence rehearsal with 144 sessions, independent scoring and complete report; no empirical model claim.",
         "status": "passed",
-        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
-        "evidence": "experiments/model_transfer/verification.md"
+        "observed_result": "Passed: 48 scripted sequences and 144 sessions through the real EAL runtime; journal reconstruction and offline report reproduction agree.",
+        "evidence": "tests/test_model_transfer.py; experiments/model_transfer/verification.md"
       },
       {
         "id": "V-LIVE",
         "stage": "collection",
-        "case": "Credentialed provider execution",
-        "expected_result": "Pinned real models return responses and usage; retained records available.",
+        "case": "Credentialed execution of protocol 2.0.0",
+        "expected_result": "Pinned snapshots return real answers/usage under the new common structured schema.",
         "status": "planned",
         "observed_result": null,
         "evidence": null
@@ -576,14 +635,14 @@
     "traceability": [
       {
         "protocol_ref": "/design/assignment_method",
-        "artifact": "runner.py",
+        "artifact": "design.py",
         "check_ids": [
           "V-ASSIGN"
         ]
       },
       {
         "protocol_ref": "/measurements/0",
-        "artifact": "cases.py; runner.py",
+        "artifact": "answers.py; scoring.py; calibration.py",
         "check_ids": [
           "V-SCORE",
           "V-PIPELINE"
@@ -591,7 +650,7 @@
       },
       {
         "protocol_ref": "/measurements/1",
-        "artifact": "provider.py; runner.py",
+        "artifact": "provider.py; session.py; resources.py",
         "check_ids": [
           "V-COLLECT",
           "V-LIVE"
@@ -599,7 +658,7 @@
       },
       {
         "protocol_ref": "/analysis/models/0",
-        "artifact": "runner.py",
+        "artifact": "reporting.py; resources.py",
         "check_ids": [
           "V-ANALYSE",
           "V-PIPELINE"
