@@ -25,6 +25,7 @@ class SessionRunner:
             response_mode: str | None = None, context_style: str = 'compact',
             include_notes: bool | None = None, reuse: str = 'compatible') -> dict:
         start = time.monotonic()
+        first_record = len(self.client.records)
         mode = response_mode or self.plan['response_mode']
         formatter = response_format(mode)
         notes = not project.strategy.requires_source if include_notes is None else include_notes
@@ -33,6 +34,7 @@ class SessionRunner:
                   'reasoning_effort': model['reasoning_effort'], 'native_tools': native_tools,
                   'response_mode': mode, 'context_style': context_style, 'include_notes': notes,
                   'reuse': reuse, 'task_context': None, 'status': 'no_answer', 'answer': None,
+                  'response_texts': [],
                   'format_valid': None, 'annotation': {'status': 'empty', 'reason': 'No response'},
                   'file_result': {'status': 'not_requested', 'written': []}}
         try:
@@ -49,19 +51,19 @@ class SessionRunner:
                 result['provider_status'] = response['status']
                 output = response['output']
                 messages.extend(output)
+                # A response can contain both task text and function calls. Keep
+                # its text before any tool fails or the call limit ends the run.
+                text = self._response_text(response)
+                if text:
+                    result['response_texts'].append(text)
                 calls = [item for item in output if item.get('type') == 'function_call']
                 if calls:
-                    if not native_tools:
-                        raise ValueError('Model requested an unavailable tool')
-                    for call in calls:
-                        if call.get('name') != 'probe' or json.loads(call['arguments']) != {}:
-                            tool_output = {'error': 'Only probe with empty arguments is available'}
-                        else:
-                            tool_output = project.probe()
-                        messages.append({'type': 'function_call_output', 'call_id': call['call_id'],
-                                         'output': json.dumps(tool_output)})
+                    self._execute_tools(project, calls, native_tools, messages)
                     continue
-                text = self._response_text(response)
+                if not text.strip() and any(part.strip() for part in result['response_texts']):
+                    result.update(status='incomplete', error={
+                        'type': 'MissingFinalAnswer', 'message': 'No final text followed the tool response'})
+                    break
                 result['raw_answer'] = text
                 parsed = formatter.parse(text)
                 result.update(status='submitted', **{k: parsed[k] for k in ('answer', 'format_valid', 'annotation')})
@@ -70,26 +72,52 @@ class SessionRunner:
                 break
             if result['status'] == 'no_answer':
                 result['error'] = {'type': 'CallLimit', 'message': 'No answer within the call limit'}
+                if any(part.strip() for part in result['response_texts']):
+                    result['status'] = 'incomplete'
         except Exception as exc:
             result.update(status='failed', error={'type': type(exc).__name__, 'message': str(exc)[:1000]})
             if isinstance(exc, ProviderResponseError):
-                # Available task text is a measurement even when the provider
-                # did not finish. It cannot trigger actions or become a complete
-                # project handoff, and its meaning requires independent coding.
                 text = self._response_text(exc.response)
-                result.update(status=exc.attempt_status, provider_status=exc.response.get('status'),
-                              raw_answer=text, answer=None, format_valid=None,
-                              annotation={'status': 'pending' if text.strip() else 'empty',
-                                          'reason': 'Response completion or validation failed; code any retained text independently',
-                                          'method': 'unfinished-response/1'},
-                              handoff={'status': 'not_retained', 'reason': 'Response was not complete and validated'})
+                if text:
+                    result['response_texts'].append(text)
+                result.update(status=exc.attempt_status, provider_status=exc.response.get('status'))
+                self._retain_unfinished_text(result)
             if isinstance(exc, ExecutionStopped):
                 result['stop_reason'] = str(exc)
         finally:
+            if result['status'] != 'submitted' and result['response_texts']:
+                self._retain_unfinished_text(result)
+            # This per-invocation list distinguishes an absent ledger from a
+            # confirmed pre-request failure, even if a session ID was reused.
+            result['api_attempt_ids'] = [row['attempt'] for row in self.client.records[first_record:]
+                                         if row['session_id'] == session_id]
             result['elapsed_seconds'] = time.monotonic() - start
             result['events'] = [e for e in project.events if e['session'] == project.session]
             write_json(project.root / f'session-{project.session}.json', result)
         return result
+
+    @staticmethod
+    def _execute_tools(project: Project, calls: list[dict], native_tools: bool,
+                       messages: list[dict]) -> None:
+        if not native_tools:
+            raise ValueError('Model requested an unavailable tool')
+        for call in calls:
+            if call.get('name') != 'probe' or json.loads(call['arguments']) != {}:
+                tool_output = {'error': 'Only probe with empty arguments is available'}
+            else:
+                tool_output = project.probe()
+            messages.append({'type': 'function_call_output', 'call_id': call['call_id'],
+                             'output': json.dumps(tool_output)})
+
+    @staticmethod
+    def _retain_unfinished_text(result: dict) -> None:
+        """Expose unfinished text to measurement without file or handoff effects."""
+        text = '\n\n'.join(result['response_texts'])
+        result.update(raw_answer=text, answer=None, format_valid=None,
+                      annotation={'status': 'pending' if text.strip() else 'empty',
+                                  'reason': 'Session did not finish; code retained response text independently',
+                                  'method': 'unfinished-response/1'},
+                      handoff={'status': 'not_retained', 'reason': 'Response was not complete and validated'})
 
     @staticmethod
     def _response_text(response: dict) -> str:

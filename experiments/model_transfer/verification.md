@@ -1,18 +1,23 @@
 # Model-session investigation verification
 
-Protocol **3.0.0**, package **2.15.0**, EAL/2. Packet/model-context schemas remain
+Protocol **3.1.0**, package **2.15.0**, EAL/2. Packet/model-context schemas remain
 `/2`; the primary plan/report use `/3`; the diagnostic plan uses `/1`.
-These records concern software and measurement instruments. No live model
-experiment has been run under this protocol.
+These records concern software and measurement instruments. Rehearsal labels
+were supplied from the deliberately scripted answer text; they are neither human
+annotation results nor model observations. No live model experiment has been run
+under this protocol.
 
 | Check | Actual result |
 | --- | --- |
 | Scientific protocol validator | VALID at specified status; zero errors and zero warnings. |
-| Actual EAL calibration | 40 primary-plan checks and 20 diagnostic-plan checks passed with no model requests, including task/source mutations and time boundaries. |
-| Annotation implementation | 32 dedicated checks passed, including a blind export/import roundtrip. |
-| Integrated suite and pipeline rehearsal | `make check`: 783 passed, 1 skipped; generated parser and maintained CLI/MCP example passed. Scripted primary: 32 sequences/96 sessions; diagnostic: 4 donors/28 recipients. |
-| Build and distribution contents | `make build` passed; 2.15.0 wheel and source archive inspected for current modules and plans; no run artefacts or removed ablation plan. |
-| Workflow and diff checks | Only `workflow_dispatch` triggers; live execution defaults off. `git diff --check` clean. |
+| Integrated suite | `make check`: 822 passed, 1 skipped; generated parser and maintained CLI/MCP example passed. |
+| Actual-runtime calibration | 41 primary-plan checks and 21 diagnostic-plan checks passed, including the changed-threshold mutation; zero live requests. |
+| Answer/annotation checks | 48 dedicated tests passed; whole-answer canonical coding and pending counterexamples verified. |
+| Full-plan scripted rehearsals | 256 primary sequences/768 sessions and 4 diagnostic donors/28 recipients completed. Scripted transports received 1,280 and 36 requests respectively. |
+| Annotation and offline reconstruction | 768 primary and 24 diagnostic pending answers passed scripted annotation import and offline analysis; original rows unchanged and resource measurements reproduced. |
+| Independent acceptance review | Original scoring, tool-turn termination, missing-journal and preparation-accounting counterexamples verified as repaired. Saved diagnostic plans replay after JSON key reordering. |
+| Build and distribution | `make build` passed; 2.15.0 source archive includes the current repair modules and excludes run artefacts. |
+| Workflow and diff | Only manual workflow dispatch; live execution defaults off. `git diff --check` clean. |
 
 The integrated checks cover the following properties. This list specifies the
 verification scope; the table records which checks have actually completed.
@@ -29,7 +34,9 @@ verification scope; the table records which checks have actually completed.
   supporting evidence without requiring the model to reconstruct omitted facts.
 * Primary prose responses do not require JSON. An unclassifiable or contradictory
   answer remains pending annotation; empty output is observed no-answer.
-  Questions, retractions and partial provider text remain pending independent coding.
+  Only complete standalone canonical prose decisions receive automatic labels.
+  Explanations, qualifications, volunteered JSON and unfinished tool-turn text
+  remain pending independent coding.
   Secondary basis/citation/format measurements do not redefine primary task
   correctness. Blind annotation adds derived labels without altering raw answers.
 * Both primary workflows retain the latest complete raw answer as a project note
@@ -40,7 +47,9 @@ verification scope; the table records which checks have actually completed.
   recorded. A failed manipulation invalidates attribution while preserving its
   answer, costs and denominator.
 * Resource accounting includes initial, each subsequent and cumulative work;
-  shared diagnostic donors count once. Unknown labels, interrupted requests and
+  shared diagnostic donors and unique recipients count once, with separately
+  recorded shared and clone preparation. Session attempt receipts distinguish
+  missing accounting from confirmed zero requests. Unknown labels, interrupted requests and
   incomplete token/cost records remain distinguishable from wrong answers and
   measured zeroes.
 
@@ -66,7 +75,14 @@ summaries, paired comparisons and manipulation checks have separate owners.
 The packet builder keeps bounded statement and omission helpers private because
 they maintain one projection invariant. Diagnostic block orchestration retains
 one donor-and-clones lifecycle; its assignment and measurement policies live in
-separate modules. These boundaries permit changes without a general-purpose
+separate modules. AttemptReconciler owns request-receipt reconciliation.
+PreparationTimer owns timed operation records through an injected persistence
+callback; DiagnosticResources owns preparation coverage and resource contrasts.
+Session helpers retain text capture, tool-message handling and unfinished-answer
+classification within one response lifecycle, where they share message ordering
+and side-effect invariants. Adversarial calibration retains its fixture cases
+with the same actual-runtime check and pass criteria.
+These boundaries permit changes without a general-purpose
 framework or duplicated evaluation logic.
 
 The production evaluator, observation repositories and collector interfaces
@@ -78,7 +94,7 @@ outputs are not observations of model capability or savings.
 
 The historical run remains separately documented in
 [run-36432530106.md](results/run-36432530106.md), with its original observations
-and scores unchanged. It does not establish performance under protocol 3.0.0.
+and scores unchanged. It does not establish performance under protocol 3.1.0.
 Credentialed manual execution is required to observe actual answers, provider
 behaviour, tokens, latency and costs for the declared plans.
 

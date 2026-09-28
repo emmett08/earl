@@ -78,7 +78,7 @@ def test_independent_oracles_and_complete_context_calibration():
     check = ContractCalibration().check(load_plan(PLAN))
     assert check['status'] == 'passed'
     assert len([c for c in check['checks'] if c['kind'] == 'task_outcome']) == 24
-    assert len([c for c in check['checks'] if c['kind'] == 'source_mutation']) == 6
+    assert len([c for c in check['checks'] if c['kind'] == 'source_mutation']) == 7
     assert len([c for c in check['checks'] if c['kind'] == 'boundary']) == 10
 
 
@@ -133,7 +133,7 @@ def test_current_context_retains_negative_result_alongside_natural_stale_notes(t
 
 def test_complete_pipeline_retains_fresh_sessions_native_masks_and_all_stages(tmp_path):
     plan = small_plan()
-    transport = ScriptedTransport('The service is ready. The reading is below the criterion.')
+    transport = ScriptedTransport('The service is ready.')
     report = Pilot(plan, tmp_path, transport).run()
     assert report['status'] == 'complete'
     assert report['planned_sequences'] == 32 and report['planned_sessions'] == 96
@@ -149,11 +149,11 @@ def test_complete_pipeline_retains_fresh_sessions_native_masks_and_all_stages(tm
             assert bool(request.get('tools')) == row['native_tools']
             assert not any(x.get('type') in ('function_call', 'function_call_output', 'reasoning') for x in request['input'])
             if row['arm'] == 'ordinary':
-                assert 'The service is ready. The reading is below the criterion.' in json.dumps(request['input'])
+                assert 'The service is ready.' in json.dumps(request['input'])
                 assert 'latest-answer.md' in json.dumps(request['input'])
                 assert 'specification.txt' in json.dumps(request['input'])
             else:
-                assert 'The service is ready. The reading is below the criterion.' not in json.dumps(request['input'])
+                assert 'The service is ready.' not in json.dumps(request['input'])
                 assert 'latest-answer.md' not in json.dumps(request['input'])
                 assert 'specification.txt' not in json.dumps(request['input'])
             assert 'Synthetic response for harness checks.' not in json.dumps(request['input'])
@@ -382,7 +382,7 @@ def test_calibration_failure_is_recorded_before_provider_use(monkeypatch):
     monkeypatch.setattr(module, 'Project', broken)
     result = ContractCalibration().check(small_plan())
     assert result['status'] == 'failed'
-    assert len(result['checks']) == 18
+    assert len(result['checks']) == 19
     assert all(c['error']['type'] == 'ValueError' for c in result['checks'])
 
 
@@ -518,7 +518,9 @@ def test_prose_task_responses_do_not_need_schema_support_or_native_tools(tmp_pat
     project = Project(tmp_path / 'sequence', CASES[1], 'eal')
     result = SessionRunner(client, plan).run(project, profile, tools, 'natural-response')
     assert result['status'] == 'submitted' and result['format_valid'] is None
-    assert ReferenceScorer().score(CASES[1], 0, result)['task_match']
+    assert result['raw_answer'] == transport.final
+    assert result['annotation']['status'] == 'pending'
+    assert ReferenceScorer().score(CASES[1], 0, result)['task_match'] is None
     assert all('text' not in request for request in transport.requests)
     assert bool(transport.requests[0].get('reasoning')) == (reasoning == 'reasoning')
     assert bool(transport.requests[0].get('tools')) == tools
@@ -541,26 +543,39 @@ def test_unsupported_schema_stops_before_request_but_prompted_json_can_run(tmp_p
 def test_pending_primary_measurements_survive_report_and_blind_annotation_reanalysis(tmp_path):
     plan = {**small_plan(), 'cases': ['fresh_positive']}
     rows = []
-    text = 'The available measurement meets the criterion.'
+    calls = []
+    text = 'The service is ready. The available measurement meets the criterion.'
     parsed = response_format('prose').parse(text)
     for allocation in AssignmentSchedule(plan).allocations():
         sessions = []
         for index in range(3):
             result = {**copy.deepcopy(parsed), 'session': index,
                       'session_id': f"{allocation['sequence_id']}.session-{index}",
-                      'raw_answer': text, 'elapsed_seconds': 1, 'events': []}
+                      'raw_answer': text, 'elapsed_seconds': 1, 'events': [],
+                      'api_attempt_ids': [len(calls)]}
+            calls.append({'attempt': len(calls), 'session_id': result['session_id'],
+                          'status': 'completed', 'cost_estimate_usd': .001,
+                          'charged_or_reserved_usd': .001,
+                          'response': {'usage': {'input_tokens': 20, 'output_tokens': 10,
+                                                'input_tokens_details': {'cached_tokens': 0},
+                                                'output_tokens_details': {'reasoning_tokens': 0}}}})
             result['score'] = ReferenceScorer().score(CASES[0], index, result)
             sessions.append(result)
         rows.append({**allocation, 'status': 'complete', 'cohort': 'diagnostic', 'sessions': sessions})
-    report = ReportBuilder(plan).build(rows, [], None)
+    report = ReportBuilder(plan).build(rows, calls, None)
     assert report['status'] == 'pending_annotation' and report['execution_status'] == 'complete'
     assert report['pending_task_annotations'] == len(rows) * 3
     assert all(cell['task_rate_bounds'] == [0, 1] for cell in report['summaries'])
     assert all(cell['format_failures'] == 0 for cell in report['summaries'])
     assert all(pair['task_difference'] is None for pair in report['paired_comparisons'])
     for name, contents in [('rows.json', rows), ('plan.json', plan),
-                           ('cases.json', [asdict(CASES[0])]), ('calls.json', [])]:
+                           ('cases.json', [asdict(CASES[0])]), ('calls.json', calls)]:
         (tmp_path / name).write_text(json.dumps(contents))
+    from experiments.model_transfer.journal import AttemptJournal
+    journal = AttemptJournal(tmp_path)
+    for call in calls:
+        journal.append({**call, 'event': 'started', 'status': 'started', 'cost_estimate_usd': None})
+        journal.append({**call, 'event': 'finished'})
     raw_rows = (tmp_path / 'rows.json').read_bytes()
     exchange = AnnotationExchange()
     bundle = tmp_path / 'blinded'

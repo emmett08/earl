@@ -45,11 +45,12 @@ class PairedComparisons:
         complete = a['session_coverage_complete'] and b['session_coverage_complete']
         return {
             'elapsed_seconds': a['elapsed_seconds'] - b['elapsed_seconds'] if complete else None,
-            'api_attempts': a['api_attempts'] - b['api_attempts'] if complete else None,
+            'api_attempts': a['api_attempts'] - b['api_attempts']
+                if a['api_accounting_complete'] and b['api_accounting_complete'] else None,
             'total_collector_calls': a['total_collector_calls'] - b['total_collector_calls']
                 if a['collection_counts_complete'] and b['collection_counts_complete'] else None,
             'known_cost_usd': a['known_cost_usd'] - b['known_cost_usd']
-                if complete and not a['unknown_cost_attempts'] and not b['unknown_cost_attempts'] else None,
+                if a['cost_accounting_complete'] and b['cost_accounting_complete'] else None,
             **{key: a[key] - b[key] if complete and a[flag] and b[flag] else None
                for key, flag in (('input_tokens', 'token_usage_complete'), ('output_tokens', 'token_usage_complete'),
                                  ('reasoning_tokens', 'reasoning_usage_complete'), ('cached_input_tokens', 'cached_usage_complete'))},

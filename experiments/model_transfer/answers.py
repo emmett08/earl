@@ -69,55 +69,28 @@ class ProseFormat:
     instructions = PROSE_OUTPUT
     provider_format = None
 
+    _canonical_decision = re.compile(
+        r'(?:(?:assessment|decision|conclusion)\s*:\s*)?'
+        r'(?:(?:the\s+)?service\s+is\s+(?:currently\s+)?)?'
+        r'(?P<decision>not[ _-]ready|ready|undetermined)\.?', re.IGNORECASE | re.ASCII)
+
     def parse(self, text: str) -> dict:
-        """Code only a complete, unambiguous explicit decision; retain other answers."""
+        """Code a whole canonical answer; independently annotate all other prose."""
         if not text.strip():
             return _uncoded('empty', 'No text answer was returned', format_valid=None)
-        # JSON volunteered in an unconstrained condition can be coded without
-        # making that format a task requirement or scoring a missing field wrong.
-        try:
-            parsed = AnswerParser().parse(text)
-        except (ValueError, TypeError):
-            parsed = None
-        if parsed and parsed['annotation']['status'] == 'automatic':
-            parsed['format_valid'] = None
-            parsed['files'] = []
-            parsed['annotation']['method'] = 'volunteered-json-decision/1'
-            return parsed
-
-        normal = re.sub(r'[*`]', '', text).strip()
-        # Conditional, interrogative, quoted, historical and retracted statements
-        # are not reliably coded by phrase matching. An independent assessor
-        # handles them, including correct answers outside this narrow grammar.
-        guards = (r'\b(if|unless|would|could|might|previously|earlier|yesterday|was|were|then|however|but|'
-                  r'cannot|unlikely|uncertain|unsure|perhaps|probably|possibly|actually|instead|false|incorrect|'
-                  r'no|retract|withdraw|disregard|correction)\b'
-                  r"|\b(?:isn|aren|can|doesn)['’]t\b")
-        candidates = set()
-        if not re.search(guards, normal, re.IGNORECASE) and not re.search(r'["“”>?]', normal):
-            for sentence in re.split(r'[.!?\n]+', normal):
-                sentence = sentence.strip()
-                match = re.fullmatch(
-                    r'(?:(?:assessment|decision|conclusion)\s*:\s*)?'
-                    r'(?:(?:the\s+)?service\s+is\s+(?:currently\s+)?)?'
-                    r'(not[ _-]ready|ready|undetermined)(?:\s*[:;—–-]\s*[^.!?]+)?',
-                    sentence, re.IGNORECASE)
-                if match:
-                    candidates.add(re.sub(r'[ -]', '_', match.group(1).lower()))
-            # Do not choose one explicit result while overlooking a contrary
-            # conclusion embedded in explanatory prose.
-            labels = set(re.findall(r'\b(?:not[ _-]ready|ready|undetermined)\b', normal.lower()))
-            labels = {re.sub(r'[ -]', '_', item) for item in labels}
-            if len(labels) > 1:
-                candidates.clear()
-        if len(candidates) != 1:
-            return _uncoded('pending', 'Natural-language decision requires independent coding', format_valid=None)
-        decision = candidates.pop()
+        # A complete-string match prevents selecting a convenient sentence and
+        # overlooking qualifiers or contradictions elsewhere in the answer.
+        # Volunteered JSON and explanatory prose use the same annotation path.
+        match = self._canonical_decision.fullmatch(text.strip())
+        if match is None:
+            return _uncoded('pending', 'Non-canonical prose-mode answer requires independent coding',
+                            format_valid=None)
+        decision = re.sub(r'[ -]', '_', match.group('decision').lower())
         return {'answer': {'decision': decision, 'basis': None, 'reading': None,
                            'observed_at': None, 'explanation': text},
                 'format_valid': None, 'files': [],
-                'annotation': {'status': 'automatic', 'reason': 'Unambiguous explicit decision',
-                               'method': 'explicit-prose-decision/1'}}
+                'annotation': {'status': 'automatic', 'reason': 'Complete canonical decision answer',
+                               'method': 'canonical-prose-decision/1'}}
 
 
 class JSONPromptedFormat:

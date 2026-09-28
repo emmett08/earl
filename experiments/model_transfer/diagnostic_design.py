@@ -115,7 +115,7 @@ class DiagnosticSchedule:
         for index, (case, receiver, tools, repeat) in enumerate(blocks):
             block_id = f'diagnostic-{index:04d}'
             variants = []
-            for factor, selected in plan['contrasts'].items():
+            for factor, selected in sorted(plan['contrasts'].items()):
                 if case not in selected:
                     continue
                 specification = FACTORS[factor]

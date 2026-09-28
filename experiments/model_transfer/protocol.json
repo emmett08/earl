@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "investigation_id": "EAL-NANO-REUSE",
   "title": "Model-session workflow comparison and component diagnostics",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "status": "specified",
   "question": "On the selected tasks, how do ordinary and EAL workflows compare in task decisions and initial, subsequent and cumulative resources; which separately manipulated components could explain observed differences?",
   "primary_claim_id": "CLM-001",
@@ -328,11 +328,11 @@
         "CON-001"
       ],
       "observable": "Unmodified task answer, independently annotated decision and optional basis/measurement/time citations; format and persistence outcomes recorded separately.",
-      "instrument_or_procedure": "AnswerParser, ReferenceScorer and annotations export/import; conservative prose coding plus blinded manual coding of pending or audited answers.",
+      "instrument_or_procedure": "Response-format strategies, ReferenceScorer and annotation export/import; automatic prose coding only for complete standalone canonical decisions, with blinded coding for all other non-empty prose.",
       "scale_or_units": "Binary reference match and counts",
       "timing": "Every initial and recipient session; every attempt retained.",
-      "preprocessing": "Primary task_match/decision_match compares an annotated decision with independent fixture arithmetic. Basis agreement, voluntary citation agreement, coded internal consistency, abstention, false assertion and format compliance are secondary dimensions; absent secondary content is unmeasured, not a primary failure. Empty/no response is observed no-answer; ambiguous prose or malformed JSON remains pending annotation.",
-      "calibration": "Known correct, wrong, negated, ambiguous and conflicting answers; independent numerical/time references; source mutation and real-host boundary checks.",
+      "preprocessing": "Primary task_match/decision_match compares an annotated decision with independent fixture arithmetic. Basis agreement, voluntary citation agreement, coded internal consistency, abstention, false assertion and format compliance are secondary dimensions; absent secondary content is unmeasured, not a primary failure. Empty/no response is observed no-answer; ambiguous prose or malformed JSON remains pending annotation. Automatic prose coding never selects a sentence from a longer response. Volunteered JSON in primary prose remains pending annotation. Text observed during tool turns remains available for annotation if the session ends before a final answer; it does not become a complete handoff.",
+      "calibration": "Known correct, wrong, negated, ambiguous and conflicting answers; independent numerical/time references; source mutation and real-host boundary checks. Include conditional or contradicted prose outside a word-list heuristic, mixed text/tool responses, call-limit exhaustion and later tool/request failures.",
       "reliability": "Retain automatic labels, masked human labels, quotations and reasons; contradictory or ambiguous expressions remain pending. Two primary API repetitions expose model variability.",
       "validity": "Measures the task decision expressed; citation agreement and reporting compliance are separate. Complete free-text argument quality and human effort remain outside scope.",
       "measurement_invariance": "The same independent task rubric applies across arms, response modes, models and sessions; parser coverage is measured rather than assumed invariant.",
@@ -349,10 +349,10 @@
       "instrument_or_procedure": "provider.BudgetedClient append-only ledger, session.SessionRunner, resources.ResourceSummary and reporting.ReportBuilder.",
       "scale_or_units": "Seconds, token/call counts and estimated USD",
       "timing": "Initial and each recipient session, then total per condition.",
-      "preprocessing": "Count every attempted request and both collection paths, including initial setup and diagnostic donor preparation. Keep token/collection/timing completeness flags and unknown amounts. Cost per task-correct decision requires complete outcomes and resource usage; pending labels retain bounds. Report each diagnostic donor once as shared preparation and recipient marginal costs separately.",
-      "calibration": "Known/unknown ledger costs, interrupted requests, cumulative arithmetic and cloned-state compatible/fresh collection counts.",
+      "preprocessing": "Count every attempted request and both collection paths, including initial setup and diagnostic donor preparation. Keep token/collection/timing completeness flags and unknown amounts. Cost per task-correct decision requires complete outcomes and resource usage; pending labels retain bounds. Report each diagnostic donor once as shared preparation and recipient marginal costs separately. Reconcile each session's exact API attempt identifiers with the journal. Explicit empty receipts identify confirmed pre-request zero work; missing, duplicate or misattributed records leave accounting incomplete and suppress finite API/cost/token contrasts. Diagnostic shared-donor and unique-recipient subtotals include separately measured workflow preparation.",
+      "calibration": "Known/unknown ledger costs, interrupted requests, cumulative arithmetic and cloned-state compatible/fresh collection counts. Missing whole journals, missing attempts within one arm, explicit pre-request zero, preparation interruption and unique diagnostic aggregation.",
       "reliability": "Recorded monotonic durations and provider usage; no assertion that local collector timing represents remote infrastructure.",
-      "validity": "All recorded machine/API resources count; API rates are estimates. Pre-authored EAL excludes authoring effort, and host infrastructure prices/human effort are unmeasured. Local fixture latency does not represent a remote evidence system.",
+      "validity": "All recorded machine/API resources count; API rates are estimates. Pre-authored EAL excludes authoring effort, and host infrastructure prices/human effort are unmeasured. Local fixture latency does not represent a remote evidence system. Diagnostic workflow preparation includes donor construction, current-state preparation and clone construction; preparation timing excludes fingerprinting and diagnostic serialisation/logging. Session timing retains the session-runner interval, including request journalling and input-file persistence; report computation and annotation are outside these intervals.",
       "measurement_invariance": "The same serial transport, budgeting and accounting applies; prompts may differ as an intended workflow component.",
       "reactivity": "A reservation limit or execution timeout can stop a plan before all cells; no outcome-selected extension.",
       "error_model": "Persist request starts before transmission; distinguish incomplete attempts, unobserved sessions and pending labels from measured zero or incorrect decisions.",
@@ -595,7 +595,7 @@
     ],
     "dependence_structure": "Case clusters recur across arms, repetitions and sessions; no independent-sample count based on calls.",
     "multiplicity": "All descriptive contrasts retained; no tests, confidence intervals or significance claims.",
-    "attrition_or_loss": "Retain every planned unit. Empty/failed responses are observed no-answer; unobserved or ambiguously annotated decisions remain unknown.",
+    "attrition_or_loss": "Retain every planned unit. Empty attempted responses are observed no-answer; failed sessions with retained text remain pending independent annotation. Unobserved or ambiguously annotated decisions remain unknown.",
     "result": "Coverage of selected workflows and diagnostic pathways; insufficient precision for population or equivalence inference. A single binary pair changes by -1, 0 or +1, so a small number of pairs has coarse resolution.",
     "sensitivity_analysis": "Report task decision separately from optional basis/citations/format; inspect blind annotation revisions; bound pending outcomes and missing sessions. Inspect each diagnostic factor separately.",
     "stopping_implications": "Stop on invalid calibration, fatal access/snapshot/budget failure, or external 120-minute job ceiling. Partial results remain partial."
@@ -660,7 +660,7 @@
     ],
     "uncertainty": "Fixed-case paired differences and observed ranges without population intervals. Task rates retain best/worst bounds for pending/unobserved decisions. No-discordance diagnostic pairs do not establish equivalence.",
     "multiplicity": "Exploratory descriptive reporting of all specified cells and contrasts.",
-    "missing_data": "Empty or absent attempted answers are observed no-answer. Unobserved sessions, ambiguous/contradictory text and unparseable JSON remain unknown pending annotation. Unknown usage blocks finite cost-per-correct-answer claims.",
+    "missing_data": "Empty or absent attempted answers are observed no-answer. Unobserved sessions, ambiguous/contradictory text and unparseable JSON remain unknown pending annotation. Unknown usage blocks finite cost-per-correct-answer claims. Missing or inconsistent session-to-request accounting is incomplete measurement, even when task decisions are known. Known subtotals remain labelled; costs and token differences require reconciled coverage.",
     "stopping_rule": "Fixed plan with at most three requests per session, 4096 output tokens, 32768 request bytes, 90-second request timeout and USD 2 reservation ledger; manual workflow has a 120-minute ceiling.",
     "robustness_checks": [
       "Separate diagnostic/additional primary cases, model transitions and session indices.",
@@ -670,7 +670,7 @@
       "Inspect each diagnostic factor and any failed manipulation without pooling into the primary comparison."
     ],
     "software_and_versions": [
-      "Python >=3.11; EAL/2; protocol 3.0.0; primary plan/report /3; diagnostic plan /1; Git identity and exact package/context versions recorded per run."
+      "Python >=3.11; EAL/2; protocol 3.1.0; primary plan/report /3; diagnostic plan /1; Git identity and exact package/context versions recorded per run."
     ],
     "inconclusive_handling": "Invalid task/source correspondence blocks calls. Partial execution, unresolved annotation, failed manipulation or conflicting outcomes remain explicitly inconclusive for the affected comparison."
   },
@@ -943,7 +943,7 @@
     ],
     "data_plan": "Preserve raw runs and code annotations separately; write new derived rows/reports without overwriting originals. Workflow artefacts retained for 90 days subject to repository limits; archive important evidence before expiry.",
     "code_plan": "Existing Git repository and PR; no automatic workflow trigger.",
-    "randomisation_or_seed_plan": "Seed 20260928 for primary matched-block/arm ordering and declared diagnostic order. Separate requests remain stochastic; no deterministic provider seed claim.",
+    "randomisation_or_seed_plan": "Seed 20260928 for primary matched-block/arm ordering and declared diagnostic order. Separate requests remain stochastic; no deterministic provider seed claim. Diagnostic contrast-map keys are sorted before seeded shuffling.",
     "provenance_plan": "Snapshot protocol and fixture definitions; record Git revision, dirty state, implementation hashes, models, pricing, prompts, attempts and timestamps.",
     "deviation_and_amendment_plan": "New protocol version and output directory for changes; preserve prior raw data and scores.",
     "replication_plan": "Repeat under declared resources and evaluate independently authored broader tasks before confirmation."
@@ -963,7 +963,7 @@
       "EAL experiment implementation"
     ],
     "created_at": "2026-09-28T13:35:01.056299+00:00",
-    "updated_at": "2026-09-28T16:01:11.728694+00:00",
+    "updated_at": "2026-09-28T16:26:55.338900+00:00",
     "sources": [
       "User goal: reliable economical knowledge reuse across new sessions/models",
       "design-scientific-investigations skill",
@@ -972,7 +972,7 @@
     ],
     "knowledge_cut": "2026-09-28",
     "change_log": [
-      "3.0.0: whole-workflow task-decision comparison, compact checked task context, prose/manual annotation and separate cloned-donor component diagnostics."
+      "3.1.0: canonical whole-answer automatic coding, retained tool-turn text, reconciled API attempts and explicit diagnostic preparation accounting."
     ]
   },
   "method_selection": {
@@ -1025,17 +1025,17 @@
   "implementation": {
     "status": "implemented",
     "assignment": {
-      "procedure": "Cross eight cases, two donor models, two receiver models, two native-tool settings, two repetitions and ordinary/EAL arms. Shuffle matched blocks and arm order using seed 20260928.",
+      "procedure": "Cross eight cases, two donor models, two receiver models, two native-tool settings, two repetitions and ordinary/EAL arms. Shuffle matched blocks and arm order using seed 20260928. Canonicalise diagnostic contrast-map keys before seeded shuffling so JSON key order cannot change replayed allocation.",
       "artifact": "design.AssignmentSchedule",
       "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "collection": {
-      "procedure": "Fresh sessions with workflow-specific prompts and ordinary prose; persist the latest complete unmodified answer as a project note under the common size limit. For diagnostics clone a donor state and change one recipient factor; retain starts, responses and actual manipulations.",
+      "procedure": "Fresh sessions with workflow-specific prompts and ordinary prose; persist the latest complete unmodified answer as a project note under the common size limit. For diagnostics clone a donor state and change one recipient factor; retain starts, responses and actual manipulations. Retain ordered provider text before tool processing, record exact session attempt receipts and measure shared/clone preparation.",
       "artifact": "provider.BudgetedClient; session.SessionRunner; project.Project; conditions; journal.AttemptJournal; diagnostics.DiagnosticPilot",
       "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
     "scoring": {
-      "procedure": "Annotate expressed decisions independently of the oracle; retain ambiguous labels, export/import blind manual codes, then compare with independent reference arithmetic. Optional basis/citation/format dimensions stay separate.",
+      "procedure": "Code only complete standalone canonical prose decisions automatically. Blindly annotate other non-empty prose, including volunteered JSON and unfinished tool-turn text, before independent reference scoring. Preserve raw output and separate optional basis/citation/format dimensions.",
       "artifact": "answers.AnswerParser; annotations; scoring.ReferenceScorer; calibration.ContractCalibration; task_context.TaskContract",
       "failure_response": "Retain the affected unit and failure; suspend invalid measurements rather than silently deleting them."
     },
@@ -1051,7 +1051,7 @@
         "case": "Primary crossed allocation and diagnostic cloned-state allocation",
         "expected_result": "256 unique primary sequences; declared diagnostic blocks/variants with no missing or duplicate assignments.",
         "status": "passed",
-        "observed_result": "Crossed primary allocation and all four diagnostic donor blocks/28 recipient variants pass allocation and tamper checks.",
+        "observed_result": "256 primary sequences and four diagnostic blocks/28 variants verified; diagnostic allocation is unchanged by sorted-key JSON serialisation.",
         "evidence": "tests/test_model_transfer.py; tests/test_model_transfer_diagnostics.py"
       },
       {
@@ -1060,8 +1060,8 @@
         "case": "Actual source/task calibration, fresh messages, raw-note persistence, tool masks and interrupted requests",
         "expected_result": "Task distinctions survive runtime/context; invalid sources fail before API; every planned unit and unknown resource retained.",
         "status": "passed",
-        "observed_result": "CLI calibration passed 40 primary and 20 diagnostic checks with zero API requests. Collection, incomplete-response retention, fresh-message and handoff regressions pass.",
-        "evidence": "calibration.py; tests/test_model_transfer.py; tests/test_model_transfer_task.py"
+        "observed_result": "Actual runtime calibration passed 41 primary-plan and 21 diagnostic-plan checks, including changed threshold. Tool-turn text survives call limits and later failures; exact request receipts distinguish zero requests from lost records.",
+        "evidence": "tests/test_model_transfer_task.py; tests/test_model_transfer_session.py; tests/test_model_transfer.py"
       },
       {
         "id": "V-SCORE",
@@ -1069,8 +1069,8 @@
         "case": "Natural prose, negation, ambiguity, malformed JSON, separate secondary dimensions and blind annotation",
         "expected_result": "Known task decisions survive incidental reporting differences; ambiguous text remains pending; imported codes are linked to unchanged raw answers without oracle exposure.",
         "status": "passed",
-        "observed_result": "32 dedicated answer/annotation tests pass, including interrogatives, retractions, pending prose and blind annotation; incomplete provider text remains separately codable.",
-        "evidence": "tests/test_model_transfer_answers.py; tests/test_model_transfer.py"
+        "observed_result": "48 dedicated answer/annotation tests pass. Conditional, contradicted and explanatory primary prose remains pending; standalone canonical decisions remain automatically codable.",
+        "evidence": "tests/test_model_transfer_answers.py"
       },
       {
         "id": "V-ANALYSE",
@@ -1078,7 +1078,7 @@
         "case": "Known paired effects, pending-label bounds, initial/later/cumulative accounting and incomplete usage",
         "expected_result": "Correct paired signs and denominators; unknown outcomes/resources distinct from failures/zero; shared diagnostic donor counted once.",
         "status": "passed",
-        "observed_result": "Cumulative overhead arithmetic, unknown outcome bounds, missing sessions and missing token breakdowns pass; diagnostic donor resources count once.",
+        "observed_result": "Missing whole/selective journals suppress finite expenditure claims; contradictory zero receipts and incomplete preparation are detected. Unique donor/recipient groups reconcile to totals.",
         "evidence": "tests/test_model_transfer_reporting.py; tests/test_model_transfer_diagnostics.py"
       },
       {
@@ -1087,8 +1087,8 @@
         "case": "Scripted primary and diagnostic pipelines with actual EAL and manual-annotation roundtrip",
         "expected_result": "Complete retained assignments/raw responses/reports; one-factor checks and offline reconstruction work without making an empirical model claim.",
         "status": "passed",
-        "observed_result": "Scripted primary rehearsal retains 32 sequences/96 sessions; diagnostic rehearsal retains four donors/28 recipients. Both support derived annotations and offline analysis without overwriting raw rows.",
-        "evidence": "tests/test_model_transfer.py; tests/test_model_transfer_diagnostics.py"
+        "observed_result": "Full scripted plans completed: 256 sequences/768 primary sessions with 1280 scripted requests, and four donors/28 recipients with 36 scripted requests. 768 primary and 24 diagnostic pending answers passed scripted annotation import and offline reconstruction; raw rows stayed unchanged. No live API calls.",
+        "evidence": "tests/test_model_transfer.py; tests/test_model_transfer_diagnostics.py; verification.md"
       },
       {
         "id": "V-DIAGNOSTIC",
@@ -1096,13 +1096,13 @@
         "case": "Clone equality, fixture and fact fingerprints, one-factor manipulation and tamper detection",
         "expected_result": "Valid component contrasts pass; state/fact/delivery defects remain visible and invalidate attribution.",
         "status": "passed",
-        "observed_result": "Clone, fixture, fact and delivered-factor checks pass; deliberate manipulation/state defects invalidate component attribution.",
+        "observed_result": "17 diagnostic checks pass, including manipulation validity, unique resource groups, preparation transitions/failures, missing ledger and saved-plan replay.",
         "evidence": "tests/test_model_transfer_diagnostics.py"
       },
       {
         "id": "V-LIVE",
         "stage": "collection",
-        "case": "Credentialed execution of protocol 3.0.0",
+        "case": "Credentialed execution of protocol 3.1.0",
         "expected_result": "Pinned configurations produce actual task answers and usage under the selected primary or diagnostic plan.",
         "status": "planned",
         "observed_result": null,

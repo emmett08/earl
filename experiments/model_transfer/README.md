@@ -1,6 +1,6 @@
 # Model-session workflow investigation
 
-Protocol **3.0.0**, schema **1.1**, status **specified**. The primary investigation
+Protocol **3.1.0**, schema **1.1**, status **specified**. The primary investigation
 compares task decisions and resources across fresh ordinary and EAL sessions.
 A separate diagnostic investigation varies individual components on cloned donor
 states. The [human developer study](../transfer_study/README.md) addresses
@@ -93,12 +93,16 @@ descriptive outcome: does the expressed decision agree with the independent
 full-information task reference? The reference is calculated from fixture facts
 and task arithmetic; it never reads EAL conclusions or enters a model prompt.
 
-Answer annotation and correctness scoring are separate. Conservative automatic
-annotation recognises explicit decisions. Ambiguous or conflicting prose and
-malformed JSON remain pending until blind review; they do not become incorrect
+Answer annotation and correctness scoring are separate. Automatic prose coding
+accepts only a complete standalone canonical decision, such as “Ready.” or
+“The service is not ready.” It never selects a sentence from an explanation.
+All other non-empty prose, including volunteered JSON, and malformed diagnostic
+JSON remain pending until blind review; they do not become incorrect
 task decisions merely because the parser cannot classify them. Partial text from
 an incomplete provider response also remains pending; provider completion is a
-separate measurement. Partial responses produce no file effects or handoff notes.
+separate measurement. Text accompanying tool calls is retained before tool
+processing and remains available for annotation if the session ends without a
+final answer. Unfinished responses produce no file effects or handoff notes.
 An empty or absent attempted answer is an observed no-answer. Unobserved sessions remain unknown.
 Reports retain best/worst bounds for pending and unobserved decisions.
 
@@ -158,8 +162,14 @@ contrast uses `fresh_positive`, where the retained observation is eligible.
 Four donor blocks cross these two cases with both recipient models, using the
 plain donor model and disabled recipient native tools. The plan has **four donor
 sessions and 28 recipient sessions**, at most **96 API requests**, and its own
-**USD 2 reservation limit**. The shared donor is counted once per block; marginal
-recipient resources are reported separately.
+**USD 2 reservation limit**. The shared donor is counted once per block; each recipient appears once in the
+resource subtotals. Reports separate donor, shared preparation, recipient and
+clone-preparation resources. Pairwise contrast entries are comparisons and must
+not be summed as a resource total. Preparation records retain completed, failed
+and unobserved operations. Preparation timing excludes fingerprinting and
+diagnostic serialisation/logging. Session timing retains the session-runner
+interval, including request journalling and input-file persistence. Report
+construction and annotation are outside these intervals.
 
 Fingerprints and intervention manifests check shared state, unchanged fixture,
 required task-fact equality and actual variant delivery. Failed checks preserve
@@ -187,7 +197,11 @@ not factual correctness.
 Reports separate initial, each recipient and cumulative API input/output/cached/
 reasoning tokens, requests, estimated cost, wall time, host collections/reuses,
 native probes and setup time. Every attempted request counts. Completeness flags
-distinguish known subtotals from unknown resources. End-to-end session time
+distinguish known subtotals from unknown resources. Each session records its exact
+API attempt identifiers, which reports reconcile with the journal. An explicit
+empty receipt records confirmed zero requests; absent or inconsistent receipts
+and missing journal entries leave accounting incomplete. Cost/token contrasts
+and cost per correct decision require reconciled coverage. End-to-end session time
 includes context preparation and note handling. Cost per correct decision is
 available only with complete outcome and resource coverage.
 

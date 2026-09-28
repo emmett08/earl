@@ -42,8 +42,9 @@ class ReportBuilder:
                     'receiver': receiver, 'native_tools': tools, 'arm': arm, 'session': session, 'cohort': cohort,
                     **outcomes, 'resources': resources,
                     'cost_per_task_answer_usd': (resources['known_cost_usd'] / correct
-                        if correct and complete and not resources['unknown_cost_attempts'] else None),
-                    'seconds_per_task_answer': (resources['elapsed_seconds'] / correct if correct and complete else None),
+                        if correct and complete and resources['cost_accounting_complete'] else None),
+                    'seconds_per_task_answer': (resources['elapsed_seconds'] / correct
+                        if correct and complete and resources['session_coverage_complete'] else None),
                 })
         paired, cumulative = PairedComparisons(self.plan).build(rows, calls)
         by_case = defaultdict(list)
@@ -75,23 +76,34 @@ class ReportBuilder:
                 trajectories[arm].append({'through_session': last, 'resources': resources,
                     'recipient_outcomes': self.outcomes.summarise([s for s in ss if s['session'] > 0], len(selected) * last)})
         all_sessions = [s for r in rows for s in r['sessions']]
+        all_ids = {f"{r['sequence_id']}.session-{i}" for r in rows
+                   for i in range(1 + self.plan['recipient_sessions'])}
+        accounting = self.resources.summarise(all_sessions, calls, session_ids=all_ids, include_unassigned=True)
         pending = sum(s.get('score', {}).get('task_match') is None for s in all_sessions)
         incomplete = stop_reason is not None or any(r['status'] != 'complete' for r in rows)
         return {
             'schema': 'EAL/model-transfer-result/3',
-            'status': 'partial' if incomplete else 'pending_annotation' if pending else 'complete',
+            'status': ('partial' if incomplete else 'incomplete_accounting' if not accounting['accounting_complete']
+                       else 'pending_annotation' if pending else 'complete'),
             'execution_status': 'partial' if incomplete else 'complete', 'pending_task_annotations': pending,
+            'accounting_complete': accounting['accounting_complete'],
+            'accounting': {key: accounting[key] for key in (
+                'accounting_errors', 'api_accounting_complete', 'cost_accounting_complete',
+                'session_coverage_complete', 'expected_api_attempts', 'token_usage_complete',
+                'reasoning_usage_complete', 'cached_usage_complete')},
             'stop_reason': stop_reason, 'planned_sequences': len(rows),
             'planned_sessions': len(rows) * (1 + self.plan['recipient_sessions']),
             'summaries': summaries, 'paired_comparisons': paired, 'case_summaries': case_summaries,
             'cumulative_comparisons': cumulative, 'cumulative_resources': trajectories,
             'resources': stages, 'api_attempts': len(calls),
-            'estimated_cost_usd': sum(c['cost_estimate_usd'] or 0 for c in calls),
-            'unknown_cost_attempts': sum(c['cost_estimate_usd'] is None for c in calls),
+            'estimated_cost_usd': accounting['known_cost_usd'] if accounting['cost_accounting_complete'] else None,
+            'known_cost_usd': accounting['known_cost_usd'],
+            'unknown_cost_attempts': accounting['unknown_cost_attempts'],
             'charged_or_reserved_usd': sum(c['charged_or_reserved_usd'] for c in calls),
             'scope': 'Selected-case workflow comparison with ordinary prose and pre-authored EAL. '
                      'Task decision is primary; evidence citations and format are separate optional diagnostics. '
                      'Unknown annotations remain bounded; no population inference or unmeasured authoring savings. '
                      'Cumulative profiles include initial model use; no extrapolated break-even. '
+                     'API attempt counts and known costs are recorded subtotals; complete totals require receipt reconciliation. '
                      'API prices exclude cached discounts, host infrastructure and human costs.',
         }

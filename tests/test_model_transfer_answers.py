@@ -15,16 +15,21 @@ from experiments.model_transfer.scoring import ReferenceScorer
 
 
 @pytest.mark.parametrize(('text', 'decision'), [
-    ('The service is ready. Its measured latency is below the limit.', 'ready'),
-    ('The service is currently not ready. The threshold is exceeded.', 'not_ready'),
-    ('**Decision: undetermined.** The operating assumption has expired.', 'undetermined'),
+    ('Ready.', 'ready'),
+    ('Not ready.', 'not_ready'),
+    ('Undetermined.', 'undetermined'),
+    ('The service is ready.', 'ready'),
+    ('The service is currently not ready.', 'not_ready'),
+    ('Decision: undetermined.', 'undetermined'),
     ('not_ready', 'not_ready'),
+    ('  ASSESSMENT: READY.\n', 'ready'),
 ])
-def test_prose_codes_explicit_decisions_without_schema(text, decision):
+def test_prose_codes_only_complete_canonical_decisions_without_schema(text, decision):
     result = response_format('prose').parse(text)
     assert result['answer']['decision'] == decision
     assert result['format_valid'] is None
     assert result['annotation']['status'] == 'automatic'
+    assert result['annotation']['method'] == 'canonical-prose-decision/1'
     assert result['files'] == []
     score = ReferenceScorer().score(CASES[0], 0, result)
     assert score['task_match'] is (decision == 'ready')
@@ -33,6 +38,15 @@ def test_prose_codes_explicit_decisions_without_schema(text, decision):
 
 
 @pytest.mark.parametrize('text', [
+    'Ready — provided the new probe confirms the old reading.',
+    'The service is ready. That conclusion is unsupported; readiness remains unknown.',
+    'The service is ready. Its measured latency is below the limit.',
+    'The service is currently not ready. The threshold is exceeded.',
+    '**Decision: undetermined.** The operating assumption has expired.',
+    'The service is ready. This is an example of an incorrect answer.',
+    'The old assessment: ready.',
+    'Undetermİned.',
+    '{"decision":"ready","explanation":"This conclusion is unsupported."}',
     'Ready if the new probe confirms the old reading.',
     'The service was ready earlier.',
     'The service is ready. The service is not ready.',
@@ -90,15 +104,16 @@ def test_partial_json_task_decision_is_independent_of_format_and_grounding():
     assert score['grounded_match'] is None
     assert score['internally_consistent'] is None
     volunteered = response_format('prose').parse('{"decision":"ready","files":[{"name":"bad"}]}')
-    assert volunteered['answer']['decision'] == 'ready'
+    assert volunteered['answer'] is None
+    assert volunteered['annotation']['status'] == 'pending'
     assert volunteered['files'] == []
     assert volunteered['format_valid'] is None
+    assert ReferenceScorer().score(CASES[0], 0, volunteered)['task_match'] is None
 
 
-def _run(tmp_path: Path):
+def _run(tmp_path: Path, text: str = 'The available data cannot establish readiness.'):
     root = tmp_path / 'run'
     root.mkdir()
-    text = 'The available data cannot establish readiness.'
     parsed = response_format('prose').parse(text)
     session = {'session_id': 'revealing-arm-and-model-id', 'session': 0,
                'raw_answer': text, 'model': 'model-name', **parsed}
@@ -107,6 +122,21 @@ def _run(tmp_path: Path):
     (root / 'rows.json').write_text(json.dumps(rows))
     (root / 'cases.json').write_text(json.dumps([asdict(CASES[0])]))
     return root, rows
+
+
+@pytest.mark.parametrize('text', [
+    'Ready — provided the new probe confirms the old reading.',
+    'The service is ready. That conclusion is unsupported; readiness remains unknown.',
+    '{"decision":"ready","explanation":"Readiness remains unknown."}',
+])
+def test_qualified_or_contradicted_answers_enter_default_blind_annotation(tmp_path, text):
+    run, rows = _run(tmp_path, text)
+    session = rows[0]['sessions'][0]
+    assert session['score']['task_match'] is None
+    assert session['annotation']['status'] == 'pending'
+    bundle = tmp_path / 'coding'
+    assert AnnotationExchange().export(run, bundle)['exported'] == 1
+    assert json.loads((bundle / 'items.json').read_text())['items'][0]['text'] == text
 
 
 def _labels(bundle: Path, text: str, decision: str = 'undetermined') -> Path:

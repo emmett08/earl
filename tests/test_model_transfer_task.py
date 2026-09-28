@@ -43,6 +43,7 @@ def test_task_context_uses_collected_reading_instead_of_fixture_answer(tmp_path)
     ('meets establishes ready', 'meets establishes not_ready'),
     ('require "reading" >= 0;', ''),
     ('"direction" == "at_most"', '"direction" == "at_least"'),
+    ('"threshold" == 200', '"threshold" == 201'),
     ('"unit" == "ms"', '"unit" == "s"'),
     ('"service" == "orders"', '"service" == "payments"'),
 ])
@@ -78,6 +79,8 @@ def test_source_digest_and_incomplete_projection_cannot_supply_definite_answer(t
 def test_independent_calibration_covers_all_task_and_adversarial_cases():
     result = ContractCalibration().check({'cases': [case.identifier for case in CASES], 'recipient_sessions': 2})
     assert result['status'] == 'passed', [check for check in result['checks'] if not check['passed']]
-    assert len(result['checks']) == 40
+    assert len(result['checks']) == 41
     assert {check['kind'] for check in result['checks']} == {'task_outcome', 'source_mutation', 'boundary'}
-    assert sum(check['kind'] == 'source_mutation' for check in result['checks']) == 6
+    assert sum(check['kind'] == 'source_mutation' for check in result['checks']) == 7
+    threshold = next(check for check in result['checks'] if check['case'] == 'changed_threshold')
+    assert threshold['correspondence_rejected'] is True

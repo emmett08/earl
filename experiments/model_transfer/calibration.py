@@ -87,6 +87,7 @@ class ContractCalibration:
         base = Case('calibration', 200, 200, EARLY)
         mutations = {
             'reversed_criterion': lambda source: source.replace('"direction" == "at_most"', '"direction" == "at_least"'),
+            'changed_threshold': lambda source: source.replace('require "threshold" == 200;', 'require "threshold" == 201;', 1),
             'missing_admission_predicate': lambda source: source.replace('require "reading" >= 0;', '', 1),
             'changed_claim_statement': lambda source: source.replace('meets establishes ready', 'meets establishes not_ready'),
             'changed_source_scope': lambda source: source.replace('require "service" == "orders";', 'require "service" == "payments";', 1),
