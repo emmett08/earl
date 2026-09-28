@@ -274,10 +274,10 @@ class MethodRegistry:
             raise ValueError('Method implementation must be an importable module-level function')
         if contract.builtin_mode is not None:
             from .builtin_methods import BUILTIN_SPECS
-            from .modes import _COMPUTATIONS
+            from .reasoning import BUILTIN_STRATEGIES
             spec = BUILTIN_SPECS.get(contract.builtin_mode)
-            expected = (_structured_marker if contract.builtin_mode == 'structured'
-                        else _COMPUTATIONS.get(contract.builtin_mode))
+            strategy = BUILTIN_STRATEGIES.get(contract.builtin_mode)
+            expected = strategy.compute if strategy is not None else None
             if spec is None or contract.identifier != spec.identifier or contract.implementation is not expected:
                 raise ValueError('Built-in method identities are reserved')
         elif contract.evidence_kind is None:
@@ -431,32 +431,22 @@ def execute_extension(contract, payload):
         return {'status': 'unsupported', 'reasons': [str(exc) or f'Method worker failed ({type(exc).__name__})'], 'details': {}, 'method_contract': contract.describe()}
 
 
-def _structured_marker(payload):
-    return {'authored': True, 'mechanically_proved': False}
-
-
 @lru_cache(maxsize=1)
 def default_registry():
     """Built-in methods use the same exact versioned references as extensions."""
     from .builtin_methods import BUILTIN_SPECS
-    from .modes import _COMPUTATIONS
+    from .reasoning import BUILTIN_STRATEGIES
     from .propositions import QUANTITIES
-    if set(_COMPUTATIONS) != set(BUILTIN_SPECS) - {'structured'}:
-        raise ValueError('Each built-in computation requires one versioned specification')
+    if set(BUILTIN_STRATEGIES) != set(BUILTIN_SPECS):
+        raise ValueError('Each built-in strategy requires one versioned specification')
     contracts = []
-    for mode, function in _COMPUTATIONS.items():
+    for mode, strategy in BUILTIN_STRATEGIES.items():
         spec = BUILTIN_SPECS[mode]
         query_schema, output_schema = spec.contract_schemas()
         quantities = (spec.quantities if spec.quantities is not None else
                       tuple(q for q in QUANTITIES if q != 'proposition'))
         contracts.append(MethodContract(spec.identifier, spec.evidence_kind, spec.input_schema,
                          query_schema, output_schema, spec.outputs, quantities,
-                         spec.exact_unit, function, spec.implementation_version,
+                         spec.exact_unit, strategy.compute, spec.implementation_version,
                          builtin_mode=mode))
-    spec = BUILTIN_SPECS['structured']
-    query_schema, output_schema = spec.contract_schemas()
-    contracts.append(MethodContract(spec.identifier, spec.evidence_kind, spec.input_schema,
-                     query_schema, output_schema, spec.outputs, spec.quantities,
-                     spec.exact_unit, _structured_marker, spec.implementation_version,
-                     builtin_mode=spec.mode))
     return MethodRegistry(contracts)

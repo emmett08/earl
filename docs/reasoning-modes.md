@@ -10,6 +10,7 @@ The implemented methods form a bounded computational vocabulary, rather than an 
 2. [Composition and result requirements](#composition-and-result-requirements)
 3. [Evidence value schemas](#evidence-value-schemas)
 4. [Bounds, failure behaviour and extensions](#bounds-failure-behaviour-and-extensions)
+5. [Implementation structure](#implementation-structure)
 
 ## Contextual interpretation and enthymemes
 
@@ -223,3 +224,46 @@ Custom functions execute in a fresh POSIX worker with time, address-space, CPU, 
 An LLM can propose a declaration or model through a host; the server reports the bounded computation and dependencies without pretending that the model itself has been established.
 
 The foundations and the limits of each correspondence are documented in [sources.md](sources.md). The relationships among claims, objections and supporting subarguments are specified in [argument-model.md](argument-model.md).
+
+## Implementation structure
+
+Each built-in mode has its own module in `src/eal/reasoning/` and one immutable
+`BuiltinStrategy` object containing its name and computational function.
+`deductive.py`, `inductive.py`, `abductive.py`, `causal.py`, `counterfactual.py`,
+`analogical.py`, `temporal.py` and `structured.py` own their respective
+implementations. `validation.py` owns shared JSON bounds and domain validators.
+`builtin_methods.py` remains the single source of versioned method schemas.
+
+This is a Strategy design using first-class functions. The objects select pure
+algorithms; the functions need no per-instance state or inheritance. The package
+registry contains selection only. A new computational algorithm changes its own
+module and registration/specification, without adding algorithm branches to
+`modes.py`. A table of functions in separate modules would also be sufficient;
+the immutable strategy record makes each name/function association explicit.
+Command would add no useful behaviour here: computations have no queued action,
+undo or replay lifecycle. If named strategy records cease to aid registration,
+the records can be reduced to a function mapping.
+
+`modes.py` is the assessment facade: it selects evidence, applies shared schema
+and resource checks and attaches provenance. `structured/1` deliberately retains
+a distinct availability check because it uses authored evidence or premise
+support, rather than one designated computational input. Its marker cannot be
+substituted for a numerical or logical proof. Custom methods retain their bounded
+worker execution path.
+
+At registration, `MethodRegistry` captures the strategy's function. Assessment
+executes that captured function, so changing the selection table cannot redirect
+an existing registered contract. Source and executable digests, schemas, method
+versions and the CPython 3.12 registry fingerprint remain checked against the
+existing snapshot. Mathematical reference cases, negative findings, malformed
+inputs, resource boundaries and post-registration code changes have separate
+tests. These checks establish the retained contracts; they do not establish
+general reasoning coverage or model performance.
+
+The design separates independently changing algorithms (single responsibility),
+keeps the common assessment path stable when adding methods (open–closed),
+requires each registered implementation to preserve its own declared input and
+output contract (substitution), exposes a single computation callback (interface
+segregation), and makes assessment depend on a registered contract rather than a
+concrete algorithm (dependency inversion). Different method meanings remain
+explicit; SOLID does not make Wilson estimation interchangeable with deduction.
