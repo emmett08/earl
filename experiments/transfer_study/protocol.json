@@ -1,0 +1,817 @@
+{
+  "schema_version": "1.1",
+  "investigation_id": "EAL-TRANSFER",
+  "title": "EAL/2 developer and model handover study",
+  "version": "1.0.0",
+  "status": "specified",
+  "question": "Does the EAL/2 workflow improve correct engineering decisions within a fixed time budget in a new prompt session, and reduce time and repeated work, when developers and models change?",
+  "primary_claim_id": "CLM-001",
+  "scope": {
+    "system_or_population": "Selected real developer teams, engineering cases and pinned model versions in a run plan.",
+    "conditions": "Two consecutive sessions; four same/different developer and model strata; isolated project copies; equal elapsed-time and model-call budgets across arms.",
+    "spatial_scope": "Instrumented development workspaces selected for the trial.",
+    "temporal_scope": "Initial work and one later question; trial dates to be declared in its plan.",
+    "exclusions": [
+      "No claim about all small or large models.",
+      "No multi-session amortisation or component-mechanism claim.",
+      "Synthetic fixtures are software checks only."
+    ],
+    "knowledge_cut": "2026-09-28"
+  },
+  "claims": [
+    {
+      "id": "CLM-001",
+      "statement": "Assignment to the EAL/2 workflow increases time-bounded later decision correctness by more than the predeclared practical threshold in the selected different-developer/different-model cases.",
+      "claim_type": "causal",
+      "role": "primary",
+      "scope_limit": "Average bundle effect in the selected cases and eligible teams under the tested adapter configurations.",
+      "success_consequence": "Support a bounded correctness benefit; report time and cost separately.",
+      "failure_consequence": "Report adverse or inconclusive results without treating nonsignificance as equivalence."
+    },
+    {
+      "id": "CLM-002",
+      "statement": "Assignment to EAL/2 changes restricted time to a correct submitted decision and total active effort across the two sessions.",
+      "claim_type": "causal",
+      "role": "secondary",
+      "scope_limit": "Descriptive secondary estimates; no success-only analysis or simultaneous confirmatory inference.",
+      "success_consequence": "Quantify time and effort changes including authoring.",
+      "failure_consequence": "Retain initial cost and failures in the estimates."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-001",
+      "statement": "No cross-case interference, shared mutable tool state, cross-arm learning or undisclosed session memory.",
+      "role": "identification",
+      "status": "untested",
+      "test_or_justification": "Distinct confirmation developers across cases, isolated projects and fresh transcripts; procedural checks for human spillover.",
+      "failure_consequence": "Cross-case inference and causal interpretation are withheld if violated."
+    },
+    {
+      "id": "ASM-002",
+      "statement": "Independent reference answers and masked assessors validly identify correct scoped decisions.",
+      "role": "measurement",
+      "status": "untested",
+      "test_or_justification": "Calibrate raters on known correct, wrong, ambiguous and qualified-unresolved cases before live trials.",
+      "failure_consequence": "Invalid references or measurements suspend the confirmatory conclusion."
+    },
+    {
+      "id": "ASM-003",
+      "statement": "Participants use recorded model/tool paths; the session clock measures the declared elapsed-time outcome.",
+      "role": "operational",
+      "status": "untested",
+      "test_or_justification": "Operator release at readiness, recorded timestamps, deadline and call-limit tests; supervise undisclosed tool use.",
+      "failure_consequence": "Report deviations and withhold inference when treatment or endpoint cannot be reconstructed."
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H-001",
+      "label": "Meaningful workflow benefit",
+      "kind": "substantive",
+      "statement": "Reusable EAL knowledge and delegated assessment enable a practically larger fraction of correct later decisions within the same time budget, including authoring in initial effort.",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "scope": "Average bundle effect in the selected cases and eligible teams under the tested adapter configurations."
+    },
+    {
+      "id": "H-002",
+      "label": "No meaningful workflow benefit",
+      "kind": "rival",
+      "statement": "Ordinary new-session work is sufficiently effective, or EAL overhead sufficiently large, that EAL does not exceed the declared practical correctness gain.",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "scope": "Average bundle effect in the selected cases and eligible teams under the tested adapter configurations."
+    }
+  ],
+  "predictions": [
+    {
+      "id": "P-001",
+      "hypothesis_ids": [
+        "H-001"
+      ],
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "estimand_ids": [
+        "EST-001"
+      ],
+      "measurement_ids": [
+        "M-001"
+      ],
+      "expected_pattern": "A positive average causal difference exceeding the run plan meaningful_difference, conditional on assumptions.",
+      "direction": "increase",
+      "magnitude_or_range": "Delta greater than the plan practical threshold; a confirmation interval must lie wholly above it.",
+      "time_window": "Later submitted decisions within the declared deadline.",
+      "tolerance": "Two-sided 95% conservative finite-sample interval; unknown outcomes bounded.",
+      "auxiliary_assumption_ids": [
+        "ASM-001",
+        "ASM-002",
+        "ASM-003"
+      ],
+      "discriminates_from_hypothesis_ids": [
+        "H-002"
+      ],
+      "shared_prediction": false
+    }
+  ],
+  "constructs": [
+    {
+      "id": "CON-001",
+      "name": "Time-bounded scoped correctness",
+      "definition": "Final submitted decision matches an independently justified answer, includes material qualifications, and contains no material unsupported claim, before the deadline.",
+      "role": "outcome",
+      "scope": "Selected tasks and fixed session budget",
+      "proxy_for_claim_ids": [
+        "CLM-001"
+      ],
+      "validity_evidence": [
+        "Reference and scorer calibration are required before a live run; currently planned."
+      ],
+      "validity_threats": [
+        "Invalid answer key",
+        "Arm-revealing wording",
+        "Correct outputs that omit essential scope"
+      ]
+    },
+    {
+      "id": "CON-002",
+      "name": "Time and work required",
+      "definition": "Restricted elapsed time to a correct final submission, plus separately reported active effort, calls, usage and tool collection.",
+      "role": "outcome",
+      "scope": "Initial and later sessions; no inference about unobserved later reuse.",
+      "proxy_for_claim_ids": [
+        "CLM-002"
+      ],
+      "validity_evidence": [
+        "Timestamp, failure and reuse paths are checked synthetically."
+      ],
+      "validity_threats": [
+        "Self-reported effort error",
+        "Unrecorded provider billing or tools",
+        "Treating elapsed waiting as active work"
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M-001",
+      "construct_ids": [
+        "CON-001"
+      ],
+      "observable": "Submitted answer, timing and independent correctness/material-error ratings; explicit nonresponse status.",
+      "instrument_or_procedure": "StudyRun submission/closure; two nonparticipant assessors and independent third adjudicator when ratings differ.",
+      "scale_or_units": "Binary correctness; unknown outcome represented by [0,1].",
+      "timing": "Every allocated initial/later session reaches one terminal record.",
+      "preprocessing": "Correct and on-time is one; wrong, late or no_answer is zero. withdrawn is unknown. invalid_measurement blocks confirmation.",
+      "calibration": "Before live trials: independently justified examples of correct, wrong, scope-deficient, unresolved and borderline answers; resolve rubric failures before allocation.",
+      "reliability": "Retain both ratings, reasons and adjudications; report disagreement counts. Agreement does not establish validity.",
+      "validity": "Task authors establish references independently of EAL output. Human calibration remains outstanding.",
+      "measurement_invariance": "Same reference and rubric for both arms of a case; rehearse across selected models and prose styles.",
+      "reactivity": "Participants know the time budget and that outputs are assessed.",
+      "error_model": "Reference error, arm disclosure, nonresponse and late answers remain distinguishable.",
+      "blinding": "Opaque IDs hide developer, model and arm metadata; self-identifying answer content is a recorded deviation."
+    },
+    {
+      "id": "M-002",
+      "construct_ids": [
+        "CON-002"
+      ],
+      "observable": "Elapsed seconds, reported active effort, model calls/failures/tokens, EAL and tool events, provider cost when returned.",
+      "instrument_or_procedure": "StudyRun timestamps; gateway and operation logs; participant effort report.",
+      "scale_or_units": "Seconds, minutes, call/token counts, provider currency as declared in adapter configuration.",
+      "timing": "All attempts in initial and later stages, including failed attempts.",
+      "preprocessing": "Restricted time is elapsed on successful on-time submission, otherwise the full budget; withdrawn/invalid is [0,budget]. Initial and later active effort are added; unknown values are not zero.",
+      "calibration": "Fake-clock deadline check, failed-call ceiling check, observation reuse/expiry rehearsal; reconcile provider billing before cost claims.",
+      "reliability": "Machine timestamps and retained raw responses; effort self-report has uncalibrated recall error.",
+      "validity": "Measures final-decision speed and recorded resource use; does not measure intrinsic reasoning skill or subjective ease.",
+      "measurement_invariance": "Equal stage budgets and call ceilings; identical pinned transition and adapter configuration within each pair.",
+      "reactivity": "Instrumented gateway and elapsed budget may affect work habits.",
+      "error_model": "Failed calls can have unknown billed usage; report known subtotals and missingness. Uninstrumented actions are deviations.",
+      "blinding": "Participants cannot be masked to workflow; outcome raters receive no timing or arm metadata."
+    }
+  ],
+  "design": {
+    "design_type": "controlled-experiment",
+    "rationale": "Within each identical case, randomise two independent developer teams to workflows, balancing the case and pinned model transition.",
+    "setting": "Real developers in isolated development workspaces; synthetic rehearsal first.",
+    "temporal_structure": "Initial session, project handover and a new model conversation with an unreleased later question.",
+    "assignment_method": "One fair pseudorandom bit per case assigns opposite arms to two predeclared slots; seed and case ID replay allocation.",
+    "allocation_concealment": "Operator holds the run plan and later questions; release only the assigned packet/workspace at session start.",
+    "masking": "Reference authors independent of EAL authors; assessors masked to metadata. Participants know their workflow.",
+    "comparator": "Ordinary developer in a new prompt session, with resulting project files and naturally produced artefacts; no experiment-authored runbook, curated previous results or earlier transcript.",
+    "control_ids": [
+      "CTRL-001",
+      "CTRL-002"
+    ]
+  },
+  "units": {
+    "target_population_or_system": "Selected real developer teams, engineering cases and pinned model versions in a run plan.",
+    "sampling_frame": "Purposively selected engineering tasks covering eight installed reasoning modes, reuse, expiry, context change, negative findings, objections and missing evidence.",
+    "experimental_unit": "Developer team and two-session task sequence.",
+    "observational_unit": "Session answer and individual recorded attempts.",
+    "assignment_unit": "Two team slots randomised within a matched case.",
+    "analysis_unit": "Matched case, equally weighted; neither turns nor ratings create new cases.",
+    "inclusion_criteria": [
+      "Real developers",
+      "Pinned accessible model versions",
+      "Same seed and model transition in both slots",
+      "Independent reference available before confirmation"
+    ],
+    "exclusion_criteria": [
+      "Known pre-allocation ineligibility recorded before assignment; no outcome-based exclusions."
+    ],
+    "recruitment_or_selection": "Trial operator recruits teams before assignment; developers cannot cross cases in confirmation. Pilot reuse is labelled dependent."
+  },
+  "interventions_or_exposures": [
+    {
+      "id": "INT-001",
+      "kind": "intervention",
+      "description": "EAL/2 authorship, registration, retained source/TOML/observations and delegated reasoning/tool assessment.",
+      "target": "Whole developer workflow across sessions.",
+      "implementation": "Existing EALKnowledgeBase and ModelContextAdapter through SessionOperations; developer selects source, entry and claim.",
+      "dose_or_intensity": "Chosen by developer within equal stage time and call budgets.",
+      "timing": "Initial authoring and optional assessment; project handover; later assessment/reuse.",
+      "admissibility": "admissible",
+      "manipulation_checks": [
+        "Retain registration, collection and reuse events; analyse as assigned even when adoption fails."
+      ],
+      "off_target_checks": [
+        "Authoring cost and tool availability recorded; no unequal oracle access."
+      ],
+      "recovery_checks": [
+        "Handover snapshot and original observation times persist; no earlier chat copied."
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTRL-001",
+      "control_type": "active-comparator",
+      "description": "Ordinary developer in a new prompt session, with resulting project files and naturally produced artefacts; no experiment-authored runbook, curated previous results or earlier transcript.",
+      "failure_mode_addressed": "Replacing ordinary developer practice with curated experiment help.",
+      "implementation": "Shared seed has no study-authored EAL answer or curated handover; preserve naturally produced project files.",
+      "diagnostic_consequence": "If supplied knowledge differs outside treatment, causal interpretation is suspended."
+    },
+    {
+      "id": "CTRL-002",
+      "control_type": "calibration",
+      "description": "Synthetic null/nonzero/missing/dependent observations and independent scoring rehearsal.",
+      "failure_mode_addressed": "False certainty, dropped failures, inert estimator or invalid scorer.",
+      "implementation": "calibration.py and tests plus pretrial human rubric calibration.",
+      "diagnostic_consequence": "Software failure requires repair and recheck; invalid human measurement blocks confirmation."
+    }
+  ],
+  "confounds": [
+    {
+      "id": "CF-001",
+      "description": "Developer learning, task difficulty and model configuration.",
+      "causal_or_measurement_path": "Assignment-related differences in these factors could explain outcomes.",
+      "control_or_adjustment": "Randomise within matched case/model transition; independent teams; distinct developers across confirmation cases.",
+      "diagnostic": "Validate identities and transitions; report selected model transitions and deviations.",
+      "residual_risk": "Human expectations, undisclosed learning and purposefully selected tasks limit interpretation and transport."
+    }
+  ],
+  "estimands": [
+    {
+      "id": "EST-001",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Predeclared different-developer/different-model cases and two eligible teams per case.",
+      "intervention_or_exposure": "Assignment to EAL bundle",
+      "comparator": "Assignment to ordinary new-session practice",
+      "outcome_measurement_ids": [
+        "M-001"
+      ],
+      "time": "Later session deadline",
+      "summary_measure": "Equal-case mean of team-average potential-outcome differences: mean_i ((Y_iA(1)-Y_iA(0)) + (Y_iB(1)-Y_iB(0)))/2.",
+      "interpretation": "Finite selected-case average correctness effect; no component mechanism or model-class effect."
+    },
+    {
+      "id": "EST-002",
+      "claim_ids": [
+        "CLM-002"
+      ],
+      "estimand_type": "causal",
+      "population_or_system": "Selected cases, by transfer stratum and model transition.",
+      "intervention_or_exposure": "Assignment to EAL bundle",
+      "comparator": "Ordinary new-session practice",
+      "outcome_measurement_ids": [
+        "M-002"
+      ],
+      "time": "Initial plus later stages",
+      "summary_measure": "Paired EAL-minus-ordinary restricted later time and descriptive initial/later resource totals.",
+      "interpretation": "Negative restricted-time difference suggests faster final decisions; active effort includes authoring. Secondary descriptive use."
+    }
+  ],
+  "identification": {
+    "target_estimand_ids": [
+      "EST-001",
+      "EST-002"
+    ],
+    "status": "partially-identified",
+    "causal_and_measurement_structure": "Potential outcomes fixed per team/case under each workflow; independent fair assignment makes the observed paired difference unbiased for the team-average case effect. Unknown outcomes widen the identified set.",
+    "assumption_ids": [
+      "ASM-001",
+      "ASM-002",
+      "ASM-003"
+    ],
+    "identified_parameters": [
+      "Mean assigned-workflow difference for observed outcomes; worst-case bounds with missing outcomes."
+    ],
+    "nonidentified_alternatives": [
+      "Separate causal contributions of persistence, tooling and reasoning.",
+      "Effects for unselected developers or all small/large models."
+    ],
+    "threats": [
+      "Interference",
+      "Invalid scoring",
+      "Unequal undisclosed tool access",
+      "Differential missingness"
+    ],
+    "diagnostics": [
+      "Assignment replay",
+      "Identity/transition validation",
+      "Explicit closures",
+      "Scorer calibration",
+      "Reported deviations"
+    ],
+    "rescue_actions": [
+      "Withhold interpretation on invalid measurement/interference; use fresh cases after material protocol repair."
+    ]
+  },
+  "sampling": {
+    "method": "Purposeful coverage pilot followed by a prospectively fixed confirmation set; random assignment within cases, not random population sampling.",
+    "sample_size_or_information_target": "Pilot: at least two cases per stratum; a 24-case mode-coverage pilot is a feasibility choice. Confirmation count is chosen before assignment from precision/resources.",
+    "inputs": [
+      "Paired correctness support [-1,1]",
+      "95% interval",
+      "Run-plan practical threshold",
+      "Available independent developer teams"
+    ],
+    "dependence_structure": "Within-pair dependence allowed. Distinct developers across confirmation cases; no shared mutable tool state or cross-case interference.",
+    "multiplicity": "Only different-developer/different-model correctness is confirmatory. Secondary results are descriptive.",
+    "attrition_or_loss": "Every allocated session retained; no_answer is zero, withdrawn unknown, invalid measurement blocks confirmation.",
+    "result": "Hoeffding radius sqrt(2 log(40)/n). Radii .30/.20/.10 require 82/185/738 primary pairs. At 24 pairs radius is about .55.",
+    "sensitivity_analysis": "calibration.py exercises null, benefit, harm, within-pair dependence, informative missingness and declared cross-case dependence; reports Monte Carlo bounds.",
+    "stopping_implications": "Fixed allocated set; no extension or best-run selection after viewing outcomes. Resource infeasibility leaves a pilot or imprecise estimate."
+  },
+  "analysis": {
+    "preprocessing_lock": "Record plan/version before assignment; preserve raw calls, terminal statuses and ratings separately from derived summaries.",
+    "exclusion_lock": "No post-allocation exclusions; all planned sessions must be submitted or explicitly closed before ratings are locked.",
+    "models": [
+      {
+        "id": "MOD-001",
+        "estimand_ids": [
+          "EST-001",
+          "EST-002"
+        ],
+        "model_or_procedure": "BoundedPairedEstimator: worst-case mean bounds with two-sided Hoeffding radius; binary support [-1,1], restricted-time support [-budget,budget].",
+        "assumptions": [
+          "Independent assignments without cross-case interference",
+          "Bounded validated outcomes",
+          "Common valid scoring"
+        ],
+        "diagnostics": [
+          "Cross-case developer reuse suppresses intervals",
+          "Invalid measurement overrides nominal benefit",
+          "Known nonzero/null calibration"
+        ],
+        "outputs": [
+          "correctness.identified_bounds",
+          "correctness.interval",
+          "restricted_time_seconds.interval",
+          "arm_totals",
+          "primary_decision"
+        ]
+      }
+    ],
+    "contrasts": [
+      "Primary: different_developer_different_model correctness",
+      "Secondary: other transfer strata, exact model transitions, restricted time, authoring and later resources"
+    ],
+    "uncertainty": "Conservative marginal 95% finite-sample confidence bounds; missingness propagated without a missing-at-random assumption.",
+    "multiplicity": "One prospective primary interval decision; secondary intervals are descriptive and not simultaneous.",
+    "missing_data": "Explicit no_answer failure, withdrawn unknown, invalid_measurement override; unknown effort/cost/usage never treated as zero.",
+    "stopping_rule": "One fixed plan and one final submission per session; within-budget retries retained and counted.",
+    "robustness_checks": [
+      "Report raw correctness and late answers alongside primary endpoint.",
+      "Inspect model-transition/stratum estimates without promoting them to confirmatory findings."
+    ],
+    "software_and_versions": [
+      "Python >=3.11; repository revision recorded with each trial; standard-library estimator and command adapters."
+    ],
+    "inconclusive_handling": "Retain estimates and bounds, do not infer equivalence; collect new independent cases under a separately fixed follow-up plan."
+  },
+  "decision_matrix": [
+    {
+      "id": "DM-001",
+      "prediction_ids": [
+        "P-001"
+      ],
+      "observation_region": "Adequate confirmation count and lower interval bound above practical threshold",
+      "analysis_outputs": [
+        "MOD-001 correctness.interval",
+        "MOD-001 primary_decision"
+      ],
+      "decision_rule": "Lower > meaningful_difference",
+      "discrimination_result": "favours-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "strengthen",
+          "rationale": "Data support a bounded meaningful correctness benefit.",
+          "scope_limit": "Average bundle effect in the selected cases and eligible teams under the tested adapter configurations."
+        }
+      ],
+      "hypothesis_effects": [
+        "Interpret H-001 and H-002 only within the measured workflow contrast."
+      ],
+      "assumption_failure_response": "Invalid measurement or interference overrides any favourable numerical result.",
+      "next_action": "Report speed/effort separately and replicate."
+    },
+    {
+      "id": "DM-002",
+      "prediction_ids": [
+        "P-001"
+      ],
+      "observation_region": "Adequate confirmation count and upper interval bound below zero",
+      "analysis_outputs": [
+        "MOD-001 correctness.interval",
+        "MOD-001 primary_decision"
+      ],
+      "decision_rule": "Upper < 0",
+      "discrimination_result": "contradicts-hypothesis",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "weaken",
+          "rationale": "Ordinary practice has higher correctness under these conditions.",
+          "scope_limit": "Average bundle effect in the selected cases and eligible teams under the tested adapter configurations."
+        }
+      ],
+      "hypothesis_effects": [
+        "Interpret H-001 and H-002 only within the measured workflow contrast."
+      ],
+      "assumption_failure_response": "Invalid measurement or interference overrides any favourable numerical result.",
+      "next_action": "Examine recorded failure modes without excluding them."
+    },
+    {
+      "id": "DM-003",
+      "prediction_ids": [
+        "P-001"
+      ],
+      "observation_region": "Interval crosses threshold, count insufficient, pilot phase or unanticipated result",
+      "analysis_outputs": [
+        "MOD-001 correctness.interval",
+        "MOD-001 primary_decision"
+      ],
+      "decision_rule": "No superiority conclusion",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "no-change",
+          "rationale": "Precision or design does not discriminate the practical claim.",
+          "scope_limit": "Average bundle effect in the selected cases and eligible teams under the tested adapter configurations."
+        }
+      ],
+      "hypothesis_effects": [
+        "Interpret H-001 and H-002 only within the measured workflow contrast."
+      ],
+      "assumption_failure_response": "Invalid measurement or interference overrides any favourable numerical result.",
+      "next_action": "Report all bounds and define the next information need."
+    },
+    {
+      "id": "DM-004",
+      "prediction_ids": [
+        "P-001"
+      ],
+      "observation_region": "Invalid reference, unusable measurement or interference",
+      "analysis_outputs": [
+        "MOD-001 correctness.interval",
+        "MOD-001 primary_decision"
+      ],
+      "decision_rule": "Withhold confirmatory interpretation",
+      "discrimination_result": "invalid-measurement",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "suspend",
+          "rationale": "Endpoint or identification assumptions fail.",
+          "scope_limit": "Average bundle effect in the selected cases and eligible teams under the tested adapter configurations."
+        }
+      ],
+      "hypothesis_effects": [
+        "Interpret H-001 and H-002 only within the measured workflow contrast."
+      ],
+      "assumption_failure_response": "Invalid measurement or interference overrides any favourable numerical result.",
+      "next_action": "Repair measurement/design and use fresh confirmation cases."
+    }
+  ],
+  "bias_assessment": {
+    "risks": [
+      {
+        "id": "BIAS-001",
+        "risk_type": "measurement",
+        "mechanism": "An answer revealing its arm can influence scoring.",
+        "prevention": "Independent reference and masked metadata; nonparticipant assessors.",
+        "detection": "Record disclosure and inter-rater disagreements.",
+        "sensitivity_or_correction": "Independent reassessment before interpretation; do not change the primary rule retrospectively.",
+        "residual_risk": "Full participant and prose blinding is impossible."
+      }
+    ],
+    "researcher_degrees_of_freedom": [
+      "Task/model mixture and thresholds fixed before allocation",
+      "No optional stopping or best-run selection"
+    ],
+    "negative_controls": [
+      "Synthetic zero effect and informative missingness"
+    ],
+    "positive_controls": [
+      "Synthetic nonzero effect; held-out known correct human scoring examples"
+    ],
+    "falsification_checks": [
+      "Late correct answer must fail the time-bounded endpoint",
+      "Cross-case developer reuse cannot produce a confirmation interval"
+    ],
+    "reporting_controls": [
+      "All allocations, failures, unknowns and initial effort reported"
+    ],
+    "residual_limitations": [
+      "Selected tasks/models",
+      "Self-reported active effort",
+      "No isolated mechanism inference",
+      "Human scorer validity still to be established"
+    ]
+  },
+  "ethics_and_safety": {
+    "applicable": true,
+    "rationale": "Human developers and potentially private work artefacts participate; only isolated fixture tools are currently supplied.",
+    "risks": [
+      "Unnecessary collection of identifying data or real credentials",
+      "Unbudgeted participant time"
+    ],
+    "mitigations": [
+      "Use pseudonymous IDs and synthetic project data; keep participant contact details outside study files.",
+      "Tell participants the tasks, time budget and withdrawal procedure."
+    ],
+    "monitoring": [
+      "Operator monitors task duration and accidental private data capture."
+    ],
+    "stopping_rules": [
+      "Participant withdrawal or unintended access to non-study systems"
+    ],
+    "stop_authority": "Participant or trial operator",
+    "review_status": "planned",
+    "post_stop_actions": [
+      "Close session with reason, protect private material and retain only permitted de-identified records."
+    ]
+  },
+  "feasibility": {
+    "current_status": "partially-feasible",
+    "apparatus_or_data": [
+      "Runnable command harness",
+      "Synthetic handover fixture",
+      "Existing EAL implementation"
+    ],
+    "access": "No live provider credentials or recruited participant access has been exercised.",
+    "skills": [
+      "Engineering task authors",
+      "Independent assessors",
+      "Trial operator"
+    ],
+    "resources": [
+      "Budgeted developer time",
+      "Pinned model access and billing",
+      "Independent workspaces"
+    ],
+    "dependencies": [
+      "Independent oracle/rubric set",
+      "Human scorer calibration",
+      "Fixed task/model mixture and information budget"
+    ],
+    "blockers": [
+      "Real task references, participants and confirmation plan remain outstanding."
+    ],
+    "fallback": "Run a labelled feasibility pilot; report imprecision rather than weakening the comparator or interpreting synthetic answers as performance."
+  },
+  "reproducibility": {
+    "preregistration_status": "not-planned",
+    "registration": "No external registration required; record a dated prospective trial plan before allocation.",
+    "immutable_materials": [
+      "Per-run plan copy, allocation, submitted handover snapshot and rating record; ordinary local files with digests, not a new access-control service."
+    ],
+    "data_plan": "Retain de-identified raw calls, terminal statuses, independent ratings and derived outputs; do not publish secrets or participant identities.",
+    "code_plan": "Code and synthetic verification tracked in the existing Git repository; no additional workflow required.",
+    "randomisation_or_seed_plan": "Choose and record one seed before allocation; replay validates the assignment record.",
+    "provenance_plan": "Record repository revision, plan digest, provider version/configuration, trial dates and adapter command.",
+    "deviation_and_amendment_plan": "Record deviations alongside results; material repairs use a new prospective plan and independent cases.",
+    "replication_plan": "Repeat with new developers, tasks and pinned models; preserve the stated comparator."
+  },
+  "execution": {
+    "protocol_version_used": null,
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": null,
+    "code_location": "experiments/transfer_study",
+    "observed_results": [],
+    "interpretation_status": "not-started"
+  },
+  "provenance": {
+    "authors": [
+      "EAL experiment implementation"
+    ],
+    "created_at": "2026-09-28T13:11:03.276813+00:00",
+    "updated_at": "2026-09-28T13:11:03.276813+00:00",
+    "sources": [
+      "User-defined new-session comparator",
+      "Hoeffding (1963), Theorem 2",
+      "design-scientific-investigations skill, schema 1.1"
+    ],
+    "knowledge_cut": "2026-09-28",
+    "change_log": [
+      "1.0.0: specified protocol and implementation traceability; empirical execution not started."
+    ]
+  },
+  "method_selection": {
+    "primary_purpose": "causal-comparison",
+    "secondary_purposes": [
+      "estimation",
+      "hypothesis-test"
+    ],
+    "rationale": "The practical question concerns the total effect of assigning the EAL workflow in a new session; randomise within case and pinned model transition.",
+    "inference_framework": "Frequentist randomisation-based finite selected-case estimation under no interference, with conservative bounded-observation uncertainty and worst-case missingness.",
+    "alternatives_considered": [
+      "Within-developer crossover reduces variation but learning and knowledge cannot be reset; independent teams preserve the intended information contrast.",
+      "Observational developer logs improve naturalism but self-selection of EAL and model configuration confounds the workflow effect.",
+      "Component ablations answer a later mechanism question; the present treatment is the whole workflow."
+    ],
+    "sources": [
+      {
+        "citation": "W. Hoeffding (1963), Probability inequalities for sums of bounded random variables, JASA 58, 13-30, Theorem 2.",
+        "url": "https://doi.org/10.1080/01621459.1963.10500830",
+        "design_consequence": "Use finite-sample bounds for independent paired scores, show the conservative precision cost, and suppress intervals under declared dependence."
+      }
+    ],
+    "information_criterion": "Predeclared primary interval precision and practical threshold; quantify sample requirements and calibrate the implemented estimator.",
+    "permitted_conclusions": [
+      "Assigned whole-workflow effect in the selected cases/teams and pinned configurations.",
+      "Bounded correctness benefit with separate descriptive time and resource effects."
+    ],
+    "excluded_conclusions": [
+      "Which EAL component caused improvement",
+      "Superiority for all model classes",
+      "Subjective ease without measuring it",
+      "Performance inferred from mocks or grammar correctness"
+    ],
+    "discovery_confirmation_separation": "Use pilot data for feasibility and planning only; choose the confirmation plan and threshold before assigning fresh teams/cases."
+  },
+  "implementation": {
+    "status": "implemented",
+    "assignment": {
+      "procedure": "One fair pseudorandom bit per case assigns opposite arms to two predeclared slots; seed and case ID replay allocation.",
+      "artifact": "experiments/transfer_study/design.py; workspace.py",
+      "failure_response": "Reject illegal plan or altered allocation before opening sessions."
+    },
+    "collection": {
+      "procedure": "Record all attempts, deadlines and explicit terminal states; preserve project handover.",
+      "artifact": "workspace.py; model_gateway.py; operations.py",
+      "failure_response": "Keep failure/unknown outcomes and reasons; invalid measurements block confirmation."
+    },
+    "scoring": {
+      "procedure": "Independent rubric and two ratings plus third adjudication; human reference calibration remains planned.",
+      "artifact": "analysis.py; planned trial-specific oracle pack",
+      "failure_response": "Reject structurally invalid ratings and withhold empirical inference when rubric is invalid."
+    },
+    "analysis": {
+      "procedure": "BoundedPairedEstimator: worst-case mean bounds with two-sided Hoeffding radius; binary support [-1,1], restricted-time support [-budget,budget].",
+      "artifact": "inference.py; analysis.py; calibration.py",
+      "failure_response": "Suppress intervals under declared dependence; retain missingness bounds; report inconclusive or invalid results."
+    },
+    "verification": [
+      {
+        "id": "V-ASSIGN",
+        "stage": "assignment",
+        "case": "Seed replay, illegal identity/transition, reused confirmation developer and altered allocation.",
+        "expected_result": "Deterministic valid assignment; reject invalid confirmation/allocation.",
+        "status": "passed",
+        "observed_result": "Passed in the focused 20-test study suite; see the recorded commands and results.",
+        "evidence": "experiments/transfer_study/verification/results.md"
+      },
+      {
+        "id": "V-COLLECT",
+        "stage": "collection",
+        "case": "Missing/failed/late sessions and altered handover snapshot.",
+        "expected_result": "Preserve denominator, unknowns and deadlines; reject changed handover.",
+        "status": "passed",
+        "observed_result": "Passed in the focused 20-test study suite; see the recorded commands and results.",
+        "evidence": "experiments/transfer_study/verification/results.md"
+      },
+      {
+        "id": "V-SCORE",
+        "stage": "scoring",
+        "case": "Disagreement and third-assessor adjudication.",
+        "expected_result": "Require two independent ratings and a distinct adjudicator.",
+        "status": "passed",
+        "observed_result": "Passed in the focused 20-test study suite; see the recorded commands and results.",
+        "evidence": "experiments/transfer_study/verification/results.md"
+      },
+      {
+        "id": "V-ANALYSE",
+        "stage": "analysis",
+        "case": "Exact small-sample null enumeration, nonzero effects, missing bounds and dependence.",
+        "expected_result": "Coverage satisfies tested null and positive effect is detected; dependent interval withheld.",
+        "status": "passed",
+        "observed_result": "Passed in the focused 20-test study suite; see the recorded commands and results.",
+        "evidence": "experiments/transfer_study/verification/results.md"
+      },
+      {
+        "id": "V-CALIBRATE",
+        "stage": "analysis",
+        "case": "Six prespecified simulated data-generating scenarios, 5000 replications each.",
+        "expected_result": "Coverage lower Monte Carlo bound >=.95; false-benefit upper <=.05; benefit detection lower >=.80.",
+        "status": "passed",
+        "observed_result": "All prespecified simulation tolerances passed; synthetic data only.",
+        "evidence": "experiments/transfer_study/verification/calibration.json"
+      },
+      {
+        "id": "V-PIPELINE",
+        "stage": "pipeline",
+        "case": "Paired initial/later sessions with EAL reuse/expiry and blind independent ratings.",
+        "expected_result": "Fresh model context, retained project, correct reuse and complete report.",
+        "status": "passed",
+        "observed_result": "Passed in the focused 20-test study suite; see the recorded commands and results.",
+        "evidence": "experiments/transfer_study/verification/results.md"
+      },
+      {
+        "id": "V-HUMAN-SCORE",
+        "stage": "scoring",
+        "case": "Independent human references and known correct/wrong/borderline scoring cases.",
+        "expected_result": "Reference authors justify each oracle; assessors meet the prospective rubric calibration criterion.",
+        "status": "planned",
+        "observed_result": null,
+        "evidence": null
+      }
+    ],
+    "traceability": [
+      {
+        "protocol_ref": "/design/assignment_method",
+        "artifact": "design.py; workspace.py",
+        "check_ids": [
+          "V-ASSIGN"
+        ]
+      },
+      {
+        "protocol_ref": "/measurements/0",
+        "artifact": "workspace.py; analysis.py; planned human reference pack",
+        "check_ids": [
+          "V-COLLECT",
+          "V-SCORE",
+          "V-HUMAN-SCORE",
+          "V-PIPELINE"
+        ]
+      },
+      {
+        "protocol_ref": "/measurements/1",
+        "artifact": "workspace.py; model_gateway.py; operations.py",
+        "check_ids": [
+          "V-COLLECT",
+          "V-PIPELINE"
+        ]
+      },
+      {
+        "protocol_ref": "/analysis/models/0",
+        "artifact": "inference.py; analysis.py; calibration.py",
+        "check_ids": [
+          "V-ANALYSE",
+          "V-CALIBRATE",
+          "V-PIPELINE"
+        ]
+      }
+    ]
+  }
+}

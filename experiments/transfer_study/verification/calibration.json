@@ -1,0 +1,167 @@
+{
+  "interpretation": "Synthetic operating characteristics only. Monte Carlo bounds are marginal. Cross-case dependence is declared, not inferred from data. No EAL performance finding.",
+  "meaningful_difference": 0.1,
+  "pairs": 120,
+  "passed": true,
+  "precision": [
+    {
+      "half_width": 0.3,
+      "required_independent_pairs": 82
+    },
+    {
+      "half_width": 0.2,
+      "required_independent_pairs": 185
+    },
+    {
+      "half_width": 0.1,
+      "required_independent_pairs": 738
+    }
+  ],
+  "replications": 5000,
+  "results": [
+    {
+      "checks": {
+        "coverage_lower_bound_at_least_095": true,
+        "false_benefit_upper_bound_at_most_005": true
+      },
+      "coverage": {
+        "count": 5000,
+        "monte_carlo_95_bounds": [
+          0.9807935441736015,
+          1
+        ],
+        "rate": 1.0
+      },
+      "meaningful_benefit": {
+        "count": 0,
+        "monte_carlo_95_bounds": [
+          0,
+          0.019206455826398416
+        ],
+        "rate": 0.0
+      },
+      "scenario": "null",
+      "true_effect": 0.0,
+      "withheld_intervals": 0
+    },
+    {
+      "checks": {
+        "benefit_detection_lower_bound_at_least_080": true,
+        "coverage_lower_bound_at_least_095": true
+      },
+      "coverage": {
+        "count": 5000,
+        "monte_carlo_95_bounds": [
+          0.9807935441736015,
+          1
+        ],
+        "rate": 1.0
+      },
+      "meaningful_benefit": {
+        "count": 5000,
+        "monte_carlo_95_bounds": [
+          0.9807935441736015,
+          1
+        ],
+        "rate": 1.0
+      },
+      "scenario": "benefit",
+      "true_effect": 0.6,
+      "withheld_intervals": 0
+    },
+    {
+      "checks": {
+        "coverage_lower_bound_at_least_095": true,
+        "false_benefit_upper_bound_at_most_005": true
+      },
+      "coverage": {
+        "count": 5000,
+        "monte_carlo_95_bounds": [
+          0.9807935441736015,
+          1
+        ],
+        "rate": 1.0
+      },
+      "meaningful_benefit": {
+        "count": 0,
+        "monte_carlo_95_bounds": [
+          0,
+          0.019206455826398416
+        ],
+        "rate": 0.0
+      },
+      "scenario": "harm",
+      "true_effect": -0.6,
+      "withheld_intervals": 0
+    },
+    {
+      "checks": {
+        "coverage_lower_bound_at_least_095": true
+      },
+      "coverage": {
+        "count": 5000,
+        "monte_carlo_95_bounds": [
+          0.9807935441736015,
+          1
+        ],
+        "rate": 1.0
+      },
+      "meaningful_benefit": {
+        "count": 4998,
+        "monte_carlo_95_bounds": [
+          0.9803935441736016,
+          1
+        ],
+        "rate": 0.9996
+      },
+      "scenario": "within_pair_dependence",
+      "true_effect": 0.5,
+      "withheld_intervals": 0
+    },
+    {
+      "checks": {
+        "coverage_lower_bound_at_least_095": true,
+        "false_benefit_upper_bound_at_most_005": true
+      },
+      "coverage": {
+        "count": 5000,
+        "monte_carlo_95_bounds": [
+          0.9807935441736015,
+          1
+        ],
+        "rate": 1.0
+      },
+      "meaningful_benefit": {
+        "count": 0,
+        "monte_carlo_95_bounds": [
+          0,
+          0.019206455826398416
+        ],
+        "rate": 0.0
+      },
+      "scenario": "informative_missingness",
+      "true_effect": 0.0,
+      "withheld_intervals": 0
+    },
+    {
+      "checks": {
+        "dependent_intervals_withheld": true,
+        "false_benefit_upper_bound_at_most_005": true
+      },
+      "coverage": null,
+      "meaningful_benefit": {
+        "count": 0,
+        "monte_carlo_95_bounds": [
+          0,
+          0.019206455826398416
+        ],
+        "rate": 0.0
+      },
+      "scenario": "cross_case_dependence",
+      "true_effect": 0.0,
+      "withheld_intervals": 5000
+    }
+  ],
+  "schema": "EAL/transfer-calibration/1",
+  "seed": 20260928
+}

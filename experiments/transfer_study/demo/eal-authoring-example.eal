@@ -1,0 +1,16 @@
+// Operator illustration only. This file is outside the participant seed.
+language "EAL/2";
+environment orders { require "service" == "orders"; }
+tool probe { version "1"; }
+evidence report {
+  tool probe; kind test; environment orders; max_age 864000;
+  input {"service":"orders"}; require "ready" == true;
+}
+reasoning report_check {
+  method "structured/1";
+  rationale "The scoped report supports readiness under the declared condition.";
+}
+claim ready { statement "The orders service is ready under this report."; environment orders; }
+argument reported_ready {
+  conclusion ready; reasoning report_check; evidence report;
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "EAL/transfer-study-plan/2",
+  "study_id": "synthetic_handover_demo",
+  "phase": "pilot",
+  "meaningful_difference": 0.1,
+  "primary_min_pairs": 1,
+  "session_minutes": {"initial": 30, "later": 15},
+  "max_model_calls": 10,
+  "models": {
+    "fixture_small": {
+      "version": "fixture-small-1",
+      "size_class": "small",
+      "command": ["python3", "-m", "experiments.transfer_study.mock_model"]
+    },
+    "fixture_large": {
+      "version": "fixture-large-1",
+      "size_class": "large",
+      "command": ["python3", "-m", "experiments.transfer_study.mock_model"]
+    }
+  },
+  "cases": [{
+    "id": "orders_fixture",
+    "seed_dir": "seed",
+    "initial_question": "Assess the current orders service report and record the decision.",
+    "later_question": "In a new session, is the orders service ready under the available report?",
+    "transfer": "different_developer_different_model",
+    "slots": [
+      {"id": "A", "sender": "alice", "recipient": "bob",
+       "initial_model": "fixture_small", "later_model": "fixture_large"},
+      {"id": "B", "sender": "carol", "recipient": "dave",
+       "initial_model": "fixture_small", "later_model": "fixture_large"}
+    ]
+  }]
+}

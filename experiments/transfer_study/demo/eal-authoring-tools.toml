@@ -1,0 +1,7 @@
+[tools.probe]
+kind = "command"
+version = "1"
+argv = ["python3", "probe.py"]
+timeout_seconds = 10
+max_output_bytes = 4096
+inherit_env = ["PATH"]

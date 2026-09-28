@@ -1,0 +1,610 @@
+{
+  "schema_version": "1.1",
+  "investigation_id": "EAL-NANO-REUSE",
+  "title": "Automated low-cost model-session reuse pilot",
+  "version": "1.0.0",
+  "status": "specified",
+  "question": "How do selected cheap model configurations perform in a fresh session with ordinary project artefacts or pre-authored EAL knowledge and persisted observations?",
+  "primary_claim_id": "CLM-001",
+  "scope": {
+    "system_or_population": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
+    "conditions": "Each recipient has native function access enabled or disabled; ordinary and EAL arms share the specification and collector. Initial sessions have native tools.",
+    "spatial_scope": "Isolated synthetic project directories and OpenAI Responses API.",
+    "temporal_scope": "One initial and one fresh recipient session per sequence.",
+    "exclusions": [
+      "No human participants or authoring-effort estimate.",
+      "No population model-class or isolated reasoning effect.",
+      "Only structured/1 is exercised."
+    ],
+    "knowledge_cut": "2026-09-28"
+  },
+  "claims": [
+    {
+      "id": "CLM-001",
+      "statement": "The selected model configurations produce measurable differences in reference-answer completion and resources when reusing ordinary project artefacts or EAL knowledge.",
+      "claim_type": "descriptive",
+      "role": "primary",
+      "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions.",
+      "success_consequence": "Identify candidate benefits and failure modes for independent follow-up.",
+      "failure_consequence": "Retain ties, failures, partial results and unavailable evidence without a superiority claim."
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "ASM-001",
+      "statement": "The reference calculation and scoring labels implement the supplied task specification.",
+      "role": "measurement",
+      "status": "tested",
+      "test_or_justification": "Boundary, missingness and assumption cases checked independently of EAL status.",
+      "failure_consequence": "Suspend affected scores and revise the scorer before interpreting live data."
+    },
+    {
+      "id": "ASM-002",
+      "statement": "The provider honours the pinned model and configured function/reasoning interface.",
+      "role": "operational",
+      "status": "untested",
+      "test_or_justification": "Check reported snapshot and retain complete provider responses, usage and attempts.",
+      "failure_consequence": "Stop on model mismatch, missing access or invalid transport output."
+    }
+  ],
+  "hypotheses": [],
+  "predictions": [],
+  "constructs": [
+    {
+      "id": "CON-001",
+      "name": "Task completion with reusable knowledge",
+      "definition": "Agreement of the final decision and basis with a full-information reference calculation, plus recorded resources.",
+      "role": "outcome",
+      "scope": "Selected cases and model configurations.",
+      "proxy_for_claim_ids": [
+        "CLM-001"
+      ],
+      "validity_evidence": [
+        "Exact-label rubric checked against six explicit specifications."
+      ],
+      "validity_threats": [
+        "Closed labels omit explanation quality.",
+        "Recipient without tools may correctly report unavailable evidence while not completing the reference task.",
+        "Simple synthetic cases underrepresent engineering work."
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "id": "M-001",
+      "construct_ids": [
+        "CON-001"
+      ],
+      "observable": "Final JSON decision and basis",
+      "instrument_or_procedure": "cases.Case.oracle and runner.Pilot; oracle called after the answer and never used in prompting.",
+      "scale_or_units": "Binary reference match and counts",
+      "timing": "Every initial and later session; all attempts.",
+      "preprocessing": "Exact reference-label match and separately reported evidence_unavailable answers.",
+      "calibration": "Known ready/not_ready/undetermined cases; no EAL status in oracle calculation.",
+      "reliability": "Deterministic reference scoring; model output may vary across runs.",
+      "validity": "Task completion and recorded resource use only; free-text explanation quality and human effort are unmeasured.",
+      "measurement_invariance": "Same specification and reference in both arms; same donor/recipient configuration within each pair.",
+      "reactivity": "A fixed output schema constrains model answers.",
+      "error_model": "Retain malformed/incomplete replies, failed calls, unknown costs and unrun sequences.",
+      "blinding": "Oracle and collector state are hidden from prompts; the deterministic scorer does not inspect arm labels."
+    },
+    {
+      "id": "M-002",
+      "construct_ids": [
+        "CON-001"
+      ],
+      "observable": "Calls, usage, setup/initial/later time, tool access and EAL reuse",
+      "instrument_or_procedure": "provider.BudgetedClient, runner.SessionRunner and cases.Project.",
+      "scale_or_units": "Seconds, token/call counts and estimated USD",
+      "timing": "Every initial and later session; all attempts.",
+      "preprocessing": "Preserve attempts; unknown usage retains a reservation and is separately counted.",
+      "calibration": "Scripted provider responses, budget exhaustion, incomplete output and replay tests.",
+      "reliability": "Deterministic reference scoring; model output may vary across runs.",
+      "validity": "Task completion and recorded resource use only; free-text explanation quality and human effort are unmeasured.",
+      "measurement_invariance": "Same specification and reference in both arms; same donor/recipient configuration within each pair.",
+      "reactivity": "A fixed output schema constrains model answers.",
+      "error_model": "Retain malformed/incomplete replies, failed calls, unknown costs and unrun sequences.",
+      "blinding": "Oracle and collector state are hidden from prompts; the deterministic scorer does not inspect arm labels."
+    }
+  ],
+  "design": {
+    "design_type": "controlled-experiment",
+    "rationale": "Compare complete configured workflows on matched tasks and model transitions, with order randomised to reduce order effects.",
+    "setting": "Automated live API calls on synthetic projects.",
+    "temporal_structure": "Two sessions; project artefacts persist and conversation history resets.",
+    "assignment_method": "Enumerate six cases x two recipient models x two tool settings x two arms; shuffle sequence order with the fixed seed.",
+    "allocation_concealment": "Not applicable: no human allocation; case oracle never enters a prompt.",
+    "masking": "Deterministic scorer reads only decision/basis and the case reference.",
+    "comparator": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+    "control_ids": [
+      "CTRL-001",
+      "CTRL-002"
+    ]
+  },
+  "units": {
+    "target_population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
+    "sampling_frame": "Six purposively selected reuse, expiry and assumption cases in cases.py.",
+    "experimental_unit": "One isolated two-session arm sequence.",
+    "observational_unit": "Session answer, provider request or acquisition event.",
+    "assignment_unit": "Sequence order only; model/tool/arm cells are exhaustively enumerated.",
+    "analysis_unit": "Case-level matched arm comparisons within each recipient configuration; calls are not independent cases.",
+    "inclusion_criteria": [
+      "All 48 planned sequences retained."
+    ],
+    "exclusion_criteria": [
+      "None after scheduling; failures and unrun rows remain."
+    ],
+    "recruitment_or_selection": "No people; two low-cost models selected for documented reasoning interface differences."
+  },
+  "interventions_or_exposures": [
+    {
+      "id": "INT-001",
+      "kind": "intervention",
+      "description": "Pre-authored EAL source, stable TOML collector binding, initial registration and persisted evidence, runtime assessment before each model session.",
+      "target": "Offloaded evidence collection/reuse and scoped assessment.",
+      "implementation": "Existing EALKnowledgeBase and ModelContextAdapter; reinstantiate from persistent storage.",
+      "dose_or_intensity": "One host assessment per session; recipient function access enabled/disabled separately.",
+      "timing": "Initial and fresh later session.",
+      "admissibility": "admissible",
+      "manipulation_checks": [
+        "Record collected/reused counts and native function calls."
+      ],
+      "off_target_checks": [
+        "Same task specification and external collector in both arms."
+      ],
+      "recovery_checks": [
+        "No previous model response or function-call history in recipient input."
+      ]
+    }
+  ],
+  "controls": [
+    {
+      "id": "CTRL-001",
+      "control_type": "active-comparator",
+      "description": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+      "failure_mode_addressed": "Curated baseline knowledge changing the intended comparator.",
+      "implementation": "Only model-emitted notes persist alongside original project files.",
+      "diagnostic_consequence": "Inspect retained initial messages and files; exclude unsupported interpretive claims if information was leaked."
+    },
+    {
+      "id": "CTRL-002",
+      "control_type": "calibration",
+      "description": "Independent fixture references and scripted transport checks.",
+      "failure_mode_addressed": "Oracle leakage, status-as-ground-truth, history leakage or budget omission.",
+      "implementation": "tests/test_model_transfer.py",
+      "diagnostic_consequence": "Repair failing checks before live execution."
+    }
+  ],
+  "confounds": [
+    {
+      "id": "CF-001",
+      "description": "Dedicated reasoning varies with model family; external evidence access differs through the EAL workflow.",
+      "causal_or_measurement_path": "Observed differences combine these features with other model/workflow differences.",
+      "control_or_adjustment": "Match donor and recipient within arm pairs; describe the full configuration.",
+      "diagnostic": "Report exact versions, effort setting and native-tool access for every session.",
+      "residual_risk": "Cannot isolate reasoning or a single EAL component as the cause."
+    }
+  ],
+  "estimands": [
+    {
+      "id": "EST-001",
+      "claim_ids": [
+        "CLM-001"
+      ],
+      "estimand_type": "descriptive",
+      "population_or_system": "Pinned GPT-4.1 nano and GPT-5 nano on six synthetic orders-service cases.",
+      "intervention_or_exposure": "Configured EAL workflow",
+      "comparator": "Ordinary prompting with specification, collector interface and project notes naturally emitted in the initial session; no supplied runbook or curated previous tool outputs.",
+      "outcome_measurement_ids": [
+        "M-001",
+        "M-002"
+      ],
+      "time": "Initial plus later session",
+      "summary_measure": "Reference match counts out of six planned sequences per arm/configuration, paired rows and resource totals.",
+      "interpretation": "Exploratory observed performance on the selected tasks; unknown costs and unrun rows remain explicit."
+    }
+  ],
+  "identification": {
+    "target_estimand_ids": [
+      "EST-001"
+    ],
+    "status": "identified",
+    "causal_and_measurement_structure": "Direct descriptive mapping from retained outputs and usage to counts and totals; no population causal effect is targeted.",
+    "assumption_ids": [
+      "ASM-001",
+      "ASM-002"
+    ],
+    "identified_parameters": [
+      "Observed reference matches and known resource totals in executed cells."
+    ],
+    "nonidentified_alternatives": [
+      "Intrinsic tool incapacity",
+      "Isolated reasoning effect",
+      "Human transfer or authoring benefit",
+      "General engineering task performance"
+    ],
+    "threats": [
+      "Provider mismatch",
+      "Invalid references",
+      "Unrecorded failed calls"
+    ],
+    "diagnostics": [
+      "Pinned response verification",
+      "Independent fixture checks",
+      "Attempt reservation before send"
+    ],
+    "rescue_actions": [
+      "Stop and retain partial records; fix identified defects in a new recorded run."
+    ]
+  },
+  "sampling": {
+    "method": "Fixed purposive six-case coverage pilot, with four recipient configurations and two arms.",
+    "sample_size_or_information_target": "48 sequences, 96 sessions, at most 288 requests; no optional extension based on scores.",
+    "inputs": [
+      "Two pinned nano models",
+      "Tools on/off for recipients",
+      "Six synthetic cases",
+      "USD 2 spend limit"
+    ],
+    "dependence_structure": "Cases recur across cells; prompts and repeated calls are not independent observations.",
+    "multiplicity": "All descriptive cell summaries reported; no tests or significance claims.",
+    "attrition_or_loss": "Retain failed, stopped and unrun sequences in the planned denominator.",
+    "result": "Operational coverage and observed differences, not precise model-class estimates.",
+    "sensitivity_analysis": "Separate decision-only agreement, basis agreement and qualified unavailable-evidence responses.",
+    "stopping_implications": "Stop on access/quota/model failure, budget exhaustion or the external job time limit; report partial coverage."
+  },
+  "analysis": {
+    "preprocessing_lock": "Record plan, seed and code revision before calls; no answer-dependent retries or model substitutions.",
+    "exclusion_lock": "No post-scheduling omissions.",
+    "models": [
+      {
+        "id": "MOD-001",
+        "estimand_ids": [
+          "EST-001"
+        ],
+        "model_or_procedure": "Exact decision/basis agreement with direct task arithmetic and grouped resource counts.",
+        "assumptions": [
+          "Valid specification oracle",
+          "Recorded provider attempts and usage"
+        ],
+        "diagnostics": [
+          "Known scorer cases",
+          "Fresh-session replay tests",
+          "Failed-call and budget checks"
+        ],
+        "outputs": [
+          "summaries",
+          "rows.json",
+          "report status",
+          "unknown_cost_attempts"
+        ]
+      }
+    ],
+    "contrasts": [
+      "EAL versus ordinary within each recipient model/tool setting; inspect matched case rows."
+    ],
+    "uncertainty": "No confidence intervals or hypothesis tests: small purposive repeated case set. Provider responses and all errors remain available for inspection.",
+    "multiplicity": "Descriptive exploratory summaries only.",
+    "missing_data": "Missing answers fail reference completion; unavailable-evidence qualifications separately reported; missing costs are unknown; unrun cases remain planned.",
+    "stopping_rule": "Fixed plan; three calls per session, 4096 output tokens per call, USD 2 conservative ledger and 45-minute manual workflow job.",
+    "robustness_checks": [
+      "Check decision and basis separately.",
+      "Report exact model/configuration and both session costs."
+    ],
+    "software_and_versions": [
+      "Python >=3.11; repository revision in provenance.json; OpenAI Responses API."
+    ],
+    "inconclusive_handling": "Report operational failures and partial cells; a later broader independent study is needed for inferential claims."
+  },
+  "decision_matrix": [
+    {
+      "id": "DM-001",
+      "prediction_ids": [],
+      "observation_region": "All planned sequences executed with valid measurements.",
+      "analysis_outputs": [
+        "MOD-001 summaries"
+      ],
+      "decision_rule": "Report observed differences without significance or superiority labels.",
+      "discrimination_result": "parameter-estimated",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "revise",
+          "rationale": "Use actual counts and resources to formulate follow-up questions.",
+          "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions."
+        }
+      ],
+      "hypothesis_effects": [],
+      "assumption_failure_response": "Suspend interpretation of invalid measurements.",
+      "next_action": "Select broader independent cases targeting observed failure mechanisms."
+    },
+    {
+      "id": "DM-002",
+      "prediction_ids": [],
+      "observation_region": "Access unavailable, budget or time stop, malformed outputs, measurement defects or unexpected results.",
+      "analysis_outputs": [
+        "MOD-001 report status",
+        "MOD-001 unknown_cost_attempts"
+      ],
+      "decision_rule": "Retain partial data and planned denominator; report the specific execution or measurement limitation.",
+      "discrimination_result": "inconclusive",
+      "claim_effects": [
+        {
+          "claim_ids": [
+            "CLM-001"
+          ],
+          "disposition": "no-change",
+          "rationale": "Incomplete or invalid data do not establish comparative benefit.",
+          "scope_limit": "Recorded behaviour on these six cases, prompts and pinned model versions."
+        }
+      ],
+      "hypothesis_effects": [],
+      "assumption_failure_response": "Repair the identified defect before any fresh run.",
+      "next_action": "Restore access or correct the instrument without recasting synthetic checks as live results."
+    }
+  ],
+  "bias_assessment": {
+    "risks": [
+      {
+        "id": "BIAS-001",
+        "risk_type": "selection",
+        "mechanism": "Six simple cases and two cheap models underrepresent real work.",
+        "prevention": "State the bounded target and fixed case set.",
+        "detection": "Report every case/configuration and failure.",
+        "sensitivity_or_correction": "A follow-up needs independently authored broader tasks.",
+        "residual_risk": "No generalisation to all engineering questions or models."
+      }
+    ],
+    "researcher_degrees_of_freedom": [
+      "Fixed prompts, cases, code and plan before live responses."
+    ],
+    "negative_controls": [
+      "Missing evidence must not imply measured failure."
+    ],
+    "positive_controls": [
+      "Fresh valid observation and expired refreshed observations."
+    ],
+    "falsification_checks": [
+      "EAL negative evidence reuse and expired assumption cases."
+    ],
+    "reporting_controls": [
+      "Every attempt and unrun allocation retained."
+    ],
+    "residual_limitations": [
+      "Pre-authored EAL",
+      "Dedicated reasoning/model-family confounding",
+      "Explanation prose ungraded",
+      "Unavailable evidence can prevent task completion without a false claim"
+    ]
+  },
+  "ethics_and_safety": {
+    "applicable": false,
+    "rationale": "Synthetic project data and read-only local fixture collectors; no human participants.",
+    "risks": [
+      "Accidental credential capture",
+      "Excess provider expenditure"
+    ],
+    "mitigations": [
+      "Do not record headers or credential values; collector inherits no provider environment.",
+      "Reserve cost before requests; no hidden retries."
+    ],
+    "monitoring": [
+      "Durable request ledger and fixed workflow timeout."
+    ],
+    "stopping_rules": [
+      "Access failure, snapshot mismatch, unavailable model, quota or budget limit."
+    ],
+    "stop_authority": "Runner or user",
+    "review_status": "not-required",
+    "post_stop_actions": [
+      "Retain attempts and incomplete-run report without spending on replacement models."
+    ]
+  },
+  "feasibility": {
+    "current_status": "partially-feasible",
+    "apparatus_or_data": [
+      "Implemented runner and six cases",
+      "Manual workflow using repository OPENAI_API_KEY"
+    ],
+    "access": "Local OPENAI_API_KEY absent; GitHub connector lacks workflow dispatch. Live account model access unverified.",
+    "skills": [
+      "Existing EAL implementation and provider adapter"
+    ],
+    "resources": [
+      "USD 2 maximum planned API budget",
+      "Up to 45 minutes of optional manual runner time"
+    ],
+    "dependencies": [
+      "Credentialed execution and workflow dispatch access"
+    ],
+    "blockers": [
+      "An authorised execution route must start the credentialed workflow."
+    ],
+    "fallback": "Deliver the verified run command and retain blocked-access status; request the necessary browser fallback authorisation."
+  },
+  "reproducibility": {
+    "preregistration_status": "not-planned",
+    "registration": "Dated local protocol and Git revision before calls; exploratory pilot.",
+    "immutable_materials": [
+      "Per-run plan, assignments, provenance and raw request records."
+    ],
+    "data_plan": "Retain synthetic project state, raw responses, costs, errors and derived scores as a workflow artifact; no credentials.",
+    "code_plan": "Existing Git repository and PR; no automatic workflow trigger.",
+    "randomisation_or_seed_plan": "Fixed seed 20260928 for sequence order.",
+    "provenance_plan": "Pin model snapshots, pricing source/date, code revision, plan digest and timestamps.",
+    "deviation_and_amendment_plan": "New directory for each run; document defects or changes; do not overwrite attempts.",
+    "replication_plan": "New independent cases and repeated live runs under separately declared resources."
+  },
+  "execution": {
+    "protocol_version_used": null,
+    "started_at": null,
+    "completed_at": null,
+    "deviations": [],
+    "data_location": null,
+    "code_location": "experiments/model_transfer",
+    "observed_results": [],
+    "interpretation_status": "not-started"
+  },
+  "provenance": {
+    "authors": [
+      "EAL experiment implementation"
+    ],
+    "created_at": "2026-09-28T13:35:01.056299+00:00",
+    "updated_at": "2026-09-28T13:35:01.056299+00:00",
+    "sources": [
+      "User request for cheaper model configurations",
+      "Official OpenAI model and function-calling documentation",
+      "design-scientific-investigations skill"
+    ],
+    "knowledge_cut": "2026-09-28",
+    "change_log": [
+      "1.0.0: automated reuse protocol specified before live calls."
+    ]
+  },
+  "method_selection": {
+    "primary_purpose": "exploration",
+    "secondary_purposes": [
+      "estimation",
+      "feasibility"
+    ],
+    "rationale": "A low-cost, bounded configuration pilot can expose operational differences and failures before a broader developer investigation.",
+    "inference_framework": "Descriptive fixed-case comparison; no population sampling or isolated mechanism inference.",
+    "alternatives_considered": [
+      "Human developer trial measures handover and effort but requires recruitment and independent assessors.",
+      "An ablation using a single model with reasoning on/off could isolate configuration effects; selected cheap families differ beyond reasoning."
+    ],
+    "sources": [
+      {
+        "citation": "John W. Tukey (1980), We Need Both Exploratory and Confirmatory, The American Statistician 34, 23-25.",
+        "url": "https://doi.org/10.1080/00031305.1980.10482706",
+        "design_consequence": "Keep this exploratory pilot separate from an independent confirmatory study."
+      }
+    ],
+    "information_criterion": "Cover all four recipient configurations and six temporal/evidence cases within USD 2.",
+    "permitted_conclusions": [
+      "Observed reference-task completion and resources for executed cells.",
+      "Specific operation and integration failures."
+    ],
+    "excluded_conclusions": [
+      "Human developer effects",
+      "Authoring efficiency",
+      "General superiority",
+      "Pure causal effect of reasoning or native tooling"
+    ],
+    "discovery_confirmation_separation": "Record this pilot as exploratory; independent follow-up cases are required for confirmation."
+  },
+  "implementation": {
+    "status": "implemented",
+    "assignment": {
+      "procedure": "Enumerate six cases x two recipient models x two tool settings x two arms; shuffle sequence order with the fixed seed.",
+      "artifact": "runner.Pilot",
+      "failure_response": "Retain schedule before any calls; unrun sequences remain explicit."
+    },
+    "collection": {
+      "procedure": "Bounded provider calls, complete within-session item replay and fresh later input.",
+      "artifact": "provider.BudgetedClient; runner.SessionRunner; cases.Project",
+      "failure_response": "Stop on fatal access/budget mismatch; retain every attempt."
+    },
+    "scoring": {
+      "procedure": "Compare returned labels with Case.oracle after model completion.",
+      "artifact": "cases.py and runner.py",
+      "failure_response": "Suspend scoring on oracle defects; never use EAL status as reference."
+    },
+    "analysis": {
+      "procedure": "Descriptive counts and resources for every arm/configuration.",
+      "artifact": "runner.Pilot",
+      "failure_response": "Report partial coverage and unknown costs."
+    },
+    "verification": [
+      {
+        "id": "V-ASSIGN",
+        "stage": "assignment",
+        "case": "48 planned sequences and full denominator after provider failure",
+        "expected_result": "48 rows retained even after the first failed request.",
+        "status": "passed",
+        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
+        "evidence": "experiments/model_transfer/verification.md"
+      },
+      {
+        "id": "V-COLLECT",
+        "stage": "collection",
+        "case": "Budget, incomplete replies, tool masks and reasoning-item replay",
+        "expected_result": "Failures retained, cost reserved before send and declared tool availability respected.",
+        "status": "passed",
+        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
+        "evidence": "experiments/model_transfer/verification.md"
+      },
+      {
+        "id": "V-SCORE",
+        "stage": "scoring",
+        "case": "Six independent oracle calculations",
+        "expected_result": "Ready/not_ready/undetermined and basis labels match the specification.",
+        "status": "passed",
+        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
+        "evidence": "experiments/model_transfer/verification.md"
+      },
+      {
+        "id": "V-ANALYSE",
+        "stage": "analysis",
+        "case": "Scripted constant answers across every cell",
+        "expected_result": "Expected reference-match counts, resource counts and no significance inference.",
+        "status": "passed",
+        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
+        "evidence": "experiments/model_transfer/verification.md"
+      },
+      {
+        "id": "V-PIPELINE",
+        "stage": "pipeline",
+        "case": "Both arms and all recipient configurations with scripted transport and real EAL runtime",
+        "expected_result": "Fresh recipient transcripts, natural notes, persistent observations and expected reuse/recollection.",
+        "status": "passed",
+        "observed_result": "Covered by six passing tests in tests/test_model_transfer.py using a scripted transport.",
+        "evidence": "experiments/model_transfer/verification.md"
+      },
+      {
+        "id": "V-LIVE",
+        "stage": "collection",
+        "case": "Credentialed provider execution",
+        "expected_result": "Pinned real models return responses and usage; retained records available.",
+        "status": "planned",
+        "observed_result": null,
+        "evidence": null
+      }
+    ],
+    "traceability": [
+      {
+        "protocol_ref": "/design/assignment_method",
+        "artifact": "runner.py",
+        "check_ids": [
+          "V-ASSIGN"
+        ]
+      },
+      {
+        "protocol_ref": "/measurements/0",
+        "artifact": "cases.py; runner.py",
+        "check_ids": [
+          "V-SCORE",
+          "V-PIPELINE"
+        ]
+      },
+      {
+        "protocol_ref": "/measurements/1",
+        "artifact": "provider.py; runner.py",
+        "check_ids": [
+          "V-COLLECT",
+          "V-LIVE"
+        ]
+      },
+      {
+        "protocol_ref": "/analysis/models/0",
+        "artifact": "runner.py",
+        "check_ids": [
+          "V-ANALYSE",
+          "V-PIPELINE"
+        ]
+      }
+    ]
+  }
+}
