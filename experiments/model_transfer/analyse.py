@@ -9,6 +9,7 @@ from .design import load_plan
 from .journal import AttemptJournal
 from .reporting import ReportBuilder
 from .records import SequenceRecords
+from .annotation_provenance import annotation_provenance, processing_provenance
 
 
 def main() -> None:
@@ -42,6 +43,8 @@ def main() -> None:
         from .adoption_costs import assess_costs
         report['adoption_costs'] = assess_costs(report, read_json(args.cost_ledger), plan, (provenance or {}).get('run_id'))
     report['interpretation'] = 'Recomputed from retained scores and declared annotations; raw answers were not repaired.'
+    report['annotation_provenance'] = annotation_provenance(rows)
+    report['processing_provenance'] = processing_provenance()
     report['rows_source'] = str(args.rows or args.run / 'rows.json')
     write_json(output, report)
 

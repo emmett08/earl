@@ -1,6 +1,6 @@
 # Running the investigation
 
-This guide describes protocol 6.0.0 and package 2.18.0. The implementation supports
+This guide describes protocol 6.0.0 and package 2.18.1. The implementation supports
 collection, resumption, independent coding, offline analysis and prospective
 allocation. A completed software run is not a completed scientific investigation.
 Read `execution_status`, annotation counts, accounting flags and decision status
@@ -49,6 +49,12 @@ Repeating `finish` on its latest full artefact archives earlier derived outputs
 under `processing/` before importing the supplied labels. An earlier evaluation
 plan cannot remain active when the current processing finds no supported allocation.
 
+AI assessment is supported when explicitly declared in the completed labels.
+Supply the assessor fields documented in [README.md](README.md); AI-coded
+decisions are recorded as AI, and their measurement limits remain visible in
+analysis and allocation reports. The current pilot's post-collection amendment
+and reproducible coding procedure are in [AI-CODING.md](../../annotations/AI-CODING.md).
+
 | Operation | Required inputs | Ordered work and stopping point |
 |---|---|---|
 | `start` | Pilot `plan`; `plan_path` only for `custom` | Verify → calibrate → rehearse → collect/resume automatically → analyse retained resources → export masked answers. Stops for independent labels. |
@@ -64,11 +70,12 @@ mechanism analysis; they do not feed the principal allocation planner. An
 evaluation also finishes after analysis. Starting another paid evaluation always
 requires the explicit `evaluate` operation and a supported saved plan.
 
-The wrapper records orchestration schema `EAL/experiment-pipeline/1`. Package
-2.18.0, protocol 6.0.0, measured implementation, scoring and execution contracts
-remain unchanged. Workflow scripts live outside the measured implementation
-digest, so otherwise compatible retained protocol-6 runs can use the wrapper.
-Changes to measured code, runtime dependencies or the plan still prevent resume.
+The wrapper records orchestration schema `EAL/experiment-pipeline/1`. Collection
+protocol 6.0.0 and execution contracts are retained. Offline processing can use
+the current package on a completed historical run; collection resume still
+requires the original implementation digest, dependencies, plan and run path.
+The assessor extension adds `EAL/annotation-provenance/1` to derived reports and
+retains the schema-1 masked export format so existing run records remain usable.
 
 The wrapper is a manually dispatched caller of [reusable GitHub workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).
 Every job uses the dispatch commit, and only collection jobs receive the model
