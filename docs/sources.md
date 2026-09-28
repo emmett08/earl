@@ -11,7 +11,7 @@ These primary sources inform the language, inference methods and host interfaces
 - [MCP integration](#mcp-integration)
 - [Project-specific decisions](#project-specific-decisions)
 - [External argumentation and enthymeme models](#external-argumentation-and-enthymeme-models)
-- [Model host and provider interfaces](#model-host-and-provider-interfaces)
+- [Model host interface](#model-host-interface)
 
 ## Argument and reasoning models
 
@@ -95,6 +95,6 @@ Evidence freshness, environment identity, assumption intervals, binding digests,
 
 **`formal-argumentation` 0.3.0, [PyPI distribution and documented interfaces](https://pypi.org/project/formal-argumentation/), [source repository](https://github.com/ctoth/argumentation).** The package documents Dung and ASPIC+ operations, with optional solver and grounding dependencies. It is a possible external provider to evaluate after fixing exact task semantics, input limits, licensing, dependency and version contracts. It is not installed by EAL; package documentation alone does not establish substitutability with `solve_composed`.
 
-## Model host and provider interfaces
+## Model host interface
 
-The [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) implements the local stdio protocol path used by EAL. The [OpenAI Chat Completions API](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create) and [embeddings API](https://developers.openai.com/api/reference/resources/embeddings/methods/create) describe optional host-configured provider boundaries. Model capabilities, costs and availability must be verified for the selected deployment; they are not properties of EAL/2 source or argument semantics.
+The [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) implements the local stdio protocol path used by EAL. The Python `ModelContextAdapter` produces bounded messages for an application-selected model without requiring native tool calling. Model capabilities, costs and availability belong to that application's selected deployment; they are not properties of EAL/2 source or argument semantics.

@@ -51,7 +51,6 @@ def _host(tmp_path, *, behaviour="normal"):
     registry.write_text(
         '[tools.reader]\nkind="command"\nversion="1"\n'
         f'argv={json.dumps([sys.executable, str(collector)])}\n'
-        'model_access="reviewed"\n'
     )
     service = ReasoningService(tmp_path, registry)
     catalogue = WorkspaceKnowledgeCatalogue(service)
@@ -114,6 +113,31 @@ def test_negative_measurement_is_reused_and_forcing_fresh_recollects(tmp_path):
     assert len(_calls(tmp_path)) == 4
 
 
+def test_assumption_interval_changes_support_without_expiring_tool_output(tmp_path):
+    host, source = _host(tmp_path)
+    source.write_text(SOURCE.replace(
+        'reasoning measured {',
+        'assumption stable { statement "The bench is stable."; environment lab; '
+        'validate steady; valid_from "2040-01-01T00:00:00Z"; '
+        'valid_until "2040-01-01T00:00:10Z"; }\n'
+        'reasoning measured {',
+    ).replace(
+        'reasoning measured; evidence quick, steady;',
+        'reasoning measured; evidence quick; assumptions stable;',
+    ))
+    first = host.assess("demo", "works", now=AT_FIRST)
+    assert first["status"] == "supported"
+    second = host.assess("demo", "works", now=AT_SECOND)
+    assert second["status"] == "supported"
+    assert second["reused_count"] == 1
+    ended = host.assess("demo", "works", now="2040-01-01T00:00:10Z")
+    assert ended["status"] == "unsupported"
+    assert ended["reused_count"] == 2
+    assert ended["collected_count"] == 0
+    assert ended["packet"]["assumptions"]["stable"]["status"] == "unsupported"
+    assert _calls(tmp_path).count("steady") == 1
+
+
 def test_failed_tool_is_retried_and_unselected_claim_is_rejected_before_collection(tmp_path):
     host, _ = _host(tmp_path, behaviour="fail")
     with pytest.raises(ValueError, match="not selected"):
@@ -129,7 +153,7 @@ def test_failed_tool_is_retried_and_unselected_claim_is_rejected_before_collecti
     assert len(_calls(tmp_path)) == 3
 
 
-def test_context_and_invalidation_block_reuse(tmp_path):
+def test_context_change_blocks_reuse(tmp_path):
     host, _ = _host(tmp_path)
     first = host.assess("demo", "works", now=AT_FIRST)
     context_changed = host.assess("demo", "works", context={"site": "elsewhere"}, now=AT_FIRST)
@@ -137,54 +161,25 @@ def test_context_and_invalidation_block_reuse(tmp_path):
     assert context_changed["reused_count"] == 0
     assert context_changed["collected_count"] == 2
 
-    original = host.service.store.get(first["collection_id"], kind="collection")
-    host.service.store.invalidate_reuse(
-        kind="event", reason="Operator marked the measurement invalid",
-        origin_run_id=original["records"]["quick"]["run_id"],
-    )
     final = host.assess("demo", "works", now=AT_FIRST)
-    assert final["reused_count"] == 1
-    assert final["collected_count"] == 1
-    assert _calls(tmp_path).count("quick") == 3
+    assert final["reused_count"] == 2
+    assert final["collected_count"] == 0
+    assert _calls(tmp_path).count("quick") == 2
 
 
 def test_reading_expiring_during_other_collection_is_recollected(tmp_path, monkeypatch):
     host, _ = _host(tmp_path)
-    first = host.assess("demo", "works", now=AT_FIRST)
-    original = host.service.store.get(first["collection_id"], kind="collection")
-    host.service.store.invalidate_reuse(
-        kind="event", reason="Recheck the steady measurement",
-        origin_run_id=original["records"]["steady"]["run_id"],
-    )
-    times = iter((AT_FIRST, AT_SECOND, AT_SECOND))
+    host.assess("demo", "works", now=AT_FIRST)
+    # The quick reading has expired when collection begins; the steady reading
+    # expires while quick is collected. Both need fresh records by assessment.
+    after_steady_expiry = "2040-01-01T00:16:41Z"
+    times = iter((AT_SECOND, after_steady_expiry, after_steady_expiry))
     monkeypatch.setattr("eal.registered_assessment.utc_now", lambda: next(times))
     second = host.assess("demo", "works")
-    assert second["status"] == "supported"
+    assert second["status"] == "unsupported"
     assert second["reused_count"] == 0
     assert second["collected_count"] == 2
     assert _calls(tmp_path).count("quick") == 2
     assert _calls(tmp_path).count("steady") == 2
     combined = host.service.store.get(second["collection_id"], kind="collection")
     assert set(combined["records"]) == {"quick", "steady"}
-
-
-def test_invalidation_during_mixed_persistence_forces_fresh_collection(tmp_path, monkeypatch):
-    host, _ = _host(tmp_path)
-    host.assess("demo", "works", now=AT_FIRST)
-    original_persist = host.service.store.put_rebound_batch
-
-    def invalidate_then_persist(entries, *, source_run_ids):
-        origin = host.service.store.get(source_run_ids[0], kind="observation")
-        host.service.store.invalidate_reuse(
-            kind="event", reason="New event invalidated selected candidate",
-            origin_run_id=origin.get("origin_run_id", origin["run_id"]),
-        )
-        return original_persist(entries, source_run_ids=source_run_ids)
-
-    monkeypatch.setattr(host.service.store, "put_rebound_batch", invalidate_then_persist)
-    result = host.assess("demo", "works", now=AT_SECOND)
-    assert result["status"] == "supported"
-    assert result["reused_count"] == 0
-    assert result["collected_count"] == 2
-    assert _calls(tmp_path).count("quick") == 3
-    assert _calls(tmp_path).count("steady") == 2

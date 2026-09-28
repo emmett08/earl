@@ -26,7 +26,6 @@ _DIGEST = re.compile(r"[0-9a-f]{64}\Z", re.ASCII)
 _CLAIM_STATES = frozenset({"supported", "contested", "unsupported", "out_of_scope"})
 _ARGUMENT_STATES = frozenset({"supported", "contested", "unsupported", "out_of_scope"})
 _OBJECTION_STATES = frozenset({"active", "undecided", "defeated", "inactive"})
-_ADEQUACY_STATES = frozenset({"adequate", "insufficient", "unresolved"})
 _EVIDENCE_ISSUES = frozenset({"out_of_scope", "missing_observation", "invalid_observation",
                               "tool_error", "stale_observation", "predicate_not_met"})
 _SAFE_METHOD_SCALARS = {
@@ -105,7 +104,6 @@ class AssessmentPacketBuilder:
         self.method_registry = method_registry
 
     def build(self, assessment: Mapping[str, Any], *, claims: Sequence[str] | None = None,
-              adequacy: Mapping[str, Mapping[str, Any]] | None = None,
               collection: Mapping[str, Any] | None = None) -> dict[str, Any]:
         if not isinstance(assessment, Mapping) or assessment.get("valid") is not True:
             raise ValueError("A packet requires a valid, completed assessment")
@@ -125,8 +123,6 @@ class AssessmentPacketBuilder:
             selected = [_identifier(name) for name in claims]
             if any(name not in entries for name in selected):
                 raise ValueError("The requested claim is absent from the assessment")
-        if adequacy is not None and not isinstance(adequacy, Mapping):
-            raise ValueError("Adequacy must map claim IDs to reviewed results")
         collection_records = self._collection_records(assessment, collection)
         collection_id = assessment.get("collection_id")
         if collection_id is not None and _record_identifier(collection_id) != collection_id:
@@ -191,10 +187,6 @@ class AssessmentPacketBuilder:
                         "expected": comparison["expected"],
                         "unit": _bounded(proposition.get("unit")),
                     }
-            if adequacy is not None and name in adequacy:
-                claim_packet["adequacy"] = self._adequacy(name, assessment_id, adequacy[name])
-            else:
-                claim_packet["adequacy"] = {"status": "unresolved", "code": "no_reviewed_result"}
             packet["claims"][name] = claim_packet
 
         # Follow declared claim premises, including every alternative route at
@@ -558,18 +550,3 @@ class AssessmentPacketBuilder:
                 "issues_omitted": len(issues) - len(shown),
                 "observation_id": _record_identifier(item.get("run_id")),
                 "age_status": "unknown"}
-
-    @staticmethod
-    def _adequacy(name: str, assessment_id: str, item: Mapping[str, Any]) -> dict[str, Any]:
-        if not isinstance(item, Mapping) or item.get("assessment_id") != assessment_id or item.get("claim") != name:
-            raise ValueError("Adequacy result must identify the same claim and assessment")
-        obligations = item.get("obligations", [])
-        if not isinstance(obligations, list):
-            raise ValueError("Adequacy obligations must be a list")
-        return {"status": _state(item.get("status"), _ADEQUACY_STATES),
-                "correspondence": _bounded(item.get("correspondence", {}).get("status"))
-                if isinstance(item.get("correspondence"), Mapping) else None,
-                "obligations": [{"id": _identifier(check["id"]),
-                                 "status": _bounded(check.get("status")), "code": _bounded(check.get("code"))}
-                                for check in obligations[:16] if isinstance(check, Mapping) and "id" in check],
-                "obligations_omitted": max(0, len(obligations) - 16)}

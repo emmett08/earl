@@ -68,7 +68,7 @@ The interpreter constructs locally usable argument and objection nodes, their re
 
 [`pygarg`](sources.md#external-argumentation-and-enthymeme-models) solves abstract argumentation extension and acceptability queries over a supplied attack graph. It could serve a specified future query under another abstract semantics. Its graph API does not directly represent `solve_composed`'s local usability, conjunctive claim premises, alternative derivations or explanatory trace. Replacing the present composed solver would require a semantics-preserving translation and independent result and trace checks; it would not resolve claim correspondence or evidence sufficiency.
 
-A host can give an LLM checked labels and traces from either operation. A model without native tool calling requires the [structured host](mcp-and-tools.md#text-model-hosts-and-provider-configuration) to make an MCP call.
+A host can give an LLM checked labels and traces from either operation. A model without native tool calling can use the [strict JSON host or model context adapter](mcp-and-tools.md#registered-developer-workflow) to obtain a checked result.
 
 ### Pure solver interface
 

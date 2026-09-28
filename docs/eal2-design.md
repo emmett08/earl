@@ -10,17 +10,17 @@ This explains the design of the EAL/2 source language. Syntax, the argument solv
 - [Tool identity and acquisition](#tool-identity-and-acquisition)
 - [Derived argument patterns](#derived-argument-patterns)
 - [Bounded support and attack](#bounded-support-and-attack)
-- [Alternatives and empirical tests](#alternatives-and-empirical-tests)
+- [Evaluation](#evaluation)
 
 ## Purpose and extension criterion
 
 EAL/2 is the source contract and the installed Python package declares version 2.14.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
 
-The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. A gain over prose or another notation remains a **hypothesis**. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data. The [live API experiment](../experiments/api_load_test/README.md) measures a bounded combined-system comparison; broader inference needs independent tasks.
+The service keeps validated EAL/2 source, claim identity, compatible tool observations and checked reasoning results available across sessions and model providers. A developer can request a registered claim without sending the source, reconstructing its dependency graph or rerunning unexpired observations. A gain in correctness, time or cost remains a **hypothesis** to measure. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data.
 
 A grammar addition requires a task whose necessary distinction cannot be represented and checked using existing claims, propositions, versioned methods, premises and targeted objections. For example, a new negative-finding keyword would need to express a semantic distinction that an explicit negative method result cannot express. A richer causal or temporal task should first identify which existing method or relation fails; an additional typed method may address it without changing the grammar.
 
-The API load-test case exercises that choice. A measured p95 above the limit remains a usable observation; `engineering/api-load-criteria/1` computes a negative criterion result and supports the explicit failing claim. A stale or mismatched report makes the evidence unusable and supports neither the passing nor failing claim. The competing design placed threshold predicates on the evidence declaration, so the interpreter called a measured failure unavailable and application code had to reconstruct the distinction. The installed method expresses the required calculation through existing EAL/2 claims and predicates without new syntax. Tests establish the declared finite outcomes; comparative readability and maintenance benefits require separate human tasks.
+The API load-test case shows the distinction. A measured p95 above the limit remains a usable observation; `engineering/api-load-criteria/1` computes a negative criterion result and supports the explicit failing claim. A stale or mismatched report makes the evidence unusable and supports neither the passing nor failing claim. The installed method expresses the calculation through existing EAL/2 claims and predicates. Tests establish those finite outcomes; comparative readability and maintenance benefits require separate human tasks.
 
 ## Primary recommendations and adaptations
 
@@ -42,7 +42,7 @@ Every reasoning declaration uses one exact versioned method contract. The host i
 
 The decisive error case is a calculation with a correct-looking scalar but the wrong question or engineering quantity. A pressure contrast cannot verify a flow-rate claim solely because it exceeds a number; RMS about a different origin cannot answer the declared RMS question. The bound proposition checks quantity, input unit, subject, scope, interval, formal query and the output's unit interpretation. Its metadata still does not establish that a producer measured the asserted physical variable or that the prose and statistical assumptions are valid.
 
-An untyped payload escape hatch would bypass these correspondence checks. A new algorithm keyword would change the grammar without changing how the operation is selected or bound. A genuinely new inference relation can justify a language change once a case demonstrates that a typed library solution loses its required meaning. The [repository skill](../skills/engineer-argumentation-languages/SKILL.md) records this removal test.
+A new inference relation has its own specified semantics. Existing versioned methods share one typed boundary and retain the same correspondence checks.
 
 ## Tool identity and acquisition
 
@@ -64,15 +64,10 @@ The source identifies supports and attacks explicitly. Its evaluator checks fini
 
 The core authored profile does not infer rules, contraries or preferences from prose and does not implement full ASPIC+. The separately installed [`argumentation/aspic/1` method](aspic-method.md) constructs arguments and preference-sensitive defeat from a finite, explicit theory. The opt-in compiler derives a theory from EAL arguments and scoped observations; its reviewed `strict`, `rank` and `contrary` relations resolve names through EAL's unique symbol table after pattern expansion. Neither operation changes the core authored graph. Source authoring remains responsible for selecting relevant arguments and objections. An unsupported or unresolved status cannot by itself establish the opposite proposition.
 
-The optional structured solver answers only the formal theory supplied to it. EAL binds that theory's exact query, subject, scope, interval and observation identity. The adequacy evaluator requires every formal axiom and ordinary premise to map to a supported EAL claim through reviewed `premise_bindings`, as it does for deductive formulae, and a checked main result obligation. It cannot establish the semantic relevance or truth of those claims, the choice of strict rules, contraries or ranks, or the physical provenance of the observations.
+The optional structured solver answers only the formal theory supplied to it. EAL binds that theory's exact query, subject, scope, interval and observation identity. The solver cannot establish the semantic relevance or truth of its premises, the choice of strict rules, contraries or ranks, or the physical provenance of the observations.
 
-## Alternatives and empirical tests
+## Evaluation
 
-| Alternative | Useful property | Decision for the current task |
-|---|---|---|
-| Typed JSON as the authored format | Constrained structure and transport without a separate textual grammar | Retain JSON for method input and host requests; the live experiment includes a semantically equivalent JSON prompt arm, so notation claims depend on measured outcomes. |
-| Host library without source patterns | Reusable ordinary programming abstractions | Keep computation in trusted host libraries; represent argument dependency identities and objection targets in reviewable source. |
-| General macros or a rule-generating syntax | Wider forms of reusable argument generation | Defer until a required case cannot preserve meaning under bounded, closed pattern expansion. |
-| Full ASPIC+ | More premise categories, ordering choices and semantics | Retain the implemented finite profile as an optional method; add broader features only with specified tasks and independent verification. |
+The source format names dependencies and objection targets in a reviewable programme; JSON remains the format for method inputs and host requests. The optional ASPIC+ method implements its specified finite profile. The registered argument service retains source revisions, exact claim selection and eligible observations, and can hand a checked packet to a model that cannot call tools.
 
-A future comparison must give every arm an equally specified task, evidence access, checker authority and cost accounting. It must measure source authoring and argument-family selection as well as checked communication: a correct computation can still concern the wrong build or test run, use a missing observation, or be misreported by a model. Compare paired outcomes within predeclared model strata and retain every attempt. A single working example or a result on exposed cases cannot establish a model-class-wide effect, much less universal superiority.
+Evaluate the combined system on tasks with specified source authoring, catalogue selection, evidence access, method authority and answer contract. Record correctness of the scoped claim, unsupported assertions, collection and model calls, context size, latency and cost across first and later sessions. A correct computation can still concern the wrong build or test run, use a missing observation, or be misreported by a model. Retain failures and report results by model and task type; the synthetic example alone establishes no model-class-wide benefit.

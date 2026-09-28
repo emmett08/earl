@@ -26,7 +26,7 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
     script = tmp_path / "tool.py"
     script.write_text("import json,sys\nrequest=json.load(sys.stdin)\nprint(json.dumps({'value':{'passed':True}}))\n")
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nmodel_access="general"\nargv='
+    registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nargv='
                         + json.dumps([sys.executable, str(script)]) + '\n')
     parameters = StdioServerParameters(
         command=sys.executable,
@@ -87,7 +87,6 @@ def test_mcp_registered_claim_reuses_prior_tool_result_across_sessions(tmp_path)
         "print(json.dumps({'value':{'passed':True,'private':'collector data'}}))\n"
     )
     registry = tmp_path / "tools.toml"
-    # This binding is intentionally not granted for generic model-authored collection.
     registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nargv='
                         + json.dumps([sys.executable, str(script)]) + '\n')
     index = WorkspaceKnowledgeCatalogue(ReasoningService(tmp_path, registry))

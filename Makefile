@@ -1,4 +1,4 @@
-.PHONY: install test generate check-generated example build check experiment-check
+.PHONY: install test generate check-generated example build check
 PYTHON ?= python3
 
 install:
@@ -20,6 +20,3 @@ build:
 	$(PYTHON) -m build
 
 check: check-generated test example
-
-experiment-check:
-	$(PYTHON) -m experiments.api_load_test self-check --output experiment-results/self-check

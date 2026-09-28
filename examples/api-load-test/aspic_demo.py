@@ -11,8 +11,7 @@ import tempfile
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-from eal.adequacy import AdequacyContract, AdequacyEvaluator
-from eal.aspic import METHOD, aspic_registry
+from eal.aspic import aspic_registry
 from eal.runtime import ReasoningService
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -21,25 +20,6 @@ SOURCE = (HERE / "aspic-source.eal").read_text()
 CONTEXT = {"service": "orders-api", "build_id": "demo-build-42", "dataset": "synthetic"}
 NOW = "2026-09-25T10:00:30Z"
 CLAIM = "run_passes"
-
-
-def adequacy_contract(assessment):
-    return AdequacyContract.from_dict({
-        "source_digest": assessment["source_digest"],
-        "claim": CLAIM,
-        "statement": "For the synthetic fixture, the formal grounded theory accepts this run-level claim via the independent probe.",
-        "environment": "test_run",
-        "methods": ["structured/1", METHOD],
-        "correspondence": "reviewed_source",
-        "obligations": [{
-            "id": "accepted", "role": "inference", "target": "argument", "reference": "formal_run",
-            "path": "reasoning_result.details.grounded_accepted", "operator": "==",
-            "expected": True, "rationale": "The run's formal theory must have an accepted route."}],
-        "premise_bindings": [
-            {"argument": "formal_run", "formula": name, "claim": name}
-            for name in ("report_checked", "latency_ok", "trace_gap", "alternate_probe_ok")
-        ],
-    })
 
 
 async def mcp(database):
@@ -85,18 +65,13 @@ def main():
         assert all(item["status"] == "ok" for item in collection["records"].values()), collection
         assessment = service.reason(SOURCE, CONTEXT, collection["collection_id"], NOW)
         result = assessment["arguments"]["formal_run"]["reasoning_result"]
-        review = AdequacyEvaluator(method_registry=aspic_registry()).assess(
-            adequacy_contract(assessment), source=SOURCE, assessment=assessment,
-            collection=collection, context=CONTEXT)
         assert assessment["claims"][CLAIM]["status"] == "supported", assessment
-        assert review["status"] == "adequate", review
         mcp_status = asyncio.run(mcp(Path(folder) / "mcp.sqlite3"))
         print(json.dumps({
             "dataset": "synthetic",
             "claim_status": assessment["claims"][CLAIM]["status"],
             "formal_status": result["details"]["grounded_status"],
             "defeat_kinds": sorted({row["kind"] for row in result["details"]["defeats"]}),
-            "adequacy": review["status"],
             "mcp_claim_status": mcp_status,
         }, indent=2))
 

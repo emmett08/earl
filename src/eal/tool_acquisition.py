@@ -21,7 +21,7 @@ import subprocess
 import time
 import tomllib
 from pathlib import Path
-from typing import Any, Literal, Mapping
+from typing import Any, Mapping
 
 MAX_JSON_DEPTH = 128
 MAX_REQUEST_BYTES = 1024 * 1024
@@ -99,9 +99,6 @@ class ToolBinding:
     # The operator asserts this collector is read-only and independent of
     # other simultaneous acquisitions. Arbitrary commands default to serial.
     parallel_safe: bool = False
-    # General model-authored collection is an explicit operator grant. Reviewed
-    # artifact and recipient routes retain their separately checked source.
-    model_access: Literal["general", "reviewed"] = "reviewed"
     # None preserves full host inheritance; an explicit list passes only the
     # named variables that exist, plus the operator's configured env overlay.
     inherit_env: tuple[str, ...] | None = None
@@ -147,8 +144,7 @@ class ToolBinding:
             "max_output_bytes": self.max_output_bytes,
             "env": dict(self.env), "pinned_files": [{"path": path, "sha256": digest}
                                                      for path, digest in self.pinned_files]}
-        # Scheduling and model access are host permissions, not properties of
-        # a measurement. They therefore leave acquisition identity unchanged.
+        # Scheduling is a host choice, not a property of a measurement.
         if self.inherit_env is not None:
             identity["inherit_env"] = sorted(self.inherit_env)
         return keyed_digest(secret, b"tool-binding", identity)
@@ -173,7 +169,7 @@ class ToolRegistry:
         if set(document) - {"tools"} or not isinstance(document.get("tools", {}), dict):
             raise ValueError("The registry must contain only a [tools] table")
         bindings = {}
-        allowed = {"kind", "version", "argv", "path", "timeout_seconds", "max_output_bytes", "env", "pinned_files", "parallel_safe", "model_access", "inherit_env"}
+        allowed = {"kind", "version", "argv", "path", "timeout_seconds", "max_output_bytes", "env", "pinned_files", "parallel_safe", "inherit_env"}
         for name, raw in document.get("tools", {}).items():
             if not isinstance(raw, dict) or set(raw) - allowed:
                 raise ValueError(f"Unknown registry settings for {name}")
@@ -200,9 +196,6 @@ class ToolRegistry:
             parallel_safe = raw.get("parallel_safe", False)
             if type(parallel_safe) is not bool:
                 raise ValueError(f"{name}: parallel_safe must be a boolean")
-            model_access = raw.get("model_access", "reviewed")
-            if model_access not in ("general", "reviewed") or type(model_access) is not str:
-                raise ValueError(f"{name}: model_access must be general or reviewed")
             inherited = raw.get("inherit_env")
             if inherited is not None:
                 if (raw["kind"] != "command" or not isinstance(inherited, list)
@@ -224,7 +217,7 @@ class ToolRegistry:
                 raise ValueError(f"{name}: only command bindings can pin executable files")
             bindings[name] = ToolBinding(
                 name, raw["kind"], raw["version"], tuple(argv), raw.get("path"), float(timeout), limit, env,
-                tuple((item["path"], item["sha256"]) for item in pinned), parallel_safe, model_access,
+                tuple((item["path"], item["sha256"]) for item in pinned), parallel_safe,
                 None if inherited is None else tuple(inherited)
             )
         return cls(bindings)

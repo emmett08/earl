@@ -2,7 +2,7 @@
 
 EAL/2 is the only supported language. Backwards compatibility is never a requirement for this project. Choose the clearest coherent design for the current language; remove obsolete syntax, version-dependent semantics, aliases and compatibility adapters rather than preserving them. Do not add migration machinery solely to support an earlier EAL version.
 
-Apply each change across affected current documentation, discovery schemas and the single API load-test example. Document the present contract and implementation; keep revision history in Git rather than explanatory pages. Keep the maintained example self-contained and clearly distinguish synthetic data from measurements. The single experiment in `experiments/api_load_test/` extends that task: JSON and prose use direct collection, never MCP or EAL evaluation. Preserve its frozen assignment ledger, independent reference and Docker execution path. A source-language version, package version and observation schema version identify different contracts; declare changes to each affected contract explicitly.
+Apply each change across affected current documentation, discovery schemas and the single API load-test example. Document the present contract and implementation; keep revision history in Git rather than explanatory pages. Keep the maintained example self-contained and clearly distinguish synthetic data from measurements. Focus validation on discovering registered EAL files, reusing compatible observations across sessions and models, and reaching the right scoped output with fewer repeated calls. A source-language version, package version and observation schema version identify different contracts; declare changes to each affected contract explicitly.
 
 Use the repository's `skills/engineer-argumentation-languages/SKILL.md` and its expert language design reference for changes to syntax, abstractions, method contracts or reasoning semantics. Separate primary-source recommendations, EAL design decisions, implemented behaviour and measured results.
 
@@ -10,4 +10,4 @@ Keep one versioned reasoning-method selector: `method "name/version"`. A tool de
 
 Reusable argument patterns use typed parameters with closed lexical scope. Expansion must preserve evidence, claim and assumption identity and the qualifications of an ordinary argument. Retain source locations in diagnostics and canonical parse–format–parse meaning.
 
-Do not infer model capability, comprehension gains or cost savings from a working interpreter alone. Measurements require actual trials and retained outcomes, including failures.
+Do not infer model capability, comprehension gains or cost savings from a working interpreter alone. Measurements require actual trials and retained outcomes, including failures. Keep GitHub workflows manually triggered.

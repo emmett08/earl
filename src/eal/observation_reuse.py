@@ -1,8 +1,7 @@
-"""Explicit, source-bound reuse of previously collected observations.
+"""Source-bound reuse of previously collected observations.
 
-Rebinding is an operator action on a named collection. It neither calls a tool
-nor turns an old measurement into a new one. The evaluator checks the newly
-bound observation's predicates and original measurement time at assessment.
+Rebinding never turns an old measurement into a new one. The evaluator checks
+its original measurement time and current predicates when it is assessed.
 """
 
 from __future__ import annotations
@@ -84,7 +83,7 @@ class ObservationRebinder:
                    current_binding_digest: str,
                    current_execution_digest: str | None = None,
                    limit: int = 100) -> list[dict[str, Any]]:
-        """Find exact-identity records; a caller still names a collection to rebind."""
+        """Find acquisition-compatible records in newest-first order."""
         expected = self._expected(program, evidence_id, context, current_binding_digest,
                                   current_execution_digest)
         indexed = self.store.find_observations(
@@ -103,13 +102,11 @@ class ObservationRebinder:
 
     def prepare_record(self, program: Any, context: Mapping[str, Any], evidence_id: str,
                        original: Mapping[str, Any], *, current_binding_digest: str | None,
-                       current_execution_digest: str | None = None,
-                       from_collection_id: str | None = None) -> dict[str, Any]:
+                       current_execution_digest: str | None = None) -> dict[str, Any]:
         """Prepare one exact-identity source-bound reuse, without writing it.
 
         A caller may combine independently collected evidence in one new
-        collection. ``RunStore.put_rebound_batch`` performs the final
-        invalidation check atomically with persistence.
+        collection. The returned record retains the original collection time.
         """
         expected = self._expected(program, evidence_id, context, current_binding_digest,
                                   current_execution_digest)
@@ -119,8 +116,6 @@ class ObservationRebinder:
         if stored != original:
             raise ValueError(f"Observation {evidence_id!r} differs from stored acquisition")
         self._verify(original, expected)
-        if self.store.reuse_invalidated(stored):
-            raise ValueError(f"Observation {original['run_id']!r} was invalidated for reuse")
         copy = deepcopy(stored)
         copy.pop("stdout", None)
         copy.pop("stderr", None)
@@ -128,55 +123,5 @@ class ObservationRebinder:
         copy["source_digest"] = program.source_digest
         copy["origin_run_id"] = stored.get("origin_run_id", stored["run_id"])
         copy["reused_from_run_id"] = stored["run_id"]
-        if from_collection_id is not None:
-            copy["reused_from_collection_id"] = from_collection_id
         copy["rebound_at"] = utc_now()
         return copy
-
-    def rebind_collection(self, program: Any, context: Mapping[str, Any], *,
-                          from_collection_id: str,
-                          current_binding_digests: Mapping[str, str | None],
-                          current_execution_digests: Mapping[str, str | None] | None = None,
-                          evidence_ids: list[str] | None = None) -> dict[str, Any]:
-        """Persist a new collection without altering its source observations.
-
-        Every selected observation must come from the named collection, exist
-        as a separate stored observation and match the current declaration,
-        context and operator tool binding. Validation precedes the atomic write.
-        """
-        if not isinstance(from_collection_id, str) or not from_collection_id.strip():
-            raise ValueError("from_collection_id must be a nonempty string")
-        if not isinstance(context, Mapping):
-            raise ValueError("context must be a JSON object")
-        canonical_digest(dict(context))
-        old = self.store.get(from_collection_id, kind="collection")
-        if canonical_digest(old.get("context")) != canonical_digest(dict(context)):
-            raise ValueError("Collection context differs from requested context")
-        names = list(old.get("records", {})) if evidence_ids is None else evidence_ids
-        if (not isinstance(names, list) or not names or any(not isinstance(n, str) for n in names)
-                or len(set(names)) != len(names)):
-            raise ValueError("evidence_ids must be a nonempty list of unique identifiers")
-        rebound: dict[str, dict[str, Any]] = {}
-        for name in names:
-            if name not in old.get("records", {}):
-                raise ValueError(f"Collection has no observation for {name!r}")
-            original = old["records"][name]
-            if not isinstance(original, Mapping) or original.get("source_digest") != old.get("source_digest"):
-                raise ValueError("Original observation source differs from its collection")
-            rebound[name] = self.prepare_record(
-                program, context, name, original,
-                current_binding_digest=current_binding_digests.get(name),
-                current_execution_digest=(None if current_execution_digests is None
-                                          else current_execution_digests.get(name)),
-                from_collection_id=from_collection_id,
-            )
-        collection = {"source_digest": program.source_digest, "context": dict(context),
-                      "records": rebound, "reused_from_collection_id": from_collection_id}
-        entries: list[tuple[str, dict[str, Any], str | None]] = [
-            ("observation", record, record["run_id"]) for record in rebound.values()
-        ]
-        entries.append(("collection", collection, None))
-        collection_id = self.store.put_rebound_batch(
-            entries, source_run_ids=[old["records"][name]["run_id"] for name in names],
-        )[-1]
-        return {"collection_id": collection_id, **collection}

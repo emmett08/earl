@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import os
-import re
 import secrets
 import sqlite3
 import stat
@@ -109,20 +108,6 @@ class RunStore:
                 "CREATE TABLE IF NOT EXISTS store_metadata "
                 "(key TEXT PRIMARY KEY, value TEXT NOT NULL)"
             )
-            connection.execute(
-                "CREATE TABLE IF NOT EXISTS reuse_invalidations "
-                "(id TEXT PRIMARY KEY, kind TEXT NOT NULL, reason TEXT NOT NULL, "
-                "origin_run_id TEXT, tool_binding_digest TEXT, acquisition_request_digest TEXT, "
-                "cutoff_sequence INTEGER NOT NULL, created_at TEXT NOT NULL)"
-            )
-            connection.execute(
-                "CREATE INDEX IF NOT EXISTS reuse_invalidations_origin "
-                "ON reuse_invalidations(origin_run_id)"
-            )
-            connection.execute(
-                "CREATE INDEX IF NOT EXISTS reuse_invalidations_scope "
-                "ON reuse_invalidations(tool_binding_digest, acquisition_request_digest)"
-            )
             indexed = connection.execute(
                 "SELECT value FROM store_metadata WHERE key = 'observation-index-version'"
             ).fetchone()
@@ -192,169 +177,21 @@ class RunStore:
                     self._index_observation(connection, record_id, payload)
         return ids
 
-    def put_rebound_batch(self, entries: list[tuple[str, dict[str, Any], str | None]],
-                          *, source_run_ids: list[str]) -> list[str]:
-        """Atomically check source reuse eligibility and commit derived records.
-
-        An invalidation racing with rebinding must either precede the check or
-        follow the commit. In the latter case it also covers the new records.
-        """
-        if not entries or not source_run_ids:
-            raise ValueError("Rebinding requires records and their source run IDs")
-        ids = [record_id or str(uuid4()) for _, _, record_id in entries]
-        encoded = [json.dumps(payload, ensure_ascii=False, sort_keys=True, allow_nan=False)
-                   for _, payload, _ in entries]
-        with self._connect() as connection:
-            connection.execute("BEGIN IMMEDIATE")
-            for run_id in source_run_ids:
-                row = connection.execute(
-                    "SELECT payload FROM records WHERE id = ? AND kind = 'observation'", (run_id,)
-                ).fetchone()
-                if row is None or self._reuse_invalidated(connection, json.loads(row[0])):
-                    raise ValueError(f"Observation {run_id!r} is unavailable for reuse")
-            for (kind, payload, _), record_id, value in zip(entries, ids, encoded):
-                connection.execute(
-                    "INSERT INTO records(id, kind, created_at, payload) VALUES (?, ?, ?, ?)",
-                    (record_id, kind, utc_now(), value),
-                )
-                if kind == "observation":
-                    self._index_observation(connection, record_id, payload)
-        return ids
-
-    def invalidate_reuse(self, *, kind: str, reason: str,
-                         origin_run_id: str | None = None,
-                         tool_binding_digest: str | None = None,
-                         acquisition_request_digest: str | None = None) -> dict[str, Any]:
-        """Persist an operator event or reconnect gap that blocks later reuse.
-
-        A scoped invalidation covers measurements already indexed and
-        acquisitions that began or observed their value before the event. A new
-        authoritative collection begun and observed afterwards is eligible.
-        Historical collection and assessment records are never changed.
-        """
-        if not isinstance(kind, str) or kind not in {"event", "gap"}:
-            raise ValueError("Invalidation kind must be event or gap")
-        try:
-            reason_bytes = reason.encode("utf-8") if isinstance(reason, str) else b""
-        except UnicodeError:
-            reason_bytes = b""
-        if not 1 <= len(reason_bytes) <= 1024 or not reason.strip():
-            raise ValueError("Invalidation reason must contain one to 1024 UTF-8 bytes")
-        if origin_run_id is not None and (not isinstance(origin_run_id, str)
-                                          or not 1 <= len(origin_run_id) <= 128):
-            raise ValueError("origin_run_id must be a stored observation identifier")
-        for label, digest in (("tool_binding_digest", tool_binding_digest),
-                              ("acquisition_request_digest", acquisition_request_digest)):
-            if digest is not None and (not isinstance(digest, str)
-                                       or re.fullmatch(r"[0-9a-f]{64}", digest) is None):
-                raise ValueError(f"{label} must be a lowercase SHA-256 digest")
-        if acquisition_request_digest is not None and tool_binding_digest is None:
-            raise ValueError("Request-scope invalidation requires a tool binding digest")
-        if origin_run_id is not None and (kind != "event" or tool_binding_digest is not None):
-            raise ValueError("An origin event cannot combine with a binding or gap scope")
-        if kind == "event" and origin_run_id is None and tool_binding_digest is None:
-            raise ValueError("An event requires an origin or tool binding scope")
-        if kind == "gap" and (origin_run_id is not None or acquisition_request_digest is not None):
-            raise ValueError("A reconnect gap may scope only to a binding or all bindings")
-        identifier = str(uuid4())
-        created_at = utc_now()
-        with self._connect() as connection:
-            connection.execute("BEGIN IMMEDIATE")
-            if origin_run_id is not None:
-                row = connection.execute(
-                    "SELECT payload FROM records WHERE id = ? AND kind = 'observation'", (origin_run_id,)
-                ).fetchone()
-                if row is None:
-                    raise ValueError("Origin observation does not exist")
-                record = json.loads(row[0])
-                if record.get("origin_run_id", record.get("run_id")) != origin_run_id:
-                    raise ValueError("Specify the origin run ID, not a derived observation")
-            cutoff = connection.execute(
-                "SELECT COALESCE(MAX(sequence), 0) FROM observation_index"
-            ).fetchone()[0]
-            connection.execute(
-                "INSERT INTO reuse_invalidations "
-                "(id, kind, reason, origin_run_id, tool_binding_digest, "
-                "acquisition_request_digest, cutoff_sequence, created_at) "
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                (identifier, kind, reason, origin_run_id, tool_binding_digest,
-                 acquisition_request_digest, cutoff, created_at),
-            )
-        return {"invalidation_id": identifier, "kind": kind, "reason": reason,
-                "origin_run_id": origin_run_id, "tool_binding_digest": tool_binding_digest,
-                "acquisition_request_digest": acquisition_request_digest,
-                "cutoff_sequence": cutoff, "created_at": created_at}
-
-    @staticmethod
-    def _at_or_before(value: Any, cutoff: str) -> bool:
-        """Treat an absent or invalid acquisition time as unsafe for reuse."""
-        if not isinstance(value, str):
-            return True
-        try:
-            instant = datetime.fromisoformat(value.replace("Z", "+00:00"))
-            boundary = datetime.fromisoformat(cutoff.replace("Z", "+00:00"))
-            return instant <= boundary
-        except (TypeError, ValueError):
-            return True
-
-    @classmethod
-    def _reuse_invalidated(cls, connection: sqlite3.Connection, record: dict[str, Any]) -> bool:
-        run_id = record.get("run_id")
-        indexed = connection.execute(
-            "SELECT sequence FROM observation_index WHERE record_id = ?", (run_id,)
-        ).fetchone()
-        if indexed is None:
-            return True
-        sequence = indexed[0]
-        origin = record.get("origin_run_id", run_id)
-        binding = record.get("tool_binding_digest")
-        request = record.get("acquisition_request_digest")
-        for row in connection.execute(
-            "SELECT origin_run_id, tool_binding_digest, acquisition_request_digest, "
-            "cutoff_sequence, created_at FROM reuse_invalidations "
-            "WHERE origin_run_id = ? OR "
-            "(origin_run_id IS NULL AND "
-            "(tool_binding_digest IS NULL OR tool_binding_digest = ?) AND "
-            "(acquisition_request_digest IS NULL OR acquisition_request_digest = ?))",
-            (origin, binding, request),
-        ):
-            invalid_origin, _, _, cutoff_sequence, created_at = row
-            if invalid_origin is not None or sequence <= cutoff_sequence:
-                return True
-            if (cls._at_or_before(record.get("started_at"), created_at)
-                    or cls._at_or_before(record.get("collected_at"), created_at)):
-                return True
-        return False
-
-    def reuse_invalidated(self, record: dict[str, Any]) -> bool:
-        """Check a stored observation against persistent reuse invalidations."""
-        if not isinstance(record, dict) or not isinstance(record.get("run_id"), str):
-            raise ValueError("Reuse requires a stored observation with a run_id")
-        with self._connect() as connection:
-            return self._reuse_invalidated(connection, record)
-
     def find_observations(self, *, evidence_id: str, environment: str,
                           request_digest: str, tool_binding_digest: str,
                           limit: int = 100) -> list[dict[str, Any]]:
-        """Return exact-identity candidates, newest first, for explicit reuse."""
+        """Return exact-acquisition candidates, newest first, for reuse."""
         if not 1 <= limit <= 1000:
             raise ValueError("limit must be between 1 and 1000")
-        compatible = []
         with self._connect() as connection:
             rows = connection.execute(
                 "SELECT records.payload FROM observation_index "
                 "JOIN records ON records.id = observation_index.record_id "
                 "WHERE evidence_id = ? AND environment = ? AND request_digest = ? "
-                "AND tool_binding_digest = ? ORDER BY sequence DESC",
-                (evidence_id, environment, request_digest, tool_binding_digest),
-            )
-            for row in rows:
-                record = json.loads(row[0])
-                if not self._reuse_invalidated(connection, record):
-                    compatible.append(record)
-                    if len(compatible) == limit:
-                        break
-        return compatible
+                "AND tool_binding_digest = ? ORDER BY sequence DESC LIMIT ?",
+                (evidence_id, environment, request_digest, tool_binding_digest, limit),
+            ).fetchall()
+        return [json.loads(row[0]) for row in rows]
 
     def get(self, record_id: str, *, kind: str | None = None) -> dict[str, Any]:
         with self._connect() as connection:

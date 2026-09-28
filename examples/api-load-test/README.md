@@ -40,7 +40,7 @@ The expected output contains:
 
 The source names the service, build, run, client count and report digest. Its evidence declaration checks that the collector returned a usable request count within a 24-hour evidence age limit. The host installs `engineering/api-load-criteria/1`, a versioned typed method that checks the three inclusive numerical limits. The `passes` result supports `performance_criteria_met`; the `fails` result supports the separate `performance_criteria_failed` claim. A failed threshold is a usable negative measurement. An expired or unavailable report supports neither claim.
 
-The host's [tool registry](tools.toml) binds `load_test_report/1` to [collect_results.py](collect_results.py) and explicitly grants this synthetic collector general model access. The EAL tool declaration has only its name and version; source does not declare whether collection is deterministic. The collector reads the selected report, checks its SHA-256 digest and identity, then computes the statistics. The EAL source supplies expected identity and thresholds; the trusted host selects the executable and report file. Collection records carry a store-local keyed `tool_binding_digest` of that selected configuration. The registry pins the collector script's bytes and rejects changes at collection or later assessment. It does not pin Python or all imported dependencies.
+The host's [tool registry](tools.toml) binds `load_test_report/1` to [collect_results.py](collect_results.py). The EAL tool declaration has only its name and version; source does not declare whether collection is deterministic. The collector reads the selected report, checks its SHA-256 digest and identity, then computes the statistics. The EAL source supplies expected identity and thresholds; the host selects the executable and report file. Collection records carry a store-local keyed `tool_binding_digest` of that selected configuration. The registry pins the collector script's bytes and rejects changes at collection or later assessment. It does not pin Python or all imported dependencies.
 
 For n recorded requests, the nearest-rank p95 is the sorted latency at one-based position ceil(0.95 × n). In this report, position 95 is 180 ms. All requests contribute to latency, including errors. Any non-2xx HTTP status counts as a failed request; status code 0 represents a transport failure or timeout, whose elapsed time must also be recorded. One failed request out of 100 gives 1%, which meets the inclusive limit. This is a sample statistic with no population confidence bound.
 
@@ -63,7 +63,7 @@ The report and criteria establish only the scoped sample result described above.
 
 Workload correspondence alone would still not guarantee future performance. Preserve the intended uncertainty and select an appropriate inferential method. The bundled claim `performance_criteria_met` remains the descriptive result for the identified synthetic report; sample p95 is 180 ms and one failed request out of 100 is 1%, meeting the inclusive 200 ms and 1% limits. These facts do not establish population bounds or production reliability.
 
-In a separately authored production argument, a recovered proposition could be a named `claim` listed in `premises`. Without a supporting route it remains `unsupported`. Using `assumption` requires its named validation evidence; the model's suggestion cannot act as that validation. The optional argument-host demonstration below already leaves an unreviewed production question unresolved before collection. That demonstrates its reviewed-form boundary, not automatic detection of this enthymeme.
+In a separately authored production argument, a recovered proposition could be a named `claim` listed in `premises`. Without a supporting route it remains `unsupported`. Using `assumption` requires its named validation evidence; the model's suggestion cannot act as that validation. Selecting this existing claim does not turn the broader production question into an assessed conclusion. A developer must author and select a claim whose scope matches that question.
 
 ## Inspect each operation
 
@@ -95,19 +95,24 @@ Replace `ASSESSMENT_ID` with the assessment's identifier. Inspect both `claims.p
 
 To use MCP directly, launch `eal-mcp --workspace . --registry examples/api-load-test/tools.toml`. Supply the source text and the same context to `eal_validate` and `eal_collect`, then the returned collection ID and the recorded assessment time to `eal_reason`. Call `eal_explain` with its assessment ID and claim. [run.py](run.py) is a complete Python MCP client for this sequence.
 
-## Reuse a reviewed argument for later prose
+## Reuse the registered argument across sessions
 
-The optional argument host uses a second, bounded view of this **same synthetic fixture**. Its [reviewed scheme](argument-schemes.toml) pins [EAL source bytes](argument-host.eal), three initial wordings and one later wording. [Tool configuration](argument-tools.toml) selects a pinned [collector](recompute_synthetic.py) that checks the fixture's digest and identity, then computes the sample statistics again. The host installs the same versioned API criteria method and the source has separate passing and failing claims. That computation is current; the original fixture's measurement time remains `2026-09-25T10:00:00Z`. It does not represent a new load test.
-
-From the repository root after installing the package, run:
+Register this source and its assessment context once. The entry ID stays available in the workspace database:
 
 ```sh
-python examples/api-load-test/argument_host_demo.py
+eal --workspace . --registry examples/api-load-test/tools.toml \
+  --methods eal.api_load_methods:registry register examples/api-load-test/source.eal \
+  --entry-id load_test --claim performance_criteria_met \
+  --context '{"service":"orders-api","build_id":"demo-build-42","dataset":"synthetic"}'
+
+eal --workspace . --registry examples/api-load-test/tools.toml \
+  --methods eal.api_load_methods:registry assess-known load_test \
+  --claim performance_criteria_met --now 2026-09-25T10:00:00Z
 ```
 
-The [demonstration](argument_host_demo.py) obtains `supported` and `adequate` for the first wording. A later question and a reviewed paraphrase each resolve to the same claim and method but trigger new tool collections and assessments. An unreviewed question about production reliability stays `unresolved` and runs no evidence tools. The output checks three different collection IDs through `fresh_collection_for_later_wording: true`; it does not recycle the first status. The temporary database is removed at the end.
+Run `assess-known` again, including from another process. It selects the complete claim closure and reuses matching observations within their original 24-hour `max_age`; it records a new assessment at the requested time without another collection of unchanged measurements. Once the report's measurement is too old, the host collects again, but rereading the same old report cannot refresh its `observed_at`. An assessment at today's time therefore remains unsupported until the collector can return a genuinely current measurement.
 
-Changing the EAL source invalidates the scheme's pinned SHA-256 until an operator reviews and updates the TOML contract. The form match establishes applicability only for these reviewed phrasings and synthetic context, including the separately reviewed p95/error paraphrase. Negated, compound, stronger and production questions remain unresolved before collection. The three adequacy obligations check sample count, sample p95 and observed sample error percentage; neither they nor the finite criteria method establish population reliability, representative workload or production readiness.
+`eal sources` and `eal find performance` retrieve registered claim metadata. For a model without tools or reasoning, run `eal model-context load_test --claim performance_criteria_met --question 'Does this build meet the load-test criteria?' --now 2026-09-25T10:00:00Z` with the same global options. The returned bounded messages give the model a checked packet; the application retains the host's claim status and assessment ID. The model's wording cannot change those fields. See the [argument service](../../docs/argument-service.md) for the Python adapter.
 
 ## Try your own report
 
@@ -115,7 +120,7 @@ Keep the report schema and include every attempted request, including timeouts. 
 
 Review the claim and thresholds for that workload. Update the EAL input, environment and assessment context to match, and pin the selected bytes using `sha256sum PATH`. Then collect a new observation and assess at the intended decision time. A digest detects changed bytes; the collector cannot authenticate measurements, discover omitted requests or determine whether the workload is representative.
 
-The teaching collector requires at least one valid recorded request; it rejects an empty fixture before method evaluation. The experimental collector can retain an otherwise complete empty run, for which the shared method reports a failed sample-size criterion and leaves latency and error-rate criteria unknown. The regression tests exercise limits that this example must respect: exactly 1% passes; 2% fails; excessive p95 latency and too few requests support the negative claim; stale evidence and mismatched build identities support neither claim.
+The teaching collector requires at least one valid recorded request; it rejects an empty fixture before method evaluation. The regression tests exercise limits that this example must respect: exactly 1% passes; 2% fails; excessive p95 latency and too few requests support the negative claim; stale evidence and mismatched build identities support neither claim.
 
 ## Resolve conflicting findings with the optional ASPIC+ method
 
@@ -125,7 +130,7 @@ The same API task has an additional [synthetic formal variant](aspic-source.eal)
 python examples/api-load-test/aspic_demo.py
 ```
 
-The script expects `formal_status: "accepted"` and `defeat_kinds: ["undercut"]`: the primary route is defeated, while the independent probe route remains accepted. It also reports `claim_status: "supported"`, `adequacy: "adequate"` under the stated reviewed mappings, and `mcp_claim_status: "supported"` from a real stdio exchange. All findings are stipulated synthetic records. The original [report](report.json) is unchanged and does not contain the additional trace or probe observations. A real use needs an identified, trustworthy collector for each finding and review of the rule and premise meanings.
+The script expects `formal_status: "accepted"` and `defeat_kinds: ["undercut"]`: the primary route is defeated, while the independent probe route remains accepted. It also reports `claim_status: "supported"` and `mcp_claim_status: "supported"` from a real stdio exchange. All findings are stipulated synthetic records. The original [report](report.json) is unchanged and does not contain the additional trace or probe observations. A real use needs an identified, trustworthy collector for each finding and review of the rule and premise meanings.
 
 ## Compile authored EAL routes into ASPIC+
 
@@ -139,9 +144,4 @@ The script checks the comparison and prints both route labels and the generated 
 
 To inspect the nested arguments and exact attacked rule, run `python examples/api-load-test/aspic_compiled_demo.py --export-view /tmp/compiled-arguments.json` and import the file into the [Vue/TypeScript visualisation app](https://github.com/emmett08/aspic_visualisation). It shows support and defeat in one graph, selectable source details and snapshot events. The exporter recomputes the formal result before writing JSON. The fixture remains synthetic and viewing makes no new measurement.
 
-This compiled profile uses reviewed EAL relations to mark `report_arg` strict and to rank the independent probe route and its observation at 700. The target kind is resolved from each unique EAL name. All other fallible elements keep rank 500. The trace-gap objection undercuts the primary route, and that undercut is independent of rank. The review reference identifies the asserted strict implication; the compiler cannot derive it from the English statement. A directed claim contrary could be declared if a genuinely incompatible claim and its supporting route were authored. The compiler reports a bounded snapshot under the supplied collection. Its agreement with default EAL in this example does not establish equivalence for all EAL programmes or the completeness of real-world counterevidence. The reviewed adequacy result reported by `aspic_demo.py` applies to that explicit-theory example, not to this compiled variant.
-
-## Live model comparison
-
-The single [API experiment](../../experiments/api_load_test/README.md) extends this same task with actual HTTP traffic and six nano/mini/full model snapshots. It compares EAL/2+MCP, equivalent JSON prompt text and three developer prompts in Docker. The synthetic report here remains a reproducible teaching fixture and is not used as experimental measurement data.
-The optional ASPIC+ variant is outside that frozen experiment. A formal solver comparison would need a separate paired protocol with equal observations and checker authority.
+This compiled profile uses reviewed EAL relations to mark `report_arg` strict and to rank the independent probe route and its observation at 700. The target kind is resolved from each unique EAL name. All other fallible elements keep rank 500. The trace-gap objection undercuts the primary route, and that undercut is independent of rank. The review reference identifies the asserted strict implication; the compiler cannot derive it from the English statement. A directed claim contrary could be declared if a genuinely incompatible claim and its supporting route were authored. The compiler reports a bounded snapshot under the supplied collection. Its agreement with default EAL in this example does not establish equivalence for all EAL programmes or the completeness of real-world counterevidence. Both results describe the supplied synthetic findings under their respective declared inference rules.

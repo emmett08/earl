@@ -1,4 +1,4 @@
-"""Operator-controlled collection concurrency and access declarations."""
+"""Operator-controlled collection concurrency and command environment."""
 
 from __future__ import annotations
 
@@ -100,7 +100,7 @@ def test_worker_limit_must_be_a_bounded_integer(max_workers):
         CollectionScheduler(max_workers)
 
 
-def test_operator_access_and_scheduling_leave_acquisition_identity_unchanged(tmp_path):
+def test_scheduling_leaves_acquisition_identity_unchanged(tmp_path):
     base = '[tools.reader]\nkind="command"\nversion="1"\nargv=["true"]\n'
     path = tmp_path / "tools.toml"
 
@@ -110,11 +110,9 @@ def test_operator_access_and_scheduling_leave_acquisition_identity_unchanged(tmp
 
     original = binding("")
     assert original.parallel_safe is False
-    assert original.model_access == "reviewed"
-    assert binding('parallel_safe=false\nmodel_access="reviewed"\n').binding_digest(
+    assert binding('parallel_safe=false\n').binding_digest(
         b"x" * 32) == original.binding_digest(b"x" * 32)
     assert binding("parallel_safe=true\n").binding_digest(b"x" * 32) == original.binding_digest(b"x" * 32)
-    assert binding('model_access="general"\n').binding_digest(b"x" * 32) == original.binding_digest(b"x" * 32)
     assert binding('inherit_env=[]\n').binding_digest(b"x" * 32) != original.binding_digest(b"x" * 32)
     projected = binding('inherit_env=["PATH", "HOME"]\n').binding_digest(b"x" * 32)
     assert binding('inherit_env=["HOME", "PATH"]\n').binding_digest(b"x" * 32) == projected
@@ -153,8 +151,7 @@ def test_allowlisted_command_environment_is_exact_and_stable(tmp_path, monkeypat
 @pytest.mark.parametrize("extra, expected", [
     ('parallel_safe="true"\n', "parallel_safe"),
     ('parallel_safe=1\n', "parallel_safe"),
-    ('model_access="admin"\n', "model_access"),
-    ('model_access=true\n', "model_access"),
+    ('unrecognised=true\n', "Unknown registry settings"),
     ('inherit_env="PATH"\n', "inherit_env"),
     ('inherit_env=["PATH", "PATH"]\n', "inherit_env"),
     ('inherit_env=["INVALID-NAME"]\n', "inherit_env"),

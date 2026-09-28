@@ -48,7 +48,7 @@ def _service(tmp_path, *, output_limit: int = 1024) -> tuple[ReasoningService, o
     registry.write_text(
         '[tools.runner]\nkind="command"\nversion="1"\n'
         f'argv={json.dumps([sys.executable, str(script)])}\n'
-        f'max_output_bytes={output_limit}\nmodel_access="general"\n',
+        f'max_output_bytes={output_limit}\n',
         encoding='utf-8',
     )
     return ReasoningService(tmp_path, registry), marker
@@ -64,14 +64,14 @@ def test_context_limit_refuses_collection_before_executing(tmp_path):
     service, marker = _service(tmp_path)
     context = {'site': 'bench', 'padding': 'x' * MAX_COLLECTION_CONTEXT_BYTES}
     with pytest.raises(ValueError, match='Collection context exceeds'):
-        service.collect(_source(1), context, model_access=True)
+        service.collect(_source(1), context)
     _assert_no_effects(service, marker)
 
 
 def test_evidence_count_limit_refuses_collection_before_executing(tmp_path):
     service, marker = _service(tmp_path)
     with pytest.raises(ValueError, match='evidence requests'):
-        service.collect(_source(MAX_COLLECTION_EVIDENCE + 1), {'site': 'bench'}, model_access=True)
+        service.collect(_source(MAX_COLLECTION_EVIDENCE + 1), {'site': 'bench'})
     _assert_no_effects(service, marker)
 
 
@@ -80,7 +80,7 @@ def test_later_oversized_request_does_not_execute_earlier_request(tmp_path):
     source = _source(2, large_input='x' * (MAX_REQUEST_BYTES - 2000))
     context = {'site': 'bench', 'padding': 'y' * 3000}
     with pytest.raises(ValueError, match="Tool request for 'reading_1' exceeds"):
-        service.collect(source, context, model_access=True)
+        service.collect(source, context)
     _assert_no_effects(service, marker)
 
 
@@ -88,13 +88,13 @@ def test_aggregate_declared_output_budget_refuses_collection_before_executing(tm
     service, marker = _service(tmp_path, output_limit=16 * 1024 * 1024)
     with pytest.raises(ValueError, match='Collection output allowance exceeds'):
         service.collect(_source(MAX_COLLECTION_OUTPUT_BYTES // (16 * 1024 * 1024) + 1),
-                        {'site': 'bench'}, model_access=True)
+                        {'site': 'bench'})
     _assert_no_effects(service, marker)
 
 
 def test_small_collection_still_executes_and_persists(tmp_path):
     service, marker = _service(tmp_path)
-    result = service.collect(_source(1), {'site': 'bench'}, model_access=True)
+    result = service.collect(_source(1), {'site': 'bench'})
     assert marker.exists()
     assert result['records']['reading_0']['status'] == 'ok'
     assert service.store.get(result['collection_id'], kind='collection')['records']['reading_0']['status'] == 'ok'

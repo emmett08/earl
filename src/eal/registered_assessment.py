@@ -32,7 +32,7 @@ class RegisteredAssessmentHost:
         self.rebinder = ObservationRebinder(service.store)
 
     def _candidate(self, program: Any, context: dict, name: str, *, instant: datetime,
-                   binding_digest: str | None, execution_digest: str | None) -> tuple[dict, str] | None:
+                   binding_digest: str | None, execution_digest: str | None) -> dict | None:
         if binding_digest is None:
             return None
         environment = program.environments[program.evidence[name].environment]
@@ -58,13 +58,13 @@ class RegisteredAssessmentHost:
             # A comparable negative measurement is reusable. Missing fields,
             # failed tools, future/stale readings and invalid payloads are not.
             if verdict.complete:
-                return derived, original["run_id"]
+                return derived
         return None
 
     def _persist_mixed(self, program: Any, context: dict, names: list[str],
-                       reused: dict[str, tuple[dict, str]],
+                       reused: dict[str, dict],
                        fresh: dict[str, dict]) -> str:
-        records = {name: (reused[name][0] if name in reused else fresh[name]) for name in names}
+        records = {name: (reused[name] if name in reused else fresh[name]) for name in names}
         collection = {"source_digest": program.source_digest, "context": dict(context),
                       "records": records}
         if len(json.dumps(collection, ensure_ascii=False, sort_keys=True,
@@ -73,11 +73,9 @@ class RegisteredAssessmentHost:
         if not reused:
             return self.service.store.put("collection", collection)
         entries = [("observation", record, record["run_id"])
-                   for record, _ in reused.values()]
+                   for record in reused.values()]
         entries.append(("collection", collection, None))
-        return self.service.store.put_rebound_batch(
-            entries, source_run_ids=[run_id for _, run_id in reused.values()],
-        )[-1]
+        return self.service.store.put_batch(entries)[-1]
 
     def assess(self, entry_id: str, claim: str, *, context: dict | None = None,
                now: str | None = None,
@@ -112,7 +110,7 @@ class RegisteredAssessmentHost:
         if program.source_digest != entry["source_digest"]:
             raise ValueError("Registered source digest differs from its snapshot")
 
-        reused: dict[str, tuple[dict, str]] = {}
+        reused: dict[str, dict] = {}
         bindings: dict[str, str | None] = {}
         executions: dict[str, str | None] = {}
         if reuse == "compatible":
@@ -127,7 +125,7 @@ class RegisteredAssessmentHost:
                     reused[name] = candidate
 
         missing = [name for name in names if name not in reused]
-        collection = (self.service.collect(source, selected_context, missing, model_access=False)
+        collection = (self.service.collect(source, selected_context, missing)
                       if missing or not reused else None)
         fresh = {} if collection is None else dict(collection["records"])
         if reused:
@@ -138,7 +136,7 @@ class RegisteredAssessmentHost:
                 instant = parse_time(utc_now())
             current_bindings = self.service.current_binding_digests(program)
             current_executions = self.service.current_execution_digests(program)
-            expired = [name for name, (record, _) in reused.items()
+            expired = [name for name, record in reused.items()
                        if bindings[name] != current_bindings[name]
                        or executions[name] != current_executions[name]
                        or not assess_evidence_record(
@@ -151,25 +149,12 @@ class RegisteredAssessmentHost:
                 for name in expired:
                     reused.pop(name)
                 replacement = self.service.collect(
-                    source, selected_context, expired, model_access=False,
+                    source, selected_context, expired,
                 )
                 fresh.update(replacement["records"])
 
         if reused:
-            try:
-                collection_id = self._persist_mixed(program, selected_context, names, reused, fresh)
-            except ValueError as exc:
-                if not (str(exc).startswith("Observation ")
-                        and str(exc).endswith(" is unavailable for reuse")):
-                    raise
-                # An invalidation raced with persistence. Recollect once under
-                # the new boundary instead of treating an old value as current.
-                collection = self.service.collect(
-                    source, selected_context, names, model_access=False,
-                )
-                collection_id = collection["collection_id"]
-                reused.clear()
-                fresh = collection["records"]
+            collection_id = self._persist_mixed(program, selected_context, names, reused, fresh)
         elif collection is not None and set(collection["records"]) == set(names) and set(fresh) == set(names):
             collection_id = collection["collection_id"]
         else:

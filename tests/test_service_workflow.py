@@ -8,6 +8,7 @@ import sys
 import pytest
 
 from eal.runtime import ReasoningService
+from eal.knowledge import EALKnowledgeBase
 
 
 SOURCE = '''language "EAL/2";
@@ -37,14 +38,13 @@ def test_claim_workflow_rebinds_without_recollecting_and_packet_is_scoped(tmp_pa
     registry = tmp_path / "tools.toml"
     registry.write_text('[tools.reader]\nkind="command"\nversion="1"\n'
                         f'argv={json.dumps([sys.executable, str(collector)])}\n'
-                        'model_access="general"\n'
                         '[tools.unrelated_reader]\nkind="command"\nversion="1"\n'
                         f'argv={json.dumps([sys.executable, str(collector)])}\n')
     service = ReasoningService(tmp_path, registry)
     plan = service.plan(SOURCE, "works")
     assert plan["evidence_ids"] == ["reading"]
     assert plan["estimated_calls"] == 1
-    collection = service.collect_claim(SOURCE, CONTEXT, "works", model_access=True)
+    collection = service.collect_claim(SOURCE, CONTEXT, "works")
     assert list(collection["records"]) == ["reading"]
     assert (tmp_path / "calls.txt").read_text() == "x"
     assessment = service.reason(SOURCE, CONTEXT, collection["collection_id"])
@@ -57,12 +57,15 @@ def test_claim_workflow_rebinds_without_recollecting_and_packet_is_scoped(tmp_pa
     revised = SOURCE.replace("The check passed.", "The check passed in this lab.")
     with pytest.raises(ValueError, match="assessment source"):
         service.reason(revised, CONTEXT, collection["collection_id"])
-    restarted = ReasoningService(tmp_path, registry)
-    rebound = restarted.rebind(revised, CONTEXT, collection["collection_id"])
-    assert rebound["records"]["reading"]["collected_at"] == collection["records"]["reading"]["collected_at"]
+    (tmp_path / "revised.eal").write_text(revised)
+    restarted = EALKnowledgeBase(tmp_path, registry)
+    restarted.register("revised.eal", context=CONTEXT, claims=["works"])
+    rebound = restarted.assess("revised.eal", "works")
+    assert rebound["reused_count"] == 1
+    derived = restarted.service.store.get(rebound["collection_id"], kind="collection")
+    assert derived["records"]["reading"]["collected_at"] == collection["records"]["reading"]["collected_at"]
     assert (tmp_path / "calls.txt").read_text() == "x"
-    second = restarted.reason(revised, CONTEXT, rebound["collection_id"])
-    assert second["claims"]["works"]["status"] == "supported"
+    assert rebound["status"] == "supported"
 
 
 def test_packet_rejects_current_method_registry_contract_drift(tmp_path):

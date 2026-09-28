@@ -7,22 +7,16 @@ name = "engineering-argument-language"
 version = "2.14.0"
 description = "An ANTLR4 language and MCP interpreter for engineering reasoning and argumentation"
 requires-python = ">=3.11"
-dependencies = ["antlr4-python3-runtime==4.13.2", "mcp==1.30.0", "jsonschema>=4.23,<5", "httpx>=0.28,<1"]
+dependencies = ["antlr4-python3-runtime==4.13.2", "mcp==1.30.0", "jsonschema>=4.23,<5"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "build>=1,<2"]
-socks = ["httpx[socks]>=0.28,<1"]
 aspic-reference = ["python-argumentation==2.0.2"]
 
 [project.scripts]
 eal = "eal.cli:main"
 eal-mcp = "eal.server:main"
 eal-host = "eal.host:main"
-eal-agent = "eal.agent:main"
-eal-benchmark = "eal.benchmark:main"
-eal-experiment = "eal.experiment:main"
-eal-relay = "eal.relay:main"
-eal-argument-host = "eal.argument_host:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

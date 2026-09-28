@@ -32,7 +32,6 @@ def test_prompt_adapter_reuses_compatible_measurements_across_sessions_and_sourc
     registry.write_text(
         '[tools.reader]\nkind="command"\nversion="1"\n'
         f'argv={json.dumps([sys.executable, str(collector)])}\n'
-        'model_access="reviewed"\n'
     )
     first = EALKnowledgeBase(tmp_path, registry)
     first.register("source.eal", context={"site": "bench"}, claims=["works"])

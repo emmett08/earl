@@ -1,82 +1,73 @@
 # Engineering Argument Language (EAL/2)
 
-EAL/2 is a language and host for bounded engineering arguments. A source file identifies the claim, the question it addresses, its reasoning method, evidence obligations, premises and objections. The interpreter validates those declarations, collects observations through host-configured tools, evaluates the stated method and records an explanation of the resulting status. A checked status is about the declared question and collected observations; the source's relevance and the observations' real-world provenance still require review.
+EAL/2 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
 
-The Python package is **2.14.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Persisted observations use `EAL/observation-record/1`, formal reasoning-method inputs use `EAL/typed-input/1`, and compact results use `EAL/assessment-packet/1`. These are separate contracts.
+The package is **2.14.0** and requires Python **3.11 or later**. The supported source language is `EAL/2`. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/1`.
 
-## Start here
+## Install and check
 
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
 python -m pip install -e '.[dev]'
-make test
+make check
 ```
 
-The generated ANTLR parser is included. Regenerating it requires Java; `make check-generated` checks that the committed output matches the grammar.
+The generated ANTLR parser is included. `make check-generated` verifies it against the grammar; regeneration requires Java. GitHub workflows run only when manually dispatched.
 
-## Reuse a known argument across sessions
+## Assess a known claim
 
-Register a developer-authored EAL file once with its assessment context and selected claim. A later process can find that claim by name or statement and assess it without sending the source to a model:
+Register a developer-authored EAL file once, with its default context and the claims the application will use:
 
 ```bash
 eal --workspace . --registry tools.toml register arguments/readiness.eal \
   --entry-id readiness --claim service_ready --context '{"cluster":"staging"}'
+eal --workspace . --registry tools.toml find 'service ready'
 eal --workspace . --registry tools.toml assess-known readiness --claim service_ready
 eal --workspace . --registry tools.toml model-context readiness --claim service_ready \
   --question 'Is the service ready?'
 ```
 
-The last command supplies a checked claim packet and prompt messages for a model with no tool or native reasoning API. The host plans the claim's full support and objection graph, reuses compatible stored observations from earlier sessions, collects missing ones with the TOML-configured tools and evaluates the declared reasoning mode. A valid source edit becomes a new revision; a changed tool request, expired observation or different context requires a new read. The equivalent Python interface is `EALKnowledgeBase` and `ModelContextAdapter`; the [argument service design](docs/argument-service.md) describes the identities and method contracts. A model-facing MCP server exposes selected registered entries only when its launcher names them with `--known-entry`.
+The host reads the current registered source, plans all declared support and objection routes, reuses each compatible fresh observation from the persistent store and calls tools only for missing or expired evidence. It evaluates the declared reasoning methods again at the assessment time. The result includes the checked claim status, a bounded packet, collection and assessment IDs, and counts of reused and newly collected observations. `eal history readiness` locates prior runs; `eal explain ASSESSMENT_ID` retrieves the full stored trace for a developer.
 
-## One engineering example
+The Python API composes the same path:
 
-[Review an API load-test result](examples/api-load-test/README.md) checks a familiar engineering question: does a particular build meet agreed latency and error-rate criteria in the supplied report? The example includes one EAL/2 source, a labelled synthetic report, a collector that computes statistics from individual request results, a trusted tool registry and a CLI/MCP walkthrough.
+```python
+from eal.knowledge import EALKnowledgeBase, ModelContextAdapter
 
-```bash
-make example
+kb = EALKnowledgeBase(".", "tools.toml")
+kb.register("arguments/readiness.eal", entry_id="readiness",
+            context={"cluster": "staging"}, claims=["service_ready"])
+checked = ModelContextAdapter(kb).prepare(
+    "Is the service ready?", "readiness", "service_ready")
+messages = checked["messages"]     # Supply to any text-only or tool-capable model.
+status = checked["assessment"]["status"]  # Host result, independent of model prose.
 ```
 
-The report contains 100 requests, a nearest-rank sample p95 of 180 ms and one failed request. It meets the example's limits of 200 ms and 1% at its recorded assessment time. `make example` validates, collects, reasons and explains through both the CLI and the actual MCP stdio server. It runs locally with no credentials or model provider, using a temporary database.
+The application selects the exact entry and claim. A model needs no EAL parser, tool access or native reasoning mode: the host performs those steps and supplies a bounded packet. For MCP clients, the launcher selects registered entries with repeated `eal-mcp --known-entry ENTRY_ID` options. That server exposes catalogue search and one-call assessment for those entries. `eal-host --known-entry ENTRY_ID` accepts one strict JSON operation from a text-only client. The lower-level CLI and MCP source operations remain available for explicit validation, planning, collection and reasoning.
 
-The source pins the report's build, run and digest. The collector preserves its original observation time; EAL checks scope and age, then the installed typed method assesses the three numerical limits. Separate passing and failing claims distinguish a measured threshold failure from unusable evidence. The [walkthrough](examples/api-load-test/README.md) explains those checks, the expected output and how to substitute a real report. The synthetic records illustrate assessment behaviour; release decisions need genuine measurements and a representative workload.
+## Evidence and time
 
-An [optional ASPIC+ method](docs/aspic-method.md) uses the same API load-test setting to resolve conflicting synthetic findings. It constructs strict and defeasible arguments and computes grounded defeat while EAL binds the scoped theory to an observation. Run `python examples/api-load-test/aspic_demo.py` for the explicit-theory runtime and MCP walkthrough. The separate, opt-in `compile-aspic` CLI or `eal_compile_aspic` MCP operation derives a bounded formal theory from authored EAL arguments, observations and objections at a checked collection snapshot; [its companion source](examples/api-load-test/aspic-compiled.eal) requires no hand-written JSON theory. The optional EAL `strict`, `rank` and `contrary` directives declare strict inference, preference rank and directed contrariness; their target kind is checked from the named declaration. The compiler returns the formal result alongside the ordinary EAL status and a map back to the originating declarations. Use `export-aspic RESULT.json --output VIEW.json`, then open the JSON in the separate [Vue/TypeScript visualisation app](https://github.com/emmett08/aspic_visualisation) to inspect derivations and defeats in one graph with source details and snapshot events. It does not infer argumentation relations from prose.
+An authored `evidence` declaration names a tool, its input, context scope, acceptance predicates and `max_age`. The actual observation is the tool's JSON output, persisted separately with its original observation time and acquisition identity. `assumption.valid_from` and `valid_until` control when an assumption applies to an argument; `evidence.max_age` controls whether a stored observation is fresh. An expired assumption cannot be made applicable by running the tool again. A source edit creates a new revision; an observation can still be reused when its evidence ID, request, tool binding, environment, context and age remain compatible.
 
-A [live API experiment](experiments/api_load_test/README.md) compares EAL/2+MCP with meaning-equivalent JSON and ordinary prose, including a conventional checked-result control. Its manually dispatched, Docker-based protocol freezes the selected measurements and scores decisions independently. An optional checked finalisation mode returns the verified decision without asking a model to restate it. The experiment measures the combined system under its specified cases; no general accuracy, cost or speed advantage over equally capable alternatives follows from the language or the synthetic example alone.
+The trusted TOML file binds tool names and versions to commands or JSON files. Tools may query external systems, authenticate or run tests. Command bindings can select inherited environment variables with `inherit_env`; the host keeps credentials and full outputs out of model packets. [MCP and tools](docs/mcp-and-tools.md) defines the request, output, limits and execution identity.
 
-The [coolant-loop composition example](experiments/composition_revision/README.md) evaluates shared premises, alternatives, an objection, evidence revocation, expiry and changed scope with EAL/2 and an independently written typed-rule implementation. The [paired runner](experiments/composition_comparison/README.md) freezes cases and scores both arms against the same expected claim statuses and revision effects. The [authoring and revision instrument](experiments/authoring_revision/README.md) freezes matched briefs and cases, preserves submitted source, replays it independently and records review and work time. The included cases and plans are synthetic controls; a claim about engineering advantage needs independently chosen tasks and observed human outcomes.
+## Reasoning and example
 
-## Interfaces and boundaries
+`reasoning NAME { method "name/version"; ... }` selects an installed method with its own typed input and output requirements. Built-in methods include structured, deductive, inductive, abductive, causal, counterfactual, analogical and temporal reasoning. The host checks their finite contracts, evidence predicates, premise dependencies, assumptions and targeted objections. `supported` means support under the authored scope and observations; it does not certify an omitted real-world premise. See [reasoning modes](docs/reasoning-modes.md) and the [argument service design](docs/argument-service.md).
 
-- `eal validate` checks parsing, references, types and method contracts without collecting evidence.
-- `eal register`, `sources`, `find`, `assess-known`, `history` and `model-context` give developers a persistent file/claim catalogue, current assessment with automatic eligible reuse, and bounded context for a text-only model.
-- `eal plan SOURCE --claim CLAIM` selects every decisive support and objection route; `eal collect SOURCE --context JSON --claim CLAIM` acquires that closure. `eal collect` also accepts explicit evidence IDs or the full source set.
-- `eal reason` computes method and argument statuses over a source-and-context-matched collection; `eal packet ASSESSMENT_ID --claim CLAIM` returns a bounded summary and `eal explain` retrieves the full trace. `eal rebind SOURCE --context JSON --from-collection ID` explicitly reuses matching stored observations at their original age. Operator-only `eal invalidate` excludes affected observations from later reuse after a source event or reconnect gap.
-- `eal compile-aspic` uses a matching stored collection and a declared goal claim to derive and solve an opt-in ASPIC+ snapshot; it reports the formal and authored EAL results separately.
-- `eal export-aspic RESULT.json --output VIEW.json` checks that snapshot or an explicit formal theory result by recomputation, then exports `aspic-view/2` JSON for the separate visualisation app.
-- `eal-mcp` serves planning, granted collection, reasoning, packet and explanation over local stdio using the MCP SDK. General model collection requires `model_access = "general"` on each operator-owned tool binding; privileged collectors stay on reviewed routes. `eal-host` accepts one strict JSON operation for text-only clients; `eal-agent` can run a bounded model feedback loop when a provider is configured.
-- The optional argument host maps reviewed prose forms to a scoped claim, decision or proposed action, collects evidence with the configured tools and tests explicit correspondence and evidence-adequacy obligations. Unreviewed wording remains unresolved unless a separately installed correspondence validator approves its interpretation. Its host-operated file-change adapter requires a checked decision before applying proposed bytes. See [executable argument host](docs/executable-argument-host.md).
-- The optional reviewed artifact and exact-question recipient routes bind a pinned source, context, question and claim on the host. They can keep a checked status authoritative when a recipient explanation differs.
-
-The implementation provides finite, explicit support and attack reasoning with versioned reasoning methods. It does not infer the correct argument family from a task, authenticate measurements beyond the configured acquisition path, prove informal warrants, or demonstrate cross-model superiority without a completed comparison.
+The [API load-test example](examples/api-load-test/README.md) uses synthetic request measurements to exercise the CLI and MCP with a custom typed method. Run `make example` for its deterministic assessment. The optional [ASPIC+ method](docs/aspic-method.md) and EAL-to-ASPIC+ compiler provide a separate bounded formal argument view.
 
 ## Documentation
 
 | Document | Scope |
 | --- | --- |
-| [Design aim](docs/design-aim.md) | Intended task coverage and limits of current evidence |
-| [EAL/2 design](docs/eal2-design.md) | Language decisions and alternatives |
-| [Argument service](docs/argument-service.md) | Configured tools, planning, inference, reuse and model packets |
-| [Language](docs/language.md) | Grammar, declarations and typed proposition correspondence |
-| [Vocabulary](docs/vocabulary.md) | Meanings of adjacent engineering terms |
-| [Argument model](docs/argument-model.md) | Composed support, objections and propagation |
-| [Grounded reasoning](docs/grounded-reasoning.md) | Explicit Dung graph solver |
-| [Reasoning modes](docs/reasoning-modes.md) | Computational method inputs, outputs and bounds |
-| [Argument reconstruction](docs/argument-reconstruction.md) | Enthymemes, contextual interpretation and requirements for optional LLM assistance |
-| [ASPIC+ method](docs/aspic-method.md) | Optional finite formal-theory solver and evidence boundary |
-| [MCP and tools](docs/mcp-and-tools.md) | Tool acquisition, persistence and model hosts |
-| [Executable argument host](docs/executable-argument-host.md) | Reviewed argument forms, adequacy checks and action preflight |
-| [Sources](docs/sources.md) | Primary research and retained references |
+| [Argument service](docs/argument-service.md) | Registered workflow, tools, reuse and model packets |
+| [Language](docs/language.md) | EAL/2 syntax and evidence versus observation |
+| [Argument model](docs/argument-model.md) | Support, objections and propagation |
+| [Reasoning modes](docs/reasoning-modes.md) | Built-in method contracts and extensions |
+| [MCP and tools](docs/mcp-and-tools.md) | Host adapters, persistence and operation schemas |
+| [ASPIC+ method](docs/aspic-method.md) | Optional formal method and compiler |
+| [Integration contract](CONTRACT.md) | Python, CLI, MCP and record interfaces |
 
-[`CONTRACT.md`](CONTRACT.md) records implementation interfaces. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).
+Correctness of an authored question and its tool's real-world measurements remains the developer's responsibility. Collector-call reduction is tested; improvements in model accuracy, latency and cost need paired trials across model sizes and sessions.

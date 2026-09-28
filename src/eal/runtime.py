@@ -91,7 +91,7 @@ class EvidenceRuntime:
         self.scheduler = CollectionScheduler() if scheduler is None else scheduler
 
     def collect(self, program, context: Mapping[str, Any], evidence_ids: list[str] | None = None,
-                *, registry: ToolRegistry | None = None, model_access: bool = False) -> dict:
+                *, registry: ToolRegistry | None = None) -> dict:
         from .evaluator import canonical_digest
         from .semantics import validate
 
@@ -126,8 +126,6 @@ class EvidenceRuntime:
                 binding = selected_registry.binding_for(declaration.tool, version=version)
             except ValueError:
                 continue
-            if model_access and binding.model_access != "general":
-                raise ValueError(f"Tool {declaration.tool!r} requires a reviewed collection route")
             if type(binding.max_output_bytes) is not int or not 1 <= binding.max_output_bytes <= MAX_COLLECTION_OUTPUT_BYTES:
                 raise ValueError(f"Tool {declaration.tool!r} has an invalid output allowance")
             output_allowance += binding.max_output_bytes
@@ -260,14 +258,11 @@ class ReasoningService:
         return {"source": formatted, "source_digest": parse(formatted).source_digest,
                 "new_collection_required": formatted != source}
 
-    def collect(self, source: str, context: dict, evidence_ids: list[str] | None = None,
-                *, model_access: bool = False) -> dict:
+    def collect(self, source: str, context: dict, evidence_ids: list[str] | None = None) -> dict:
         from .parser import parse
 
         registry = ToolRegistry.load(self.registry_path) if self.registry_path is not None else self.runtime.registry
-        return self.runtime.collect(
-            parse(source), context, evidence_ids, registry=registry, model_access=model_access,
-        )
+        return self.runtime.collect(parse(source), context, evidence_ids, registry=registry)
 
     def plan(self, source: str, claim: str) -> dict:
         """List the complete acquisition closure for one declared claim."""
@@ -296,33 +291,11 @@ class ReasoningService:
             },
         }
 
-    def collect_claim(self, source: str, context: dict, claim: str, *,
-                      model_access: bool = False) -> dict:
+    def collect_claim(self, source: str, context: dict, claim: str) -> dict:
         """Collect every support and attack route for a claim's declared graph."""
         plan = self.plan(source, claim)
-        collection = self.collect(
-            source, context, plan["evidence_ids"], model_access=model_access,
-        )
+        collection = self.collect(source, context, plan["evidence_ids"])
         return {**collection, "plan": plan}
-
-    def rebind(self, source: str, context: dict, from_collection_id: str,
-               evidence_ids: list[str] | None = None) -> dict:
-        """Explicitly reuse matching stored measurements under revised source."""
-        from .observation_reuse import ObservationRebinder
-        from .parser import parse
-        from .semantics import validate
-
-        program = parse(source)
-        diagnostics = validate(program, registry=self.method_registry)
-        if diagnostics:
-            raise ValueError("Cannot rebind invalid EAL source: " + "; ".join(
-                item.message for item in diagnostics))
-        return ObservationRebinder(self.store).rebind_collection(
-            program, context, from_collection_id=from_collection_id,
-            current_binding_digests=self.current_binding_digests(program),
-            current_execution_digests=self.current_execution_digests(program),
-            evidence_ids=evidence_ids,
-        )
 
     def packet(self, assessment_id: str, claim: str | None = None) -> dict:
         """Give a model a scoped result while keeping its full trace retrievable."""

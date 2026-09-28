@@ -225,7 +225,6 @@ def write_case(workspace: Path, name: str) -> tuple[Path, Path, Path]:
     registry_path.write_text(
         f'[tools.{tool}]\nkind = "json_file"\npath = "cases/{name}.json"\n'
         'version = "1"\n'
-        'model_access = "general"\n'
     )
     return source_path, observation_path, registry_path
 

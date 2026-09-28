@@ -9,7 +9,6 @@ import pytest
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
-from eal.adequacy import AdequacyContract, AdequacyEvaluator
 from eal.aspic import METHOD, aspic_registry, solve_aspic
 from eal.evaluator import evaluate
 from eal.modes import assess_mode
@@ -292,38 +291,6 @@ def test_typed_eal_observation_binds_whole_theory_scope_time_and_result():
     assert run(data, collected_at="2026-09-23T11:58:59Z")[2]["claims"]["run_passes"]["status"] == "unsupported"
 
 
-def test_adequacy_requires_a_supported_named_claim_for_every_formal_premise():
-    data = theory()
-    del data["premises"][-1]
-    del data["rules"][-1]
-    program, records, assessment = run(data)
-    assessment.update(collection_id="test-collection", assessment_id="test-assessment")
-    args = {"source": source(data), "assessment": assessment, "context": CONTEXT,
-            "collection": {"source_digest": program.source_digest, "context": CONTEXT,
-                           "collection_id": "test-collection", "records": records}}
-    config = {"source_digest": program.source_digest, "claim": "run_passes",
-              "statement": program.claims["run_passes"].statement,
-              "environment": "lab", "methods": ["structured/1", METHOD],
-              "correspondence": "reviewed_source", "obligations": [{
-                  "id": "formal_result", "role": "inference", "target": "argument",
-                  "reference": "formal_arg", "path": "reasoning_result.details.grounded_accepted",
-                  "operator": "==", "expected": True,
-                  "rationale": "The formal grounded result must be accepted."}],
-              "premise_bindings": [
-                  {"argument": "formal_arg", "formula": "report_checked", "claim": "report_checked"},
-                  {"argument": "formal_arg", "formula": "latency_ok", "claim": "latency_ok"}]}
-
-    def check():
-        return AdequacyEvaluator(method_registry=aspic_registry()).assess(
-            AdequacyContract.from_dict(config), **args)
-
-    assert check()["status"] == "adequate", check()
-    config["premise_bindings"].pop()
-    assert check()["status"] == "unresolved"
-    config["premise_bindings"].append({"argument": "formal_arg", "formula": "latency_ok", "claim": "absent_claim"})
-    assert check()["status"] == "unresolved"
-
-
 def test_installed_method_runs_over_real_mcp_collection_and_reasoning(tmp_path):
     data = theory()
     del data["premises"][-1]
@@ -348,7 +315,7 @@ def test_installed_method_runs_over_real_mcp_collection_and_reasoning(tmp_path):
         "'request':{k:req[k] for k in ('tool','tool_version','input','context')}}))\n"
     )
     (tmp_path / "tools.toml").write_text(
-        '[tools.collector]\nkind="command"\nversion="1"\nmodel_access="general"\nargv='
+        '[tools.collector]\nkind="command"\nversion="1"\nargv='
         + json.dumps([sys.executable, str(script)]) + "\n"
     )
     parameters = StdioServerParameters(

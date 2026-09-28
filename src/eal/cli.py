@@ -64,10 +64,10 @@ def main() -> None:
     model_context.add_argument("--context", help="Operator-side JSON context override, or @file")
     model_context.add_argument("--now", help="ISO-8601 assessment time; defaults to current UTC")
     model_context.add_argument("--reuse", choices=("compatible", "fresh"), default="compatible")
-    for operation in ("validate", "format", "plan", "collect", "rebind", "reason", "compile-aspic"):
+    for operation in ("validate", "format", "plan", "collect", "reason", "compile-aspic"):
         command = subcommands.add_parser(operation)
         command.add_argument("source", help="Source file, relative to the workspace")
-        if operation in ("collect", "rebind", "reason", "compile-aspic"):
+        if operation in ("collect", "reason", "compile-aspic"):
             command.add_argument("--context", required=True, help="JSON object, or @file relative to the workspace")
         if operation == "plan":
             command.add_argument("--claim", required=True, help="Declared claim to plan")
@@ -75,9 +75,6 @@ def main() -> None:
             selection = command.add_mutually_exclusive_group()
             selection.add_argument("--evidence", action="append", dest="evidence_ids")
             selection.add_argument("--claim", help="Collect the claim's complete evidence closure")
-        if operation == "rebind":
-            command.add_argument("--from-collection", required=True, dest="from_collection_id")
-            command.add_argument("--evidence", action="append", dest="evidence_ids")
         if operation == "reason":
             command.add_argument("--collection", dest="collection_id")
             command.add_argument("--now", help="ISO-8601 assessment time; defaults to current UTC")
@@ -93,16 +90,6 @@ def main() -> None:
     packet.add_argument("--claim")
     grounded = subcommands.add_parser("grounded")
     grounded.add_argument("graph", help="JSON file containing arguments and attacks")
-    invalidate = subcommands.add_parser(
-        "invalidate", help="Operator-only invalidation of future observation reuse",
-    )
-    invalidate.add_argument("--kind", choices=("event", "gap"), required=True)
-    invalidate.add_argument("--reason", required=True)
-    scope = invalidate.add_mutually_exclusive_group(required=True)
-    scope.add_argument("--origin-run-id")
-    scope.add_argument("--binding-digest")
-    scope.add_argument("--all", action="store_true", help="Reconnect gap for all configured bindings")
-    invalidate.add_argument("--request-digest", help="Limit an event to one acquisition request")
     export = subcommands.add_parser("export-aspic")
     export.add_argument("result", help="JSON file containing theory and formal result")
     export.add_argument("--output", required=True, help="ASPIC+ graph JSON within the workspace")
@@ -123,18 +110,6 @@ def main() -> None:
             result = {"output": str(target), "argument_count": len(view["arguments"]),
                       "defeat_witness_count": len(view["defeats"]),
                       "formal_status": view["formal_status"]}
-        elif args.operation == "invalidate":
-            from .store import RunStore
-
-            database = args.database or workspace / ".eal" / "runs.sqlite3"
-            if not database.exists():
-                raise ValueError("Run database does not exist")
-            result = RunStore(database).invalidate_reuse(
-                kind=args.kind, reason=args.reason,
-                origin_run_id=args.origin_run_id,
-                tool_binding_digest=args.binding_digest,
-                acquisition_request_digest=args.request_digest,
-            )
         elif args.operation == "grounded":
             from .dialectic import solve_grounded
 
@@ -204,8 +179,6 @@ def main() -> None:
                     if args.operation == "collect":
                         result = (service.collect_claim(source, context, args.claim) if args.claim
                                   else service.collect(source, context, args.evidence_ids))
-                    elif args.operation == "rebind":
-                        result = service.rebind(source, context, args.from_collection_id, args.evidence_ids)
                     elif args.operation == "reason":
                         result = service.reason(source, context, args.collection_id, args.now)
                     else:

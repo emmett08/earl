@@ -66,7 +66,7 @@ def _assessment():
     }
 
 
-def test_packet_retains_method_binding_assumption_objection_and_review_status_without_tool_values():
+def test_packet_retains_method_binding_assumption_and_objection_status_without_tool_values():
     result = _assessment()
     result["objections"]["sensor_fault"]["premises"] = ["other"]
     result["arguments"]["other_argument"]["dependencies"]["evidence"] = ["other_probe"]
@@ -74,17 +74,12 @@ def test_packet_retains_method_binding_assumption_objection_and_review_status_wi
                                           "run_id": "1dcb2b72-2ee2-45fb-a4e2-201010101010",
                                           "value": "Bearer SUPER_SECRET_TOOL_CREDENTIAL"}
     secret = "SUPER_SECRET_TOOL_CREDENTIAL"
-    adequacy = {"pressure": {"assessment_id": "assessment-123", "claim": "pressure",
-                             "status": "unresolved", "correspondence": {"status": "satisfied"},
-                             "obligations": [{"id": "randomisation", "status": "unresolved",
-                                              "code": "unresolved_obligation", "reasons": [secret]}]}}
-    packet = AssessmentPacketBuilder().build(result, claims=["pressure"], adequacy=adequacy)
+    packet = AssessmentPacketBuilder().build(result, claims=["pressure"])
     claim = packet["claims"]["pressure"]
     method = packet["arguments"]["experiment"]["method_result"]
     assert packet["schema"] == "EAL/assessment-packet/1"
     assert packet["full_explanation"]["assessment_id"] == result["assessment_id"]
-    assert claim["status"] == "contested" and claim["adequacy"]["status"] == "unresolved"
-    assert claim["adequacy"]["obligations"][0]["id"] == "randomisation"
+    assert claim["status"] == "contested"
     assert method["status"] == "supported" and method["evidence_id"] == "trial"
     assert method["outputs"] == {"estimate": 2.8, "standard_error": 0.2}
     assert method["binding"]["actual"] == 2.8 and method["binding"]["prose_verified"] is False
@@ -129,14 +124,6 @@ def test_output_is_bounded_and_oversize_summary_names_authoritative_explanation(
     assert "raw" not in json.dumps(packet)
 
 
-def test_review_result_must_identify_same_assessment_and_claim():
-    result = _assessment()
-    with pytest.raises(ValueError, match="same claim and assessment"):
-        AssessmentPacketBuilder().build(result, claims=["pressure"],
-                                        adequacy={"pressure": {"claim": "pressure",
-                                                                "assessment_id": "old", "status": "adequate"}})
-
-
 def test_premise_routes_and_installed_method_contract_are_preserved():
     result = _assessment()
     result["claims"]["calibration_claim"] = {"status": "supported", "supporting_arguments": ["calibration_argument"],
@@ -174,7 +161,6 @@ def test_real_evaluator_packet_retains_premise_and_typed_method_decision():
     assert packet["premise_claims"]["increase"]["status"] == "supported"
     assert packet["arguments"]["measured"]["method_result"]["binding"]["actual"] == 7.5
     assert packet["arguments"]["measured"]["method_result"]["outputs"]["estimate"] == 7500
-    assert packet["claims"]["outcome"]["adequacy"]["status"] == "unresolved"
 
 
 @pytest.mark.parametrize("case,expected_issue,expected_age", [
