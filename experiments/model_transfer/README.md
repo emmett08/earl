@@ -6,6 +6,11 @@ decision, statistical assumptions, task populations and inference limits.
 Implementation checks and synthetic validation do not establish a live benefit.
 Start with the [ordered workflow and input guide](WORKFLOW.md) for local commands,
 GitHub Actions settings, resumption, annotation and evaluation.
+In **Actions → EAL experiment**, the defaults `start` and `comparison` run the
+free checks, automatically chained collection segments, resource analysis and
+masked annotation export. After independent coding, `finish` imports the labels,
+analyses the results and runs allocation planning when applicable. The workflow
+retains its data between these two dispatches without keeping a runner waiting.
 
 ## What the plans measure
 

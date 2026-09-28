@@ -1,0 +1,46 @@
+{
+  "baseline_commit": "d52e2bd0898ed519253aedbbc8e002e493dd64d2",
+  "final_wrapper_tests": {
+    "command": "python3 -m pytest -q tests/test_experiment_pipeline.py",
+    "passed": 22
+  },
+  "limits": [
+    "Scripted transport and artefact-transfer fixtures verify software behaviour; they do not supply empirical observations or independent human labels.",
+    "The GitHub-hosted wrapper has not been dispatched; YAML validation does not establish hosted execution.",
+    "Runtime and experiment implementation are unchanged; hosted resumes must still satisfy the original execution contract."
+  ],
+  "measured_implementation_sha256": "dcd14a0c70a424fb0d138789595080f341c032873f70364fb2ce695e2b9152bd",
+  "orchestration_schema": "EAL/experiment-pipeline/1",
+  "paid_api_calls": 0,
+  "principal_preflight": {
+    "annotated_answers": 4224,
+    "api_attempts": 6528,
+    "calibration_checks": 83,
+    "execution_kind": "scripted",
+    "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+    "operation": "rehearse",
+    "plan_sha256": "78dece927916b54578f50634af5e090fe9cd650b596bceed063eae7638489bef",
+    "planned_sequences": 384,
+    "planned_sessions": 4224,
+    "raw_rows_unchanged": true,
+    "resources_reproduced": true,
+    "status": "passed"
+  },
+  "schema": "EAL/experiment-pipeline-verification/1",
+  "source_distribution_wrapper_included": true,
+  "verification": {
+    "cli_mcp_example": "passed",
+    "command": "make check",
+    "parser": "passed",
+    "passed": 958,
+    "scientific_contracts": "passed",
+    "skipped": 1
+  },
+  "verified_on": "2026-09-28",
+  "workflow_validation": {
+    "files": 4,
+    "reusable_input_and_secret_interfaces": "passed",
+    "schema": "https://json.schemastore.org/github-workflow.json",
+    "schema_sha256": "d10c9f4656e1bd5bc6727e9b35080e017dc167154726fca93da33c7a6bd1c4f3"
+  }
+}

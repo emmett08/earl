@@ -7,6 +7,8 @@ prune experiments/transfer_study/runs
 prune experiments/model_transfer/runs
 recursive-include docs *.md *.json
 include scripts/generate_parser.py
+include scripts/experiment_pipeline.py
+recursive-include .github/workflows *.yml
 
 include Makefile CONTRACT.md AGENTS.md
 recursive-include skills *.md *.yaml *.svg
