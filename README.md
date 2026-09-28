@@ -58,6 +58,8 @@ The trusted TOML file binds tool names and versions to commands or JSON files. T
 
 The [API load-test example](examples/api-load-test/README.md) uses synthetic request measurements to exercise the CLI and MCP with a custom typed method. Run `make example` for its deterministic assessment. The optional [ASPIC+ method](docs/aspic-method.md) and EAL-to-ASPIC+ compiler provide a separate bounded formal argument view.
 
+The [developer and model handover experiment](experiments/transfer_study/README.md) supplies paired case allocation, fresh-session model commands, project handover, blinded answer scoring and analysis. Its synthetic fixture verifies the harness; comparative claims require independent cases and live developer and model runs.
+
 ## Documentation
 
 | Document | Scope |
@@ -69,5 +71,6 @@ The [API load-test example](examples/api-load-test/README.md) uses synthetic req
 | [MCP and tools](docs/mcp-and-tools.md) | Host adapters, persistence and operation schemas |
 | [ASPIC+ method](docs/aspic-method.md) | Optional formal method and compiler |
 | [Integration contract](CONTRACT.md) | Python, CLI, MCP and record interfaces |
+| [Handover experiment](experiments/transfer_study/README.md) | New-session developer and model comparison protocol |
 
 Correctness of an authored question and its tool's real-world measurements remains the developer's responsibility. Collector-call reduction is tested; improvements in model accuracy, latency and cost need paired trials across model sizes and sessions.

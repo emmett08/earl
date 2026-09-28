@@ -33,6 +33,8 @@ The [API load-test example](../examples/api-load-test/README.md) demonstrates so
 
 Evaluate developer benefit on independently selected tasks with an equivalent question, observation access and answer contract: record time to first correct scoped answer, calls to collectors and models, prompt tokens, cost, and incorrect or unjustified claims. Test fresh and later sessions, small and large models, and models using native tools versus the host adapter. Keep authoring effort and catalogue selection errors visible. The executable example establishes behaviour but cannot establish a comparative benefit.
 
+The [developer and model handover study](../experiments/transfer_study/README.md) compares ordinary prompting with EAL/2 in new sessions, crossing continuity of developer and model. Its operator-held plan releases later tasks after the first session, retains naturally produced project artefacts in each arm and scores final decisions against independent references. The included fixture checks study transport and supplies no performance result.
+
 ## Present coverage and open obligations
 
 The grammar currently declares environments, tools, evidence, assumptions, reasoning, claims with optional typed propositions, arguments, closed patterns and applications, and objections. The runtime supports bounded method contracts, source and type checking, formal query/result bindings, finite support/attack evaluation, CLI and MCP calls and a host interaction loop. Those are implementation properties established by repository tests and one worked path. They do not verify the engineering warrant in a source, authenticate an external observation, or demonstrate a performance advantage over equally capable prose or JSON systems.

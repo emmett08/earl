@@ -1,6 +1,7 @@
 include README.md
 recursive-include grammar *.g4
 recursive-include examples *.eal *.json *.toml *.py *.md
+recursive-include experiments *.py *.json *.md *.eal *.toml
 recursive-include docs *.md *.json
 include scripts/generate_parser.py
 
