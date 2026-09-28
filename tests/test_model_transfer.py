@@ -175,6 +175,20 @@ def test_complete_pipeline_retains_fresh_sessions_native_masks_and_all_stages(tm
     rebuilt = read_json(tmp_path / 'analysis.json')
     rebuilt.pop('interpretation')
     assert rebuilt.pop('rows_source') == str(tmp_path / 'rows.json')
+    # Offline reconstruction adds measurement and processor identity without
+    # changing any of the retained collection report's scientific results.
+    annotation = rebuilt.pop('annotation_provenance')
+    assert annotation['session_counts'] == {'automatic': 96}
+    assert annotation['contains_ai_assessment'] is False
+    assert annotation['assessors'] == []
+    processing = rebuilt.pop('processing_provenance')
+    from eal import __version__
+    from experiments.model_transfer.run_state import implementation_digest
+    import os
+    assert processing['package_version'] == __version__
+    assert processing['implementation_sha256'] == implementation_digest()
+    assert processing['revision'] == os.environ.get('GITHUB_SHA')
+    assert processing['python'] == sys.version
     assert rebuilt == {k: v for k, v in report.items() if k != 'created_at'}
 
 
