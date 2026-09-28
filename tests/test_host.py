@@ -18,12 +18,26 @@ from eal.host import dispatch_request, parse_request
     '{"operation":"validate","source":"","source":"different"}',
     '{"operation":"collect","source":"", "context":[]}',
     '{"operation":"collect","source":"", "context":{"number":1e309}}',
+    '{"operation":"plan","source":""}',
+    '{"operation":"collect_claim","source":"", "context":{}, "claim":""}',
+    '{"operation":"packet","claim":"works"}',
     '{"operation":"grounded","arguments":[], "attacks":[["a"]]}',
     '{"operation":"grounded","arguments":null, "attacks":[]}',
 ])
 def test_strict_host_request_rejects_unstructured_and_extra_fields(request_text):
     with pytest.raises(ValueError):
         parse_request(request_text)
+
+
+@pytest.mark.parametrize("payload,expected", [
+    ({"operation": "plan", "source": "source", "claim": "works"}, "eal_plan"),
+    ({"operation": "collect_claim", "source": "source", "context": {}, "claim": "works"}, "eal_collect_claim"),
+    ({"operation": "packet", "assessment_id": "assessment-1", "claim": "works"}, "eal_packet"),
+])
+def test_host_exposes_claim_scoped_operations(payload, expected):
+    tool, arguments = parse_request(json.dumps(payload))
+    assert tool == expected
+    assert arguments == {key: value for key, value in payload.items() if key != "operation"}
 
 
 def test_host_dispatches_text_model_request_through_actual_mcp(tmp_path):

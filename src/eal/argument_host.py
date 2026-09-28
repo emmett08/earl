@@ -22,10 +22,11 @@ from typing import Any, Collection, Protocol
 
 from antlr4 import InputStream
 
-from .artifacts import _claim_closure, _require_complete_collection
+from .artifacts import _require_complete_collection
 from .evaluator import canonical_digest, evaluate
 from .generated.EALLexer import EALLexer
 from .parser import MAX_SOURCE_BYTES, parse
+from .planning import EvidencePlanner
 from .runtime import ReasoningService, bounded_path, strict_json
 from .store import utc_now
 
@@ -359,7 +360,7 @@ class ArgumentHost:
         descriptions = {}
         for name, scheme in self.schemes.items():
             program = parse(self._source(name))
-            closure = _claim_closure(program, scheme.claim)
+            closure = EvidencePlanner(program).plan(scheme.claim).closure
             descriptions[name] = {"kind": scheme.kind, "description": scheme.description,
                 "claim": scheme.claim, "forms": list(scheme.forms), "followups": list(scheme.followups),
                 "parameters": {key: {"kind": value.kind, "context_path": value.context_path,
@@ -478,7 +479,7 @@ class ArgumentHost:
                     "candidates": candidates, "tool_execution": False}
         name, bindings, bound_context, source, correspondence = next(iter(unique.values()))
         scheme, program = self.schemes[name], parse(source)
-        closure = _claim_closure(program, scheme.claim)
+        closure = EvidencePlanner(program).plan(scheme.claim).closure
         result = {"status": "resolved", "scheme_id": name, "task_kind": scheme.kind,
                   "bindings": bindings, "context": bound_context, "claim": scheme.claim,
                   "statement": program.claims[scheme.claim].statement,

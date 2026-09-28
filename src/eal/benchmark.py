@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import copy
 from dataclasses import asdict
 import hashlib
 import json
@@ -78,7 +79,7 @@ def prepare_task(task: dict, root: Path, workspace: Path) -> tuple[ReasoningServ
         (workspace / filename).write_text(json.dumps(envelope, allow_nan=False))
         declaration = program.tools[tool]
         registry.extend([f"[tools.{tool}]", 'kind="json_file"', f"path={json.dumps(filename)}",
-                         f"version={json.dumps(declaration.version)}", ""])
+                         f"version={json.dumps(declaration.version)}", 'model_access="general"', ""])
     registry_path = workspace / "tools.toml"
     registry_path.write_text("\n".join(registry))
     from .runtime import load_method_registry
@@ -491,7 +492,22 @@ async def evaluate_task(task: dict, root: Path, provider, *, arm: str, budget=No
             if not comparison["equivalent"]:
                 score.update(correct=False, correctly_resolved=False, justified_unresolved=False)
                 score["unjustified"] |= any(item["actual"] == "supported" for item in score["claims"].values())
-            trace = evidence_trace_score(inputs, reference, comparison, report)
+            # The agent deliberately withholds observation values from model
+            # feedback and its public tool transcript. The independent
+            # scorer reads the immutable local collection for this trial,
+            # without adding raw observations to the model-facing report.
+            trace_report = copy.deepcopy(report)
+            for event in trace_report.get("tool_calls", []):
+                if event.get("tool") != "eal_collect" or event.get("status") != "ok":
+                    continue
+                collection_id = event.get("result", {}).get("collection_id")
+                if isinstance(collection_id, str):
+                    try:
+                        event["result"] = {"collection_id": collection_id,
+                                           **service.store.get(collection_id, kind="collection")}
+                    except KeyError:
+                        pass
+            trace = evidence_trace_score(inputs, reference, comparison, trace_report)
             score["evidence_trace"] = trace
             if not trace["verified"]:
                 score.update(correct=False, correctly_resolved=False, justified_unresolved=False)

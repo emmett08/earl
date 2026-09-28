@@ -14,7 +14,7 @@ This explains the design of the EAL/2 source language. Syntax, the argument solv
 
 ## Purpose and extension criterion
 
-EAL/2 is the source contract and the installed Python package declares version 2.13.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
+EAL/2 is the source contract and the installed Python package declares version 2.14.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts.
 
 The intended gain is faithful formulation, challenge and revision of bounded engineering arguments with checked evidence identity and method results. A gain over prose or another notation remains a **hypothesis**. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data. The [live API experiment](../experiments/api_load_test/README.md) measures a bounded combined-system comparison; broader inference needs independent tasks.
 
@@ -76,4 +76,3 @@ The optional structured solver answers only the formal theory supplied to it. EA
 | Full ASPIC+ | More premise categories, ordering choices and semantics | Retain the implemented finite profile as an optional method; add broader features only with specified tasks and independent verification. |
 
 A future comparison must give every arm an equally specified task, evidence access, checker authority and cost accounting. It must measure source authoring and argument-family selection as well as checked communication: a correct computation can still concern the wrong build or test run, use a missing observation, or be misreported by a model. Compare paired outcomes within predeclared model strata and retain every attempt. A single working example or a result on exposed cases cannot establish a model-class-wide effect, much less universal superiority.
-

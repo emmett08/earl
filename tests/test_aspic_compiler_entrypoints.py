@@ -60,10 +60,10 @@ def test_service_compilation_is_opt_in_and_collection_bound(tmp_path):
     assert later["claims"] == authored["claims"]
     assert later["arguments"] == authored["arguments"]
 
-    with pytest.raises(ValueError, match="source or context"):
+    with pytest.raises(ValueError, match="assessment source"):
         service.compile_aspic(SOURCE + "\n", CONTEXT, collection["collection_id"],
                               "run_passes", NOW)
-    with pytest.raises(ValueError, match="source or context"):
+    with pytest.raises(ValueError, match="assessment context"):
         service.compile_aspic(SOURCE, {**CONTEXT, "dataset": "measured"},
                               collection["collection_id"], "run_passes", NOW)
 

@@ -13,15 +13,15 @@ import json
 import re
 import stat
 import tomllib
-from collections import deque
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Awaitable, Callable
 
 from .evaluator import assess_environment, assess_evidence_record, canonical_digest
 from .parser import MAX_SOURCE_BYTES
+from .planning import EvidencePlanner
 from .runtime import ReasoningService, bounded_path
-from .semantics import objection_scopes, parse_time
+from .semantics import parse_time
 from .store import utc_now
 
 
@@ -33,83 +33,6 @@ class Artifact:
     claims: tuple[str, ...]
     context: dict[str, Any]
     now: str | None
-
-
-@dataclass(frozen=True)
-class _ClaimClosure:
-    """Declarations which can affect one claim under the EAL/2 support graph."""
-
-    claims: frozenset[str]
-    arguments: frozenset[str]
-    objections: frozenset[str]
-    evidence: frozenset[str]
-    assumptions: frozenset[str]
-    reasoning: frozenset[str]
-
-
-def _claim_closure(program, target: str) -> _ClaimClosure:
-    """Include all alternative derivations, attacks, defences and their premises.
-
-    Objection premise claims can themselves have arguments and objections. The
-    worklist follows those edges as well as ordinary argument premises, so a
-    collector is never omitted merely because its attack is currently inactive.
-    """
-    by_conclusion: dict[str, list[str]] = {}
-    for name, argument in program.arguments.items():
-        by_conclusion.setdefault(argument.conclusion, []).append(name)
-    by_target: dict[tuple[str, str], list[str]] = {}
-    for name, objection in program.objections.items():
-        by_target.setdefault((objection.target_kind, objection.target), []).append(name)
-    scopes = objection_scopes(program)
-    claims: set[str] = set()
-    arguments: set[str] = set()
-    objections: set[str] = set()
-    evidence: set[str] = set()
-    assumptions: set[str] = set()
-    reasoning: set[str] = set()
-    pending = deque([("claim", target)])
-
-    def attacks(kind: str, identifier: str, environment: str) -> None:
-        for objection_id in by_target.get((kind, identifier), ()):
-            if scopes[objection_id] == {environment}:
-                pending.append(("objection", objection_id))
-
-    while pending:
-        kind, name = pending.popleft()
-        if kind == "claim":
-            if name in claims:
-                continue
-            claims.add(name)
-            environment = program.claims[name].environment
-            pending.extend(("argument", item) for item in by_conclusion.get(name, ()))
-            attacks("claim", name, environment)
-        elif kind == "argument":
-            if name in arguments:
-                continue
-            arguments.add(name)
-            argument = program.arguments[name]
-            environment = program.claims[argument.conclusion].environment
-            evidence.update(argument.evidence)
-            reasoning.add(argument.reasoning)
-            evidence.update(program.reasoning[argument.reasoning].backing)
-            assumptions.update(argument.assumptions)
-            evidence.update(program.assumptions[item].validation for item in argument.assumptions)
-            pending.extend(("claim", item) for item in argument.premises)
-            attacks("argument", name, environment)
-            attacks("reasoning", argument.reasoning, environment)
-            for item in argument.assumptions:
-                attacks("assumption", item, environment)
-        else:
-            if name in objections:
-                continue
-            objections.add(name)
-            objection = program.objections[name]
-            evidence.update(objection.evidence)
-            pending.extend(("claim", item) for item in objection.premises)
-            attacks("objection", name, next(iter(scopes[name])))
-
-    return _ClaimClosure(*(frozenset(group) for group in
-                           (claims, arguments, objections, evidence, assumptions, reasoning)))
 
 
 def _require_complete_collection(program, evidence_ids: set[str] | frozenset[str],
@@ -249,7 +172,7 @@ class ArtifactRegistry:
         context = artifact.context
         selected_claims = artifact.claims if claim is None else (claim,)
         evidence_ids = (None if claim is None else
-                        sorted(_claim_closure(program, claim).evidence))
+                        list(EvidencePlanner(program).plan(claim).evidence_ids))
         collection = self.service.collect(source, context, evidence_ids=evidence_ids)
         expected_evidence = set(program.evidence) if evidence_ids is None else set(evidence_ids)
         if (collection.get("source_digest") != artifact.sha256 or collection.get("context") != context
@@ -326,7 +249,7 @@ class ArtifactRegistry:
             expected_evidence = set(program.evidence)
         elif claim_scope in artifact.claims:
             selected = (claim_scope,)
-            expected_evidence = set(_claim_closure(program, claim_scope).evidence)
+            expected_evidence = set(EvidencePlanner(program).plan(claim_scope).evidence_ids)
         else:
             raise ValueError("Stored claim scope differs from the registered artifact")
         if set(collection.get("records", {})) != expected_evidence:
@@ -524,7 +447,7 @@ class ArtifactRegistry:
 
         packet = self.finish_claim(name, assessment_id, claim)
         assessment = self.service.store.get(assessment_id, kind="assessment")
-        closure = _claim_closure(parse(self._source(name)), claim)
+        closure = EvidencePlanner(parse(self._source(name))).plan(claim).closure
         if len(closure.objections) > 128:
             raise ValueError("Claim explanation exceeds its objection bound")
         environment = assessment["claims"][claim]["environment"]

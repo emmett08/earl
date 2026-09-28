@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from eal.benchmark import compare_sources, evaluate_models, evidence_trace_score, load_suite, score_answer, source_correspondence, summarise, task_inputs, workflow_score
+from eal.benchmark import check_task, compare_sources, evaluate_models, evidence_trace_score, load_suite, score_answer, source_correspondence, summarise, task_inputs, workflow_score
 from _runtime_cases import PRESSURE_SOURCE, write_suite
 
 def report(claims, status="completed"):
@@ -165,12 +165,23 @@ def test_paired_harness_through_actual_mcp_with_explicit_regression_provider(tmp
     assert delegated["score"]["source_correspondence"]
     collection = next(event["result"] for event in delegated["report"]["tool_calls"]
                       if event["tool"] == "eal_collect" and event["status"] == "ok")
-    independent = {"collection": {"records": copy.deepcopy(collection["records"])}}
-    independent["collection"]["records"]["pressure_trial"]["tool_binding_digest"] = "f" * 64
+    assert "value" not in collection["records"]["pressure_trial"]
+    independent = check_task(load_suite(suite)["tasks"][0], suite.parent,
+                             tmp_path / "independent-reference")
     comparison = delegated["score"]["source_comparison"]
-    assert evidence_trace_score(delegated["inputs"], independent, comparison,
-                                delegated["report"])["verified"]
-    altered = copy.deepcopy(delegated["report"])
+    assert delegated["score"]["evidence_trace"]["verified"]
+    # Reconstruct the independent test record with this trial's local keyed
+    # binding identity to exercise the scorer's tamper check. Real scoring
+    # hydrates the stored collection privately inside evaluate_task.
+    full_report = copy.deepcopy(delegated["report"])
+    full_collection = next(event["result"] for event in full_report["tool_calls"]
+                           if event["tool"] == "eal_collect" and event["status"] == "ok")
+    actual = copy.deepcopy(independent["collection"]["records"]["pressure_trial"])
+    actual["tool_binding_digest"] = collection["records"]["pressure_trial"]["tool_binding_digest"]
+    full_collection["context"] = delegated["inputs"]["context"]
+    full_collection["records"]["pressure_trial"] = actual
+    assert evidence_trace_score(delegated["inputs"], independent, comparison, full_report)["verified"]
+    altered = copy.deepcopy(full_report)
     altered_collection = next(event["result"] for event in altered["tool_calls"]
                               if event["tool"] == "eal_collect" and event["status"] == "ok")
     altered_collection["records"]["pressure_trial"]["tool_binding_digest"] = "e" * 64

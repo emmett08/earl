@@ -2,7 +2,7 @@
 
 EAL/2 is a language and host for bounded engineering arguments. A source file identifies the claim, the question it addresses, its reasoning method, evidence obligations, premises and objections. The interpreter validates those declarations, collects observations through host-configured tools, evaluates the stated method and records an explanation of the resulting status. A checked status is about the declared question and collected observations; the source's relevance and the observations' real-world provenance still require review.
 
-The Python package is **2.13.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Formal reasoning-method inputs use the independent `EAL/typed-input/1` envelope. Source, package, acquisition and typed-method identifiers describe different contracts.
+The Python package is **2.14.0** and requires Python **3.11 or later**. EAL/2 is the supported source language. Its tool declaration names an interface and version; host configuration selects its execution adapter. Persisted observations use `EAL/observation-record/1`, formal reasoning-method inputs use `EAL/typed-input/1`, and compact results use `EAL/assessment-packet/1`. These are separate contracts.
 
 ## Start here
 
@@ -36,10 +36,11 @@ The [coolant-loop composition example](experiments/composition_revision/README.m
 ## Interfaces and boundaries
 
 - `eal validate` checks parsing, references, types and method contracts without collecting evidence.
-- `eal collect` runs the configured tools and persists their observations; `eal reason` computes method and argument statuses at an explicit or current time; `eal explain` retrieves the recorded trace.
+- `eal plan SOURCE --claim CLAIM` selects every decisive support and objection route; `eal collect SOURCE --context JSON --claim CLAIM` acquires that closure. `eal collect` also accepts explicit evidence IDs or the full source set.
+- `eal reason` computes method and argument statuses over a source-and-context-matched collection; `eal packet ASSESSMENT_ID --claim CLAIM` returns a bounded summary and `eal explain` retrieves the full trace. `eal rebind SOURCE --context JSON --from-collection ID` explicitly reuses matching stored observations at their original age. Operator-only `eal invalidate` excludes affected observations from later reuse after a source event or reconnect gap.
 - `eal compile-aspic` uses a matching stored collection and a declared goal claim to derive and solve an opt-in ASPIC+ snapshot; it reports the formal and authored EAL results separately.
-- `eal export-aspic RESULT.json --output VIEW.json` checks that snapshot or an explicit formal theory result by recomputation, then exports `aspic-view/1` JSON for the separate visualisation app.
-- `eal-mcp` serves the same operations over local stdio using the MCP SDK. `eal-host` accepts one strict JSON operation for text-only clients; `eal-agent` can run a bounded model feedback loop when a provider is configured.
+- `eal export-aspic RESULT.json --output VIEW.json` checks that snapshot or an explicit formal theory result by recomputation, then exports `aspic-view/2` JSON for the separate visualisation app.
+- `eal-mcp` serves planning, granted collection, reasoning, packet and explanation over local stdio using the MCP SDK. General model collection requires `model_access = "general"` on each operator-owned tool binding; privileged collectors stay on reviewed routes. `eal-host` accepts one strict JSON operation for text-only clients; `eal-agent` can run a bounded model feedback loop when a provider is configured.
 - The optional argument host maps reviewed prose forms to a scoped claim, decision or proposed action, collects evidence with the configured tools and tests explicit correspondence and evidence-adequacy obligations. Unreviewed wording remains unresolved unless a separately installed correspondence validator approves its interpretation. Its host-operated file-change adapter requires a checked decision before applying proposed bytes. See [executable argument host](docs/executable-argument-host.md).
 - The optional reviewed artifact and exact-question recipient routes bind a pinned source, context, question and claim on the host. They can keep a checked status authoritative when a recipient explanation differs.
 
@@ -51,6 +52,7 @@ The implementation provides finite, explicit support and attack reasoning with v
 | --- | --- |
 | [Design aim](docs/design-aim.md) | Intended task coverage and limits of current evidence |
 | [EAL/2 design](docs/eal2-design.md) | Language decisions and alternatives |
+| [Argument service](docs/argument-service.md) | Configured tools, planning, inference, reuse and model packets |
 | [Language](docs/language.md) | Grammar, declarations and typed proposition correspondence |
 | [Vocabulary](docs/vocabulary.md) | Meanings of adjacent engineering terms |
 | [Argument model](docs/argument-model.md) | Composed support, objections and propagation |
@@ -63,4 +65,3 @@ The implementation provides finite, explicit support and attack reasoning with v
 | [Sources](docs/sources.md) | Primary research and retained references |
 
 [`CONTRACT.md`](CONTRACT.md) records implementation interfaces. Contributors should read [`AGENTS.md`](AGENTS.md) and the [argument-language skill](skills/engineer-argumentation-languages/SKILL.md).
-

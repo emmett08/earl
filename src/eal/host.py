@@ -26,9 +26,12 @@ OPERATIONS = {
     "describe": (set(), set()),
     "format": ({"source"}, set()),
     "validate": ({"source"}, set()),
+    "plan": ({"source", "claim"}, set()),
     "collect": ({"source", "context"}, {"evidence_ids"}),
+    "collect_claim": ({"source", "context", "claim"}, set()),
     "reason": ({"source", "context"}, {"collection_id", "now"}),
     "explain": ({"assessment_id"}, {"claim"}),
+    "packet": ({"assessment_id"}, {"claim"}),
     "grounded": ({"arguments", "attacks"}, set()),
     "task_candidates": (set(), set()),
     "bound_task": (set(), set()),
@@ -60,6 +63,8 @@ def parse_request(text: str) -> tuple[str, dict[str, Any]]:
     for key in ("claim", "collection_id", "now"):
         if key in arguments and arguments[key] is not None and not isinstance(arguments[key], str):
             raise ValueError(f"{key} must be a string or null")
+    if operation in {"plan", "collect_claim"} and not arguments["claim"]:
+        raise ValueError(f"{operation} requires a non-empty claim identifier")
     if "context" in arguments and not isinstance(arguments["context"], dict):
         raise ValueError("context must be an object")
     for key in ("evidence_ids", "arguments"):

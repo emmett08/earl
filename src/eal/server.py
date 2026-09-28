@@ -115,9 +115,19 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
             return service.validate(source)
 
         @server.tool(structured_output=True)
+        def eal_plan(source: str, claim: str) -> dict[str, Any]:
+            """Plan all evidence for a claim, including alternative supports and objections."""
+            return service.plan(source, claim)
+
+        @server.tool(structured_output=True)
         def eal_collect(source: str, context: dict, evidence_ids: list[str] | None = None) -> dict[str, Any]:
-            """Run operator-configured tools and store observations; return collection_id for reasoning."""
-            return service.collect(source, context, evidence_ids)
+            """Run tools explicitly granted for general model collection; return collection_id."""
+            return service.collect(source, context, evidence_ids, model_access=True)
+
+        @server.tool(structured_output=True)
+        def eal_collect_claim(source: str, context: dict, claim: str) -> dict[str, Any]:
+            """Collect the complete declared evidence closure for a claim using granted tools."""
+            return service.collect_claim(source, context, claim, model_access=True)
 
         @server.tool(structured_output=True)
         def eal_reason(source: str, context: dict, collection_id: str | None = None, now: str | None = None) -> dict[str, Any]:
@@ -134,6 +144,11 @@ def create_server(service: ReasoningService, artifacts: ArtifactRegistry | None 
         def eal_explain(assessment_id: str, claim: str | None = None) -> dict[str, Any]:
             """Retrieve a persisted reasoning result and its dependency explanations."""
             return service.explain(assessment_id, claim)
+
+        @server.tool(structured_output=True)
+        def eal_packet(assessment_id: str, claim: str | None = None) -> dict[str, Any]:
+            """Return compact claim results with a reference to the full explanation."""
+            return service.packet(assessment_id, claim)
 
         @server.tool(structured_output=True)
         def eal_grounded(arguments: list[str], attacks: list[list[str]]) -> dict[str, Any]:

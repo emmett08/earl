@@ -150,6 +150,7 @@ def test_copying_database_without_private_key_invalidates_old_observations(tmp_p
     database = copy / "runs.sqlite3"
     with sqlite3.connect(service.store.path) as original, sqlite3.connect(database) as target:
         original.backup(target)
+    database.chmod(0o600)
     recreated = ReasoningService(copy, tmp_path / "tools.toml", database)
     assessed = recreated.reason(SOURCE, CONTEXT, collection["collection_id"])
     assert assessed["claims"]["works"]["status"] == "unsupported"

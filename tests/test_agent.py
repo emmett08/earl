@@ -61,7 +61,8 @@ def server(tmp_path, *, observation=True):
         script = tmp_path / "tool.py"
         script.write_text("import json,sys\njson.load(sys.stdin)\nprint(json.dumps({'value':{'passed':True}}))\n")
         registry = tmp_path / "tools.toml"
-        registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nargv=' + json.dumps([sys.executable, str(script)]) + '\n')
+        registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nmodel_access="general"\nargv='
+                            + json.dumps([sys.executable, str(script)]) + '\n')
         args += ["--registry", str(registry)]
     return StdioServerParameters(command=sys.executable, args=args, env=dict(os.environ))
 
@@ -471,31 +472,31 @@ def test_responses_unaided_replay_is_released_on_interrupted_continuation(termin
 def test_compact_feedback_preserves_conflict_missing_assumptions_and_bound_results():
     from eal.agent import _compact_feedback
 
-    proposition = {"subject": "pipe", "quantity": "pressure", "unit": "kPa", "result": {"expected": 20}}
+    secret = "Bearer private-collector-value"
     original = {"operation": "reason", "is_error": False, "result": {
-        "claims": {"pressure": {"status": "contested", "reasons": ["Active objection"], "proposition": proposition}},
-        "assumptions": {"calibration": {"status": "unsupported", "reasons": ["Validation expired"]}},
-        "objections": {"sensor_fault": {"status": "active", "target": "pressure"}},
+        "valid": True, "assessment_id": "stored-assessment", "source_digest": "a" * 64,
+        "claims": {"pressure": {"status": "contested", "objections": ["sensor_fault"]}},
+        "assumptions": {"calibration": {"status": "unsupported", "reasons": [secret]}},
+        "objections": {"sensor_fault": {"status": "active", "target_kind": "claim", "target": "pressure"}},
         "arguments": {"derivation": {"status": "contested", "conclusion": "pressure", "dependencies": {"assumptions": ["calibration"]},
-            "reasoning_result": {"status": "supported", "reasons": ["Model-conditional computation"],
-                "method_contract": {"identifier": "causal/test", "input_schema": {"large": "schema"}, "quantity_interpretation": "model-conditional"},
-                "binding": {"actual": 12, "output_unit": "kPa", "status": "supported", "proposition": proposition,
-                            "formal_query": {"large": "input"}, "method_contract": {"duplicate": "schema"}},
-                "details": {"assumptions_verified": False, "counterexample": {"A": False}, "samples": list(range(3000))}}}},
+            "reasoning_result": {"status": "supported", "method": "causal/1", "reasons": [secret],
+                "binding": {"actual": 12, "output_unit": "kPa", "status": "supported",
+                            "formal_query": {"credential": secret}},
+                "details": {"sample_size": 12, "assumptions_verified": False,
+                            "secret": secret, "samples": list(range(3000))}}}},
         "dialectic": {"nodes": {"derivation": "rejected"}, "trace": [{"round": 1}]},
     }}
     compact = _compact_feedback(original)
     result = compact["result"]
-    assert result["claims"] == original["result"]["claims"]
-    assert result["assumptions"] == original["result"]["assumptions"]
-    assert result["objections"] == original["result"]["objections"]
-    calculation = result["arguments"]["derivation"]["reasoning_result"]
+    assert result["claims"]["pressure"]["status"] == "contested"
+    assert result["assumptions"]["calibration"]["status"] == "unsupported"
+    assert result["objections"]["sensor_fault"]["status"] == "active"
+    calculation = result["arguments"]["derivation"]["method_result"]
     assert calculation["binding"]["actual"] == 12 and calculation["binding"]["output_unit"] == "kPa"
-    assert calculation["details"]["assumptions_verified"] is False
-    assert calculation["details"]["counterexample"] == {"A": False}
-    assert calculation["detail_fields_available_in_full_explanation"] == ["samples"]
-    assert "method_contract" not in calculation and "formal_query" not in calculation["binding"]
-    assert result["full_explanation"] == {"operation": "explain", "detail": "full"}
+    assert calculation["assumptions_verified"] is False
+    assert calculation["outputs"]["sample_size"] == 12
+    assert secret not in json.dumps(result) and "samples" not in json.dumps(result)
+    assert result["full_explanation"]["assessment_id"] == "stored-assessment"
     assert "trace" in original["result"]["dialectic"]  # Raw persisted result remains intact.
 
 
@@ -507,8 +508,8 @@ def test_full_explanation_is_retrieved_on_explicit_request(tmp_path):
                                    initial_data={"source": SOURCE, "context": {"site": "bench"}}))
     assert report["status"] == "completed", report
     feedback = [json.loads(m["content"])["host_feedback"] for m in report["conversation"] if m["role"] == "user" and "host_feedback" in json.loads(m["content"])]
-    assert next(item for item in feedback if item.get("operation") == "reason")["feedback_detail"] == "summary"
-    assert "feedback_detail" not in next(item for item in feedback if item.get("operation") == "explain")
+    assert next(item for item in feedback if item.get("operation") == "reason")["feedback_detail"] == "packet"
+    assert next(item for item in feedback if item.get("operation") == "explain")["feedback_detail"] == "packet"
     assert "detail" not in next(call for call in report["tool_calls"] if call["tool"] == "eal_explain")["arguments"]
 
 
@@ -520,10 +521,10 @@ def test_assess_delegates_complete_workflow_and_finish_uses_exact_checked_result
     assert report["final"]["source"] == SOURCE
     assert report["final"]["claims"]["works"]["status"] == "supported"
     assert [call["tool"] for call in report["tool_calls"] if call["tool"] != "eal_describe"] == [
-        "eal_validate", "eal_collect", "eal_reason", "eal_explain"]
+        "eal_validate", "eal_collect_claim", "eal_reason", "eal_packet"]
     assert len(report["attempts"]) == 2
     for entry in report["host_operations"]:
-        if entry["operation"] in {"collect", "reason", "explain", "finish"}:
+        if entry["operation"] in {"collect", "collect_claim", "reason", "packet", "explain", "finish"}:
             assert not {"source", "context", "assessment_id"} & entry["input_schema"]["properties"].keys()
     feedback = feedback_result(report["conversation"], "assess")
     assert feedback["claims"]["works"]["status"] == "supported"
@@ -548,8 +549,101 @@ def test_assess_observation_failure_stays_unsupported(tmp_path):
                                    initial_data={"source": SOURCE, "context": {"site": "bench"}}))
     assert report["status"] == "completed", report
     assert report["final"]["claims"]["works"]["status"] == "unsupported"
-    collected = next(call["result"] for call in report["tool_calls"] if call["tool"] == "eal_collect")
+    collected = next(call["result"] for call in report["tool_calls"] if call["tool"] == "eal_collect_claim")
     assert collected["records"]["measured"]["status"] == "error"
+
+
+def test_assess_collects_only_claim_closure_and_sends_no_collector_value_to_model(tmp_path):
+    secret = "PRIVATE_TOOL_PAYLOAD_123"
+    collector = tmp_path / "collector.py"
+    collector.write_text("import json,sys\njson.load(sys.stdin)\n"
+                         f"print(json.dumps({{'value':{{'passed':True,'token':'{secret}'}}}}))\n")
+    registry = tmp_path / "tools.toml"
+    registry.write_text('[tools.public]\nkind="command"\nversion="1"\nmodel_access="general"\nargv='
+                        + json.dumps([sys.executable, str(collector)])
+                        + '\n[tools.private]\nkind="command"\nversion="1"\nargv='
+                        + json.dumps([sys.executable, str(collector)]) + '\n')
+    source = '''language "EAL/2";
+environment lab { require "site" == "bench"; }
+tool public { version "1"; }
+tool private { version "1"; }
+evidence observation { tool public; kind test; environment lab; max_age 60; require "passed" == true; }
+evidence unrelated { tool private; kind test; environment lab; max_age 60; require "passed" == true; }
+reasoning support { method "structured/1"; rationale "The observation supports this test."; }
+claim works { statement "The test passed."; environment lab; }
+claim other { statement "Another test passed."; environment lab; }
+argument first { conclusion works; reasoning support; evidence observation; }
+argument second { conclusion other; reasoning support; evidence unrelated; }
+'''
+    parameters = StdioServerParameters(command=sys.executable,
+        args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(registry)], env=dict(os.environ))
+    report = asyncio.run(run_agent("Check works", ScriptedProvider([{"operation": "assess"},
+        {"operation": "finish"}]), parameters, required_claims=("works",),
+        initial_data={"source": source, "context": {"site": "bench"}}))
+    assert report["status"] == "completed", report
+    assert report["final"]["claims"]["works"]["status"] == "supported"
+    collection = next(call for call in report["tool_calls"] if call["tool"] == "eal_collect_claim")
+    assert set(collection["result"]["records"]) == {"observation"}
+    assert secret not in json.dumps(report["conversation"])
+    assert secret not in json.dumps(report["tool_calls"])
+    assert report["active_state"]["assessment_available"]
+
+
+def test_direct_collect_feedback_redacts_observation_values(tmp_path):
+    secret = "PRIVATE_TOOL_PAYLOAD_456"
+    collector = tmp_path / "collector.py"
+    collector.write_text("import json,sys\njson.load(sys.stdin)\n"
+                         f"print(json.dumps({{'value':{{'passed':True,'token':'{secret}'}}}}))\n")
+    registry = tmp_path / "tools.toml"
+    registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nmodel_access="general"\nargv='
+                        + json.dumps([sys.executable, str(collector)]) + '\n')
+    parameters = StdioServerParameters(command=sys.executable,
+        args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(registry)], env=dict(os.environ))
+    report = asyncio.run(run_agent("Collect the check", ScriptedProvider([
+        {"operation": "collect"}, {"operation": "stop", "reason": "Enough"}]), parameters,
+        initial_data={"source": SOURCE, "context": {"site": "bench"}}))
+    assert report["stop_reason"] == "model_stopped"
+    assert feedback_result(report["conversation"], "collect")["records"]["measured"]["status"] == "ok"
+    assert secret not in json.dumps(report["conversation"])
+    assert secret not in json.dumps(report["tool_calls"])
+
+
+def test_assess_multiple_claims_unites_plans_and_keeps_checked_packets(tmp_path):
+    source = SOURCE + '''
+claim second { statement "The same observation supports a second result."; environment lab; }
+argument second_route { conclusion second; reasoning measurement; evidence measured; }
+'''
+    report = asyncio.run(run_agent("Check both", ScriptedProvider([{"operation": "assess"},
+        {"operation": "finish"}]), server(tmp_path), required_claims=("works", "second"),
+        initial_data={"source": source, "context": {"site": "bench"}}))
+    assert report["status"] == "completed", report
+    assert {name: item["status"] for name, item in report["final"]["claims"].items()} == {
+        "works": "supported", "second": "supported"}
+    calls = [entry["tool"] for entry in report["tool_calls"] if entry["tool"] != "eal_describe"]
+    assert calls == ["eal_validate", "eal_plan", "eal_plan", "eal_collect",
+                     "eal_reason", "eal_packet", "eal_packet"]
+    collection = next(item for item in report["tool_calls"] if item["tool"] == "eal_collect")
+    assert collection["arguments"]["evidence_ids"] == ["measured"]
+    feedback = feedback_result(report["conversation"], "assess")
+    assert feedback["schema"] == "EAL/assessment-packet-set/1"
+    assert set(feedback["packets"]) == {"works", "second"}
+
+
+def test_stateful_model_can_plan_collect_claim_and_retrieve_packet(tmp_path):
+    provider = ScriptedProvider([
+        {"operation": "plan", "claim": "works"},
+        {"operation": "collect_claim", "claim": "works"},
+        {"operation": "reason"},
+        {"operation": "packet", "claim": "works"},
+        {"operation": "finish"},
+    ])
+    report = asyncio.run(run_agent("Check works", provider, server(tmp_path),
+        required_claims=("works",), initial_data={"source": SOURCE, "context": {"site": "bench"}}))
+    assert report["status"] == "completed", report
+    calls = [entry["tool"] for entry in report["tool_calls"] if entry["tool"] != "eal_describe"]
+    assert calls == ["eal_plan", "eal_validate", "eal_collect_claim", "eal_reason", "eal_packet"]
+    assert feedback_result(report["conversation"], "packet")["claims"]["works"]["status"] == "supported"
+    assert report["final"]["claims"]["works"]["status"] == "supported"
 
 
 def test_assess_counts_every_call_against_budget_and_cannot_reuse_old_assessment(tmp_path):

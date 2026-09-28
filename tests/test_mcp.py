@@ -21,7 +21,8 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
     script = tmp_path / "tool.py"
     script.write_text("import json,sys\nrequest=json.load(sys.stdin)\nprint(json.dumps({'value':{'passed':True}}))\n")
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nargv=' + json.dumps([sys.executable, str(script)]) + '\n')
+    registry.write_text('[tools.runner]\nkind="command"\nversion="1"\nmodel_access="general"\nargv='
+                        + json.dumps([sys.executable, str(script)]) + '\n')
     parameters = StdioServerParameters(
         command=sys.executable,
         args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(registry)],
@@ -34,7 +35,8 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
                 hello = await session.initialize()
                 assert hello.protocolVersion == "2025-11-25"
                 names = {entry.name for entry in (await session.list_tools()).tools}
-                assert {"eal_describe", "eal_format", "eal_validate", "eal_collect", "eal_reason", "eal_explain", "eal_grounded"} <= names
+                assert {"eal_describe", "eal_format", "eal_validate", "eal_plan", "eal_collect",
+                        "eal_collect_claim", "eal_reason", "eal_explain", "eal_packet", "eal_grounded"} <= names
                 described = await session.call_tool("eal_describe", {})
                 assert not described.isError
                 assert "EAL/2" in described.structuredContent["languages"]
@@ -44,6 +46,8 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
                 valid = await session.call_tool("eal_validate", {"source": SOURCE})
                 assert not valid.isError
                 assert valid.structuredContent["valid"]
+                planned = await session.call_tool("eal_plan", {"source": SOURCE, "claim": "works"})
+                assert planned.structuredContent["evidence_ids"] == ["measured"]
                 collected = await session.call_tool("eal_collect", {"source": SOURCE, "context": {"site": "bench"}})
                 assert not collected.isError
                 collection_id = collected.structuredContent["collection_id"]
@@ -52,6 +56,10 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
                 assert reasoned.structuredContent["claims"]["works"]["status"] == "supported"
                 explained = await session.call_tool("eal_explain", {"assessment_id": reasoned.structuredContent["assessment_id"], "claim": "works"})
                 assert explained.structuredContent["result"]["status"] == "supported"
+                packet = await session.call_tool("eal_packet", {"assessment_id": reasoned.structuredContent["assessment_id"], "claim": "works"})
+                assert packet.structuredContent["claims"]["works"]["status"] == "supported"
+                selected = await session.call_tool("eal_collect_claim", {"source": SOURCE, "context": {"site": "bench"}, "claim": "works"})
+                assert selected.structuredContent["plan"]["evidence_ids"] == ["measured"]
                 grounded = await session.call_tool("eal_grounded", {"arguments": ["a", "b"], "attacks": [["a", "b"]]})
                 assert grounded.structuredContent["accepted"] == ["a"]
                 error = await session.call_tool("eal_explain", {"assessment_id": "missing"})

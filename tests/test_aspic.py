@@ -348,7 +348,7 @@ def test_installed_method_runs_over_real_mcp_collection_and_reasoning(tmp_path):
         "'request':{k:req[k] for k in ('tool','tool_version','input','context')}}))\n"
     )
     (tmp_path / "tools.toml").write_text(
-        '[tools.collector]\nkind="command"\nversion="1"\nargv='
+        '[tools.collector]\nkind="command"\nversion="1"\nmodel_access="general"\nargv='
         + json.dumps([sys.executable, str(script)]) + "\n"
     )
     parameters = StdioServerParameters(

@@ -37,7 +37,7 @@ Lists use commas. An argument needs at least one direct evidence, assumption or 
 
 An argument's conclusion, evidence, assumptions, premise claims and reasoning backing must use the same named environment. An objection's evidence and premise claims must share an environment compatible with its target. A reasoning-target objection affects applications of that reasoning declaration within the objection's environment. The conclusion-to-premise graph must be acyclic; attack and objection-support cycles are permitted and may remain undecided. Their calculation is in the [argument model](argument-model.md).
 
-Source selects a tool by name and exact version. The trusted host binding specifies execution, while the observation records the selected binding's digest. A tool declaration has no repeatability classification: actual variability depends on inputs, state, software and collection conditions.
+Source selects a tool by name and exact version. The trusted host binding specifies execution and model access, while the observation records the selected binding's digest. The operator may separately authorise bounded parallel collection for read-only independent calls. These operational settings remain in TOML, outside EAL. A tool declaration has no repeatability classification: actual variability depends on inputs, state, software and collection conditions.
 
 ## Reusable argument patterns
 
@@ -130,4 +130,4 @@ The optional [ASPIC+ method](aspic-method.md) accepts an explicit typed `proposi
 
 Recognition produces typed intermediate representation. Independent passes check IR shape, unique identity, reference kinds, predicate types, registered method contracts, typed query/output correspondence, dependencies, scopes and bounds. Diagnostics provide a code, message, declaration and, where available, one-based source span with exclusive end; contract mismatches can include expected and actual types. Open JSON output fields retain runtime checks. Malformed Python-created IR is checked too.
 
-`format_source(source)` validates and emits canonical source. `format_program(program)` applies the same checks to IR; `semantic_ir(program)` supports parse–format–parse comparisons. Formatting retains meaning and authored pattern/application forms, but can change comments and declaration order across categories. Changed exact source bytes change its digest, so observations must be recollected or explicitly rebound through the normal collection workflow.
+`format_source(source)` validates and emits canonical source. `format_program(program)` applies the same checks to IR; `semantic_ir(program)` supports parse–format–parse comparisons. Formatting retains meaning and authored pattern/application forms, but can change comments and declaration order across categories. Changed exact source bytes change its digest, so reasoning requires a new collection made by acquisition or explicit rebinding of matching stored observations at their original age.

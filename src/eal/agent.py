@@ -245,6 +245,32 @@ def _check_collection_identity(result: dict, arguments: dict) -> None:
         raise ValueError("Collection identity differs from the requested source or context")
 
 
+def _check_plan_identity(result: dict, source: str, claim: str) -> list[str]:
+    if (result.get("source_digest") != _digest(source) or result.get("claim") != claim
+            or not isinstance(result.get("evidence_ids"), list)
+            or any(not isinstance(name, str) or not name for name in result["evidence_ids"])
+            or len(set(result["evidence_ids"])) != len(result["evidence_ids"])):
+        raise ValueError("Evidence plan differs from the requested source or claim")
+    return result["evidence_ids"]
+
+
+def _check_packet_identity(packet: dict, assessment: dict, claim: str | None) -> None:
+    if (packet.get("schema") != "EAL/assessment-packet/1"
+            or packet.get("assessment_id") != assessment.get("assessment_id")
+            or packet.get("source_digest") != assessment.get("source_digest")
+            or packet.get("context_fingerprint") != assessment.get("context_fingerprint")
+            or packet.get("method_registry_fingerprint") != assessment.get("method_registry_fingerprint")
+            or not isinstance(packet.get("claims"), dict)):
+        raise ValueError("Packet identity differs from the checked assessment")
+    if claim is not None and (claim not in packet["claims"] or
+                              packet["claims"][claim].get("status") != assessment["claims"][claim]["status"]):
+        raise ValueError("Packet claim differs from the checked assessment")
+    if claim is None and any(
+            name not in assessment["claims"] or item.get("status") != assessment["claims"][name]["status"]
+            for name, item in packet["claims"].items()):
+        raise ValueError("Packet statuses differ from the checked assessment")
+
+
 def _leaves(error: BaseException) -> list[BaseException]:
     if isinstance(error, BaseExceptionGroup):
         return [leaf for child in error.exceptions for leaf in _leaves(child)]
@@ -291,11 +317,11 @@ class _ActiveState:
     def expand(self, request: dict) -> dict:
         request = dict(request)
         op = request.get("operation")
-        if op in {"validate", "format", "collect", "reason"} and "source" not in request:
+        if op in {"validate", "format", "plan", "collect", "collect_claim", "reason"} and "source" not in request:
             if self.source is None:
                 raise ValueError("No active source; supply source explicitly")
             request["source"] = self.source
-        if op in {"collect", "reason"} and "context" not in request:
+        if op in {"collect", "collect_claim", "reason"} and "context" not in request:
             if self.context is None:
                 raise ValueError("No active context; supply context explicitly")
             request["context"] = self.context
@@ -308,7 +334,7 @@ class _ActiveState:
                 request["now"] = self.now
             if "collection_id" not in request and same_source and same_context and self.collection_id is not None:
                 request["collection_id"] = self.collection_id
-        if op in {"explain", "finish"} and "assessment_id" not in request:
+        if op in {"explain", "packet", "finish"} and "assessment_id" not in request:
             if self.assessment is None:
                 raise ValueError("No current assessment; reason over the active source and observations first")
             request["assessment_id"] = self.assessment["assessment_id"]
@@ -401,7 +427,7 @@ def _host_operation(tool, stateful: bool = False, initial: dict | None = None) -
             schema["properties"]["detail"] = {"type": "string", "enum": ["summary", "full"], "default": "summary",
                 "description": "Summary preserves outcomes and dependencies; full retrieves complete method contracts, formal inputs and solver traces."}
         owned = {"assessment_id"}
-        if operation in {"collect", "reason", "format"} or "source" in initial:
+        if operation in {"plan", "collect", "collect_claim", "reason", "format"} or "source" in initial:
             owned.add("source")
         owned.update(key for key in ("context", "now") if key in initial)
         for key in owned:
@@ -417,46 +443,38 @@ def _host_operation(tool, stateful: bool = False, initial: dict | None = None) -
 def _compact_feedback(response: dict) -> dict:
     """Keep conclusions and limitations; make bulky derivations retrievable."""
     operation, original = response.get("operation"), response.get("result")
-    if response.get("is_error") or not isinstance(original, dict) or operation not in {"collect", "reason", "explain", "assess"}:
+    if response.get("is_error") or not isinstance(original, dict) or operation not in {"collect", "collect_claim", "reason", "explain", "assess"}:
         return response
-    value = dict(original)
-    if operation == "collect":
-        fields = {"status", "error", "collected_at", "run_id", "tool", "tool_version", "tool_binding_digest",
-                  "evidence_kind", "environment", "value", "data_digest", "execution_error", "output_truncated"}
+    if operation == "assess":
+        # The automatic workflow returns a bounded server packet, never raw
+        # collector observations or a second copy of the full assessment.
+        return response
+    if operation in {"collect", "collect_claim"}:
+        value = dict(original)
+        fields = {"status", "collected_at", "run_id", "tool", "tool_version", "tool_binding_digest",
+                  "evidence_kind", "environment", "data_digest", "input_digest", "source_digest",
+                  "evidence_id", "output_truncated"}
         value["records"] = {name: {key: item for key, item in record.items() if key in fields}
                             for name, record in original.get("records", {}).items()}
         value.pop("context", None)  # The exact active context is sent once beside the result.
     else:
-        arguments = {}
-        for name, argument in original.get("arguments", {}).items():
-            entry = dict(argument)
-            computation = dict(entry.get("reasoning_result", {}))
-            contract = computation.pop("method_contract", None)
-            if isinstance(contract, dict):
-                computation["method"] = {key: contract[key] for key in (
-                    "identifier", "implementation_version", "execution", "quantity_interpretation", "outputs") if key in contract}
-            if isinstance(computation.get("binding"), dict):
-                binding = dict(computation["binding"])
-                binding.pop("method_contract", None)
-                binding.pop("formal_query", None)
-                # The complete proposition remains on its named claim.
-                binding.pop("proposition", None)
-                binding["claim"] = entry.get("conclusion")
-                computation["binding"] = binding
-            details = computation.get("details")
-            if isinstance(details, dict):
-                computation["details"] = {key: item for key, item in details.items() if len(_json(item)) <= 2048}
-                omitted = [key for key in details if key not in computation["details"]]
-                if omitted:
-                    computation["detail_fields_available_in_full_explanation"] = omitted
-            entry["reasoning_result"] = computation
-            arguments[name] = entry
-        if "arguments" in original:
-            value["arguments"] = arguments
-        if isinstance(original.get("dialectic"), dict):
-            value["dialectic"] = {key: item for key, item in original["dialectic"].items() if key != "trace"}
-        value["full_explanation"] = {"operation": "explain", "detail": "full"}
-    return {**response, "result": value, "feedback_detail": "summary"}
+        from .packets import AssessmentPacketBuilder
+
+        assessment = original
+        selected = None
+        if operation == "explain" and isinstance(original.get("claim"), str):
+            selected = [original["claim"]]
+            assessment = {**original, "valid": True,
+                          "claims": {original["claim"]: original.get("result")}}
+        try:
+            value = AssessmentPacketBuilder().build(assessment, claims=selected)
+        except (ValueError, TypeError, KeyError):
+            # A malformed/invalid assessment cannot be promoted into model
+            # feedback by copying arbitrary method or observation fields.
+            value = {"assessment_id": original.get("assessment_id"),
+                     "valid": original.get("valid") is True,
+                     "packet_unavailable": True}
+    return {**response, "result": value, "feedback_detail": "packet"}
 
 
 def _request_templates(stateful: bool = False) -> list[dict]:
@@ -464,7 +482,7 @@ def _request_templates(stateful: bool = False) -> list[dict]:
     if stateful:
         # This template performs the fixed tool workflow in the host itself.
         # Individual operations remain available for deliberate investigation.
-        return [{"step": "Validate, collect, reason and retrieve the current explanation", "request": {"operation": "assess"}},
+        return [{"step": "Validate, collect, reason and retrieve the current claim packet", "request": {"operation": "assess"}},
                 {"step": "Return the required claims from the current assessment", "request": {"operation": "finish"}}]
     return [
         {"step": "Validate the source", "request": {"operation": "validate", "source": "<complete source text>"}},
@@ -498,7 +516,7 @@ def _control_operations(stateful: bool = False, assess_available: bool = True) -
                           "properties": {"old": {"type": "string", "minLength": 1}, "new": {"type": "string"}}}}}}})
         if assess_available:
             operations.append({"operation": "assess", "description":
-                "Validate the active source, collect fresh observations, reason with that new collection, and retrieve the explanation. This runs collection again; reason alone reuses retained observations.",
+                "Validate the active source, collect its claim evidence, reason with that new collection, and retrieve the packet. This runs collection again; reason alone reuses retained observations.",
                 "input_schema": {"type": "object", "additionalProperties": False, "required": ["operation"],
                                  "properties": {"operation": {"const": "assess"}}}})
     return operations
@@ -542,7 +560,8 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                     run.report["discovered_tools"] = [
                         {"name": t.name, "description": t.description, "input_schema": t.inputSchema}
                         for t in available if t.name in schemas]
-                    assess_available = {"eal_validate", "eal_collect", "eal_reason", "eal_explain"} <= schemas.keys()
+                    assess_available = {"eal_validate", "eal_collect", "eal_collect_claim",
+                                        "eal_plan", "eal_reason", "eal_packet"} <= schemas.keys()
                     run.report["host_operations"] = [_host_operation(t, stateful, run.initial_data) for t in available if t.name in schemas] + _control_operations(stateful, assess_available)
                     run.operations = run.report["host_operations"]
 
@@ -562,7 +581,12 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                             value = result.structuredContent
                             if value is None:
                                 value = {"content": [i.model_dump(mode="json", exclude_none=True) for i in result.content]}
-                            event.update(status="error" if result.isError else "ok", is_error=bool(result.isError), result=value)
+                            recorded = (_compact_feedback({"operation": tool.removeprefix("eal_"),
+                                                           "is_error": bool(result.isError), "result": value})["result"]
+                                        if tool in {"eal_collect", "eal_collect_claim"} and not result.isError
+                                        else value)
+                            event.update(status="error" if result.isError else "ok", is_error=bool(result.isError),
+                                         result=recorded)
                             return {"operation": tool.removeprefix("eal_"), "is_error": bool(result.isError), "result": value}
                         except asyncio.CancelledError:
                             event.update(status="cancelled", is_error=True)
@@ -590,10 +614,43 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                         if not state.valid:
                             return {"operation": "assess", "is_error": True, "failed_operation": "validate", "result": validation["result"]}
                         validated_sources.add(_digest(state.source))
-                        collected = await call("eal_collect", {"source": state.source, "context": state.context})
+                        collection_steps = []
+                        if len(required_claims) == 1:
+                            claim = required_claims[0]
+                            collected = await call("eal_collect_claim", {
+                                "source": state.source, "context": state.context, "claim": claim,
+                            })
+                            collection_steps.append("collect_claim")
+                            if not collected["is_error"]:
+                                plan = collected["result"].get("plan", {})
+                                selected_ids = _check_plan_identity(plan, state.source, claim)
+                                if set(collected["result"].get("records", {})) != set(selected_ids):
+                                    raise ValueError("Claim collection differs from its evidence plan")
+                        elif required_claims:
+                            selected_ids = []
+                            for claim in required_claims:
+                                planned = await call("eal_plan", {"source": state.source, "claim": claim})
+                                if planned["is_error"]:
+                                    return {"operation": "assess", "is_error": True,
+                                            "failed_operation": "plan", "result": planned["result"]}
+                                collection_steps.append("plan")
+                                for name in _check_plan_identity(planned["result"], state.source, claim):
+                                    if name not in selected_ids:
+                                        selected_ids.append(name)
+                            collected = await call("eal_collect", {"source": state.source,
+                                                                   "context": state.context,
+                                                                   "evidence_ids": selected_ids})
+                            collection_steps.append("collect")
+                        else:
+                            collected = await call("eal_collect", {"source": state.source,
+                                                                   "context": state.context})
+                            collection_steps.append("collect")
                         if collected["is_error"] or not isinstance(collected["result"].get("collection_id"), str):
                             return {"operation": "assess", "is_error": True, "failed_operation": "collect", "result": collected["result"]}
                         _check_collection_identity(collected["result"], arguments)
+                        if required_claims and len(required_claims) > 1 and set(
+                                collected["result"].get("records", {})) != set(selected_ids):
+                            raise ValueError("Collection differs from the union of required claim plans")
                         state.collection_id = collected["result"]["collection_id"]
                         reason_arguments = {**arguments, "collection_id": state.collection_id}
                         assessed = await call("eal_reason", reason_arguments)
@@ -601,15 +658,28 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                         if assessed["is_error"] or result.get("valid") is not True or not isinstance(result.get("assessment_id"), str) or not isinstance(result.get("claims"), dict):
                             return {"operation": "assess", "is_error": True, "failed_operation": "reason", "result": result}
                         _check_assessment_identity(result, reason_arguments)
-                        explanation = await call("eal_explain", {"assessment_id": result["assessment_id"]})
-                        if explanation["is_error"]:
-                            return {"operation": "assess", "is_error": True, "failed_operation": "explain", "result": explanation["result"]}
-                        _check_assessment_identity(explanation["result"], reason_arguments)
-                        if explanation["result"].get("assessment_id") != result["assessment_id"]:
-                            raise ValueError("Explanation does not identify the requested assessment")
+                        packet_claims = required_claims or (None,)
+                        packets = {}
+                        for claim in packet_claims:
+                            request = {"assessment_id": result["assessment_id"]}
+                            if claim is not None:
+                                request["claim"] = claim
+                            response = await call("eal_packet", request)
+                            if response["is_error"]:
+                                return {"operation": "assess", "is_error": True,
+                                        "failed_operation": "packet", "result": response["result"]}
+                            packet = response["result"]
+                            _check_packet_identity(packet, result, claim)
+                            packets[claim] = packet
                         state.assessment = result
-                        return {"operation": "assess", "is_error": False, "result": result,
-                                "completed_operations": ["validate", "collect", "reason", "explain"]}
+                        checked_packet = (packets[packet_claims[0]] if len(packet_claims) == 1 else {
+                            "schema": "EAL/assessment-packet-set/1", "assessment_id": result["assessment_id"],
+                            "claims": {claim: packets[claim]["claims"][claim] for claim in required_claims},
+                            "packets": packets,
+                        })
+                        return {"operation": "assess", "is_error": False, "result": checked_packet,
+                                "completed_operations": ["validate", *collection_steps, "reason",
+                                                         *(["packet"] * len(packet_claims))]}
 
                     transport_instruction = (
                         "Call exactly one supplied operation function per turn. The function name selects the operation; supply its arguments only. "
@@ -619,9 +689,9 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                         "The host retains the exact active source, context, assessment time, current matching collection and current assessment. "
                         "Host-owned fields are absent from operation schemas: do not copy source, context, timestamps or identifiers into those requests. "
                         "A source_digest is metadata, NEVER source text. The literal strings initial_data or source are NEVER source text. "
-                        "Start with {\"operation\":\"assess\"} to validate, collect fresh observations, reason and retrieve the explanation in one host workflow. "
+                        "Start with {\"operation\":\"assess\"} to validate, collect the required claims' evidence, reason and retrieve compact checked packets in one host workflow. "
                         "Then {\"operation\":\"finish\"} returns the required claims from that checked assessment. "
-                        "Individual validate, collect, reason and explain operations remain available; reason reuses observations while assess collects again. "
+                        "Individual plan, collect_claim, collect, reason, packet and explain operations remain available; reason reuses observations while assess collects again. "
                         "Finish with {\"operation\":\"finish\"} to return the task's required claims from the current assessment. "
                         "If no required claims were supplied, include claims explicitly in finish. "
                         "To repair an unanchored draft, use revise with replacements:[{old:<unique original text>,new:<replacement text>}]. "
@@ -728,11 +798,11 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                                 parse_time(arguments["now"])
                             if operation == "reason" and "now" in run.initial_data and arguments.get("now") != run.initial_data["now"]:
                                 raise ValueError("reason must include the fixed task assessment time as now")
-                            if operation in {"collect", "reason"} or operation == "validate" and not stateful:
+                            if operation in {"collect", "collect_claim", "reason"} or operation == "validate" and not stateful:
                                 state.adopt(arguments)
-                            if operation in {"collect", "reason"}:
+                            if operation in {"collect", "collect_claim", "reason"}:
                                 state.assessment = None
-                                if operation == "collect":
+                                if operation in {"collect", "collect_claim"}:
                                     state.collection_id = None
                                 source_id = _digest(arguments["source"])
                                 if source_id not in validated_sources:
@@ -758,8 +828,15 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                                 state.adopt({"source": arguments["source"]})
                                 validated_sources.add(_digest(arguments["source"]))
                                 state.valid = True
-                            if operation == "collect" and isinstance(result.get("collection_id"), str):
+                            if operation == "plan":
+                                _check_plan_identity(result, arguments["source"], arguments["claim"])
+                            if operation in {"collect", "collect_claim"} and isinstance(result.get("collection_id"), str):
                                 _check_collection_identity(result, arguments)
+                                if operation == "collect_claim":
+                                    selected_ids = _check_plan_identity(
+                                        result.get("plan", {}), arguments["source"], arguments["claim"])
+                                    if set(result.get("records", {})) != set(selected_ids):
+                                        raise ValueError("Claim collection differs from its evidence plan")
                                 state.collection_id = result["collection_id"]
                             if operation == "reason":
                                 if result.get("valid") is not True or not isinstance(result.get("assessment_id"), str) or not isinstance(result.get("claims"), dict):
@@ -768,7 +845,14 @@ async def run_agent(task: str, provider: TextProvider, server: StdioServerParame
                                 _check_assessment_identity(result, arguments)
                                 state.assessment = result
                                 state.context = arguments["context"]
-                            run.feedback(_compact_feedback(response) if stateful and detail != "full" else response)
+                            if operation == "packet" and stateful:
+                                if state.assessment is None:
+                                    raise ValueError("A packet requires the active checked assessment")
+                                _check_packet_identity(result, state.assessment, arguments.get("claim"))
+                            # Collection results can contain arbitrary values from
+                            # trusted commands. Never feed those bytes into a model,
+                            # including when it explicitly asks for full detail.
+                            run.feedback(_compact_feedback(response))
                         except (ValueError, TypeError, KeyError, RecursionError) as exc:
                             run.repair(str(exc), phase="request")
                     raise _Stop("iteration_budget_exhausted")

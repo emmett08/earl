@@ -227,7 +227,8 @@ def _fixture_server(tmp_path):
     (tmp_path / "value.json").write_text(json.dumps({"value": {"passed": True}, "context": CONTEXT, "observed_at": NOW,
         "request": acquisition_request(parse(BASE), "positive", CONTEXT)}))
     registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.collector]\nkind="json_file"\npath="value.json"\nversion="1"\n')
+    registry.write_text('[tools.collector]\nkind="json_file"\npath="value.json"\nversion="1"\n'
+                        'model_access="general"\n')
     return StdioServerParameters(command=sys.executable,
         args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(registry)])
 

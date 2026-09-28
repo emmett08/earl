@@ -167,7 +167,7 @@ class TrialTools:
         source = source_for(self.case["target"]["input"], self.case["target"]["context"], report_id)
         (directory / "source.eal").write_text(source)
         registry = directory / "tools.toml"
-        registry.write_text('[tools.api_load_test]\nkind="command"\nversion="2"\n'
+        registry.write_text('[tools.api_load_test]\nkind="command"\nversion="2"\nmodel_access="general"\n'
                             'timeout_seconds=60\nmax_output_bytes=32768\n'
                             f'argv={json.dumps(argv)}\n')
         settings = StdioServerParameters(command=sys.executable,
