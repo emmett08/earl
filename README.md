@@ -72,7 +72,7 @@ The [developer and model handover experiment](experiments/transfer_study/README.
 | [ASPIC+ method](docs/aspic-method.md) | Optional formal method and compiler |
 | [Integration contract](CONTRACT.md) | Python, CLI, MCP and record interfaces |
 | [EAL/2 experiment methodology](docs/eal2-experiment-methodology.md) | Practical thresholds, pilot-informed allocation and cumulative fresh-session evaluation |
-| [Experiment workflow and inputs](experiments/model_transfer/WORKFLOW.md) | Plan selection, run order, concurrent collection, resumption, annotation and evaluation |
+| [Experiment workflow and inputs](experiments/model_transfer/WORKFLOW.md) | One wrapper for free checks, automatic collection segments, annotation hand-off, analysis and evaluation planning |
 | [Handover experiment](experiments/transfer_study/README.md) | New-session developer and model comparison protocol |
 
 Correctness of an authored question and its tool's real-world measurements remains the developer's responsibility. Collector-call reduction is tested; improvements in model accuracy, latency and cost need paired trials across model sizes and sessions.

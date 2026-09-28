@@ -6,6 +6,76 @@ allocation. A completed software run is not a completed scientific investigation
 Read `execution_status`, annotation counts, accounting flags and decision status
 separately. No current protocol benefit is asserted by the supplied synthetic checks.
 
+## One workflow for the ordered stages
+
+Open **Actions → EAL experiment → Run workflow**. For the principal pilot, leave
+**operation = start**, **plan = comparison**, **workers = 0**, and every other
+field blank. Configure the repository secret `OPENAI_API_KEY` before collection.
+This is the recommended entry point; **EAL tests** remains available for an
+individual stage or verification alone.
+
+The wrapper runs the shared verification/build job, calibrates the selected
+plan, then rehearses its collection, annotation and analysis using scripted
+responses. Once these checks pass, it collects live observations with four
+workers by default. Up to four successive collection jobs each allow 6,000
+seconds. They pass the cumulative artefact ID automatically and stop early when
+collection completes. The frozen plan's USD 2 and 21,600-second ceilings apply
+across all jobs; no segment receives a new budget. Setup, free checks and uploads
+add to overall workflow duration and GitHub Actions usage.
+
+Only an ordinary collection deadline starts the next segment automatically.
+Provider errors, cancellation, exhausted limits and unexpected failures retain
+their data for inspection. Collection jobs reject **Re-run jobs**, which could
+replay paid work from an older artefact. Recover with a new **resume** dispatch
+using the latest full artefact. The wrapper cannot make an exhausted plan
+complete by resetting its allowances.
+
+After collection stops, the wrapper reconstructs a resource/completeness report
+and exports the answers for independent coding. Its summary links two distinct
+artefacts: the full retained run and `experiment-annotations-…`, containing only
+the masked `items.json`. Give the assessor the latter. The full artefact includes
+the private assignment mapping and reference material.
+
+Independent coding is the only required external hand-off. The workflow ends
+with **awaiting_annotations**, retaining its data while the assessor works; no
+runner waits for the labels. Commit the completed labels JSON to the repository.
+Run **EAL experiment** again with **operation = finish**, the **full export
+artefact ID**, and **annotation_labels = the repository path to that file**.
+The wrapper requires a code for every exported answer, imports the labels,
+analyses the retained observations, and runs prospective allocation planning
+for a principal/cadence pilot. An ambiguous code remains unresolved. A successful
+processing job can still report incomplete measurement or no supported allocation.
+Repeating `finish` on its latest full artefact archives earlier derived outputs
+under `processing/` before importing the supplied labels. An earlier evaluation
+plan cannot remain active when the current processing finds no supported allocation.
+
+| Operation | Required inputs | Ordered work and stopping point |
+|---|---|---|
+| `start` | Pilot `plan`; `plan_path` only for `custom` | Verify → calibrate → rehearse → collect/resume automatically → analyse retained resources → export masked answers. Stops for independent labels. |
+| `resume` | Latest **full** `source_artifact_id` | Verify runtime/implementation/plan identity → continue the same bounded collection → analyse/export. Saved workers and cumulative allowances remain in force. |
+| `finish` | Full export `source_artifact_id`, completed `annotation_labels`; optional matching `information_config` | Verify → import every answer code → analyse → plan a supported allocation when applicable. No model calls. |
+| `evaluate` | Full finish/planning `source_artifact_id` containing `evaluation-plan.json` | Verify → calibrate/rehearse the allocated plan → collect a **fresh**, separately bounded evaluation → analyse/export. Finish its labels with `finish`. Pilot rows are not copied into evaluation outcomes. |
+| `rehearse` | Pilot `plan`; `plan_path` for `custom` | Verify → calibrate → full scripted collection, annotation roundtrip and analysis. No live model evidence or API charges. |
+
+`workers=0` uses the selected plan. A new pilot can select 1–8; resume preserves
+its saved count, and evaluation rejects any change to its allocated count.
+`information_config` is used only by `finish`. Diagnostics finish after their
+mechanism analysis; they do not feed the principal allocation planner. An
+evaluation also finishes after analysis. Starting another paid evaluation always
+requires the explicit `evaluate` operation and a supported saved plan.
+
+The wrapper records orchestration schema `EAL/experiment-pipeline/1`. Package
+2.18.0, protocol 6.0.0, measured implementation, scoring and execution contracts
+remain unchanged. Workflow scripts live outside the measured implementation
+digest, so otherwise compatible retained protocol-6 runs can use the wrapper.
+Changes to measured code, runtime dependencies or the plan still prevent resume.
+
+The wrapper is a manually dispatched caller of [reusable GitHub workflows](https://docs.github.com/en/actions/how-tos/reuse-automations/reuse-workflows).
+Every job uses the dispatch commit, and only collection jobs receive the model
+API secret. Calibration and scripted records have their own retained artefact.
+The stage summary supplies the artefact IDs needed at the two explicit hand-offs
+(labels and a fresh evaluation); collection passes its own IDs between jobs.
+
 ## Choose a question, then a plan
 
 | Actions plan input | Local plan | Question and intended use |

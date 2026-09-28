@@ -15,20 +15,32 @@ usage and dollar totals are deliberately scripted software inputs.
 | Check | Actual result |
 |---|---|
 | Scientific validation | Pinned validator self-test passed; both maintained protocols valid with zero errors and warnings. Source digests verified by regression test. |
-| Integrated repository check | `make check`: 936 tests passed, one optional ASPIC reference test skipped. ANTLR 4.13.2 parser verification and the maintained CLI/MCP example passed. |
+| Integrated repository check | `make check`: 958 tests passed, one optional ASPIC reference test skipped. ANTLR 4.13.2 parser verification and the maintained CLI/MCP example passed. |
 | Final interruption accounting check | 50 execution/diagnostic tests passed after conservative timing and collector-coverage hardening. |
 | Full principal rehearsal | All 384 sequences, 4,224 sessions and 6,528 synthetic API attempts retained with four workers. All 4,224 answer codes imported; raw rows unchanged and resources reproduced offline. 83 calibration checks passed. |
 | Component diagnostic rehearsal | Ten donors, 46 recipients, 66 synthetic attempts; 27 calibration checks. All 56 answers passed the annotation roundtrip, including JSON explanations. |
 | Cadence diagnostic rehearsal | Six donors, 30 recipients, 42 synthetic attempts; 23 calibration checks. All 36 answers passed annotation and reconstruction. Frequent-change reuse can remain an invalid actual-reuse contrast because both policies recollect. |
 | Complete cadence calibration | 215 checks passed across all 18 cases and eleven snapshots; no model requests. |
-| Workflow inputs | New collection, resume, custom evaluation artefacts, annotation export/import, offline analysis, deadline margins and rejection of resume flags on offline actions tested. YAML parses with ten dispatch inputs and no automatic trigger. |
-| Distribution | `make build` produced the 2.18.0 wheel and source archive; runtime constraints and pinned validator are included in the source distribution. |
+| Workflow inputs | Single-stage dispatch retains ten inputs; the ordered wrapper has seven. All four YAML files passed workflow-schema and reusable-call interface checks. Entry workflows are manual; the two supporting workflows are callable only. |
+| Ordered wrapper | 22 targeted tests passed after final offline-reprocessing changes. Tests exercise deadline-only automatic continuation, cumulative reservations and hard-kill time leases, paid rerun rejection, frozen worker counts, and actual scripted collection across two artefact transfers with earlier attempts unchanged. |
+| Wrapper annotation and allocation | Principal and diagnostic scripted observations passed actual export/import/analysis. Missing labels stop import. Reprocessing archives earlier derived records and clears stale evaluation plans. Synthetic observations cannot produce a supported evaluation allocation. |
+| Wrapper principal preflight | The actual `rehearse` entry point completed 83 calibration checks, all 384 sequences / 4,224 sessions / 6,528 scripted requests, and imported 4,224 answer codes. Raw rows and resource totals were preserved. No live model requests. |
+| Distribution | `make build` produced the 2.18.0 wheel and source archive. The source includes runtime constraints, the pinned validator, wrapper script and reusable workflows. |
 
 Current complete-pipeline summaries and fingerprints are retained in
 [validation/runtime-rehearsals.json](validation/runtime-rehearsals.json). The
 older `validation/rehearsals.json` remains a baseline software record. Neither
 file supplies empirical answers, human annotations or a supported evaluation
 allocation. Raw generated rehearsal directories are reproducible local outputs.
+
+[validation/wrapper.json](validation/wrapper.json) records the wrapper checks.
+Its orchestration contract is `EAL/experiment-pipeline/1`; the measured
+implementation digest remains
+`dcd14a0c70a424fb0d138789595080f341c032873f70364fb2ce695e2b9152bd`.
+The wrapper was exercised locally with scripted transport and artefact transfer
+fixtures. GitHub-hosted orchestration and live-provider throughput have not been
+executed for this change. Workflow structure/interface checks are distinct from
+a completed hosted run.
 
 Recovery tests cover bounded overlap, serial order within each matched pair,
 unique receipt IDs, atomic budget admission, cancellation/deadline stops, exact

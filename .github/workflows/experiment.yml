@@ -1,0 +1,114 @@
+name: EAL experiment
+run-name: EAL experiment — ${{ inputs.operation }} — ${{ inputs.plan }}
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'start runs the pilot; finish imports labels and processes results; evaluate starts a separately budgeted evaluation'
+        type: choice
+        options: [start, resume, finish, evaluate, rehearse]
+        default: start
+      plan:
+        description: 'Pilot question (used only for start/rehearse); bundled plans have a USD 2 ceiling'
+        type: choice
+        options: [comparison, diagnostics, cadence, cadence-diagnostics, custom]
+        default: comparison
+      source_artifact_id:
+        description: 'Latest full artefact ID for resume/finish; planning artefact for evaluate; otherwise blank'
+        type: string
+        default: ''
+      annotation_labels:
+        description: 'For finish: repository path to completed independent labels JSON'
+        type: string
+        default: ''
+      plan_path:
+        description: 'For a custom start/rehearse only: repository path to pilot plan'
+        type: string
+        default: ''
+      information_config:
+        description: 'For finish: optional repository path to a matching allocation configuration'
+        type: string
+        default: ''
+      workers:
+        description: '0 uses the plan (default 4); 1–8 overrides a new pilot; resume/evaluation preserve their allocation'
+        type: number
+        default: 0
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: eal-experiment-${{ inputs.source_artifact_id || github.run_id }}
+  cancel-in-progress: false
+jobs:
+  verify:
+    uses: ./.github/workflows/verify.yml
+  prepare:
+    needs: verify
+    if: ${{ inputs.operation != 'finish' }}
+    uses: ./.github/workflows/experiment-stage.yml
+    with:
+      phase: prepare
+      stage_name: prepared
+      operation: ${{ inputs.operation }}
+      plan: ${{ inputs.plan }}
+      plan_path: ${{ inputs.plan_path }}
+      source_artifact_id: ${{ inputs.source_artifact_id }}
+      workers: ${{ inputs.workers }}
+  collect-1:
+    needs: prepare
+    if: ${{ needs.prepare.outputs.can_collect == 'true' }}
+    uses: ./.github/workflows/experiment-stage.yml
+    with:
+      phase: collect
+      stage_name: segment-1
+      source_artifact_id: ${{ needs.prepare.outputs.artifact_id }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  collect-2:
+    needs: collect-1
+    if: ${{ needs.collect-1.outputs.can_collect == 'true' }}
+    uses: ./.github/workflows/experiment-stage.yml
+    with:
+      phase: collect
+      stage_name: segment-2
+      source_artifact_id: ${{ needs.collect-1.outputs.artifact_id }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  collect-3:
+    needs: collect-2
+    if: ${{ needs.collect-2.outputs.can_collect == 'true' }}
+    uses: ./.github/workflows/experiment-stage.yml
+    with:
+      phase: collect
+      stage_name: segment-3
+      source_artifact_id: ${{ needs.collect-2.outputs.artifact_id }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  collect-4:
+    needs: collect-3
+    if: ${{ needs.collect-3.outputs.can_collect == 'true' }}
+    uses: ./.github/workflows/experiment-stage.yml
+    with:
+      phase: collect
+      stage_name: segment-4
+      source_artifact_id: ${{ needs.collect-3.outputs.artifact_id }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  export:
+    needs: [prepare, collect-1, collect-2, collect-3, collect-4]
+    if: ${{ !cancelled() && needs.prepare.result == 'success' && inputs.operation != 'rehearse' }}
+    uses: ./.github/workflows/experiment-stage.yml
+    with:
+      phase: export
+      stage_name: export
+      source_artifact_id: ${{ needs.collect-4.outputs.artifact_id || needs.collect-3.outputs.artifact_id || needs.collect-2.outputs.artifact_id || needs.collect-1.outputs.artifact_id || needs.prepare.outputs.artifact_id }}
+  finish:
+    needs: verify
+    if: ${{ inputs.operation == 'finish' }}
+    uses: ./.github/workflows/experiment-stage.yml
+    with:
+      phase: finish
+      stage_name: finish
+      source_artifact_id: ${{ inputs.source_artifact_id }}
+      annotation_labels: ${{ inputs.annotation_labels }}
+      information_config: ${{ inputs.information_config }}
