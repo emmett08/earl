@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from .workspace import StudyRun, read_json, write_json
+from .workspace import StudyRun, read_json, utc_now, write_json
 
 
 MAX_REQUEST_BYTES = 1024 * 1024
@@ -34,6 +34,8 @@ class ModelGateway:
             raise ValueError("A developer prompt is required")
         path = self.run.root / "calls" / f"{session_id}.json"
         history = read_json(path) if path.exists() else []
+        if len(history) >= self.run.design.max_model_calls:
+            raise ValueError("Session model-call budget exhausted, including failed attempts")
         completed = [call for call in history if "response" in call]
         if context_path is not None and completed:
             raise ValueError("EAL context is selected on the first model turn only")
@@ -66,10 +68,12 @@ class ModelGateway:
             raise ValueError("Model request exceeds 1 MiB")
         start = time.monotonic()
         call = {"prompt": prompt, "request": request,
+                "started_at": utc_now().isoformat(),
                 "context_file": str(context_path) if context_path else None}
         try:
             result = subprocess.run(model.command, input=encoded, stdout=subprocess.PIPE,
-                                    stderr=subprocess.PIPE, timeout=model.timeout_seconds,
+                                    stderr=subprocess.PIPE,
+                                    timeout=min(model.timeout_seconds, self.run.remaining_seconds(packet)),
                                     check=False)
             if result.returncode != 0:
                 raise RuntimeError(f"Model adapter exited {result.returncode}: " +

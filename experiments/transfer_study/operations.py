@@ -10,7 +10,7 @@ from typing import Any
 
 from eal.knowledge import EALKnowledgeBase, ModelContextAdapter
 
-from .workspace import StudyRun, read_json, write_json
+from .workspace import StudyRun, read_json, utc_now, write_json
 
 
 class SessionOperations:
@@ -27,6 +27,7 @@ class SessionOperations:
         return path
 
     def _event(self, session_id: str, value: dict) -> None:
+        value["recorded_at"] = utc_now().isoformat()
         path = self.run.root / "events" / f"{session_id}.json"
         values = read_json(path) if path.exists() else []
         values.append(value)
@@ -42,16 +43,17 @@ class SessionOperations:
         start = time.monotonic()
         try:
             result = subprocess.run(argv, cwd=packet["workspace"], capture_output=True,
-                                    timeout=timeout_seconds, check=False)
-        except (OSError, subprocess.TimeoutExpired) as exc:
+                                    timeout=min(timeout_seconds, self.run.remaining_seconds(packet)),
+                                    check=False)
+            if len(result.stdout) + len(result.stderr) > 1024 * 1024:
+                raise ValueError("Tool output exceeds 1 MiB")
+        except (OSError, subprocess.TimeoutExpired, ValueError) as exc:
             self._event(session_id, {"kind": "developer_tool_error", "argv": argv,
                                      "duration_seconds": time.monotonic() - start,
                                      "error": {"type": type(exc).__name__,
                                                "message": str(exc)[:4000]}})
             raise
         duration = time.monotonic() - start
-        if len(result.stdout) + len(result.stderr) > 1024 * 1024:
-            raise ValueError("Tool output exceeds 1 MiB")
         record = {"kind": "developer_tool", "argv": argv,
                   "returncode": result.returncode, "duration_seconds": duration,
                   "stdout": result.stdout.decode("utf-8", errors="replace"),

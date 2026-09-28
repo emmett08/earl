@@ -33,7 +33,7 @@ The [API load-test example](../examples/api-load-test/README.md) demonstrates so
 
 Evaluate developer benefit on independently selected tasks with an equivalent question, observation access and answer contract: record time to first correct scoped answer, calls to collectors and models, prompt tokens, cost, and incorrect or unjustified claims. Test fresh and later sessions, small and large models, and models using native tools versus the host adapter. Keep authoring effort and catalogue selection errors visible. The executable example establishes behaviour but cannot establish a comparative benefit.
 
-The [developer and model handover study](../experiments/transfer_study/README.md) compares ordinary prompting with EAL/2 in new sessions, crossing continuity of developer and model. Its operator-held plan releases later tasks after the first session, retains naturally produced project artefacts in each arm and scores final decisions against independent references. The included fixture checks study transport and supplies no performance result.
+The [developer and model handover study](../experiments/transfer_study/README.md) compares ordinary prompting with EAL/2 in new sessions, crossing continuity of developer and model. Its operator-held plan releases later tasks after the first session, retains naturally produced project artefacts in each arm and scores time-bounded final decisions against independent references. It reports later decision speed and total effort including initial authoring, retains allocated failures and missing outcomes, and uses conservative paired uncertainty. The included fixture checks study transport and supplies no performance result.
 
 ## Present coverage and open obligations
 

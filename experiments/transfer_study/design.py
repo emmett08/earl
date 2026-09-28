@@ -137,6 +137,8 @@ class StudyDesign:
     phase: str
     meaningful_difference: float
     primary_min_pairs: int
+    session_minutes: dict[str, float]
+    max_model_calls: int
     models: dict[str, Model]
     cases: tuple[Case, ...]
     source: Path
@@ -148,8 +150,9 @@ class StudyDesign:
         raw_bytes = source.read_bytes()
         data = _fields(json.loads(raw_bytes), {"schema", "study_id", "phase",
                                               "meaningful_difference", "primary_min_pairs",
+                                              "session_minutes", "max_model_calls",
                                               "models", "cases"})
-        if data["schema"] != "EAL/transfer-study-plan/1":
+        if data["schema"] != "EAL/transfer-study-plan/2":
             raise ValueError("Unexpected study plan schema")
         if data["phase"] not in ("pilot", "confirmation"):
             raise ValueError("Study phase must be pilot or confirmation")
@@ -161,12 +164,26 @@ class StudyDesign:
         if not isinstance(data["models"], dict) or not data["models"]:
             raise ValueError("The study needs pinned model commands")
         models = {key: Model.read(key, value) for key, value in data["models"].items()}
+        if len({model.version for model in models.values()}) != len(models):
+            raise ValueError("Distinct model IDs must name distinct pinned versions, not aliases")
         if not isinstance(data["cases"], list) or not data["cases"]:
             raise ValueError("The study needs cases")
         cases = tuple(Case.read(raw, source.parent, models) for raw in data["cases"])
         if len({case.identifier for case in cases}) != len(cases):
             raise ValueError("Case IDs must be unique")
-        return cls(_name(data["study_id"]), data["phase"], difference, minimum,
+        minutes = _fields(data["session_minutes"], {"initial", "later"})
+        if any(isinstance(value, bool) or not isinstance(value, (int, float)) or
+               not 0 < value <= 480 for value in minutes.values()):
+            raise ValueError("Session time limits must be finite minutes in (0, 480]")
+        calls = data["max_model_calls"]
+        if type(calls) is not int or not 1 <= calls <= 1000:
+            raise ValueError("max_model_calls must be 1..1000, including failures")
+        if data["phase"] == "confirmation":
+            if repeated_developers(cases):
+                raise ValueError("Confirmation requires distinct developers across cases")
+            if sum(case.transfer == TRANSFERS[-1] for case in cases) < minimum:
+                raise ValueError("Confirmation has fewer primary cases than primary_min_pairs")
+        return cls(_name(data["study_id"]), data["phase"], difference, minimum, minutes, calls,
                    models, cases, source,
                    hashlib.sha256(raw_bytes).hexdigest())
 
@@ -185,3 +202,14 @@ class StudyDesign:
                 })
         return {"schema": "EAL/transfer-allocation/1", "study_id": self.study_id,
                 "plan_sha256": self.digest, "seed": seed, "assignments": assignments}
+
+
+def repeated_developers(cases: tuple[Case, ...]) -> list[str]:
+    """Same-person continuity within a case is intended; cross-case reuse is not independent."""
+    seen: set[str] = set()
+    repeated: set[str] = set()
+    for case in cases:
+        people = {person for slot in case.slots for person in (slot.sender, slot.recipient)}
+        repeated.update(seen & people)
+        seen.update(people)
+    return sorted(repeated)

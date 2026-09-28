@@ -1,9 +1,11 @@
 {
-  "schema": "EAL/transfer-study-plan/1",
+  "schema": "EAL/transfer-study-plan/2",
   "study_id": "synthetic_handover_demo",
   "phase": "pilot",
   "meaningful_difference": 0.1,
   "primary_min_pairs": 1,
+  "session_minutes": {"initial": 30, "later": 15},
+  "max_model_calls": 10,
   "models": {
     "fixture_small": {
       "version": "fixture-small-1",

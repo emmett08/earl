@@ -2,9 +2,14 @@
 
 ## Research question
 
-Does EAL/2 increase the probability that a developer reaches the correct scoped
-engineering decision in a **new prompt session**, especially when both the
-developer and language model change?
+Does EAL/2 help a developer reach the correct scoped engineering decision
+within a fixed time budget in a **new prompt session**, and reduce the time
+and repeated work required, especially when both developer and model change?
+
+[protocol.json](protocol.json) specifies the investigation using schema 1.1.
+Its status is **specified**, with the software implemented and synthetic checks
+completed. Real case oracles, scorer calibration, participants and the final
+confirmation plan remain to be supplied. No human or live-model trial has run.
 
 Each case has two independent developer teams working from identical project
 files. Seeded random allocation assigns one slot to ordinary practice and the
@@ -23,23 +28,39 @@ Both arms begin with the same project and underlying tool access. The EAL source
 registration work and observations are effects of that arm. Developers choose
 their own prompts and available tools. A command gateway records model calls
 and starts a fresh conversation for each session, while preserving turns inside
-the current session. Apply equal time and token limits across arms; include
-failed attempts in the result.
+the current session. The plan sets equal elapsed-time budgets per stage and a
+model-call ceiling for both arms; failed model calls consume the ceiling. Token
+use is an outcome, not an equalised resource. The operator opens a session when
+the developer is ready; that starts its uninterrupted clock. Calls cannot start
+after the deadline, and model/tool subprocess timeouts are capped by the time
+remaining. In-process EAL work is timed but cannot be forcibly interrupted; an
+answer submitted after the deadline cannot pass the primary endpoint.
+
+Use real developers for developer comparisons. Native reasoning/tool support is
+a property of the selected adapter and model configuration, not the assigned
+arm. Match the adapter configuration and underlying tool access across arms.
+The supplied Responses adapter is text-only; developer tool commands and EAL
+assessments run outside it. A study of native agent tooling requires an adapter
+that records those attempts and an independently rehearsed configuration.
 
 ## Assignment and case material
 
 The four transfer strata are `same_developer_same_model`,
 `same_developer_different_model`, `different_developer_same_model` and
 `different_developer_different_model`. Each matched case uses the same model
-transition in both arms, and developer teams do not overlap across arms. The
-last stratum is primary. Balance small-to-large and large-to-small changes,
+transition in both arms, and developer teams do not overlap across arms.
+Confirmation also requires distinct developers across cases to avoid learning
+and interference between assignments. A pilot can reuse developers, but its
+analysis then suppresses independent-case intervals. The
+last stratum is primary. Select the task and model mixture before allocation.
+Balance small-to-large and large-to-small changes,
 along with small-to-small and large-to-large cases. Pin exact provider model
 versions. Findings about selected versions cannot automatically generalise to
 all models of a given size.
 
 The pilot should include at least two independent cases per stratum. After
 pilot calibration, freeze a confirmation plan, sample size and practical
-threshold. A starting target is 24 independent cases, with three cases centred
+threshold. A 24-case coverage pilot can include three cases centred
 on each installed reasoning mode: structured, deductive, inductive, abductive,
 causal, counterfactual, analogical and temporal. Distribute modes across
 transfer strata. A task sequence has an initial question, unreleased later
@@ -68,23 +89,95 @@ error and reasons. Disagreements require adjudication. If an answer names the
 intervention and reveals its arm, record that as a scoring deviation. The
 harness cannot replace a human reference judgement with EAL's result.
 
-For each stratum, estimate the mean paired difference
-`correct_eal - correct_ordinary` and a case-resampled 95% interval when at
-least four pairs are available. The primary estimand is the difference in the
-different-developer/different-model stratum. Confirmation plans declare
-`meaningful_difference` (for example 0.10) and `primary_min_pairs` before
-outcomes. An interval entirely above that threshold supports a meaningful
-benefit under the tested conditions; an interval below zero favours ordinary
-practice. Other outcomes remain inconclusive. Pilot reports are exploratory.
-Submit and score an explicit failed decision if a session cannot finish.
+The primary endpoint is a correct submitted later decision **within the
+plan's elapsed-time budget**. The secondary time endpoint is time to a correct
+submitted decision, restricted to that budget: an incorrect, late or absent
+answer receives the full budget. This measures time to the final decision,
+not the first correct thought or draft. Report raw correctness and late-answer
+counts too. Self-reported active effort is distinct from elapsed time.
 
-Report initial preparation effort, later developer effort, model calls,
-tokens, elapsed model time, provider cost when available, tool calls, EAL
-collection and reuse, and failures separately. Include initial authoring cost
-when comparing total effort after repeated questions. Reconcile provider
-billing if its adapter has no per-call price. Select the confirmation sample
-size from pilot paired discordance and prespecified simulations of precision
-or power; do not extend confirmation after inspecting its outcomes.
+Every allocated session needs a terminal record. `submit` records an answer;
+`close` records `no_answer`, `withdrawn` or `invalid_measurement` with a reason.
+No answer is a known failure for the time-bounded endpoint. Withdrawal leaves
+its correctness in [0, 1] and restricted time in [0, budget]. Unknown outcomes
+remain in the allocated denominator; analysis propagates their bounds. Invalid
+measurement prevents a confirmatory conclusion. Do not encode missingness as
+an invented answer or silently exclude cases. Missing effort, billing or token
+usage is reported as unknown alongside the known subtotal.
+
+For each matched case, take EAL minus ordinary correctness. Random assignment
+makes the mean difference unbiased for the average treatment effect across the
+two eligible developer teams in each selected case, assuming no interference
+and a valid common scorer. The estimand covers the assigned **whole workflow**:
+authoring, persistence, retrieval, tooling and reasoning. It cannot isolate
+which component caused an effect. Same-person memory is part of the stated
+continuity condition. The equally weighted case mixture is the target; it is
+not an estimate for every developer or every small/large model.
+
+The primary stratum is different developer/different model. The estimator uses
+a conservative two-sided 95% Hoeffding interval for independent paired
+observations in [-1, 1]. With n pairs, the radius is
+`sqrt(2 * log(40) / n)`, clipped to [-1, 1]. For unknown outcomes, expand the
+worst-case mean bounds by that radius. This finite-sample procedure does not
+need normally distributed or identically distributed cases. Its cost is wide
+intervals: 24 pairs give a radius of about 0.55. Planned radii of 0.30, 0.20
+and 0.10 require 82, 185 and 738 independent primary pairs respectively.
+These are precision calculations, not empirical power estimates.
+
+Confirmation plans declare `meaningful_difference` and `primary_min_pairs`
+before assignment. A primary interval entirely above the practical threshold
+supports meaningful correctness improvement under the tested conditions; an
+interval below zero favours ordinary practice. Other outcomes are inconclusive.
+Pilot results remain exploratory. Secondary time, transfer-stratum and model
+transition estimates have descriptive, marginal intervals: no simultaneous
+coverage or separate confirmatory discovery is claimed. A correctness benefit
+alone does not establish faster work, lower cost or improved reasoning ability.
+
+Report initial authoring/preparation effort and later effort, model calls and
+failures, measured tokens, elapsed model and EAL time, known provider cost,
+developer tool calls, and EAL collection/reuse. Total effort includes both
+sessions. Retain failures and all within-budget retries; never select the best
+attempt retrospectively. Reconcile unavailable cost/usage against billing before
+making cost claims. The two-session study does not establish an amortisation
+curve over many later sessions. That needs a separately planned extension.
+
+The finite-sample bound follows Hoeffding (1963), Theorem 2,
+[original paper](https://www.cs.rpi.edu/academics/courses/spring06/random/hoefding.pdf),
+[DOI](https://doi.org/10.1080/01621459.1963.10500830).
+[verification/calibration.json](verification/calibration.json) records synthetic
+null, benefit, harm, within-pair dependence, informative missingness and declared
+cross-case dependence checks. Monte Carlo uncertainty is reported separately.
+Run the calibration with:
+
+```sh
+python -m experiments.transfer_study.calibration \
+  --output experiments/transfer_study/verification/calibration.json
+```
+
+## Implementation and verification
+
+`StudyDesign` validates the plan and creates paired allocation. `StudyRun` owns
+session state and project handovers. `ModelGateway` is the provider adapter
+boundary; `SessionOperations` records tools and the EAL adapter. `OutcomeReader`
+joins terminal records to independent ratings. `BoundedPairedEstimator` handles
+numeric uncertainty independently of collection and scoring. These separate
+responsibilities keep provider, storage and statistical changes local; the
+adapter and repository patterns reuse the existing EAL implementation.
+
+`EAL/transfer-study-plan/2` requires `session_minutes.initial`,
+`session_minutes.later` and `max_model_calls`. Session terminal records and
+analysis output use version 2; provider request/response and ratings remain
+version 1. EAL/2 grammar, semantics and production observation formats are
+unchanged. Allocation is replay-checked when a run is loaded, and the project
+snapshot digest is checked before opening its handover.
+
+Protocol traceability names tests for assignment, collection, scoring, analysis
+and the complete synthetic pipeline. Software checks establish the behaviour
+exercised by those tests. Independent task/scorer calibration still needs known
+correct, wrong, qualified-unresolved and borderline answers before a real trial.
+If blinding breaks or a reference is invalid, record the deviation and withhold
+a confirmatory interpretation. The harness cannot enforce human independence,
+reference validity or exclusive use of the instrumented tools.
 
 ## CLI and provider boundary
 
@@ -138,7 +231,17 @@ selection from the oracle. Assessments use the case's declared later time.
 `max_age` controls observation freshness; assumption dates govern assumption
 applicability. The original observation time remains unchanged across sessions.
 
-After both slots finish, export assessor material. A rating has fields
+An allocated session that does not produce an answer is closed explicitly,
+even if it never opened. Use `withdrawn` for an unknown outcome and
+`invalid_measurement` for an unusable task/reference or measurement:
+
+```sh
+python -m experiments.transfer_study close experiments/transfer_study/runs/demo \
+  orders_fixture.A.later --status no_answer --reason "No answer within the budget" \
+  --effort-minutes 15
+```
+
+After all allocated sessions have terminal records, export assessor material. A rating has fields
 `blind_id`, `rater`, `correct`, `material_error` and `reason`. The ratings
 envelope has `schema: "EAL/transfer-ratings/1"`, a `ratings` list containing
 two independent entries per answer, and an `adjudications` list for

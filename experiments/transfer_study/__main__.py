@@ -22,11 +22,11 @@ def parser() -> argparse.ArgumentParser:
     init.add_argument("plan", type=Path)
     init.add_argument("output", type=Path)
     init.add_argument("--seed", type=int, required=True)
-    for name in ("open", "invoke", "tool", "register", "assess", "submit",
+    for name in ("open", "invoke", "tool", "register", "assess", "submit", "close",
                  "blind-export", "score", "analyse"):
         command = commands.add_parser(name)
         command.add_argument("output", type=Path)
-        if name in ("open", "invoke", "tool", "register", "assess", "submit"):
+        if name in ("open", "invoke", "tool", "register", "assess", "submit", "close"):
             if name == "open":
                 command.add_argument("case_id")
                 command.add_argument("slot_id")
@@ -51,6 +51,11 @@ def parser() -> argparse.ArgumentParser:
         if name == "submit":
             command.add_argument("--answer-file", type=Path, required=True)
             command.add_argument("--effort-minutes", type=float, required=True)
+        if name == "close":
+            command.add_argument("--status", choices=("no_answer", "withdrawn", "invalid_measurement"),
+                                 required=True)
+            command.add_argument("--reason", required=True)
+            command.add_argument("--effort-minutes", type=float)
         if name in ("blind-export", "analyse"):
             command.add_argument("--file", type=Path, required=True)
         if name == "score":
@@ -90,6 +95,8 @@ def main() -> None:
             value = run.submit(args.session_id,
                                args.answer_file.read_text(encoding="utf-8"),
                                args.effort_minutes)
+        elif args.action == "close":
+            value = run.close(args.session_id, args.status, args.reason, args.effort_minutes)
         elif args.action == "blind-export":
             value = export_answers(run)
             write_json(args.file, value)
