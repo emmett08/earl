@@ -6,7 +6,6 @@ EAL/2 evaluates an authored argument graph against recorded observations, a sele
 
 - [Argument structure](#argument-structure)
 - [Local support and formal propositions](#local-support-and-formal-propositions)
-- [Reviewed evidence adequacy](#reviewed-evidence-adequacy)
 - [Compositional objections and defences](#compositional-objections-and-defences)
 - [Result interpretation](#result-interpretation)
 - [Scope, assumptions and evidence time](#scope-assumptions-and-evidence-time)
@@ -38,10 +37,6 @@ For each application, the evaluator checks its declared environment; the availab
 A typed `proposition` adds subject, quantity, unit, scope, validity interval, query and result criterion. Its `binding` checks that a designated observation addresses the registered method query and that the output addresses the proposition criterion. This is correspondence within the represented contract, not verification of the claim's natural-language statement; assessed claims expose `prose_verified: false`. Without a typed proposition, author-supplied text and selected output predicates still constrain support, but the evaluator cannot infer a formal meaning from the text.
 
 Local usability precedes dialectical acceptance. A source-usable derivation has usable local sources and a source-usable path through its required premise claims. The composed solver then decides whether that derivation survives attacks. Keeping these stages separate prevents a locally successful calculation from pre-accepting a contested premise or objection.
-
-## Reviewed evidence adequacy
-
-The optional [argument host](executable-argument-host.md) applies a separate, operator-reviewed adequacy contract to one instantiated source, claim, context and collection. Its executable obligations compare fields in evidence values, computation results, assumptions, objections, claims or context. It also checks that a supported derivation uses reviewed methods, a satisfied main threshold or inference criterion, and required mappings for its premise formulae, assumptions and relevant objections. The result is `adequate` only when the checked EAL claim is supported, the reviewed statement correspondence holds and every required obligation is satisfied. A violated obligation is `insufficient`; an absent or uncheckable relation remains `unresolved`. This is sufficiency relative to the declared contract: it cannot discover an omitted material requirement, authenticate the external producer or establish arbitrary prose equivalence. Without an installed adequacy contract, the host leaves adequacy unresolved rather than inferring it from a tool's success.
 
 ## Compositional objections and defences
 

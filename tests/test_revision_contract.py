@@ -1,6 +1,5 @@
 """Independent checks that a computed answer still answers the declared question."""
 from copy import deepcopy
-import asyncio
 import json
 
 import pytest
@@ -128,66 +127,3 @@ def test_dimensional_query_constants_cannot_silently_change_unit(mode, query, ob
     assert assessment["claims"]["checked_claim"]["status"] == "unsupported"
     binding = assessment["arguments"]["derivation"]["reasoning_result"]["binding"]
     assert any("unit" in reason for reason in binding["reasons"])
-
-
-@pytest.mark.parametrize("budget_values,reason", [
-    ({"max_total_tokens": 100}, "token_budget_exhausted"),
-    ({"max_model_cost_usd": 0.01}, "model_cost_budget_exhausted"),
-])
-def test_terminal_model_answer_cannot_bypass_a_measured_budget_overrun(budget_values, reason):
-    from eal.agent import AgentBudget, run_unaided
-    from eal.providers import ModelResponse
-
-    class MeasuredInterface:
-        def identity(self):
-            return {"model": "interface-fixture", "measurement_kind": "interface_only",
-                    "pricing": {"input_usd_per_million": 1000, "output_usd_per_million": 1000}}
-
-        async def complete(self, messages, max_output_tokens):
-            return ModelResponse('{"claims":{"checked_claim":"supported"}}', 100, 1)
-
-    report = asyncio.run(run_unaided("Assess the fixture", MeasuredInterface(),
-                                    budget=AgentBudget(**budget_values)))
-    assert report["status"] == "incomplete"
-    assert report["stop_reason"] == reason
-    assert report["final"] is None
-    assert len(report["attempts"]) == 1
-    assert report["usage"]["total_tokens"] == 101
-    assert report["usage"]["model_cost_usd"] == pytest.approx(0.101)
-
-
-def test_benchmark_identity_distinguishes_boolean_predicates_from_numbers():
-    from eal.benchmark import source_correspondence
-
-    original = '''language "EAL/2";
-environment lab { require "enabled" == true; }
-claim checked_claim { statement "The environment is enabled."; environment lab; }
-'''
-    assert source_correspondence(original, "// reformatted only\n" + original)
-    assert not source_correspondence(original, original.replace("== true", "== 1"))
-
-
-def test_rejected_generation_usage_remains_in_completed_run_total():
-    from eal.agent import run_unaided
-    from eal.providers import ModelResponse, ProviderError
-
-    class FailedThenCorrect:
-        def __init__(self):
-            self.calls = 0
-
-        def identity(self):
-            return {"model": "interface-fixture", "measurement_kind": "interface_only",
-                    "pricing": {"input_usd_per_million": 1, "output_usd_per_million": 2}}
-
-        async def complete(self, messages, max_output_tokens):
-            self.calls += 1
-            if self.calls == 1:
-                raise ProviderError("Incomplete output", response=ModelResponse("partial", 200, 40))
-            return ModelResponse('{"claims":{"checked_claim":"unsupported"}}', 300, 10)
-
-    report = asyncio.run(run_unaided("Assess the fixture", FailedThenCorrect()))
-    assert report["status"] == "completed"
-    assert [a["status"] for a in report["attempts"]] == ["provider_error", "received"]
-    assert report["usage"]["input_tokens"] == 500
-    assert report["usage"]["output_tokens"] == 50
-    assert report["usage"]["model_cost_usd"] == pytest.approx(0.0006)

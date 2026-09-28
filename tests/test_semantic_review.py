@@ -1,8 +1,5 @@
 """Independent semantic and interaction regressions for EAL/2."""
 from dataclasses import replace
-import asyncio
-import json
-import sys
 
 import pytest
 
@@ -206,56 +203,3 @@ argument sum_route { conclusion timing; reasoning sum_method; evidence series; b
     assert blocked["claims"]["timing"]["status"] == "unsupported"
     binding = blocked["arguments"]["sum_route"]["reasoning_result"]["binding"]
     assert any("query field 'origin'" in reason for reason in binding["reasons"])
-
-
-class _ScriptedText:
-    def __init__(self, requests):
-        self.requests = iter(requests)
-
-    def identity(self):
-        return {"model": "independent-interface-fixture", "measurement_kind": "interface_only", "pricing": {}}
-
-    async def complete(self, messages, max_output_tokens):
-        from eal.providers import ModelResponse
-        return ModelResponse(json.dumps(next(self.requests)), 100, 20)
-
-
-def _fixture_server(tmp_path):
-    from mcp import StdioServerParameters
-    from eal.runtime import acquisition_request
-
-    (tmp_path / "value.json").write_text(json.dumps({"value": {"passed": True}, "context": CONTEXT, "observed_at": NOW,
-        "request": acquisition_request(parse(BASE), "positive", CONTEXT)}))
-    registry = tmp_path / "tools.toml"
-    registry.write_text('[tools.collector]\nkind="json_file"\npath="value.json"\nversion="1"\n')
-    return StdioServerParameters(command=sys.executable,
-        args=["-m", "eal.server", "--workspace", str(tmp_path), "--registry", str(registry)])
-
-
-def test_stateful_host_reuses_exact_anchored_source_without_model_copying(tmp_path):
-    from eal.agent import run_agent
-
-    model = _ScriptedText([{"operation": name} for name in ("collect", "reason", "finish")])
-    report = asyncio.run(run_agent("Assess the declared foundation", model, _fixture_server(tmp_path),
-        initial_data={"source": BASE, "context": CONTEXT, "now": NOW}, required_claims=("foundation",)))
-    assert report["status"] == "completed", report["stop_reason"]
-    assert report["repairs"] == 0
-    assert report["final"]["source"] == BASE
-    assert report["final"]["claims"]["foundation"]["status"] == "supported"
-    assert all("source" not in json.loads(attempt["text"]) for attempt in report["attempts"])
-    for call in report["tool_calls"]:
-        if "source" in call["arguments"]:
-            assert call["arguments"]["source"] == BASE
-
-
-def test_stateful_finish_cannot_reuse_assessment_after_new_collection(tmp_path):
-    from eal.agent import run_agent
-
-    model = _ScriptedText([{"operation": "reason"}, {"operation": "collect"},
-                           {"operation": "finish"}, {"operation": "stop", "reason": "A new assessment is needed."}])
-    report = asyncio.run(run_agent("Assess the declared foundation", model, _fixture_server(tmp_path),
-        initial_data={"source": BASE, "context": CONTEXT, "now": NOW}, required_claims=("foundation",)))
-    assert report["status"] == "incomplete"
-    assert report["stop_reason"] == "model_stopped"
-    assert report["final"] is None
-    assert report["repairs"] == 1

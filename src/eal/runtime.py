@@ -8,13 +8,22 @@ from __future__ import annotations
 
 import dataclasses
 import hashlib
+import json
 from pathlib import Path
 from typing import Any, Mapping
 from uuid import uuid4
 
+from .collection_scheduler import CollectionScheduler
 from .store import RunStore, utc_now
-from .tool_acquisition import (ToolBinding, ToolRegistry, bounded_path, strict_json,
+from .tool_acquisition import (MAX_REQUEST_BYTES, ToolBinding, ToolRegistry, bounded_path, strict_json,
                                validate_envelope)
+
+
+OBSERVATION_SCHEMA = "EAL/observation-record/1"
+MAX_COLLECTION_CONTEXT_BYTES = 16 * 1024
+MAX_COLLECTION_EVIDENCE = 128
+MAX_COLLECTION_OUTPUT_BYTES = 128 * 1024 * 1024
+MAX_COLLECTION_BYTES = 32 * 1024 * 1024
 
 
 def load_method_registry(factory: str | None = None):
@@ -71,13 +80,15 @@ def acquisition_request(program, evidence_id: str, context: Mapping[str, Any]) -
 
 
 class EvidenceRuntime:
-    def __init__(self, workspace: str | Path, registry: ToolRegistry, store: RunStore, *, method_registry=None):
+    def __init__(self, workspace: str | Path, registry: ToolRegistry, store: RunStore, *,
+                 method_registry=None, scheduler: CollectionScheduler | None = None):
         from .methods import default_registry
 
         self.workspace = Path(workspace).resolve()
         self.registry = registry
         self.store = store
         self.method_registry = default_registry() if method_registry is None else method_registry
+        self.scheduler = CollectionScheduler() if scheduler is None else scheduler
 
     def collect(self, program, context: Mapping[str, Any], evidence_ids: list[str] | None = None,
                 *, registry: ToolRegistry | None = None) -> dict:
@@ -90,15 +101,53 @@ class EvidenceRuntime:
         if not isinstance(context, dict):
             raise ValueError("context must be a JSON object")
         canonical_digest(context)
+        context_bytes = len(json.dumps(context, sort_keys=True, allow_nan=False).encode("utf-8"))
+        if context_bytes > MAX_COLLECTION_CONTEXT_BYTES:
+            raise ValueError(f"Collection context exceeds {MAX_COLLECTION_CONTEXT_BYTES} bytes")
         names = list(program.evidence) if evidence_ids is None else evidence_ids
         if (not isinstance(names, list) or any(not isinstance(name, str) for name in names)
                 or len(set(names)) != len(names) or any(name not in program.evidence for name in names)):
             raise ValueError("evidence_ids must be unique declared evidence identifiers")
+        if len(names) > MAX_COLLECTION_EVIDENCE:
+            raise ValueError(f"Collection exceeds {MAX_COLLECTION_EVIDENCE} evidence requests")
         selected_registry = self.registry if registry is None else registry
-        records = {}
+        # Check the complete selected plan before its first effectful call.
+        # A missing binding is still collected as a durable error observation.
+        output_allowance = 0
         for name in names:
-            records[name] = self._collect_one(program, name, context, selected_registry)
+            declaration = program.evidence[name]
+            version = program.tools[declaration.tool].version
+            request = {"evidence_id": name, "environment": declaration.environment,
+                       **acquisition_request(program, name, context)}
+            request_bytes = len(json.dumps(request, sort_keys=True, allow_nan=False).encode("utf-8")) + 1
+            if request_bytes > MAX_REQUEST_BYTES:
+                raise ValueError(f"Tool request for {name!r} exceeds {MAX_REQUEST_BYTES} bytes")
+            try:
+                binding = selected_registry.binding_for(declaration.tool, version=version)
+            except ValueError:
+                continue
+            if type(binding.max_output_bytes) is not int or not 1 <= binding.max_output_bytes <= MAX_COLLECTION_OUTPUT_BYTES:
+                raise ValueError(f"Tool {declaration.tool!r} has an invalid output allowance")
+            output_allowance += binding.max_output_bytes
+            if output_allowance > MAX_COLLECTION_OUTPUT_BYTES:
+                raise ValueError(f"Collection output allowance exceeds {MAX_COLLECTION_OUTPUT_BYTES} bytes")
+
+        def parallel_safe(name: str) -> bool:
+            declaration = program.evidence[name]
+            try:
+                return selected_registry.binding_for(
+                    declaration.tool, version=program.tools[declaration.tool].version
+                ).parallel_safe
+            except ValueError:
+                return False
+
+        records = self.scheduler.run(
+            names, parallel_safe,
+            lambda name: self._collect_one(program, name, context, selected_registry),
+        )
         collection = {"source_digest": program.source_digest, "context": dict(context), "records": records}
+        if len(json.dumps(collection, ensure_ascii=False, sort_keys=True, allow_nan=False).encode("utf-8")) > MAX_COLLECTION_BYTES:
+            raise ValueError(f"Collection exceeds {MAX_COLLECTION_BYTES} stored bytes")
         collection_id = self.store.put("collection", collection)
         return {"collection_id": collection_id, **collection}
 
@@ -111,6 +160,7 @@ class EvidenceRuntime:
         run_id = str(uuid4())
         started_at = utc_now()
         record = {
+            "schema": OBSERVATION_SCHEMA,
             "evidence_id": name, "source_digest": program.source_digest,
             "tool": declaration.tool, "tool_version": declared_tool.version,
             "evidence_kind": declaration.kind,
@@ -153,22 +203,21 @@ class EvidenceRuntime:
 
 
 def _store_observation(store: RunStore, record: dict, stdout: bytes, stderr: bytes) -> None:
-    """Persist success or failure with the same bounded raw-output accounting."""
+    """Persist output digests and lengths without exposing raw process streams."""
     record["ingested_at"] = utc_now()
     record["stdout_digest"] = hashlib.sha256(stdout).hexdigest()
     record["stderr_digest"] = hashlib.sha256(stderr).hexdigest()
     record["stdout_bytes"] = len(stdout)
     record["stderr_bytes"] = len(stderr)
-    record["stderr"] = stderr.decode("utf-8", errors="replace")
-    if record["status"] == "error":
-        record["stdout"] = stdout.decode("utf-8", errors="replace")
     store.put("observation", record, record_id=record["run_id"])
 
 
 class ReasoningService:
     """One application path used by CLI, MCP and the text-model host."""
 
-    def __init__(self, workspace: str | Path, registry_path: str | Path | None = None, database_path: str | Path | None = None, *, method_registry=None):
+    def __init__(self, workspace: str | Path, registry_path: str | Path | None = None,
+                 database_path: str | Path | None = None, *, method_registry=None,
+                 scheduler: CollectionScheduler | None = None):
         from .methods import MethodRegistry, default_registry
 
         self.method_registry = default_registry() if method_registry is None else method_registry
@@ -178,7 +227,10 @@ class ReasoningService:
         self.registry_path = Path(registry_path).resolve() if registry_path else None
         registry = ToolRegistry.load(self.registry_path) if self.registry_path else ToolRegistry()
         self.store = RunStore(database_path or self.workspace / ".eal" / "runs.sqlite3")
-        self.runtime = EvidenceRuntime(self.workspace, registry, self.store, method_registry=self.method_registry)
+        self.runtime = EvidenceRuntime(
+            self.workspace, registry, self.store, method_registry=self.method_registry,
+            scheduler=scheduler,
+        )
 
     def validate(self, source: str) -> dict:
         from .parser import parse
@@ -204,13 +256,61 @@ class ReasoningService:
 
         formatted = format_source(source, registry=self.method_registry)
         return {"source": formatted, "source_digest": parse(formatted).source_digest,
-                "observation_recollection_required": formatted != source}
+                "new_collection_required": formatted != source}
 
     def collect(self, source: str, context: dict, evidence_ids: list[str] | None = None) -> dict:
         from .parser import parse
 
         registry = ToolRegistry.load(self.registry_path) if self.registry_path is not None else self.runtime.registry
         return self.runtime.collect(parse(source), context, evidence_ids, registry=registry)
+
+    def plan(self, source: str, claim: str) -> dict:
+        """List the complete acquisition closure for one declared claim."""
+        from .parser import parse
+        from .planning import EvidencePlanner
+        from .semantics import validate
+
+        program = parse(source)
+        diagnostics = validate(program, registry=self.method_registry)
+        if diagnostics:
+            raise ValueError("Cannot plan invalid EAL source: " + "; ".join(
+                item.message for item in diagnostics))
+        plan = EvidencePlanner(program).plan(claim)
+        closure = plan.closure
+        return {
+            "claim": claim, "source_digest": program.source_digest,
+            "method_registry_fingerprint": self.method_registry.fingerprint,
+            "evidence_ids": list(plan.evidence_ids), "estimated_calls": plan.estimated_calls,
+            "calls": [dataclasses.asdict(call) for call in plan.calls],
+            "dependencies": {
+                "claims": [name for name in program.claims if name in closure.claims],
+                "arguments": [name for name in program.arguments if name in closure.arguments],
+                "reasoning": [name for name in program.reasoning if name in closure.reasoning],
+                "assumptions": [name for name in program.assumptions if name in closure.assumptions],
+                "objections": [name for name in program.objections if name in closure.objections],
+            },
+        }
+
+    def collect_claim(self, source: str, context: dict, claim: str) -> dict:
+        """Collect every support and attack route for a claim's declared graph."""
+        plan = self.plan(source, claim)
+        collection = self.collect(source, context, plan["evidence_ids"])
+        return {**collection, "plan": plan}
+
+    def packet(self, assessment_id: str, claim: str | None = None) -> dict:
+        """Give a model a scoped result while keeping its full trace retrievable."""
+        from .packets import AssessmentPacketBuilder
+
+        assessment = self.explain(assessment_id)
+        if assessment.get("method_registry_fingerprint") != self.method_registry.fingerprint:
+            raise ValueError("Stored assessment method registry differs from the current packet contract")
+        collection_id = assessment.get("collection_id")
+        collection = ({"collection_id": collection_id,
+                       **self.store.get(collection_id, kind="collection")}
+                      if isinstance(collection_id, str) else None)
+        return AssessmentPacketBuilder(method_registry=self.method_registry).build(
+            assessment, claims=None if claim is None else [claim], collection=collection,
+        )
 
     def current_binding_digests(self, program) -> dict[str, str | None]:
         """Resolve current operator configuration for each evidence declaration.
@@ -221,28 +321,57 @@ class ReasoningService:
         """
         registry = ToolRegistry.load(self.registry_path) if self.registry_path is not None else self.runtime.registry
         current = {}
+        resolved: dict[tuple[str, str], str | None] = {}
+        for name, evidence in program.evidence.items():
+            tool = program.tools.get(evidence.tool)
+            if tool is None:
+                current[name] = None
+                continue
+            key = (tool.name, tool.version)
+            if key not in resolved:
+                try:
+                    resolved[key] = registry.binding_for(
+                        tool.name, version=tool.version).binding_digest(
+                            self.store._binding_key, workspace=self.workspace)
+                except ValueError:
+                    resolved[key] = None
+            current[name] = resolved[key]
+        return current
+
+    def current_execution_digests(self, program) -> dict[str, str | None]:
+        """Check whether a command would inherit the same process environment.
+
+        An inherited credential, kubeconfig or endpoint can change an
+        observation's meaning while the operator TOML stays identical. A
+        changed environment refuses explicit reuse of its old measurement.
+        File imports do not spawn a process and have no execution environment.
+        """
+        registry = ToolRegistry.load(self.registry_path) if self.registry_path is not None else self.runtime.registry
+        current: dict[str, str | None] = {}
         for name, evidence in program.evidence.items():
             tool = program.tools.get(evidence.tool)
             if tool is None:
                 current[name] = None
                 continue
             try:
-                current[name] = registry.binding_for(
-                    tool.name, version=tool.version).binding_digest(self.store._binding_key,
-                                                                    workspace=self.workspace)
+                binding = registry.binding_for(tool.name, version=tool.version)
+                current[name] = binding.process_environment_digest(self.store._binding_key)
             except ValueError:
                 current[name] = None
         return current
 
     def reason(self, source: str, context: dict, collection_id: str | None = None, now: str | None = None) -> dict:
+        from .collection_identity import CollectionIdentityValidator
         from .evaluator import evaluate
         from .parser import parse
 
         program = parse(source)
         if collection_id is not None and (not isinstance(collection_id, str) or not collection_id.strip()):
             raise ValueError("collection_id must be a nonempty string or null")
-        collection = self.store.get(collection_id, kind="collection") if collection_id is not None else {"records": {}}
-        assessment = evaluate(program, collection["records"], now=utc_now() if now is None else now,
+        collection = self.store.get(collection_id, kind="collection") if collection_id is not None else None
+        records = ({} if collection is None else CollectionIdentityValidator().validate(
+            collection, source_digest=program.source_digest, context=context))
+        assessment = evaluate(program, records, now=utc_now() if now is None else now,
                               context=context, registry=self.method_registry,
                               binding_digests=self.current_binding_digests(program))
         assessment["collection_id"] = collection_id
@@ -259,18 +388,17 @@ class ReasoningService:
         collector bindings; a client cannot supply a substitute theory.
         """
         from .aspic_compiler import compile_eal_aspic
-        from .evaluator import canonical_digest
+        from .collection_identity import CollectionIdentityValidator
         from .parser import parse
 
         if not isinstance(collection_id, str) or not collection_id.strip():
             raise ValueError("compile_aspic requires a stored collection_id")
         program = parse(source)
         collection = self.store.get(collection_id, kind="collection")
-        if (collection.get("source_digest") != program.source_digest
-                or canonical_digest(collection.get("context")) != canonical_digest(context)):
-            raise ValueError("ASPIC compilation collection differs from the source or context")
+        records = CollectionIdentityValidator().validate(
+            collection, source_digest=program.source_digest, context=context)
         compiled = compile_eal_aspic(
-            source, collection["records"], goal=goal,
+            source, records, goal=goal,
             now=utc_now() if now is None else now, context=context,
             registry=self.method_registry,
             binding_digests=self.current_binding_digests(program),

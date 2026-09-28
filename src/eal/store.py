@@ -54,11 +54,39 @@ def _private_binding_key(database_path: Path) -> bytes:
     return key
 
 
+def _check_private_sqlite_files(database_path: Path, *, create_database: bool = False) -> None:
+    """Refuse readable or replaceable SQLite files before opening the store."""
+    if create_database:
+        try:
+            descriptor = os.open(
+                database_path, os.O_RDWR | os.O_CREAT | os.O_EXCL |
+                getattr(os, "O_NOFOLLOW", 0), 0o600,
+            )
+        except FileExistsError:
+            pass
+        else:
+            os.close(descriptor)
+    for path in (database_path, database_path.with_name(database_path.name + "-wal"),
+                 database_path.with_name(database_path.name + "-shm")):
+        try:
+            descriptor = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+        except FileNotFoundError:
+            if path == database_path:
+                raise
+            continue
+        with os.fdopen(descriptor, "rb") as stream:
+            details = os.fstat(stream.fileno())
+        if (not stat.S_ISREG(details.st_mode) or stat.S_IMODE(details.st_mode) != 0o600
+                or (os.name == "posix" and details.st_uid != os.getuid())):
+            raise PermissionError(f"SQLite store file must be a private regular 0600 file: {path.name}")
+
+
 class RunStore:
     def __init__(self, path: str | Path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._binding_key = _private_binding_key(self.path)
+        _check_private_sqlite_files(self.path, create_database=True)
         with self._connect() as connection:
             connection.execute("PRAGMA journal_mode=WAL")
             connection.execute(
@@ -66,9 +94,46 @@ class RunStore:
                 "(id TEXT PRIMARY KEY, kind TEXT NOT NULL, created_at TEXT NOT NULL, payload TEXT NOT NULL)"
             )
             connection.execute("CREATE INDEX IF NOT EXISTS records_kind ON records(kind, created_at)")
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS observation_index "
+                "(sequence INTEGER PRIMARY KEY, record_id TEXT NOT NULL UNIQUE, "
+                "evidence_id TEXT NOT NULL, environment TEXT NOT NULL, "
+                "request_digest TEXT NOT NULL, tool_binding_digest TEXT NOT NULL)"
+            )
+            connection.execute(
+                "CREATE INDEX IF NOT EXISTS observation_identity ON observation_index "
+                "(evidence_id, environment, request_digest, tool_binding_digest, sequence DESC)"
+            )
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS store_metadata "
+                "(key TEXT PRIMARY KEY, value TEXT NOT NULL)"
+            )
+            indexed = connection.execute(
+                "SELECT value FROM store_metadata WHERE key = 'observation-index-version'"
+            ).fetchone()
+            if indexed is None:
+                # Existing stores predate the index. Scan once, including failed
+                # attempts which deliberately get no reusable index entry.
+                for record_id, encoded in connection.execute(
+                    "SELECT id, payload FROM records WHERE kind = 'observation' ORDER BY rowid"
+                ):
+                    self._index_observation(connection, record_id, json.loads(encoded))
+                connection.execute(
+                    "INSERT INTO store_metadata(key, value) VALUES ('observation-index-version', '1')"
+                )
+            elif indexed[0] != "1":
+                raise ValueError("Unsupported observation index version")
+        _check_private_sqlite_files(self.path)
 
     def _connect(self) -> sqlite3.Connection:
-        return sqlite3.connect(self.path, timeout=30)
+        _check_private_sqlite_files(self.path)
+        connection = sqlite3.connect(self.path, timeout=30)
+        try:
+            _check_private_sqlite_files(self.path)
+        except BaseException:
+            connection.close()
+            raise
+        return connection
 
     def put(self, kind: str, payload: dict[str, Any], *, record_id: str | None = None) -> str:
         record_id = record_id or str(uuid4())
@@ -78,7 +143,55 @@ class RunStore:
                 "INSERT INTO records(id, kind, created_at, payload) VALUES (?, ?, ?, ?)",
                 (record_id, kind, utc_now(), encoded),
             )
+            if kind == "observation":
+                self._index_observation(connection, record_id, payload)
         return record_id
+
+    @staticmethod
+    def _index_observation(connection: sqlite3.Connection, record_id: str, payload: dict[str, Any]) -> None:
+        if payload.get("status") != "ok":
+            return
+        keys = (payload.get("evidence_id"), payload.get("environment"),
+                payload.get("request_digest"), payload.get("tool_binding_digest"))
+        if any(not isinstance(key, str) or not key for key in keys):
+            return
+        connection.execute(
+            "INSERT INTO observation_index(record_id, evidence_id, environment, request_digest, "
+            "tool_binding_digest) VALUES (?, ?, ?, ?, ?)", (record_id, *keys)
+        )
+
+    def put_batch(self, entries: list[tuple[str, dict[str, Any], str | None]]) -> list[str]:
+        """Commit a collection and its observations as one transaction."""
+        if not entries:
+            raise ValueError("entries must not be empty")
+        ids = [record_id or str(uuid4()) for _, _, record_id in entries]
+        encoded = [json.dumps(payload, ensure_ascii=False, sort_keys=True, allow_nan=False)
+                   for _, payload, _ in entries]
+        with self._connect() as connection:
+            for (kind, payload, _), record_id, value in zip(entries, ids, encoded):
+                connection.execute(
+                    "INSERT INTO records(id, kind, created_at, payload) VALUES (?, ?, ?, ?)",
+                    (record_id, kind, utc_now(), value),
+                )
+                if kind == "observation":
+                    self._index_observation(connection, record_id, payload)
+        return ids
+
+    def find_observations(self, *, evidence_id: str, environment: str,
+                          request_digest: str, tool_binding_digest: str,
+                          limit: int = 100) -> list[dict[str, Any]]:
+        """Return exact-acquisition candidates, newest first, for reuse."""
+        if not 1 <= limit <= 1000:
+            raise ValueError("limit must be between 1 and 1000")
+        with self._connect() as connection:
+            rows = connection.execute(
+                "SELECT records.payload FROM observation_index "
+                "JOIN records ON records.id = observation_index.record_id "
+                "WHERE evidence_id = ? AND environment = ? AND request_digest = ? "
+                "AND tool_binding_digest = ? ORDER BY sequence DESC LIMIT ?",
+                (evidence_id, environment, request_digest, tool_binding_digest, limit),
+            ).fetchall()
+        return [json.loads(row[0]) for row in rows]
 
     def get(self, record_id: str, *, kind: str | None = None) -> dict[str, Any]:
         with self._connect() as connection:

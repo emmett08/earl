@@ -8,6 +8,7 @@ This is the reference for authored syntax, static checks and typed proposition b
 - [Declarations](#declarations)
 - [Reusable argument patterns](#reusable-argument-patterns)
 - [Predicates and time](#predicates-and-time)
+- [Observation records](#observation-records)
 - [Typed propositions and observations](#typed-propositions-and-observations)
 - [Method selection and static checks](#method-selection-and-static-checks)
 - [Validation and canonical formatting](#validation-and-canonical-formatting)
@@ -37,7 +38,7 @@ Lists use commas. An argument needs at least one direct evidence, assumption or 
 
 An argument's conclusion, evidence, assumptions, premise claims and reasoning backing must use the same named environment. An objection's evidence and premise claims must share an environment compatible with its target. A reasoning-target objection affects applications of that reasoning declaration within the objection's environment. The conclusion-to-premise graph must be acyclic; attack and objection-support cycles are permitted and may remain undecided. Their calculation is in the [argument model](argument-model.md).
 
-Source selects a tool by name and exact version. The trusted host binding specifies execution, while the observation records the selected binding's digest. A tool declaration has no repeatability classification: actual variability depends on inputs, state, software and collection conditions.
+Source selects a tool by name and exact version. The host TOML binding specifies how to execute it, while each collected observation records the selected binding's identity. The host may run independent read-only calls in parallel when its bindings permit it. These execution settings remain outside EAL. A tool declaration has no repeatability classification: actual variability depends on inputs, state, software and collection conditions.
 
 ## Reusable argument patterns
 
@@ -63,7 +64,33 @@ require "entailed" == true;
 
 A dotted path selects object fields from context, observation value or a computation's output according to the enclosing declaration. `==`, `!=`, `<`, `<=`, `>` and `>=` compare scalars. A missing field, incompatible operand or nonfinite number cannot satisfy a predicate. Booleans differ from numbers; ordered comparisons need numbers or strings. String order is lexicographical, so use explicit timestamp clauses or a temporal method for instants. Each declaration's predicates combine conjunctively. JSON can contain null, finite numbers, strings, booleans, arrays and unique-key objects; it never executes code.
 
-`max_age` is finite nonnegative seconds measured from the record's original `collected_at` to assessment `now`. Age exactly at the bound is eligible; a future-dated observation is not. `ingested_at` marks storage and does not refresh an observation. `valid_from` and `valid_until` require timezone-aware ISO-8601 instants and form `[valid_from, valid_until)`. The evaluator tests an assumption's interval at assessment time and requires usable validation evidence. A historical assessment supplies historical `now` and context explicitly. These checks do not prove continuous physical conditions.
+`max_age` is finite nonnegative seconds measured from an observation's original `collected_at` to assessment `now`. Age exactly at the bound is eligible; a future-dated observation is not. `ingested_at` marks storage and does not refresh an observation. An assumption's optional `valid_from` and `valid_until` require timezone-aware ISO-8601 instants and form `[valid_from, valid_until)`. The evaluator tests this interval at assessment time and independently requires usable validation evidence. An observation can become too old before its assumption's interval ends when `max_age` is shorter than that interval. Conversely, a fresh observation cannot support an assumption after its interval ends. A historical assessment supplies historical `now` and context explicitly. These checks do not prove continuous physical conditions.
+
+## Observation records
+
+EAL/2 source declares what to observe and how to use the result. It has no `observation` declaration. For example:
+
+```eal
+evidence calibration {
+  tool probe;
+  kind test;
+  environment lab;
+  max_age 86400;
+  input {"sensor": "pump-A"};
+  require "within_tolerance" == true;
+}
+assumption calibrated {
+  statement "The pump sensor was calibrated for this assessment.";
+  environment lab;
+  validate calibration;
+  valid_from "2026-09-23T10:00:00Z";
+  valid_until "2026-09-24T10:00:00Z";
+}
+```
+
+Here `calibration` identifies a tool request and acceptance condition, and `calibrated` uses it during the stated interval. The tool emits a JSON result such as `{"value":{"within_tolerance":true},"observed_at":"2026-09-23T10:00:00Z"}`. The host stores the value in a separate `EAL/observation-record/1` record with the evidence ID, tool and request identity, context, original observation time and result digest. The input JSON and predicates are authored definitions, not measured results. A successful negative measurement remains an observation even when it does not satisfy `require`.
+
+The durable record can be reused by later sessions and models while its acquisition identity still matches the current request and its original time satisfies `max_age`. A registered claim assessment looks for an eligible record before calling a collector; it recollects missing or expired evidence and recomputes the argument. Changes to an assumption's dates affect the assessment, not the measurement time. Tool or context changes can invalidate reuse independently of time. The observation record is separate from the authored argument so it can be refreshed without rewriting the source or changing the source digest. A `json_file` tool binding imports an externally stored observation envelope when measurements must travel as a file.
 
 ## Typed propositions and observations
 
@@ -130,4 +157,4 @@ The optional [ASPIC+ method](aspic-method.md) accepts an explicit typed `proposi
 
 Recognition produces typed intermediate representation. Independent passes check IR shape, unique identity, reference kinds, predicate types, registered method contracts, typed query/output correspondence, dependencies, scopes and bounds. Diagnostics provide a code, message, declaration and, where available, one-based source span with exclusive end; contract mismatches can include expected and actual types. Open JSON output fields retain runtime checks. Malformed Python-created IR is checked too.
 
-`format_source(source)` validates and emits canonical source. `format_program(program)` applies the same checks to IR; `semantic_ir(program)` supports parse–format–parse comparisons. Formatting retains meaning and authored pattern/application forms, but can change comments and declaration order across categories. Changed exact source bytes change its digest, so observations must be recollected or explicitly rebound through the normal collection workflow.
+`format_source(source)` validates and emits canonical source. `format_program(program)` applies the same checks to IR; `semantic_ir(program)` supports parse–format–parse comparisons. Formatting retains meaning and authored pattern/application forms, but can change comments and declaration order across categories. Changed exact source bytes change its digest. The registered assessment path creates a new source-bound collection from compatible stored observations at their original age and collects the remaining evidence. The lower-level `rebind` operation performs the same check for a named earlier collection.

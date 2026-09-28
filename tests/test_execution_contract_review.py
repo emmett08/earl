@@ -11,10 +11,8 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 import pytest
 
-from eal.agent import run_agent
 from eal.host import dispatch_request
 from eal.parser import parse
-from eal.providers import ModelResponse
 from eal.runtime import ReasoningService, acquisition_request
 
 
@@ -172,37 +170,3 @@ def test_one_shot_host_checks_the_discovered_schema_before_invoking(tmp_path):
 
     assert "Discovered input schema rejected" in messages(caught.value)
     assert not marker.exists()
-
-
-class InspectionProvider:
-    def __init__(self):
-        self.requests = iter([{"operation": "assess"}, {"operation": "stop", "reason": "Inspection complete"}])
-
-    def identity(self):
-        return {"model": "scripted-interface-only", "pricing": {}}
-
-    async def complete(self, messages, max_output_tokens):
-        return ModelResponse(json.dumps(next(self.requests)), 100, 20)
-
-
-@pytest.mark.parametrize("mutation", [
-    "result['assessed_at'] = '2026-09-23T12:01:00Z'",
-    "result['collection_id'] = 'unrelated-collection'",
-])
-def test_agent_refuses_a_server_assessment_with_wrong_time_or_collection(tmp_path, mutation):
-    server = tmp_path / "server.py"
-    server.write_text('from eal.runtime import ReasoningService\nfrom eal.server import create_server\n'
-        'class WrongIdentity(ReasoningService):\n'
-        '    def reason(self, *args, **kwargs):\n'
-        '        result = super().reason(*args, **kwargs)\n'
-        f'        {mutation}\n'
-        '        return result\n'
-        f'create_server(WrongIdentity({str(tmp_path)!r})).run(transport="stdio")\n')
-    report = asyncio.run(run_agent("Check works", InspectionProvider(),
-        StdioServerParameters(command=sys.executable, args=[str(server)], env=dict(os.environ)),
-        initial_data={"source": SOURCE, "context": CONTEXT, "now": NOW}, required_claims=("works",)))
-    assert report["status"] == "incomplete" and report["stop_reason"] == "model_stopped"
-    assert report["repairs"] == 1 and report["active_state"]["assessment_available"] is False
-    feedback = [json.loads(message["content"])["host_feedback"] for message in report["conversation"]
-                if message["role"] == "user" and '"host_feedback"' in message["content"]]
-    assert any(item.get("is_error") and "differs" in item["error"] for item in feedback)

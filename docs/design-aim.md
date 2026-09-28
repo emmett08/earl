@@ -6,7 +6,7 @@ EAL/2 aims to let an engineer or a language-model host state a bounded engineeri
 
 - [Purpose and acceptance criteria](#purpose-and-acceptance-criteria)
 - [Language and implementation choices](#language-and-implementation-choices)
-- [Delegation and end-to-end study](#delegation-and-end-to-end-study)
+- [Developer use and evaluation](#developer-use-and-evaluation)
 - [Present coverage and open obligations](#present-coverage-and-open-obligations)
 
 ## Purpose and acceptance criteria
@@ -25,18 +25,16 @@ The implementation applies selected patterns from Parr's *Language Implementatio
 
 For a typed proposition, correspond the queried method input and output to the proposition's subject, quantity, unit, scope and interval. For instance, a successful calculation of pressure about one origin cannot justify a flow-rate claim or a different origin. The runtime checks represented correspondence; an independently reviewed brief and source are still needed to establish that this is the physical question the user asked. An observation's matching digest and environment fingerprint identify supplied data but cannot authenticate a measurement or detect an omitted operating condition.
 
-## Delegation and end-to-end study
+## Developer use and evaluation
 
-A text model can formulate the question, author or select a source and request further observations. A host validates its requests, calls the MCP server and configured collectors, returns diagnostics for bounded repair, obtains an assessment and preserves its exact statuses when composing the final answer. This loop is part of the tested *system route*: MCP availability by itself cannot make a model call tools, translate a brief faithfully or adopt a checked status. [MCP and tools](mcp-and-tools.md) specifies the current interface and trust boundaries.
+A developer registers a validated EAL/2 source and its claim once. Later sessions can select the same entry and claim, assess at the decision time, reuse compatible unexpired observations, collect only missing evidence and provide a compact checked result to a small or large model. The host performs collection and reasoning for a model without tool access or reliable reasoning capabilities. An application keeps the host's exact claim status separate from the model's prose. [The argument service](argument-service.md) specifies registration, assessment and reuse; [MCP and tools](mcp-and-tools.md) specifies the interfaces.
 
-The [API load-test example](../examples/api-load-test/README.md) demonstrates EAL/2 source, collection of a pinned report and assessment through CLI and MCP. It computes sample latency and error statistics from synthetic request results. Its bounded claim concerns those records; it supplies no production measurements or model-comparison outcomes.
+The [API load-test example](../examples/api-load-test/README.md) demonstrates source, collection of an identified report and assessment through CLI and MCP. It computes sample latency and error statistics from synthetic request results. Its bounded claim concerns those records; it supplies no production measurements or model-comparison outcomes.
 
-The [live API experiment](../experiments/api_load_test/README.md) compares EAL/2 through MCP, a meaning-equivalent JSON prompt, three ordinary developer prompts and explicit prose with an ordinary deterministic checker across six pinned nano/mini/full model snapshots. Every arm selects from the same immutable case measurements. EAL receives an MCP assessment; the conventional-checker control receives direct deterministic checks. The remaining arms receive measurements without a verdict. A common text-mediated adapter supports models without native function calling. Its protocol therefore estimates a combined system difference, not a notation-only effect. Broader claims require independently selected engineering cases.
-
-Published work on program-assisted reasoning, formal argumentation and prompt representation motivates the comparison. Its reported effects concern those systems and data, so the experiment must establish any EAL-specific effect using its own measurements.
+Evaluate developer benefit on independently selected tasks with an equivalent question, observation access and answer contract: record time to first correct scoped answer, calls to collectors and models, prompt tokens, cost, and incorrect or unjustified claims. Test fresh and later sessions, small and large models, and models using native tools versus the host adapter. Keep authoring effort and catalogue selection errors visible. The executable example establishes behaviour but cannot establish a comparative benefit.
 
 ## Present coverage and open obligations
 
 The grammar currently declares environments, tools, evidence, assumptions, reasoning, claims with optional typed propositions, arguments, closed patterns and applications, and objections. The runtime supports bounded method contracts, source and type checking, formal query/result bindings, finite support/attack evaluation, CLI and MCP calls and a host interaction loop. Those are implementation properties established by repository tests and one worked path. They do not verify the engineering warrant in a source, authenticate an external observation, or demonstrate a performance advantage over equally capable prose or JSON systems.
 
-Claims about authoring reliability, human comprehension, transfer to new task families, overall cost and model-class superiority remain open empirical questions. A future study needs independently reviewed cases, frozen model snapshots, a prespecified comparison and retained outcomes, including failures.
+Claims about authoring reliability, human comprehension, transfer to new task families, overall cost and model-class superiority remain open empirical questions. A comparison needs independently reviewed cases, specified model versions, a prespecified protocol and retained outcomes, including failures.
