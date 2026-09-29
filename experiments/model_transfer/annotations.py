@@ -102,7 +102,17 @@ class AnnotationExchange:
             raise ValueError('Run rows changed after annotation export')
         annotator = supplied.get('annotator')
         if not isinstance(annotator, str) or not annotator.strip():
-            raise ValueError('Record an independent annotator identifier')
+            raise ValueError('Record an annotator identifier')
+        assessor = supplied.get('assessor', {'kind': 'human'})
+        if not isinstance(assessor, dict) or assessor.get('kind') not in {'human', 'ai'}:
+            raise ValueError('Assessor kind must be human or ai')
+        kind = assessor['kind']
+        if kind == 'ai':
+            for field in ('model', 'method', 'validation', 'protocol'):
+                if not isinstance(assessor.get(field), str) or not assessor[field].strip():
+                    raise ValueError(f'AI assessment requires {field}')
+            if assessor.get('source_items_sha256') != hashlib.sha256((bundle / 'items.json').read_bytes()).hexdigest():
+                raise ValueError('AI assessment must identify the exact masked items file')
         rows = copy.deepcopy(json.loads(rows_text))
         session_list = [s for row in rows for s in _sessions(row)]
         sessions = {s['session_id']: s for s in session_list}
@@ -122,6 +132,8 @@ class AnnotationExchange:
             text = session['raw_answer']
             if _digest(text) != location['answer_sha256']:
                 raise ValueError('Answer changed after annotation export')
+            if 'text' in item and item['text'] != text:
+                raise ValueError('Supplied answer text differs from the retained answer')
             decision, quote, note = item.get('decision'), item.get('quote'), item.get('note')
             if not isinstance(decision, str) or decision not in LABELS:
                 raise ValueError('Supply a valid explicit decision code')
@@ -130,8 +142,10 @@ class AnnotationExchange:
             if not isinstance(note, str) or not note.strip():
                 raise ValueError('Annotation needs a coding note')
             session.setdefault('annotation_history', []).append(copy.deepcopy(session.get('annotation')))
-            status = {'ambiguous': 'ambiguous', 'no_answer': 'empty'}.get(decision, 'human')
-            session['annotation'] = {'status': status, 'method': 'blind-human-decision/1',
+            status = {'ambiguous': 'ambiguous', 'no_answer': 'empty'}.get(decision, kind)
+            session['annotation'] = {'status': status, 'method': (assessor['method'] if kind == 'ai'
+                                                                                else 'blind-human-decision/1'),
+                                     'assessor': copy.deepcopy(assessor),
                                      'id': identifier, 'annotator': annotator.strip(),
                                      'decision_code': decision, 'quote': quote, 'note': note}
             # Human coding supplies only the decision. Other fields are copied

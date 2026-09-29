@@ -64,6 +64,13 @@ python -m experiments.model_transfer.annotations export experiments/model_transf
 
 The assessor receives the exported `items.json`, without reference answers or
 arm labels. Complete its decision, quote and note fields and annotator identity.
+Human coding is the default for existing schema-1 files. AI coding must add an
+`assessor` object with `kind: "ai"`, `model`, `method`, `validation`, `protocol`
+and `source_items_sha256` (the SHA-256 of the original masked `items.json`).
+The importer preserves this provenance, records AI decisions as `ai`, and never
+identifies them as human assessments. Analysis and allocation reports carry
+`EAL/annotation-provenance/1` and qualify inference conditional on AI labels.
+See [the retained pilot coding amendment](../../annotations/AI-CODING.md).
 Save the completed assessor file as `/tmp/eal-labels.json`, then import it:
 
 ```bash

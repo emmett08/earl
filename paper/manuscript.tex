@@ -1,321 +1,284 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[preprint,11pt]{elsarticle}
+\usepackage[a4paper,margin=25mm]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage[margin=25mm]{geometry}
-\usepackage{lmodern,microtype,amsmath,amssymb,booktabs,tabularx,graphicx}
-\usepackage[numbers,sort&compress]{natbib}
-\usepackage{listings,xcolor}
+\usepackage{lmodern,microtype,amsmath,amssymb,booktabs,array,tabularx}
+\usepackage{xcolor,listings,graphicx,placeins,xurl}
 \usepackage[hidelinks]{hyperref}
-\usepackage{enumitem}
-\setlist{nosep}
-\setlength{\emergencystretch}{2em}
-\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
-  frame=none,keepspaces=true,showstringspaces=false}
-\makeatletter
-\let\inputtable\@@input
-\makeatother
-\newcommand{\code}[1]{\texttt{#1}}
-\newcommand{\status}[1]{\textsf{#1}}
-\title{Executable engineering arguments with EAL/2:\\
-  Typed evidence, defeasible assessment and API load-test pilots}
-\author{}
-\date{Review manuscript for the Journal of Systems and Software\\25 September 2026}
+\input{eal2-listings}
+\journal{Journal of Systems and Software}
+\newcommand{\EAL}{EAL/2}
+\newcommand{\code}[1]{\nolinkurl{#1}}
+\date{28 September 2026}
+\myfooter[L]{Review draft for Journal of Systems and Software\hfill 28 September 2026}
 \begin{document}
-\maketitle
+\begin{frontmatter}
+\title{Preserving engineering assessments across fresh language-model sessions: a paired EAL/2 workflow pilot}
+\author{Anonymous review manuscript}
 \begin{abstract}
-Engineering decisions made with language models require a traceable relation between a claim, its observations and the rule used to interpret them. EAL/2 represents these relations in a domain-specific language and evaluates them through a Python host. The host binds typed propositions to scoped, dated evidence, invokes versioned reasoning methods and computes grounded acceptance with objections. We describe the implemented semantics and demonstrate an API performance argument. Reanalysis of a development experiment preserves 1,200 assignments across 40 controlled HTTP cases, six model snapshots and five prompting/tool conditions: 628 completed, 131 failed and 441 were unattempted. GPT-4.1 full achieved 40/40 correct assignments with EAL/MCP and 36/40 with a JSON prompt; mini achieved 32/40 and 21/40. All four full-model JSON discrepancies concerned failed-check enumeration; its decision statuses were correct. A separately analysed nano-only follow-up added ordinary deterministic validation and changed the answer schema. Plain-validator scored 11/40 against EAL/MCP's 3/40. Of the 40 EAL assignments, 13 completed incorrectly, 14 exhausted the model-call limit and ten were unattempted after a provider error stopped execution. Every attempted EAL trial obtained a correct checked packet. These pilots establish neither a notation advantage nor an accuracy advantage over ordinary validation. They provide reproducible evidence of failures in operation formatting and communication of deterministic results, within purposive cases and incomplete execution.
+Engineering decisions often depend on dated evidence whose applicability changes between work sessions. A language model inheriting a previous answer must distinguish a reusable observation from a conclusion that has become stale. We evaluate a workflow built around EAL/2, an executable engineering argument language, against an ordinary specification-and-notes workflow. A retained pilot comprises six synthetic tasks, two donor models, two recipient models, two recipient tool settings and four repetitions: 192 paired blocks, 384 sequences and 4,224 fresh sessions. Each sequence contains one donor and ten recipients. The EAL/2 host supplies a checked assessment and manages observation reuse; the ordinary workflow receives the latest answer and can request evidence when native tools are enabled. The comparison therefore concerns these complete workflows. Post-collection AI-assisted coding leaves 31 answers ambiguous. Among 1,920 recipient answers per arm, correctness relative to the task reference is bounded at 97.71--99.11\% for EAL/2 and 38.85--38.91\% for ordinary notes. Cumulative input plus output tokens, including donors, are 1,943,638 and 2,992,739 respectively, a 35.05\% reduction. These descriptive results are conditional on the selected tasks and unvalidated AI coding. They neither isolate a language-notation effect nor establish performance on real engineering projects. The replication package preserves prompts, answers, evidence events, accounting and uncertainty, and identifies the annotation and design work required before a confirmatory evaluation.
 \end{abstract}
-\noindent\textbf{Keywords:} engineering argumentation; domain-specific languages; evidence provenance; grounded semantics; language models; software performance assessment
+\begin{keyword}
+Executable arguments \sep engineering evidence \sep large language models \sep context transfer \sep empirical software engineering \sep reproducibility
+\end{keyword}
+\end{frontmatter}
 
 \section{Introduction}
-\label{sec:intro}
-An engineering claim can be syntactically well formed and numerically plausible while referring to the wrong deployment, an expired observation or an untested assumption. A language model asked to assess that claim must select evidence for the specified deployment and interval, apply the intended rule and communicate the result without changing its scope. Producing a structured answer addresses only part of this task. The relation between the answer and the underlying observations needs an executable definition.
+An engineering assessment can be correct when written and misleading when reused. A test result may concern an earlier release; a calibration may cease to apply after a configuration change; an observation may exceed its permitted age. A successor working session needs both the decision rule and evidence that is eligible for its current target. Retaining a persuasive explanation does not by itself preserve those conditions.
 
-EAL/2, the Engineering Argument Language, makes that relation explicit. A source document names claims, evidence, assumptions, reasoning methods, supporting arguments and objections. A host validates the document, obtains observations through configured collectors, applies computational methods and returns an assessment with diagnostics. Authors can express a proposition using a typed quantity, unit, subject, scope, interval, query and result condition. Those fields constrain which observation may support the proposition. Free-text descriptions remain available for explanation, with an explicit indication that their meaning has not been verified.
+Language-model workflows make this problem concrete. A fresh session can inherit a specification and a predecessor's notes without inheriting the provider's conversation state. The notes may communicate a useful conclusion, but they also create a risk of repeating that conclusion after its evidential basis changes. A different design retains structured claims, methods, evidence requirements and observations in the host. The host can check applicability and compute a task result before asking the model to explain it. This design spends engineering effort on explicit rules and trusted integrations, and its benefit must be measured against that operational cost.
 
-The engineering contribution is the combination of these checks in a small executable system. It is useful when an assessment must be repeated after evidence changes or when a reviewer needs to distinguish a failed requirement from evidence that cannot establish whether the requirement holds. Existing work supplies argumentation semantics, structured assurance representations and model-to-solver techniques. EAL/2 adopts parts of that foundation and defines an operational profile for dated engineering observations and a tool-accessible assessment host.
+This paper reports a completed pilot of the latter design using \EAL{}. The experiment tests a bounded practical question: on six authored engineering tasks, how do recipient decision correctness and cumulative model-token use differ between a host-assessed EAL/2 workflow and a specification-and-notes workflow across ten fresh recipient sessions? It also asks how those outcomes vary with task, session position, recipient model and native tool availability. The result is a comparison of complete workflow assignments. The EAL/2 arm receives an automatically prepared current assessment that the ordinary arm does not receive automatically. Equal information delivery is therefore not part of the treatment contrast.
 
-Two forms of evidence support the account. Source inspection and automated tests establish behaviour of package version 2.5.0. Two supplied archives record a five-condition development experiment and a later nano-only experiment that adds ordinary validation. Each contains actual model calls and HTTP observations, together with failed and unattempted assignments. Their source snapshots, scorers and results are preserved separately. The later experiment changes both the answer schema and execution rules, so its outcomes cannot be pooled with the earlier results or treated as a controlled replication.
+The contributions are a precisely specified repeated-session comparison, a retained record connecting answer measurements to acquisition and API accounting, and an analysis that keeps ambiguous answers in the denominator. The paper distinguishes three forms of incompleteness: the paid collection is complete; decision coding is partly unresolved and lacks independent human validation; the planned prospective allocation remains blocked. Treating these as separate statuses prevents a successful workflow run from being mistaken for a completed scientific evaluation.
 
-The paper addresses three questions. First, which relations between a proposition and an observation does the implementation check, and where does its assurance end? Second, what outcomes did the historical EAL/MCP and comparator systems produce on the assigned cases? Third, which recorded failures identify concrete changes to assessment interfaces or experimental controls? The pilot supports descriptive answers to the latter questions. It does not estimate a general advantage of a notation, establish a model-size effect or measure performance in production services.
+\section{Related work and the scope of the comparison}
+External execution is an established way to complement language generation. Program-aided language models generate programs and delegate computation to an interpreter~\cite{gao2023pal}; Logic-LM combines language models with symbolic solvers~\cite{pan2023logiclm}. ReAct interleaves reasoning and actions to obtain information and act on an environment~\cite{yao2023react}. These approaches motivate separating language production from executable operations. The present intervention instead supplies a pre-authored, source-bound engineering rule and persistent evidence management. It does not evaluate model-generated programs, solver selection or general planning ability.
 
-\section{Related work and design position}
-\label{sec:related}
-Dung's abstract argumentation framework represents arguments and attacks and defines acceptable sets through their defence relations \citep{dung1995}. Its grounded extension provides a conservative basis for acceptance when attacks remain unresolved. EAL/2 implements an explicit attack-only solver and also a composed evaluator in which argument nodes depend on premise claims and claim nodes have alternative derivations. The composed evaluator therefore requires rules for both support and attack; attaching a familiar argumentation label to an arbitrary dependency graph would be insufficient.
+Structured assurance representations distinguish claims, evidence and supporting argument structure; SACM provides a metamodel for such representations~\cite{omg2023sacm}. EAL/2 is a particular executable design whose host binds acquisition and reasoning methods. This study makes no SACM-conformance claim and does not measure the quality of a complete safety or assurance case. Its outcome is a small, explicitly defined readiness judgement under synthetic evidence changes.
 
-ASPIC+ constructs arguments using strict and defeasible rules and supports attacks and preferences \citep{modgil2014}. EAL/2 has named arguments, objections and computational reasoning methods, but the implemented profile does not claim the full ASPIC+ semantics. Its local usability checks and acceptance equations are stated in Section~\ref{sec:semantics}. This restricted account makes the implementation's commitments testable without implying that every property of a broader structured-argumentation formalism transfers to it.
+Long-context studies show that the presence of information in a prompt does not ensure that a model will use it effectively~\cite{liu2024lost}. Here, however, every recipient starts with a fresh provider session. The study concerns what a host prepares and retains between sessions, rather than the position of evidence in one long conversation. Likewise, research on LLM-based judges documents useful agreement and systematic biases under particular benchmarks~\cite{zheng2023judge}. It supplies a reason to examine assessor error; it does not validate the AI-assisted coding used here. Our measurement procedure, unresolved cases and absence of independent assessor validation are reported explicitly.
 
-The Structured Assurance Case Metamodel defines representations for assurance claims, arguments and evidence and their interchange \citep{omg2023}. EAL/2 addresses a narrower implementation problem: repeatedly evaluating designated evidence and argument dependencies through executable methods. The comparison concerns the scope of this implementation; assessing execution in other assurance-case tools would require examining those tools individually. A representation of a supporting relation and an implementation that evaluates a particular relation provide different kinds of evidence for a software decision.
+\section{Workflow and task semantics}
+\subsection{What persists between sessions}
+Both arms receive the same task specification and may retain project notes. The runner stores the latest answer verbatim as a handoff note, subject to an 8,192-byte limit. The next session is a new model invocation without provider conversation history or a previous-response link. Additional calls within a session can complete tool use, but they do not connect that session to its predecessor's provider state.
 
-Program-aided language models delegate computations in generated programs to an interpreter \citep{gao2023}. Logic-LM translates problems into formal representations, invokes symbolic solvers and interprets the results \citep{pan2023}. These systems establish the relevance of external computation to model-assisted reasoning. EAL/2 similarly delegates defined computations, while adding evidence identity, freshness and objection handling. A solver's result remains conditional on the supplied formalisation and observations; it does not establish that an informal engineering problem has been represented correctly.
+In the ordinary arm, context preparation contributes no automatic evidence assessment. The recipient receives the specification, retained material and current task time. When native tools are enabled it can request a dated snapshot through the \code{probe} tool. Tool availability is an opportunity to acquire evidence, not a guarantee that acquisition occurs. When tools are disabled, the model relies on the supplied and retained text.
 
-Grammar-constrained decoding studies whether generated outputs conform to a formal grammar and how that affects logical parsing \citep{raspanti2025}. The pilot reported here supplied EAL source to the model and used a common text-based operation adapter. It consequently measures neither EAL authoring ability nor grammar-constrained generation. Its JSON condition supplied a semantically corresponding argument as prompt text; it did not invoke a provider's structured-output feature.
+In the EAL/2 arm, a trusted host assesses the retained EAL source before model invocation. It checks observation eligibility, collects evidence when necessary, reuses eligible observations and supplies the resulting task context. The model is not given the raw EAL source as its principal task input. Consequently, the experiment evaluates the behaviour of a host that interprets EAL/2 and prepares model context. It is not a test of whether either model understands EAL/2 syntax. Native model tools, when enabled, remain available in addition to this automatic host activity.
 
-The implementation follows conventional language-engineering separation between parsing, intermediate representation, name resolution and evaluation \citep{parr2009}. This separation permits syntax and reference errors to be reported before evidence is assessed. The host exposes tools through the Model Context Protocol (MCP) \citep{mcp2025}. MCP supplies the interaction format; the EAL implementation supplies the meanings of validation, collection and assessment. These protocol and semantic responsibilities must remain distinguishable when interpreting a successful tool call.
+The intervention combines explicit source, deterministic task evaluation, persistent observations, evidence acquisition policy and prepared model context. A difference in outcomes may arise from any combination of these components. In particular, automatic delivery of a current result can account for an advantage even if notation has no independent effect. The disabled-native-tools condition isolates neither the host nor external computation, because the EAL host still acquires and assesses evidence there.
 
-\section{Language and implementation}
-\label{sec:language}
-\subsection{Source records and assessment responsibilities}
-EAL/2 source declares an environment, tools, evidence, assumptions, reasoning records, claims, arguments and objections. Patterns can generate repeated argument structures. An argument refers to a conclusion, a reasoning record and any evidence, assumptions or premise claims it needs. An objection is evaluated as an argument that attacks a designated target. Several arguments may independently offer derivations of the same claim, while the premises within a particular derivation must all hold.
+\subsection{Eligibility, three-valued readiness and source binding}
+Each task specifies requirements over dated facts. A fact is eligible when it is active, matches the requirement's scope keys and has an age between zero and the requirement's maximum, inclusively. The uniquely newest eligible fact is selected. An absent or ineligible fact gives an unknown requirement value. The selected corpus contains no unresolved ties between simultaneously newest facts.
 
-The Python implementation parses the source with an ANTLR grammar and constructs a resolved intermediate representation. Validation checks identifiers, reference kinds, required fields, method-specific inputs and the acyclicity of ordinary premise dependencies. Resource limits bound processing: source input is limited to 1 MiB, token count to 100,000, records to 4,096, premise nesting to 128 and pattern applications to 1,000. The composed assessment graph admits at most 4,096 argument nodes, 4,096 claim nodes and 131,072 relationships. These bounds specify the admitted inputs to this implementation.
+For conjunctive tasks, any false requirement makes the conjunction false; otherwise an unknown requirement makes it unknown. Alternative routes are evaluated as conjunctions: one true route suffices, all refuted routes give false, and the remaining cases are unknown. The task adapter maps true, false and unknown to \code{ready}, \code{not_ready} and \code{undetermined}. Scope may bind different requirements to different version keys, so a firmware change need not invalidate an unrelated calibration unless that requirement's declared scope requires it.
 
-The package requires Python 3.11 or later. The inspected version uses ANTLR runtime 4.13.2 and MCP SDK 1.30.0, with an MCP stdio profile dated 2025-11-25. Package version, language revision and protocol profile identify different artefacts. Reproducing an assessment also requires the source document, method identifiers, collected records and assessment time. The software and data availability statement specifies the source snapshots used for the software description and historical results.
+The snapshot contract permits reuse for 60 seconds inclusively. Sessions advance the synthetic task clock by one minute. Evidence and scope changes occur at even-numbered positions; the following odd position retains the same snapshot under this policy. These are authored validity assumptions. They do not establish that a real engineering observation remains valid for one minute, nor that absence of a new observation means the physical system is unchanged.
 
-\subsection{Evidence collection, identity and time}
-The host executes collectors configured by its operator. Source documents name tools and inputs; they do not supply an arbitrary executable command. Collector outcomes, including errors, are recorded in SQLite. A record can contain a collection time, content digest, metadata and a structured value used by a reasoning method. Its digest checks content consistency against the recorded value. It cannot establish that a sensor was calibrated, that a remote service was honest or that the observation represents the intended operational population.
+The retained source binds evidence to a task identifier, a rule digest and a target-identity digest. Its reasoning selector is \lstinline[style=ealcode]|method "experiment/task-rules/1"|. The example in Listing~\ref{lst:method} is an excerpt from the actual cutover source, formatted for publication. The complete source, including the evidence digests and claim statement, is supplied in the replication package and checked by the repository parser.
 
-Freshness is evaluated against an explicit assessment time. If $t$ is that time, $t_c$ the recorded collection time and $a$ the permitted age, the condition is
+\lstinputlisting[style=ealcode,caption={Reasoning and argument declarations from the retained cutover source. The complete, parser-validated source is included with the article.},label={lst:method}]{listings/method-excerpt.eal}
+
+The claim identifier \code{criterion_evaluated} refers to successful completion of the declared calculation. A supported calculation can yield negative or unknown readiness. The host's assessment status must therefore not be substituted for the task's readiness output. This distinction is material to the experiment: successful execution of a rule does not establish that the engineering action should proceed.
+
+\subsection{The reference computation}
+The task reference is implemented separately from the EAL interpreter and its installed method. It derives readiness from the recorded rule, scope and timeline, and checks the authored expected decisions. This provides an executable reference for this corpus. It is not externally validated engineering ground truth: the task authors supplied the rules and synthetic facts shared by both implementations. The article's reproduction script independently recomputes all reference decisions from those retained facts and reconciles them with every saved score. Agreement checks catch divergent implementations, but cannot establish that the common task specification represents an actual engineering decision adequately.
+
+\section{Experimental method}
+\subsection{Questions, units and selected cases}
+The primary endpoints are recipient decision correctness and cumulative input plus output tokens through recipient horizon ten. The questions are whether the EAL/2 workflow preserves a correct current decision, whether its cumulative model-token use is lower after including the donor, and what qualification the unresolved measurement and allocation status place on those findings. Task and configuration profiles are descriptive diagnostics rather than separate confirmatory hypotheses.
+
+The selected pool contains six separately AI-authored synthetic cases in three families (Table~\ref{tab:cases}). Eight threshold-calibration cases are excluded from the principal estimand. The selected tasks were not randomly sampled from projects, organisations or engineering domains. Each trajectory exercises changes in support, refutation, expiry or applicability. An authored sequence of expected decisions is a corpus property; repeated model sessions do not create new independent tasks.
+
+\begin{table}[t]
+\centering\small
+\caption{The six selected cases. Every case has eleven task-time positions and ten recipient assessments per sequence.}\label{tab:cases}
+\begin{tabularx}{\linewidth}{@{}l l X@{}}\toprule
+Case & Rule family & Engineering distinction exercised\\\midrule
+Release & Conjunction & Tests, signature and rollback obligations; refutation and expiry.\\
+Cutover & Conjunction & Schema compatibility, restored backup and bounded replica lag.\\
+Read routes & Alternatives & Alternative database read routes, including unknown and refuted routes.\\
+Dispatch & Alternatives & Direct or tunnel route; a valid alternative can preserve readiness.\\
+Firmware & Applicability & Selective binding to firmware, calibration and policy versions.\\
+Version bindings & Applicability & Multiple version bindings in a migration assessment.\\\bottomrule
+\end{tabularx}
+\end{table}
+
+The design crosses six cases, two donor models, two recipient models, two recipient native-tool settings and four repetitions. Each resulting block contains both workflows, giving 192 paired blocks and 384 sequences. Every sequence comprises one donor followed by ten recipients, for 4,224 sessions. The 48 case--donor--recipient--tool strata each contain four paired repetitions. All donor sessions have native tools enabled, including those in blocks whose recipients have tools disabled.
+
+The paired block is the unit for comparisons across repeated stochastic executions. A sequence is the unit for within-arm recipient averages; its ten recipient outcomes share inherited material and are dependent. The analysis does not treat 3,840 recipient answers as independent Bernoulli trials. The fixed pool and balanced allocation give equal weight to the six tasks and the model/tool configurations. That weighting defines this experiment's estimand, not a population distribution of engineering work.
+
+\subsection{Models, execution and the frozen contract}
+The model labelled \code{plain} is \code{gpt-4.1-nano-2025-04-14}. The model labelled \code{reasoning} is \code{gpt-5-nano-2025-08-07}, with reasoning effort set to \code{low}. The former has no explicit reasoning-effort setting. These labels distinguish two model configurations; changing between them also changes the model family and snapshot. They cannot identify a pure causal effect of reasoning effort.
+
+The frozen plan uses seed 20260928. The runner constructs the crossed blocks, shuffles their order and randomises arm order within each block. Five workers process independent blocks concurrently; the two arms within a block run sequentially in their assigned order. Sessions within an arm retain their task-time order. Random ordering reduces a systematic association between workflow and execution order, but a shared provider batch can still introduce dependencies and service variation.
+
+Responses are ordinary prose. Limits are three API calls per session, 4,096 output tokens per call, 32,768 request bytes and a 90-second request timeout. The retained plan has a USD~2 budget, a 21,600-second total runtime limit and five workers. The collection job's segment allowance is 6,000 seconds. The actual retained plan and execution contract govern this collection; an older 7,200-second value in the descriptive protocol is not used as its realised runtime limit. This discrepancy is preserved in the audit record rather than silently normalised.
+
+Collection ran on 28 September 2026 from 20:20:10 to 21:08:04 UTC, with a recorded segment duration of 2,874.54 seconds. The frozen run identity is \code{984bd05d-6366-41c3-b9ae-ee8766835b08}. The successful offline finishing workflow imported AI labels and produced analysis and planning reports without new collection calls. Table~\ref{tab:provenance} distinguishes collection from processing. A processing revision does not retroactively change the implementation that produced the observations.
+
+\begin{table}[t]
+\centering\small
+\caption{Execution and processing identities retained by the replication package.}\label{tab:provenance}
+\begin{tabularx}{\linewidth}{@{}l X@{}}\toprule
+Item & Retained identity or status\\\midrule
+Collection & GitHub Actions run 36477862213; revision \code{d52e2bd0898ed519253aedbbc8e002e493dd64d2}\\
+Frozen study & \code{eal-model-transfer-pilot-6}; pilot role; protocol 6.0.0\\
+Source language & EAL/2; distinct from package and protocol versions\\
+Annotation export & Corrected export run 36487342999; artefact 10998924773\\
+Offline finishing & Run 36492423435; revision \code{31a3cba769948e123a59ca35c54c5135ad005f54}\\
+Finished artefact & 11001997190; analysis available, prospective allocation blocked\\\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Post-collection decision coding}
+Prose answers require measurement before comparison with the task reference. The retained answers were exported with workflow metadata masked. Following collection, AI-assisted coding assigned a stated-decision category using explicit decision phrases and semantic adjudication. The recorded procedure covers all 4,224 answers through AI-authored rules and 222 adjudication entries. It is not 4,224 independent model judgements. The coding record identifies OpenAI ChatGPT/Codex; the exact serving model identifier was not exposed.
+
+Coding asks what decision the answer states, not whether the underlying decision is correct. The latter comparison is made against the reference computation. A plausible explanation does not repair an explicitly wrong final category, and a matching category does not demonstrate that the explanation is grounded or internally consistent. This paper therefore reports \emph{decision correctness relative to the task reference}; it does not report validated explanation quality.
+
+The exported text can reveal the workflow through its wording, and the AI assessor had prior task context. Metadata masking is consequently weaker than assessor independence or effective blinding. There is no independent human validation, inter-rater reliability estimate or measured assessor error rate. The AI coding is a disclosed post-collection measurement amendment, not a preregistered independently validated assay. Frozen collection settings provide reproducibility, but do not establish an externally registered protocol.
+
+The final categories comprise 2,345 \code{ready}, 850 \code{not_ready}, 998 \code{undetermined} and 31 \code{ambiguous} answers. Ambiguous cases retain unknown correctness. Of these, 28 are recipient answers and three are donors. No ambiguous answer is discarded or assigned a convenient reference-matching label. The package includes answer text, selected quotations, adjudication notes, assessor provenance and checksums sufficient to locate the measurements for independent review.
+
+\subsection{Estimands and uncertainty}
+Let $Y_{baj}$ indicate that the coded decision matches the reference in block $b$, arm $a$ and recipient position $j$. For $B=192$, $H=10$ and $a\in\{E,O\}$, define
 \begin{equation}
-  0 \leq t-t_c \leq a.
-  \label{eq:freshness}
+ \widehat Q_a=\frac{1}{B}\sum_{b=1}^{B}\frac{1}{H}\sum_{j=1}^{H}Y_{baj},
+ \qquad \widehat\Delta=\widehat Q_E-\widehat Q_O.
 \end{equation}
-Preserving the original collection time when importing evidence prevents ingestion from making an old observation fresh. Assumption validity uses a declared interval with an inclusive start and an exclusive end. These temporal checks establish eligibility under the declared rules. They cannot establish that the measured system remained unchanged throughout the interval.
-
-\subsection{Typed propositions and computational methods}
-\label{sec:typed}
-A typed proposition identifies a subject $s$, quantity $q$, unit $u$, scope $\sigma$, interval $I$, query $Q$ and result predicate $R$. A designated computational evidence value carries an \code{EAL/typed-input/1} envelope. The host checks that its method, subject, quantity and scope match the proposition, that its unit is compatible, that its observation interval contains $I$, and that the query agrees under canonical comparison. The method then computes a result for evaluation against $R$.
-
-Figure~\ref{fig:typed} illustrates these correspondences with stipulated pressure observations. The unit conversion allows a result expressed in pascals to be compared with a condition in kilopascals. Agreement of the metadata is necessary for this binding, but matching an authored scope string does not independently verify experimental assignment. The figure illustrates a computational interface using stipulated values.
-
-\begin{figure}[tbp]
-  \centering
-  \includegraphics[width=160mm]{figures/typed-correspondence.pdf}
-  \caption{Typed correspondence for a constructed \code{causal/1} example. The two columns denote proposition fields and supplied observation fields; connecting relations specify the checks. The observation interval must contain the proposition interval, and $v|_Q$ denotes the fields of the supplied value selected by the query. Compatible units permit the illustrated conversion before the result condition is checked. The values are stipulated, and the declared randomised assignment is not independently established by this correspondence.}
-  \label{fig:typed}
-\end{figure}
-
-Eight built-in method families are versioned separately from their display names. The default \code{structured/1} method checks the availability of declared dependencies while retaining an authored rationale. It does not turn that rationale into a formal entailment. \code{deductive/1} evaluates bounded propositional inputs, with at most 12 atoms, and checks premise consistency. \code{inductive/1} uses a Wilson interval; \code{abductive/1} uses declared priors and likelihoods; and \code{causal/1} evaluates a contrast between independent groups. \code{counterfactual/1} operates on a bounded affine structural causal model with fixed exogenous inputs. \code{analogical/1} compares specified features, and \code{temporal/1} checks sampled temporal coverage. Each method's result is conditional on its input schema and assumptions. In particular, sampled temporal coverage does not prove continuous-time behaviour, and a group contrast alone does not identify an intervention effect.
-
-A registered custom method can extend the computations. Resource-limited worker execution bounds some failures, but it does not make custom code a security sandbox or prove its purity. Method registration and collector configuration remain trusted host responsibilities. The assessment includes \code{prose\_verified: false} to identify the separate status of explanatory prose. A reader can inspect what was computed without treating the surrounding natural-language interpretation as mechanically proved.
-
-\section{Defeasible assessment and implementation evidence}
-\label{sec:semantics}
-\subsection{Acceptance of arguments and claims}
-Let $N$ be the finite set of argument and objection nodes and $C$ the finite set of claims. For $n\in N$, let $U(n)$ denote the result of its local usability checks, $P(n)\subseteq C$ its required premise claims and $T(n)\subseteq N$ its attackers. For $c\in C$, let $D(c)\subseteq N$ contain its derivations. Labels range over accepted, rejected and undecided. With $\mathsf{A}$ and $\mathsf{R}$ denoting the first two labels, the evaluator applies the following rules:
-\begin{align}
- n:\mathsf{A} &\quad\text{if } U(n)\land
-       \bigwedge_{p\in P(n)}p:\mathsf{A}\land
-       \bigwedge_{b\in T(n)}b:\mathsf{R}, \label{eq:accept}\\
- n:\mathsf{R} &\quad\text{if } \neg U(n)\lor
-       \bigvee_{p\in P(n)}p:\mathsf{R}\lor
-       \bigvee_{b\in T(n)}b:\mathsf{A}, \label{eq:reject}\\
- c:\mathsf{A} &\quad\text{if } \bigvee_{d\in D(c)}d:\mathsf{A}, \label{eq:claimaccept}\\
- c:\mathsf{R} &\quad\text{if } \bigwedge_{d\in D(c)}d:\mathsf{R}. \label{eq:claimreject}
-\end{align}
-Empty conjunctions are true and empty disjunctions false. Thus a claim with no derivation is rejected by the graph evaluator. This graph label means that no accepted derivation is available; it does not establish the factual negation of the engineering claim.
-
-Evaluation starts with every label undecided and repeatedly applies the rules until no label changes. Settled labels are retained. On a finite graph, this monotone accumulation of information terminates because each node and claim can become settled at most once. This argument concerns termination of the label computation after local checks have completed. Collector execution and custom methods require their own runtime controls.
-
-The rules make conjunctive premises and alternative derivations explicit. An accepted premise alone cannot compensate for another rejected premise of the same argument. An accepted alternative derivation can support a claim whose other derivation has been rejected. Reusing an evidence record across derivations does not create independent observations or multiply the statistical strength of that evidence. Attack cycles may remain undecided even though ordinary premise dependencies are acyclic.
-
-The public engineering statuses include \status{supported}, \status{contested}, \status{unsupported} and \status{out\_of\_scope}. They are interpretations of an assessment in its declared environment. Evidence availability, graph acceptance and the truth of an external proposition are separate quantities. An application that needs an \status{unavailable} decision category must specify its mapping from diagnostics and evidence checks; Section~\ref{sec:protocol} describes the historical experiment's mapping.
-
-\subsection{What the tests establish}
-The repository checks the attack-only solver against independent complete-extension enumeration for all 531 directed graphs with zero to three nodes, including self-attacks. The composed evaluator is compared with an independent Dung translation over 1,024 two-node, one-claim combinations, 200 seeded larger cases and 512 three-node attack-only cases. Additional tests exercise propagation through a chain of 4,096 argument nodes and 4,096 claims across 8,192 rounds. These finite comparisons check the implemented rules on the enumerated and generated inputs; they are not a mechanised proof covering every graph within the resource limits.
-
-For the source snapshot described in this paper, the full test suite completed with 846 passing tests. It includes parser, validation, evidence, reasoning, command-line and MCP interaction tests. Agreement between an implementation and a translated reference could still reflect a shared modelling error, so the equations, independent enumerations and executable tests are supplied together. Test success establishes the checked software behaviour. It cannot establish that a deployed collector observes the intended system or that a language model will communicate an assessment faithfully.
-
-\section{Worked API performance argument}
-\label{sec:example}
-The repository's worked example concerns a named API service, build, load-test run and concurrency level. A collector validates the report and computes request count, nearest-rank sample p95 latency and the proportion of failed requests. For $n$ ordered latency values $x_{(1)},\ldots,x_{(n)}$, the sample quantile is
+For unknown correctness, set $Y$ to zero for the lower endpoint and one for the upper endpoint. With $C_a$ correct answers, $U_a$ unknown answers and $N_a=BH$, the descriptive envelope is
 \begin{equation}
- \widehat q_{.95}=x_{(\lceil .95n\rceil)},\qquad
- \widehat e=\frac{\#\{\text{failed requests}\}}{n}.
- \label{eq:metrics}
+ Q_a\in\left[\frac{C_a}{N_a},\frac{C_a+U_a}{N_a}\right],\quad
+ \Delta\in\left[\frac{C_E-C_O-U_O}{BH},\frac{C_E+U_E-C_O}{BH}\right].
+ \label{eq:unknown}
 \end{equation}
-The declared acceptance conditions are $n\geq100$, $\widehat q_{.95}\leq200$ ms and $\widehat e\leq0.01$. Report identity, completeness, freshness and internal consistency must also satisfy their checks. These thresholds specify a decision for a finite report; they do not provide a confidence statement about a service's long-run tail latency or error probability.
+These bounds cover the unresolved categories conditional on the other codes being correct. They are not confidence intervals and do not cover assessor errors among apparently resolved answers.
 
-The example supplies synthetic records with 100 requests, a sample p95 of 180 ms and one failed request. It is assessed at a fixed time, with a maximum evidence age of 86,400 seconds. The inclusive inequalities admit the error rate of exactly 1\%. Figure~\ref{fig:region} shows the acceptance region conditional on sufficient request count and eligible evidence. Its second marked point stipulates two failures, making the report fail the error-rate condition while leaving the latency value unchanged. This perturbation illustrates the rule without adding a measured observation.
-
-Listing~\ref{lst:example} reproduces the claim and argument from the executable example. Its collector computes the metrics, and the evidence declaration applies the three thresholds. The reasoning record selects \code{structured/1}. Consequently, this example demonstrates executable evidence requirements and dependency assessment with an authored rationale; it does not exercise the typed proposition binding illustrated in Figure~\ref{fig:typed}. The complete source and its collector are included in the repository and covered by the test suite.
-
-\lstinputlisting[firstline=32,lastline=41,caption={Claim and argument excerpt from \code{examples/api-load-test/source.eal}. The referenced environment, reasoning and evidence records are declared earlier in that file.},label={lst:example}]{../examples/api-load-test/source.eal}
-
-\begin{figure}[tbp]
-  \centering
-  \includegraphics[width=160mm]{figures/acceptance-region.pdf}
-  \caption{Decision region for the worked API example, conditional on at least 100 requests. With eligible evidence ($A=1$), the inclusive bounds are sample p95 latency at most 200 ms and error rate at most 1\%. The point $(180,1)$ uses the synthetic example's values; $(180,2)$ is a stipulated perturbation. When report validity, identity, completeness, freshness or consistency is unresolved or fails ($A=0$), performance remains unavailable for this decision. The axes show the declared decision rule; no pilot measurements or fitted response surface are plotted.}
-  \label{fig:region}
-\end{figure}
-
-Pinning the report digest and comparing command-line and MCP assessments checks whether the same example is interpreted consistently through two interfaces. A digest mismatch, stale report or different build cannot be repaired by a favourable performance number. The operational consequence is to obtain eligible observations before deciding whether the performance requirement holds. This consequence motivates the unavailable category used in the experiment.
-
-\section{Historical pilot: materials and method}
-\label{sec:protocol}
-\subsection{Run identity and case construction}
-The analysed artefact is GitHub Actions run 36163505801, attempt 1, executed on 25 September 2026 using commit \code{3490076dd78404caa1326d9aae704f964910c4c8}. Its manifest identifies plan version 2.0.0 and run schema \code{eal-api-experiment-run/2}. The supplied ZIP's SHA-256 agrees with the digest recorded for GitHub artefact 10879620453. Reanalysis uses the original reference and scoring code from that commit. It does not apply the later experiment's additional comparator or revised outcome fields to the historical answers.
-
-The 40 cases comprise four variations in each of ten designed families: healthy, near-limit, slow, errors, incomplete, wrong identity, stale, corrupt, conflicting and distractor. Each case acquired a real HTTP workload against a controlled loopback service. The harness then constructed a report bundle, including annotated fault injections where required. The harness used the same immutable report bundle for every model and condition assigned to a case. Case identity and byte content are verified during reanalysis. This arrangement controls differences in observations across conditions while retaining a realistic report-selection task. The cases are development examples selected by mechanism, with no probability sampling of production incidents.
-
-The independent reference recomputes metrics from raw request rows and evaluates report selection, identity and validity without calling the EAL collector. A family's intended label does not determine its reference outcome: measured rows and injected conditions do. The final reference distribution is nine supported, 12 unsupported and 19 unavailable cases. Freshness is evaluated against a shared frozen assessment time with a 300-second age limit. This differs from the worked example's one-day limit and is preserved in the historical reanalysis.
-
-\subsection{Conditions, models and resource limits}
-The assignment ledger crosses 40 cases, six model snapshots and five conditions, giving 1,200 assignments. The EAL/MCP condition supplies a complete EAL source document and access to the EAL collection and assessment host. The JSON condition supplies the corresponding argument structure as JSON prompt text, with direct collector access. Three prose conditions provide a brief instruction, explicit decision instructions or a review-oriented instruction, also with direct collector access. The historical JSON and prose conditions have no equivalent EAL checker. All conditions receive the same report catalogue and acceptance criteria. Their tools return collector-derived metrics and measurement facts from the same underlying reports; EAL/MCP additionally returns the checked assessment. Prompt lengths and available tool conclusions therefore differ. The comparison concerns these complete systems.
-
-The EAL condition uses \code{structured/1} with the supplied argument. The pilot therefore tests report selection and communication of a computed assessment; it does not exercise model authoring, typed proposition binding or objection handling. The independent reference uses raw rows, whereas the models report metrics already computed by their collector.
-
-The pinned GPT-4.1 nano, mini and full snapshots are all dated 2025-04-14 and use temperature 0.2. GPT-5.4 nano and mini are dated 2026-03-17; the full snapshot is dated 2026-03-05. The GPT-5.4 configurations request medium reasoning effort. These names identify the archive's provider snapshots and commercial tiers. The study supplies no parameter counts or controlled manipulation of model capacity.
-
-All six models use the same text-based JSON operation adapter; native provider tool mode is disabled. The EAL condition connects those operations to a real MCP session, while the other conditions call the direct collector. Each trial permits at most six model calls, each with at most 4,096 output tokens and a 120-second timeout. The manifest records a USD 20 per-model admission allowance, a one-second minimum call interval, six workers and assignment seed 20260925. Equal limits do not imply equal prompt tokens or equal computational assistance. In particular, a model requesting an EAL assessment can receive a checked conclusion unavailable to a comparator model.
-
-\subsection{Reference decisions and correctness}
-\label{sec:scoring}
-Let $A$ mean that report validity, identity, completeness, freshness and consistency all evaluate to true. The reference status is unavailable when $A$ is false or unresolved. Given $A$, it is supported when all three performance predicates hold and unsupported otherwise. This order prevents a missing or invalid observation from being classified as demonstrated poor performance.
-
-The required final answer identifies the report and its scope, gives a status, enumerates failed checks and supplies request count, sample p95 and error rate. The original rubric requires collection, correct report selection, exact scope, correct status, an exact set of failed checks, exact count and latency/error metrics within 0.01 in their reported units. The narrative explanation is retained but is not scored. A failed check is a predicate whose value is explicitly false. An unknown predicate is not included in that set. The version-2 answer schema has no separate \code{unknown\_checks} field.
-
-This distinction is consequential for corrupt reports. Their validity check can be false while other checks and metrics are unknown. Listing every unresolved check as failed violates the rubric even if the answer's unavailable status is correct. Reporting both the composite score and the underlying discrepancy is necessary to interpret such cases.
-
-The EAL host's unsupported assessment can arise from a measured failure or from unavailable evidence. The version-2 adapter therefore supplies both \code{host\_status} and \code{decision\_status}, together with a status mapping. Its presence does not guarantee that a model will select the application-level decision status. Retained host assessments are compared with the independent reference, allowing a disagreement in the final answer to be separated from a disagreement in the host's computation. The later experiment uses one application-level \code{status} in the model-visible packet, as described in Section~\ref{sec:nano}.
-
-\subsection{Analysis of incomplete execution}
-\label{sec:analysis}
-One attempt was assigned to each case--model--condition combination. The archive records 628 completed attempts, 131 failures and 441 assignments not attempted. Of the failures, 128 reached the model-call limit and three returned provider errors stating that the response was incomplete. The runner's broad provider-error rule stopped subsequent assignments for the affected model. Each GPT-5.4 snapshot encountered such an error; the full snapshot stopped after its first assignment. These stops account for all unattempted assignments.
-
-The primary descriptive score retains the assignment denominator. Write $Y_{ima}=1$ when case $i$, model $m$ and condition $a$ completed with a correct answer, and zero otherwise. For each model and condition, the reported score is $\sum_{i=1}^{40}Y_{ima}/40$. This describes the recorded system's realised yield under the run's stopping rule. A zero caused by non-execution is not evidence of an incorrect answer that a model would have produced.
-
-For the paired EAL/MCP--JSON contrast, let $n_{10}$ count cases correct only under EAL/MCP and $n_{01}$ those correct only under JSON. The finite-case difference is
+Let $T_{baj}$ be recorded input plus output tokens, with $j=0$ denoting the donor. The resource endpoint is the ratio of aggregate totals:
 \begin{equation}
- \Delta_m=\frac{1}{40}\sum_{i=1}^{40}(Y_{imE}-Y_{imJ})
-          =\frac{n_{10}-n_{01}}{40}.
- \label{eq:delta}
+ \widehat R_T=1-\frac{\sum_b\sum_{j=0}^{H}T_{bEj}}{\sum_b\sum_{j=0}^{H}T_{bOj}}.
+ \label{eq:tokens}
 \end{equation}
-Completed-pair counts accompany this contrast. Conditioning on completion changes the analysed subset and may select easier cases; it cannot repair missing outcomes. No confidence interval, significance test or equivalence conclusion is assigned to these purposively constructed cases. There is one realised model attempt per assignment, shared case structure within each family and no probability sampling scheme for a target population. The observed differences are descriptive development results.
+This is not the mean of per-pair reductions. Cached input is already included in input tokens; reasoning tokens are already included in output tokens. Neither is added again. API attempts, cost estimates, native probe calls, host acquisitions, observation reuses and elapsed times are separate quantities. A token saving does not imply fewer evidence acquisitions or lower total engineering cost.
+
+The frozen engineering criteria require $\Delta>-0.05$, $Q_E>0.90$ and $R_T>0.20$ at $H=10$. The margins are prospective design choices, not validated developer-utility thresholds. The saved analysis also supplies conditional sampling intervals. For correctness it uses an empirical Bernstein bound on whole paired trajectories, allowing independent non-identically distributed bounded observations~\cite{maurer2009empirical}. Unknown answers enter through a conservative variance envelope. For resources it uses an approximate stratified paired delta-method interval with a $t$ correction~\cite{deng2018delta}. Appendix~\ref{app:uncertainty} records the implementation and assumptions.
+
+The displayed two-sided intervals allocate a total nominal error probability of 0.05 across three endpoints. The joint engineering decision instead uses an intersection--union of three one-sided tests, each at 0.05. Their three lower bounds must not be presented as jointly 95\% simultaneous lower bounds. Both calculations depend on the measurement and execution assumptions; neither turns a pilot into a confirmatory evaluation.
 
 \section{Results}
-\label{sec:results}
-\subsection{Assignment yield and paired outcomes}
-Table~\ref{tab:accuracy} reports correct assignments across all five conditions. GPT-4.1 full and mini completed all 200 assignments each; their differences therefore do not depend on unattempted cases. Full scored 40/40 in EAL/MCP and 36/40 in JSON, a difference of 10 percentage points. Mini scored 32/40 and 21/40, a difference of 27.5 percentage points. GPT-4.1 nano scored 16/40 and 6/40, but only 25 of those paired assignments completed in both conditions. Its 25-point difference combines answer correctness and completion under the specified limits.
+\subsection{Collection completeness and decision correctness}
+All 384 planned sequences and 4,224 sessions are recorded. The article reconstruction reconciles every session with its API attempt identifiers, recomputes the task reference from the retained corpus and checks all saved correctness scores. All 5,453 API attempts have recorded usage and cost estimates. Execution completeness therefore does not depend on imputing missing calls or treating absent usage as zero.
 
-\begin{table}[tbp]
+For the 1,920 recipients in the EAL/2 arm, 1,876 coded decisions match the reference, 17 do not and 27 remain unknown. The corresponding ordinary-arm counts are 746, 1,173 and one. Equation~\ref{eq:unknown} gives correctness envelopes of 97.71--99.11\% and 38.85--38.91\%, respectively, and a difference of 58.80--60.26 percentage points. These are large descriptive differences for the selected workflow assignments, conditional on the resolved AI codes.
+
+\begin{table}[t]
 \centering\small
-\caption{Correct assignments out of 40 in each model--condition cell. Failed and unattempted assignments remain in the denominator. Snapshot dates and settings are given in Section~\ref{sec:protocol}. ``Full'' identifies the unqualified model name.}
-\label{tab:accuracy}
-\begin{tabular}{lrrrrr}\toprule
-Model & EAL/MCP & JSON & Brief & Explicit & Review\\\midrule
-\inputtable{results/accuracy-rows.tex}
-\bottomrule\end{tabular}
+\caption{Recipient outcomes by case; each arm has 320 answers per case. C/I/U means correct/incorrect/unknown. Ranges assign unknown correctness adversely and favourably; they are not confidence intervals.}\label{tab:correctness}
+\input{results/case-rows}
 \end{table}
 
-Figure~\ref{fig:paired} shows the paired counts. For GPT-4.1 mini, EAL/MCP alone was correct on 12 cases and JSON alone on one; the two systems were both incorrect on seven. For full, the four discordant cases all favoured EAL/MCP under the composite rubric. These counts locate agreement and disagreement more precisely than marginal percentages alone.
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=160mm]{figures/paired-outcomes.pdf}
-\caption{Paired EAL/MCP and JSON assignment outcomes. Rows are EAL/MCP correct and incorrect; columns are JSON correct and incorrect. Each matrix sums to all 40 assigned cases. The off-diagonal counts give $\Delta$ through Equation~\ref{eq:delta}; completed-pair counts disclose exposure. Here ``incorrect'' includes failed and unattempted assignments under the declared yield measure. In particular, the 40 in the GPT-5.4 full lower-right cell represents absent successful execution, not 40 observed pairs of wrong answers.}
-\label{fig:paired}
+\begin{figure}[t]
+\centering\includegraphics{figures/case-correctness.pdf}
+\caption{Decision-correctness envelopes for the six selected cases, pooling donor and recipient configurations. Markers show the lower endpoint; short horizontal segments extend to the upper endpoint when answers are ambiguous. Each marker represents 320 recipient answers nested within 32 sequences. The ranges express unresolved coding, not sampling precision.}\label{fig:cases}
 \end{figure}
 
-The GPT-5.4 records support a narrower account because model-level stopping removed substantial exposure. Mini scored 16/40 in EAL/MCP and 17/40 in JSON, with only 13 completed pairs. Nano scored 2/40 and 0/40, with four completed pairs. Full supplied no completed assignment. Table~\ref{tab:disposition} separates completion, failure and non-execution for each model. These totals preclude interpreting the GPT-5.4 scores as an ordered capability comparison with GPT-4.1.
+The direction is consistent across all six tasks (Table~\ref{tab:correctness} and Figure~\ref{fig:cases}). The lowest EAL/2 lower endpoint is 95.6\% for Firmware; ordinary-arm endpoints range from 33.1\% for Release to 48.4\% for Read routes. The shape of the task-time profiles is more informative than an overall average alone (Figure~\ref{fig:positions}). Recipients encounter authored changes as well as intervals of permitted reuse. A correct predecessor answer can continue to match the reference for one position and then become stale. The plotted profiles describe this sequence dependence; they do not estimate an independent time effect.
 
-\begin{table}[tbp]
-\centering\small
-\caption{Disposition of the 200 assignments for each model, pooled over five conditions. A failed attempt consumed execution; an unattempted assignment remained after stopping.}
-\label{tab:disposition}
-\begin{tabular}{lrrr}\toprule
-Model & Complete & Failed & Not attempted\\\midrule
-\inputtable{results/disposition-rows.tex}
-\bottomrule\end{tabular}
-\end{table}
-
-\subsection{What the correctness differences mean}
-All four incorrect JSON answers from GPT-4.1 full concerned corrupt-report cases. Their statuses, report selection, scope and metrics were correct; their failed-check sets included unknown checks. Thus the 40 versus 36 composite score supplies evidence about compliance with the answer rubric, while the observed status accuracy was 40/40 in both conditions. A claim that EAL/MCP improved full-model decision-status accuracy would misstate these data.
-
-The eight incorrect EAL/MCP answers from GPT-4.1 mini identify a different problem. Seven had an incorrect status: two incomplete-report cases, four stale-report cases and one wrong-identity case. One further answer used the wrong scope on a healthy case. All 40 mini EAL/MCP answers had correct metrics and failed-check sets. The discrepancy between an accurate computed result and its final status expression makes status communication an interface concern, even when the model successfully obtains the relevant evidence.
-
-Across the run, 141 host checks were recorded, and all agreed with the independent reference according to the archived comparison flags. This is an agreement rate for the checks that were actually invoked and retained; it is not coverage of all 240 EAL assignments. It supports separating the observed communication failures from failures of those recorded host computations. The reference itself remains a program subject to specification and implementation error.
-
-\subsection{Consumption and reproducibility}
-The archive records 2,342 model calls and an estimated total cost of USD 3.97892431 at the manifest's frozen token rates, with no calls missing cost accounting. Table~\ref{tab:cost} gives condition totals. They include calls from failed attempts. Missing execution reduces some totals substantially, so lower cost in an incomplete cell does not establish greater efficiency at completing the task.
-
-\begin{table}[tbp]
-\centering\small
-\caption{Recorded token-cost estimates in USD, rounded to four decimal places. Rates are those frozen in the run manifest, not current prices. Zero cells have no recorded model calls.}
-\label{tab:cost}
-\begin{tabular}{lrrrrr}\toprule
-Model & EAL/MCP & JSON & Brief & Explicit & Review\\\midrule
-\inputtable{results/cost-rows.tex}
-\bottomrule\end{tabular}
-\end{table}
-
-Each of the three incomplete-response errors occurred on a response reporting 4,096 output tokens, the configured cap. The archive reports 4,073 reasoning tokens for the GPT-5.4 nano response, 4,027 for mini and 38 for full. These observations identify a budget/response interaction requiring investigation. They do not establish the provider's internal stopping mechanism or predict the result of a larger budget.
-
-The supplied reproduction script verifies the archive-derived file hashes, the 40 case hashes, all 1,200 assignment identities and the two historical scoring-module hashes. It recomputes the independent reference and rubric for all 759 attempted assignments, checks token costs against the frozen rates and regenerates the historical summary. Every recomputed score and the full summary match the archived originals. Reproduction requires no network connection or new model calls. The paper's numerical tables and paired matrices are generated from that replay, avoiding manual transcription of cell results.
-
-\subsection{Nano-only follow-up with ordinary validation}
-\label{sec:nano}
-Actions run 36176588712 used plan 3.1.0 at commit \code{8220e838a8d4}. It assigned GPT-4.1 nano, snapshot 2025-04-14, to 40 cases in six conditions. The additional plain-validator condition combines explicit prose with deterministic checking through the direct collector. The revised answer schema separates \code{failed\_checks} from \code{unknown\_checks}. Both checked conditions return one application-level status. Temperature 0.2, text-mediated operations and the six-call limit remain fixed. The run reuses the case identifiers with newly acquired HTTP observations; changing observations, rubric and failure handling prevents a direct estimate of performance change from the version-2 run.
-
-Table~\ref{tab:nano} preserves all 240 assignments. Plain-validator achieved 11/40 correct assignments, compared with 3/40 for EAL/MCP and 5/40 for explicit prose. These are differences of 20 and 15 percentage points, respectively, in realised assignment yield. Only eight EAL/MCP--validator pairs completed in both conditions. Within that selected subset, plain-validator alone was correct on three cases and EAL/MCP alone on none. The result supplies counterevidence to an EAL/MCP advantage on this task, while incomplete execution and unequal interfaces prevent attributing the difference to notation.
-
-\begin{table}[tbp]
-\centering\small
-\caption{Nano-only follow-up under plan 3.1.0. Each condition has 40 assigned cases. Scores retain failed and unattempted assignments.}
-\label{tab:nano}
-\begin{tabular}{lrrrr}\toprule
-Condition & Correct & Complete & Failed & Not attempted\\\midrule
-\inputtable{results/nano-outcome-rows.tex}
-\bottomrule\end{tabular}
-\end{table}
-
-The EAL/MCP assignments separate into three correct completions, 13 incorrect completions, 14 exhausted conversations and ten unattempted cases (Figure~\ref{fig:nano}). All 30 attempted trials successfully invoked the fixed EAL assessment on their first model call. Their validation, collection, reasoning and explanation receipts record success; all 34 returned packets, including repeated assessments, agree with the independent reference on the supplied measurements and decision fields. The failures therefore occur after successful assessment in these trials.
-
-\begin{figure}[tbp]
-\centering
-\includegraphics[width=160mm]{figures/nano-failure-diagnosis.pdf}
-\caption{Disposition of the 40 EAL/MCP assignments in the nano follow-up. Every attempted assignment obtained a correct assessment packet. The nested counts distinguish incorrect final answers, exhausted conversations and assignments removed by the later model-level stop. Counts describe this execution and preserve its missing outcomes.}
-\label{fig:nano}
+\begin{figure}[p]
+\centering\includegraphics{figures/session-profiles.pdf}
+\caption{Correctness by task and session position. Solid teal triangles denote EAL/2 and dashed grey diamonds ordinary notes; vertical segments cover ambiguous coding. Each position contains 32 answers per arm. Position zero is the donor and is excluded from recipient correctness; positions one to ten are fresh recipients. The task fixtures change at even positions, with the next odd position retaining an eligible snapshot. The horizontal connections show ordered profiles, not independent observations or interpolation of task state.}\label{fig:positions}
 \end{figure}
 
-All 14 exhausted conversations used the six permitted model calls. In 13 of these, the first response after assessment omitted the required operation name; the corresponding count across all attempted EAL trials was 26/30. Later replies repeatedly omitted required fields. Two exhausted trials produced the correct scored fields but omitted the required explanation, which was a schema requirement although explanation quality was unscored. These records distinguish inability to complete the operation protocol from an incorrect engineering decision.
+\subsection{Recipient models and native tool availability}
+Table~\ref{tab:configurations} disaggregates recipients by model and native tool setting, pooling donors and tasks. Every cell contains 480 recipient answers. The highest observed EAL/2 correctness occurs for GPT-4.1 nano with native tools disabled: all 480 decisions match the reference. In this condition the EAL host still supplies its checked assessment. This observation therefore cannot support a claim that external evidence or computation is unnecessary.
 
-Among the 13 incorrect completions, 12 have a wrong status, five have wrong metrics, four have wrong failed-check sets, three have wrong unknown-check sets and one has wrong scope; these counts overlap. No completed EAL answer uses \status{unavailable}, although seven require it. In case \code{case-cd277ae1a808}, the packet reports \status{unsupported} with a 20\% error rate and a failed error-rate check. The final answer preserves those facts and explains why the run fails, yet labels it \status{supported}. Other answers replace available measurements with null after receiving a protocol error, treating a malformed operation as absent evidence. The ordinary-validator condition also mislabels unavailable evidence, so this communication problem extends beyond EAL.
+\begin{table}[t]
+\centering\small
+\caption{Recipient configuration profiles. Native tools refer to the recipient's optional probe, not the EAL host's automatic evidence activity. All donors have native tools enabled.}\label{tab:configurations}
+\input{results/configuration-rows}
+\end{table}
 
-The annotation claiming that all checks passed appears alongside measurements in some packets. Its repetition, prompt length and the amount of provenance may affect model behaviour, but this run does not isolate those effects. A wrong-identity EAL case with a neutral annotation and no protocol error still changes the correct \status{unavailable} packet to \status{supported}. The retained evidence establishes disregard or alteration of correct decision fields; it does not establish a single prompt feature as their cause.
+Ordinary-workflow correctness is similar across these configurations, despite native tool availability in half of them. An available probe need not be invoked at every session, and an invocation need not produce a correctly stated final decision. The aggregate record contains 488 ordinary recipient native probe calls across all 1,920 recipients, including the disabled-tool cells, versus 470 for EAL/2. The data support inspection of acquisition behaviour, but do not identify a causal effect of actually using the probe: tool use is chosen during the assigned workflow and is a post-assignment variable. A comparison restricted to callers would select on model behaviour.
 
-The run ended when a plain-validator call returned HTTP 503. Its recorded usage and charge were unknown. The runner marked the error retryable but stopped the model under the frozen unknown-cost rule. The remaining 56 assignments, including ten EAL assignments, were never dispatched. Thus EAL non-execution was caused by a shared execution stop, while all 14 EAL failures were exhausted conversations. Across conditions, 141 assignments completed, 43 failed and 56 remained unattempted. The archive records 689 calls, USD 0.1146428 in known token costs and one call with unknown cost. This is partial cost accounting, not a claim about the provider's total charge.
+\subsection{Cumulative model resources and host work}
+The EAL/2 workflow uses 1,943,638 input plus output tokens; ordinary notes use 2,992,739. The resulting aggregate reduction is 35.05\%. Table~\ref{tab:resources} includes the donor and separates model usage from collector activity. EAL/2 has lower aggregate input and output counts, although the reductions differ. Figure~\ref{fig:cumulative} shows how those differences accumulate through the recipient horizon.
 
-The separate reproduction script verifies all retained case hashes and the eight preserved source/configuration hashes, recomputes all 184 attempted scores and reproduces the complete 240-assignment summary. It also rechecks every retained model-visible measurement packet against raw case rows. The curated follow-up data retain response text, protocol errors and full tool traces, permitting the communication and execution diagnoses to be regenerated without model calls. Neither pilot supplies an efficacy result for subsequent protocol repairs.
+\begin{table}[t]
+\centering\fontsize{8.5}{11}\selectfont\setlength{\tabcolsep}{3.5pt}
+\caption{Recorded resources. Initial denotes 192 donors per arm; recipients denotes 1,920 subsequent sessions. Token totals include all linked API attempts. Cost is the retained plan's API estimate, not an invoice or total project cost.}\label{tab:resources}
+\input{results/resource-rows}
+\end{table}
 
-\section{Discussion and threats to validity}
-\label{sec:discussion}
-\subsection{Bounded engineering value}
-The implementation makes several engineering mistakes detectable before a conclusion is communicated: an evidence record can name the wrong subject, use an incompatible unit, fall outside the permitted interval or fail a method-specific input condition. The composed evaluator also exposes unresolved attacks and unavailable premises. These checks provide inspectable reasons for an assessment. Their usefulness depends on engineers choosing quantities, intervals, collectors and methods that represent the intended question.
+\begin{figure}[t]
+\centering\includegraphics{figures/paired-token-ratios.pdf}
+\caption{Empirical distributions of the paired cumulative token ratio, including donor and ten recipients. Each curve contains 96 paired blocks grouped by recipient model, pooling donor, task and tool settings. Ratios below one favour EAL/2. These are distributions of paired resource observations, not confidence distributions for the aggregate ratio.}\label{fig:ratios}
+\end{figure}
 
-The pilot adds evidence about the interaction surrounding those checks. On the completely executed GPT-4.1 full and mini strata, EAL/MCP had higher composite correctness than the four supplied alternatives. However, the full-model JSON difference was entirely attributable to the exact failed-check rubric, and mini still miscommunicated seven statuses after using EAL/MCP. These findings support improving the application response schema and its interpretation. They do not establish that an executable host eliminates reasoning errors.
+EAL/2 uses fewer cumulative tokens in 191 of the 192 paired blocks. Figure~\ref{fig:ratios} retains the distribution rather than replacing it with the aggregate ratio. It also makes clear that a ratio of totals weights blocks by ordinary-arm token use, whereas an unweighted mean of pair ratios answers a different question. No pair is excluded for having an unfavourable ratio.
 
-The nano follow-up favours ordinary validation over EAL/MCP in realised assignment yield. Together, the pilots show that providing a correct computed verdict does not ensure a correct model response. The EAL condition also changes notation, provenance and the MCP execution route, whereas the plain-validator condition uses a direct checker. A comparison with matched response content, prompt information and output requirements would distinguish these contributions. Model authoring of EAL source requires a separate task and failure taxonomy because both pilots supply the source in advance.
+\begin{figure}[t]
+\centering\includegraphics{figures/cumulative-tokens.pdf}
+\caption{Observed aggregate token reductions as recipients accumulate, always including donors. Zero denotes donors alone. Input and output curves are components; the total curve uses their summed counts. The horizontal 20\% reference is the frozen engineering criterion for the total at horizon ten. It is not a fitted effect, a cost threshold or a confidence limit.}\label{fig:cumulative}
+\end{figure}
 
-The accompanying protocol-4 implementation addresses the recorded failure mechanisms through explicit operation contracts. The host supplies an omitted report identifier from the most recently inspected packet and an omitted scope from the requested task; conflicting supplied fields are rejected. Explanation becomes optional, and protocol feedback distinguishes operation errors from unchanged evidence. Model finalisation remains the default and retains model-authored decisions, including incorrect ones. A separately labelled checked-finalisation mode returns the deterministic result directly for the two checked conditions; its outcomes must remain separate from model-finalised outcomes. Bounded retries for transient transport and server failures preserve unknown-charge reservations and remain within the existing call limit. These changes have offline implementation checks, with no new model-performance measurements reported here.
+Lower model-token use accompanies additional host evidence work. EAL/2 records 1,152 automatic host acquisitions, 960 host reuses and 562 native probe calls, giving 1,714 collector calls in total. Ordinary notes record 667 native probe calls and no automatic host acquisitions. A host reuse is not a new collector call. This is a model-token saving under a workflow that performs more recorded acquisitions, not an across-the-board reduction in computational activity.
 
-\subsection{Construct and internal validity}
-The composite outcome combines report acquisition, selection, scope, status, failed-check enumeration and metric reporting. It deliberately demands a complete answer, but its exact-set requirement makes unknown-versus-failed wording consequential. Reporting status accuracy and error components alongside the composite score avoids equating every failed answer with a wrong engineering decision. Explanation quality, calibration, user comprehension and downstream deployment choices were not measured.
+The retained API cost estimates are USD~0.29840445 for EAL/2 and USD~0.39637595 for ordinary notes, totalling USD~0.69478040 within the frozen USD~2 ceiling. Pricing, caching and different model input rates mean that money and token counts are not interchangeable endpoints. The recorded collection segment lasts 47.91 minutes with five workers. Summed session elapsed times, about 5,290 and 5,406 seconds by arm, overlap in wall time and include more than model inference. They must not be added and interpreted as a serial workflow duration. Source authoring, method development, annotation, infrastructure and human review costs were not measured.
 
-The independent reference recomputes results from raw rows, reducing direct implementation reuse with the EAL collector. Both nevertheless implement the same authored specification, and both could embody a mistaken requirement. Case construction, protocol design and interpretation occurred within the project that develops EAL. No independent participant study or external replication is available. Archive integrity and exact score reproduction address data handling; they cannot remove these design dependencies.
+\subsection{Conditional intervals and the blocked prospective allocation}
+The retained simultaneous-interval calculation yields 42.20--76.86 percentage points for the correctness difference, 89.63--100\% for EAL/2 correctness, and 33.64--36.47\% for cumulative token reduction. The first two are conservative bounded-outcome intervals; the third is an approximate resource interval. They condition on the fixed cases, independent paired execution assumptions and correct coding of resolved answers. They do not incorporate an estimated AI-assessor error distribution.
 
-The model-level stopping rules make missingness depend on execution outcomes and assignment order. Treating all assignments as denominators preserves each run's operational yield but penalises conditions scheduled after a model stopped. Restricting analysis to completed trials changes that problem into selection bias. The paper therefore reports both disposition and paired completion and refrains from assigning missing counterfactual answers. Protocol 4 defines bounded retry and continuation rules prospectively; evaluating them requires a new run. Reclassifying the historical 503 response after observing its consequences would change the historical protocol.
+The separate one-sided decision calculation gives lower bounds of 47.16 percentage points, 92.07\% and 34.10\%, respectively. The saved report marks its joint engineering criteria as met while retaining \code{pilot_only} status. The fact that the two-sided absolute-correctness interval reaches below 90\% is compatible with this result: the intervals and one-sided decision use different tail allocations. It should not be hidden by reporting only the more favourable calculation.
 
-\subsection{External and statistical validity}
-The workload was a local HTTP service with controlled modifications to reports. It supplies real requests and timing observations but does not sample the operating conditions, organisational practices or failure distributions of deployed services. Four variations within each designed family share substantial structure. Forty case identifiers consequently do not imply 40 independent draws from an engineering population.
+The prospective planner returns \code{no_supported_allocation}. It requires complete pilot recipient annotation and at least four complete paired repetitions in each stratum for nuisance estimation. Although four pairs were collected in every stratum, ambiguous recipient answers reduce the minimum complete-pair count to one. All 48 strata have resource variance information, but this does not supply missing correctness information. No confirmatory plan was emitted and no evaluation collection was run. A successful offline pipeline therefore means that processing and reporting completed, not that the experiment satisfied every scientific prerequisite.
 
-Provider snapshots, reasoning settings and per-call limits are specific to the archived run. Commercial model tiers are not experimental manipulations of a single capability variable. Cross-family differences combine architecture, training, inference behaviour and interface configuration. Single realised attempts also leave response variability unmeasured. These restrictions motivate descriptive counts and paired differences rather than population confidence intervals or claims of statistical equivalence.
+\subsection{Sensitivity to unresolved assessor validity}
+An unknown-answer envelope does not protect against misclassification of a resolved answer. To make this distinction explicit, Figure~\ref{fig:sensitivity} presents an exploratory, post-collection sensitivity calculation. Let $\epsilon_E$ and $\epsilon_O$ denote adverse coding changes as fractions of all recipient answers in the respective arms. They are assumed error allowances, not measured error rates. A conservative descriptive lower gap is
+\begin{equation}
+ L_\Delta(\epsilon_E,\epsilon_O)=0.5880208-\epsilon_E-\epsilon_O,
+ \qquad L_E(\epsilon_E)=0.9770833-\epsilon_E.
+\end{equation}
+The positive-gap condition holds when the two allowances sum to less than 58.80 percentage points. The stronger absolute requirement $L_E>0.90$ allows less than 7.71 percentage points of adverse EAL/2 coding change. These statements concern robustness of the observed envelopes only; sampling uncertainty and possible common specification error remain separate. The plot cannot substitute for independent annotation validation.
 
-The software account and the pilot concern different commits. The current package's successful test run does not retroactively validate every historical execution path, and the pilot does not measure later changes. The accompanying materials retain both identities, the original scorer and the artefact digest so that a future study can state exactly which components were changed.
+\begin{figure}[t]
+\centering\includegraphics{figures/coding-sensitivity.pdf}
+\caption{Assumption-based sensitivity of the descriptive correctness envelopes. The shaded region satisfies both a positive EAL/2--ordinary gap and an EAL/2 lower correctness bound above 90\%, after adverse changes to resolved codes. Boundary points do not satisfy the strict inequalities. No assessor error rates have been measured. This is an exploratory algebraic calculation, not additional experimental data or a confidence region.}\label{fig:sensitivity}
+\end{figure}
+
+\section{Discussion}
+\subsection{What the pilot establishes}
+For these six synthetic tasks, the completed EAL/2 workflow produces many more reference-matching recipient decisions and uses fewer cumulative model tokens than the implemented ordinary-notes workflow. The result survives assigning all unresolved EAL/2 recipient answers incorrectly and the single unresolved ordinary recipient answer correctly. Retained acquisition events also show that the EAL host implements the intended alternation between collecting and reusing dated snapshots. These are measured properties of this particular execution, subject to the declared coding limitation.
+
+The result is consistent with a practical design in which a host owns evidence eligibility and deterministic calculation, while a model communicates the result. It does not establish that the model has acquired a more reliable reasoning capability. A short checked context can reduce repeated prompt material, and automatic provision of the current answer can improve decision accuracy. Those are useful workflow properties if their upstream engineering and validation costs are acceptable. The experiment has not measured those costs or compared equally informative alternatives.
+
+\subsection{Alternative explanations and a discriminating follow-up}
+The largest identification gap is the bundled treatment. Ordinary recipients sometimes have only the previous answer, whereas EAL recipients automatically receive a current checked assessment. A direct follow-up should independently vary delivery of the same current facts, provision of a computed decision, observation retention and source representation. An ordinary structured-state baseline receiving the same facts and deterministic result would test whether EAL/2 contributes beyond information delivery and computation. A baseline receiving matched facts without the computed decision would test the added value of deterministic evaluation. Such comparisons require explicit, prospectively fixed inputs and endpoints.
+
+The current synthetic cases should also be separated from a broader target population. Replication on new independently authored tasks, with external review of task realism and the reference decisions, would address common specification error. Independent coding should first validate a prospectively selected sample of the retained prose, with oversampling or complete review of ambiguous and disagreement-prone answers accounted for in the validation design. Only after the measurement procedure and nuisance estimates are adequate should a confirmatory allocation be frozen. The blocked planner should not be bypassed by filling ambiguous labels from the desired reference or recycling the pilot as a fresh evaluation.
+
+\subsection{Threats to validity}
+\textit{Construct validity.} A three-way readiness category compresses the quality of an engineering assessment. The current outcome does not validate an explanation, action recommendation, source interpretation or assurance argument. Synthetic eligibility rules and one-minute snapshot validity are imposed contracts, and correct execution may preserve a poorly chosen rule. Token counts are a reproducible model resource measure, but omit development effort and much host cost.
+
+\textit{Internal validity.} Randomised paired ordering controls some order effects, but not every provider or concurrency effect. The EAL intervention differs in automatic evidence delivery as well as representation. The two model snapshots differ in more than reasoning effort. Tool use and answer length are outcomes of the assigned workflow and should not be adjusted for as if they were pretreatment covariates. AI coding was introduced after collection, can infer arm identity from answer wording and has no independent measured error rate.
+
+\textit{Statistical conclusion validity.} The primary comparison preserves whole trajectories and all planned pairs. Sampling intervals nevertheless require independent repetitions and stable execution conditions; a common service batch can violate these assumptions. Four repeats per stratum are thin support for variance estimation. The resource interval is approximate. The post-collection diagnostic plots and coding sensitivity are exploratory, and there is no multiplicity-adjusted confirmatory claim over task or configuration subgroups.
+
+\textit{External validity.} Six authored cases, two snapshots from one provider and one collected batch do not establish performance over engineering projects, organisations or future models. No human participant study was conducted and no developer productivity outcome was measured. EAL source and host integrations were already supplied. A new adopter may incur substantial modelling, validation and maintenance costs before achieving comparable operation.
+
+\section{Replication and research transparency}
+The replacement \code{paper/} directory contains the article source, compiled PDF, include-ready TikZ and vector PDF figures, the syntax-highlighting definition, full retained EAL example, generated tables and an offline evidence snapshot~\cite{earl2026artifact}. The snapshot preserves complete annotated session rows, including initial prompts, final answers and evidence events. API calls are projected to usage, timing, identifiers and configuration fields; duplicated request text and provider response payloads are omitted from this compact package. The original archive and every copied source file are identified by SHA-256 hashes in its manifest.
+
+Running \texttt{make reproduce} regenerates results and plot sources without network access or API credentials. Running \texttt{make check} verifies checksums, all reference decisions, all saved decision scores, pairing, allocation, attempt coverage and generated-output consistency, and parses the EAL example with the repository implementation. \texttt{make pdf} builds the figures and article; \texttt{make submission} produces a flat source bundle. The README specifies dependencies, command order, data provenance and what is and is not reproduced.
+
+The source collection is revision-bound, and the compact snapshot prevents numerical reproduction from depending solely on a temporary workflow artefact. The original finished GitHub artefact is scheduled to expire on 27 December 2026. Repository access and a durable public archive must be arranged before a submission claims unrestricted public availability. The package does not state that a journal has reviewed the work or that the current manuscript is accepted for publication.
 
 \section{Conclusion}
-EAL/2 provides an executable relation between typed propositions, dated evidence, reasoning methods and defeasible acceptance. Its value is clearest where an engineering assessment must reveal which observation was used, whether it met declared eligibility conditions and how an objection affected the conclusion. The implementation tests and worked example establish bounded software behaviour; they leave the adequacy of the chosen engineering formalisation open to inspection.
+The completed pilot supports a bounded descriptive finding: a host-assessed EAL/2 workflow preserves reference-matching decisions across fresh sessions more often than the implemented ordinary-notes workflow, while using 35.05\% fewer cumulative model tokens. It does so with more recorded evidence acquisitions and with automatic delivery of checked context. The comparison therefore supports further evaluation of the workflow package, rather than an isolated effect of notation or a general model-capability claim.
 
-Reanalysis of both historical pilots reproduces their scores and preserves incomplete execution. The completely executed GPT-4.1 full and mini strata favour EAL/MCP under the earlier composite rubric, with the full-model JSON difference confined to failed-check enumeration. The later nano study favours plain-validator and locates EAL failures after successful assessment: malformed completion operations, incorrect final fields and a shared provider stop. The evidence supports executable assessment as a bounded software capability, while leaving an accuracy advantage over ordinary validation unestablished. Matched interfaces and predefined continuation rules are required to test proposed repairs.
+The collection and offline processing are complete. Independent validation of the AI coding, resolution of the remaining ambiguous answers and a supported prospective allocation are not complete. Those limitations are retained in the data, plots and conclusion. The next scientific step is to validate the measurement and separate information delivery from representation and deterministic assessment in a prospectively specified comparison.
 
-\section*{Software and data availability}
-\label{sec:availability}
-Source and research materials are available in the \href{https://github.com/emmett08/earl}{\code{emmett08/earl}} repository. The implementation description and test run refer to commit \code{8220e838a8d42922edc0496ff50927c672a1f87d}. The first experiment refers to commit \code{3490076dd78404caa1326d9aae704f964910c4c8} and \href{https://github.com/emmett08/earl/actions/runs/36163505801}{Actions run 36163505801}. The \code{paper/data} directory preserves all raw case rows and the assignment, answer, outcome and token-accounting fields required for its score reproduction. It also contains hashes and provenance for the supplied archive. For that first run, full provider response text, replay handles and per-call tool transcripts remain in the original Actions artefact and are not duplicated in the curated scoring dataset. The repository records the need for durable full-archive deposits before journal submission.
+\section*{Declaration of generative AI use}
+OpenAI ChatGPT/Codex was used to assist task and software development, code the retained prose under the disclosed procedure, prepare this manuscript and write the plotting and reproduction code. The exact serving model used for coding was not exposed. Figures are programmatic renderings of retained observations or explicitly stated algebraic assumptions; they are not generated experimental observations. AI coding provenance and its absence of independent human validation are part of the method and limitations. This declaration does not assert that the present draft has completed human author review.
 
-The nano-only follow-up is \href{https://github.com/emmett08/earl/actions/runs/36176588712}{Actions run 36176588712}, at the implementation commit given above. Its separate \code{paper/data/nano-v3} dataset includes raw cases, all 240 assignments, provider response text without replay handles, model-visible host packets and complete tool traces. Preserved source files in \code{paper/analysis/nano\_v3\_original} are checked against the historical manifest before scoring. The two datasets retain their distinct protocols and newly acquired observations.
+\appendix
+\section{Uncertainty calculation and audit boundaries}\label{app:uncertainty}
+For each paired block, the ten recipient outcomes give lower and upper sequence means, and their adverse cross-arm differences give $[l_b,u_b]\subseteq[-1,1]$. The retained implementation bounds the sample variance over every completion of these intervals. With $m_b=(l_b+u_b)/2$, half-width $d_b=(u_b-l_b)/2$, sample variance $s_m^2$ and support width $W$, it uses
+\begin{equation}
+ v_+=\min\left\{\left(\sqrt{s_m^2}+\sqrt{\frac{\sum_b d_b^2}{B-1}}\right)^2,
+ \frac{BW^2}{4(B-1)}\right\}.
+\end{equation}
+The first term follows by applying the triangle inequality to centred observation vectors; the second bounds variance on the declared support. An empirical Bernstein radius is then
+\begin{equation}
+ r=\sqrt{\frac{2v_+\log(2/\alpha_t)}{B}}+
+ \frac{7W\log(2/\alpha_t)}{3(B-1)}.
+\end{equation}
+The interval expands the mean lower and upper endpoints by $r$ and clips to the support. Theorem 11 of Maurer and Pontil supplies the independent bounded-observation result~\cite{maurer2009empirical}; the interval-completion envelope is an implementation choice. The two-sided three-endpoint display uses $\alpha_t=0.05/6$ per tail. The one-sided joint decision uses 0.05 for each component. For absolute EAL/2 correctness the support is $[0,1]$ and $W=1$, whereas paired differences have $W=2$.
 
-Running \code{make -C paper} regenerates the results, four TikZ figures and manuscript PDF. The reanalysis uses Python's standard library; figure and manuscript compilation require a LaTeX installation with TikZ, \code{standalone}, \code{natbib}, \code{latexmk} and the packages listed in the source. Author metadata and submission declarations are kept in the accompanying submission checklist for author confirmation before submission.
+The resource calculation works with paired cumulative input-plus-output counts and estimates the ratio of stratum-weighted means. It retains covariance within pairs and estimates within-stratum variance from the four repetitions, using a Satterthwaite-style effective degrees of freedom of 44.73 for the reported $t$ correction. The article independently reconstructs its resource totals and ratio; the approximate interval is retained from the revision-bound analysis implementation. The package labels this distinction instead of claiming that two implementations independently establish the interval.
 
-\bibliographystyle{plainnat}
+The collection revision, offline-processing revision and paper analysis have different purposes. Collection determines which outputs were produced. Offline processing adds explicit AI annotation provenance and computes reports. Article processing verifies the compact evidence package and renders the manuscript's tables and plots. The paper does not rewrite the frozen collection, its budget, run identity or original answer text.
+
+\FloatBarrier
+\bibliographystyle{elsarticle-num}
 \bibliography{references}
 \end{document}

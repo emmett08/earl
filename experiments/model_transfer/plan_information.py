@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 from .records import SequenceRecords
+from .annotation_provenance import annotation_provenance, processing_provenance
 
 from experiments.transfer_study.workspace import read_json, write_json
 from .design import AssignmentSchedule, load_plan
@@ -43,6 +44,10 @@ def main() -> None:
     report = AllocationPlanner(config).plan(PilotExtractor().extract(rows, calls, plan['recipient_sessions']),
         plan, provenance, data_fingerprint(plan, rows, calls), allow_scripted=args.allow_scripted)
     report['rows_source'] = str(args.rows or args.run / 'rows.json')
+    report['annotation_provenance'] = annotation_provenance(rows)
+    report['processing_provenance'] = processing_provenance()
+    if report['proposed_evaluation_plan'] is not None:
+        report['proposed_evaluation_plan']['pilot_annotation_provenance'] = report['annotation_provenance']
     report['pilot_accounting_errors'] = accounting['accounting_errors']
     write_json(args.output, report)
     if args.evaluation_plan and report['proposed_evaluation_plan'] is not None:
