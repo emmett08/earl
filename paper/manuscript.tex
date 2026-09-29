@@ -142,17 +142,17 @@ Let $T_{baj}$ be recorded input plus output tokens, with $j=0$ denoting the dono
 \end{equation}
 The corresponding target $R_T$ is one minus the ratio of expected aggregate token totals under repeated executions of this allocation. Equation~\ref{eq:tokens} weights per-pair reductions by ordinary-arm token use. Cached input is already included in input tokens; reasoning tokens are already included in output tokens. Neither is added again. API attempts, cost estimates, native probe calls, host acquisitions, observation reuses and elapsed times are separate quantities. A token saving does not imply fewer evidence acquisitions or lower total engineering cost.
 
+Figure~\ref{fig:estimands} works through Equations~\ref{eq:correctness}--\ref{eq:tokens} using two illustrative paired blocks with three recipients each. In panel~(a), each sequence first averages its three correctness values; the two sequence means then give each arm's observed envelope. The difference takes the EAL/2 lower endpoint against the ordinary upper endpoint, and conversely for the upper endpoint. Panel~(b) includes the donor at $j=0$ in each token sum, then divides the sums across both blocks. These constructed values are separate from the pilot observations.
+
+\begin{figure}[!htbp]
+\centering\includegraphics{figures/estimands-worked-example.pdf}
+\caption{Illustrative evaluation of the estimators with $B=2$ and $H=3$; these numbers are not pilot observations. (a) Entries at $j=1,2,3$ give recipient correctness; ? marks unresolved correctness coding, distinct from a valid \code{undetermined} decision. Capped segments plot each sequence mean on a zero-to-one scale (a tick alone marks a resolved mean). The two sequence means give each arm's envelope; opposite assignments of the ? entries yield the extreme difference bounds. (b) Input-plus-output tokens include the donor at $j=0$. Segmented bars plot each sequence's token sum, with its donor segment in teal. The ratio of aggregate totals gives 40\% reduction; the unweighted mean of block reductions is 25\%. Neither toy coding bound is a confidence interval.}\label{fig:estimands}
+\end{figure}
+\FloatBarrier
+
 The frozen engineering criteria require $\Delta>-0.05$, $Q_E>0.90$ and $R_T>0.20$ at $H=10$. The margins are prospective design choices, not validated developer-utility thresholds. The saved analysis also supplies conditional sampling intervals. For correctness it uses an empirical Bernstein bound on whole paired trajectories, allowing independent non-identically distributed bounded observations~\cite{maurer2009empirical}. Unknown answers enter through a conservative variance envelope. For resources it uses an approximate stratified paired delta-method interval with a $t$ correction~\cite{deng2018delta}. \ref{app:uncertainty} records the implementation and assumptions.
 
 The displayed two-sided intervals allocate a total nominal error probability of 0.05 across three endpoints. The joint engineering decision instead uses an intersection--union of three one-sided tests, each at 0.05. Their three lower bounds must not be presented as jointly 95\% simultaneous lower bounds. Both calculations depend on the measurement and execution assumptions; neither turns a pilot into a confirmatory evaluation.
-
-Figure~\ref{fig:estimands} illustrates these operations with the retained pilot values. In panel~(a), $\bar l$ and $\bar u$ are the means of the lower and upper paired-block differences, and the Bernstein radius $r$ expands their observed coding envelope to a sampling interval for $\Delta$. Panel~(b) divides both token totals by the ordinary total; the remaining span to one gives $\widehat R_T$.
-
-\begin{figure}[!htbp]
-\centering\includegraphics{figures/estimands-uncertainty.pdf}
-\caption{Observed uncertainty and aggregate token use at $H=10$. (a) The thick segment covers unresolved coding; the thin capped segment adds the two-sided Bernstein allowance for expected correctness difference. It uses $\alpha_t=0.05/6$ and assumes independent blocks and correct resolved codes. (b) Ordinary token use defines one; the span above the EAL/2 ratio is the token reduction. Both totals include donors and ten recipients.}\label{fig:estimands}
-\end{figure}
-\FloatBarrier
 
 \section{Results}
 \subsection{Collection completeness and decision correctness}
