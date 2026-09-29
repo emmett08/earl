@@ -1,53 +1,81 @@
-# Figure design and verification
+# Evidence-visualisation design record
 
-Applied skill: `design-evidence-visualisation`. The figures are exact TikZ drawings with selectable vector text. No generated raster imagery is used for scientific quantities. The score below is a design judgement, not measured reader performance.
+The figures serve a JSS review article about one retained workflow pilot. Readers need to distinguish descriptive correctness, unresolved coding, repeated-session dependence, model resources and unmeasured assessor validity. The statistical analysis owns the units, denominators and uncertainty semantics. Standard statistical plots are used because the user explicitly requested plots and these forms preserve those meanings. No decorative system diagram or generic pipeline is included.
 
-Candidate scores use 1–5 scales: claim coverage (35%), information economy (20%), reading order (15%), resistance to misinterpretation (20%) and reproducibility (10%). Five structurally different candidates were considered for each figure. Scores are weighted means; the selected form also had to fit the manuscript's actual evidence.
+Scores use explanatory value (E, 0.30), evidential integrity (I, 0.25), semantic fidelity (F, 0.20), economy (C, 0.10), reproducibility (R, 0.10) and originality (O, 0.05), each on a 1–5 scale. Originality is subordinate to faithful evidence. Candidates below 4 on fidelity are rejected regardless of total. The following are design judgements, not measured scientific results. Five materially different candidates were considered for each figure.
 
-## Figure 1: typed correspondence
+## Figure 1: correctness by case
 
-Purpose: show which proposition fields must correspond to the supplied observation, including interval containment and unit conversion. Evidence: implementation contracts and the constructed pressure example. Status: explanatory, not empirical.
+Question: does the aggregate contrast hide a reversal or unresolved measurement in any selected case? Data: 320 recipient answers per arm per case, nested in 32 sequences. Permitted inference: descriptive case comparison conditional on resolved AI codes. Excluded inference: independent-session confidence, task-population effects, validated assessor accuracy.
 
-| Candidate | Coverage | Economy | Reading | Misinterpretation | Reproduction | Weighted score |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Paired field correspondence, selected | 5 | 4 | 5 | 5 | 5 | 4.80 |
-| Commuting unit-conversion diagram | 3 | 5 | 4 | 4 | 5 | 3.95 |
-| Nested validity-interval geometry | 3 | 5 | 5 | 4 | 5 | 4.10 |
-| Constraint incidence matrix | 5 | 3 | 3 | 4 | 5 | 4.10 |
-| Evidence provenance braid | 3 | 3 | 3 | 3 | 4 | 3.10 |
+| Candidate | E/I/F/C/R/O | Weighted score | Decision |
+|---|---|---:|---|
+| Paired horizontal correctness-envelope plot | 5/5/5/4/5/4 | 4.85 | Selected: encodes lower and upper endpoints without inventing a point estimate. |
+| C/I/U contingency table alone | 4/5/5/4/5/2 | 4.45 | Retained as a complementary table; direction is slower to compare. |
+| Three-category stacked bars | 4/4/4/3/5/2 | 3.90 | Makes small unknown fractions difficult to inspect. |
+| Case-by-arm heatmap | 4/3/3/5/5/3 | 3.70 | Rejected: a single colour cannot represent the unresolved interval faithfully. |
+| Correctness difference with unknown bounds | 4/5/4/4/5/3 | 4.30 | Hides the ordinary and EAL absolute rates needed for interpretation. |
 
-The chosen figure exposes five correspondences in one reading pass. Its bottom equation gives the result-unit conversion; the method name fixes the computational interpretation. The caption states that assignment metadata and the effect size are stipulated. Generic box-and-arrow architecture would obscure the relations that are actually checked.
+Visual contract: horizontal position is percentage correctness; triangle/diamond identifies arm; a thick horizontal segment spans C/N to (C+U)/N. Zero-to-100 scale retained. Caption states that these are coding envelopes, not confidence intervals. Counts remain in the adjacent generated table.
 
-## Figure 2: finite-report decision region
+## Figure 2: task-time profiles
 
-Purpose: expose inclusive performance thresholds while keeping ineligible evidence separate from demonstrated threshold failure. Evidence: the synthetic API example and original oracle's availability distinction. Status: formal rule geometry with two stipulated points.
+Question: how does correctness change across donor and recipient positions in each authored trajectory? Data: 32 answers per arm at each position per case. Ordered positions are dependent; the donor is shown but is excluded from the primary correctness estimand.
 
-| Candidate | Coverage | Economy | Reading | Misinterpretation | Reproduction | Weighted score |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Conditional acceptance region, selected | 5 | 5 | 5 | 4 | 5 | 4.80 |
-| Truth-table lattice | 5 | 3 | 3 | 5 | 5 | 4.30 |
-| Predicate incidence matrix | 4 | 4 | 3 | 4 | 5 | 3.95 |
-| Logical formula with aligned substitutions | 4 | 5 | 3 | 4 | 5 | 4.15 |
-| Counterexample cut-set composition | 4 | 3 | 3 | 4 | 4 | 3.65 |
+| Candidate | E/I/F/C/R/O | Weighted score | Decision |
+|---|---|---:|---|
+| Six-panel position profiles with coding envelopes | 5/5/5/4/4/2 | 4.65 | Selected: preserves task identity, order, arm and unknowns. |
+| Answer-level raster for all sequences | 4/5/5/2/4/4 | 4.25 | Too dense for a 160 mm article column; useful as an interactive audit. |
+| Transition matrix between decision codes | 3/4/4/4/5/4 | 3.80 | Loses time position and task-specific reference transitions. |
+| All sequences as individual lines | 3/4/4/1/5/2 | 3.40 | Overplotting obscures the comparison. |
+| Correctness pooled over all tasks by position | 4/4/3/5/5/2 | 3.90 | Rejected: hides different authored changes and task reversals. |
 
-This is a specialist decision-region diagram, not a generic chart of measurements. The origin is visible, units are stated and the complete inclusive boundary is drawn. Request count is fixed by the caption's condition. The unavailable state lies outside the performance coordinate plane. It does not mean a large latency or error rate.
+Visual contract: common 0–100% vertical scales, eleven integer positions, solid triangle versus dashed diamond, vertical coding envelopes. Connections communicate order only. The caption identifies the donor and the even-position changes. No fitted time trend or independent-session error bars are drawn.
 
-## Figure 3: paired experimental outcomes
+## Figure 3: paired token ratios
 
-Purpose: show case-paired agreement, directional discrepancies and completion exposure for all six models. Evidence: historical version-2 scorer replay; every matrix entry is generated from `results/summary.json`. Status: descriptive empirical result.
+Question: is the ratio of aggregate token totals driven by a few blocks, and does the distribution differ descriptively by recipient model? Unit: one complete paired block, including donor and ten recipients. Each model grouping has 96 pairs.
 
-| Candidate | Coverage | Economy | Reading | Misinterpretation | Reproduction | Weighted score |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| Canonical 2-by-2 contingency matrices, selected | 5 | 5 | 4 | 5 | 5 | 4.85 |
-| Case-by-condition binary incidence atlas | 5 | 2 | 2 | 4 | 5 | 3.80 |
-| Paired difference dot display | 3 | 5 | 5 | 3 | 5 | 3.90 |
-| Alluvial outcome braid | 4 | 3 | 3 | 3 | 4 | 3.45 |
-| Discordance-only arithmetic decomposition | 3 | 5 | 4 | 3 | 5 | 3.75 |
+| Candidate | E/I/F/C/R/O | Weighted score | Decision |
+|---|---|---:|---|
+| Empirical cumulative distributions of paired ratios | 5/5/5/3/4/3 | 4.60 | Selected: keeps every observation and exposes the unfavourable tail. |
+| Two model-specific ratio histograms | 4/4/4/4/5/2 | 4.00 | Bin choice can obscure the one ratio above unity. |
+| Paired token scatterplot | 4/5/5/3/4/3 | 4.30 | Faithful, but ratio distributions and model groups take longer to read. |
+| Boxplots of ratios | 3/4/4/5/5/2 | 3.80 | Suppresses most of the empirical distribution. |
+| One aggregate percentage per model | 3/3/3/5/5/1 | 3.30 | Rejected: cannot answer concentration and tail questions. |
 
-The canonical matrix retains the off-diagonal counts needed for the paired difference and the agreement cells that a difference alone would hide. Completed-pair denominators and the caption prevent the zero-execution model from appearing to have produced 40 observed pairs of wrong answers. The GPT-5.4 full model has a mathematically zero realised-yield difference in the absence of completed answers; no equivalence interpretation is permitted.
+Visual contract: exact step ECDF, ratio one marked as equality, no smoothing, no exclusions, solid/dashed model cues. The caption distinguishes the distribution of pair ratios from the article's ratio-of-totals endpoint. Neither curve is an inferential confidence distribution.
 
-## Render checks
+## Figure 4: cumulative model-token reductions
 
-Sources declare a 160 mm target width. The reproducible repository renderer adds a 2 mm border to the 156 mm drawing; figures are included at 160 mm in the paper. Text is 8–9 pt with larger bold headings, one dark teal accent and direct labels. The visualisation skill's independent renderer also compiled every exact source and checked embedded fonts, single-page output, width and selectable text. Its 1.5 mm border produced 159 mm previews.
+Question: does the advantage remain after including donor work and extending the recipient horizon? Unit: aggregate cumulative counts at each ordered horizon. Input and output are components of total, not additive percentage reductions.
 
-All three 300 dpi previews were visually inspected: no collision, clipping, overlapping mathematical labels or missing glyphs was found. Direct numeric labels and bracket positions preserve every distinction in greyscale; accent colour is redundant. Final paper pages were inspected after compilation. Validation commands and build outcome are in `validation.txt`.
+| Candidate | E/I/F/C/R/O | Weighted score | Decision |
+|---|---|---:|---|
+| Cumulative aggregate reduction profiles | 5/4/5/3/4/4 | 4.40 | Selected: reveals donor-inclusive persistence and component differences. |
+| Absolute cumulative token totals for both arms | 4/5/5/3/4/2 | 4.25 | Useful, but six curves make the resource mix harder to compare. |
+| Donor/recipient resource table alone | 4/5/5/4/5/1 | 4.40 | Retained as a table; omits intermediate horizons. |
+| Stacked resource area plot | 3/4/3/3/5/3 | 3.45 | Rejected: coloured areas blur ratios and components. |
+| Fitted break-even curve | 3/2/2/4/3/4 | 2.70 | Rejected: introduces an unsupported extrapolated adoption model. |
+
+Visual contract: horizon zero is donor only; input, output and total have redundant line/marker cues. The 20% line is the frozen total-token engineering criterion. No bootstrap bands, projected horizons or human labour cost are invented. Receipt counts and wall-time limits are given separately in the manuscript.
+
+## Figure 5: assessor-error sensitivity
+
+Question: how much adverse change among resolved codes would remove the observed positive gap or the absolute 90% lower bound? Inputs are explicit error allowances, not estimates. The plot is a post-collection algebraic sensitivity analysis.
+
+| Candidate | E/I/F/C/R/O | Weighted score | Decision |
+|---|---|---:|---|
+| Admissible region in two adverse-error allowances | 4/4/5/4/4/5 | 4.25 | Selected: makes arm-asymmetric assumptions explicit. |
+| Single line under equal error in both arms | 4/3/3/5/5/3 | 3.70 | Rejected: imposes an unjustified equality of assessor error. |
+| Table of hypothetical error scenarios | 3/5/5/4/5/2 | 4.15 | Honest but requires arbitrary scenario selection. |
+| Monte Carlo draws from an assessor-error model | 3/2/2/3/3/4 | 2.60 | Rejected: no empirical distribution is available. |
+| Estimated assessor-confusion matrix | 4/1/1/4/3/3 | 2.50 | Rejected: independent validation data do not exist. |
+
+Visual contract: horizontal and vertical axes are percentage-point allowances over all recipient answers. Shading denotes the intersection of two strict descriptive conditions; the caption excludes boundaries. The gap line and 90% boundary are individually labelled. The colour is a light tint; geometry and labels carry the meaning in greyscale. Sampling uncertainty is explicitly outside this figure.
+
+## Production rules
+
+All plots are generated from `results/summary.json` in the same computation that verifies the retained inputs. There are no manually transcribed plotted values. Each `.tikz.tex` contains one include-ready `tikzpicture`, local colour/style declarations, package requirements, target width, minimum font size and greyscale intent. PDF rendering uses exact source coordinates, embedded vector fonts and no raster screenshots, `resizebox`, `scalebox` or shape scaling. Body fonts are 8.5 pt at natural size; the widest figure is approximately 159 mm in a 160 mm text block.
+
+Review includes individual colour renders, greyscale renders, inclusion in the article and the full PDF page set. Compilation alone is not treated as visual verification. The production checks and any corrected defects are recorded in `verification.md`.

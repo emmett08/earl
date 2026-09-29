@@ -1,18 +1,23 @@
 PYTHON ?= python3
-export SOURCE_DATE_EPOCH := 1790366400
-export FORCE_SOURCE_DATE := 1
-.PHONY: all reproduce figures check clean
-all: figures
-	latexmk -pdf -halt-on-error -interaction=nonstopmode -outdir=build manuscript.tex
-	cp build/manuscript.pdf manuscript.pdf
+.PHONY: all reproduce check figures pdf submission clean
+all: pdf
+
 reproduce:
 	$(PYTHON) analysis/reproduce.py
-	$(PYTHON) analysis/reproduce_nano.py
-figures: reproduce
-	$(PYTHON) analysis/make_figures.py
-	$(PYTHON) analysis/make_diagnosis_figure.py
+	$(PYTHON) analysis/check_listing.py --write
+
+check:
+	$(PYTHON) analysis/reproduce.py --check
+	$(PYTHON) analysis/check_listing.py
+
+figures: check
 	$(PYTHON) analysis/render_figures.py
-check: all
-	$(PYTHON) analysis/check_paper.py
+
+pdf: figures
+	latexmk -pdf -interaction=nonstopmode -halt-on-error manuscript.tex
+
+submission: pdf
+	$(PYTHON) analysis/make_submission.py
+
 clean:
-	rm -rf build
+	latexmk -c manuscript.tex

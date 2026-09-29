@@ -1,89 +1,79 @@
-"""Extract bounded, credential-free analysis inputs from the exact supplied pilot.
+#!/usr/bin/env python3
+"""Make the article's auditable, offline evidence snapshot from the retained ZIP.
 
-No archive code is executed. Raw conversations and tool receipts remain in the
-identified original artefact; their bytes are covered by its SHA-256 digest.
+No API calls. The session rows, corpus and small contracts are byte-preserved.
+API calls are projected to accounting/configuration fields; provider payloads and
+duplicated request text are omitted. Full initial prompts/answers/events remain
+in annotated-rows.json.gz. All source hashes refer to uncompressed archive bytes.
 """
-from __future__ import annotations
-
+from pathlib import Path
 import argparse
+import gzip
 import hashlib
 import json
-from pathlib import Path
 import zipfile
 
-ARCHIVE_SHA256 = "bf5b59c340b1c11c85a3e39679bc9cc1bc4521af741f45d9dc5cc1c65cbd8547"
-PAPER = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[1]
+ARCHIVE_SHA = "0c1b8f5af0990f04c20564ffffee9c103ac47cbcab7ca940639225d80bb32d23"
+COPY = ["annotated-rows.json", "cases.json", "plan.json", "protocol.json",
+        "provenance.json", "execution-contract.json", "segments.json",
+        "analysis-annotated.json", "information-report.json", "pipeline-status.json",
+        "calibration.json", "restore-receipt.json"]
 
 
-def extract(archive: Path, destination: Path) -> None:
-    digest = hashlib.sha256(archive.read_bytes()).hexdigest()
-    if digest != ARCHIVE_SHA256:
-        raise ValueError("Archive differs from GitHub artefact 10879620453")
-    destination.mkdir(parents=True, exist_ok=True)
-    member_hashes = {}
-    with zipfile.ZipFile(archive) as z:
-        if len(z.namelist()) != len(set(z.namelist())):
-            raise ValueError("Duplicate archive member")
+def digest(value):
+    return hashlib.sha256(value).hexdigest()
 
-        def read(name):
-            raw = z.read(name)
-            member_hashes[name] = hashlib.sha256(raw).hexdigest()
-            return json.loads(raw)
 
-        manifest = read("run/manifest.json")
-        case_manifest = read("run/case-manifest.json")
-        summary = read("run/summary.json")
-        completion = read("run/completion.json")
-        cases = [read(f"run/cases/{key}/case.json") for key in sorted(case_manifest["cases"])]
-        trials = []
-        for assignment in manifest["assignments"]:
-            original = read(f"run/trials/{assignment['id']}/trial.json")
-            # Preserve all assignments, outcomes, answer fields and accounting.
-            # Do not duplicate response text, replay handles or provider objects.
-            trial = {key: value for key, value in original.items()
-                     if key not in {"model_calls", "model_spec"}}
-            calls = []
-            for original_call in original.get("model_calls", []):
-                call = {key: original_call[key] for key in
-                        ("turn", "error", "estimated_usd", "seconds") if key in original_call}
-                response = original_call.get("response")
-                if response:
-                    call["response"] = {key: response[key] for key in
-                                        ("model", "input_tokens", "output_tokens") if key in response}
-                    call["response"]["metadata"] = {
-                        key: response.get("metadata", {})[key] for key in
-                        ("cached_input_tokens", "reasoning_tokens", "service_tier")
-                        if key in response.get("metadata", {})}
-                else:
-                    call["response"] = None
-                calls.append(call)
-            trial["model_calls"] = calls
-            trials.append(trial)
-    payloads = {"historical-manifest.json": manifest, "case-manifest.json": case_manifest,
-                "original-summary.json": summary, "completion.json": completion}
-    for name, value in payloads.items():
-        (destination / name).write_text(json.dumps(value, sort_keys=True, indent=2) + "\n")
-    for name, values in (("cases.jsonl", cases), ("trials.jsonl", trials)):
-        (destination / name).write_text("".join(json.dumps(x, sort_keys=True) + "\n" for x in values))
-    provenance = {
-        "schema": "eal-paper-evidence/1", "archive_sha256": digest,
-        "github_run_id": 36163505801, "github_run_attempt": 1,
-        "github_artifact_id": 10879620453,
-        "archive_url": "https://github.com/emmett08/earl/actions/runs/36163505801/artifacts/10879620453",
-        "archive_expires_at": "2026-10-25T17:38:02Z",
-        "run_commit": manifest["commit"], "protocol": manifest["plan"]["version"],
-        "projection": "Every assignment, raw case, final answer, original score and call accounting retained. Response text, replay handles and duplicated model specifications omitted. Original archive retains tool receipts and conversations.",
-        "source_member_sha256": member_hashes,
-        "derived_file_sha256": {name: hashlib.sha256((destination / name).read_bytes()).hexdigest()
-                                for name in sorted([*payloads, "cases.jsonl", "trials.jsonl"])}
-    }
-    (destination / "provenance.json").write_text(json.dumps(provenance, sort_keys=True, indent=2) + "\n")
-    print(f"Extracted {len(trials)} assignments and {len(cases)} cases from verified archive")
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("archive", type=Path)
+    args = parser.parse_args()
+    assert digest(args.archive.read_bytes()) == ARCHIVE_SHA, "Wrong retained ZIP"
+    directory = ROOT / "data"
+    directory.mkdir(exist_ok=True)
+    manifest = {"schema": "earl-jss-evidence/1", "run_id": "984bd05d-6366-41c3-b9ae-ee8766835b08",
+                "collection_run": 36477862213, "processing_run": 36492423435,
+                "artifact_id": 11001997190, "archive_sha256": ARCHIVE_SHA,
+                "collection_revision": "d52e2bd0898ed519253aedbbc8e002e493dd64d2",
+                "processing_revision": "31a3cba769948e123a59ca35c54c5135ad005f54",
+                "source_files": {}, "files": {}}
+    with zipfile.ZipFile(args.archive) as archive:
+        for name in COPY:
+            raw = archive.read(name)
+            manifest["source_files"][name] = digest(raw)
+            compressed = gzip.compress(raw, mtime=0)
+            output = name + ".gz"
+            (directory / output).write_bytes(compressed)
+            manifest["files"][output] = digest(compressed)
+        raw = archive.read("calls.json")
+        manifest["source_files"]["calls.json"] = digest(raw)
+        calls = []
+        for call in json.loads(raw):
+            record = {k: v for k, v in call.items() if k not in {"request", "response"}}
+            record["usage"] = call["response"]["usage"]
+            record["model"] = call["request"]["model"]
+            record["request_config"] = {k: v for k, v in call["request"].items()
+                                        if k not in {"input", "tools"}}
+            calls.append(record)
+        projected = json.dumps(calls, sort_keys=True, separators=(",", ":")).encode()
+        compressed = gzip.compress(projected, mtime=0)
+        (directory / "call-accounting.json.gz").write_bytes(compressed)
+        manifest["files"]["call-accounting.json.gz"] = digest(compressed)
+        manifest["projection"] = {
+            "source": "calls.json", "output": "call-accounting.json.gz",
+            "retained": "All top-level fields except request/response; response.usage; request.model; request fields except input/tools",
+            "omitted": "Duplicated request messages, tool definitions and provider response payloads; full initial prompts, final answers and session tool events remain in annotated rows"}
+        for name in ["rows.json", "completed-labels.json"]:
+            manifest["source_files"][name] = digest(archive.read(name))
+        source_name = "sequences/block-0000.eal/project/argument.eal"
+        source = archive.read(source_name)
+        (ROOT / "listings" / "retained-argument.eal").write_bytes(source)
+        manifest["retained_listing_source"] = source_name
+        manifest["retained_listing_sha256"] = digest(source)
+    (directory / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
+    print(f"Retained {len(manifest['files'])} evidence files; ZIP and source hashes recorded.")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("archive", type=Path)
-    parser.add_argument("--output", type=Path, default=PAPER / "data")
-    args = parser.parse_args()
-    extract(args.archive, args.output)
+    main()
