@@ -125,11 +125,12 @@ Let $Y_{baj}$ indicate that the coded decision matches the reference in block $b
 \begin{equation}
  \widehat Q_a=\frac{1}{B}\sum_{b=1}^{B}\frac{1}{H}\sum_{j=1}^{H}Y_{baj},
  \qquad \widehat\Delta=\widehat Q_E-\widehat Q_O.
+ \label{eq:correctness}
 \end{equation}
-For unknown correctness, set $Y$ to zero for the lower endpoint and one for the upper endpoint. With $C_a$ correct answers, $U_a$ unknown answers and $N_a=BH$, the descriptive envelope is
+The target $Q_a=\mathbb{E}[\widehat Q_a]$ averages repeated executions of this fixed task and configuration allocation, and $\Delta=Q_E-Q_O$. Each ten-recipient sequence contributes one block mean. Write $q_a^{\mathrm{obs}}$ and $\delta^{\mathrm{obs}}=q_E^{\mathrm{obs}}-q_O^{\mathrm{obs}}$ for the fully resolved realised values of the estimators. For unknown correctness, set $Y$ to zero for the lower endpoint and one for the upper endpoint. With $C_a$ correct answers, $U_a$ unknown answers and $N_a=BH$, the descriptive envelopes are
 \begin{equation}
- Q_a\in\left[\frac{C_a}{N_a},\frac{C_a+U_a}{N_a}\right],\quad
- \Delta\in\left[\frac{C_E-C_O-U_O}{BH},\frac{C_E+U_E-C_O}{BH}\right].
+ q_a^{\mathrm{obs}}\in\left[\frac{C_a}{N_a},\frac{C_a+U_a}{N_a}\right],\quad
+ \delta^{\mathrm{obs}}\in\left[\frac{C_E-C_O-U_O}{BH},\frac{C_E+U_E-C_O}{BH}\right].
  \label{eq:unknown}
 \end{equation}
 These bounds cover the unresolved categories conditional on the other codes being correct. They are not confidence intervals and do not cover assessor errors among apparently resolved answers.
@@ -139,11 +140,19 @@ Let $T_{baj}$ be recorded input plus output tokens, with $j=0$ denoting the dono
  \widehat R_T=1-\frac{\sum_b\sum_{j=0}^{H}T_{bEj}}{\sum_b\sum_{j=0}^{H}T_{bOj}}.
  \label{eq:tokens}
 \end{equation}
-This is not the mean of per-pair reductions. Cached input is already included in input tokens; reasoning tokens are already included in output tokens. Neither is added again. API attempts, cost estimates, native probe calls, host acquisitions, observation reuses and elapsed times are separate quantities. A token saving does not imply fewer evidence acquisitions or lower total engineering cost.
+The corresponding target $R_T$ is one minus the ratio of expected aggregate token totals under repeated executions of this allocation. Equation~\ref{eq:tokens} weights per-pair reductions by ordinary-arm token use. Cached input is already included in input tokens; reasoning tokens are already included in output tokens. Neither is added again. API attempts, cost estimates, native probe calls, host acquisitions, observation reuses and elapsed times are separate quantities. A token saving does not imply fewer evidence acquisitions or lower total engineering cost.
 
-The frozen engineering criteria require $\Delta>-0.05$, $Q_E>0.90$ and $R_T>0.20$ at $H=10$. The margins are prospective design choices, not validated developer-utility thresholds. The saved analysis also supplies conditional sampling intervals. For correctness it uses an empirical Bernstein bound on whole paired trajectories, allowing independent non-identically distributed bounded observations~\cite{maurer2009empirical}. Unknown answers enter through a conservative variance envelope. For resources it uses an approximate stratified paired delta-method interval with a $t$ correction~\cite{deng2018delta}. Appendix~\ref{app:uncertainty} records the implementation and assumptions.
+The frozen engineering criteria require $\Delta>-0.05$, $Q_E>0.90$ and $R_T>0.20$ at $H=10$. The margins are prospective design choices, not validated developer-utility thresholds. The saved analysis also supplies conditional sampling intervals. For correctness it uses an empirical Bernstein bound on whole paired trajectories, allowing independent non-identically distributed bounded observations~\cite{maurer2009empirical}. Unknown answers enter through a conservative variance envelope. For resources it uses an approximate stratified paired delta-method interval with a $t$ correction~\cite{deng2018delta}. \ref{app:uncertainty} records the implementation and assumptions.
 
 The displayed two-sided intervals allocate a total nominal error probability of 0.05 across three endpoints. The joint engineering decision instead uses an intersection--union of three one-sided tests, each at 0.05. Their three lower bounds must not be presented as jointly 95\% simultaneous lower bounds. Both calculations depend on the measurement and execution assumptions; neither turns a pilot into a confirmatory evaluation.
+
+Figure~\ref{fig:estimands} illustrates these operations with the retained pilot values. In panel~(a), $\bar l$ and $\bar u$ are the means of the lower and upper paired-block differences, and the Bernstein radius $r$ expands their observed coding envelope to a sampling interval for $\Delta$. Panel~(b) divides both token totals by the ordinary total; the remaining span to one gives $\widehat R_T$.
+
+\begin{figure}[!htbp]
+\centering\includegraphics{figures/estimands-uncertainty.pdf}
+\caption{Observed uncertainty and aggregate token use at $H=10$. (a) The thick segment covers unresolved coding; the thin capped segment adds the two-sided Bernstein allowance for expected correctness difference. It uses $\alpha_t=0.05/6$ and assumes independent blocks and correct resolved codes. (b) Ordinary token use defines one; the span above the EAL/2 ratio is the token reduction. Both totals include donors and ten recipients.}\label{fig:estimands}
+\end{figure}
+\FloatBarrier
 
 \section{Results}
 \subsection{Collection completeness and decision correctness}

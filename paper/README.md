@@ -14,7 +14,7 @@ From the repository root:
 |---|---|---|
 | 1 | `make -C paper reproduce` | Verify input hashes; recompute references, correctness, usage, paired bounds and plot coordinates; derive the highlighted EAL excerpt. Produces `results/` and `.tikz.tex` files. |
 | 2 | `make -C paper check` | Detect changed data, stale generated outputs, broken pairing, unmatched API attempts, score discrepancies, EAL parse/format differences and highlighting-keyword drift. Writes no data. |
-| 3 | `make -C paper pdf` | Repeat checks, compile five natural-size vector figures, then compile `manuscript.pdf` with references. |
+| 3 | `make -C paper pdf` | Repeat checks, compile six natural-size vector figures, then compile `manuscript.pdf` with references. |
 | 4 | `make -C paper submission` | Build the article and make a flat source ZIP; compile that ZIP's source independently before packaging it. |
 
 These commands never collect model responses, contact the API or change the frozen experiment budget. No workflow dispatch, annotation import or new labels are needed to reproduce the present article. `python paper/analysis/reproduce.py --check` runs the numerical audit without requiring the repository package or LaTeX. `make -C paper clean` removes only LaTeX intermediate files.
@@ -47,6 +47,6 @@ The source example is the actual retained cutover argument. The printed excerpt 
 
 ## Figures and review
 
-Five figures have include-ready `.tikz.tex` source and vector PDFs under `figures/`. They use retained data except the explicitly assumption-based coding-sensitivity region. Natural-size text is at least 8.5 pt. Colour is supplemented by marker shape and dash pattern. [The figure design record](review/figure-design.md) documents alternatives, semantic decisions and selection scores. [The verification record](review/verification.md) records numerical, syntax and visual checks.
+Six figures have include-ready `.tikz.tex` source and vector PDFs under `figures/`. They use retained data except the explicitly assumption-based coding-sensitivity region. The two-panel `estimands-uncertainty` figure distinguishes observed coding bounds from the conditional sampling interval and explains aggregate token normalisation. Its coordinates and labels are generated from the audited results; both correctness interval endpoints are checked against a separate recalculation. Natural-size text is at least 8.5 pt. Colour is supplemented by direct labels, stroke weights, marker shape and dash pattern. [The figure design record](review/figure-design.md) documents alternatives, semantic decisions and selection scores. [The verification record](review/verification.md) records numerical, syntax and visual checks.
 
 The manuscript uses the official Elsevier `elsarticle` 3.4 class and numeric bibliography style, distributed with their source under LPPL; see [vendor/SOURCE.md](vendor/SOURCE.md). This is a review manuscript prepared for JSS, not a claim of acceptance or verified compliance with every current submission requirement. [Author-review notes](review/author-review.md) list the remaining authorship, declarations, availability and scientific decisions. No journal submission or public release is performed by these build commands.
