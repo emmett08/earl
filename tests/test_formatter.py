@@ -18,8 +18,8 @@ def test_canonical_source_round_trip_preserves_typed_ir_and_is_idempotent(source
     assert not validate(parse(formatted), registry=registry)
 
 
-def test_contextual_words_remain_identifiers_in_eal2_sources():
-    source = '''language "EAL/2"
+def test_contextual_words_remain_identifiers_in_eal3_sources():
+    source = '''language "EAL/3"
 
 environment scope {
   require "site" == "bench"
@@ -58,7 +58,7 @@ claim query {
 
 
 def test_removed_tool_mode_words_can_be_ordinary_names():
-    source = '''language "EAL/2"
+    source = '''language "EAL/3"
 
 environment deterministic {
   require "site" == "bench"

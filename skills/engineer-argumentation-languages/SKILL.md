@@ -5,7 +5,7 @@ description: Design, implement, extend and critically test domain-specific langu
 
 # Engineer Argumentation Languages
 
-This directory provides the repository-maintained `engineer-argumentation-languages` skill so contributors can use the guidance without a personal skill installation. When updating it, check the references, agent metadata and assets together; follow the project-specific EAL/2 instructions in `AGENTS.md` and below. General language-design advice remains distinct from implemented behaviour and measured results.
+This directory provides the repository-maintained `engineer-argumentation-languages` skill so contributors can use the guidance without a personal skill installation. When updating it, check the references, agent metadata and assets together; follow the project-specific EAL/3 instructions in `AGENTS.md` and below. General language-design advice remains distinct from implemented behaviour and measured results.
 
 Build languages that help engineers formulate, derive, challenge and revise conclusions from explicit grounds. Keep the object of the language reasoning and argumentation. Introduce organisational approvals, release controls or compliance workflows only when independently requested.
 
@@ -13,7 +13,7 @@ Read [expert-language-design.md](references/expert-language-design.md) before de
 
 ## Establish the reasoning problem
 
-Inspect the target repository, its local instructions, existing grammar and examples. For this repository, EAL/2 is the only supported language and backwards compatibility is never a requirement. Remove obsolete syntax, aliases, version-dependent semantics and compatibility adapters when a coherent current design supersedes them. Do not create migration machinery solely for earlier source versions. Historical experiment records retain their original labels and measurements. The repository name does not imply EARL 6.1 syntax.
+Inspect the target repository, its local instructions, existing grammar and examples. For this repository, EAL/3 is the only supported language and backwards compatibility is never a requirement. Remove obsolete syntax, aliases, version-dependent semantics and compatibility adapters when a coherent current design supersedes them. Do not create migration machinery solely for earlier source versions. Historical experiment records retain their original labels and measurements. The repository name does not imply EARL 6.1 syntax.
 
 Update current documentation, discovery schemas, examples, task fixtures and runnable experiment plans with the implementation. Check every public entry point against the same contract. Keep revision history in Git; retain immutable experimental records with the implementation identity that produced them. Distinguish source-language, package and observation-schema versions; advance the affected contract explicitly without retaining an older execution path.
 

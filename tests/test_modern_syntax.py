@@ -12,7 +12,7 @@ from eal.semantics import validate
 from test_evaluator import CONTEXT, NOW, record
 
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 environment lab {
   require site == "bench"
 }
@@ -88,9 +88,9 @@ def test_nested_defaults_local_override_and_lexical_extent():
 
 def test_singleton_fields_can_be_reordered_without_changing_the_ir():
     fields = ['tool collector', 'kind test', 'environment lab', 'max_age 60', 'require ok == true']
-    base = parse('language "EAL/2"\nevidence e {\n' + '\n'.join(fields) + '\n}\n')
+    base = parse('language "EAL/3"\nevidence e {\n' + '\n'.join(fields) + '\n}\n')
     for order in itertools.permutations(fields):
-        candidate = parse('language "EAL/2"\nevidence e {\n' + '\n'.join(order) + '\n}\n')
+        candidate = parse('language "EAL/3"\nevidence e {\n' + '\n'.join(order) + '\n}\n')
         assert replace(candidate, source_digest=base.source_digest) == base
 
 

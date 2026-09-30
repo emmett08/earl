@@ -1,4 +1,4 @@
-# EAL/2 vocabulary and distinctions
+# EAL/3 vocabulary and distinctions
 
 This glossary defines what the authored terms denote. [Language](language.md) gives their syntax and static rules; [argument model](argument-model.md) defines the computed statuses; [MCP and tools](mcp-and-tools.md) specifies observation acquisition and protocol operations.
 

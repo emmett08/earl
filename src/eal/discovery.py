@@ -4,7 +4,7 @@ from __future__ import annotations
 from . import __version__
 
 
-EXAMPLE = '''language "EAL/2"
+EXAMPLE = '''language "EAL/3"
 environment bench {
   require site == "bench"
 }
@@ -36,12 +36,12 @@ def describe_language(*, registry=None) -> dict:
 
     return {
         "implementation_version": __version__,
-        "languages": ["EAL/2"],
-        "source_syntax": "EAL/2-modern/1",
+        "languages": ["EAL/3"],
+        "source_syntax": "EAL/3",
         "method_registry_fingerprint": registry.fingerprint,
         "syntax": {
             'notation': 'Capitalised placeholders denote values. Fields end at newlines and may appear in any order. Square brackets are literal lists/support groups. Names are globally unique; forward references are allowed. Strings use JSON quoting; comments use // or /* */.',
-            'program': 'language "EAL/2"\nDECLARATIONS',
+            'program': 'language "EAL/3"\nDECLARATIONS',
             'context': 'context environment ENV, tool TOOL, max_age SECONDS {\nDECLARATIONS\n}',
             'environment': 'environment NAME {\nrequire CONTEXT.FIELD OP SCALAR\n}',
             'tool': 'tool NAME {\nversion "VERSION"\n}',
@@ -72,10 +72,10 @@ def describe_language(*, registry=None) -> dict:
             "temporal/1": {"kind": "trace", "input": {"start": "NUMBER", "end": "NUMBER", "max_gap": "NUMBER", "events": [{"time": "NUMBER", "value": "NUMBER"}], "property": {"operator": "lt|le|eq|ne|ge|gt", "value": "NUMBER"}, "semantics": "sampled"}, "outputs": ["holds"], "meaning": "Ordered, bounded finite samples with endpoint/gap coverage; no continuous-time conclusion"},
         },
         "optional_compilation": {
-            "profile": "EAL/2-compiled-aspic/4",
+            "profile": "EAL/3-compiled-aspic/4",
             "cli": "compile-aspic SOURCE --context JSON --collection COLLECTION_ID --goal CLAIM [--now TIME]",
             "mcp": "eal_compile_aspic(source, context, collection_id, goal, now?)",
-            "input": "Validated EAL/2 source, matching stored observation collection, declared goal claim and explicit or current assessment time",
+            "input": "Validated EAL/3 source, matching stored observation collection, declared goal claim and explicit or current assessment time",
             "meaning": "Check EAL observations and local methods, then translate available evidence, locally usable argument routes, assumptions and targeted objections into a bounded ASPIC+ theory with explicit source mapping; reviewed EAL argumentation relations supply optional strict rules, ranks and directed claim contraries; ordinary EAL reasoning is unchanged",
             "output": ["profile", "theory", "formal", "routes", "source_map", "claim_status", "authored_claim_status", "source_digest", "snapshot_digest", "collection_id"],
             "limits": "Unannotated fallible elements use rank 500 and authored routes remain defeasible; strictness, claim contrariness and ranks require checked source annotations. Objections cannot undercut strict routes or carry ranks. Accepted contrary conclusions are rejected as outside this profile. Finite acyclic argument construction and grounded minimum-rank defeat only; no inferred prose semantics, full ASPIC+ expressiveness or general EAL/ASPIC+ equivalence",
@@ -87,7 +87,7 @@ def describe_language(*, registry=None) -> dict:
             "meaning": "Recompute the bounded formal result and require exact agreement before exporting. The separate app imports JSON locally; neither export nor viewing collects evidence or authenticates supplied provenance",
         },
         "typed_bindings": describe_bindings(registry=registry),
-        "composition": "Default EAL/2 computes the least-information fixed point of authored conjunctive support, alternative derivations and objection attacks. Objections can depend on claim subarguments; targeting an objection expresses defence. Attack cycles may remain undecided. Default assessment does not construct ASPIC+ rule arguments or preference-sensitive defeat. The separate opt-in compiler constructs a bounded ASPIC+ snapshot from checked EAL declarations. Rejected acceptance does not assert falsity.",
+        "composition": "Default EAL/3 computes the least-information fixed point of authored conjunctive support, alternative derivations and objection attacks. Objections can depend on claim subarguments; targeting an objection expresses defence. Attack cycles may remain undecided. Default assessment does not construct ASPIC+ rule arguments or preference-sensitive defeat. The separate opt-in compiler constructs a bounded ASPIC+ snapshot from checked EAL declarations. Rejected acceptance does not assert falsity.",
         "statuses": {
             "valid": "Static language well-formedness only",
             "supported": "At least one usable, uncontested derivation under the declared model",

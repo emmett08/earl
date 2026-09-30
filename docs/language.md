@@ -1,4 +1,4 @@
-# EAL/2 source language
+# EAL/3 source language
 
 This is the reference for authored syntax, static checks and typed proposition binding in the current [grammar](../grammar/EAL.g4). [Vocabulary](vocabulary.md) distinguishes terms; the [argument model](argument-model.md) defines support and attack; [reasoning methods](reasoning-modes.md) define computations; [MCP and tools](mcp-and-tools.md) defines acquisition. The [API load-test case](../examples/api-load-test/README.md) is the maintained end-to-end example.
 
@@ -16,7 +16,7 @@ This is the reference for authored syntax, static checks and typed proposition b
 
 ## Source structure
 
-The first statement is `language "EAL/2"`; any other header fails validation. Top-level declarations can refer to later global declarations. Names are case-sensitive and unique across declaration kinds. They start with a letter or underscore and continue with letters, digits or underscores; some keyword spellings are admitted as contextual identifiers by the grammar. Pattern parameters form a separate, closed scope. Comments use `//` or `/* ... */`. Fields end at a newline; singleton fields may appear in any order. Semicolons are rejected. A final flow or directive may end at EOF. Braces group declarations without indentation tokens. JSON arrays and objects, support groups, parameter lists and flows may span lines; multiline comments do not supply field terminators. The source notation is identified as `EAL/2-modern/1` in discovery, separately from package and observation-record versions. A syntax error rejects the parse, including an ANTLR error-recovery tree.
+The first statement is `language "EAL/3"`; any other header fails validation. Top-level declarations can refer to later global declarations. Names are case-sensitive and unique across declaration kinds. They start with a letter or underscore and continue with letters, digits or underscores; some keyword spellings are admitted as contextual identifiers by the grammar. Pattern parameters form a separate, closed scope. Comments use `//` or `/* ... */`. Fields end at a newline; singleton fields may appear in any order. Semicolons are rejected. A final flow or directive may end at EOF. Braces group declarations without indentation tokens. JSON arrays and objects, support groups, parameter lists and flows may span lines; multiline comments do not supply field terminators. Discovery identifies the source language and syntax as `EAL/3`, separately from package and observation-record versions. `EALModern` was a proposal name; the canonical ANTLR grammar remains `EAL.g4` with grammar name `EAL`, because ANTLR identifiers cannot contain a slash. The source header is `language "EAL/3"`. A syntax error rejects the parse, including an ANTLR error-recovery tree.
 
 The source byte limit is 1 MiB and the token limit is 100,000. Structural validation allows at most 4,096 declaration/body records after pattern expansion and a premise depth of 128. These limits bound this implementation's domain.
 
@@ -99,7 +99,7 @@ Bare keys denote literal property paths; quoted keys retain arbitrary original s
 
 ## Observation records
 
-EAL/2 source declares what to observe and how to use the result. It has no `observation` declaration. For example:
+EAL/3 source declares what to observe and how to use the result. It has no `observation` declaration. For example:
 
 ```eal
 evidence calibration {

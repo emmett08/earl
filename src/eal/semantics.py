@@ -240,9 +240,9 @@ def _validate_declarations(program, error, identifier):
               "Stored arguments or diagnostics differ from the declared patterns and applications; lower the edited program again",
               changed)
 
-    if program.language != "EAL/2":
-        error("unsupported_language", f"Expected EAL/2, found {program.language!r}",
-              expected="EAL/2", actual=program.language)
+    if program.language != "EAL/3":
+        error("unsupported_language", f"Expected EAL/3, found {program.language!r}",
+              expected="EAL/3", actual=program.language)
     return True
 
 

@@ -1,15 +1,15 @@
-# Engineering Argument Language (EAL/2)
+# Engineering Argument Language (EAL/3)
 
-EAL/2 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
+EAL/3 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
 
-The package is **2.19.0** and requires Python **3.11 or later**. The supported source language is `EAL/2`, with newline-based source notation `EAL/2-modern/1`. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
+The package is **3.0.0** and requires Python **3.11 or later**. The supported source language is `EAL/3`, with newline-terminated fields and typed flows. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
 
 ## Author a bounded argument
 
 Fields end at newlines. Context defaults remove repeated metadata; role-labelled support lists preserve reference types:
 
 ```eal
-language "EAL/2"
+language "EAL/3"
 environment lab {
   require site == "bench"
 }
@@ -97,13 +97,13 @@ The [developer and model handover experiment](experiments/transfer_study/README.
 | Document | Scope |
 | --- | --- |
 | [Argument service](docs/argument-service.md) | Registered workflow, tools, reuse and model packets |
-| [Language](docs/language.md) | EAL/2 syntax and evidence versus observation |
+| [Language](docs/language.md) | EAL/3 syntax and evidence versus observation |
 | [Argument model](docs/argument-model.md) | Support, objections and propagation |
 | [Reasoning modes](docs/reasoning-modes.md) | Built-in method contracts and extensions |
 | [MCP and tools](docs/mcp-and-tools.md) | Host adapters, persistence and operation schemas |
 | [ASPIC+ method](docs/aspic-method.md) | Optional formal method and compiler |
 | [Integration contract](CONTRACT.md) | Python, CLI, MCP and record interfaces |
-| [EAL/2 experiment methodology](docs/eal2-experiment-methodology.md) | Practical thresholds, pilot-informed allocation and cumulative fresh-session evaluation |
+| [EAL/3 experiment methodology](docs/eal3-experiment-methodology.md) | Practical thresholds, pilot-informed allocation and cumulative fresh-session evaluation |
 | [Experiment workflow and inputs](experiments/model_transfer/WORKFLOW.md) | One wrapper for free checks, automatic collection segments, annotation hand-off, analysis and evaluation planning |
 | [Handover experiment](experiments/transfer_study/README.md) | New-session developer and model comparison protocol |
 

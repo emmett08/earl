@@ -1,6 +1,6 @@
 grammar EAL;
 
-// EAL/2-modern/1. Contexts and flows lower to the existing typed EAL/2 IR.
+// EAL/3. Contexts and flows lower to the existing typed EAL/3 IR.
 program : NL* 'language' STRING lineEnd (declaration NL*)* EOF ;
 
 declaration

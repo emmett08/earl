@@ -14,7 +14,7 @@ from eal.parser import parse
 from test_evaluator import CONTEXT, NOW, record
 
 
-BASE = '''language "EAL/2"
+BASE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -299,7 +299,7 @@ def test_unknown_goal_invalid_programme_and_formal_self_import_are_rejected():
     with pytest.raises(CompilationError, match="Unknown EAL goal"):
         compile_eal_aspic(BASE, records, goal="absent", now=NOW, context=CONTEXT)
     programme.claims["run_passes"] = programme.claims["reportable"]
-    with pytest.raises(TypeError, match="source must be EAL/2 text"):
+    with pytest.raises(TypeError, match="source must be EAL/3 text"):
         compile_eal_aspic(programme, records, goal="run_passes", now=NOW, context=CONTEXT)
     with pytest.raises(CompilationError, match="invalid"):
         compile_eal_aspic(BASE.replace("structured/1", "unknown/1"), records,

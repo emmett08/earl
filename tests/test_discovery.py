@@ -7,7 +7,7 @@ from eal.semantics import validate
 def test_discovery_example_is_executable_and_contracts_available():
     reference = describe_language()
     assert not validate(parse(reference["example"]))
-    assert reference["languages"] == ["EAL/2"]
+    assert reference["languages"] == ["EAL/3"]
     assert "language_evolution" not in reference
     assert "does not construct ASPIC+" in reference["composition"]
     assert reference["method_registry_fingerprint"]

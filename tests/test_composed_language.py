@@ -1,4 +1,4 @@
-"""Compiler-to-solver contracts for EAL/2 objections and defences."""
+"""Compiler-to-solver contracts for EAL/3 objections and defences."""
 from eal.evaluator import canonical_digest, environment_fingerprint, evaluate
 from eal.formatter import format_source, semantic_ir
 from eal.parser import parse
@@ -7,7 +7,7 @@ from _provenance import synthetic_provenance
 
 NOW = '2026-09-23T12:00:00Z'
 CONTEXT = {'site': 'bench'}
-BASE = '''language "EAL/2"
+BASE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"

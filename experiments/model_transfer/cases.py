@@ -63,7 +63,7 @@ class Case:
   valid_from "{self.assumption_from}"
   valid_until "{self.assumption_until}"
 }}''' if self.assumption_until else '')
-        return f'''language "EAL/2"
+        return f'''language "EAL/3"
 
 environment scope {{
   require "service" == "orders"

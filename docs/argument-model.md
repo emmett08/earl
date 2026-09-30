@@ -1,6 +1,6 @@
-# EAL/2 argument model
+# EAL/3 argument model
 
-EAL/2 evaluates an authored argument graph against recorded observations, a selected method registry, an environment and an assessment time. It determines whether the *declared* routes to a claim have usable support under the rules below. The result does not establish that the author chose the right physical model, collected an authentic measurement or translated the engineering question faithfully.
+EAL/3 evaluates an authored argument graph against recorded observations, a selected method registry, an environment and an assessment time. It determines whether the *declared* routes to a claim have usable support under the rules below. The result does not establish that the author chose the right physical model, collected an authentic measurement or translated the engineering question faithfully.
 
 ## Contents
 
@@ -15,9 +15,9 @@ EAL/2 evaluates an authored argument graph against recorded observations, a sele
 
 An `argument` declares a conclusion, a reasoning step and at least one source: evidence, an assumption or a premise claim. Every declared source is required for that particular derivation. Several arguments can support one claim; a premise claim may itself have several derivations. Premise dependencies must be acyclic, and reusing the same evidence in several arguments does not make independent observations. A `pattern` expands one argument with closed, typed parameters; each `apply` becomes an ordinary named argument without copying its evidence identity. See [language syntax](language.md) for the grammar and [vocabulary](vocabulary.md) for construct contracts.
 
-Toulmin's distinction among claim, grounds, warrant, backing, qualifier and rebuttal informs this design; EAL/2 defines executable relations rather than adopting Toulmin as a formal calculus. See the [primary source](sources.md#argument-and-reasoning-models).
+Toulmin's distinction among claim, grounds, warrant, backing, qualifier and rebuttal informs this design; EAL/3 defines executable relations rather than adopting Toulmin as a formal calculus. See the [primary source](sources.md#argument-and-reasoning-models).
 
-| Toulmin function | EAL/2 relation |
+| Toulmin function | EAL/3 relation |
 | --- | --- |
 | Claim | A `claim` statement, environment and optional typed proposition |
 | Grounds | The argument's evidence, assumptions and premise claims |
@@ -92,6 +92,6 @@ An assessment identifies its source, observation set, context, evaluation time a
 
 The attack-only fragment of the composed solver, when all nodes are locally usable, agrees with Dung grounded labelling. The separate `eal_grounded` operation directly solves an explicitly supplied finite argument-and-attack graph. A complementary Dung-node construction has been used as an independent check of the composed equations; that construction and the finite tests are described in [grounded reasoning](grounded-reasoning.md).
 
-ASPIC+ distinguishes strict and defeasible rules, premise categories, contrariness and preference-sensitive attack/defeat. EAL/2's core targeted objections remain authored attacks under the equations above. The optional [`argumentation/aspic/1` method](aspic-method.md) separately constructs a bounded formal theory, its undermining, rebutting and undercutting defeats and grounded labels. The opt-in compiler obtains a theory from checked EAL routes and observations; reviewed top-level EAL directives declare strict inference, preference rank and directed claim contrariness. Each target kind follows from its unique declaration name. The authored EAL evaluator validates these directives without applying their inference effects. This instantiation does not implement all ASPIC+ variants or replace EAL evidence checks. The abstract `solve_grounded` operation still accepts only an already specified graph and cannot check how it was obtained. See [Modgil and Prakken](sources.md#argument-and-reasoning-models) for the framework.
+ASPIC+ distinguishes strict and defeasible rules, premise categories, contrariness and preference-sensitive attack/defeat. EAL/3's core targeted objections remain authored attacks under the equations above. The optional [`argumentation/aspic/1` method](aspic-method.md) separately constructs a bounded formal theory, its undermining, rebutting and undercutting defeats and grounded labels. The opt-in compiler obtains a theory from checked EAL routes and observations; reviewed top-level EAL directives declare strict inference, preference rank and directed claim contrariness. Each target kind follows from its unique declaration name. The authored EAL evaluator validates these directives without applying their inference effects. This instantiation does not implement all ASPIC+ variants or replace EAL evidence checks. The abstract `solve_grounded` operation still accepts only an already specified graph and cannot check how it was obtained. See [Modgil and Prakken](sources.md#argument-and-reasoning-models) for the framework.
 
 A richer deductive language, preference-sensitive defeat or probabilistic argument calculus would need a declared input model and inference rules, not simply another keyword or confidence score. In particular, multiplying support probabilities across reused evidence requires justified dependence assumptions: $P(A\cap B)=P(A)P(B\mid A)$. The present methods give method-specific numerical outputs without converting them into a probability that an engineering claim is true.

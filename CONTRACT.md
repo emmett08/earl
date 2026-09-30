@@ -1,13 +1,13 @@
-# EAL/2 integration contract
+# EAL/3 integration contract
 
-EAL/2 is the supported source language. The package is `2.19.0`; its source notation is `EAL/2-modern/1`. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
+EAL/3 is the supported source language. The package is `3.0.0` and its source notation uses newline-terminated fields and typed flows. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
 
 Source fields use newlines, contexts resolve metadata defaults, and typed support flows lower to the existing argument model. Package, source notation and stored observation versions remain separate. Strictness, ranks and contraries retain their opt-in ASPIC+ compilation effects.
 
 
 ## Authored source and observations
 
-`parse(source: str) -> Program` parses exact EAL/2 UTF-8 text; `validate(program, *, registry=None)` returns structured diagnostics for references, types and method contracts. `format_source(source)` returns canonical source. `Program.source_digest` hashes exact source bytes, even when two programs have the same meaning.
+`parse(source: str) -> Program` parses exact EAL/3 UTF-8 text; `validate(program, *, registry=None)` returns structured diagnostics for references, types and method contracts. `format_source(source)` returns canonical source. `Program.source_digest` hashes exact source bytes, even when two programs have the same meaning.
 
 An EAL a `tool NAME` block containing `version "VERSION"` declares an interface. An `evidence NAME` selects that tool, evidence `kind`, `environment`, `max_age` in seconds, optional JSON `input` and one or more `require "VALUE.FIELD" OP SCALAR` predicates. A `reasoning NAME` selects exactly one installed versioned method, rationale, optional evidence `backing` and optional output predicates. Claims, arguments, premises, assumptions, objections, patterns and optional formal directives state the argument graph. The host never treats prose as a mechanically proven warrant.
 
@@ -47,7 +47,7 @@ Collection preflight bounds context JSON to 16 KiB, 128 evidence IDs and each re
 
 Protocol 5.0.0 uses primary plan/report `/4`, diagnostic plan/report `/2`, and
 information-design configuration/result `/2`. These experiment contracts do not
-change EAL/2 semantics. The default population contains six evaluation cases;
+change EAL/3 semantics. The default population contains six evaluation cases;
 eight threshold cases serve calibration only. A frozen
 `EAL/evaluation-task-manifest/1` records independently supplied task provenance,
 reference-checked answer keys and explicit evidence revisions. Revisions enter
@@ -65,5 +65,5 @@ Matched-fact diagnostics independently vary withheld, EAL-derived and convention
 conclusions. Failed manipulation checks retain observations and costs but block
 component attribution. The optional `EAL/adoption-cost-ledger/1` binds measured
 activity to a run and plan digest; missing rates or coverage remain unknown.
-See [methodology](docs/eal2-experiment-methodology.md) and
+See [methodology](docs/eal3-experiment-methodology.md) and
 [verification](experiments/model_transfer/verification.md).

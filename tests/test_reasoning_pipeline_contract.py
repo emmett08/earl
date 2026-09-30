@@ -11,7 +11,7 @@ from eal.semantics import validate
 from _provenance import synthetic_provenance
 
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -105,14 +105,14 @@ def _digest(value):
     return hashlib.sha256(encoded).hexdigest()
 
 
-# Full-result hashes include source digests and spans for EAL/2-modern/1,
+# Full-result hashes include source digests and spans for EAL/3,
 # typed evidence diagnostics and assumption applicability.
 @pytest.mark.parametrize('missing,stale,context,expected_digest', [
-    ((), (), CONTEXT, '1ac431d37c28fc89d93e47ea39e326fcc05dc51c7d27d3c777d695e750983094'),
-    (('defence',), (), CONTEXT, 'e4bf9a70720724bd2e8ff079de9f9ec45a08bc9a5d35e8a62255896fc1c2f8b4'),
-    (('positive',), (), CONTEXT, '3e0bde6dffd585ab573fffaa415e689d47c5dabbc79a0013ac77be95f0b9bc0a'),
-    ((), ('negative',), CONTEXT, '06c354c76d11b799bc95dbcdf84a401b12b6eddb577bfb9da8493fcbfa458279'),
-    ((), (), {'site': 'elsewhere'}, '3a36dddf31eb170fe327e4b6a7b574f0ae8c611f9df4405e9aa1deeb28944149'),
+    ((), (), CONTEXT, '7ace35d71c54c64477797b5761d02ab81010f990b97a78078120fc6441d9618f'),
+    (('defence',), (), CONTEXT, 'b754839e29d756dcd3ed2a2b6bfc55d0966b146a000b4f0ba8d7d3dae96795dc'),
+    (('positive',), (), CONTEXT, 'd0ec20f03d4dba508b4f329e3f16f645880e6004d8c0ba0ae9dff77b53a01b23'),
+    ((), ('negative',), CONTEXT, '2ba1e735b5cc83a07101fa23a3c6a01bcd51c6b1327597b622807e7df73d69f1'),
+    ((), (), {'site': 'elsewhere'}, 'e7af82c31e61438f3778f83141831e944ce7bae7a6a193d6312c8c26c7523275'),
 ])
 def test_full_result_is_stable_across_pipeline_stages(missing, stale, context, expected_digest):
     program = parse(SOURCE)

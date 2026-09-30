@@ -303,7 +303,7 @@ def test_negative_computed_results_can_support_explicit_negative_claims(mode, ki
 
     context = {"site": "bench"}
     now = "2026-09-23T12:00:00Z"
-    source = f'''language "EAL/2"
+    source = f'''language "EAL/3"
 
     environment lab {{ require "site" == "bench"
  }}

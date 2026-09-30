@@ -14,7 +14,7 @@ from test_evaluator import CONTEXT, NOW, record
 from test_typed_propositions import SOURCE, VALUE
 
 
-BASE = '''language "EAL/2"
+BASE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -79,7 +79,7 @@ def test_patterns_expand_typed_references_and_retain_authored_structure():
 
 
 def test_forward_references_and_alpha_renaming_cannot_capture_global_names():
-    original = parse('''language "EAL/2"
+    original = parse('''language "EAL/3"
 ''' + APPLICATION + BASE.split('\n', 1)[1] + PATTERN)
     renamed = PATTERN.replace('c: claim', 'pressure: claim').replace('=> c', '=> pressure')
     alpha_renamed = parse(BASE + renamed + APPLICATION.replace('c=pressure', 'pressure=pressure'))
@@ -168,7 +168,7 @@ def test_application_budget_and_expanded_reference_budget_are_enforced(monkeypat
 
 
 def test_declaration_locations_use_one_based_exclusive_end_positions():
-    source = '''language "EAL/2"
+    source = '''language "EAL/3"
 
 reasoning reason {
   method "structured/1"

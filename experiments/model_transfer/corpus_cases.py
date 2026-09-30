@@ -75,7 +75,7 @@ class CorpusCase:
         statement = json.dumps(self.task_specification['natural_language_rule'])
         digest = rule_digest(self.rule)
         target_digest = rule_digest(self.target_identity())
-        return f'''language "EAL/2"
+        return f'''language "EAL/3"
 
 environment scope {{
   require "task_id" == "{self.identifier}"

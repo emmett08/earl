@@ -1,4 +1,4 @@
-"""A finite, explicitly delimited ASPIC+ instantiation for EAL/2.
+"""A finite, explicitly delimited ASPIC+ instantiation for EAL/3.
 
 The host installs this method. EAL binds the exact theory to a scoped typed
 proposition and an observation; this module only constructs arguments and

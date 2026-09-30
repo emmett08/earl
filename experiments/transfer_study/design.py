@@ -151,7 +151,9 @@ class StudyDesign:
         data = _fields(json.loads(raw_bytes), {"schema", "study_id", "phase",
                                               "meaningful_difference", "primary_min_pairs",
                                               "session_minutes", "max_model_calls",
-                                              "models", "cases"})
+                                              "models", "cases"}, {"source_language"})
+        if "source_language" in data and data["source_language"] != "EAL/3":
+            raise ValueError("The current study instrument requires EAL/3 source")
         if data["schema"] != "EAL/transfer-study-plan/2":
             raise ValueError("Unexpected study plan schema")
         if data["phase"] not in ("pilot", "confirmation"):

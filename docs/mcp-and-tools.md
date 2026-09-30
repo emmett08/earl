@@ -1,6 +1,6 @@
 # MCP, tools and model adapters
 
-The EAL/2 service connects an authored argument to configured collectors and versioned reasoning methods. A developer registers a validated `.eal` file and its claims once. Later prompt sessions and models can request a registered claim, reuse compatible observations and receive a checked packet without reconstructing the source. The same service has Python, CLI, MCP and strict JSON text-host interfaces. The [argument service](argument-service.md) defines claim planning and reuse; the [language reference](language.md) defines authored syntax.
+The EAL/3 service connects an authored argument to configured collectors and versioned reasoning methods. A developer registers a validated `.eal` file and its claims once. Later prompt sessions and models can request a registered claim, reuse compatible observations and receive a checked packet without reconstructing the source. The same service has Python, CLI, MCP and strict JSON text-host interfaces. The [argument service](argument-service.md) defines claim planning and reuse; the [language reference](language.md) defines authored syntax.
 
 ## MCP operations
 

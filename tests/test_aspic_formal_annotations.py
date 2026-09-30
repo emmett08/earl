@@ -1,4 +1,4 @@
-"""Reviewed EAL/2 argumentation directives are parsed, checked and compiled explicitly."""
+"""Reviewed EAL/3 argumentation directives are parsed, checked and compiled explicitly."""
 
 from dataclasses import replace
 
@@ -246,8 +246,8 @@ rank probe_data 700 reviewed "review/ambiguous"'''
 def test_argumentation_directives_are_order_independent_and_default_eal_is_unchanged():
     preface = '''rank probe_data 700 reviewed "review/probe"
 '''
-    source = BASE.replace('''language "EAL/2"
-''', '''language "EAL/2"
+    source = BASE.replace('''language "EAL/3"
+''', '''language "EAL/3"
 ''' + preface)
     assert semantic_ir(parse(source)) == semantic_ir(parse(format_source(source)))
     original = parse(BASE)

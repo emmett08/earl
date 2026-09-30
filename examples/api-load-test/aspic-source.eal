@@ -1,5 +1,5 @@
 // Synthetic API load-test fixture.
-language "EAL/2"
+language "EAL/3"
 
 environment test_run {
   require service == "orders-api"

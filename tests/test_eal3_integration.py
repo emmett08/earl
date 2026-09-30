@@ -1,4 +1,4 @@
-"""EAL/2 abstractions exercised through installed interfaces."""
+"""EAL/3 abstractions exercised through installed interfaces."""
 from dataclasses import replace
 import json
 import subprocess

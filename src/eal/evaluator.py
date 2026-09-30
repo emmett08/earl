@@ -529,7 +529,7 @@ def _project_grounded_result(program, result, sources: _SourceAssessment,
     for source, target in sorted(attacks):
         attackers[target].append(source)
     result["dialectic"] = {**grounded, "attacks": [list(edge) for edge in sorted(attacks)],
-                            "construction": "EAL/2 scoped applications with conjunctive claim support"}
+                            "construction": "EAL/3 scoped applications with conjunctive claim support"}
     for name, argument in program.arguments.items():
         entry = result["arguments"][name]
         label = grounded["nodes"][f"argument:{name}"]

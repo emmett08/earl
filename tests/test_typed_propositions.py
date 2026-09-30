@@ -8,7 +8,7 @@ from eal.parser import parse
 from eal.semantics import validate
 from test_evaluator import record, CONTEXT, NOW
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -113,7 +113,7 @@ def test_changed_query_is_rejected_even_if_numerical_result_would_pass():
 
 
 @pytest.mark.parametrize('old,new,code', [
-    ('EAL/2', 'EAL/0.2', 'unsupported_language'),
+    ('EAL/3', 'EAL/0.2', 'unsupported_language'),
     ('quantity "pressure"', 'quantity "flow"', 'invalid_proposition'),
     ('unit "kPa"', 'unit "L/s"', 'invalid_proposition'),
     ('binding trial', '', 'missing_binding'),

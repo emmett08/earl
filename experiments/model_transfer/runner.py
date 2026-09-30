@@ -163,6 +163,7 @@ def main() -> None:
     write_json(args.output / 'provenance.json', {
         'revision': revision, 'working_tree_dirty': dirty, 'started_at': utc_now().isoformat(),
         'protocol_version': protocol['version'],
+        'source_language': plan['source_language'],
         'plan_file_sha256': hashlib.sha256(args.plan.read_bytes()).hexdigest(),
         'plan_sha256': digest(plan),
         'implementation_sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest()

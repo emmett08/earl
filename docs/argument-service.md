@@ -1,6 +1,6 @@
 # EAL argument service
 
-EAL/2 defines claims, evidence, reasoning methods, premises, assumptions and objections. The service connects those declarations to operator-configured collectors, computes an assessment and stores it for later models and prompt sessions. A registered claim can be assessed through one call: the host selects its complete evidence plan, reuses eligible observations, collects the remainder, evaluates the argument and returns a bounded result.
+EAL/3 defines claims, evidence, reasoning methods, premises, assumptions and objections. The service connects those declarations to operator-configured collectors, computes an assessment and stores it for later models and prompt sessions. A registered claim can be assessed through one call: the host selects its complete evidence plan, reuses eligible observations, collects the remainder, evaluates the argument and returns a bounded result.
 
 ## Developer workflow
 

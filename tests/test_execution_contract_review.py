@@ -16,7 +16,7 @@ from eal.parser import parse
 from eal.runtime import ReasoningService, acquisition_request
 
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"

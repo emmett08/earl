@@ -1,4 +1,4 @@
-"""An optional, bounded finite-state model checker for EAL/2.
+"""An optional, bounded finite-state model checker for EAL/3.
 
 The host installs this method explicitly. An EAL source cannot load Python code.
 It decides reachability in the *supplied graph*, not whether that graph describes

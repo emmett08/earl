@@ -1,4 +1,4 @@
-"""Independent EAL/2 contracts: one semantics, exact methods, stable extensions."""
+"""Independent EAL/3 contracts: one semantics, exact methods, stable extensions."""
 from copy import deepcopy
 from dataclasses import asdict, replace
 
@@ -15,7 +15,7 @@ from _provenance import synthetic_provenance
 
 NOW = '2026-09-23T12:00:00Z'
 CONTEXT = {'site': 'bench'}
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -141,7 +141,7 @@ def test_legacy_versions_have_no_runtime_semantics(old_version):
     program = replace(parse(SOURCE), language=old_version)
     result = evaluate(program, {}, now=NOW, context=CONTEXT)
     assert result['valid'] is False
-    assert any(d['code'] == 'unsupported_language' and d['expected'] == 'EAL/2'
+    assert any(d['code'] == 'unsupported_language' and d['expected'] == 'EAL/3'
                and d['actual'] == old_version for d in result['diagnostics'])
     assert result['arguments'] == result['claims'] == {}
 

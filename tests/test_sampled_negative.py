@@ -21,7 +21,7 @@ CALIBRATION = {'detection_limit': .8, 'sensitivity_lower_bound': .98}
 
 
 def source(query, result='"finding" == true'):
-    return f'''language "EAL/2"
+    return f'''language "EAL/3"
 
 environment lab {{ require "site" == "bench"
  }}

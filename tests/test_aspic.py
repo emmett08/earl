@@ -226,7 +226,7 @@ def test_invalid_or_unbounded_theory_cannot_create_support(change):
 
 def source(data):
     query = json.dumps({"theory": data}, separators=(",", ":"))
-    return f'''language "EAL/2"
+    return f'''language "EAL/3"
 
 environment lab {{
   require "site" == "bench"

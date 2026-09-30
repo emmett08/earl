@@ -11,7 +11,7 @@ from eal.runtime import ReasoningService
 from eal.knowledge import EALKnowledgeBase
 
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"

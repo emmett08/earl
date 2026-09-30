@@ -1,6 +1,6 @@
-# EAL/2 design decisions
+# EAL/3 design decisions
 
-This explains the design of the EAL/2 source language. Syntax, the argument solver and the MCP interface are specified respectively in [language](language.md), [argument model](argument-model.md) and [MCP and tools](mcp-and-tools.md). [Design aim](design-aim.md) describes the intended engineering tasks and evaluation criteria.
+This explains the design of the EAL/3 source language. Syntax, the argument solver and the MCP interface are specified respectively in [language](language.md), [argument model](argument-model.md) and [MCP and tools](mcp-and-tools.md). [Design aim](design-aim.md) describes the intended engineering tasks and evaluation criteria.
 
 ## Contents
 
@@ -11,23 +11,23 @@ This explains the design of the EAL/2 source language. Syntax, the argument solv
 - [Derived argument patterns](#derived-argument-patterns)
 - [Bounded support and attack](#bounded-support-and-attack)
 - [Evaluation](#evaluation)
-- [EAL/2 experiment methodology](#eal2-experiment-methodology)
+- [EAL/3 experiment methodology](#eal3-experiment-methodology)
 
 ## Purpose and extension criterion
 
-EAL/2 is the semantic source contract, `EAL/2-modern/1` identifies the current newline-based notation, and the installed Python package declares version 2.19.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts. Model summaries use `EAL/assessment-packet/2` and `EAL/model-context/2`; the observation-record schema remains `/1`.
+EAL/3 is the semantic source contract, `EAL/3` identifies the current newline-based notation, and the installed Python package declares version 3.0.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts. Model summaries use `EAL/assessment-packet/2` and `EAL/model-context/2`; the observation-record schema remains `/1`.
 
-The service keeps validated EAL/2 source, claim identity, compatible tool observations and checked reasoning results available across sessions and model providers. A developer can request a registered claim without sending the source, reconstructing its dependency graph or rerunning unexpired observations. A gain in correctness, time or cost remains a **hypothesis** to measure. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data.
+The service keeps validated EAL/3 source, claim identity, compatible tool observations and checked reasoning results available across sessions and model providers. A developer can request a registered claim without sending the source, reconstructing its dependency graph or rerunning unexpired observations. A gain in correctness, time or cost remains a **hypothesis** to measure. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data.
 
 A grammar addition requires a task whose necessary distinction cannot be represented and checked using existing claims, propositions, versioned methods, premises and targeted objections. For example, a new negative-finding keyword would need to express a semantic distinction that an explicit negative method result cannot express. A richer causal or temporal task should first identify which existing method or relation fails; an additional typed method may address it without changing the grammar.
 
-The API load-test case shows the distinction. A measured p95 above the limit remains a usable observation; `engineering/api-load-criteria/1` computes a negative criterion result and supports the explicit failing claim. A stale or mismatched report makes the evidence unusable and supports neither the passing nor failing claim. The installed method expresses the calculation through existing EAL/2 claims and predicates. Tests establish those finite outcomes; comparative readability and maintenance benefits require separate human tasks.
+The API load-test case shows the distinction. A measured p95 above the limit remains a usable observation; `engineering/api-load-criteria/1` computes a negative criterion result and supports the explicit failing claim. A stale or mismatched report makes the evidence unusable and supports neither the passing nor failing claim. The installed method expresses the calculation through existing EAL/3 claims and predicates. Tests establish those finite outcomes; comparative readability and maintenance benefits require separate human tasks.
 
 ## Primary recommendations and adaptations
 
-The cited authors supplied language-design ideas; they did not evaluate or endorse EAL/2. The source-to-design relation is recorded here so their recommendations are not mistaken for evidence of model performance or for the language's inference semantics.
+The cited authors supplied language-design ideas; they did not evaluate or endorse EAL/3. The source-to-design relation is recorded here so their recommendations are not mistaken for evidence of model performance or for the language's inference semantics.
 
-| Primary source and inspected location | Source recommendation | EAL/2 adaptation |
+| Primary source and inspected location | Source recommendation | EAL/3 adaptation |
 |---|---|---|
 | C. A. R. Hoare, *Hints on Programming Language Design* (1973), reprint §§13.2–13.3, [text](https://flint.cs.yale.edu/cs428/doc/HintsPL.pdf) | Simplicity, readable programmes and early error detection help programmers understand consequences; modularity and orthogonality can serve simplicity. | Keep one exact method selector, common argument checks and local diagnostics; combine features only where their meaning is specified. |
 | Niklaus Wirth, *Good Ideas, Through the Looking Glass* (2005 author manuscript), §§4.8, 5.1–5.2, [text](https://people.inf.ethz.ch/wirth/Articles/GoodIdeas_origFig.pdf) | Type loopholes undermine checking; parser power does not cure obscure notation. | Use a shared grammar and checked input/query/output contracts rather than a free-form algorithm payload. |
@@ -73,6 +73,6 @@ The source format names dependencies and objection targets in a reviewable progr
 
 Evaluate the combined system on tasks with specified source authoring, catalogue selection, evidence access, method authority and answer contract. Record correctness of the scoped claim, unsupported assertions, collection and model calls, context size, latency and cost across first and later sessions. A correct computation can still concern the wrong build or test run, use a missing observation, or be misreported by a model. Retain failures and report results by model and task type; the synthetic example alone establishes no model-class-wide benefit.
 
-## EAL/2 experiment methodology
+## EAL/3 experiment methodology
 
-The [experiment methodology](eal2-experiment-methodology.md) defines the fresh-session ordinary comparator, a joint correctness and cumulative-token decision at ten recipient sessions, pilot-informed precision allocation and separate component diagnostics. It specifies task provenance, repeated-session dependence, evidence changes, accounting and the limits of inference. The [run guide](../experiments/model_transfer/README.md) describes execution; the [versioned protocol](../experiments/model_transfer/protocol.json) records the prospective scientific contract.
+The [experiment methodology](eal3-experiment-methodology.md) defines the fresh-session ordinary comparator, a joint correctness and cumulative-token decision at ten recipient sessions, pilot-informed precision allocation and separate component diagnostics. It specifies task provenance, repeated-session dependence, evidence changes, accounting and the limits of inference. The [run guide](../experiments/model_transfer/README.md) describes execution; the [versioned protocol](../experiments/model_transfer/protocol.json) records the prospective scientific contract.

@@ -18,7 +18,7 @@ def codes(program, **kwargs):
 
 
 @pytest.mark.parametrize("original", [
-    '"EAL/2"', '"bench"', '"1"', '"suite"', '"smoke"',
+    '"EAL/3"', '"bench"', '"1"', '"suite"', '"smoke"',
     '"The measured configuration persists."', '"structured/1"',
     '"The bounded test result supports the stated test claim."',
     '"The smoke test passes."',
@@ -45,7 +45,7 @@ def test_a_valid_surrogate_pair_formats_to_utf8_and_preserves_meaning():
     ("engineering/rms/1", "sample_size", "false", "number", "boolean"),
 ])
 def test_impossible_method_predicates_are_rejected_before_collection(method, path, operand, expected, actual):
-    source = f'''language "EAL/2"
+    source = f'''language "EAL/3"
 
 reasoning r {{
   method "{method}"
@@ -65,7 +65,7 @@ reasoning r {{
 
 @pytest.mark.parametrize("path", ["missing", "rms.field", "sample_size.field"])
 def test_closed_extension_contract_rejects_missing_or_nonscalar_result_paths(path):
-    source = f'''language "EAL/2"
+    source = f'''language "EAL/3"
 
 reasoning r {{
   method "engineering/rms/1"
@@ -79,7 +79,7 @@ reasoning r {{
 def test_runtime_checked_open_output_fields_remain_usable():
     # The abductive contract admits additional JSON outputs. Its method returns
     # the string-valued best candidate, which the example explicitly tests.
-    source = '''language "EAL/2"
+    source = '''language "EAL/3"
 
 reasoning r {
   method "abductive/1"

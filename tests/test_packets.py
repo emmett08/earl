@@ -160,7 +160,7 @@ def test_premise_routes_and_installed_method_contract_are_preserved():
 def test_real_evaluator_packet_retains_premise_and_typed_method_decision():
     from eal.evaluator import evaluate
     from eal.parser import parse
-    from test_eal2_runtime import CONTEXT, NOW, SOURCE, records_for
+    from test_eal3_runtime import CONTEXT, NOW, SOURCE, records_for
 
     programme = parse(SOURCE)
     assessed = evaluate(programme, records_for(programme), now=NOW, context=CONTEXT)

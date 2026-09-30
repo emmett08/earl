@@ -29,7 +29,7 @@ def _source(count: int, *, large_input: str | None = None) -> str:
  }}'''
         )
     return '\n'.join([
-        'language "EAL/2"\n',
+        'language "EAL/3"\n',
         'environment lab {\n  require "site" == "bench"\n}',
         'tool runner {\n  version "1"\n}',
         *declarations,

@@ -7,7 +7,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-PRESSURE_SOURCE = '''language "EAL/2"
+PRESSURE_SOURCE = '''language "EAL/3"
 
 environment bench {
   require "site" == "bench"
@@ -106,7 +106,7 @@ PRESSURE_OBSERVATION = json.loads("""{
   }
 }""")
 
-RMS_SOURCE = '''language "EAL/2"
+RMS_SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -179,7 +179,7 @@ RMS_OBSERVATION = json.loads("""{
   }
 }""")
 
-REACHABILITY_SOURCE = '''language "EAL/2"
+REACHABILITY_SOURCE = '''language "EAL/3"
 
 environment controller_bench {
   require "site" == "simulation"

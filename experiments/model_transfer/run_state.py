@@ -47,8 +47,11 @@ class RunState:
                 fcntl.flock(lock, fcntl.LOCK_UN)
 
     def _validate(self):
+        if self.plan.get('source_language') != 'EAL/3':
+            raise ValueError('New collection requires an EAL/3 plan; analyse earlier runs offline')
         path = self.root / 'execution-contract.json'
         expected = {'schema': 'EAL/execution-contract/1', 'plan_sha256': digest(self.plan),
+                    'source_language': 'EAL/3',
                     'implementation_sha256': implementation_digest(), 'root': str(self.root.resolve()),
                     'python': sys.version, 'executable': sys.executable,
                     'dependencies': {line.split('==')[0]: importlib.metadata.version(line.split('==')[0])

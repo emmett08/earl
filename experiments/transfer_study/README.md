@@ -6,7 +6,7 @@ already-authored knowledge and has a separate protocol and bounded conclusions.
 
 ## Research question
 
-Does EAL/2 help a developer reach the correct scoped engineering decision
+Does EAL/3 help a developer reach the correct scoped engineering decision
 within a fixed time budget in a **new prompt session**, and reduce the time
 and repeated work required, especially when both developer and model change?
 
@@ -17,7 +17,7 @@ confirmation plan remain to be supplied. No human or live-model trial has run.
 
 Each case has two independent developer teams working from identical project
 files. Seeded random allocation assigns one slot to ordinary practice and the
-other to EAL/2. The later question is released only after the first session is
+other to EAL/3. The later question is released only after the first session is
 submitted. A copy of the resulting project travels to the next session; the
 earlier model conversation does not.
 The first project is snapshotted at submission; subsequent edits to that
@@ -26,7 +26,7 @@ workspace cannot change the later developer's handover.
 | Arm | First session | New session |
 | --- | --- | --- |
 | `ordinary` | Prompt the assigned model; use project files, ordinary tools and artefacts naturally produced while working. | Inspect the resulting project and prompt the assigned model. The experiment supplies no special runbook, curated cache or earlier transcript. |
-| `eal` | Do the same work while authoring and registering an EAL/2 source and TOML bindings. Its assessment can be used during this session. | Inspect the resulting project, select a claim and use the registered assessment. Source and observations persist in the copied workspace. |
+| `eal` | Do the same work while authoring and registering an EAL/3 source and TOML bindings. Its assessment can be used during this session. | Inspect the resulting project, select a claim and use the registered assessment. Source and observations persist in the copied workspace. |
 
 Both arms begin with the same project and underlying tool access. The EAL source,
 registration work and observations are effects of that arm. Developers choose
@@ -171,8 +171,8 @@ adapter and repository patterns reuse the existing EAL implementation.
 `EAL/transfer-study-plan/2` requires `session_minutes.initial`,
 `session_minutes.later` and `max_model_calls`. Session terminal records and
 analysis output use version 2; provider request/response and ratings remain
-version 1. EAL/2 grammar, semantics and production observation formats are
-unchanged. Allocation is replay-checked when a run is loaded, and the project
+version 1. Protocol 2.0.0 uses EAL/3 source. Production observation formats
+remain independently versioned; the demo plan records `source_language: EAL/3`. Allocation is replay-checked when a run is loaded, and the project
 snapshot digest is checked before opening its handover.
 
 Protocol traceability names tests for assignment, collection, scoring, analysis

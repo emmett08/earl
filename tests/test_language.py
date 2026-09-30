@@ -4,7 +4,7 @@ import pytest
 from eal.parser import EALSyntaxError, parse
 from eal.semantics import validate
 
-BASE = '''language "EAL/2"
+BASE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -122,7 +122,7 @@ def test_parser_resource_limit():
 
 
 def test_premise_depth_is_bounded_without_recursive_static_walk():
-    declarations = ['language "EAL/2"\n', 'environment e {\n  require "x" == 1\n}',
+    declarations = ['language "EAL/3"\n', 'environment e {\n  require "x" == 1\n}',
                     'reasoning r {\n  method "structured/1"\n  rationale "Declared relation"\n}']
     for index in range(130):
         declarations.append(f'''claim c{index} {{
@@ -150,9 +150,9 @@ def test_versioned_methods_are_explicit_and_unused_unknowns_are_rejected():
     assert not validate(parse(source.replace('method "structured/1"', f'''method "{identifier}"''')))
 
 
-@pytest.mark.parametrize('language', ['EAL/0.1', 'EAL/0.2', 'EAL/0.3', 'EAL/1', 'EAL/2.0'])
+@pytest.mark.parametrize('language', ['EAL/0.1', 'EAL/0.2', 'EAL/0.3', 'EAL/1', 'EAL/3.0'])
 def test_previous_and_unrecognised_language_versions_are_rejected(language):
-    assert 'unsupported_language' in codes(BASE.replace('EAL/2', language))
+    assert 'unsupported_language' in codes(BASE.replace('EAL/3', language))
 
 
 @pytest.mark.parametrize('mode', ['structured', 'deductive', 'inductive', 'abductive',

@@ -14,7 +14,7 @@ from eal.parser import parse
 from eal.runtime import ReasoningService, ToolBinding, ToolRegistry, acquisition_request, bounded_path
 
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"

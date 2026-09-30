@@ -6,7 +6,7 @@ import sys
 from eal.knowledge import EALKnowledgeBase, ModelContextAdapter
 
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"

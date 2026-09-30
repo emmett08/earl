@@ -7,7 +7,7 @@ from eal.evaluator import assess_evidence_record, canonical_digest, environment_
 from eal.parser import parse
 from eal.semantics import parse_time
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -289,7 +289,7 @@ def test_explicit_time_and_finite_json_are_required():
 
 
 def test_inductive_computation_and_declared_threshold_control_derivation():
-    source = '''language "EAL/2"
+    source = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -334,7 +334,7 @@ argument estimation = [evidence sample_data] via estimate_rate => reliable
 
 
 def test_deductive_entailment_countermodel_and_inconsistency_do_not_collapse():
-    source = '''language "EAL/2"
+    source = '''language "EAL/3"
 
 environment lab { require "site" == "bench"
  }

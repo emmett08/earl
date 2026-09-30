@@ -1,4 +1,4 @@
-"""Opt-in, bounded EAL/2-to-ASPIC+ translation at a checked observation snapshot.
+"""Opt-in, bounded EAL/3-to-ASPIC+ translation at a checked observation snapshot.
 
 This is a derived profile, not the default EAL evaluator.  It translates
 authored argument routes and targeted objections, never prose, into rules of
@@ -27,7 +27,7 @@ from .model import Program
 from .parser import parse
 from .semantics import objection_scopes
 
-PROFILE = "EAL/2-compiled-aspic/4"
+PROFILE = "EAL/3-compiled-aspic/4"
 RANK = 500
 
 
@@ -158,7 +158,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                       goal: str, now, context: Mapping,
                       registry=None,
                       binding_digests: Mapping[str, str | None] | None = None) -> CompiledTheory:
-    """Parse and compile exact EAL/2 source bytes at one checked snapshot.
+    """Parse and compile exact EAL/3 source bytes at one checked snapshot.
 
     The named goal is an EAL claim.  No records are collected here.  Method
     checks are taken from EAL's local assessment, while the EAL-composed graph
@@ -170,7 +170,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
     # fixed.  Accept text only, so source spans and the published source hash
     # always correspond to the declarations actually assessed and compiled.
     if not isinstance(source, str):
-        raise TypeError("source must be EAL/2 text")
+        raise TypeError("source must be EAL/3 text")
     program = parse(source)
     # These conservative declaration limits run before any local method
     # execution.  The final theory schema checks actual emitted cardinality.

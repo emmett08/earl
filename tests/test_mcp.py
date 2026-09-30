@@ -12,7 +12,7 @@ from eal.runtime import ReasoningService
 from eal.server import create_server
 
 
-SOURCE = '''language "EAL/2"
+SOURCE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -67,7 +67,7 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
                 assert not {"eal_sources", "eal_find_claims", "eal_assess_known"} & names
                 described = await session.call_tool("eal_describe", {})
                 assert not described.isError
-                assert "EAL/2" in described.structuredContent["languages"]
+                assert "EAL/3" in described.structuredContent["languages"]
                 formatted = await session.call_tool("eal_format", {"source": SOURCE})
                 assert not formatted.isError
                 assert "source_digest" in formatted.structuredContent

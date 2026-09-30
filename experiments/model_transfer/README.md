@@ -1,7 +1,7 @@
 # Fresh-session EAL workflow experiment
 
-Protocol **6.0.0**, scientific schema **1.2**, status **specified**. The
-[methodology](../../docs/eal2-experiment-methodology.md) defines the practical
+EAL/3 source, package **3.0.0**, protocol **7.0.0**, scientific schema **1.2**, status **specified**. The
+[methodology](../../docs/eal3-experiment-methodology.md) defines the practical
 decision, statistical assumptions, task populations and inference limits.
 Implementation checks and synthetic validation do not establish a live benefit.
 Start with the [ordered workflow and input guide](WORKFLOW.md) for local commands,
@@ -195,3 +195,11 @@ observations remain fresh and all other task information agrees. Counts of
 actual reuse and recollection are retained. In a frequent-change block,
 compatible reuse may correctly recollect; that block cannot identify an effect
 of actual reuse and remains invalid for that component attribution.
+
+Protocol 7.0.0 identifies the EAL/3 instrument. Current plans pin
+`source_language` and `protocol_version`; new collection rejects earlier language
+plans. Execution contracts freeze source version, implementation, dependencies
+and plan identity, so an EAL/2 run cannot resume under EAL/3. Retained EAL/2
+protocols, results and verification remain historical records available for
+offline analysis. The grammar change has no measured model or authoring benefit
+in those records. See [EAL/3 verification](verification-eal3.md).

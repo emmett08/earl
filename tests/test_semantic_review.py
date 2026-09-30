@@ -1,4 +1,4 @@
-"""Independent semantic and interaction regressions for EAL/2."""
+"""Independent semantic and interaction regressions for EAL/3."""
 from dataclasses import replace
 
 import pytest
@@ -10,7 +10,7 @@ from _provenance import synthetic_provenance
 
 NOW = "2026-09-23T12:00:00Z"
 CONTEXT = {"site": "bench"}
-BASE = '''language "EAL/2"
+BASE = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"
@@ -239,7 +239,7 @@ def test_custom_numeric_contract_rejects_boolean_observations():
 def test_custom_method_checks_question_identity_even_when_scalar_answer_is_unchanged():
     from eal.methods import default_registry
 
-    source = '''language "EAL/2"
+    source = '''language "EAL/3"
 
 environment lab {
   require "site" == "bench"

@@ -1,8 +1,8 @@
 {
   "schema_version": "1.2",
   "investigation_id": "EAL-NANO-REUSE",
-  "title": "EAL/2 cumulative reuse investigation: pilot-informed estimation and separate component diagnostics",
-  "version": "6.0.0",
+  "title": "EAL/3 cumulative reuse investigation: pilot-informed estimation and separate component diagnostics",
+  "version": "7.0.0",
   "status": "specified",
   "question": "Does EAL preserve correctness within five percentage points, exceed 90% absolute correctness and save over 20% cumulative tokens at ten fresh recipients, with an affordable allocation that controls false success and has useful joint decision power; which matched-fact diagnostics distinguish host reasoning and reuse contributions?",
   "primary_claim_id": "CLM-001",
@@ -948,7 +948,7 @@
       "Report authoring, correction, maintenance and host cost completeness separately."
     ],
     "software_and_versions": [
-      "Python >=3.11; EAL/2; protocol 5.0.0; primary plan/report /4; diagnostic plan /2; information-design configuration and report schemas recorded with code/model identities."
+      "Python >=3.11; EAL/3; protocol 7.0.0; primary plan/report /4; diagnostic plan /2; information-design configuration and report schemas recorded with code/model identities."
     ],
     "inconclusive_handling": "Invalid task/source correspondence blocks calls. Partial execution, unresolved annotation, failed manipulation or conflicting outcomes remain explicitly inconclusive for the affected comparison. Insufficient pilot support, infeasible allocation, failed precision targets or intervals crossing practical thresholds remain inconclusive for practical support."
   },
@@ -1446,8 +1446,8 @@
         "case": "Primary crossed allocation and diagnostic cloned-state allocation",
         "expected_result": "384 principal sequences/4224 sessions and 10 diagnostic donors/46 recipients; deterministic saved-plan replay.",
         "status": "passed",
-        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification.md.",
-        "evidence": "verification.md; validation/rehearsals.json; validation/design-validation.json"
+        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification-eal3.md and the retained numerical checks in verification.md.",
+        "evidence": "verification-eal3.md; verification.md (retained numerical checks); validation/rehearsals.json; validation/design-validation.json"
       },
       {
         "id": "V-COLLECT",
@@ -1455,8 +1455,8 @@
         "case": "Actual source/task calibration, fresh messages, raw-note persistence, tool masks and interrupted requests",
         "expected_result": "Task distinctions survive runtime/context; invalid sources fail before API; every planned unit and unknown resource retained.",
         "status": "passed",
-        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification.md.",
-        "evidence": "verification.md; validation/rehearsals.json; validation/design-validation.json"
+        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification-eal3.md and the retained numerical checks in verification.md.",
+        "evidence": "verification-eal3.md; verification.md (retained numerical checks); validation/rehearsals.json; validation/design-validation.json"
       },
       {
         "id": "V-SCORE",
@@ -1464,8 +1464,8 @@
         "case": "Natural prose, negation, ambiguity, malformed JSON, separate secondary dimensions and blind annotation",
         "expected_result": "Known task decisions survive incidental reporting differences; ambiguous text remains pending; imported codes are linked to unchanged raw answers without oracle exposure.",
         "status": "passed",
-        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification.md.",
-        "evidence": "verification.md; validation/rehearsals.json; validation/design-validation.json"
+        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification-eal3.md and the retained numerical checks in verification.md.",
+        "evidence": "verification-eal3.md; verification.md (retained numerical checks); validation/rehearsals.json; validation/design-validation.json"
       },
       {
         "id": "V-ANALYSE",
@@ -1473,8 +1473,8 @@
         "case": "Known paired effects, pending-label bounds, initial/later/cumulative accounting and incomplete usage",
         "expected_result": "Correct paired signs and denominators; unknown outcomes/resources distinct from failures/zero; shared diagnostic donor counted once.",
         "status": "passed",
-        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification.md.",
-        "evidence": "verification.md; validation/rehearsals.json; validation/design-validation.json"
+        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification-eal3.md and the retained numerical checks in verification.md.",
+        "evidence": "verification-eal3.md; verification.md (retained numerical checks); validation/rehearsals.json; validation/design-validation.json"
       },
       {
         "id": "V-PIPELINE",
@@ -1482,8 +1482,8 @@
         "case": "Scripted primary and diagnostic pipelines with actual EAL and manual-annotation roundtrip",
         "expected_result": "Complete retained assignments/raw responses/reports; one-factor checks and offline reconstruction work without making an empirical model claim.",
         "status": "passed",
-        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification.md.",
-        "evidence": "verification.md; validation/rehearsals.json; validation/design-validation.json"
+        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification-eal3.md and the retained numerical checks in verification.md.",
+        "evidence": "verification-eal3.md; verification.md (retained numerical checks); validation/rehearsals.json; validation/design-validation.json"
       },
       {
         "id": "V-DIAGNOSTIC",
@@ -1491,13 +1491,13 @@
         "case": "Clone equality, fixture and fact fingerprints, one-factor manipulation and tamper detection",
         "expected_result": "Valid component contrasts pass; state/fact/delivery defects remain visible and invalidate attribution.",
         "status": "passed",
-        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification.md.",
-        "evidence": "verification.md; validation/rehearsals.json; validation/design-validation.json"
+        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification-eal3.md and the retained numerical checks in verification.md.",
+        "evidence": "verification-eal3.md; verification.md (retained numerical checks); validation/rehearsals.json; validation/design-validation.json"
       },
       {
         "id": "V-LIVE",
         "stage": "collection",
-        "case": "Credentialed pilot and fresh evaluation under protocol 6.0.0",
+        "case": "Credentialed pilot and fresh evaluation under protocol 7.0.0",
         "expected_result": "Pinned configurations produce actual task answers and usage under the selected primary or diagnostic plan.",
         "status": "planned",
         "observed_result": null,
@@ -1509,8 +1509,8 @@
         "case": "Pilot information, dependence, feasibility and joint threshold simulation",
         "expected_result": "Known paired variability/discordance recovered; seeded repeatability; correlated trajectories and missing/budget-limited runs retained; sparse or scripted evidence cannot establish live information adequacy; cheap incorrect results never satisfy the joint criterion. Known simulated truths support reported marginal/joint coverage; a narrow under-covering interval cannot make an allocation eligible. Stress failures remain separately labelled.",
         "status": "passed",
-        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification.md.",
-        "evidence": "verification.md; validation/rehearsals.json; validation/design-validation.json"
+        "observed_result": "Completed software verification; see the command-specific results, limitations and retained synthetic evidence in verification-eal3.md and the retained numerical checks in verification.md.",
+        "evidence": "verification-eal3.md; verification.md (retained numerical checks); validation/rehearsals.json; validation/design-validation.json"
       },
       {
         "id": "V-RESUME",
@@ -1749,5 +1749,5 @@
       "evidence": "diagnostic_measurement.py; diagnostic_inference.py; verification.md"
     }
   },
-  "updated_at": "2026-09-28T19:54:40.920897+00:00"
+  "updated_at": "2026-09-30T00:00:00Z"
 }

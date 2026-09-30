@@ -1,3 +1,10 @@
+# Retained EAL/2 verification record
+
+This report describes the named earlier implementation and protocol. It is retained
+unchanged below. Current EAL/3 verification is recorded in
+[verification-eal3.md](verification-eal3.md); these checks and paid observations
+are not relabelled as EAL/3 results.
+
 # Investigation verification
 
 Protocol **6.0.0**, package **2.18.0**, EAL/2. Primary plan/result schemas remain

@@ -16,7 +16,7 @@ KINDS = {"deductive": "logical_case", "causal": "experiment",
 
 
 def source(mode, query, *, quantity="proposition", unit="1", result='"entailed" == true'):
-    return f'''language "EAL/2"
+    return f'''language "EAL/3"
 
 environment lab {{ require "site" == "bench"
  }}

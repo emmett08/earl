@@ -1,4 +1,4 @@
-"""EAL/2 scalar propositions and versioned method/input correspondence.
+"""EAL/3 scalar propositions and versioned method/input correspondence.
 
 Metadata asserts an engineering interpretation. Checks establish correspondence
 within that interpretation; they cannot authenticate a sensor or interpret prose.

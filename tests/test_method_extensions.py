@@ -48,7 +48,7 @@ def test_actual_rms_method_runs_through_unchanged_core_grammar_and_typed_claim()
 
 
 def test_custom_method_does_not_enable_an_obsolete_language_version():
-    source = custom_source().replace('EAL/2', 'EAL/0.3')
+    source = custom_source().replace('EAL/3', 'EAL/0.3')
     assert 'unsupported_language' in {item.code for item in validate(parse(source), registry=example_registry())}
 
 
