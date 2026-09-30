@@ -1,4 +1,4 @@
-"""Modern source notation preserves the existing typed and ASPIC+ contracts."""
+"""EAL/3 source notation preserves the existing typed and ASPIC+ contracts."""
 from dataclasses import replace
 import itertools
 
@@ -6,6 +6,7 @@ import pytest
 
 from eal.aspic_compiler import compile_eal_aspic
 from eal.aspic_export import export_aspic_view
+from eal.evaluator import evaluate
 from eal.formatter import format_source, semantic_ir
 from eal.parser import EALSyntaxError, parse
 from eal.semantics import validate
@@ -86,6 +87,35 @@ def test_nested_defaults_local_override_and_lexical_extent():
     assert semantic_ir(program) == semantic_ir(parse(format_source(source)))
 
 
+def test_multiple_scoped_evidence_keep_distinct_requests_and_required_support():
+    source = SOURCE.replace('  claim measured {', '''  evidence corroboration {
+    kind test
+    input {"measurement": "errors"}
+    require fraction <= 0.01
+  }
+  claim measured {''').replace('[premises measured]', '[evidence corroboration, premises measured]')
+    program = parse(source)
+    assert not validate(program)
+    assert set(program.evidence) == {'observation', 'corroboration'}
+    for evidence in program.evidence.values():
+        assert (evidence.environment, evidence.tool, evidence.max_age) == ('lab', 'collector', 60)
+    assert semantic_ir(program) == semantic_ir(parse(format_source(source)))
+
+    records = {
+        'observation': record(program, 'observation', {'ok': True}),
+        'corroboration': record(program, 'corroboration', {'fraction': 0.005}),
+    }
+    assert records['observation']['request_digest'] != records['corroboration']['request_digest']
+    result = evaluate(program, records, now=NOW, context=CONTEXT)
+    assert result['claims']['followup']['status'] == 'supported'
+
+    records['corroboration'] = record(program, 'corroboration', {'fraction': 0.02})
+    for supplied in (records, {'observation': records['observation']}):
+        result = evaluate(program, supplied, now=NOW, context=CONTEXT)
+        assert result['claims']['measured']['status'] == 'supported'
+        assert result['claims']['followup']['status'] == 'unsupported'
+
+
 def test_singleton_fields_can_be_reordered_without_changing_the_ir():
     fields = ['tool collector', 'kind test', 'environment lab', 'max_age 60', 'require ok == true']
     base = parse('language "EAL/3"\nevidence e {\n' + '\n'.join(fields) + '\n}\n')
@@ -102,7 +132,7 @@ def test_singleton_fields_can_be_reordered_without_changing_the_ir():
     (SOURCE.replace('    require ok == true\n', ''), 'requires at least one'),
     (SOURCE.replace('max_age 60', 'max_age 60;'), 'recognition error'),
 ])
-def test_malformed_modern_fields_fail_before_evaluation(source, message):
+def test_malformed_eal3_fields_fail_before_evaluation(source, message):
     with pytest.raises(EALSyntaxError, match=message):
         parse(source)
 

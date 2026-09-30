@@ -9,6 +9,7 @@ This is the reference for authored syntax, static checks and typed proposition b
 - [Context defaults and nested derivations](#context-defaults-and-nested-derivations)
 - [Reusable argument patterns](#reusable-argument-patterns)
 - [Predicates and time](#predicates-and-time)
+- [Implementation limits](#implementation-limits)
 - [Observation records](#observation-records)
 - [Typed propositions and observations](#typed-propositions-and-observations)
 - [Method selection and static checks](#method-selection-and-static-checks)
@@ -16,7 +17,7 @@ This is the reference for authored syntax, static checks and typed proposition b
 
 ## Source structure
 
-The first statement is `language "EAL/3"`; any other header fails validation. Top-level declarations can refer to later global declarations. Names are case-sensitive and unique across declaration kinds. They start with a letter or underscore and continue with letters, digits or underscores; some keyword spellings are admitted as contextual identifiers by the grammar. Pattern parameters form a separate, closed scope. Comments use `//` or `/* ... */`. Fields end at a newline; singleton fields may appear in any order. Semicolons are rejected. A final flow or directive may end at EOF. Braces group declarations without indentation tokens. JSON arrays and objects, support groups, parameter lists and flows may span lines; multiline comments do not supply field terminators. Discovery identifies the source language and syntax as `EAL/3`, separately from package and observation-record versions. `EALModern` was a proposal name; the canonical ANTLR grammar remains `EAL.g4` with grammar name `EAL`, because ANTLR identifiers cannot contain a slash. The source header is `language "EAL/3"`. A syntax error rejects the parse, including an ANTLR error-recovery tree.
+The first statement is `language "EAL/3"`; any other header fails validation. Top-level declarations can refer to later global declarations. Names are case-sensitive and unique across declaration kinds. They start with a letter or underscore and continue with letters, digits or underscores; some keyword spellings are admitted as contextual identifiers by the grammar. Pattern parameters form a separate, closed scope. Comments use `//` or `/* ... */`. Fields end at a newline; singleton fields may appear in any order. Semicolons are rejected. A final flow or directive may end at EOF. Braces group declarations without indentation tokens. JSON arrays and objects, support groups, parameter lists and flows may span lines; multiline comments do not supply field terminators. Discovery identifies the source language and syntax as `EAL/3`, separately from package and observation-record versions. The canonical ANTLR grammar is `EAL.g4` with grammar name `EAL`, because ANTLR identifiers cannot contain a slash. The source header is `language "EAL/3"`. A syntax error rejects the parse, including an ANTLR error-recovery tree.
 
 The source byte limit is 1 MiB and the token limit is 100,000. Structural validation allows at most 4,096 declaration/body records after pattern expansion and a premise depth of 128. These limits bound this implementation's domain.
 
@@ -47,7 +48,13 @@ Source selects a tool by name and exact version. The host TOML binding specifies
 context environment lab, tool probe, max_age 60 {
   evidence reading {
     kind test
+    input {"measurement": "probe"}
     require passed == true
+  }
+  evidence error_rate {
+    kind test
+    input {"measurement": "errors"}
+    require fraction <= 0.01
   }
   context max_age 5 {
     evidence short_lived {
@@ -61,7 +68,11 @@ context environment lab, tool probe, max_age 60 {
 }
 ```
 
-A context supplies lexical defaults, resolved before ordinary typed validation. Evidence inherits `environment`, `tool` and `max_age`; claims inherit `environment`; assumptions inherit `environment`, `valid_from` and `valid_until`. The nearest context overrides an outer default, and an explicit declaration field overrides either. Duplicate defaults or singleton fields fail recognition. Missing required fields after inheritance fail recognition. Contexts create neither namespaces nor logical premises. Proposition subject, quantity, unit, scope, dates and query remain explicit, so context grouping cannot silently change a formal question.
+A context may contain multiple evidence declarations, claims, assumptions, arguments and further contexts. In this fragment, `reading` and `error_rate` both inherit environment `lab`, tool `probe` and `max_age 60`; `short_lived` inherits the same environment and tool with `max_age 5`. The named environment and tool must be declared elsewhere. Each evidence keeps its own name, kind, input, predicates and observation bindings. Grouping does not assert statistical independence or combine observations.
+
+A context supplies lexical defaults, resolved before ordinary typed validation. Evidence inherits `environment`, `tool` and `max_age`; claims inherit `environment`; assumptions inherit `environment`, `valid_from` and `valid_until`. The nearest context overrides an outer default, and an explicit declaration field overrides either. Duplicate defaults or singleton fields fail recognition. Missing required fields after inheritance fail recognition. Contexts create neither namespaces nor logical premises. Proposition subject, quantity, unit, scope, dates and query remain explicit, so context grouping cannot silently change a formal question. Defaults are limited to `environment`, `tool`, `max_age`, `valid_from` and `valid_until`; `kind`, `input` and predicates remain declaration fields. A declaration may name a different environment or tool explicitly, but its consuming argument must still satisfy the ordinary same-environment checks. Names remain globally unique across contexts.
+
+An argument can use both evidence declarations with `[evidence reading, error_rate]`. Within one route, all required support must be usable; alternative routes are expressed as separate arguments concluding the same claim.
 
 Nested arguments are represented through **premise claims**, including claims established by pattern instances:
 
@@ -96,6 +107,25 @@ require entailed == true
 Bare keys denote literal property paths; quoted keys retain arbitrary original spellings. String values stay quoted, and JSON object keys follow JSON. There is no implicit identifier lookup or general-purpose expression evaluation. A dotted path selects object fields from context, observation value or a computation's output according to the enclosing declaration. `==`, `!=`, `<`, `<=`, `>` and `>=` compare scalars. A missing field, incompatible operand or nonfinite number cannot satisfy a predicate. Booleans differ from numbers; ordered comparisons need numbers or strings. String order is lexicographical, so use explicit timestamp clauses or a temporal method for instants. Each declaration's predicates combine conjunctively. JSON can contain null, finite numbers, strings, booleans, arrays and unique-key objects; it never executes code.
 
 `max_age` is finite nonnegative seconds measured from an observation's original `collected_at` to assessment `now`. Age exactly at the bound is eligible; a future-dated observation is not. `ingested_at` marks storage and does not refresh an observation. An assumption's optional `valid_from` and `valid_until` require timezone-aware ISO-8601 instants and form `[valid_from, valid_until)`. The evaluator tests this interval at assessment time and independently requires usable validation evidence. An observation can become too old before its assumption's interval ends when `max_age` is shorter than that interval. Conversely, a fresh observation cannot support an assumption after its interval ends. A historical assessment supplies historical `now` and context explicitly. These checks do not prove continuous physical conditions.
+
+## Implementation limits
+
+These bounds describe the current implementation; contexts do not impose a one-evidence limit.
+
+| Area | Current restriction |
+|---|---|
+| Contexts | Five supported defaults, applied only to their documented declaration kinds. Global names, with no context-local namespace or automatic environment conversion. |
+| Argument composition | Nested derivations through premise claims and named pattern instances. No inline argument declarations, recursive patterns, or pattern applications inside pattern bodies. Premise cycles are invalid. |
+| Predicates | Six scalar comparators over literal keys/property paths. No arithmetic, function calls, implicit variable lookup or arbitrary expression execution. String values and JSON object keys stay quoted. |
+| Typed propositions | Explicit subject, quantity, unit, scope, dates, query and result binding. Inheritance does not fill proposition metadata or prove that prose matches the formal question. |
+| Source and graph | 1 MiB source, 100,000 tokens, 4,096 declaration/body records after expansion, at most 128 premise edges in a chain. |
+| Pattern expansion | 1,000 applications and 100,000 expanded references, also subject to the source/graph bounds. |
+| Collection | At most 128 evidence requests per collection. Declaring more evidence in one context does not remove this host-operation bound. |
+| ASPIC+ compilation | At most 64 evidence declarations and 64 combined argument, assumption and objection rules. The emitted theory must also satisfy the solver bounds below. |
+| ASPIC+ solver | An acyclic rule profile with grounded semantics and minimum-rank preferences: 64 formal premises, 64 rules, eight antecedents per rule, 128 distinct atoms, 128 contrary pairs, 128 constructed arguments and 4,096 defeat witnesses. Alternatives and nested routes can reach these bounds before the source limit. |
+| Reviewed directives | `strict`, `rank` and directed `contrary` affect the opt-in ASPIC+ compiler. Ordinary authored assessment validates them without applying those formal inference effects. Review references are supplied metadata. |
+
+An assessment checks the declared argument against the supplied observations and installed method contracts. It does not establish observation authenticity, prove arbitrary claim prose, or infer physical continuity from freshness alone. Unsupported or missing support does not assert falsity. More detailed host limits are in the [integration contract](../CONTRACT.md); the [ASPIC+ method](aspic-method.md) specifies its omitted cases and failure behaviour.
 
 ## Observation records
 

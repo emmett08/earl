@@ -11,8 +11,8 @@ from eal.semantics import validate
 from experiments.model_transfer.run_state import RunState
 
 
-@pytest.mark.parametrize('header', ['EAL/2', 'EALModern', 'EAL/2-modern/1'])
-def test_only_eal3_is_valid_even_with_modern_notation(header):
+@pytest.mark.parametrize('header', ['EAL/2', 'EAL/unknown', 'EAL/3-preview'])
+def test_only_eal3_is_valid_even_with_newline_fields(header):
     program = parse(EXAMPLE.replace('EAL/3', header))
     diagnostic = next(d for d in validate(program) if d.code == 'unsupported_language')
     assert diagnostic.expected == 'EAL/3'
