@@ -4,19 +4,27 @@ from __future__ import annotations
 from . import __version__
 
 
-EXAMPLE = '''language "EAL/2";
-environment bench { require "site" == "bench"; }
-tool collector { version "1"; }
-evidence observation {
-  tool collector; kind test; environment bench; max_age 3600;
-  require "passed" == true;
+EXAMPLE = '''language "EAL/2"
+environment bench {
+  require site == "bench"
 }
-reasoning measured {
-  method "structured/1";
-  rationale "The observation supports only the stated test result in this environment.";
+tool collector {
+  version "1"
 }
-claim checked { statement "The supplied test passes at the bench."; environment bench; }
-argument measurement { conclusion checked; reasoning measured; evidence observation; }
+context environment bench, tool collector, max_age 3600 {
+  evidence observation {
+    kind test
+    require passed == true
+  }
+  reasoning measured {
+    method "structured/1"
+    rationale "The observation supports only the stated test result in this environment."
+  }
+  claim checked {
+    statement "The supplied test passes at the bench."
+  }
+  argument measurement = [evidence observation] via measured => checked
+}
 '''
 
 
@@ -29,24 +37,29 @@ def describe_language(*, registry=None) -> dict:
     return {
         "implementation_version": __version__,
         "languages": ["EAL/2"],
+        "source_syntax": "EAL/2-modern/1",
         "method_registry_fingerprint": registry.fingerprint,
         "syntax": {
-            "notation": "Capitalised placeholders denote strings, identifiers, numbers or JSON. Square brackets denote optional clauses; + denotes one or more repetitions. Clause order is fixed. Names are unique across declarations; forward references are allowed. Strings use JSON quoting. Comments use // or /* */.",
-            "program": 'language "EAL/2"; DECLARATIONS',
-            "environment": 'environment NAME { require "CONTEXT.FIELD" OP SCALAR; + }',
-            "tool": 'tool NAME { version "VERSION"; }',
-            "evidence": 'evidence NAME { tool TOOL; kind KIND; environment ENV; max_age SECONDS; [input JSON;] require "VALUE.FIELD" OP SCALAR; + }',
-            "assumption": 'assumption NAME { statement "TEXT"; environment ENV; validate EVIDENCE; [valid_from "TIME";] [valid_until "TIME";] }',
-            "reasoning": 'reasoning NAME { method "VERSIONED_METHOD_ID"; rationale "TEXT"; [backing EVIDENCE_LIST;] [require "OUTPUT.FIELD" OP SCALAR; ...] }',
-            "claim": 'claim NAME { statement "TEXT"; environment ENV; [proposition { subject "ENTITY"; quantity "QUANTITY"; unit "UNIT"; scope "MODEL_OR_EPISODE"; valid_from "TIME"; valid_until "TIME"; query JSON; result "OUTPUT.FIELD" OP SCALAR; }] }',
-            "argument": 'argument NAME { conclusion CLAIM; reasoning REASONING; [evidence EVIDENCE_LIST;] [assumptions ASSUMPTION_LIST;] [premises CLAIM_LIST;] [binding EVIDENCE;] }',
-            "objection": 'objection NAME { target claim|reasoning|assumption|argument|objection NAME; [evidence EVIDENCE_LIST;] [premises CLAIM_LIST;] } — at least one evidence or premise is required.',
-            "pattern": 'pattern NAME(PARAM: claim|reasoning|evidence|assumption, ...) { conclusion PARAM; reasoning PARAM; [evidence PARAM_LIST;] [assumptions PARAM_LIST;] [premises PARAM_LIST;] [binding PARAM;] }',
-            "apply": 'apply NAME = PATTERN(PARAM=DECLARATION, ...);',
-            "formal_relations": 'strict ARGUMENT reviewed "REVIEW_REFERENCE"; | rank EVIDENCE_OR_ASSUMPTION_OR_ARGUMENT INTEGER reviewed "REVIEW_REFERENCE"; | contrary CLAIM to CLAIM reviewed "REVIEW_REFERENCE"; — argumentation directives within EAL/2, validated by both reason and compile-aspic; only compile-aspic applies their inference effects. Global name resolution after pattern expansion determines each reference kind; ranks are integers 0–1000 and contraries are directed.',
-            "abstraction": "Patterns bind typed declaration references. Every body reference is a parameter; there is no implicit capture, recursion or executable import. Applications expand into named arguments and preserve original evidence identities. Forward references are allowed; invalid or ambiguous bindings are diagnosed.",
-            "operators": ["==", "!=", "<", "<=", ">", ">="],
-            "lists": "One or more comma-separated identifiers. An argument requires at least one evidence, assumption or premise. A computational method requires at least one output predicate, supplied by its method-level require or its typed claim's result condition. A typed claim requires a binding for each supporting argument.",
+            'notation': 'Capitalised placeholders denote values. Fields end at newlines and may appear in any order. Square brackets are literal lists/support groups. Names are globally unique; forward references are allowed. Strings use JSON quoting; comments use // or /* */.',
+            'program': 'language "EAL/2"\nDECLARATIONS',
+            'context': 'context environment ENV, tool TOOL, max_age SECONDS {\nDECLARATIONS\n}',
+            'environment': 'environment NAME {\nrequire CONTEXT.FIELD OP SCALAR\n}',
+            'tool': 'tool NAME {\nversion "VERSION"\n}',
+            'evidence': 'evidence NAME {\ntool TOOL\nkind KIND\nenvironment ENV\nmax_age SECONDS\ninput JSON\nrequire VALUE.FIELD OP SCALAR\n}',
+            'assumption': 'assumption NAME {\nstatement "TEXT"\nenvironment ENV\nvalidate EVIDENCE\nvalid_from "TIME"\nvalid_until "TIME"\n}',
+            'reasoning': 'reasoning NAME {\nmethod "VERSIONED_METHOD_ID"\nrationale "TEXT"\nbacking [EVIDENCE_LIST]\nrequire OUTPUT.FIELD OP SCALAR\n}',
+            'claim': 'claim NAME {\nstatement "TEXT"\nenvironment ENV\nproposition {\nsubject "ENTITY"\nquantity "QUANTITY"\nunit "UNIT"\nscope "SCOPE"\nvalid_from "TIME"\nvalid_until "TIME"\nquery JSON\nresult OUTPUT.FIELD OP SCALAR\n}\n}',
+            'argument': 'argument NAME = [evidence EVIDENCE_LIST, assumptions ASSUMPTION_LIST, premises CLAIM_LIST] via REASONING => CLAIM binding EVIDENCE',
+            'objection': 'objection NAME = [evidence EVIDENCE_LIST, premises CLAIM_LIST] -x> TARGET_KIND TARGET_NAME',
+            'pattern': 'pattern NAME(c: claim, r: reasoning, e: evidence) = [evidence e] via r => c',
+            'apply': 'apply ARGUMENT = PATTERN(PARAM=REFERENCE, ...)',
+            'formal_relations': 'strict ARGUMENT reviewed "REVIEW_REFERENCE"\nrank EVIDENCE_OR_ASSUMPTION_OR_ARGUMENT INTEGER reviewed "REVIEW_REFERENCE"\ncontrary CLAIM to CLAIM reviewed "REVIEW_REFERENCE". These are ASPIC+ formalisation directives. reason validates them; compile-aspic applies their effects. Ranks are integers 0-1000; claim contraries are directed.',
+            'scope_defaults': 'Nearest context wins; explicit fields override defaults. environment applies to evidence/assumption/claim, tool and max_age to evidence, valid_from/valid_until to assumptions. Proposition dates remain explicit. Contexts retain global declaration identities.',
+            'optional_fields': 'Evidence input, reasoning backing, claim proposition, assumption validity dates, each support group and binding are optional. Evidence/environment require predicates; arguments/objections require nonempty support. All proposition fields are required.',
+            'nested_derivations': 'Premises reference claims supported by other arguments, including pattern instances, forming an acyclic derivation graph. Premise slots do not accept argument IDs. Inline argument declarations and recursive/nested pattern applications are unsupported.',
+            'abstraction': 'Patterns have closed typed parameters. Every body reference names a parameter; expansion preserves dependency identities. Forward references are allowed; invalid bindings are diagnosed.',
+            'operators': ['==', '!=', '<', '<=', '>', '>='],
+            'lists': 'Comma-separated identifiers retain their order. Computational methods need output predicates and typed claims need an evidence binding on each supporting argument.',
         },
         "methods": {
             "structured/1": {"input": "Author-supplied evidence/premise relation", "meaning": "Checks availability and composition; does not prove prose"},

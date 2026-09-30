@@ -24,8 +24,8 @@ def run_method(payload, contract=RMS_CONTRACT):
 
 def custom_source():
     return (SOURCE.replace('kind experiment', 'kind measurement_series')
-            .replace('method "causal/1";', 'method "engineering/rms/1";')
-            .replace('query {"assignment":"randomised"}', 'query {"origin":0}')
+            .replace('method "causal/1"', 'method "engineering/rms/1"')
+            .replace('query {"assignment": "randomised"}', 'query {"origin":0}')
             .replace('result "estimate" >= 5', 'result "rms" == 5'))
 
 

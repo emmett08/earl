@@ -1,15 +1,15 @@
 # EAL/2 integration contract
 
-EAL/2 is the supported source language. The package is `2.18.0`. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
+EAL/2 is the supported source language. The package is `2.19.0`; its source notation is `EAL/2-modern/1`. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
 
-Package 2.14.1 separates built-in strategy implementations without changing the source language, observation schemas, method identifiers, numerical contracts or recorded built-in implementation identities.
+Source fields use newlines, contexts resolve metadata defaults, and typed support flows lower to the existing argument model. Package, source notation and stored observation versions remain separate. Strictness, ranks and contraries retain their opt-in ASPIC+ compilation effects.
 
 
 ## Authored source and observations
 
 `parse(source: str) -> Program` parses exact EAL/2 UTF-8 text; `validate(program, *, registry=None)` returns structured diagnostics for references, types and method contracts. `format_source(source)` returns canonical source. `Program.source_digest` hashes exact source bytes, even when two programs have the same meaning.
 
-An EAL `tool NAME { version "VERSION"; }` declares an interface. An `evidence NAME` selects that tool, evidence `kind`, `environment`, `max_age` in seconds, optional JSON `input` and one or more `require "VALUE.FIELD" OP SCALAR` predicates. A `reasoning NAME` selects exactly one installed versioned method, rationale, optional evidence `backing` and optional output predicates. Claims, arguments, premises, assumptions, objections, patterns and optional formal directives state the argument graph. The host never treats prose as a mechanically proven warrant.
+An EAL a `tool NAME` block containing `version "VERSION"` declares an interface. An `evidence NAME` selects that tool, evidence `kind`, `environment`, `max_age` in seconds, optional JSON `input` and one or more `require "VALUE.FIELD" OP SCALAR` predicates. A `reasoning NAME` selects exactly one installed versioned method, rationale, optional evidence `backing` and optional output predicates. Claims, arguments, premises, assumptions, objections, patterns and optional formal directives state the argument graph. The host never treats prose as a mechanically proven warrant.
 
 An observation is not an EAL declaration. The configured tool returns JSON with `value` and optional `observed_at`, `context`, `request` and `details`; a file import must provide the latter acquisition fields and original time. The host persists the observation under `EAL/observation-record/1` with evidence ID, kind, environment, tool/version, input and request identity, context, source digest, original time, result digest, binding identity and a durable run ID. The original time is never advanced by reuse. A command receives one JSON object with `evidence_id`, `environment`, `tool`, `tool_version`, `input` and `context` on stdin and returns one JSON object on stdout. EAL source cannot select a command, file path, credential or Python method implementation.
 

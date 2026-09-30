@@ -58,13 +58,99 @@ def _span(ctx):
                       stop.column + len(text) + 1 if len(lines) == 1 else len(lines[-1]) + 1)
 
 
-def _argument_fields(ctx):
-    return (ctx.conclusionRef.getText(), ctx.reasoningRef.getText(),
-            _ids(ctx.evidenceRefs), _ids(ctx.assumptionRefs), _ids(ctx.premiseRefs),
-            ctx.bindingRef.getText() if ctx.bindingRef else None)
-
-
 class _ASTBuilder(EALVisitor):
+    def __init__(self):
+        self.defaults = {}
+
+    def visitDeclaration(self, ctx):
+        child = ctx.getChild(0)
+        if isinstance(child, EALParser.ContextDeclContext):
+            return self.visit(child)
+        return [(self.visit(child), _span(child))]
+
+    def visitContextDecl(self, ctx):
+        additions = {}
+        for attribute in ctx.contextAttribute():
+            key = attribute.start.text
+            if key in additions:
+                self.fail(attribute, f"Duplicate context default {key!r}")
+            if attribute.identifier():
+                value = attribute.identifier().getText()
+            elif attribute.NUMBER():
+                value = float(attribute.NUMBER().getText())
+            else:
+                value = _string(attribute.STRING())
+            additions[key] = value
+        previous = self.defaults
+        self.defaults = {**previous, **additions}
+        try:
+            return [item for declaration in ctx.declaration()
+                    for item in self.visit(declaration)]
+        finally:
+            self.defaults = previous
+
+    @staticmethod
+    def fail(ctx, message):
+        raise EALSyntaxError(f"{ctx.start.line}:{ctx.start.column + 1}: {message}")
+
+    def fields(self, ctx, wrappers, kind, required):
+        result, predicates = {}, []
+        for wrapper in wrappers:
+            field = wrapper.getChild(0)
+            key = field.start.text
+            if key == "require":
+                predicates.append(self.visit(field))
+                continue
+            if key in result:
+                self.fail(field, f"Duplicate field {key!r}")
+            if key == "proposition":
+                value = self.visit(field)
+            elif key == "result":
+                value = Predicate(self.visit(field.key()), field.comparator().getText(),
+                                  self.visit(field.jsonScalar()))
+            elif hasattr(field, "identifier"):
+                value = field.identifier().getText()
+            elif hasattr(field, "jsonValue"):
+                value = self.visit(field.jsonValue())
+            elif hasattr(field, "referenceList"):
+                value = _ids(field.referenceList())
+            elif hasattr(field, "NUMBER"):
+                value = float(field.NUMBER().getText())
+            else:
+                value = _string(field.STRING())
+            result[key] = value
+        applicable = {
+            "evidence": ("environment", "tool", "max_age"),
+            "assumption": ("environment", "valid_from", "valid_until"),
+            "claim": ("environment",),
+        }.get(kind, ())
+        for key in applicable:
+            if key not in result and key in self.defaults:
+                result[key] = self.defaults[key]
+        missing = set(required) - result.keys()
+        if missing:
+            self.fail(ctx, "Missing field after context inheritance: " + ", ".join(sorted(missing)))
+        result["predicates"] = tuple(predicates)
+        if kind == "evidence" and not predicates:
+            self.fail(ctx, "Evidence requires at least one require predicate")
+        return result
+
+    def groups(self, ctx, rule):
+        result = {}
+        for group in getattr(ctx, rule)():
+            key = group.start.text
+            if key in result:
+                self.fail(group, f"Duplicate support group {key!r}")
+            result[key] = _ids(group)
+        return result
+
+    def argument_fields(self, ctx):
+        groups = self.groups(ctx.support(), "supportGroup")
+        return (ctx.conclusionRef.getText(), ctx.reasoningRef.getText(),
+                groups.get("evidence", ()), groups.get("assumptions", ()),
+                groups.get("premises", ()),
+                ctx.bindingRef.getText() if ctx.bindingRef else None)
+
     def visitArgumentationDirective(self, ctx):
         words = ctx.getChild(0).getText()
         names = ctx.identifier()
@@ -80,47 +166,41 @@ class _ASTBuilder(EALVisitor):
         return Environment(ctx.identifier().getText(), tuple(self.visit(p) for p in ctx.predicate()))
 
     def visitToolDecl(self, ctx):
-        return Tool(ctx.identifier().getText(), _string(ctx.STRING()))
+        return Tool(ctx.identifier().getText(), _string(ctx.versionField().STRING()))
 
     def visitEvidenceDecl(self, ctx):
-        return Evidence(ctx.identifier(0).getText(), ctx.identifier(1).getText(), ctx.identifier(2).getText(), ctx.identifier(3).getText(),
-                        float(ctx.NUMBER().getText()),
-                        self.visit(ctx.jsonValue()) if ctx.jsonValue() else {},
-                        tuple(self.visit(p) for p in ctx.predicate()))
+        f = self.fields(ctx, ctx.evidenceField(), "evidence",
+                        ("tool", "kind", "environment", "max_age"))
+        return Evidence(ctx.identifier().getText(), f["tool"], f["kind"], f["environment"],
+                        f["max_age"], f.get("input", {}), f["predicates"])
 
     def visitAssumptionDecl(self, ctx):
-        strings = ctx.STRING()
-        # Keyword positions distinguish an omitted valid_from from valid_until.
-        dates = {}
-        for i, child in enumerate(ctx.children[:-1]):
-            if child.getText() in ("valid_from", "valid_until"):
-                dates[child.getText()] = _string(ctx.children[i + 1])
-        return Assumption(ctx.identifier(0).getText(), _string(strings[0]),
-                          ctx.identifier(1).getText(), ctx.identifier(2).getText(),
-                          dates.get("valid_from"), dates.get("valid_until"))
+        f = self.fields(ctx, ctx.assumptionField(), "assumption",
+                        ("statement", "environment", "validate"))
+        return Assumption(ctx.identifier().getText(), f["statement"], f["environment"],
+                          f["validate"], f.get("valid_from"), f.get("valid_until"))
 
     def visitReasoningDecl(self, ctx):
-        return Reasoning(ctx.identifier().getText(),
-                         _string(ctx.STRING(0)),
-                         _string(ctx.STRING(1)), _ids(ctx.idList()),
-                         tuple(self.visit(p) for p in ctx.predicate()))
+        f = self.fields(ctx, ctx.reasoningField(), "reasoning", ("method", "rationale"))
+        return Reasoning(ctx.identifier().getText(), f["method"], f["rationale"],
+                         f.get("backing", ()), f["predicates"])
 
     def visitClaimDecl(self, ctx):
-        return Claim(ctx.identifier(0).getText(), _string(ctx.STRING()), ctx.identifier(1).getText(),
-                     self.visit(ctx.propositionDecl()) if ctx.propositionDecl() else None)
+        f = self.fields(ctx, ctx.claimField(), "claim", ("statement", "environment"))
+        return Claim(ctx.identifier().getText(), f["statement"], f["environment"], f.get("proposition"))
 
     def visitPropositionDecl(self, ctx):
-        values = [_string(node) for node in ctx.STRING()]
-        return Proposition(*values[:6], Predicate(values[6], ctx.comparator().getText(),
-                                                 self.visit(ctx.jsonScalar())), self.visit(ctx.jsonValue()))
+        keys = ("subject", "quantity", "unit", "scope", "valid_from", "valid_until", "result", "query")
+        f = self.fields(ctx, ctx.propositionField(), "proposition", keys)
+        return Proposition(*(f[key] for key in keys))
 
     def visitArgumentDecl(self, ctx):
-        return Argument(ctx.identifier().getText(), *_argument_fields(ctx.argumentBody()))
+        return Argument(ctx.identifier().getText(), *self.argument_fields(ctx.argumentFlow()))
 
     def visitPatternDecl(self, ctx):
         return Pattern(ctx.identifier().getText(),
                        tuple(self.visit(parameter) for parameter in ctx.patternParameter()),
-                       *_argument_fields(ctx.argumentBody()))
+                       *self.argument_fields(ctx.argumentFlow()))
 
     def visitPatternParameter(self, ctx):
         return PatternParameter(ctx.identifier().getText(), ctx.parameterKind().getText())
@@ -133,11 +213,15 @@ class _ASTBuilder(EALVisitor):
         return PatternBinding(ctx.identifier(0).getText(), ctx.identifier(1).getText())
 
     def visitObjectionDecl(self, ctx):
+        groups = self.groups(ctx.objectionSupport(), "objectionGroup")
         return Objection(ctx.identifier(0).getText(), ctx.targetKind().getText(),
-                         ctx.identifier(1).getText(), _ids(ctx.evidenceRefs), _ids(ctx.premiseRefs))
+                         ctx.identifier(1).getText(), groups.get("evidence", ()), groups.get("premises", ()))
 
     def visitPredicate(self, ctx):
-        return Predicate(_string(ctx.STRING()), ctx.comparator().getText(), self.visit(ctx.jsonScalar()))
+        return Predicate(self.visit(ctx.key()), ctx.comparator().getText(), self.visit(ctx.jsonScalar()))
+
+    def visitKey(self, ctx):
+        return _string(ctx.STRING()) if ctx.STRING() else ctx.getText()
 
     def visitJsonScalar(self, ctx):
         return _string(ctx.STRING()) if ctx.STRING() else json.loads(ctx.getText())
@@ -195,19 +279,22 @@ def parse(source: str) -> Program:
     locations = {}
     argumentation_directives = []
     try:
-        for declaration in tree.declaration():
-            value = builder.visit(declaration.getChild(0))
+        declarations = [item for declaration in tree.declaration()
+                        for item in builder.visit(declaration)]
+        for value, span in declarations:
             if isinstance(value, ArgumentationDirective):
                 argumentation_directives.append(value)
                 continue
             if value.name in symbols:
                 duplicates.append(value.name)
             symbols.add(value.name)
-            locations[value.name] = _span(declaration)
+            locations[value.name] = span
             groups[destinations[type(value)]][value.name] = value
+    except EALSyntaxError:
+        raise
     except (RecursionError, ValueError, OverflowError) as exc:
         raise EALSyntaxError(f"Invalid JSON data: {exc}") from exc
     program = Program(language=_string(tree.STRING()), source_digest=hashlib.sha256(encoded).hexdigest(),
                       **groups, argumentation_directives=tuple(argumentation_directives), duplicates=tuple(duplicates), locations=locations,
-                      declaration_count=len(tree.declaration()) + len(groups["patterns"]))
+                      declaration_count=len(declarations) + len(groups["patterns"]))
     return lower_patterns(program)

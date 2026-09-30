@@ -15,26 +15,72 @@ from _provenance import synthetic_provenance
 
 NOW = '2026-09-23T12:00:00Z'
 CONTEXT = {'site': 'bench'}
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool observer { version "1"; }
-evidence measurement { tool observer; kind experiment; environment lab; max_age 60; require "schema" == "EAL/typed-input/1"; }
-evidence calibration { tool observer; kind test; environment lab; max_age 60; require "holds" == true; }
-assumption calibrated { statement "The instrument calibration applies."; environment lab; validate calibration;
- valid_until "2026-09-23T12:00:30Z";
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
 }
-reasoning contrast { method "causal/1"; rationale "The randomised experiment estimates the pressure difference."; }
-reasoning compose { method "structured/1"; rationale "The measured contrast supports the calibrated conclusion."; }
-claim increase { statement "The treatment raises pressure by at least 5 kPa."; environment lab;
- proposition {
-  subject "pump-A"; quantity "pressure"; unit "kPa"; scope "trial-1";
-  valid_from "2026-09-23T10:00:00Z"; valid_until "2026-09-23T11:00:00Z";
-  query {"assignment":"randomised"}; result "estimate" >= 5;
- }
+
+tool observer {
+  version "1"
 }
-claim outcome { statement "The calibrated trial supports the increase."; environment lab; }
-argument measured { conclusion increase; reasoning contrast; evidence measurement; binding measurement; }
-argument calibrated_route { conclusion outcome; reasoning compose; assumptions calibrated; premises increase; }
+
+evidence measurement {
+  tool observer
+  kind experiment
+  environment lab
+  max_age 60
+  require "schema" == "EAL/typed-input/1"
+}
+
+evidence calibration {
+  tool observer
+  kind test
+  environment lab
+  max_age 60
+  require "holds" == true
+}
+
+assumption calibrated {
+  statement "The instrument calibration applies."
+  environment lab
+  validate calibration
+  valid_until "2026-09-23T12:00:30Z"
+}
+
+reasoning contrast {
+  method "causal/1"
+  rationale "The randomised experiment estimates the pressure difference."
+}
+
+reasoning compose {
+  method "structured/1"
+  rationale "The measured contrast supports the calibrated conclusion."
+}
+
+claim increase {
+  statement "The treatment raises pressure by at least 5 kPa."
+  environment lab
+  proposition {
+    subject "pump-A"
+    quantity "pressure"
+    unit "kPa"
+    scope "trial-1"
+    valid_from "2026-09-23T10:00:00Z"
+    valid_until "2026-09-23T11:00:00Z"
+    query {"assignment": "randomised"}
+    result "estimate" >= 5
+  }
+}
+
+claim outcome {
+  statement "The calibrated trial supports the increase."
+  environment lab
+}
+
+argument measured = [evidence measurement] via contrast => increase binding measurement
+
+argument calibrated_route = [assumptions calibrated, premises increase] via compose => outcome
 '''
 VALUE = {'schema': 'EAL/typed-input/1', 'method': 'causal/1', 'subject': 'pump-A',
          'quantity': 'pressure', 'unit': 'Pa', 'scope': 'trial-1',
@@ -60,8 +106,8 @@ def records_for(program, context=CONTEXT, *, stale=()):
 
 @pytest.mark.parametrize('addition,stale,context,now,expected,label', [
     ('', (), CONTEXT, NOW, 'supported', 'accepted'),
-    ('objection circular { target claim outcome; premises outcome; }', (), CONTEXT, NOW, 'contested', 'undecided'),
-    ('objection challenge { target assumption calibrated; evidence calibration; }', (), CONTEXT, NOW, 'contested', 'rejected'),
+    ('objection circular = [premises outcome] -x> claim outcome', (), CONTEXT, NOW, 'contested', 'undecided'),
+    ('objection challenge = [evidence calibration] -x> assumption calibrated', (), CONTEXT, NOW, 'contested', 'rejected'),
     ('', ('measurement',), CONTEXT, NOW, 'unsupported', 'rejected'),
     ('', (), CONTEXT, '2026-09-23T12:00:30Z', 'unsupported', 'rejected'),
     ('', (), {'site': 'elsewhere'}, NOW, 'out_of_scope', 'rejected'),
@@ -129,7 +175,7 @@ def test_reasoning_and_computation_explanations_identify_methods_without_reasoni
 
 
 def test_static_diagnostics_retain_lowering_spans_and_attach_declaration_spans():
-    program = parse(SOURCE.replace('premises increase;', 'premises missing;'))
+    program = parse(SOURCE.replace('premises increase', 'premises missing'))
     explicit = SourceSpan(20, 3, 20, 9)
     lowered = Diagnostic('pattern_binding_kind', 'Wrong kind', 'calibrated_route', explicit,
                          'claim', 'evidence')
@@ -145,11 +191,13 @@ def test_static_diagnostics_retain_lowering_spans_and_attach_declaration_spans()
 
 
 def test_defence_and_alternative_derivation_obey_one_fixed_point():
-    source = SOURCE + '''
-argument independent { conclusion outcome; reasoning compose; evidence calibration; }
-objection challenge { target argument calibrated_route; evidence calibration; }
-objection defence { target objection challenge; evidence calibration; }
-objection reply { target objection defence; evidence calibration; }
+    source = SOURCE + '''argument independent = [evidence calibration] via compose => outcome
+
+objection challenge = [evidence calibration] -x> argument calibrated_route
+
+objection defence = [evidence calibration] -x> objection challenge
+
+objection reply = [evidence calibration] -x> objection defence
 '''
     program = parse(source)
     result = evaluate(program, records_for(program), now=NOW, context=CONTEXT)

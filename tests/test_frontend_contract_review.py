@@ -45,8 +45,14 @@ def test_a_valid_surrogate_pair_formats_to_utf8_and_preserves_meaning():
     ("engineering/rms/1", "sample_size", "false", "number", "boolean"),
 ])
 def test_impossible_method_predicates_are_rejected_before_collection(method, path, operand, expected, actual):
-    source = f'''language "EAL/2";
-    reasoning r {{ method "{method}"; rationale "A bounded finding."; require "{path}" == {operand}; }}'''
+    source = f'''language "EAL/2"
+
+reasoning r {{
+  method "{method}"
+  rationale "A bounded finding."
+  require "{path}" == {operand}
+}}
+'''
     program = parse(source)
     diagnostic = next(d for d in validate(program, registry=example_registry())
                       if d.code == "reasoning_predicate_type")
@@ -59,16 +65,28 @@ def test_impossible_method_predicates_are_rejected_before_collection(method, pat
 
 @pytest.mark.parametrize("path", ["missing", "rms.field", "sample_size.field"])
 def test_closed_extension_contract_rejects_missing_or_nonscalar_result_paths(path):
-    source = f'''language "EAL/2";
-    reasoning r {{ method "engineering/rms/1"; rationale "RMS comparison."; require "{path}" > 0; }}'''
+    source = f'''language "EAL/2"
+
+reasoning r {{
+  method "engineering/rms/1"
+  rationale "RMS comparison."
+  require "{path}" > 0
+}}
+'''
     assert "reasoning_predicate_path" in codes(parse(source), registry=example_registry())
 
 
 def test_runtime_checked_open_output_fields_remain_usable():
     # The abductive contract admits additional JSON outputs. Its method returns
     # the string-valued best candidate, which the example explicitly tests.
-    source = '''language "EAL/2";
-    reasoning r { method "abductive/1"; rationale "Best model."; require "best" == "fault"; }'''
+    source = '''language "EAL/2"
+
+reasoning r {
+  method "abductive/1"
+  rationale "Best model."
+  require "best" == "fault"
+}
+'''
     assert not validate(parse(source))
 
 

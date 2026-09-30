@@ -43,15 +43,9 @@ Local usability precedes dialectical acceptance. A source-usable derivation has 
 An `objection` names one target and at least one source, either evidence or premise claims. Its premises can themselves have alternative supporting arguments. An objection to another objection is a defence; that defence can be challenged in turn. Its sources and scope-bearing targets share one declared environment; a reasoning target applies only to uses of that declaration in the objection's environment. An objection to a `claim` attacks *every* argument deriving it; an objection to an `argument` attacks that application only. An objection to `reasoning` or `assumption` attacks their directly dependent applications within the objection's environment. Attacks on premise claims propagate through the dependencies of arguments that require them.
 
 ```eal
-objection sampling_problem {
-  target argument lifetime_estimate;
-  premises samples_are_dependent;
-}
-objection independence_defence {
-  target objection sampling_problem;
-  evidence measured_independence;
-  premises independence_measurement_applies;
-}
+objection sampling_problem = [premises samples_are_dependent] -x> argument lifetime_estimate
+
+objection independence_defence = [evidence measured_independence, premises independence_measurement_applies] -x> objection sampling_problem
 ```
 
 The solver constructs one node for each argument application and objection, plus a claim node for each declared claim. Let $U(n)$ mean local source and computation usability for node $n$, $P(n)$ its required premise claims, $A(n)$ its attacking nodes and $D(c)$ the argument nodes deriving claim $c$. Starting with every label undecided, it repeatedly applies the following implications until no label changes:

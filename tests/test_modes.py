@@ -303,16 +303,28 @@ def test_negative_computed_results_can_support_explicit_negative_claims(mode, ki
 
     context = {"site": "bench"}
     now = "2026-09-23T12:00:00Z"
-    source = f'''language "EAL/2";
-    environment lab {{ require "site" == "bench"; }}
-    tool calculation {{ version "1"; }}
-    evidence observed {{ tool calculation; kind {kind}; environment lab; max_age 60;
-      require {input_predicate}; }}
-    reasoning check_result {{ method "{mode}/1"; rationale "The computed negative result establishes the stated failure.";
-      require "{output_field}" == false; }}
-    claim failure {{ statement "The supplied case fails the stated property."; environment lab; }}
-    argument failure_argument {{ conclusion failure; reasoning check_result; evidence observed; }}
-    '''
+    source = f'''language "EAL/2"
+
+    environment lab {{ require "site" == "bench"
+ }}
+    tool calculation {{ version "1"
+ }}
+    evidence observed {{ tool calculation
+ kind {kind}
+ environment lab
+ max_age 60
+
+      require {input_predicate}
+ }}
+    reasoning check_result {{ method "{mode}/1"
+ rationale "The computed negative result establishes the stated failure."
+
+      require "{output_field}" == false
+ }}
+    claim failure {{ statement "The supplied case fails the stated property."
+ environment lab
+ }}
+    argument failure_argument = [evidence observed] via check_result => failure'''
     program = parse(source)
     observation = {"evidence_id": "observed", "source_digest": program.source_digest,
                    "tool": "calculation", "tool_version": "1",

@@ -56,23 +56,44 @@ class Case:
                 'precedence and requires undetermined. ' + assumption)
 
     def source(self) -> str:
-        assumption = (f'assumption window {{ statement "The operating assumption applies."; '
-                      f'environment scope; validate report; valid_from "{self.assumption_from}"; '
-                      f'valid_until "{self.assumption_until}"; }}' if self.assumption_until else '')
-        return f'''language "EAL/2";
-environment scope {{ require "service" == "orders"; }}
-tool probe {{ version "1"; }}
-evidence report {{ tool probe; kind threshold_measurement; environment scope; max_age 300;
-  require "reading" >= 0; require "threshold" == {self.threshold};
-  require "direction" == "{self.direction}"; require "service" == "orders";
-  require "metric" == "{self.metric}"; require "unit" == "{self.unit}"; }}
+        assumption = (f'''assumption window {{
+  statement "The operating assumption applies."
+  environment scope
+  validate report
+  valid_from "{self.assumption_from}"
+  valid_until "{self.assumption_until}"
+}}''' if self.assumption_until else '')
+        return f'''language "EAL/2"
+
+environment scope {{
+  require "service" == "orders"
+}}
+tool probe {{
+  version "1"
+}}
+evidence report {{
+  tool probe
+  kind threshold_measurement
+  environment scope
+  max_age 300
+  require "reading" >= 0
+  require "threshold" == {self.threshold}
+  require "direction" == "{self.direction}"
+  require "service" == "orders"
+  require "metric" == "{self.metric}"
+  require "unit" == "{self.unit}"
+}}
 {assumption}
-reasoning threshold {{ method "experiment/threshold/2";
-  rationale "Compare the measurement with the specified inclusive threshold. Positive and negative findings are completed calculations.";
-  require "reading" >= 0; }}
-claim criterion_evaluated {{ statement "For orders, the measured {self.metric} in {self.unit} has been compared with {self.direction} {self.threshold}; meets establishes ready and fails establishes not_ready within the declared applicability conditions."; environment scope; }}
-argument result {{ conclusion criterion_evaluated; reasoning threshold; evidence report;
-  {'assumptions window;' if self.assumption_until else ''} }}
+reasoning threshold {{
+  method "experiment/threshold/2"
+  rationale "Compare the measurement with the specified inclusive threshold. Positive and negative findings are completed calculations."
+  require "reading" >= 0
+}}
+claim criterion_evaluated {{
+  statement "For orders, the measured {self.metric} in {self.unit} has been compared with {self.direction} {self.threshold}; meets establishes ready and fails establishes not_ready within the declared applicability conditions."
+  environment scope
+}}
+argument result = [evidence report{", assumptions window" if self.assumption_until else ""}] via threshold => criterion_evaluated
 '''
 
 

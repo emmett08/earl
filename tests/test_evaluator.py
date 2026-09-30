@@ -7,22 +7,64 @@ from eal.evaluator import assess_evidence_record, canonical_digest, environment_
 from eal.parser import parse
 from eal.semantics import parse_time
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool runner { version "1"; }
-evidence observed { tool runner; kind test; environment lab; max_age 60;
- input {"suite":"smoke"}; require "passed" == true;
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
 }
-evidence counterexample { tool runner; kind test; environment lab; max_age 60; require "found" == true; }
-assumption stable { statement "Configuration persists for the stated interval.";
- environment lab; validate observed; valid_from "2026-09-23T11:00:00Z"; valid_until "2026-09-23T13:00:00Z";
+
+tool runner {
+  version "1"
 }
-reasoning method { method "structured/1"; rationale "Passing the smoke test supports this bounded test claim."; }
-reasoning alternative_method { method "structured/1"; rationale "An independent relation supports the bounded test claim."; }
-claim working { statement "The smoke test passes."; environment lab; }
-claim downstream { statement "The follow-up conclusion follows under the declared relation."; environment lab; }
-argument base { conclusion working; reasoning method; evidence observed; assumptions stable; }
-argument nested { conclusion downstream; reasoning method; premises working; }
+
+evidence observed {
+  tool runner
+  kind test
+  environment lab
+  max_age 60
+  input {"suite": "smoke"}
+  require "passed" == true
+}
+
+evidence counterexample {
+  tool runner
+  kind test
+  environment lab
+  max_age 60
+  require "found" == true
+}
+
+assumption stable {
+  statement "Configuration persists for the stated interval."
+  environment lab
+  validate observed
+  valid_from "2026-09-23T11:00:00Z"
+  valid_until "2026-09-23T13:00:00Z"
+}
+
+reasoning method {
+  method "structured/1"
+  rationale "Passing the smoke test supports this bounded test claim."
+}
+
+reasoning alternative_method {
+  method "structured/1"
+  rationale "An independent relation supports the bounded test claim."
+}
+
+claim working {
+  statement "The smoke test passes."
+  environment lab
+}
+
+claim downstream {
+  statement "The follow-up conclusion follows under the declared relation."
+  environment lab
+}
+
+argument base = [evidence observed, assumptions stable] via method => working
+
+argument nested = [premises working] via method => downstream
 '''
 CONTEXT = {'site': 'bench'}
 NOW = '2026-09-23T12:00:00Z'
@@ -191,7 +233,7 @@ def test_structural_evidence_verdict_distinguishes_false_from_invalid():
 
 
 def test_active_claim_objection_propagates_through_nested_subarguments():
-    source = SOURCE + 'objection attack { target claim working; evidence counterexample; }'
+    source = SOURCE + 'objection attack = [evidence counterexample] -x> claim working'
     result = run(source, values={'observed': {'passed': True}, 'counterexample': {'found': True}})
     assert result['claims']['working']['status'] == 'contested'
     assert result['claims']['downstream']['status'] == 'contested'
@@ -199,9 +241,9 @@ def test_active_claim_objection_propagates_through_nested_subarguments():
 
 
 def test_attack_on_one_reasoning_method_preserves_an_independent_argument():
-    source = SOURCE + '''
-objection attack { target reasoning method; evidence counterexample; }
-argument alternative { conclusion working; reasoning alternative_method; evidence observed; }
+    source = SOURCE + '''objection attack = [evidence counterexample] -x> reasoning method
+
+argument alternative = [evidence observed] via alternative_method => working
 '''
     result = run(source, values={'observed': {'passed': True}, 'counterexample': {'found': True}})
     assert result['arguments']['base']['status'] == 'contested'
@@ -212,9 +254,9 @@ argument alternative { conclusion working; reasoning alternative_method; evidenc
 
 
 def test_assumption_objection_affects_only_dependent_arguments():
-    source = SOURCE + '''
-objection attack { target assumption stable; evidence counterexample; }
-argument alternative { conclusion working; reasoning alternative_method; evidence observed; }
+    source = SOURCE + '''objection attack = [evidence counterexample] -x> assumption stable
+
+argument alternative = [evidence observed] via alternative_method => working
 '''
     result = run(source, values={'observed': {'passed': True}, 'counterexample': {'found': True}})
     assert result['assumptions']['stable']['status'] == 'contested'
@@ -247,18 +289,36 @@ def test_explicit_time_and_finite_json_are_required():
 
 
 def test_inductive_computation_and_declared_threshold_control_derivation():
-    source = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool counter { version "1"; }
-evidence sample_data { tool counter; kind sample; environment lab; max_age 60;
- require "trials" >= 1;
+    source = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
 }
-reasoning estimate_rate { method "inductive/1";
- rationale "The Wilson lower confidence limit exceeds the declared target under the sampling assumptions.";
- require "lower" > 0.8;
+
+tool counter {
+  version "1"
 }
-claim reliable { statement "The stated confidence procedure has a lower limit above 0.8."; environment lab; }
-argument estimation { conclusion reliable; reasoning estimate_rate; evidence sample_data; }
+
+evidence sample_data {
+  tool counter
+  kind sample
+  environment lab
+  max_age 60
+  require "trials" >= 1
+}
+
+reasoning estimate_rate {
+  method "inductive/1"
+  rationale "The Wilson lower confidence limit exceeds the declared target under the sampling assumptions."
+  require "lower" > 0.8
+}
+
+claim reliable {
+  statement "The stated confidence procedure has a lower limit above 0.8."
+  environment lab
+}
+
+argument estimation = [evidence sample_data] via estimate_rate => reliable
 '''
     result = run(source, values={'sample_data': {'successes': 98, 'trials': 100, 'confidence': 0.95}})
     assert result['claims']['reliable']['status'] == 'supported'
@@ -274,18 +334,30 @@ argument estimation { conclusion reliable; reasoning estimate_rate; evidence sam
 
 
 def test_deductive_entailment_countermodel_and_inconsistency_do_not_collapse():
-    source = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool encoder { version "1"; }
-evidence formal_case { tool encoder; kind logical_case; environment lab; max_age 60;
- require "conclusion" == "q";
+    source = '''language "EAL/2"
+
+environment lab { require "site" == "bench"
+ }
+tool encoder { version "1"
+ }
+evidence formal_case { tool encoder
+ kind logical_case
+ environment lab
+ max_age 60
+
+ require "conclusion" == "q"
+
 }
-reasoning entails { method "deductive/1"; rationale "Finite propositional entailment within the encoded premises.";
- require "entailed" == true;
+reasoning entails { method "deductive/1"
+ rationale "Finite propositional entailment within the encoded premises."
+
+ require "entailed" == true
+
 }
-claim conclusion { statement "The encoded conclusion follows from the encoded premises."; environment lab; }
-argument formal { conclusion conclusion; reasoning entails; evidence formal_case; }
-'''.replace('claim conclusion', 'claim conclusion_claim').replace('conclusion conclusion;', 'conclusion conclusion_claim;')
+claim conclusion { statement "The encoded conclusion follows from the encoded premises."
+ environment lab
+ }
+argument formal = [evidence formal_case] via entails => conclusion'''.replace('claim conclusion', 'claim conclusion_claim').replace('=> conclusion', '=> conclusion_claim')
     case = {'premises': ['p', {'implies': ['p', 'q']}], 'conclusion': 'q'}
     result = run(source, values={'formal_case': case})
     assert result['claims']['conclusion_claim']['status'] == 'supported'

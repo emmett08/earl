@@ -6,15 +6,36 @@ import sys
 from eal.knowledge import EALKnowledgeBase, ModelContextAdapter
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool reader { version "1"; }
-evidence reading { tool reader; kind test; environment lab; max_age 3600;
-  input {"sample": 1}; require "ok" == true; }
-reasoning measured { method "structured/1";
-  rationale "This report supports the declared test result."; }
-claim works { statement "The supplied test passed at the bench."; environment lab; }
-argument result { conclusion works; reasoning measured; evidence reading; }
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool reader {
+  version "1"
+}
+
+evidence reading {
+  tool reader
+  kind test
+  environment lab
+  max_age 3600
+  input {"sample": 1}
+  require "ok" == true
+}
+
+reasoning measured {
+  method "structured/1"
+  rationale "This report supports the declared test result."
+}
+
+claim works {
+  statement "The supplied test passed at the bench."
+  environment lab
+}
+
+argument result = [evidence reading] via measured => works
 '''
 
 

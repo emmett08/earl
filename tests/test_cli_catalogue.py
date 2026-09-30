@@ -7,16 +7,35 @@ import subprocess
 import sys
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool reader { version "1"; }
-evidence observation {
-  tool reader; kind test; environment lab; max_age 60;
-  require "ok" == true;
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
 }
-reasoning authored { method "structured/1"; rationale "The observation supports this claim."; }
-claim ready { statement "The service is ready."; environment lab; }
-argument route { conclusion ready; reasoning authored; evidence observation; }
+
+tool reader {
+  version "1"
+}
+
+evidence observation {
+  tool reader
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+reasoning authored {
+  method "structured/1"
+  rationale "The observation supports this claim."
+}
+
+claim ready {
+  statement "The service is ready."
+  environment lab
+}
+
+argument route = [evidence observation] via authored => ready
 '''
 
 

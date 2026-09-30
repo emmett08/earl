@@ -49,7 +49,7 @@ The strict JSON `eal-host` accepts one schema-checked operation, calls the MCP s
 
 ## Tool registry and observation identity
 
-The EAL source declares `tool NAME { version "VERSION"; }` and an evidence declaration supplies an `input`, `kind`, environment and `max_age`. A sibling TOML registry chooses the collector:
+The EAL source declares a `tool NAME` block containing `version "VERSION"` and an evidence declaration supplies an `input`, `kind`, environment and `max_age`. A sibling TOML registry chooses the collector:
 
 ```toml
 [tools.load_test_report]

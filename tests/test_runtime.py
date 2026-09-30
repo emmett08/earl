@@ -14,16 +14,36 @@ from eal.parser import parse
 from eal.runtime import ReasoningService, ToolBinding, ToolRegistry, acquisition_request, bounded_path
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool runner { version "1.0"; }
-evidence measured {
-  tool runner; kind test; environment lab; max_age 60;
-  input {"value": 7}; require "passed" == true;
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
 }
-reasoning observation { method "structured/1"; rationale "The exact requested measurement supports the bounded claim."; }
-claim works { statement "The configured measurement passes."; environment lab; }
-argument result { conclusion works; reasoning observation; evidence measured; }
+
+tool runner {
+  version "1.0"
+}
+
+evidence measured {
+  tool runner
+  kind test
+  environment lab
+  max_age 60
+  input {"value": 7}
+  require "passed" == true
+}
+
+reasoning observation {
+  method "structured/1"
+  rationale "The exact requested measurement supports the bounded claim."
+}
+
+claim works {
+  statement "The configured measurement passes."
+  environment lab
+}
+
+argument result = [evidence measured] via observation => works
 '''
 CONTEXT = {"site": "bench"}
 

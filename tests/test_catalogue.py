@@ -10,13 +10,35 @@ from eal.extensions import example_registry
 from eal.runtime import ReasoningService
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool reader { version "1"; }
-evidence observation { tool reader; kind test; environment lab; max_age 60; require "ok" == true; }
-reasoning authored { method "structured/1"; rationale "The measurement supports this claim."; }
-claim ready { statement "The service is ready."; environment lab; }
-argument route { conclusion ready; reasoning authored; evidence observation; }
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool reader {
+  version "1"
+}
+
+evidence observation {
+  tool reader
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+reasoning authored {
+  method "structured/1"
+  rationale "The measurement supports this claim."
+}
+
+claim ready {
+  statement "The service is ready."
+  environment lab
+}
+
+argument route = [evidence observation] via authored => ready
 '''
 CONTEXT = {"site": "bench"}
 
@@ -67,7 +89,7 @@ def test_invalid_edit_does_not_replace_last_valid_revision(tmp_path):
     _, index = catalogue(tmp_path)
     original = index.register("source.eal", context=CONTEXT, claims=["ready"])
     (tmp_path / "source.eal").write_text(
-        SOURCE.replace("claim ready", "claim gone").replace("conclusion ready", "conclusion gone")
+        SOURCE.replace("claim ready", "claim gone").replace("=> ready", "=> gone")
     )
     with pytest.raises(ValueError, match="Selected claims are absent"):
         index.get("source.eal")

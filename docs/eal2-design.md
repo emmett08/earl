@@ -15,7 +15,7 @@ This explains the design of the EAL/2 source language. Syntax, the argument solv
 
 ## Purpose and extension criterion
 
-EAL/2 is the source contract and the installed Python package declares version 2.16.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts. Model summaries use `EAL/assessment-packet/2` and `EAL/model-context/2`; the observation-record schema remains `/1`.
+EAL/2 is the semantic source contract, `EAL/2-modern/1` identifies the current newline-based notation, and the installed Python package declares version 2.19.0. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts. Model summaries use `EAL/assessment-packet/2` and `EAL/model-context/2`; the observation-record schema remains `/1`.
 
 The service keeps validated EAL/2 source, claim identity, compatible tool observations and checked reasoning results available across sessions and model providers. A developer can request a registered claim without sending the source, reconstructing its dependency graph or rerunning unexpired observations. A gain in correctness, time or cost remains a **hypothesis** to measure. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data.
 
@@ -47,7 +47,7 @@ A new inference relation has its own specified semantics. Existing versioned met
 
 ## Tool identity and acquisition
 
-The tool declaration is `tool NAME { version "VERSION"; }`. A trusted TOML binding chooses the collector. The selected binding's digest is recorded in a collected observation and checked by the host before reasoning with stored collection records. Source describes the intended acquisition; the host owns execution configuration. Evidence obligations check the value and applicability of each acquired observation.
+The tool declaration is a `tool NAME` block containing `version "VERSION"`. A trusted TOML binding chooses the collector. The selected binding's digest is recorded in a collected observation and checked by the host before reasoning with stored collection records. Source describes the intended acquisition; the host owns execution configuration. Evidence obligations check the value and applicability of each acquired observation.
 
 Repeatability needs specified replay inputs, algorithm version, environment and test procedure, possibly multiple acquisitions or a sampling obligation. A test runner with fixed code can read a changing remote service, while a stochastic simulation with a recorded seed and initial state can replay one run. A binary source label would not establish either property's relevance to a conclusion. Repeated outputs do not prove independence or measurement accuracy. A configuration digest identifies configured arguments and limits, not executable bytes, dependencies, external state or physical authenticity.
 

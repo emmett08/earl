@@ -1,57 +1,85 @@
-// Synthetic companion: authored routes are compiled only by the opt-in ASPIC+ operation.
-language "EAL/2";
+// Synthetic API load-test fixture.
+language "EAL/2"
+
 environment test_run {
-  require "service" == "orders-api";
-  require "build_id" == "demo-build-42";
-  require "dataset" == "synthetic";
+  require service == "orders-api"
+  require build_id == "demo-build-42"
+  require dataset == "synthetic"
 }
-tool aspic_fixture { version "1"; }
-evidence checked_record {
-  tool aspic_fixture; kind test; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "checked" == true;
+
+tool aspic_fixture {
+  version "1"
 }
-evidence latency_record {
-  tool aspic_fixture; kind test; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "within_limit" == true;
+
+context environment test_run, tool aspic_fixture, max_age 3600.0 {
+  evidence checked_record {
+    kind test
+    input {"run_id": "demo-load-001"}
+    require checked == true
+  }
+
+  evidence latency_record {
+    kind test
+    input {"run_id": "demo-load-001"}
+    require within_limit == true
+  }
+
+  evidence gap_record {
+    kind test
+    input {"run_id": "demo-load-001"}
+    require gap_found == true
+  }
+
+  evidence probe_record {
+    kind test
+    input {"run_id": "demo-load-001"}
+    require within_limit == true
+  }
+
+  reasoning recorded {
+    method "structured/1"
+    rationale "The stipulated finding concerns only the identified synthetic run."
+  }
+
+  claim report_checked {
+    statement "The synthetic report identity was checked."
+  }
+
+  claim latency_ok {
+    statement "The synthetic primary latency sample meets its limit."
+  }
+
+  claim trace_gap {
+    statement "The synthetic diagnostic reports a primary trace gap."
+  }
+
+  claim alternate_probe_ok {
+    statement "An independent synthetic probe for this run meets its latency limit."
+  }
+
+  claim run_passes {
+    statement "The synthetic run meets the stated criterion through an accepted route."
+  }
+
+  argument report_arg = [evidence checked_record] via recorded => report_checked
+
+  argument latency_arg = [evidence latency_record] via recorded => latency_ok
+
+  argument gap_arg = [evidence gap_record] via recorded => trace_gap
+
+  argument primary_run = [premises report_checked, latency_ok] via recorded => run_passes
+
+  argument independent_probe = [premises alternate_probe_ok] via recorded => run_passes
+
+  pattern observation_route(c: claim, r: reasoning, e: evidence) = [evidence e] via r => c
+
+  apply probe_arg = observation_route(c=alternate_probe_ok, r=recorded, e=probe_record)
+
+  objection primary_trace_gap = [premises trace_gap] -x> argument primary_run
+
+  strict report_arg reviewed "synthetic-review/checked-record-implication"
+
+  rank independent_probe 700 reviewed "synthetic-review/independent-probe"
+
+  rank probe_record 700 reviewed "synthetic-review/probe-observation"
 }
-evidence gap_record {
-  tool aspic_fixture; kind test; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "gap_found" == true;
-}
-evidence probe_record {
-  tool aspic_fixture; kind test; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "within_limit" == true;
-}
-reasoning recorded {
-  method "structured/1";
-  rationale "The stipulated finding concerns only the identified synthetic run.";
-}
-claim report_checked {
-  statement "The synthetic report identity was checked."; environment test_run;
-}
-claim latency_ok {
-  statement "The synthetic primary latency sample meets its limit."; environment test_run;
-}
-claim trace_gap {
-  statement "The synthetic diagnostic reports a primary trace gap."; environment test_run;
-}
-claim alternate_probe_ok {
-  statement "An independent synthetic probe for this run meets its latency limit."; environment test_run;
-}
-claim run_passes {
-  statement "The synthetic run meets the stated criterion through an accepted route."; environment test_run;
-}
-argument report_arg { conclusion report_checked; reasoning recorded; evidence checked_record; }
-argument latency_arg { conclusion latency_ok; reasoning recorded; evidence latency_record; }
-argument gap_arg { conclusion trace_gap; reasoning recorded; evidence gap_record; }
-argument probe_arg { conclusion alternate_probe_ok; reasoning recorded; evidence probe_record; }
-argument primary_run {
-  conclusion run_passes; reasoning recorded; premises report_checked, latency_ok;
-}
-argument independent_probe {
-  conclusion run_passes; reasoning recorded; premises alternate_probe_ok;
-}
-objection primary_trace_gap { target argument primary_run; premises trace_gap; }
-strict report_arg reviewed "synthetic-review/checked-record-implication";
-rank independent_probe 700 reviewed "synthetic-review/independent-probe";
-rank probe_record 700 reviewed "synthetic-review/probe-observation";

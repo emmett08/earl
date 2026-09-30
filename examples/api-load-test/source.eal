@@ -1,57 +1,46 @@
-// Teaching data: this argument assesses the supplied synthetic report.
-language "EAL/2";
+// Synthetic API load-test fixture.
+language "EAL/2"
 
 environment test_run {
-  require "service" == "orders-api";
-  require "build_id" == "demo-build-42";
-  require "dataset" == "synthetic";
+  require service == "orders-api"
+  require build_id == "demo-build-42"
+  require dataset == "synthetic"
 }
 
-tool load_test_report { version "1"; }
-
-evidence load_test {
-  tool load_test_report; kind api_report; environment test_run; max_age 86400;
-  input {
-    "service": "orders-api",
-    "build_id": "demo-build-42",
-    "run_id": "demo-load-001",
-    "concurrent_clients": 10,
-    "dataset": "synthetic",
-    "report_sha256": "0ed808bf1858159172a3fd79dd818c842079f47fa9bb6a0c7e300e41a90b152d"
-  };
-  require "request_count" >= 0;
+tool load_test_report {
+  version "1"
 }
 
-reasoning passing_limits {
-  method "engineering/api-load-criteria/1";
-  rationale "The collector checks this report's identity and calculates nearest-rank p95 over every attempt. The installed method checks the inclusive sample size, latency and error-rate limits for these synthetic records only.";
-  require "passes" == true;
-}
+context environment test_run {
+  evidence load_test {
+    tool load_test_report
+    kind api_report
+    max_age 86400.0
+    input {"build_id": "demo-build-42", "concurrent_clients": 10, "dataset": "synthetic", "report_sha256": "0ed808bf1858159172a3fd79dd818c842079f47fa9bb6a0c7e300e41a90b152d", "run_id": "demo-load-001", "service": "orders-api"}
+    require request_count >= 0
+  }
 
-reasoning failing_limits {
-  method "engineering/api-load-criteria/1";
-  rationale "An identified, usable report with a failed sample-size, latency or error-rate result supports a measured failure of these criteria; collection failure supplies no such conclusion.";
-  require "fails" == true;
-}
+  reasoning passing_limits {
+    method "engineering/api-load-criteria/1"
+    rationale "The collector checks this report's identity and calculates nearest-rank p95 over every attempt. The installed method checks the inclusive sample size, latency and error-rate limits for these synthetic records only."
+    require passes == true
+  }
 
-claim performance_criteria_met {
-  statement "The synthetic report demo-load-001 for orders-api build demo-build-42, labelled with 10 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent.";
-  environment test_run;
-}
+  reasoning failing_limits {
+    method "engineering/api-load-criteria/1"
+    rationale "An identified, usable report with a failed sample-size, latency or error-rate result supports a measured failure of these criteria; collection failure supplies no such conclusion."
+    require fails == true
+  }
 
-claim performance_criteria_failed {
-  statement "The identified synthetic report demo-load-001 fails at least one of the sample-size, latency or error-rate criteria.";
-  environment test_run;
-}
+  claim performance_criteria_met {
+    statement "The synthetic report demo-load-001 for orders-api build demo-build-42, labelled with 10 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent."
+  }
 
-argument passing_performance {
-  conclusion performance_criteria_met;
-  reasoning passing_limits;
-  evidence load_test;
-}
+  claim performance_criteria_failed {
+    statement "The identified synthetic report demo-load-001 fails at least one of the sample-size, latency or error-rate criteria."
+  }
 
-argument failing_performance {
-  conclusion performance_criteria_failed;
-  reasoning failing_limits;
-  evidence load_test;
+  argument passing_performance = [evidence load_test] via passing_limits => performance_criteria_met
+
+  argument failing_performance = [evidence load_test] via failing_limits => performance_criteria_failed
 }

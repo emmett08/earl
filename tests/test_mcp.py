@@ -12,13 +12,35 @@ from eal.runtime import ReasoningService
 from eal.server import create_server
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool runner { version "1"; }
-evidence measured { tool runner; kind test; environment lab; max_age 60; require "passed" == true; }
-reasoning measurement { method "structured/1"; rationale "The bounded observation supplies support."; }
-claim works { statement "The requested check passes."; environment lab; }
-argument result { conclusion works; reasoning measurement; evidence measured; }
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool runner {
+  version "1"
+}
+
+evidence measured {
+  tool runner
+  kind test
+  environment lab
+  max_age 60
+  require "passed" == true
+}
+
+reasoning measurement {
+  method "structured/1"
+  rationale "The bounded observation supplies support."
+}
+
+claim works {
+  statement "The requested check passes."
+  environment lab
+}
+
+argument result = [evidence measured] via measurement => works
 '''
 
 

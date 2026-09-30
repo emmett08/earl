@@ -10,19 +10,65 @@ from _provenance import synthetic_provenance
 
 NOW = "2026-09-23T12:00:00Z"
 CONTEXT = {"site": "bench"}
-BASE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool collector { version "1"; }
-evidence positive { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
-evidence negative { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
-evidence independent { tool collector; kind test; environment lab; max_age 60; require "passed" == true; }
-reasoning authored { method "structured/1"; rationale "Apply the stated conditional support relation."; }
-claim foundation { statement "The bounded foundation claim."; environment lab; }
-claim downstream { statement "The dependent engineering claim."; environment lab; }
-claim critique { statement "The objection's stated premise."; environment lab; }
-argument first_route { conclusion foundation; reasoning authored; evidence positive; }
-argument downstream_route { conclusion downstream; reasoning authored; premises foundation; }
-argument critique_route { conclusion critique; reasoning authored; evidence negative; }
+BASE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool collector {
+  version "1"
+}
+
+evidence positive {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "passed" == true
+}
+
+evidence negative {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "passed" == true
+}
+
+evidence independent {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "passed" == true
+}
+
+reasoning authored {
+  method "structured/1"
+  rationale "Apply the stated conditional support relation."
+}
+
+claim foundation {
+  statement "The bounded foundation claim."
+  environment lab
+}
+
+claim downstream {
+  statement "The dependent engineering claim."
+  environment lab
+}
+
+claim critique {
+  statement "The objection\'s stated premise."
+  environment lab
+}
+
+argument first_route = [evidence positive] via authored => foundation
+
+argument downstream_route = [premises foundation] via authored => downstream
+
+argument critique_route = [evidence negative] via authored => critique
 '''
 
 
@@ -52,9 +98,9 @@ def claim_statuses(result):
 
 
 def test_grounded_defence_reinstates_both_local_and_dependent_arguments():
-    source = BASE + '''
-objection challenge { target argument first_route; premises critique; }
-objection defence { target objection challenge; evidence independent; }
+    source = BASE + '''objection challenge = [premises critique] -x> argument first_route
+
+objection defence = [evidence independent] -x> objection challenge
 '''
     result = assess(source)
     assert claim_statuses(result) == {"foundation": "supported", "downstream": "supported", "critique": "supported"}
@@ -64,9 +110,9 @@ objection defence { target objection challenge; evidence independent; }
 
 
 def test_claim_cannot_bootstrap_its_own_only_defence():
-    source = BASE + '''
-objection challenge { target argument first_route; premises critique; }
-objection defence { target objection challenge; premises foundation; }
+    source = BASE + '''objection challenge = [premises critique] -x> argument first_route
+
+objection defence = [premises foundation] -x> objection challenge
 '''
     result = assess(source)
     assert result["claims"]["foundation"]["status"] == "contested"
@@ -76,10 +122,11 @@ objection defence { target objection challenge; premises foundation; }
 
 
 def test_independent_route_can_ground_a_defence_that_was_previously_circular():
-    source = BASE + '''
-argument independent_route { conclusion foundation; reasoning authored; evidence independent; }
-objection challenge { target argument first_route; premises critique; }
-objection defence { target objection challenge; premises foundation; }
+    source = BASE + '''argument independent_route = [evidence independent] via authored => foundation
+
+objection challenge = [premises critique] -x> argument first_route
+
+objection defence = [premises foundation] -x> objection challenge
 '''
     result = assess(source)
     assert result["claims"]["foundation"]["status"] == "supported"
@@ -88,7 +135,8 @@ objection defence { target objection challenge; premises foundation; }
 
 
 def test_objection_without_an_accepted_premise_cannot_defeat_an_argument():
-    source = BASE + '\nobjection challenge { target argument first_route; premises critique; }\n'
+    source = BASE + '''objection challenge = [premises critique] -x> argument first_route
+'''
     result = assess(source, missing={"negative"})
     assert result["claims"]["critique"]["status"] == "unsupported"
     assert result["claims"]["foundation"]["status"] == "supported"
@@ -96,8 +144,10 @@ def test_objection_without_an_accepted_premise_cannot_defeat_an_argument():
 
 
 def test_defence_does_not_depend_on_declaration_order():
-    challenge = 'objection challenge { target argument first_route; premises critique; }\n'
-    defence = 'objection defence { target objection challenge; evidence independent; }\n'
+    challenge = '''objection challenge = [premises critique] -x> argument first_route
+'''
+    defence = '''objection defence = [evidence independent] -x> objection challenge
+'''
     first, second = assess(BASE + challenge + defence), assess(BASE + defence + challenge)
     for section in ("claims", "arguments", "objections"):
         labels = lambda result: {name: entry["grounded_label"] for name, entry in result[section].items()}
@@ -105,12 +155,26 @@ def test_defence_does_not_depend_on_declaration_order():
 
 
 def test_reasoning_objection_only_attacks_applications_in_its_source_environment():
-    source = BASE + '''
-environment peer { require "site" == "bench"; }
-evidence peer_check { tool collector; kind test; environment peer; max_age 60; require "passed" == true; }
-claim peer_claim { statement "Independent environmental application."; environment peer; }
-argument peer_route { conclusion peer_claim; reasoning authored; evidence peer_check; }
-objection challenge { target reasoning authored; evidence negative; }
+    source = BASE + '''environment peer {
+  require "site" == "bench"
+}
+
+evidence peer_check {
+  tool collector
+  kind test
+  environment peer
+  max_age 60
+  require "passed" == true
+}
+
+claim peer_claim {
+  statement "Independent environmental application."
+  environment peer
+}
+
+argument peer_route = [evidence peer_check] via authored => peer_claim
+
+objection challenge = [evidence negative] -x> reasoning authored
 '''
     result = assess(source)
     assert result["claims"]["foundation"]["status"] == "contested"
@@ -175,20 +239,45 @@ def test_custom_numeric_contract_rejects_boolean_observations():
 def test_custom_method_checks_question_identity_even_when_scalar_answer_is_unchanged():
     from eal.methods import default_registry
 
-    source = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool collector { version "1"; }
-evidence series { tool collector; kind sum_input; environment lab; max_age 60;
-  require "schema" == "EAL/typed-input/1";
+    source = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
 }
-reasoning sum_method { method "review/sum/1"; rationale "Apply the registered sum method."; }
-claim timing { statement "The declared time statistic is 5 ms."; environment lab;
-  proposition { subject "controller"; quantity "time"; unit "ms"; scope "case-1";
-    valid_from "2026-09-23T11:00:00Z"; valid_until "2026-09-23T13:00:00Z";
-    query {"origin": 0}; result "value" == 5;
+
+tool collector {
+  version "1"
+}
+
+evidence series {
+  tool collector
+  kind sum_input
+  environment lab
+  max_age 60
+  require "schema" == "EAL/typed-input/1"
+}
+
+reasoning sum_method {
+  method "review/sum/1"
+  rationale "Apply the registered sum method."
+}
+
+claim timing {
+  statement "The declared time statistic is 5 ms."
+  environment lab
+  proposition {
+    subject "controller"
+    quantity "time"
+    unit "ms"
+    scope "case-1"
+    valid_from "2026-09-23T11:00:00Z"
+    valid_until "2026-09-23T13:00:00Z"
+    query {"origin": 0}
+    result "value" == 5
   }
 }
-argument sum_route { conclusion timing; reasoning sum_method; evidence series; binding series; }
+
+argument sum_route = [evidence series] via sum_method => timing binding series
 '''
     registry = default_registry().with_method(_method_contract())
     envelope = {"schema": "EAL/typed-input/1", "method": "review/sum/1", "subject": "controller",

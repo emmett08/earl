@@ -28,10 +28,10 @@ An untyped computational conclusion requires a `require` predicate on the reason
 
 ```eal
 reasoning estimate_reliability {
-  method "inductive/1";
-  rationale "The declared Bernoulli sample estimates success probability under the stated operating conditions.";
-  backing test_sample;
-  require "lower" >= 0.95;
+  method "inductive/1"
+  rationale "The declared Bernoulli sample estimates success probability under the stated operating conditions."
+  backing [test_sample]
+  require "lower" >= 0.95
 }
 ```
 
@@ -54,7 +54,7 @@ The calculation uses the union of direct argument evidence, reasoning backing an
 
 The host-installed `argumentation/aspic/1` method adds `aspic_theory` evidence, finite strict/defeasible argument construction, undermining, rebutting and undercutting defeats, and grounded acceptance. Its [exact theory schema, preference rule, bounds and example](aspic-method.md) are separate from the core EAL objection calculus. Install it explicitly through `--methods eal.aspic:aspic_registry`.
 
-The computation helper returns `{status, reasons, details, method}`, with the selected `evidence_id` beside `details` for computational methods. `details` contains only method output, so a declared result field named `evidence_id` cannot be overwritten by execution metadata. Here `supported` means that the bounded calculation or authored-support check succeeds; the argument evaluator separately checks result requirements, scope, observation freshness, assumptions, premise status and objections. `unsupported` means insufficient input, malformed input, an exceeded computational bound, or a method-specific inability to use the computation. An inconsistent logical case and an incomplete temporal sampling contract are unusable in this profile. A consistent countermodel or an observed temporal violation is a usable result: a requirement such as `require "entailed" == false;` or `require "holds" == false;` can support a claim about that failure. A probability estimate, contrast or feature-match fraction can be validly calculated even when it fails an argument's required threshold.
+The computation helper returns `{status, reasons, details, method}`, with the selected `evidence_id` beside `details` for computational methods. `details` contains only method output, so a declared result field named `evidence_id` cannot be overwritten by execution metadata. Here `supported` means that the bounded calculation or authored-support check succeeds; the argument evaluator separately checks result requirements, scope, observation freshness, assumptions, premise status and objections. `unsupported` means insufficient input, malformed input, an exceeded computational bound, or a method-specific inability to use the computation. An inconsistent logical case and an incomplete temporal sampling contract are unusable in this profile. A consistent countermodel or an observed temporal violation is a usable result: a requirement such as `require "entailed" == false` or `require "holds" == false` can support a claim about that failure. A probability estimate, contrast or feature-match fraction can be validly calculated even when it fails an argument's required threshold.
 
 ## Evidence value schemas
 
@@ -217,7 +217,7 @@ A supplied calculation value is checked before evaluation: at most 100,000 JSON 
 
 ### Host-registered methods
 
-An operator can register a new pure calculation without adding grammar keywords. Source selects its exact versioned method identifier, for example `method "engineering/rms/1";`, but cannot import the implementation. A `MethodContract` declares one evidence kind, bounded input/query/output schemas, claim-addressable output paths, compatible quantity and unit rules, trusted implementation function, implementation version and resource limits. Built-ins use the same binding and schema checks. Duplicate identities and unknown schema features fail registration. A new method needs a mathematical interpretation, independently known reference cases, malformed-input and limit cases, and explicit modelling assumptions; a registered type contract alone cannot establish mathematical correctness.
+An operator can register a new pure calculation without adding grammar keywords. Source selects its exact versioned method identifier, for example `method "engineering/rms/1"`, but cannot import the implementation. A `MethodContract` declares one evidence kind, bounded input/query/output schemas, claim-addressable output paths, compatible quantity and unit rules, trusted implementation function, implementation version and resource limits. Built-ins use the same binding and schema checks. Duplicate identities and unknown schema features fail registration. A new method needs a mathematical interpretation, independently known reference cases, malformed-input and limit cases, and explicit modelling assumptions; a registered type contract alone cannot establish mathematical correctness.
 
 Custom functions execute in a fresh POSIX worker with time, address-space, CPU, JSON-size and output bounds. Startup has a separate five-second wall-clock deadline. After startup, the registered `timeout_seconds` bounds execution wall time; the cumulative OS CPU limit adds that allowance to CPU already consumed during startup, rounded up to whole seconds. The address-space limit applies to the whole worker. This boundary controls resources; it does not sandbox filesystem or network access or prove purity. Runtime checks a loaded entry-point code digest against the registered digest, and discovery/assessments record the method-registry fingerprint. These identify declared code and contracts, but do not hash every imported dependency or guarantee reproducibility of an external environment. Changing a method's meaning calls for a new identifier/version and preserved dependencies. The maintained [API load-test case](../examples/api-load-test/README.md) installs `engineering/api-load-criteria/1` explicitly. It accepts count, nearest-rank p95 and failed-request percentage; it returns separate threshold results and `passes`/`fails` booleans. The source qualifies the report's identity, completeness and age before this method runs. A threshold failure can support the explicit negative claim; collection failure supports neither claim.
 

@@ -226,30 +226,95 @@ def test_invalid_or_unbounded_theory_cannot_create_support(change):
 
 def source(data):
     query = json.dumps({"theory": data}, separators=(",", ":"))
-    return f'''language "EAL/2";
-environment lab {{ require "site" == "bench"; }}
-tool collector {{ version "1"; }}
-evidence formal {{ tool collector; kind aspic_theory; environment lab; max_age 60;
- require "schema" == "EAL/typed-input/1"; }}
-evidence report_record {{ tool collector; kind test; environment lab; max_age 60; require "checked" == true; }}
-evidence latency_record {{ tool collector; kind test; environment lab; max_age 60; require "within_limit" == true; }}
-evidence gap_record {{ tool collector; kind test; environment lab; max_age 60; require "gap_found" == true; }}
-reasoning recorded {{ method "structured/1"; rationale "Each claim is limited to the observed run."; }}
-reasoning argumentation {{ method "{METHOD}"; rationale "The declared theory resolves a conflict for this run."; }}
-claim report_checked {{ statement "The selected run identity was checked."; environment lab; }}
-claim latency_ok {{ statement "The selected run has p95 within the limit."; environment lab; }}
-claim trace_gap {{ statement "A trace coverage gap was observed in the selected run."; environment lab; }}
-argument report_arg {{ conclusion report_checked; reasoning recorded; evidence report_record; }}
-argument latency_arg {{ conclusion latency_ok; reasoning recorded; evidence latency_record; }}
-argument gap_arg {{ conclusion trace_gap; reasoning recorded; evidence gap_record; }}
-claim run_passes {{ statement "The selected run is accepted by the specified formal theory.";
- environment lab; proposition {{
- subject "orders-api"; quantity "proposition"; unit "1"; scope "run-001";
- valid_from "2026-09-23T10:00:00Z"; valid_until "2026-09-23T11:00:00Z";
- query {query}; result "grounded_accepted" == true;
- }} }}
-argument formal_arg {{ conclusion run_passes; reasoning argumentation; evidence formal;
- premises report_checked, latency_ok, trace_gap; binding formal; }}
+    return f'''language "EAL/2"
+
+environment lab {{
+  require "site" == "bench"
+}}
+
+tool collector {{
+  version "1"
+}}
+
+evidence formal {{
+  tool collector
+  kind aspic_theory
+  environment lab
+  max_age 60
+  require "schema" == "EAL/typed-input/1"
+}}
+
+evidence report_record {{
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "checked" == true
+}}
+
+evidence latency_record {{
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "within_limit" == true
+}}
+
+evidence gap_record {{
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "gap_found" == true
+}}
+
+reasoning recorded {{
+  method "structured/1"
+  rationale "Each claim is limited to the observed run."
+}}
+
+reasoning argumentation {{
+  method "{METHOD}"
+  rationale "The declared theory resolves a conflict for this run."
+}}
+
+claim report_checked {{
+  statement "The selected run identity was checked."
+  environment lab
+}}
+
+claim latency_ok {{
+  statement "The selected run has p95 within the limit."
+  environment lab
+}}
+
+claim trace_gap {{
+  statement "A trace coverage gap was observed in the selected run."
+  environment lab
+}}
+
+argument report_arg = [evidence report_record] via recorded => report_checked
+
+argument latency_arg = [evidence latency_record] via recorded => latency_ok
+
+argument gap_arg = [evidence gap_record] via recorded => trace_gap
+
+claim run_passes {{
+  statement "The selected run is accepted by the specified formal theory."
+  environment lab
+  proposition {{
+    subject "orders-api"
+    quantity "proposition"
+    unit "1"
+    scope "run-001"
+    valid_from "2026-09-23T10:00:00Z"
+    valid_until "2026-09-23T11:00:00Z"
+    query {query}
+    result "grounded_accepted" == true
+  }}
+}}
+
+argument formal_arg = [evidence formal, premises report_checked, latency_ok, trace_gap] via argumentation => run_passes binding formal
 '''
 
 

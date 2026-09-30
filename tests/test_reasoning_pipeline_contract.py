@@ -11,22 +11,75 @@ from eal.semantics import validate
 from _provenance import synthetic_provenance
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool collector { version "1"; }
-evidence positive { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
-evidence negative { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
-evidence defence { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
-assumption applicable { statement "Assumption applies."; environment lab; validate positive; }
-reasoning authored { method "structured/1"; rationale "Bounded source support."; }
-claim outcome { statement "The bounded outcome."; environment lab; }
-claim critique { statement "The measured critique."; environment lab; }
-claim dependent { statement "The dependent claim."; environment lab; }
-argument route { conclusion outcome; reasoning authored; evidence positive; assumptions applicable; }
-argument critique_route { conclusion critique; reasoning authored; evidence negative; }
-argument dependent_route { conclusion dependent; reasoning authored; premises outcome; }
-objection challenge { target claim outcome; premises critique; }
-objection defence_route { target objection challenge; evidence defence; }
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool collector {
+  version "1"
+}
+
+evidence positive {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "holds" == true
+}
+
+evidence negative {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "holds" == true
+}
+
+evidence defence {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "holds" == true
+}
+
+assumption applicable {
+  statement "Assumption applies."
+  environment lab
+  validate positive
+}
+
+reasoning authored {
+  method "structured/1"
+  rationale "Bounded source support."
+}
+
+claim outcome {
+  statement "The bounded outcome."
+  environment lab
+}
+
+claim critique {
+  statement "The measured critique."
+  environment lab
+}
+
+claim dependent {
+  statement "The dependent claim."
+  environment lab
+}
+
+argument route = [evidence positive, assumptions applicable] via authored => outcome
+
+argument critique_route = [evidence negative] via authored => critique
+
+argument dependent_route = [premises outcome] via authored => dependent
+
+objection challenge = [premises critique] -x> claim outcome
+
+objection defence_route = [evidence defence] -x> objection challenge
 '''
 NOW = '2026-09-23T12:00:00Z'
 CONTEXT = {'site': 'bench'}
@@ -52,13 +105,14 @@ def _digest(value):
     return hashlib.sha256(encoded).hexdigest()
 
 
-# Full-result hashes include typed evidence diagnostics and assumption applicability.
+# Full-result hashes include source digests and spans for EAL/2-modern/1,
+# typed evidence diagnostics and assumption applicability.
 @pytest.mark.parametrize('missing,stale,context,expected_digest', [
-    ((), (), CONTEXT, '9605a9232bd20cc62ddd129d0b5f9035fe7d894e56dc53c2d3607917d7a84671'),
-    (('defence',), (), CONTEXT, 'a573169db6b409058f424196460ae99a24dcfb63563cc33c3eac22c5336ffdc5'),
-    (('positive',), (), CONTEXT, '5d1d3f2d40de9bbba930b028b17ab4019ea1cb39c4aea17098e25f18d8fef06b'),
-    ((), ('negative',), CONTEXT, '959a2f09830be203f8f6bfa2026df9833aba5a8b2309f38d8d9847d6147be4d9'),
-    ((), (), {'site': 'elsewhere'}, '53782626deb44a0e94939d9ba4b23401ed2a47b0fec30a65f753039de89beeee'),
+    ((), (), CONTEXT, '1ac431d37c28fc89d93e47ea39e326fcc05dc51c7d27d3c777d695e750983094'),
+    (('defence',), (), CONTEXT, 'e4bf9a70720724bd2e8ff079de9f9ec45a08bc9a5d35e8a62255896fc1c2f8b4'),
+    (('positive',), (), CONTEXT, '3e0bde6dffd585ab573fffaa415e689d47c5dabbc79a0013ac77be95f0b9bc0a'),
+    ((), ('negative',), CONTEXT, '06c354c76d11b799bc95dbcdf84a401b12b6eddb577bfb9da8493fcbfa458279'),
+    ((), (), {'site': 'elsewhere'}, '3a36dddf31eb170fe327e4b6a7b574f0ae8c611f9df4405e9aa1deeb28944149'),
 ])
 def test_full_result_is_stable_across_pipeline_stages(missing, stale, context, expected_digest):
     program = parse(SOURCE)
@@ -80,7 +134,7 @@ def test_validation_diagnostics_order_and_spans_are_stable():
     assert [(item['code'], item['declaration']) for item in diagnostics] == [
         ('empty_statement', 'outcome'), ('unknown_reference', 'route'),
         ('unknown_reference', 'route')]
-    assert _digest(diagnostics) == '3bf32773d2a164c59eac0b6a374faf42fa3ab9f51dc2f40020a08c7c51384b7d'
+    assert _digest(diagnostics) == '05fd2ee24e2bbb8795bf7810308d3378e3c6a4ce430eb144210a3a7e0ed6c31b'
 
 
 def test_dependency_pass_keeps_cycle_and_depth_guards(monkeypatch):

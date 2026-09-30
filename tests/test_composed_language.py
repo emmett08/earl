@@ -7,18 +7,64 @@ from _provenance import synthetic_provenance
 
 NOW = '2026-09-23T12:00:00Z'
 CONTEXT = {'site': 'bench'}
-BASE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool collector { version "1"; }
-evidence positive { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
-evidence negative { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
-evidence defence_data { tool collector; kind test; environment lab; max_age 60; require "holds" == true; }
-assumption applicable { statement "Applicability holds in the measured context."; environment lab; validate positive; }
-reasoning authored { method "structured/1"; rationale "The declared conditional relation supplies support."; }
-claim outcome { statement "The bounded conclusion."; environment lab; }
-claim critique { statement "The objection's measured grounds."; environment lab; }
-argument outcome_route { conclusion outcome; reasoning authored; evidence positive; assumptions applicable; }
-argument critique_route { conclusion critique; reasoning authored; evidence negative; }
+BASE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool collector {
+  version "1"
+}
+
+evidence positive {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "holds" == true
+}
+
+evidence negative {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "holds" == true
+}
+
+evidence defence_data {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "holds" == true
+}
+
+assumption applicable {
+  statement "Applicability holds in the measured context."
+  environment lab
+  validate positive
+}
+
+reasoning authored {
+  method "structured/1"
+  rationale "The declared conditional relation supplies support."
+}
+
+claim outcome {
+  statement "The bounded conclusion."
+  environment lab
+}
+
+claim critique {
+  statement "The objection\'s measured grounds."
+  environment lab
+}
+
+argument outcome_route = [evidence positive, assumptions applicable] via authored => outcome
+
+argument critique_route = [evidence negative] via authored => critique
 '''
 
 
@@ -42,7 +88,7 @@ def assess(source, *, stale=()):
 
 
 def test_objection_depending_on_the_claim_it_attacks_has_no_grounded_start():
-    source = BASE + 'objection circular { target claim outcome; premises outcome; }'
+    source = BASE + 'objection circular = [premises outcome] -x> claim outcome'
     result = assess(source)
     assert result['claims']['outcome']['grounded_label'] == 'undecided'
     assert result['claims']['outcome']['status'] == 'contested'
@@ -51,15 +97,15 @@ def test_objection_depending_on_the_claim_it_attacks_has_no_grounded_start():
 
 
 def test_defence_of_an_assumption_then_rebuttal_of_that_defence():
-    source = BASE + '''
-objection challenged { target assumption applicable; premises critique; }
-objection defended { target objection challenged; evidence defence_data; }
+    source = BASE + '''objection challenged = [premises critique] -x> assumption applicable
+
+objection defended = [evidence defence_data] -x> objection challenged
 '''
     result = assess(source)
     assert result['assumptions']['applicable']['status'] == 'supported'
     assert result['claims']['outcome']['status'] == 'supported'
     assert result['objections']['challenged']['status'] == 'defeated'
-    source += 'objection reply { target objection defended; evidence negative; }'
+    source += 'objection reply = [evidence negative] -x> objection defended'
     result = assess(source)
     assert result['objections']['reply']['status'] == 'active'
     assert result['objections']['defended']['status'] == 'defeated'
@@ -70,7 +116,7 @@ objection defended { target objection challenged; evidence defence_data; }
 
 
 def test_objection_evidence_and_claim_premises_are_both_required():
-    source = BASE + 'objection challenge { target claim outcome; evidence defence_data; premises critique; }'
+    source = BASE + 'objection challenge = [evidence defence_data, premises critique] -x> claim outcome'
     assert assess(source)['claims']['outcome']['status'] == 'contested'
     for stale in ({'negative'}, {'defence_data'}):
         result = assess(source, stale=stale)
@@ -80,9 +126,12 @@ def test_objection_evidence_and_claim_premises_are_both_required():
 
 
 def test_support_rejection_retains_unsupported_distinction_and_final_premise_labels():
-    source = BASE + '''
-claim dependent { statement "Requires the conclusion."; environment lab; }
-argument dependent_route { conclusion dependent; reasoning authored; premises outcome; }
+    source = BASE + '''claim dependent {
+  statement "Requires the conclusion."
+  environment lab
+}
+
+argument dependent_route = [premises outcome] via authored => dependent
 '''
     result = assess(source, stale={'positive'})
     entry = result['arguments']['dependent_route']
@@ -94,9 +143,9 @@ argument dependent_route { conclusion dependent; reasoning authored; premises ou
 
 
 def test_composed_formatter_preserves_ir_and_does_not_require_declaration_order():
-    source = BASE + '''
-objection reply { target objection challenge; evidence defence_data; premises outcome; }
-objection challenge { target argument outcome_route; premises critique; }
+    source = BASE + '''objection reply = [evidence defence_data, premises outcome] -x> objection challenge
+
+objection challenge = [premises critique] -x> argument outcome_route
 '''
     formatted = format_source(source)
     assert semantic_ir(parse(formatted)) == semantic_ir(parse(source))
@@ -105,13 +154,23 @@ objection challenge { target argument outcome_route; premises critique; }
 
 
 def test_scope_validation_and_nonempty_composed_objections():
-    source = BASE + 'objection challenge { target objection challenge; premises critique; }'
+    source = BASE + 'objection challenge = [premises critique] -x> objection challenge'
     assert not validate(parse(source))
-    assert 'empty_objection' in {d.code for d in validate(parse(BASE + 'objection empty { target claim outcome; }'))}
-    source = BASE + '''
-environment peer { require "site" == "bench"; }
-evidence peer_observation { tool collector; kind test; environment peer; max_age 60; require "holds" == true; }
-objection challenge { target claim outcome; premises critique; }
-objection wrong_scope { target objection challenge; evidence peer_observation; }
+    assert 'empty_objection' in {d.code for d in validate(parse(BASE + 'objection empty = [] -x> claim outcome'))}
+    source = BASE + '''environment peer {
+  require "site" == "bench"
+}
+
+evidence peer_observation {
+  tool collector
+  kind test
+  environment peer
+  max_age 60
+  require "holds" == true
+}
+
+objection challenge = [premises critique] -x> claim outcome
+
+objection wrong_scope = [evidence peer_observation] -x> objection challenge
 '''
     assert 'environment_mismatch' in {d.code for d in validate(parse(source))}

@@ -14,26 +14,74 @@ from eal.parser import parse
 from test_evaluator import CONTEXT, NOW, record
 
 
-BASE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool collector { version "1"; }
-evidence primary_data { tool collector; kind test; environment lab; max_age 60;
- require "ok" == true; }
-evidence probe_data { tool collector; kind test; environment lab; max_age 60;
- require "ok" == true; }
-evidence gap_data { tool collector; kind test; environment lab; max_age 60;
- require "ok" == true; }
-evidence calibration_data { tool collector; kind test; environment lab; max_age 60;
- require "ok" == true; }
-reasoning authored { method "structured/1"; rationale "Bounded measured route."; }
-claim run_passes { statement "This run meets the specified result."; environment lab; }
-claim reportable { statement "This run may be reported."; environment lab; }
-argument primary_route { conclusion run_passes; reasoning authored; evidence primary_data;
- assumptions calibration; }
-argument probe_route { conclusion run_passes; reasoning authored; evidence probe_data; }
-argument reporting_route { conclusion reportable; reasoning authored; premises run_passes; }
-assumption calibration { statement "Calibration is applicable to this run.";
- environment lab; validate calibration_data; }
+BASE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool collector {
+  version "1"
+}
+
+evidence primary_data {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+evidence probe_data {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+evidence gap_data {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+evidence calibration_data {
+  tool collector
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+reasoning authored {
+  method "structured/1"
+  rationale "Bounded measured route."
+}
+
+claim run_passes {
+  statement "This run meets the specified result."
+  environment lab
+}
+
+claim reportable {
+  statement "This run may be reported."
+  environment lab
+}
+
+argument primary_route = [evidence primary_data, assumptions calibration] via authored => run_passes
+
+argument probe_route = [evidence probe_data] via authored => run_passes
+
+argument reporting_route = [premises run_passes] via authored => reportable
+
+assumption calibration {
+  statement "Calibration is applicable to this run."
+  environment lab
+  validate calibration_data
+}
 '''
 
 
@@ -48,7 +96,7 @@ def compare(source, *, missing=(), stale=()):
 
 
 def test_route_specific_undercut_and_independent_probe_match_composed_eal():
-    source = BASE + 'objection trace_gap { target argument primary_route; evidence gap_data; }'
+    source = BASE + 'objection trace_gap = [evidence gap_data] -x> argument primary_route'
     compiled, projection = compare(source)
     assert compiled.assessment["claims"]["run_passes"]["status"] == "supported"
     assert projection["claim_status"] == "supported"
@@ -64,7 +112,7 @@ def test_route_specific_undercut_and_independent_probe_match_composed_eal():
 
 
 def test_missing_or_stale_primary_observation_preserves_probe_route():
-    source = BASE + 'objection trace_gap { target argument primary_route; evidence gap_data; }'
+    source = BASE + 'objection trace_gap = [evidence gap_data] -x> argument primary_route'
     digests = set()
     for omission in ({"missing": ("primary_data",)}, {"stale": ("primary_data",)}):
         compiled, projection = compare(source, **omission)
@@ -127,7 +175,7 @@ def test_out_of_scope_result_preserves_eal_scope_decision():
 
 @pytest.mark.parametrize("target", ("argument primary_route", "claim run_passes"))
 def test_small_snapshot_matrix_agrees_on_claim_status(target):
-    source = BASE + f'objection challenge {{ target {target}; evidence gap_data; }}'
+    source = BASE + f'''objection challenge = [evidence gap_data] -x> {target}'''
     names = ("primary_data", "probe_data", "gap_data", "calibration_data")
     for present in product((False, True), repeat=len(names)):
         missing = tuple(name for name, available in zip(names, present) if not available)
@@ -143,7 +191,7 @@ def test_small_snapshot_matrix_agrees_on_claim_status(target):
     ('target assumption calibration', "supported"),
 ])
 def test_targeted_objection_kinds_preserve_affected_routes(objection, expected):
-    source = BASE + f'objection challenge {{ {objection}; evidence gap_data; }}'
+    source = BASE + f'objection challenge = [evidence gap_data] -x> {objection.removeprefix("target ")}'
     compiled, projection = compare(source)
     assert compiled.assessment["claims"]["run_passes"]["status"] == expected
     assert projection["claim_status"] == expected
@@ -153,8 +201,9 @@ def test_targeted_objection_kinds_preserve_affected_routes(objection, expected):
 
 
 def test_defence_of_objection_restores_primary_route():
-    source = BASE + '''objection challenge { target argument primary_route; evidence gap_data; }
-objection defence { target objection challenge; evidence probe_data; }
+    source = BASE + '''objection challenge = [evidence gap_data] -x> argument primary_route
+
+objection defence = [evidence probe_data] -x> objection challenge
 '''
     compiled, projection = compare(source)
     assert compiled.assessment["objections"]["challenge"]["status"] == "defeated"
@@ -163,14 +212,21 @@ objection defence { target objection challenge; evidence probe_data; }
 
 
 def test_multi_level_alternative_derivations_keep_direct_edges_and_nested_defeats():
-    source = BASE + '''
-claim deployable { statement "Synthetic run may proceed."; environment lab; }
-claim release_ready { statement "Synthetic release may be considered."; environment lab; }
-argument deploy_route { conclusion deployable; reasoning authored;
- premises reportable, run_passes; }
-argument release_route { conclusion release_ready; reasoning authored;
- premises deployable; }
-objection challenge { target argument primary_route; evidence gap_data; }
+    source = BASE + '''claim deployable {
+  statement "Synthetic run may proceed."
+  environment lab
+}
+
+claim release_ready {
+  statement "Synthetic release may be considered."
+  environment lab
+}
+
+argument deploy_route = [premises reportable, run_passes] via authored => deployable
+
+argument release_route = [premises deployable] via authored => release_ready
+
+objection challenge = [evidence gap_data] -x> argument primary_route
 '''
     programme = parse(source)
     records = {name: record(programme, name, {"ok": True}) for name in programme.evidence}
@@ -209,16 +265,25 @@ objection challenge { target argument primary_route; evidence gap_data; }
 
 
 def test_circular_objection_is_undecided_in_both_compositions():
-    source = BASE + '''objection circular { target claim run_passes; premises run_passes; }'''
+    source = BASE + 'objection circular = [premises run_passes] -x> claim run_passes'
     compiled, projection = compare(source)
     assert compiled.assessment["claims"]["run_passes"]["grounded_label"] == "undecided"
     assert projection["formal"]["grounded_status"] == "undecided"
 
 
 def test_source_map_is_stable_under_source_declaration_reordering():
-    source = BASE + 'objection challenge { target argument primary_route; evidence gap_data; }'
-    moved = source.replace('claim run_passes { statement "This run meets the specified result."; environment lab; }\n', '')
-    moved += 'claim run_passes { statement "This run meets the specified result."; environment lab; }\n'
+    source = BASE + 'objection challenge = [evidence gap_data] -x> argument primary_route'
+    moved = source.replace('''claim run_passes {
+  statement "This run meets the specified result."
+  environment lab
+}
+''', '')
+    moved += '''
+claim run_passes {
+  statement "This run meets the specified result."
+  environment lab
+}
+'''
     first = compare(source)[1]
     second = compare(moved)[1]
     assert first["theory"] == second["theory"]
@@ -289,13 +354,20 @@ def test_reconstructed_snapshot_cannot_project_goal_onto_another_claim():
 
 
 def test_compiled_strict_contraries_cannot_both_be_reported_supported():
-    source = BASE + '''
-claim run_fails { statement "The run failed."; environment lab; }
-argument failure_route { conclusion run_fails; reasoning authored; evidence gap_data; }
-strict probe_route reviewed "review/probe-implication";
-strict failure_route reviewed "review/failure-implication";
-contrary run_fails to run_passes reviewed "review/incompatible-outcomes";
-contrary run_passes to run_fails reviewed "review/incompatible-outcomes";
+    source = BASE + '''claim run_fails {
+  statement "The run failed."
+  environment lab
+}
+
+argument failure_route = [evidence gap_data] via authored => run_fails
+
+strict probe_route reviewed "review/probe-implication"
+
+strict failure_route reviewed "review/failure-implication"
+
+contrary run_fails to run_passes reviewed "review/incompatible-outcomes"
+
+contrary run_passes to run_fails reviewed "review/incompatible-outcomes"
 '''
     programme = parse(source)
     records = {name: record(programme, name, {"ok": True}) for name in programme.evidence}

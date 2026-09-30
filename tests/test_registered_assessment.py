@@ -12,15 +12,48 @@ from eal.registered_assessment import RegisteredAssessmentHost
 from eal.runtime import ReasoningService
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool reader { version "1"; }
-evidence quick { tool reader; kind test; environment lab; max_age 5; require "ok" == true; }
-evidence steady { tool reader; kind test; environment lab; max_age 1000; require "ok" == true; }
-reasoning measured { method "structured/1"; rationale "Both observations support this bounded claim."; }
-claim works { statement "Both checks passed."; environment lab; }
-claim other { statement "An unrelated claim."; environment lab; }
-argument result { conclusion works; reasoning measured; evidence quick, steady; }
+SOURCE = '''language "EAL/2"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool reader {
+  version "1"
+}
+
+evidence quick {
+  tool reader
+  kind test
+  environment lab
+  max_age 5
+  require "ok" == true
+}
+
+evidence steady {
+  tool reader
+  kind test
+  environment lab
+  max_age 1000
+  require "ok" == true
+}
+
+reasoning measured {
+  method "structured/1"
+  rationale "Both observations support this bounded claim."
+}
+
+claim works {
+  statement "Both checks passed."
+  environment lab
+}
+
+claim other {
+  statement "An unrelated claim."
+  environment lab
+}
+
+argument result = [evidence quick, steady] via measured => works
 '''
 AT_FIRST = "2040-01-01T00:00:01Z"
 AT_SECOND = "2040-01-01T00:00:07Z"
@@ -117,14 +150,14 @@ def test_assumption_interval_changes_support_without_expiring_tool_output(tmp_pa
     host, source = _host(tmp_path)
     source.write_text(SOURCE.replace(
         'reasoning measured {',
-        'assumption stable { statement "The bench is stable."; environment lab; '
-        'validate steady; valid_from "2040-01-01T00:00:00Z"; '
-        'valid_until "2040-01-01T00:00:10Z"; }\n'
-        'reasoning measured {',
-    ).replace(
-        'reasoning measured; evidence quick, steady;',
-        'reasoning measured; evidence quick; assumptions stable;',
-    ))
+        'assumption stable {\n'
+        '  statement "The bench is stable."\n'
+        '  environment lab\n'
+        '  validate steady\n'
+        '  valid_from "2040-01-01T00:00:00Z"\n'
+        '  valid_until "2040-01-01T00:00:10Z"\n'
+        '}\nreasoning measured {',
+    ).replace('[evidence quick, steady]', '[evidence quick, assumptions stable]'))
     first = host.assess("demo", "works", now=AT_FIRST)
     assert first["status"] == "supported"
     second = host.assess("demo", "works", now=AT_SECOND)

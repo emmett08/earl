@@ -15,7 +15,7 @@ from test_aspic_compiler import BASE, compare
 
 
 def compiled_view(*, missing=()):
-    source = BASE + 'objection challenge { target argument primary_route; evidence gap_data; }'
+    source = BASE + 'objection challenge = [evidence gap_data] -x> argument primary_route'
     return compare(source, missing=missing)[1]
 
 
