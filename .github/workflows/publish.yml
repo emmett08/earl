@@ -7,7 +7,7 @@ on:
         description: 'Existing release tag; dispatch this workflow on the same tag'
         type: string
         required: true
-        default: v3.2.1
+        default: v3.2.2
       destination:
         description: 'Verify artefacts, or publish the verified artefacts to the selected index'
         type: choice

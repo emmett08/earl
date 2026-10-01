@@ -3,12 +3,15 @@ from copy import deepcopy
 from dataclasses import replace
 import math
 import time
+from types import FunctionType
 
 import pytest
 
-from eal.extensions import RMS_CONTRACT, example_registry
+from eal.extensions import RMS_CONTRACT, example_registry, root_mean_square
 from eal.evaluator import evaluate
-from eal.methods import MethodRegistry, default_registry, schema_errors
+from eal.methods import (
+    MethodRegistry, check_implementation_identity, default_registry, schema_errors,
+)
 from eal.modes import assess_mode, validate_mode
 from eal.parser import parse
 from eal.propositions import describe_bindings
@@ -181,3 +184,50 @@ def test_registry_snapshots_entrypoint_identity_without_reopening_source(monkeyp
     assert registry.fingerprint == fingerprint
     assert registry.get('engineering/rms/1').describe()['implementation_source_digest'] != 'changed-file-content'
     assert len(registry.get('engineering/rms/1').describe()['implementation_code_digest']) == 64
+
+
+def _method_with_code_constant(value):
+    # CPython 3.14 folds constant slices into co_consts. Inject the same
+    # representation to exercise registry identity on every supported Python.
+    code = root_mean_square.__code__
+    implementation = FunctionType(
+        code.replace(co_consts=(*code.co_consts, value)),
+        root_mean_square.__globals__, root_mean_square.__name__,
+    )
+    return replace(RMS_CONTRACT, implementation=implementation)
+
+
+@pytest.mark.parametrize('value', [
+    slice(None, None, None), slice(-4, 9, 2),
+    (slice(None, 4, -1),), slice((1, 2), None, 3),
+])
+def test_slice_code_constants_register_with_deterministic_identity(value):
+    first = MethodRegistry([_method_with_code_constant(value)])
+    second = MethodRegistry([_method_with_code_constant(deepcopy(value))])
+    assert first.fingerprint == second.fingerprint
+    contract = first.get('engineering/rms/1')
+    check_implementation_identity(contract)
+    assert contract.implementation({'origin': 0, 'samples': [3, 4]})['sample_size'] == 2
+    check_implementation_identity(contract)
+
+
+@pytest.mark.parametrize('changed', [
+    slice(1, 5, 2), slice(None, 6, 2), slice(None, 5, 3),
+])
+def test_each_slice_component_changes_registered_code_identity(changed):
+    first = MethodRegistry([_method_with_code_constant(slice(None, 5, 2))])
+    second = MethodRegistry([_method_with_code_constant(changed)])
+    assert first.fingerprint != second.fingerprint
+    contract = first.get('engineering/rms/1')
+    contract.implementation.__code__ = second.get(contract.identifier).implementation.__code__
+    with pytest.raises(ValueError, match='registered code identity'):
+        check_implementation_identity(contract)
+
+
+@pytest.mark.parametrize('value', [
+    slice(object(), None, None), slice(None, object(), None),
+    slice(None, None, object()),
+])
+def test_slice_code_constants_reject_unsupported_components(value):
+    with pytest.raises(ValueError, match='Unsupported method code constant object'):
+        MethodRegistry([_method_with_code_constant(value)])

@@ -15,7 +15,7 @@ This explains the design of the EAL/3 source language. Syntax, the argument solv
 
 ## Purpose and extension criterion
 
-EAL/3 is the semantic source contract, `EAL/3` identifies the current newline-based notation, and the installed Python package declares version 3.2.1. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts. Model summaries use `EAL/assessment-packet/2` and `EAL/model-context/2`; the observation-record schema remains `/1`.
+EAL/3 is the semantic source contract, `EAL/3` identifies the current newline-based notation, and the installed Python package declares version 3.2.2. Formal reasoning-method inputs use `EAL/typed-input/1`. Source version, package version, acquisition fields, typed-method input envelope and method identifiers name different contracts. Model summaries use `EAL/assessment-packet/2` and `EAL/model-context/2`; the observation-record schema remains `/1`.
 
 The service keeps validated EAL/3 source, claim identity, compatible tool observations and checked reasoning results available across sessions and model providers. A developer can request a registered claim without sending the source, reconstructing its dependency graph or rerunning unexpired observations. A gain in correctness, time or cost remains a **hypothesis** to measure. The maintained [API load-test example](../examples/api-load-test/README.md) establishes an execution path using synthetic data.
 
