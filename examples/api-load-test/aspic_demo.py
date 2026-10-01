@@ -38,9 +38,9 @@ async def mcp(database):
 
             async def call(tool, arguments):
                 response = await session.call_tool(tool, arguments)
-                if response.isError:
+                if response.is_error:
                     raise RuntimeError(f"{tool} failed: {response.content}")
-                return response.structuredContent
+                return response.structured_content
 
             valid = await call("eal_validate", {"source": SOURCE})
             assert valid["valid"], valid

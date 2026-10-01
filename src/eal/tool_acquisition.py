@@ -15,13 +15,14 @@ import json
 import os
 import re
 import selectors
-import signal
 import stat
 import subprocess
 import time
 import tomllib
 from pathlib import Path
 from typing import Any, Mapping
+
+from .command_process import supervised_command
 
 MAX_JSON_DEPTH = 128
 MAX_REQUEST_BYTES = 1024 * 1024
@@ -241,12 +242,10 @@ class ToolRegistry:
         return adapter(binding, request, workspace, secret)
 
 
-def _kill_process(process: subprocess.Popen) -> None:
+def _request_stop(process: subprocess.Popen) -> None:
     try:
-        if os.name == "posix":
-            os.killpg(process.pid, signal.SIGKILL)
-        else:
-            process.kill()
+        # The supervisor stops the collector group before releasing its lease.
+        process.terminate()
     except ProcessLookupError:
         pass
 
@@ -263,65 +262,68 @@ def _execute(binding: ToolBinding, request: dict, workspace: Path, secret: bytes
         secret, effective_env=effective_env)}
     if os.name != "posix":
         raise RuntimeError("The bounded command adapter currently requires a POSIX host")
-    process = subprocess.Popen(
-        binding.argv, cwd=workspace, env=effective_env, stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=False, start_new_session=True,
-    )
-    stdout, stderr = bytearray(), bytearray()
-    deadline = time.monotonic() + binding.timeout_seconds
-    failure = None
-    # Nonblocking stdin matters: an adapter may never consume a large request.
-    try:
-        with selectors.DefaultSelector() as selector:
-            for stream, label in ((process.stdout, "stdout"), (process.stderr, "stderr"), (process.stdin, "stdin")):
-                os.set_blocking(stream.fileno(), False)
-                selector.register(stream, selectors.EVENT_WRITE if label == "stdin" else selectors.EVENT_READ, label)
-            remaining_input = memoryview(encoded_request)
-            while selector.get_map():
-                if time.monotonic() >= deadline:
-                    failure = "timeout"
-                    break
-                events = selector.select(min(0.1, max(0, deadline - time.monotonic())))
-                for key, _ in events:
-                    if key.data == "stdin":
-                        try:
-                            written = os.write(key.fd, remaining_input[:65536])
-                            remaining_input = remaining_input[written:]
-                        except BrokenPipeError:
-                            remaining_input = remaining_input[:0]
-                        if not remaining_input:
+    with supervised_command(binding.argv, workspace=workspace, environ=effective_env,
+                            timeout=binding.timeout_seconds) as command:
+        process = command.process
+        stdout, stderr = bytearray(), bytearray()
+        deadline = time.monotonic() + binding.timeout_seconds
+        failure = None
+        # Nonblocking stdin matters: an adapter may never consume a large request.
+        try:
+            with selectors.DefaultSelector() as selector:
+                for stream, label in ((process.stdout, "stdout"), (process.stderr, "stderr"), (process.stdin, "stdin")):
+                    os.set_blocking(stream.fileno(), False)
+                    selector.register(stream, selectors.EVENT_WRITE if label == "stdin" else selectors.EVENT_READ, label)
+                remaining_input = memoryview(encoded_request)
+                while selector.get_map():
+                    if time.monotonic() >= deadline:
+                        failure = "timeout"
+                        break
+                    events = selector.select(min(0.1, max(0, deadline - time.monotonic())))
+                    for key, _ in events:
+                        if key.data == "stdin":
+                            try:
+                                written = os.write(key.fd, remaining_input[:65536])
+                                remaining_input = remaining_input[written:]
+                            except BrokenPipeError:
+                                remaining_input = remaining_input[:0]
+                            if not remaining_input:
+                                selector.unregister(key.fileobj)
+                                key.fileobj.close()
+                            continue
+                        chunk = os.read(key.fd, 65536)
+                        if not chunk:
                             selector.unregister(key.fileobj)
                             key.fileobj.close()
-                        continue
-                    chunk = os.read(key.fd, 65536)
-                    if not chunk:
-                        selector.unregister(key.fileobj)
-                        key.fileobj.close()
-                        continue
-                    target = stdout if key.data == "stdout" else stderr
-                    remaining = binding.max_output_bytes - len(stdout) - len(stderr)
-                    target.extend(chunk[:max(0, remaining)])
-                    if len(chunk) > remaining:
-                        failure = "output_limit"
+                            continue
+                        target = stdout if key.data == "stdout" else stderr
+                        remaining = binding.max_output_bytes - len(stdout) - len(stderr)
+                        target.extend(chunk[:max(0, remaining)])
+                        if len(chunk) > remaining:
+                            failure = "output_limit"
+                            break
+                    if failure:
                         break
-                if failure:
-                    break
-        if failure:
-            _kill_process(process)
-        try:
-            returncode = process.wait(timeout=max(0.01, deadline - time.monotonic()))
-        except subprocess.TimeoutExpired:
+            if failure:
+                _request_stop(process)
+            try:
+                returncode = process.wait(timeout=max(0.01, deadline - time.monotonic()))
+            except subprocess.TimeoutExpired:
+                failure = failure or "timeout"
+                _request_stop(process)
+                returncode = process.wait(timeout=5)
+        except BaseException:
+            _request_stop(process)
+            process.wait(timeout=5)
+            raise
+        finally:
+            for stream in (process.stdin, process.stdout, process.stderr):
+                if stream and not stream.closed:
+                    stream.close()
+        status = command.collector_status()
+        returncode = status.returncode
+        if status.timed_out and failure is None:
             failure = "timeout"
-            _kill_process(process)
-            returncode = process.wait(timeout=5)
-    except BaseException:
-        _kill_process(process)
-        process.wait(timeout=5)
-        raise
-    finally:
-        for stream in (process.stdin, process.stdout, process.stderr):
-            if stream and not stream.closed:
-                stream.close()
     metadata.update({"returncode": returncode, "output_truncated": failure == "output_limit"})
     if failure:
         metadata["execution_error"] = failure

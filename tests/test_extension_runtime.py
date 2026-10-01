@@ -39,8 +39,8 @@ def test_registered_extension_real_mcp_collection_format_reason_and_explain(tmp_
                 await session.initialize()
                 async def call(name, args):
                     response = await session.call_tool(name, args)
-                    assert not response.isError, response.content
-                    return response.structuredContent
+                    assert not response.is_error, response.content
+                    return response.structured_content
                 described = await call('eal_describe', {})
                 assert 'engineering/rms/1' in described['typed_bindings']['methods']
                 fingerprint = described['method_registry_fingerprint']

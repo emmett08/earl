@@ -103,22 +103,22 @@ def test_mcp_exposes_opt_in_compilation_and_rejects_other_collection_source_or_c
                 assert "eal_compile_aspic" in names
                 collected = await session.call_tool("eal_collect", {
                     "source": SOURCE, "context": CONTEXT})
-                assert not collected.isError
-                collection_id = collected.structuredContent["collection_id"]
+                assert not collected.is_error
+                collection_id = collected.structured_content["collection_id"]
                 common = {"source": SOURCE, "context": CONTEXT,
                           "collection_id": collection_id, "now": NOW}
                 reasoned = await session.call_tool("eal_reason", common)
-                assert not reasoned.isError
+                assert not reasoned.is_error
                 compiled = await session.call_tool("eal_compile_aspic", {
                     **common, "goal": "run_passes"})
-                assert not compiled.isError, compiled
-                assert_compiled_result(compiled.structuredContent, reasoned.structuredContent)
+                assert not compiled.is_error, compiled
+                assert_compiled_result(compiled.structured_content, reasoned.structured_content)
                 wrong_source = await session.call_tool("eal_compile_aspic", {
                     **common, "source": SOURCE + "\n", "goal": "run_passes"})
-                assert wrong_source.isError
+                assert wrong_source.is_error
                 wrong_context = await session.call_tool("eal_compile_aspic", {
                     **common, "context": {**CONTEXT, "dataset": "measured"},
                     "goal": "run_passes"})
-                assert wrong_context.isError
+                assert wrong_context.is_error
 
     asyncio.run(exercise())

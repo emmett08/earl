@@ -73,9 +73,19 @@ Generated parser code and its runtime must use compatible, explicitly selected v
 
 ## MCP integration
 
-**Model Context Protocol maintainers, architecture and protocol specification.** [Architecture](https://modelcontextprotocol.io/docs/learn/architecture), [dated tools specification](https://modelcontextprotocol.io/specification/2025-11-25/server/tools).
+**Model Context Protocol maintainers, architecture and protocol specification.** [Architecture](https://modelcontextprotocol.io/docs/learn/architecture), [dated tools specification](https://modelcontextprotocol.io/specification/2025-11-25/server/tools), [dated transport specification](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports).
 
-MCP connects application hosts and clients to server capabilities. A text-only model can produce a structured request for a host adapter to validate and dispatch. Protocol integration alone does not give that model native tool invocation. This implementation uses the official Python SDK 1.30.0 and selects the 2025-11-25 protocol profile; it does not claim support for the later 2026 protocol. The runtime tests exercise negotiation and tool invocation for the selected profile.
+MCP connects application hosts and clients to server capabilities. A text-only model can produce a structured request for a host adapter to validate and dispatch. Protocol integration supplies that interaction boundary; native model tool invocation remains a capability of the model's application.
+
+The Streamable HTTP transport specification requires validating supplied Origin headers to prevent DNS rebinding. EAL's HTTP launcher enables FastMCP's strict Host/Origin guard and adds validated operator trust lists. Its authentication requirement also applies when public trust entries forward to a loopback listener.
+
+**PrefectHQ, FastMCP 4 documentation and source.** [Server transports](https://gofastmcp.com/deployment/running-server), [HTTP deployment and Host/Origin protection](https://gofastmcp.com/deployment/http#host-and-origin-protection), [bearer client authentication](https://gofastmcp.com/clients/auth/bearer), [middleware](https://gofastmcp.com/servers/middleware), [SDK v1 porting guide](https://gofastmcp.com/getting-started/upgrading/from-mcp-sdk-v1), [release source](https://github.com/PrefectHQ/fastmcp/tree/v4.0.10).
+
+FastMCP supplies typed operation registration, stdio and Streamable HTTP runners, middleware and authentication hooks. EAL selects FastMCP `4.0.10` for one adapter over both transports and constructs explicit `BearerAuth` clients. Its strict validation, exposure allowlist, immutable settings, response sanitisation and acquisition supervision are EAL implementation choices; see [MCP architecture](mcp-architecture.md).
+
+**Model Context Protocol maintainers, Python SDK 2.** [SDK source](https://github.com/modelcontextprotocol/python-sdk/tree/v2.2.0), [v2 protocol and API changes](https://github.com/modelcontextprotocol/python-sdk/blob/v2.2.0/docs/whats-new.md).
+
+EAL pins SDK `2.2.0`, which underlies FastMCP 4. SDK 2 supports the `2026-07-28` discovery profile and earlier handshake profiles. EAL's protocol tests exercise `2025-11-25` and `2026-07-28` tool discovery and invocation; application contract tests compare stdio and HTTP operation behaviour. Support for a protocol profile establishes the transport boundary, while observations and claim results retain their EAL identities and scope.
 
 ## Project-specific decisions
 
@@ -97,7 +107,7 @@ Evidence freshness, environment identity, assumption intervals, binding digests,
 
 ## Model host interface
 
-The [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) implements the local stdio protocol path used by EAL. The Python `ModelContextAdapter` produces bounded messages for an application-selected model without requiring native tool calling. Model capabilities, costs and availability belong to that application's selected deployment; they are not properties of EAL/3 source or argument semantics.
+The [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) underlies the FastMCP stdio and HTTP protocol paths used by EAL. The strict JSON host can launch a local stdio subprocess or connect to an existing HTTP endpoint. The Python `ModelContextAdapter` produces bounded messages for an application-selected model without requiring native tool calling. Model capabilities, costs and availability belong to that application's selected deployment; they are not properties of EAL/3 source or argument semantics.
 
 ### Model reasoning and tool use: applicability review, 28 September 2026
 

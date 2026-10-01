@@ -1,0 +1,23 @@
+# Paths resolve relative to this file, regardless of the launcher's directory.
+[service]
+workspace = "../.."
+registry = "tools.toml"
+database = "../../.eal/runs.sqlite3"
+methods = "eal.api_load_methods:registry"
+
+[server]
+transport = "stdio"
+exposure = "operator"
+max_in_flight = 1
+
+[server.http]
+host = "127.0.0.1"
+port = 8000
+path = "/mcp"
+# Set the named variable and uncomment this line to authenticate local HTTP.
+# A non-loopback bind or additional non-loopback trust entry requires authentication.
+# token_env = "EAL_MCP_TOKEN"
+# HTTP always validates Host and Origin; loopback needs no additions.
+# For a public proxy/browser client, set token_env and add literal trust entries:
+# allowed_hosts = ["mcp.example.com"]
+# allowed_origins = ["https://app.example.com"]

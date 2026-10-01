@@ -1,6 +1,6 @@
 # Fresh-session EAL workflow experiment
 
-EAL/3 source, package **3.1.0**, protocol **7.0.0**, scientific schema **1.2**, status **specified**. The
+EAL/3 source, package **3.2.0**, protocol **7.0.0**, scientific schema **1.2**, status **specified**. The
 [methodology](../../docs/eal3-experiment-methodology.md) defines the practical
 decision, statistical assumptions, task populations and inference limits.
 Implementation checks and synthetic validation do not establish a live benefit.
@@ -204,4 +204,4 @@ protocols, results and verification remain historical records available for
 offline analysis. The grammar change has no measured model or authoring benefit
 in those records. See [EAL/3 verification](verification-eal3.md).
 
-Current EAL/3 package 3.1.0 composition, public contracts and experiment checks are recorded in [composition verification](verification-eal31.md). Previous verification files remain historical records.
+The [retained composition verification](verification-eal31.md) records package 3.1.0 checks. Current MCP hosting and transport checks are described in [MCP composition and execution](../../docs/mcp-architecture.md). Retained experimental records keep their original implementation identities.
