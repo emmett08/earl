@@ -2,7 +2,7 @@
 
 `argumentation/aspic/2` is a bounded, host-installed ASPIC+ instantiation. It constructs arguments from an explicit finite theory, derives undermining, rebutting and undercutting defeats, and computes grounded, preferred or stable extensions with a separate credulous or sceptical conclusion query. The separate, opt-in `EAL/3-compiled-aspic/5` operation translates authored EAL routes at a checked observation snapshot. EAL/3 admits reviewed `strict`, `rank`, `contrary` and `prefer` relations with targets resolved through its own declaration namespace. The default authored evaluator validates these directives without applying their inference effects. The [ASPIC+ tutorial](sources.md#argument-and-reasoning-models) supplies the framework's argument, attack and defeat definitions; the restrictions and ranking below are this implementation's choices.
 
-The Python package is 3.2.2. The compiled profile is `/5`, while the installed ASPIC method is `argumentation/aspic/2` with implementation `eal-aspic-finite-5`. Stored observations retain acquisition identities and original measurement times; returned records contain output digests and byte counts without raw process streams.
+The Python package is 3.2.3. The compiled profile is `/5`, while the installed ASPIC method is `argumentation/aspic/2` with implementation `eal-aspic-finite-5`. Stored observations retain acquisition identities and original measurement times; returned records contain output digests and byte counts without raw process streams.
 
 ## Run the synthetic engineering case
 
