@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterator
+from contextlib import contextmanager
 import json
 import os
 import secrets
@@ -125,15 +127,17 @@ class RunStore:
                 raise ValueError("Unsupported observation index version")
         _check_private_sqlite_files(self.path)
 
-    def _connect(self) -> sqlite3.Connection:
+    @contextmanager
+    def _connect(self) -> Iterator[sqlite3.Connection]:
+        """Commit or roll back one operation and close its owned connection."""
         _check_private_sqlite_files(self.path)
         connection = sqlite3.connect(self.path, timeout=30)
         try:
             _check_private_sqlite_files(self.path)
-        except BaseException:
+            with connection:
+                yield connection
+        finally:
             connection.close()
-            raise
-        return connection
 
     def put(self, kind: str, payload: dict[str, Any], *, record_id: str | None = None) -> str:
         record_id = record_id or str(uuid4())

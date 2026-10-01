@@ -44,7 +44,7 @@ argument result = [evidence measured] via measurement => works
 '''
 
 
-def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
+def test_legacy_protocol_stdio_lifecycle_collection_reason_explain(tmp_path):
     script = tmp_path / "tool.py"
     script.write_text("import json,sys\nrequest=json.load(sys.stdin)\nprint(json.dumps({'value':{'passed':True}}))\n")
     registry = tmp_path / "tools.toml"
@@ -60,38 +60,40 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
         async with stdio_client(parameters) as (read, write):
             async with ClientSession(read, write) as session:
                 hello = await session.initialize()
-                assert hello.protocolVersion == "2025-11-25"
+                # The low-level SDK ClientSession deliberately exercises the
+                # supported initialize era alongside FastMCP's modern clients.
+                assert hello.protocol_version == "2025-11-25"
                 names = {entry.name for entry in (await session.list_tools()).tools}
                 assert {"eal_describe", "eal_format", "eal_validate", "eal_plan", "eal_collect",
                         "eal_collect_claim", "eal_reason", "eal_explain", "eal_packet", "eal_grounded"} <= names
                 assert not {"eal_sources", "eal_find_claims", "eal_assess_known"} & names
                 described = await session.call_tool("eal_describe", {})
-                assert not described.isError
-                assert "EAL/3" in described.structuredContent["languages"]
+                assert not described.is_error
+                assert "EAL/3" in described.structured_content["languages"]
                 formatted = await session.call_tool("eal_format", {"source": SOURCE})
-                assert not formatted.isError
-                assert "source_digest" in formatted.structuredContent
+                assert not formatted.is_error
+                assert "source_digest" in formatted.structured_content
                 valid = await session.call_tool("eal_validate", {"source": SOURCE})
-                assert not valid.isError
-                assert valid.structuredContent["valid"]
+                assert not valid.is_error
+                assert valid.structured_content["valid"]
                 planned = await session.call_tool("eal_plan", {"source": SOURCE, "claim": "works"})
-                assert planned.structuredContent["evidence_ids"] == ["measured"]
+                assert planned.structured_content["evidence_ids"] == ["measured"]
                 collected = await session.call_tool("eal_collect", {"source": SOURCE, "context": {"site": "bench"}})
-                assert not collected.isError
-                collection_id = collected.structuredContent["collection_id"]
+                assert not collected.is_error
+                collection_id = collected.structured_content["collection_id"]
                 reasoned = await session.call_tool("eal_reason", {"source": SOURCE, "context": {"site": "bench"}, "collection_id": collection_id})
-                assert not reasoned.isError
-                assert reasoned.structuredContent["claims"]["works"]["status"] == "supported"
-                explained = await session.call_tool("eal_explain", {"assessment_id": reasoned.structuredContent["assessment_id"], "claim": "works"})
-                assert explained.structuredContent["result"]["status"] == "supported"
-                packet = await session.call_tool("eal_packet", {"assessment_id": reasoned.structuredContent["assessment_id"], "claim": "works"})
-                assert packet.structuredContent["claims"]["works"]["status"] == "supported"
+                assert not reasoned.is_error
+                assert reasoned.structured_content["claims"]["works"]["status"] == "supported"
+                explained = await session.call_tool("eal_explain", {"assessment_id": reasoned.structured_content["assessment_id"], "claim": "works"})
+                assert explained.structured_content["result"]["status"] == "supported"
+                packet = await session.call_tool("eal_packet", {"assessment_id": reasoned.structured_content["assessment_id"], "claim": "works"})
+                assert packet.structured_content["claims"]["works"]["status"] == "supported"
                 selected = await session.call_tool("eal_collect_claim", {"source": SOURCE, "context": {"site": "bench"}, "claim": "works"})
-                assert selected.structuredContent["plan"]["evidence_ids"] == ["measured"]
+                assert selected.structured_content["plan"]["evidence_ids"] == ["measured"]
                 grounded = await session.call_tool("eal_grounded", {"arguments": ["a", "b"], "attacks": [["a", "b"]]})
-                assert grounded.structuredContent["accepted"] == ["a"]
+                assert grounded.structured_content["accepted"] == ["a"]
                 error = await session.call_tool("eal_explain", {"assessment_id": "missing"})
-                assert error.isError
+                assert error.is_error
 
     asyncio.run(exercise())
 
@@ -128,28 +130,28 @@ def test_mcp_registered_claim_reuses_prior_tool_result_across_sessions(tmp_path)
                 names = {entry.name for entry in (await session.list_tools()).tools}
                 assert names == {"eal_sources", "eal_find_claims", "eal_assess_known"}
                 listed = await session.call_tool("eal_sources", {})
-                assert not listed.isError
-                assert len(listed.structuredContent["sources"]) == 1
-                entry = listed.structuredContent["sources"][0]
+                assert not listed.is_error
+                assert len(listed.structured_content["sources"]) == 1
+                entry = listed.structured_content["sources"][0]
                 assert entry["entry_id"] == "source.eal"
                 assert entry["claims"] == ["works"]
                 assert "context" not in entry and "source" not in entry
                 matches = await session.call_tool("eal_find_claims", {"query": "requested check"})
-                assert [item["entry_id"] for item in matches.structuredContent["matches"]] == ["source.eal"]
+                assert [item["entry_id"] for item in matches.structured_content["matches"]] == ["source.eal"]
                 if first:
                     hidden = await session.call_tool("eal_assess_known", {
                         "entry_id": "hidden.eal", "claim": "works"})
-                    assert hidden.isError
+                    assert hidden.is_error
                     generic = await session.call_tool("eal_collect", {
                         "source": SOURCE, "context": {"site": "bench"}})
-                    assert generic.isError
+                    assert generic.is_error
                     injected = await session.call_tool("eal_assess_known", {
                         "entry_id": "source.eal", "claim": "works", "context": {"site": "other"}})
-                    assert injected.isError
+                    assert injected.is_error
                 assessed = await session.call_tool("eal_assess_known", {
                     "entry_id": "source.eal", "claim": "works"})
-                assert not assessed.isError
-                result = assessed.structuredContent
+                assert not assessed.is_error
+                result = assessed.structured_content
                 assert result["status"] == "supported"
                 assert result["collected_count"] == (1 if first else 0)
                 assert result["reused_count"] == (0 if first else 1)

@@ -154,14 +154,14 @@ def test_mcp_rejects_unknown_arguments_and_coercible_json_types(tmp_path):
             async with ClientSession(read, write) as session:
                 await session.initialize()
                 described = await session.list_tools()
-                assert all(tool.inputSchema["additionalProperties"] is False for tool in described.tools)
+                assert all(tool.input_schema["additionalProperties"] is False for tool in described.tools)
                 for arguments in ({"source": SOURCE, "ignored": True}, {"source": 4}):
                     result = await session.call_tool("eal_validate", arguments)
-                    assert result.isError
+                    assert result.is_error
                 invalid = await session.call_tool("eal_grounded", {"arguments": '["a"]', "attacks": []})
-                assert invalid.isError  # SDK coercion must not reinterpret text as a list.
+                assert invalid.is_error  # SDK coercion must not reinterpret text as a list.
                 valid = await session.call_tool("eal_validate", {"source": SOURCE})
-                assert not valid.isError and valid.structuredContent["valid"]
+                assert not valid.is_error and valid.structured_content["valid"]
 
     asyncio.run(exercise())
 
@@ -176,7 +176,7 @@ def test_one_shot_host_checks_the_discovered_schema_before_invoking(tmp_path):
     marker = tmp_path / "invoked"
     server = tmp_path / "restricted_server.py"
     server.write_text('from pathlib import Path\nfrom typing import Literal\n'
-        'from mcp.server.fastmcp import FastMCP\nserver = FastMCP("schema fixture")\n'
+        'from fastmcp import FastMCP\nserver = FastMCP("schema fixture")\n'
         '@server.tool()\ndef eal_validate(source: Literal["allowed"]):\n'
         f'    Path({str(marker)!r}).write_text("called")\n'
         '    return {"valid":True}\nserver.run(transport="stdio")\n')

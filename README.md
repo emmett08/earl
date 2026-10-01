@@ -2,7 +2,7 @@
 
 EAL/3 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
 
-The package is **3.1.0** and requires Python **3.11 or later**. The supported source language is `EAL/3`, with newline-terminated fields and typed flows. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
+The package is **3.2.0** and requires Python **3.11 or later**. The supported source language is `EAL/3`, with newline-terminated fields and typed flows. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
 
 ## Author a bounded argument
 
@@ -46,6 +46,17 @@ make check
 ```
 
 The generated ANTLR parser is included. `make check-generated` verifies it against the grammar; regeneration requires Java. GitHub workflows run only when manually dispatched.
+
+## Select an MCP transport
+
+One FastMCP 4 server exposes the same typed operations over stdio or Streamable HTTP. Stdio is the default. The maintained example supplies a [server configuration](examples/api-load-test/mcp.toml):
+
+```bash
+eal-mcp --config examples/api-load-test/mcp.toml --transport stdio
+eal-mcp --config examples/api-load-test/mcp.toml --transport http
+```
+
+Each command launches one process with its selected transport. HTTP defaults to `http://127.0.0.1:8000/mcp`; `eal-host --url http://127.0.0.1:8000/mcp` connects to an existing HTTP service. Host configuration resolves CLI options before `EAL_MCP_*` environment variables, TOML values and defaults. Configured non-loopback HTTP binds require a bearer token supplied through a named environment variable. An endpoint exposes one operator workspace or a fixed set of registered entries. See [MCP and tools](docs/mcp-and-tools.md) for configuration, authentication and model-host usage, and [MCP architecture](docs/mcp-architecture.md) for SOLID responsibilities and execution limits.
 
 ## Assess a known claim
 
@@ -103,6 +114,7 @@ The [developer and model handover experiment](experiments/transfer_study/README.
 | [Argument model](docs/argument-model.md) | Support, objections and propagation |
 | [Reasoning modes](docs/reasoning-modes.md) | Built-in method contracts and extensions |
 | [MCP and tools](docs/mcp-and-tools.md) | Host adapters, persistence and operation schemas |
+| [MCP architecture](docs/mcp-architecture.md) | Shared operations, configuration, transports and acquisition coordination |
 | [ASPIC+ method](docs/aspic-method.md) | Optional formal method and compiler |
 | [Integration contract](CONTRACT.md) | Python, CLI, MCP and record interfaces |
 | [EAL/3 experiment methodology](docs/eal3-experiment-methodology.md) | Practical thresholds, pilot-informed allocation and cumulative fresh-session evaluation |

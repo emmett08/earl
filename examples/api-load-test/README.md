@@ -93,7 +93,31 @@ eal --workspace . --registry examples/api-load-test/tools.toml \
 
 Replace `ASSESSMENT_ID` with the assessment's identifier. Inspect both `claims.performance_criteria_met.status` and `claims.performance_criteria_failed.status`. The second claim distinguishes an observed criterion failure from missing or stale evidence. The source statement and rationale remain authored assertions; the method checks only the declared finite measurements.
 
-To use MCP directly, launch `eal-mcp --workspace . --registry examples/api-load-test/tools.toml`. Supply the source text and the same context to `eal_validate` and `eal_collect`, then the returned collection ID and the recorded assessment time to `eal_reason`. Call `eal_explain` with its assessment ID and claim. [run.py](run.py) is a complete Python MCP client for this sequence.
+To use MCP directly, launch the supplied [server configuration](mcp.toml), which also installs the custom criteria method:
+
+```sh
+eal-mcp --config examples/api-load-test/mcp.toml --transport stdio
+```
+
+Supply the source text and the same context to `eal_validate` and `eal_collect`, then the returned collection ID and the recorded assessment time to `eal_reason`. Call `eal_explain` with its assessment ID and claim. [run.py](run.py) is a complete Python MCP client for this sequence.
+
+The same configuration and operations can use Streamable HTTP. Start the server in one terminal:
+
+```sh
+eal-mcp --config examples/api-load-test/mcp.toml --transport http
+```
+
+In another terminal, send one strict JSON request to that existing endpoint:
+
+```sh
+eal-host --url http://127.0.0.1:8000/mcp <<'JSON'
+{"operation":"describe"}
+JSON
+```
+
+The result describes EAL/3 and includes `engineering/api-load-criteria/1`. Subsequent requests can use `validate`, `collect`, `reason`, `explain` and `compile_aspic` with their documented fields. In the stdio route, `eal-host --config examples/api-load-test/mcp.toml` launches its subprocess with the same service settings. Each server process selects one transport; the database and observation identities remain shared when both launches use this local workspace.
+
+The example binds HTTP to loopback and uses operator exposure. Configure a named token environment variable for authenticated HTTP; a non-loopback bind requires it. [MCP and tools](../../docs/mcp-and-tools.md) documents precedence, access scope and concurrency. HTTP serving changes how clients reach the synthetic assessment; its availability supplies no measurements of production performance.
 
 ## Reuse the registered argument across sessions
 

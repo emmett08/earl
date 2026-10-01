@@ -19,7 +19,7 @@ def test_only_eal3_is_valid_even_with_newline_fields(header):
 
 
 def test_current_discovery_and_experiment_plans_agree():
-    assert __version__ == '3.1.0'
+    assert __version__ == '3.2.0'
     capabilities = describe_language()
     assert capabilities['languages'] == ['EAL/3']
     assert capabilities['source_syntax'] == 'EAL/3'

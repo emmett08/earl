@@ -396,22 +396,22 @@ def test_installed_method_runs_over_real_mcp_collection_and_reasoning(tmp_path):
             async with ClientSession(reader, writer) as session:
                 await session.initialize()
                 described = await session.call_tool("eal_describe", {})
-                methods = described.structuredContent["typed_bindings"]["methods"]
+                methods = described.structured_content["typed_bindings"]["methods"]
                 assert METHOD in methods
                 valid = await session.call_tool("eal_validate", {"source": source(data)})
-                assert valid.structuredContent["valid"]
+                assert valid.structured_content["valid"]
                 collected = await session.call_tool(
                     "eal_collect", {"source": source(data), "context": CONTEXT})
-                assert not collected.isError, collected
+                assert not collected.is_error, collected
                 reasoned = await session.call_tool("eal_reason", {
                     "source": source(data), "context": CONTEXT,
-                    "collection_id": collected.structuredContent["collection_id"], "now": NOW})
-                assert not reasoned.isError, reasoned
-                report = reasoned.structuredContent
+                    "collection_id": collected.structured_content["collection_id"], "now": NOW})
+                assert not reasoned.is_error, reasoned
+                report = reasoned.structured_content
                 assert report["claims"]["run_passes"]["status"] == "supported"
                 assert report["arguments"]["formal_arg"]["reasoning_result"]["details"]["grounded_accepted"]
                 explained = await session.call_tool("eal_explain", {
                     "assessment_id": report["assessment_id"], "claim": "run_passes"})
-                assert explained.structuredContent["result"]["status"] == "supported"
+                assert explained.structured_content["result"]["status"] == "supported"
 
     asyncio.run(exercise())

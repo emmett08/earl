@@ -131,9 +131,9 @@ async def run_mcp():
 
                 async def call(tool, arguments):
                     response = await session.call_tool(tool, arguments)
-                    if response.isError:
+                    if response.is_error:
                         raise RuntimeError(f"{tool} failed: {response.content}")
-                    return response.structuredContent
+                    return response.structured_content
 
                 source = (HERE / "source.eal").read_text(encoding="utf-8")
                 assert (await call("eal_validate", {"source": source}))["valid"]
