@@ -1,6 +1,7 @@
 """A source-language change must not relabel retained experiment observations."""
 import json
 from pathlib import Path
+import tomllib
 
 import pytest
 
@@ -19,11 +20,13 @@ def test_only_eal3_is_valid_even_with_newline_fields(header):
 
 
 def test_current_discovery_and_experiment_plans_agree():
-    assert __version__ == '3.2.0'
+    root = Path(__file__).resolve().parents[1]
+    project = tomllib.loads((root / 'pyproject.toml').read_text(encoding='utf-8'))['project']
+    assert __version__ == project['version']
     capabilities = describe_language()
+    assert capabilities['implementation_version'] == __version__
     assert capabilities['languages'] == ['EAL/3']
     assert capabilities['source_syntax'] == 'EAL/3'
-    root = Path(__file__).resolve().parents[1]
     for path in (root / 'experiments/model_transfer').glob('*plan.json'):
         plan = json.loads(path.read_text())
         assert plan['source_language'] == 'EAL/3'
