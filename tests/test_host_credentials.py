@@ -38,16 +38,16 @@ async def invoke_host(url: str, token: str, source: str, workspace: Path):
 
 
 @pytest.mark.parametrize("token", ["oauth", "is_error", "result", "operation", "validate", "text"])
-def test_http_host_preserves_envelope_and_nested_schema_on_success_and_tool_failure(tmp_path, token):
+def test_http_host_preserves_envelope_and_redacts_remote_keys_on_success_and_tool_failure(tmp_path, token):
     class CredentialEchoService(ReasoningService):
         def validate(self, source):
             if source == "failure":
                 raise ValueError("Remote diagnostic echoed credential=" + token)
             return {
                 "valid": True,
-                "result": {"operation": token, "is_error": False,
-                           "nested": [{"result": token}]},
-                "encoded": json.dumps({"result": {"operation": token}}),
+                "echoes": {token: "key echo", "secret": token,
+                           "nested": [{"prefix-" + token + "-suffix": token}]},
+                "encoded": json.dumps({token: token}),
             }
 
     server = create_server(CredentialEchoService(tmp_path), auth=BearerTokenVerifier(token))
@@ -63,12 +63,12 @@ def test_http_host_preserves_envelope_and_nested_schema_on_success_and_tool_fail
             assert response["is_error"] is False
             expected = {
                 "valid": True,
-                "result": {"operation": "[redacted]", "is_error": False,
-                           "nested": [{"result": "[redacted]"}]},
+                "echoes": {"[redacted]": "key echo", "secret": "[redacted]",
+                           "nested": [{"prefix-[redacted]-suffix": "[redacted]"}]},
             }
             payload = response["result"]
             assert {key: payload[key] for key in expected} == expected
-            assert json.loads(payload["encoded"]) == {"result": {"operation": "[redacted]"}}
+            assert json.loads(payload["encoded"]) == {"[redacted]": "[redacted]"}
             for block in response["content"]:
                 if block["type"] == "text":
                     assert json.loads(block["text"]) == payload
@@ -104,15 +104,18 @@ def test_http_host_preserves_failure_envelope_without_disclosing_credential(tmp_
     asyncio.run(exercise())
 
 
-@pytest.mark.parametrize("token", ["operation", "is_error", "result", "2026-07-28"])
-def test_public_response_metadata_is_stable_when_it_coincides_with_a_credential(token):
+@pytest.mark.parametrize(("token", "application_key"), [
+    ("operation", "result"), ("is_error", "result"),
+    ("result", "[redacted]"), ("2026-07-28", "result"),
+])
+def test_public_response_metadata_is_stable_when_it_coincides_with_a_credential(token, application_key):
     response = {"operation": "operation", "protocol_version": "2026-07-28",
                 "is_error": False, "result": {"result": token}}
     sanitised = sanitise_response(response, token)
     assert sanitised["operation"] == response["operation"]
     assert sanitised["protocol_version"] == response["protocol_version"]
     assert sanitised["is_error"] is False
-    assert sanitised["result"] == {"result": "[redacted]"}
+    assert sanitised["result"] == {application_key: "[redacted]"}
 
 
 def test_json_text_decodes_escaped_credentials_before_value_redaction():
@@ -130,7 +133,30 @@ def test_json_string_text_decodes_escaped_credentials_before_value_redaction():
     assert json.loads(sanitised["content"][0]["text"]) == "[redacted]"
 
 
-def test_json_text_with_only_a_schema_key_collision_keeps_its_representation():
+def test_json_text_redacts_an_application_key_even_when_it_matches_a_public_field():
     encoded = '{\n  "result": true\n}'
     response = {"content": [{"type": "text", "text": encoded}]}
-    assert sanitise_response(response, "result") == response
+    sanitised = sanitise_response(response, "result")
+    assert json.loads(sanitised["content"][0]["text"]) == {"[redacted]": True}
+
+
+def test_http_host_refuses_key_collisions_without_emitting_partial_results(tmp_path):
+    token = "synthetic-collision-token"
+
+    class CollidingService(ReasoningService):
+        def validate(self, source):
+            return {token: "first", "[redacted]": "second"}
+
+    server = create_server(CollidingService(tmp_path), auth=BearerTokenVerifier(token))
+
+    async def exercise():
+        async with run_server_async(server) as url:
+            completed = await invoke_host(url, token, "success", tmp_path)
+            assert completed.returncode == 2
+            assert token not in completed.stdout
+            assert json.loads(completed.stdout) == {
+                "is_error": True,
+                "error": "Credential redaction would merge distinct JSON object keys",
+            }
+
+    asyncio.run(exercise())
