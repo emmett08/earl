@@ -1,0 +1,17 @@
+{
+  "schema": "temperature-samples/1",
+  "dataset": "synthetic",
+  "sensor": "controller-A",
+  "unit": "degC",
+  "observed_at": "2026-09-30T10:00:00Z",
+  "samples": {
+    "staging": {
+      "safe": [60, 64, 68],
+      "overheat": [60, 64, 81]
+    },
+    "production": {
+      "safe": [72, 75, 78],
+      "overheat": [72, 75, 86]
+    }
+  }
+}

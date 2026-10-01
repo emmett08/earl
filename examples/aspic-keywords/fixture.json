@@ -1,0 +1,174 @@
+{
+  "schema": "eal-aspic-keywords/1",
+  "dataset": "synthetic",
+  "observed_at": "2026-10-01T07:00:05Z",
+  "facts": {
+    "primary_record": {
+      "primary_ok": true
+    },
+    "probe_record": {
+      "probe_ok": true
+    },
+    "fault_record": {
+      "fault_found": true
+    },
+    "gap_record": {
+      "trace_gap": true
+    },
+    "calibration_record": {
+      "calibration_valid": true
+    },
+    "criterion_record": {
+      "criterion_defined": true
+    }
+  },
+  "theory": {
+    "premises": [
+      {
+        "atom": "criterion_defined",
+        "kind": "axiom"
+      },
+      {
+        "atom": "primary_ok",
+        "kind": "ordinary",
+        "rank": 400
+      },
+      {
+        "atom": "probe_ok",
+        "kind": "ordinary",
+        "rank": 900
+      },
+      {
+        "atom": "audit",
+        "kind": "ordinary",
+        "rank": 800
+      },
+      {
+        "atom": "trace_gap",
+        "kind": "ordinary",
+        "rank": 200
+      },
+      {
+        "atom": "fault",
+        "kind": "ordinary",
+        "rank": 600
+      },
+      {
+        "atom": "estimate_normal",
+        "kind": "ordinary",
+        "rank": 500
+      },
+      {
+        "atom": "estimate_abnormal",
+        "kind": "ordinary",
+        "rank": 500
+      }
+    ],
+    "rules": [
+      {
+        "id": "primary_ready",
+        "kind": "defeasible",
+        "antecedents": [
+          "criterion_defined",
+          "primary_ok"
+        ],
+        "consequent": "ready",
+        "name": "use_primary",
+        "rank": 700
+      },
+      {
+        "id": "probe_ready",
+        "kind": "defeasible",
+        "antecedents": [
+          "probe_ok"
+        ],
+        "consequent": "ready",
+        "name": "use_probe",
+        "rank": 900
+      },
+      {
+        "id": "audit_primary",
+        "kind": "strict",
+        "antecedents": [
+          "audit"
+        ],
+        "consequent": "~primary_ok"
+      },
+      {
+        "id": "gap_primary",
+        "kind": "strict",
+        "antecedents": [
+          "trace_gap"
+        ],
+        "consequent": "~use_primary"
+      },
+      {
+        "id": "fault_blocks",
+        "kind": "defeasible",
+        "antecedents": [
+          "fault"
+        ],
+        "consequent": "~ready",
+        "name": "use_fault",
+        "rank": 600
+      },
+      {
+        "id": "report_ready",
+        "kind": "strict",
+        "antecedents": [
+          "ready"
+        ],
+        "consequent": "reportable"
+      }
+    ],
+    "contraries": [
+      {
+        "attacker": "~primary_ok",
+        "target": "primary_ok"
+      },
+      {
+        "attacker": "~use_primary",
+        "target": "use_primary"
+      },
+      {
+        "attacker": "~ready",
+        "target": "ready"
+      },
+      {
+        "attacker": "ready",
+        "target": "~ready"
+      },
+      {
+        "attacker": "estimate_normal",
+        "target": "estimate_abnormal"
+      },
+      {
+        "attacker": "estimate_abnormal",
+        "target": "estimate_normal"
+      }
+    ],
+    "goal": "ready",
+    "options": {
+      "semantics": "preferred",
+      "query_mode": "sceptical",
+      "preference": "last_link_partial"
+    },
+    "priorities": [
+      {
+        "kind": "rule",
+        "higher": "probe_ready",
+        "lower": "fault_blocks"
+      },
+      {
+        "kind": "rule",
+        "higher": "fault_blocks",
+        "lower": "primary_ready"
+      },
+      {
+        "kind": "premise",
+        "higher": "audit",
+        "lower": "primary_ok"
+      }
+    ]
+  }
+}

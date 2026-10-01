@@ -1,0 +1,237 @@
+{
+  "dataset": "synthetic",
+  "round_trip": "passed",
+  "compiled": {
+    "argument_count": 15,
+    "defeat_count": 6,
+    "query_status": "accepted",
+    "grounded_status": "accepted",
+    "semantics": "preferred",
+    "preference": "last_link_partial"
+  },
+  "authored_claim_status": "supported",
+  "formal": {
+    "argument_count": 15,
+    "defeat_count": 10,
+    "query_status": "accepted",
+    "grounded_status": "accepted",
+    "semantics": "preferred",
+    "preference": "last_link_partial"
+  },
+  "option_variants": [
+    {
+      "semantics": "grounded",
+      "query_mode": "credulous",
+      "preference": "minimum_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 1
+    },
+    {
+      "semantics": "grounded",
+      "query_mode": "credulous",
+      "preference": "last_link_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 1
+    },
+    {
+      "semantics": "grounded",
+      "query_mode": "credulous",
+      "preference": "last_link_partial",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 1
+    },
+    {
+      "semantics": "grounded",
+      "query_mode": "sceptical",
+      "preference": "minimum_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 1
+    },
+    {
+      "semantics": "grounded",
+      "query_mode": "sceptical",
+      "preference": "last_link_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 1
+    },
+    {
+      "semantics": "grounded",
+      "query_mode": "sceptical",
+      "preference": "last_link_partial",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 1
+    },
+    {
+      "semantics": "preferred",
+      "query_mode": "credulous",
+      "preference": "minimum_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "preferred",
+      "query_mode": "credulous",
+      "preference": "last_link_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "preferred",
+      "query_mode": "credulous",
+      "preference": "last_link_partial",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "preferred",
+      "query_mode": "sceptical",
+      "preference": "minimum_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "preferred",
+      "query_mode": "sceptical",
+      "preference": "last_link_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "preferred",
+      "query_mode": "sceptical",
+      "preference": "last_link_partial",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "stable",
+      "query_mode": "credulous",
+      "preference": "minimum_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "stable",
+      "query_mode": "credulous",
+      "preference": "last_link_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "stable",
+      "query_mode": "credulous",
+      "preference": "last_link_partial",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "stable",
+      "query_mode": "sceptical",
+      "preference": "minimum_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "stable",
+      "query_mode": "sceptical",
+      "preference": "last_link_rank",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "stable",
+      "query_mode": "sceptical",
+      "preference": "last_link_partial",
+      "goal": "ready",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "grounded",
+      "query_mode": "credulous",
+      "preference": "last_link_partial",
+      "goal": "estimate_normal",
+      "query_status": "undecided",
+      "extensions": 1
+    },
+    {
+      "semantics": "grounded",
+      "query_mode": "sceptical",
+      "preference": "last_link_partial",
+      "goal": "estimate_normal",
+      "query_status": "undecided",
+      "extensions": 1
+    },
+    {
+      "semantics": "preferred",
+      "query_mode": "credulous",
+      "preference": "last_link_partial",
+      "goal": "estimate_normal",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "preferred",
+      "query_mode": "sceptical",
+      "preference": "last_link_partial",
+      "goal": "estimate_normal",
+      "query_status": "undecided",
+      "extensions": 2
+    },
+    {
+      "semantics": "stable",
+      "query_mode": "credulous",
+      "preference": "last_link_partial",
+      "goal": "estimate_normal",
+      "query_status": "accepted",
+      "extensions": 2
+    },
+    {
+      "semantics": "stable",
+      "query_mode": "sceptical",
+      "preference": "last_link_partial",
+      "goal": "estimate_normal",
+      "query_status": "undecided",
+      "extensions": 2
+    }
+  ],
+  "preference_comparison": [
+    {
+      "preference": "minimum_rank",
+      "query_status": "rejected"
+    },
+    {
+      "preference": "last_link_rank",
+      "query_status": "accepted"
+    },
+    {
+      "preference": "last_link_partial",
+      "query_status": "rejected"
+    },
+    {
+      "preference": "last_link_partial_without_priority",
+      "query_status": "undecided"
+    }
+  ],
+  "unresolved_outcomes": {
+    "absent_goal": "unconstructed",
+    "odd_attack_cycle_stable": "no_extension"
+  }
+}

@@ -1,0 +1,403 @@
+{
+  "schema": "aspic-view/3",
+  "theory_digest": "4b2a134f5bb3ccc0ee8bf7b615430e09e9d77003c7cee8d6a615ce7eda54f15c",
+  "evaluated_at": null,
+  "validation": {
+    "formal_result": "recomputed",
+    "provenance": "supplied"
+  },
+  "profile": "supplied-formal-result",
+  "goal": "ready",
+  "goal_claim": null,
+  "formal_status": "accepted",
+  "semantics": "preferred",
+  "query_mode": "sceptical",
+  "query_status": "accepted",
+  "preference": "last_link_partial",
+  "extensions": [
+    [
+      "A0",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A9",
+      "A11",
+      "A12",
+      "A14"
+    ],
+    [
+      "A0",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A7",
+      "A9",
+      "A11",
+      "A12",
+      "A14"
+    ]
+  ],
+  "execution_limits": {
+    "source_bytes": 1048576,
+    "source_tokens": 100000,
+    "structural_values": 100000,
+    "declarations": 4096,
+    "premise_depth": 128,
+    "expansion_depth": 128,
+    "applications": 1000,
+    "expanded_references": 100000,
+    "expression_nodes": 10000,
+    "expression_depth": 128,
+    "json_depth": 64,
+    "json_nodes": 100000,
+    "record_bytes": 4194304,
+    "collection_evidence": 128,
+    "composed_edges": 131072,
+    "abstract_attacks": 65536,
+    "formal_premises": 64,
+    "formal_rules": 64,
+    "formal_antecedents": 8,
+    "formal_atoms": 128,
+    "formal_contraries": 128,
+    "formal_arguments": 128,
+    "formal_defeats": 4096,
+    "formal_construction": 100000,
+    "extension_search": 100000
+  },
+  "formal_directives": [],
+  "claim_status": null,
+  "authored_claim_status": null,
+  "source_digest": null,
+  "snapshot_digest": null,
+  "arguments": [
+    {
+      "conclusion": "criterion_defined",
+      "direct_subarguments": [],
+      "id": "A0",
+      "label": "in",
+      "strength": 1001,
+      "subarguments": [],
+      "top": "axiom",
+      "origin": {
+        "kind": "formal premise",
+        "name": "criterion_defined"
+      },
+      "display_conclusion": "criterion_defined"
+    },
+    {
+      "conclusion": "primary_ok",
+      "direct_subarguments": [],
+      "id": "A1",
+      "label": "out",
+      "rank": 400,
+      "strength": 400,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "formal premise",
+        "name": "primary_ok"
+      },
+      "display_conclusion": "primary_ok"
+    },
+    {
+      "conclusion": "probe_ok",
+      "direct_subarguments": [],
+      "id": "A2",
+      "label": "in",
+      "rank": 900,
+      "strength": 900,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "formal premise",
+        "name": "probe_ok"
+      },
+      "display_conclusion": "probe_ok"
+    },
+    {
+      "conclusion": "audit",
+      "direct_subarguments": [],
+      "id": "A3",
+      "label": "in",
+      "rank": 800,
+      "strength": 800,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "formal premise",
+        "name": "audit"
+      },
+      "display_conclusion": "audit"
+    },
+    {
+      "conclusion": "trace_gap",
+      "direct_subarguments": [],
+      "id": "A4",
+      "label": "in",
+      "rank": 200,
+      "strength": 200,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "formal premise",
+        "name": "trace_gap"
+      },
+      "display_conclusion": "trace_gap"
+    },
+    {
+      "conclusion": "fault",
+      "direct_subarguments": [],
+      "id": "A5",
+      "label": "in",
+      "rank": 600,
+      "strength": 600,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "formal premise",
+        "name": "fault"
+      },
+      "display_conclusion": "fault"
+    },
+    {
+      "conclusion": "estimate_normal",
+      "direct_subarguments": [],
+      "id": "A6",
+      "label": "undecided",
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "formal premise",
+        "name": "estimate_normal"
+      },
+      "display_conclusion": "estimate_normal"
+    },
+    {
+      "conclusion": "estimate_abnormal",
+      "direct_subarguments": [],
+      "id": "A7",
+      "label": "undecided",
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "formal premise",
+        "name": "estimate_abnormal"
+      },
+      "display_conclusion": "estimate_abnormal"
+    },
+    {
+      "conclusion": "ready",
+      "direct_subarguments": [
+        "A0",
+        "A1"
+      ],
+      "id": "A8",
+      "label": "out",
+      "rank": 700,
+      "rule_id": "primary_ready",
+      "rule_name": "use_primary",
+      "strength": 400,
+      "subarguments": [
+        "A0",
+        "A1"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "formal rule",
+        "name": "primary_ready"
+      },
+      "display_conclusion": "ready"
+    },
+    {
+      "conclusion": "ready",
+      "direct_subarguments": [
+        "A2"
+      ],
+      "id": "A9",
+      "label": "in",
+      "rank": 900,
+      "rule_id": "probe_ready",
+      "rule_name": "use_probe",
+      "strength": 900,
+      "subarguments": [
+        "A2"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "formal rule",
+        "name": "probe_ready"
+      },
+      "display_conclusion": "ready"
+    },
+    {
+      "conclusion": "reportable",
+      "direct_subarguments": [
+        "A8"
+      ],
+      "id": "A10",
+      "label": "out",
+      "rule_id": "report_ready",
+      "strength": 400,
+      "subarguments": [
+        "A0",
+        "A1",
+        "A8"
+      ],
+      "top": "strict",
+      "origin": {
+        "kind": "formal rule",
+        "name": "report_ready"
+      },
+      "display_conclusion": "reportable"
+    },
+    {
+      "conclusion": "reportable",
+      "direct_subarguments": [
+        "A9"
+      ],
+      "id": "A11",
+      "label": "in",
+      "rule_id": "report_ready",
+      "strength": 900,
+      "subarguments": [
+        "A2",
+        "A9"
+      ],
+      "top": "strict",
+      "origin": {
+        "kind": "formal rule",
+        "name": "report_ready"
+      },
+      "display_conclusion": "reportable"
+    },
+    {
+      "conclusion": "~primary_ok",
+      "direct_subarguments": [
+        "A3"
+      ],
+      "id": "A12",
+      "label": "in",
+      "rule_id": "audit_primary",
+      "strength": 800,
+      "subarguments": [
+        "A3"
+      ],
+      "top": "strict",
+      "origin": {
+        "kind": "formal rule",
+        "name": "audit_primary"
+      },
+      "display_conclusion": "~primary_ok"
+    },
+    {
+      "conclusion": "~ready",
+      "direct_subarguments": [
+        "A5"
+      ],
+      "id": "A13",
+      "label": "out",
+      "rank": 600,
+      "rule_id": "fault_blocks",
+      "rule_name": "use_fault",
+      "strength": 600,
+      "subarguments": [
+        "A5"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "formal rule",
+        "name": "fault_blocks"
+      },
+      "display_conclusion": "~ready"
+    },
+    {
+      "conclusion": "~use_primary",
+      "direct_subarguments": [
+        "A4"
+      ],
+      "id": "A14",
+      "label": "in",
+      "rule_id": "gap_primary",
+      "strength": 200,
+      "subarguments": [
+        "A4"
+      ],
+      "top": "strict",
+      "origin": {
+        "kind": "formal rule",
+        "name": "gap_primary"
+      },
+      "display_conclusion": "~use_primary"
+    }
+  ],
+  "defeats": [
+    {
+      "attacker": "A6",
+      "kind": "undermine",
+      "subargument": "A7",
+      "target": "A7"
+    },
+    {
+      "attacker": "A7",
+      "kind": "undermine",
+      "subargument": "A6",
+      "target": "A6"
+    },
+    {
+      "attacker": "A9",
+      "kind": "rebut",
+      "subargument": "A13",
+      "target": "A13"
+    },
+    {
+      "attacker": "A12",
+      "kind": "undermine",
+      "subargument": "A1",
+      "target": "A1"
+    },
+    {
+      "attacker": "A12",
+      "kind": "undermine",
+      "subargument": "A1",
+      "target": "A8"
+    },
+    {
+      "attacker": "A12",
+      "kind": "undermine",
+      "subargument": "A1",
+      "target": "A10"
+    },
+    {
+      "attacker": "A13",
+      "kind": "rebut",
+      "subargument": "A8",
+      "target": "A8"
+    },
+    {
+      "attacker": "A13",
+      "kind": "rebut",
+      "subargument": "A8",
+      "target": "A10"
+    },
+    {
+      "attacker": "A14",
+      "kind": "undercut",
+      "subargument": "A8",
+      "target": "A8"
+    },
+    {
+      "attacker": "A14",
+      "kind": "undercut",
+      "subargument": "A8",
+      "target": "A10"
+    }
+  ],
+  "unavailable_evidence": []
+}
