@@ -1,0 +1,120 @@
+// Fixed synthetic controller run; no external device is measured.
+language "EAL/3"
+
+environment bench {
+  require device == "synthetic-controller"
+  require run_id == "keywords-001"
+  require dataset == "synthetic"
+}
+
+tool fixture {
+  version "1"
+}
+
+context environment bench, tool fixture, max_age 120 {
+  evidence criterion_record {
+    kind test
+    input {"run_id": "keywords-001"}
+    require criterion_defined == true
+  }
+
+  evidence primary_record {
+    kind test
+    input {"run_id": "keywords-001"}
+    require primary_ok == true
+  }
+
+  evidence probe_record {
+    kind test
+    input {"run_id": "keywords-001"}
+    require probe_ok == true
+  }
+
+  evidence fault_record {
+    kind test
+    input {"run_id": "keywords-001"}
+    require fault_found == true
+  }
+
+  evidence gap_record {
+    kind test
+    input {"run_id": "keywords-001"}
+    require trace_gap == true
+  }
+
+  evidence calibration_record {
+    kind test
+    input {"run_id": "keywords-001"}
+    require calibration_valid == true
+  }
+
+  assumption calibration {
+    statement "The stipulated calibration applies to this synthetic run."
+    validate calibration_record
+    valid_from "2026-10-01T07:00:00Z"
+    valid_until "2026-10-01T07:02:00Z"
+  }
+
+  reasoning recorded {
+    method "structured/1"
+    rationale "This route uses only the named synthetic findings and its declared assumptions."
+  }
+
+  claim criterion_defined {
+    statement "For this example, readiness means that an accepted primary or probe route supplies the stipulated criterion."
+  }
+
+  claim ready {
+    statement "The synthetic controller meets the stipulated readiness criterion for keywords-001."
+  }
+
+  claim not_ready {
+    statement "The synthetic fault route concludes that the readiness criterion fails for keywords-001."
+  }
+
+  claim reportable {
+    statement "An accepted readiness conclusion can be reported for this synthetic run."
+  }
+
+  claim caution {
+    statement "The synthetic primary trace requires caution."
+  }
+
+  // This strict route only projects the fixture's stipulated criterion field.
+  argument definition_route = [evidence criterion_record] via recorded => criterion_defined
+
+  argument primary_route = [evidence primary_record, assumptions calibration, premises criterion_defined] via recorded => ready
+
+  pattern observation_route(c: claim, r: reasoning, e: evidence) = [evidence e] via r => c
+
+  apply probe_route = observation_route(c=ready, r=recorded, e=probe_record)
+
+  argument fault_route = [evidence fault_record] via recorded => not_ready
+
+  argument reporting_route = [premises ready] via recorded => reportable
+
+  argument caution_route = [evidence gap_record] via recorded => caution
+
+  objection primary_trace_gap = [evidence gap_record] -x> argument primary_route
+
+  strict definition_route reviewed "synthetic-review/stipulated-definition"
+  strict reporting_route reviewed "synthetic-review/readiness-reporting-implication"
+
+  rank primary_record 400 reviewed "synthetic-review/primary-observation"
+  rank probe_record 900 reviewed "synthetic-review/probe-observation"
+  rank primary_route 700 reviewed "synthetic-review/primary-inference"
+  rank probe_route 900 reviewed "synthetic-review/probe-inference"
+  rank calibration 800 reviewed "synthetic-review/calibration-assumption"
+  rank fault_route 600 reviewed "synthetic-review/fault-inference"
+
+  // Reciprocal directions make this claim pair contradictory.
+  contrary not_ready to ready reviewed "synthetic-review/incompatible-readiness-conclusions"
+  contrary ready to not_ready reviewed "synthetic-review/incompatible-readiness-conclusions"
+
+  // One direction supplies a preference-independent contrary.
+  contrary caution to not_ready reviewed "synthetic-review/caution-qualifies-fault-conclusion"
+
+  prefer probe_route over fault_route reviewed "synthetic-review/probe-rule-priority"
+  prefer fault_route over primary_route reviewed "synthetic-review/fault-rule-priority"
+  prefer probe_record over primary_record reviewed "synthetic-review/probe-premise-priority"
+}

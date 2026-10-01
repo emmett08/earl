@@ -1,0 +1,976 @@
+{
+  "schema": "aspic-view/3",
+  "theory_digest": "c94e5c5b276bd886f5e6f928cd969b2ed4216d1784d3edbd2dffb8f188003722",
+  "evaluated_at": "2026-10-01T07:00:30Z",
+  "validation": {
+    "formal_result": "recomputed",
+    "provenance": "supplied"
+  },
+  "profile": "EAL/3-compiled-aspic/5",
+  "goal": "c5a54a81c7dc8e35825e0",
+  "goal_claim": "reportable",
+  "formal_status": "accepted",
+  "semantics": "preferred",
+  "query_mode": "sceptical",
+  "query_status": "accepted",
+  "preference": "last_link_partial",
+  "extensions": [
+    [
+      "A0",
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A8",
+      "A9",
+      "A10",
+      "A12",
+      "A14"
+    ]
+  ],
+  "execution_limits": {
+    "source_bytes": 1048576,
+    "source_tokens": 100000,
+    "structural_values": 100000,
+    "declarations": 4096,
+    "premise_depth": 128,
+    "expansion_depth": 128,
+    "applications": 1000,
+    "expanded_references": 100000,
+    "expression_nodes": 10000,
+    "expression_depth": 128,
+    "json_depth": 64,
+    "json_nodes": 100000,
+    "record_bytes": 4194304,
+    "collection_evidence": 128,
+    "composed_edges": 131072,
+    "abstract_attacks": 65536,
+    "formal_premises": 64,
+    "formal_rules": 64,
+    "formal_antecedents": 8,
+    "formal_atoms": 128,
+    "formal_contraries": 128,
+    "formal_arguments": 128,
+    "formal_defeats": 4096,
+    "formal_construction": 100000,
+    "extension_search": 100000
+  },
+  "formal_directives": [
+    {
+      "kind": "strict",
+      "name": "definition_route",
+      "other": null,
+      "rank": null,
+      "review": "synthetic-review/stipulated-definition",
+      "span": {
+        "line": 100,
+        "column": 3,
+        "end_line": 101,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "argument"
+    },
+    {
+      "kind": "strict",
+      "name": "reporting_route",
+      "other": null,
+      "rank": null,
+      "review": "synthetic-review/readiness-reporting-implication",
+      "span": {
+        "line": 101,
+        "column": 3,
+        "end_line": 103,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "argument"
+    },
+    {
+      "kind": "rank",
+      "name": "primary_record",
+      "other": null,
+      "rank": 400,
+      "review": "synthetic-review/primary-observation",
+      "span": {
+        "line": 103,
+        "column": 3,
+        "end_line": 104,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "evidence"
+    },
+    {
+      "kind": "rank",
+      "name": "probe_record",
+      "other": null,
+      "rank": 900,
+      "review": "synthetic-review/probe-observation",
+      "span": {
+        "line": 104,
+        "column": 3,
+        "end_line": 105,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "evidence"
+    },
+    {
+      "kind": "rank",
+      "name": "primary_route",
+      "other": null,
+      "rank": 700,
+      "review": "synthetic-review/primary-inference",
+      "span": {
+        "line": 105,
+        "column": 3,
+        "end_line": 106,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "argument"
+    },
+    {
+      "kind": "rank",
+      "name": "probe_route",
+      "other": null,
+      "rank": 900,
+      "review": "synthetic-review/probe-inference",
+      "span": {
+        "line": 106,
+        "column": 3,
+        "end_line": 107,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "argument"
+    },
+    {
+      "kind": "rank",
+      "name": "calibration",
+      "other": null,
+      "rank": 800,
+      "review": "synthetic-review/calibration-assumption",
+      "span": {
+        "line": 107,
+        "column": 3,
+        "end_line": 108,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "assumption"
+    },
+    {
+      "kind": "rank",
+      "name": "fault_route",
+      "other": null,
+      "rank": 600,
+      "review": "synthetic-review/fault-inference",
+      "span": {
+        "line": 108,
+        "column": 3,
+        "end_line": 111,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "argument"
+    },
+    {
+      "kind": "contrary",
+      "name": "not_ready",
+      "other": "ready",
+      "rank": null,
+      "review": "synthetic-review/incompatible-readiness-conclusions",
+      "span": {
+        "line": 111,
+        "column": 3,
+        "end_line": 112,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "claim"
+    },
+    {
+      "kind": "contrary",
+      "name": "ready",
+      "other": "not_ready",
+      "rank": null,
+      "review": "synthetic-review/incompatible-readiness-conclusions",
+      "span": {
+        "line": 112,
+        "column": 3,
+        "end_line": 115,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "claim"
+    },
+    {
+      "kind": "contrary",
+      "name": "caution",
+      "other": "not_ready",
+      "rank": null,
+      "review": "synthetic-review/caution-qualifies-fault-conclusion",
+      "span": {
+        "line": 115,
+        "column": 3,
+        "end_line": 117,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "claim"
+    },
+    {
+      "kind": "prefer",
+      "name": "probe_route",
+      "other": "fault_route",
+      "rank": null,
+      "review": "synthetic-review/probe-rule-priority",
+      "span": {
+        "line": 117,
+        "column": 3,
+        "end_line": 118,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "argument"
+    },
+    {
+      "kind": "prefer",
+      "name": "fault_route",
+      "other": "primary_route",
+      "rank": null,
+      "review": "synthetic-review/fault-rule-priority",
+      "span": {
+        "line": 118,
+        "column": 3,
+        "end_line": 119,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "argument"
+    },
+    {
+      "kind": "prefer",
+      "name": "probe_record",
+      "other": "primary_record",
+      "rank": null,
+      "review": "synthetic-review/probe-premise-priority",
+      "span": {
+        "line": 119,
+        "column": 3,
+        "end_line": 120,
+        "end_column": 1
+      },
+      "source_file": null,
+      "target_kind": "evidence"
+    }
+  ],
+  "claim_status": "supported",
+  "authored_claim_status": "supported",
+  "source_digest": "35a052d3aa6bab8c1e3891e0de314e30dcdb25e1d5dea44e9e652d2c3a1efcf2",
+  "snapshot_digest": "3973adf715a7950e9bf5049e8158807bacd4dd8e30847f431fd717f2d4aac935",
+  "arguments": [
+    {
+      "conclusion": "e2ece15eec00bd6cb35a7",
+      "direct_subarguments": [],
+      "id": "A0",
+      "label": "in",
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "evidence",
+        "name": "calibration_record",
+        "span": {
+          "line": 45,
+          "column": 3,
+          "end_line": 49,
+          "end_column": 4
+        },
+        "formal_review": null,
+        "observation": {
+          "run_id": "e4353b40-b17f-45c5-a8ff-4629faafd658",
+          "data_digest": "2c20f10577ad148bbababf46d34c1e3631a0f37ee86950160586b5ed11bcbea8",
+          "request_digest": "d00358c262bfe3b51a6b1cd5c5a75405569185894339552471453362eba432d9",
+          "collected_at": "2026-10-01T07:00:05Z",
+          "tool_binding_digest": "0c2004f26aa42af9b4fa4308859be61cbd190c7f8a2ed007d002a032c892cdf1"
+        }
+      },
+      "display_conclusion": "calibration_record"
+    },
+    {
+      "conclusion": "ee9819bddaa4126d83e82",
+      "direct_subarguments": [],
+      "id": "A1",
+      "label": "in",
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "evidence",
+        "name": "criterion_record",
+        "span": {
+          "line": 15,
+          "column": 3,
+          "end_line": 19,
+          "end_column": 4
+        },
+        "formal_review": null,
+        "observation": {
+          "run_id": "ea4b8eaf-8716-43d9-8404-88f3d8e0361f",
+          "data_digest": "54265a71b2c6ba468feb3eddb562c930016231708c9f69bd24997686e274aacf",
+          "request_digest": "91e4d64d69c6c6329db281f8ed0eea15320e244ca9074bb2445ba1db0ba61269",
+          "collected_at": "2026-10-01T07:00:05Z",
+          "tool_binding_digest": "0c2004f26aa42af9b4fa4308859be61cbd190c7f8a2ed007d002a032c892cdf1"
+        }
+      },
+      "display_conclusion": "criterion_record"
+    },
+    {
+      "conclusion": "e1fbc3521aa61b1d83bd4",
+      "direct_subarguments": [],
+      "id": "A2",
+      "label": "in",
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "evidence",
+        "name": "fault_record",
+        "span": {
+          "line": 33,
+          "column": 3,
+          "end_line": 37,
+          "end_column": 4
+        },
+        "formal_review": null,
+        "observation": {
+          "run_id": "f1497f64-7e6f-468b-bdf2-5b46167ae327",
+          "data_digest": "6d8a1da29851411826c4f88b6d50bcff1243711dbe51ff724956edf008043ad9",
+          "request_digest": "58a4b5bdc6b51accd122d2d0b3f96e0693131ccbf7619406f5ffbe69cb2799f8",
+          "collected_at": "2026-10-01T07:00:05Z",
+          "tool_binding_digest": "0c2004f26aa42af9b4fa4308859be61cbd190c7f8a2ed007d002a032c892cdf1"
+        }
+      },
+      "display_conclusion": "fault_record"
+    },
+    {
+      "conclusion": "e1a77da4ea20fb919150f",
+      "direct_subarguments": [],
+      "id": "A3",
+      "label": "in",
+      "rank": 500,
+      "strength": 500,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "evidence",
+        "name": "gap_record",
+        "span": {
+          "line": 39,
+          "column": 3,
+          "end_line": 43,
+          "end_column": 4
+        },
+        "formal_review": null,
+        "observation": {
+          "run_id": "70798102-bb2e-407b-a399-829ed7d10fc0",
+          "data_digest": "89f728cb49efe8ab559fcb38ad3d3f01f483367dc77e828857e459a0b605698a",
+          "request_digest": "06204437cbdf78895d30d92c54f9f6dafda59b1efb86022c9944db6557abab0a",
+          "collected_at": "2026-10-01T07:00:05Z",
+          "tool_binding_digest": "0c2004f26aa42af9b4fa4308859be61cbd190c7f8a2ed007d002a032c892cdf1"
+        }
+      },
+      "display_conclusion": "gap_record"
+    },
+    {
+      "conclusion": "eecd3223278be43c656fe",
+      "direct_subarguments": [],
+      "id": "A4",
+      "label": "in",
+      "rank": 400,
+      "strength": 400,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "evidence",
+        "name": "primary_record",
+        "span": {
+          "line": 21,
+          "column": 3,
+          "end_line": 25,
+          "end_column": 4
+        },
+        "formal_review": {
+          "kind": "rank",
+          "name": "primary_record",
+          "other": null,
+          "rank": 400,
+          "review": "synthetic-review/primary-observation",
+          "span": {
+            "line": 103,
+            "column": 3,
+            "end_line": 104,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "evidence"
+        },
+        "observation": {
+          "run_id": "e3db7f8b-3b29-4830-b623-95b0bd8731db",
+          "data_digest": "51c0a2d7dc2faf70dde5f83579f46602c60576b1eeb0065447bbcb9683b10fd1",
+          "request_digest": "7722534cb63e92266548c29b0a174e6a2978776ca6c4769eba373892acf5ee91",
+          "collected_at": "2026-10-01T07:00:05Z",
+          "tool_binding_digest": "0c2004f26aa42af9b4fa4308859be61cbd190c7f8a2ed007d002a032c892cdf1"
+        }
+      },
+      "display_conclusion": "primary_record"
+    },
+    {
+      "conclusion": "e265b4e725bb5b48eb373",
+      "direct_subarguments": [],
+      "id": "A5",
+      "label": "in",
+      "rank": 900,
+      "strength": 900,
+      "subarguments": [],
+      "top": "ordinary",
+      "origin": {
+        "kind": "evidence",
+        "name": "probe_record",
+        "span": {
+          "line": 27,
+          "column": 3,
+          "end_line": 31,
+          "end_column": 4
+        },
+        "formal_review": {
+          "kind": "rank",
+          "name": "probe_record",
+          "other": null,
+          "rank": 900,
+          "review": "synthetic-review/probe-observation",
+          "span": {
+            "line": 104,
+            "column": 3,
+            "end_line": 105,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "evidence"
+        },
+        "observation": {
+          "run_id": "6f7d20df-c137-4482-b819-86726553820c",
+          "data_digest": "5fc8f951d8c96f3470660b0b6f80cacb14990e16c785c19c074883d19d29d22c",
+          "request_digest": "6ad0e3e87f2c1d5452e8e91313d5fe2a2398d8e9fabbbe0fc872d14a3c51e5a8",
+          "collected_at": "2026-10-01T07:00:05Z",
+          "tool_binding_digest": "0c2004f26aa42af9b4fa4308859be61cbd190c7f8a2ed007d002a032c892cdf1"
+        }
+      },
+      "display_conclusion": "probe_record"
+    },
+    {
+      "conclusion": "c3cf083c28255868b5f46",
+      "direct_subarguments": [
+        "A3"
+      ],
+      "id": "A6",
+      "label": "in",
+      "rank": 500,
+      "rule_id": "r16d3c1bf26550be527b2",
+      "rule_name": "x4fc041a5fc26472b88cc",
+      "strength": 500,
+      "subarguments": [
+        "A3"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "argument",
+        "name": "caution_route",
+        "span": {
+          "line": 96,
+          "column": 3,
+          "end_line": 98,
+          "end_column": 1
+        },
+        "formal_review": null,
+        "rationale": "This route uses only the named synthetic findings and its declared assumptions.",
+        "reasoning": "recorded"
+      },
+      "display_conclusion": "caution",
+      "authored_statement": "The synthetic primary trace requires caution."
+    },
+    {
+      "conclusion": "c7459d64cb848053a2b1c",
+      "direct_subarguments": [
+        "A2"
+      ],
+      "id": "A7",
+      "label": "out",
+      "rank": 600,
+      "rule_id": "rf29d76cc05238c9daf3f",
+      "rule_name": "xc55c78cc0173cdfac599",
+      "strength": 500,
+      "subarguments": [
+        "A2"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "argument",
+        "name": "fault_route",
+        "span": {
+          "line": 92,
+          "column": 3,
+          "end_line": 94,
+          "end_column": 1
+        },
+        "formal_review": {
+          "kind": "rank",
+          "name": "fault_route",
+          "other": null,
+          "rank": 600,
+          "review": "synthetic-review/fault-inference",
+          "span": {
+            "line": 108,
+            "column": 3,
+            "end_line": 111,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "argument"
+        },
+        "rationale": "This route uses only the named synthetic findings and its declared assumptions.",
+        "reasoning": "recorded"
+      },
+      "display_conclusion": "not_ready",
+      "authored_statement": "The synthetic fault route concludes that the readiness criterion fails for keywords-001."
+    },
+    {
+      "conclusion": "ca6038b2965db2e8da47b",
+      "direct_subarguments": [
+        "A1"
+      ],
+      "id": "A8",
+      "label": "in",
+      "rule_id": "r1173e3a9625d183107f0",
+      "strength": 500,
+      "subarguments": [
+        "A1"
+      ],
+      "top": "strict",
+      "origin": {
+        "kind": "argument",
+        "name": "definition_route",
+        "span": {
+          "line": 84,
+          "column": 3,
+          "end_line": 86,
+          "end_column": 1
+        },
+        "formal_review": {
+          "kind": "strict",
+          "name": "definition_route",
+          "other": null,
+          "rank": null,
+          "review": "synthetic-review/stipulated-definition",
+          "span": {
+            "line": 100,
+            "column": 3,
+            "end_line": 101,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "argument"
+        },
+        "rationale": "This route uses only the named synthetic findings and its declared assumptions.",
+        "reasoning": "recorded"
+      },
+      "display_conclusion": "criterion_defined",
+      "authored_statement": "For this example, readiness means that an accepted primary or probe route supplies the stipulated criterion."
+    },
+    {
+      "conclusion": "ode5457bf52e544bf6f05",
+      "direct_subarguments": [
+        "A3"
+      ],
+      "id": "A9",
+      "label": "in",
+      "rank": 500,
+      "rule_id": "jde5457bf52e544bf6f05",
+      "rule_name": "xd8526e8ff18fdae8f2a2",
+      "strength": 500,
+      "subarguments": [
+        "A3"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "objection",
+        "name": "primary_trace_gap",
+        "span": {
+          "line": 98,
+          "column": 3,
+          "end_line": 100,
+          "end_column": 1
+        },
+        "formal_review": null
+      },
+      "display_conclusion": "primary_trace_gap"
+    },
+    {
+      "conclusion": "se152337e4e85aa3e8148",
+      "direct_subarguments": [
+        "A0"
+      ],
+      "id": "A10",
+      "label": "in",
+      "rank": 800,
+      "rule_id": "ve152337e4e85aa3e8148",
+      "rule_name": "x04ce2361ac2ebca0b3c1",
+      "strength": 500,
+      "subarguments": [
+        "A0"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "assumption",
+        "name": "calibration",
+        "span": {
+          "line": 51,
+          "column": 3,
+          "end_line": 56,
+          "end_column": 4
+        },
+        "formal_review": {
+          "kind": "rank",
+          "name": "calibration",
+          "other": null,
+          "rank": 800,
+          "review": "synthetic-review/calibration-assumption",
+          "span": {
+            "line": 107,
+            "column": 3,
+            "end_line": 108,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "assumption"
+        }
+      },
+      "display_conclusion": "calibration"
+    },
+    {
+      "conclusion": "cb24d6d33736ecd5604a4",
+      "direct_subarguments": [
+        "A4",
+        "A10",
+        "A8"
+      ],
+      "id": "A11",
+      "label": "out",
+      "rank": 700,
+      "rule_id": "rcfb68c926d312df6e25d",
+      "rule_name": "xec90908ed8a2db114744",
+      "strength": 400,
+      "subarguments": [
+        "A4",
+        "A0",
+        "A10",
+        "A1",
+        "A8"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "argument",
+        "name": "primary_route",
+        "span": {
+          "line": 86,
+          "column": 3,
+          "end_line": 88,
+          "end_column": 1
+        },
+        "formal_review": {
+          "kind": "rank",
+          "name": "primary_route",
+          "other": null,
+          "rank": 700,
+          "review": "synthetic-review/primary-inference",
+          "span": {
+            "line": 105,
+            "column": 3,
+            "end_line": 106,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "argument"
+        },
+        "rationale": "This route uses only the named synthetic findings and its declared assumptions.",
+        "reasoning": "recorded"
+      },
+      "display_conclusion": "ready",
+      "authored_statement": "The synthetic controller meets the stipulated readiness criterion for keywords-001."
+    },
+    {
+      "conclusion": "cb24d6d33736ecd5604a4",
+      "direct_subarguments": [
+        "A5"
+      ],
+      "id": "A12",
+      "label": "in",
+      "rank": 900,
+      "rule_id": "rfaa5396c458cba25aee9",
+      "rule_name": "x457603ec7727e9e92d99",
+      "strength": 900,
+      "subarguments": [
+        "A5"
+      ],
+      "top": "defeasible",
+      "origin": {
+        "kind": "argument",
+        "name": "probe_route",
+        "span": {
+          "line": 90,
+          "column": 3,
+          "end_line": 92,
+          "end_column": 1
+        },
+        "formal_review": {
+          "kind": "rank",
+          "name": "probe_route",
+          "other": null,
+          "rank": 900,
+          "review": "synthetic-review/probe-inference",
+          "span": {
+            "line": 106,
+            "column": 3,
+            "end_line": 107,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "argument"
+        },
+        "rationale": "This route uses only the named synthetic findings and its declared assumptions.",
+        "reasoning": "recorded"
+      },
+      "display_conclusion": "ready",
+      "authored_statement": "The synthetic controller meets the stipulated readiness criterion for keywords-001."
+    },
+    {
+      "conclusion": "c5a54a81c7dc8e35825e0",
+      "direct_subarguments": [
+        "A11"
+      ],
+      "id": "A13",
+      "label": "out",
+      "rule_id": "r00eeb5668f161af300ed",
+      "strength": 400,
+      "subarguments": [
+        "A4",
+        "A0",
+        "A10",
+        "A1",
+        "A8",
+        "A11"
+      ],
+      "top": "strict",
+      "origin": {
+        "kind": "argument",
+        "name": "reporting_route",
+        "span": {
+          "line": 94,
+          "column": 3,
+          "end_line": 96,
+          "end_column": 1
+        },
+        "formal_review": {
+          "kind": "strict",
+          "name": "reporting_route",
+          "other": null,
+          "rank": null,
+          "review": "synthetic-review/readiness-reporting-implication",
+          "span": {
+            "line": 101,
+            "column": 3,
+            "end_line": 103,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "argument"
+        },
+        "rationale": "This route uses only the named synthetic findings and its declared assumptions.",
+        "reasoning": "recorded"
+      },
+      "display_conclusion": "reportable",
+      "authored_statement": "An accepted readiness conclusion can be reported for this synthetic run."
+    },
+    {
+      "conclusion": "c5a54a81c7dc8e35825e0",
+      "direct_subarguments": [
+        "A12"
+      ],
+      "id": "A14",
+      "label": "in",
+      "rule_id": "r00eeb5668f161af300ed",
+      "strength": 900,
+      "subarguments": [
+        "A5",
+        "A12"
+      ],
+      "top": "strict",
+      "origin": {
+        "kind": "argument",
+        "name": "reporting_route",
+        "span": {
+          "line": 94,
+          "column": 3,
+          "end_line": 96,
+          "end_column": 1
+        },
+        "formal_review": {
+          "kind": "strict",
+          "name": "reporting_route",
+          "other": null,
+          "rank": null,
+          "review": "synthetic-review/readiness-reporting-implication",
+          "span": {
+            "line": 101,
+            "column": 3,
+            "end_line": 103,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "argument"
+        },
+        "rationale": "This route uses only the named synthetic findings and its declared assumptions.",
+        "reasoning": "recorded"
+      },
+      "display_conclusion": "reportable",
+      "authored_statement": "An accepted readiness conclusion can be reported for this synthetic run."
+    }
+  ],
+  "defeats": [
+    {
+      "attacker": "A6",
+      "kind": "rebut",
+      "subargument": "A7",
+      "target": "A7",
+      "relation_origin": {
+        "objection": null,
+        "annotation": {
+          "kind": "contrary",
+          "name": "caution",
+          "other": "not_ready",
+          "rank": null,
+          "review": "synthetic-review/caution-qualifies-fault-conclusion",
+          "span": {
+            "line": 115,
+            "column": 3,
+            "end_line": 117,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "claim"
+        }
+      }
+    },
+    {
+      "attacker": "A7",
+      "kind": "rebut",
+      "subargument": "A11",
+      "target": "A11",
+      "relation_origin": {
+        "objection": null,
+        "annotation": {
+          "kind": "contrary",
+          "name": "not_ready",
+          "other": "ready",
+          "rank": null,
+          "review": "synthetic-review/incompatible-readiness-conclusions",
+          "span": {
+            "line": 111,
+            "column": 3,
+            "end_line": 112,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "claim"
+        }
+      }
+    },
+    {
+      "attacker": "A7",
+      "kind": "rebut",
+      "subargument": "A11",
+      "target": "A13",
+      "relation_origin": {
+        "objection": null,
+        "annotation": {
+          "kind": "contrary",
+          "name": "not_ready",
+          "other": "ready",
+          "rank": null,
+          "review": "synthetic-review/incompatible-readiness-conclusions",
+          "span": {
+            "line": 111,
+            "column": 3,
+            "end_line": 112,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "claim"
+        }
+      }
+    },
+    {
+      "attacker": "A9",
+      "kind": "undercut",
+      "subargument": "A11",
+      "target": "A11",
+      "relation_origin": {
+        "objection": "primary_trace_gap",
+        "annotation": null
+      }
+    },
+    {
+      "attacker": "A9",
+      "kind": "undercut",
+      "subargument": "A11",
+      "target": "A13",
+      "relation_origin": {
+        "objection": "primary_trace_gap",
+        "annotation": null
+      }
+    },
+    {
+      "attacker": "A12",
+      "kind": "rebut",
+      "subargument": "A7",
+      "target": "A7",
+      "relation_origin": {
+        "objection": null,
+        "annotation": {
+          "kind": "contrary",
+          "name": "ready",
+          "other": "not_ready",
+          "rank": null,
+          "review": "synthetic-review/incompatible-readiness-conclusions",
+          "span": {
+            "line": 112,
+            "column": 3,
+            "end_line": 115,
+            "end_column": 1
+          },
+          "source_file": null,
+          "target_kind": "claim"
+        }
+      }
+    }
+  ],
+  "unavailable_evidence": []
+}

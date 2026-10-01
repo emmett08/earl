@@ -1,0 +1,39 @@
+// Synthetic temperature samples, with one argument pattern used in two scopes.
+language "EAL/3"
+
+environment staging {
+  require dataset == "synthetic"
+  require deployment == "staging"
+  require sensor == "controller-A"
+}
+
+environment production {
+  require dataset == "synthetic"
+  require deployment == "production"
+  require sensor == "controller-A"
+}
+
+tool temperature_samples {
+  version "1"
+}
+
+reasoning sample_criterion {
+  method "structured/1"
+  rationale "The scoped evidence predicates check the stated criterion over the retained synthetic temperature samples."
+}
+
+pattern bounded_sample(env: environment, collector: tool, criterion: reasoning) {
+  context environment env, tool collector, kind temperature_sample, max_age 60 {
+    evidence readings {
+      input {"fixture": "temperature-samples/1", "unit": "degC"}
+      require count(samples) >= 3 and max(samples) <= 80
+    }
+    claim within_limit {
+      statement "The retained synthetic sample contains at least three readings, each at most 80 degrees Celsius, for controller-A in this environment."
+    }
+    argument assess = [evidence readings] via criterion => within_limit
+  }
+}
+
+apply staging_check = bounded_sample(env=staging, collector=temperature_samples, criterion=sample_criterion)
+apply production_check = bounded_sample(env=production, collector=temperature_samples, criterion=sample_criterion)

@@ -90,6 +90,8 @@ The trusted TOML file binds tool names and versions to commands or JSON files. T
 
 The [API load-test example](examples/api-load-test/README.md) uses synthetic request measurements to exercise the CLI and MCP with a custom typed method. Run `make example` for its deterministic assessment. The optional [ASPIC+ method](docs/aspic-method.md) and EAL-to-ASPIC+ compiler provide a separate bounded formal argument view.
 
+The [multi-environment example](examples/multi-environment/README.md) applies one argument pattern to staging and production, preserving separate observations and reusing compatible records across sessions. The [ASPIC+ keyword example](examples/aspic-keywords/README.md) exercises every reviewed argumentation directive and the implemented formal theory vocabulary, with reproducible browser snapshots and checks for all three attack types.
+
 The [developer and model handover experiment](experiments/transfer_study/README.md) supplies paired allocation, fresh-session model commands, project handover, independent answer scoring, time budgets and analysis that retains failed and missing sessions. Its synthetic fixture verifies the harness; comparative claims require independent cases and live developer and model runs. The [automated nano-model pilot](experiments/model_transfer/README.md) provides a separate bounded run across reasoning and native-tool configurations.
 
 ## Documentation

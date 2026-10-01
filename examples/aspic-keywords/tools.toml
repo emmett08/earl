@@ -1,0 +1,10 @@
+[tools.fixture]
+kind = "command"
+argv = ["python3", "examples/aspic-keywords/collector.py"]
+version = "1"
+timeout_seconds = 10
+max_output_bytes = 65536
+pinned_files = [
+  {path = "examples/aspic-keywords/collector.py", sha256 = "c20fd626808468f70156401884e0151506be25ddaa17bff667d2b886c0939439"},
+  {path = "examples/aspic-keywords/fixture.json", sha256 = "1a0bc701e81f53b48c09e98d4d6bb2c1bfbd4107de06822edde1c940c58081aa"},
+]
