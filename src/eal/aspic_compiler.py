@@ -2,15 +2,15 @@
 
 This is a derived profile, not the default EAL evaluator.  It translates
 authored argument routes and targeted objections, never prose, into rules of
-``argumentation/aspic/1``.  EAL performs the observation and local
+``argumentation/aspic/2``.  EAL performs the observation and local
 method checks first.  The returned source map preserves the checked origins of
 every generated premise, rule and attack, including unavailable observations.
 
 Strictness, directed claim contraries and ranks require explicit reviewed EAL
 argumentation directives; none is inferred from English statements. Unannotated
 fallible premises and rules receive the same rank.
-The current ASPIC method bounds the theory to 64 rules/premises, eight
-antecedents per rule and 128 constructed arguments; exceedance is an error.
+The host owns construction and extension-search budgets. Exhaustion yields no
+completed acceptance result; captured limits are part of snapshot identity.
 """
 from __future__ import annotations
 
@@ -26,8 +26,9 @@ from .evaluator import canonical_digest, evaluate
 from .model import Program
 from .parser import parse
 from .semantics import objection_scopes
+from .limits import ExecutionLimits, current_limits, bounded, BudgetExceeded
 
-PROFILE = "EAL/3-compiled-aspic/4"
+PROFILE = "EAL/3-compiled-aspic/5"
 RANK = 500
 
 
@@ -56,7 +57,7 @@ def _snapshot_digest(mapping: dict) -> str:
     return canonical_digest({
         **{key: mapping[key] for key in (
             "source_digest", "assessed_at", "context_fingerprint",
-            "method_registry_fingerprint", "backend", "assessment_digest", "theory_digest")},
+            "method_registry_fingerprint", "backend", "assessment_digest", "theory_digest", "execution_limits")},
         "evidence_record_digests": {name: mapping["evidence"][name]["record_digest"]
                                     for name in sorted(mapping["evidence"])},
     })
@@ -99,6 +100,11 @@ class CompiledTheory:
             raise CompilationError(f"Compiled snapshot integrity check failed: {exc}") from exc
         return theory, mapping, assessment
 
+    @property
+    def limits(self):
+        return ExecutionLimits(**self.source_map['execution_limits'])
+
+    @bounded
     def solve(self) -> dict:
         """Solve the compiled goal and project formal routes to EAL identities."""
         return self._solve_snapshot(*self._checked_snapshot())
@@ -128,7 +134,7 @@ class CompiledTheory:
                                        "rejected" if labels else "unconstructed"),
                             "rule_id": origin["rule_id"],
                             "emitted": origin["emitted"]}
-        status = formal["grounded_status"]
+        status = formal["query_status"]
         scoped_status = assessment["claims"][mapping["goal"]["claim"]]["status"]
         return {"profile": PROFILE, "formal": formal, "routes": routes,
                 "claim": mapping["goal"]["claim"],
@@ -138,6 +144,7 @@ class CompiledTheory:
                                  "unsupported"),
                 "source_map": mapping}
 
+    @bounded
     def to_dict(self) -> dict:
         """Return the complete JSON-serialisable, opt-in compilation result."""
         theory, mapping, assessment = self._checked_snapshot()
@@ -154,16 +161,19 @@ class CompiledTheory:
                 "snapshot_digest": mapping["snapshot_digest"]}
 
 
+@bounded
 def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                       goal: str, now, context: Mapping,
                       registry=None,
-                      binding_digests: Mapping[str, str | None] | None = None) -> CompiledTheory:
+                      binding_digests: Mapping[str, str | None] | None = None,
+                      limits=None, resolver=None, semantics='grounded', query_mode='sceptical',
+                      preference=None) -> CompiledTheory:
     """Parse and compile exact EAL/3 source bytes at one checked snapshot.
 
     The named goal is an EAL claim.  No records are collected here.  Method
     checks are taken from EAL's local assessment, while the EAL-composed graph
     remains available as ``assessment`` for differential inspection.  Method
-    ``argumentation/aspic/1`` is deliberately excluded from this profile: a
+    ``argumentation/aspic/2`` is deliberately excluded from this profile: a
     pre-authored formal theory cannot be silently reinterpreted as EAL routes.
     """
     # A Program's declaration maps are mutable while its source_digest is
@@ -171,25 +181,26 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
     # always correspond to the declarations actually assessed and compiled.
     if not isinstance(source, str):
         raise TypeError("source must be EAL/3 text")
-    program = parse(source)
+    program = parse(source, limits=limits, resolver=resolver)
     # These conservative declaration limits run before any local method
     # execution.  The final theory schema checks actual emitted cardinality.
-    if len(program.evidence) > 64 or (len(program.arguments) +
+    if len(program.evidence) > current_limits().formal_premises or (len(program.arguments) +
                                       len(program.assumptions) +
-                                      len(program.objections)) > 64:
-        raise CompilationError("Compiled profile permits at most 64 evidence declarations "
-                               "and 64 combined argument, assumption and objection rules")
+                                      len(program.objections)) > current_limits().formal_rules:
+        raise BudgetExceeded('Compiled profile exceeds the host premise or rule budget')
     assessment = evaluate(program, records, now=now, context=context,
                           registry=registry, binding_digests=binding_digests)
     if not assessment["valid"]:
         raise CompilationError(f"EAL programme is invalid: {assessment['diagnostics']!r}")
+    if assessment.get('complete') is False:
+        raise BudgetExceeded('Local EAL assessment is incomplete; no partial formal snapshot is compiled')
     if goal not in program.claims:
         raise CompilationError(f"Unknown EAL goal claim {goal!r}")
     if any(program.reasoning[a.reasoning].method == METHOD for a in program.arguments.values()):
-        raise CompilationError("Compile authored EAL routes, not an argumentation/aspic/1 theory")
+        raise CompilationError("Compile authored EAL routes, not an argumentation/aspic/2 theory")
 
     annotations = {(item.kind, item.name): item for item in program.argumentation_directives
-                   if item.kind != "contrary"}
+                   if item.kind in ('rank', 'strict')}
     target_kinds = {name: kind for kind, table in (
         ("evidence", program.evidence), ("assumption", program.assumptions),
         ("argument", program.arguments), ("objection", program.objections),
@@ -218,6 +229,7 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                "context_fingerprint": assessment["context_fingerprint"],
                "method_registry_fingerprint": assessment["method_registry_fingerprint"],
                "backend": _backend_identity(),
+               "execution_limits": current_limits().describe(),
                "goal": {"claim": goal, "atom": claims[goal]},
                "claims": {}, "evidence": {}, "assumptions": {},
                "arguments": {}, "objections": {}, "contraries": [],
@@ -393,6 +405,33 @@ def compile_eal_aspic(source: str, records: Mapping[str, Mapping], *,
                                         "meaning": "Authored ungrounded relation or empty snapshot; no observation"}
     theory = {"premises": premises, "rules": rules, "contraries": contraries,
               "goal": claims[goal]}
+    preferences = [item for item in program.argumentation_directives if item.kind == 'prefer']
+    selected_preference = preference or ('last_link_partial' if preferences else 'minimum_rank')
+    if preferences and selected_preference != 'last_link_partial':
+        raise CompilationError('Reviewed priorities require last_link_partial preference')
+    if semantics != 'grounded' or query_mode != 'sceptical' or selected_preference != 'minimum_rank':
+        theory['options'] = {'semantics': semantics, 'query_mode': query_mode, 'preference': selected_preference}
+    if preferences:
+        priorities = []
+        for item in preferences:
+            if item.name in evidence:
+                kind, higher, lower = 'premise', evidence[item.name], evidence[item.other]
+                eligible = mapping['evidence'][item.name]['available'] and mapping['evidence'][item.other]['available']
+            else:
+                table = 'arguments' if item.name in program.arguments else 'assumptions'
+                other_table = 'arguments' if item.other in program.arguments else 'assumptions'
+                a, b = mapping[table][item.name], mapping[other_table][item.other]
+                kind, higher, lower = 'rule', a['rule_id'], b['rule_id']
+                eligible = a['emitted'] and b['emitted']
+            if eligible:
+                priorities.append({'kind': kind, 'higher': higher, 'lower': lower})
+        theory['priorities'] = priorities
+    for table in ('claims', 'evidence', 'assumptions', 'arguments', 'objections'):
+        for name, entry in mapping[table].items():
+            if name in program.source_files:
+                entry['source_file'] = program.source_files[name]
+            if table == 'arguments' and program.reasoning[program.arguments[name].reasoning].transfer:
+                entry['scope_transfer'] = asdict(program.reasoning[program.arguments[name].reasoning].transfer)
     try:
         _validate(theory)
     except ValueError as exc:

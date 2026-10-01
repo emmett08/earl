@@ -1,0 +1,51 @@
+language "EAL/3"
+environment lab {
+  require dataset == "synthetic"
+}
+tool probe {
+  version "1"
+}
+module release {
+  context environment lab, tool probe, kind test, max_age 60 {
+    evidence first {
+      input {"sensor": "left"}
+      require valid and count(samples) >= 3
+    }
+    evidence second {
+      input {"sensor": "right"}
+      require valid and sum(samples) / count(samples) < 10
+    }
+    evidence challenge {
+      input {"sensor": "challenge"}
+      require valid
+    }
+    claim passed {
+      statement "At least one synthetic check supports the reviewed criterion."
+    }
+    claim ready {
+      statement "The synthetic release has an accepted reviewed route."
+    }
+  }
+  reasoning measured {
+    method "structured/1"
+    rationale "The authored acceptance checks are relevant to this synthetic criterion."
+  }
+  pattern each(c: claim, r: reasoning, es: evidence[]) decreases es {
+    when es {
+      argument item = [evidence head(es)] via r => c
+      apply rest = each(c=c, r=r, es=tail(es))
+    }
+  }
+  apply checks = each(c=passed, r=measured, es=[first, second])
+  argument assess {
+    claim intermediate {
+      statement "The synthetic criterion has an accepted supporting route."
+      environment lab
+    }
+    argument child = [premises passed] via measured => intermediate
+    [premises intermediate] via measured => ready
+  }
+  objection disputed = [evidence challenge] -x> argument checks.item
+  rank checks.rest.item 700 reviewed "synthetic-review/right-sensor"
+  prefer checks.rest.item over checks.item reviewed "synthetic-review/route-order"
+}

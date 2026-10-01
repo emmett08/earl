@@ -23,6 +23,7 @@ def expanded_source():
     program = parse(SOURCE)
     arguments = {name: replace(arg, origin=None) for name, arg in program.arguments.items()}
     return format_program(replace(program, arguments=arguments, patterns={}, applications={},
+                                  authored=None, generated=(),
                                   declaration_count=program.declaration_count - len(program.patterns)))
 
 

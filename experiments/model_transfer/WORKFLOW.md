@@ -1,6 +1,6 @@
 # Running the investigation
 
-This guide describes protocol 7.0.0 and package 3.0.0. The implementation supports
+This guide describes protocol 7.0.0 and package 3.1.0. The implementation supports
 collection, resumption, independent coding, offline analysis and prospective
 allocation. A completed software run is not a completed scientific investigation.
 Read `execution_status`, annotation counts, accounting flags and decision status
@@ -273,3 +273,5 @@ python -m experiments.model_transfer.benchmark --output /tmp/harness-benchmark.j
 This compares one and four workers with fixed synthetic latency and identical
 outcomes/call counts. Its speedup is software evidence, not a measured live-model
 speedup. See [verification.md](verification.md) for actual results and limits.
+
+Current EAL/3 package 3.1.0 composition, public contracts and experiment checks are recorded in [composition verification](verification-eal31.md). Previous verification files remain historical records.

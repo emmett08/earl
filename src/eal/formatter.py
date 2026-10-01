@@ -9,6 +9,7 @@ import re
 from .model import Program
 from .parser import parse
 from .semantics import validate, _RESERVED_NAMES
+from .expressions import format_expression, predicate_expression
 
 
 def _json(value):
@@ -24,7 +25,7 @@ def semantic_ir(program: Program):
     result = asdict(program)
     # Keep the structured interchange key independent of Python model names.
     result['formal'] = result.pop('argumentation_directives')
-    for key in ('source_digest', 'locations'):
+    for key in ('source_digest', 'locations', 'authored', 'limits'):
         result.pop(key, None)
     for argument in result['arguments'].values():
         argument.pop('origin', None)
@@ -32,6 +33,13 @@ def semantic_ir(program: Program):
         diagnostic.pop('span', None)
     for directive in result['formal']:
         directive.pop('span', None)
+    def without_spans(value):
+        if type(value) is dict:
+            return {key: without_spans(child) for key, child in value.items() if key != 'span'}
+        if type(value) in (list, tuple):
+            return tuple(without_spans(child) for child in value)
+        return value
+    result = without_spans(result)
     return result
 
 
@@ -39,6 +47,9 @@ def format_program(program: Program, *, registry=None) -> str:
     diagnostics = validate(program, registry=registry)
     if diagnostics:
         raise ValueError('; '.join(f'{d.code}: {d.message}' for d in diagnostics))
+    if program.authored is not None:
+        from .source_printer import print_program
+        return print_program(program)
     blocks = [f'language {_json(program.language)}']
     defaults = {}
     for key, values in (
@@ -56,7 +67,7 @@ def format_program(program: Program, *, registry=None) -> str:
         blocks.append(f'{kind} {name} {{\n' + '\n'.join(f'  {line}' for line in lines) + '\n}')
 
     def predicates(values):
-        return [f'require {key(p.path)} {p.operator} {_json(p.expected)}' for p in values]
+        return [f'require {format_expression(predicate_expression(p), _json)}' for p in values]
 
     def key(path):
         parts = path.split('.')
@@ -108,7 +119,7 @@ def format_program(program: Program, *, registry=None) -> str:
                 lines.append(f'  {name_} {_json(getattr(proposition, name_))}')
             lines.append(f'  query {_json(proposition.query)}')
             p = proposition.result
-            lines.append(f'  result {key(p.path)} {p.operator} {_json(p.expected)}')
+            lines.append(f'  result {format_expression(predicate_expression(p), _json)}')
             lines.append('}')
         emit('claim', name, lines)
     for name, value in program.arguments.items():
@@ -140,6 +151,6 @@ def format_program(program: Program, *, registry=None) -> str:
     return '\n\n'.join(blocks) + '\n'
 
 
-def format_source(source: str, *, registry=None) -> str:
+def format_source(source: str, *, registry=None, **parse_options) -> str:
     """Parse, validate and print source; invalid input is never repaired silently."""
-    return format_program(parse(source), registry=registry)
+    return format_program(parse(source, **parse_options), registry=registry)

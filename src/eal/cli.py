@@ -26,6 +26,7 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
+    parser.add_argument("--limits", type=Path, help="Host-owned TOML execution budgets")
     subcommands = parser.add_subparsers(dest="operation", required=True)
     subcommands.add_parser("describe")
     register = subcommands.add_parser("register", help="Register a workspace EAL file for later sessions")
@@ -82,6 +83,9 @@ def main() -> None:
             command.add_argument("--collection", dest="collection_id", required=True)
             command.add_argument("--goal", required=True, help="Declared EAL claim to query")
             command.add_argument("--now", help="ISO-8601 assessment time; defaults to current UTC")
+            command.add_argument('--semantics', choices=('grounded', 'preferred', 'stable'), default='grounded')
+            command.add_argument('--query-mode', choices=('credulous', 'sceptical'), default='sceptical')
+            command.add_argument('--preference', choices=('minimum_rank', 'last_link_rank', 'last_link_partial'))
     explain = subcommands.add_parser("explain")
     explain.add_argument("assessment_id")
     explain.add_argument("--claim")
@@ -96,6 +100,8 @@ def main() -> None:
     args = parser.parse_args()
     workspace = args.workspace.resolve()
     try:
+        from .limits import ExecutionLimits, using_limits
+        limits = ExecutionLimits.load(args.limits) if args.limits else ExecutionLimits()
         if args.operation == "export-aspic":
             from .aspic_export import MAX_INPUT_BYTES, export_aspic_view
 
@@ -103,7 +109,7 @@ def main() -> None:
             if input_path.stat().st_size > MAX_INPUT_BYTES:
                 raise ValueError("ASPIC+ result exceeds the 4 MiB export input limit")
             supplied = strict_json(input_path.read_text(encoding="utf-8"))
-            view = export_aspic_view(supplied)
+            view = export_aspic_view(supplied, limits=limits)
             target = bounded_path(workspace, args.output)
             target.write_text(json.dumps(view, indent=2, ensure_ascii=False, allow_nan=False) + "\n",
                               encoding="utf-8")
@@ -116,7 +122,8 @@ def main() -> None:
             graph = strict_json(bounded_path(workspace, args.graph).read_text())
             if not isinstance(graph, dict) or set(graph) != {"arguments", "attacks"}:
                 raise ValueError("Graph must contain exactly arguments and attacks")
-            result = solve_grounded(**graph)
+            with using_limits(limits):
+                result = solve_grounded(**graph)
         else:
             methods = load_method_registry(args.methods)
             registered_operation = args.operation in {
@@ -126,11 +133,11 @@ def main() -> None:
                 from .knowledge import EALKnowledgeBase
 
                 knowledge = EALKnowledgeBase(workspace, args.registry, args.database,
-                                             method_registry=methods)
+                                             method_registry=methods, limits=limits)
                 service = knowledge.service
             else:
                 service = ReasoningService(workspace, args.registry, args.database,
-                                           method_registry=methods)
+                                           method_registry=methods, limits=limits)
             if args.operation == "describe":
                 result = service.describe()
             elif registered_operation:
@@ -182,7 +189,9 @@ def main() -> None:
                     elif args.operation == "reason":
                         result = service.reason(source, context, args.collection_id, args.now)
                     else:
-                        result = service.compile_aspic(source, context, args.collection_id, args.goal, args.now)
+                        result = service.compile_aspic(source, context, args.collection_id, args.goal, args.now,
+                                                       semantics=args.semantics, query_mode=args.query_mode,
+                                                       preference=args.preference)
         print(json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False))
         if result.get("valid") is False or any(record.get("status") == "error" for record in result.get("records", {}).values()):
             raise SystemExit(1)

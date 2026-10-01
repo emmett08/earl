@@ -1,6 +1,6 @@
 # EAL/3 integration contract
 
-EAL/3 is the supported source language. The package is `3.0.0` and its source notation uses newline-terminated fields and typed flows. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
+EAL/3 is the supported source language. The package is `3.1.0` and its source notation uses newline-terminated fields and typed flows. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/2` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
 
 Source fields use newlines, contexts resolve metadata defaults, and typed support flows lower to the existing argument model. Package, source notation and stored observation versions remain separate. Strictness, ranks and contraries retain their opt-in ASPIC+ compilation effects.
 
@@ -41,7 +41,9 @@ Collections bind exact source bytes and context. The evaluator reports `supporte
 
 ## Bounds and persistence
 
-Collection preflight bounds context JSON to 16 KiB, 128 evidence IDs and each request to 1 MiB. The sum of configured tool output allowances is at most 128 MiB, individual command outputs at most 16 MiB, and the final collection JSON at most 32 MiB. Packet output defaults to a 16 KiB bound with explicit omission counts; it excludes raw observation values, command streams and arbitrary extension outputs. SQLite stores immutable observations, collections and assessments under private files. Stored records remain historical results; a new assessment checks current source, method, binding and observation freshness. See [MCP and tools](docs/mcp-and-tools.md) for exact adapter envelopes and failure handling.
+Source/graph/construction/search budgets are operator-owned `ExecutionLimits`. CLI, MCP and JSON launchers accept `--limits FILE`; source cannot raise them. `[limits]` TOML values are positive integers. Discovery advertises the selected budgets. Compile/export captures them in the checked snapshot, and exporting under a smaller current host budget is rejected. An exhausted calculation is incomplete and supplies no accepted or rejected conclusion. See [scoped composition](docs/eal3-composition.md).
+
+Collection preflight bounds context JSON to 16 KiB, a host-configurable evidence count (default 128) and each request to 1 MiB. The sum of configured tool output allowances is at most 128 MiB, individual command outputs at most 16 MiB, and the final collection JSON at most 32 MiB. Packet output defaults to a 16 KiB bound with explicit omission counts; it excludes raw observation values, command streams and arbitrary extension outputs. SQLite stores immutable observations, collections and assessments under private files. Stored records remain historical results; a new assessment checks current source, method, binding and observation freshness. See [MCP and tools](docs/mcp-and-tools.md) for exact adapter envelopes and failure handling.
 
 ## Investigation contracts
 

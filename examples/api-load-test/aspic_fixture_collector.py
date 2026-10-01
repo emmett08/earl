@@ -21,7 +21,7 @@ def collect(request):
         raise ValueError("Unexpected fixture identity")
     identifier = request["evidence_id"]
     values = {"formal_theory": {
-        "schema": "EAL/typed-input/1", "method": "argumentation/aspic/1",
+        "schema": "EAL/typed-input/1", "method": "argumentation/aspic/2",
         "subject": "orders-api", "quantity": "proposition", "unit": "1",
         "scope": "demo-load-001", "valid_from": "2026-09-25T10:00:00Z",
         "valid_until": "2026-09-25T10:00:01Z",

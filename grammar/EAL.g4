@@ -1,139 +1,147 @@
 grammar EAL;
 
-// EAL/3. Contexts and flows lower to the existing typed EAL/3 IR.
+// EAL/3. Recognition is independent of binding, lowering and evaluation.
 program : NL* 'language' STRING lineEnd (declaration NL*)* EOF ;
-
 declaration
-    : contextDecl | environmentDecl | toolDecl | evidenceDecl
-    | assumptionDecl | reasoningDecl | claimDecl | argumentDecl
-    | objectionDecl | patternDecl | applicationDecl | argumentationDirective
+    : contextDecl | moduleDecl | importDecl | environmentDecl | toolDecl
+    | evidenceDecl | assumptionDecl | reasoningDecl | claimDecl | argumentDecl
+    | objectionDecl | patternDecl | applicationDecl | patternGuard
+    | argumentationDirective
     ;
-
-// Contexts supply defaults, never namespaces or new logical premises.
+moduleDecl : 'module' qualifiedName '{' NL* (declaration NL*)* '}' ;
+importDecl : 'import' STRING 'as' identifier lineEnd ;
 contextDecl
     : 'context' contextAttribute (',' contextAttribute)*
       '{' NL* (declaration NL*)* '}'
     ;
 contextAttribute
-    : 'environment' identifier | 'tool' identifier | 'max_age' NUMBER
-    | 'valid_from' STRING | 'valid_until' STRING
+    : 'environment' qualifiedName | 'tool' qualifiedName | 'max_age' signedNumber
+    | 'kind' identifier | 'input' jsonValue | 'version' STRING
+    | 'validate' qualifiedName | 'method' STRING
+    | 'subject' STRING | 'quantity' STRING | 'unit' STRING | 'scope' STRING
+    | 'valid_from' STRING | 'valid_until' STRING | 'query' jsonValue
     ;
-
-environmentDecl : 'environment' identifier '{' NL* predicate+ '}' ;
-toolDecl : 'tool' identifier '{' NL* versionField '}' ;
+environmentDecl : 'environment' qualifiedName '{' NL* predicate+ '}' ;
+toolDecl : 'tool' qualifiedName '{' NL* versionField* '}' ;
 versionField : 'version' STRING lineEnd ;
-
-// Required fields and singleton cardinality are checked after inheritance.
-evidenceDecl : 'evidence' identifier '{' NL* evidenceField* '}' ;
+evidenceDecl : 'evidence' qualifiedName '{' NL* evidenceField* '}' ;
 evidenceField
-    : toolField | kindField | environmentField | maxAgeField | inputField
-    | predicate
+    : toolField | kindField | environmentField | maxAgeField | inputField | predicate
     ;
-toolField : 'tool' identifier lineEnd ;
+toolField : 'tool' qualifiedName lineEnd ;
 kindField : 'kind' identifier lineEnd ;
-environmentField : 'environment' identifier lineEnd ;
-maxAgeField : 'max_age' NUMBER lineEnd ;
+environmentField : 'environment' qualifiedName lineEnd ;
+maxAgeField : 'max_age' signedNumber lineEnd ;
 inputField : 'input' jsonValue lineEnd ;
-
-assumptionDecl : 'assumption' identifier '{' NL* assumptionField* '}' ;
+assumptionDecl : 'assumption' qualifiedName '{' NL* assumptionField* '}' ;
 assumptionField
-    : statementField | environmentField | validateField
-    | validFromField | validUntilField
+    : statementField | environmentField | validateField | validFromField | validUntilField
     ;
 statementField : 'statement' STRING lineEnd ;
-validateField : 'validate' identifier lineEnd ;
+validateField : 'validate' qualifiedName lineEnd ;
 validFromField : 'valid_from' STRING lineEnd ;
 validUntilField : 'valid_until' STRING lineEnd ;
-
-reasoningDecl : 'reasoning' identifier '{' NL* reasoningField* '}' ;
-reasoningField : methodField | rationaleField | backingField | predicate ;
+reasoningDecl : 'reasoning' qualifiedName '{' NL* reasoningField* '}' ;
+reasoningField : methodField | rationaleField | backingField | transferField | predicate ;
 methodField : 'method' STRING lineEnd ;
 rationaleField : 'rationale' STRING lineEnd ;
 backingField : 'backing' referenceList lineEnd ;
-
-claimDecl : 'claim' identifier '{' NL* claimField* '}' ;
+transferField
+    : 'transfer' 'from' qualifiedName 'to' qualifiedName
+      'assuming' qualifiedName 'reviewed' STRING lineEnd
+    ;
+claimDecl : 'claim' qualifiedName '{' NL* claimField* '}' ;
 claimField : statementField | environmentField | propositionDecl ;
 propositionDecl : 'proposition' '{' NL* propositionField* '}' NL* ;
 propositionField
-    : subjectField | quantityField | unitField | scopeField
-    | validFromField | validUntilField | queryField | resultField
+    : subjectField | quantityField | unitField | scopeField | validFromField
+    | validUntilField | queryField | resultField
     ;
 subjectField : 'subject' STRING lineEnd ;
 quantityField : 'quantity' STRING lineEnd ;
 unitField : 'unit' STRING lineEnd ;
 scopeField : 'scope' STRING lineEnd ;
 queryField : 'query' jsonValue lineEnd ;
-resultField : 'result' key comparator jsonScalar lineEnd ;
-
-argumentDecl : 'argument' identifier '=' NL* argumentFlow lineEnd ;
+resultField : 'result' expression lineEnd ;
+argumentDecl
+    : 'argument' qualifiedName
+      ('=' NL* argumentFlow lineEnd
+      | '{' NL* (declaration NL*)* argumentFlow lineEnd '}')
+    ;
 argumentFlow
-    : support NL* 'via' NL* reasoningRef=identifier
-      NL* '=>' NL* conclusionRef=identifier
-      (NL* 'binding' bindingRef=identifier)?
+    : support NL* 'via' NL* reasoningRef=reference
+      NL* '=>' NL* conclusionRef=reference
+      (NL* 'binding' bindingRef=reference)?
     ;
-support
-    : '[' NL* (supportGroup (',' NL* supportGroup)*)? NL* ']'
-    ;
-supportGroup : supportKind identifier (',' NL* identifier)* ;
+support : '[' NL* (supportGroup (',' NL* supportGroup)*)? NL* ']' ;
+supportGroup : supportKind reference (',' NL* reference)* ;
 supportKind : 'evidence' | 'assumptions' | 'premises' ;
-
 patternDecl
-    : 'pattern' identifier '(' NL*
+    : 'pattern' qualifiedName '(' NL*
       (patternParameter (',' NL* patternParameter)*)? NL* ')'
-      NL* '=' NL* argumentFlow lineEnd
+      (NL* 'decreases' identifier)? NL*
+      ('=' NL* argumentFlow lineEnd | '{' NL* (declaration NL*)+ '}')
     ;
-patternParameter : identifier ':' parameterKind ;
-parameterKind : 'claim' | 'reasoning' | 'evidence' | 'assumption' | identifier ;
+patternParameter : identifier ':' parameterKind ('[' ']')? ;
+parameterKind : 'claim' | 'reasoning' | 'evidence' | 'assumption' | 'environment' | 'tool' | identifier ;
 applicationDecl
-    : 'apply' identifier '=' identifier '(' NL*
+    : 'apply' qualifiedName '=' qualifiedName '(' NL*
       (patternBinding (',' NL* patternBinding)*)? NL* ')' lineEnd
     ;
-patternBinding : identifier '=' identifier ;
-
+patternBinding : identifier '=' bindingValue ;
+bindingValue : reference | '[' NL* (reference (',' NL* reference)*)? NL* ']' ;
+patternGuard
+    : 'when' identifier '{' NL* (declaration NL*)* '}'
+      (NL* 'else' '{' NL* (declaration NL*)* '}')?
+    ;
 objectionDecl
-    : 'objection' identifier '=' NL* objectionSupport NL* '-x>' NL*
-      targetKind identifier lineEnd
+    : 'objection' qualifiedName '=' NL* objectionSupport NL* '-x>' NL*
+      targetKind reference lineEnd
     ;
-objectionSupport
-    : '[' NL* (objectionGroup (',' NL* objectionGroup)*)? NL* ']'
-    ;
-objectionGroup : objectionSupportKind identifier (',' NL* identifier)* ;
+objectionSupport : '[' NL* (objectionGroup (',' NL* objectionGroup)*)? NL* ']' ;
+objectionGroup : objectionSupportKind reference (',' NL* reference)* ;
 objectionSupportKind : 'evidence' | 'premises' ;
 targetKind : 'claim' | 'reasoning' | 'assumption' | 'argument' | 'objection' ;
-
 argumentationDirective
-    : 'strict' identifier 'reviewed' STRING lineEnd
-    | 'rank' identifier NUMBER 'reviewed' STRING lineEnd
-    | 'contrary' identifier 'to' identifier 'reviewed' STRING lineEnd
+    : 'strict' qualifiedName 'reviewed' STRING lineEnd
+    | 'rank' qualifiedName signedNumber 'reviewed' STRING lineEnd
+    | 'contrary' qualifiedName 'to' qualifiedName 'reviewed' STRING lineEnd
+    | 'prefer' qualifiedName 'over' qualifiedName 'reviewed' STRING lineEnd
     ;
-
-referenceList : '[' NL* identifier (',' NL* identifier)* NL* ']' ;
-// A bare key denotes its exact text, including dots; it is not an expression.
-predicate : 'require' key comparator jsonScalar lineEnd ;
-key : identifier ('.' identifier)* | STRING ;
+referenceList : '[' NL* reference (',' NL* reference)* NL* ']' ;
+reference : qualifiedName | 'head' '(' qualifiedName ')' | 'tail' '(' qualifiedName ')' ;
+qualifiedName : identifier ('.' identifier)* ;
+predicate : 'require' expression lineEnd ;
+expression : orExpression ;
+orExpression : andExpression ('or' andExpression)* ;
+andExpression : comparisonExpression ('and' comparisonExpression)* ;
+comparisonExpression : additiveExpression (comparator additiveExpression)? ;
+additiveExpression : multiplicativeExpression (('+' | '-') multiplicativeExpression)* ;
+multiplicativeExpression : unaryExpression (('*' | '/' | '%') unaryExpression)* ;
+unaryExpression : ('not' | '+' | '-') unaryExpression | primaryExpression ;
+primaryExpression
+    : qualifiedName '(' (expression (',' expression)*)? ')'
+    | qualifiedName | jsonValue | '(' expression ')'
+    ;
 comparator : '==' | '!=' | '<=' | '>=' | '<' | '>' ;
-
 jsonValue : jsonScalar | jsonObject | jsonArray ;
 jsonObject
     : '{' NL* (STRING NL* ':' NL* jsonValue
       (NL* ',' NL* STRING NL* ':' NL* jsonValue)*)? NL* '}'
     ;
-jsonArray
-    : '[' NL* (jsonValue (NL* ',' NL* jsonValue)*)? NL* ']'
-    ;
-jsonScalar : STRING | NUMBER | 'true' | 'false' | 'null' ;
-
-// Retain every identifier spelling admitted by the supplied grammar.
+jsonArray : '[' NL* (jsonValue (NL* ',' NL* jsonValue)*)? NL* ']' ;
+jsonScalar : STRING | signedNumber | 'true' | 'false' | 'null' ;
+signedNumber : '-'? NUMBER ;
 identifier
     : ID | 'proposition' | 'subject' | 'quantity' | 'unit' | 'scope'
     | 'result' | 'binding' | 'query' | 'method' | 'pattern' | 'apply'
-    | 'strict' | 'rank' | 'contrary' | 'reviewed' | 'to'
-    | 'context' | 'via'
+    | 'strict' | 'rank' | 'contrary' | 'reviewed' | 'to' | 'context' | 'via'
+    | 'module' | 'import' | 'as' | 'transfer' | 'from' | 'assuming'
+    | 'decreases' | 'when' | 'else' | 'head' | 'tail' | 'prefer' | 'over'
     ;
-// EOF permits a final directive/flow without a final newline.
 lineEnd : NL+ | EOF ;
 ID : [a-zA-Z_] [a-zA-Z_0-9]* ;
-NUMBER : '-'? ('0' | [1-9] [0-9]*) ('.' [0-9]+)? ([eE] [+-]? [0-9]+)? ;
+NUMBER : ('0' | [1-9] [0-9]*) ('.' [0-9]+)? ([eE] [+-]? [0-9]+)? ;
 STRING : '"' (ESC | ~["\\\r\n])* '"' ;
 fragment ESC : '\\' (["\\/bfnrt] | 'u' HEX HEX HEX HEX) ;
 fragment HEX : [0-9a-fA-F] ;

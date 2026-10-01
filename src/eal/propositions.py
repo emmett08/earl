@@ -5,7 +5,8 @@ within that interpretation; they cannot authenticate a sensor or interpret prose
 """
 from __future__ import annotations
 
-from dataclasses import asdict
+from dataclasses import asdict, replace
+from copy import deepcopy
 from fractions import Fraction
 import hashlib
 import json
@@ -13,7 +14,8 @@ import math
 import operator
 import re
 
-from .model import Proposition
+from .model import Proposition, Predicate
+from .expressions import expression_errors, predicate_paths, evaluate_expression, format_expression
 from .builtin_methods import BUILTIN_SPECS
 
 SCHEMA = 'EAL/typed-input/1'
@@ -86,7 +88,7 @@ def proposition_errors(proposition: Proposition, method: str | None = None, regi
     except (ValueError, TypeError):
         errors.append('Proposition interval requires ISO-8601 timestamps with timezones')
     expected = proposition.result.expected
-    if not isinstance(expected, (bool, int, float)) or isinstance(expected, float) and not math.isfinite(expected):
+    if proposition.result.expression is None and (not isinstance(expected, (bool, int, float)) or isinstance(expected, float) and not math.isfinite(expected)):
         errors.append('A scalar proposition result must compare a finite number or boolean')
     if isinstance(expected, bool) and proposition.result.operator not in ('==', '!='):
         errors.append('Boolean proposition results support only == and !=')
@@ -102,11 +104,20 @@ def proposition_errors(proposition: Proposition, method: str | None = None, regi
             errors.append(f'Unknown registered method {method!r}')
             return errors
         errors.extend(schema_errors(proposition.query, contract.query_schema, 'query'))
-        output = contract.output_type(proposition.result.path)
-        if output is None:
-            errors.append(f'Method {method!r} has no typed result {proposition.result.path!r}')
-        elif (output == 'boolean') != isinstance(expected, bool):
-            errors.append('Proposition result type does not match the method output type')
+        if proposition.result.expression is not None:
+            errors.extend(expression_errors(proposition.result.expression, contract.output_schema))
+            paths = predicate_paths(proposition.result)
+            if not paths:
+                errors.append('A proposition result must depend on a declared method output')
+            for path in paths:
+                if contract.output_type(path) is None:
+                    errors.append(f'Method {method!r} has no typed result {path!r}')
+        else:
+            output = contract.output_type(proposition.result.path)
+            if output is None:
+                errors.append(f'Method {method!r} has no typed result {proposition.result.path!r}')
+            elif (output == 'boolean') != isinstance(expected, bool):
+                errors.append('Proposition result type does not match the method output type')
         if proposition.quantity not in contract.quantities:
             errors.append(f'Method {method!r} does not accept quantity {proposition.quantity!r}')
     return errors
@@ -167,6 +178,27 @@ def prepare_binding(proposition: Proposition, method: str, evidence_id: str, val
 
 def check_result(proposition: Proposition, method: str, details: dict, trace: dict, registry=None):
     """Evaluate the formal result predicate, converting only physical statistics."""
+    if proposition.result.expression is not None:
+        converted = deepcopy(details)
+        observations = {}
+        for path in predicate_paths(proposition.result):
+            output = _output_type(method, path, registry)
+            check = check_result(replace(proposition, result=Predicate(path, '==', False if output == 'boolean' else 0)),
+                                 method, details, trace, registry)
+            if 'actual' not in check:
+                return check
+            observations[path] = check['actual']
+            destination = converted
+            parts = path.split('.')
+            for field in parts[:-1]:
+                destination = destination[field]
+            destination[parts[-1]] = check['actual']
+        checked = evaluate_expression(proposition.result.expression, converted)
+        if not checked.known or type(checked.value) is not bool:
+            return {**trace, 'status': 'unsupported', 'reasons': [checked.reason or 'Result requires a Boolean']}
+        return {**trace, 'status': 'supported' if checked.value else 'unsupported', 'holds': checked.value,
+                'actual': observations, 'output_unit': proposition.unit,
+                'reasons': [format_expression(proposition.result.expression) + (' holds' if checked.value else ' does not hold')]}
     actual = details
     for field in proposition.result.path.split('.'):
         if not isinstance(actual, dict) or field not in actual:

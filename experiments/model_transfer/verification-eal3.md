@@ -1,3 +1,5 @@
+Historical package 3.0.0 verification. Current composition checks are in [the 3.1.0 record](verification-eal31.md).
+
 # EAL/3 verification
 
 Package **3.0.0**, source **EAL/3**, model-transfer protocol **7.0.0**,

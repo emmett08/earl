@@ -48,7 +48,7 @@ context environment test_run, tool aspic_fixture, max_age 3600.0 {
   }
 
   reasoning formal_conflict {
-    method "argumentation/aspic/1"
+    method "argumentation/aspic/2"
     rationale "The specified strict and defeasible rules and their undercut resolve the synthetic run-level conflict."
   }
 

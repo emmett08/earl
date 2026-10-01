@@ -1,6 +1,6 @@
 # Fresh-session EAL workflow experiment
 
-EAL/3 source, package **3.0.0**, protocol **7.0.0**, scientific schema **1.2**, status **specified**. The
+EAL/3 source, package **3.1.0**, protocol **7.0.0**, scientific schema **1.2**, status **specified**. The
 [methodology](../../docs/eal3-experiment-methodology.md) defines the practical
 decision, statistical assumptions, task populations and inference limits.
 Implementation checks and synthetic validation do not establish a live benefit.
@@ -203,3 +203,5 @@ and plan identity, so an EAL/2 run cannot resume under EAL/3. Retained EAL/2
 protocols, results and verification remain historical records available for
 offline analysis. The grammar change has no measured model or authoring benefit
 in those records. See [EAL/3 verification](verification-eal3.md).
+
+Current EAL/3 package 3.1.0 composition, public contracts and experiment checks are recorded in [composition verification](verification-eal31.md). Previous verification files remain historical records.

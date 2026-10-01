@@ -156,13 +156,13 @@ def test_recursion_and_nested_applications_are_not_grammar_productions():
         parse(BASE + PATTERN.replace('=> c', 'apply inner=check(c=c)\n conclusion c'))
 
 
-def test_application_budget_and_expanded_reference_budget_are_enforced(monkeypatch):
+def test_application_budget_and_expanded_reference_budget_are_enforced():
+    from eal.limits import ExecutionLimits
     applications = ''.join(APPLICATION.replace('pressure_check', f'use_{i}') for i in range(1001))
     program = parse(BASE + PATTERN + applications)
     assert 'resource_limit' in {d.code for d in validate(program)}
     assert not program.arguments
-    monkeypatch.setattr(abstractions, 'MAX_EXPANDED_REFERENCES', 4)
-    program = parse(BASE + PATTERN + APPLICATION)
+    program = parse(BASE + PATTERN + APPLICATION, limits=ExecutionLimits(expanded_references=4))
     assert 'resource_limit' in {d.code for d in validate(program)}
     assert not program.arguments
 

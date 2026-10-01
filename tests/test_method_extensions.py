@@ -88,7 +88,7 @@ def test_bad_output_exception_and_nontermination_never_become_support(callback):
     contract = replace(RMS_CONTRACT, identifier='test/failure/1', implementation=callback, timeout_seconds=.1)
     started = time.monotonic()
     result = run_method({'origin': 0, 'samples': [1]}, contract)
-    assert result['status'] == 'unsupported'
+    assert result['status'] == ('incomplete' if callback is _hang else 'unsupported')
     assert result['details'] == {}
     assert result['evidence_id'] == 'trial'
     assert time.monotonic() - started < 3

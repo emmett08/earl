@@ -2,7 +2,7 @@
 
 EAL/3 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
 
-The package is **3.0.0** and requires Python **3.11 or later**. The supported source language is `EAL/3`, with newline-terminated fields and typed flows. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
+The package is **3.1.0** and requires Python **3.11 or later**. The supported source language is `EAL/3`, with newline-terminated fields and typed flows. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
 
 ## Author a bounded argument
 
@@ -34,7 +34,7 @@ apply check = measured_route(c=measured, r=authored, e=reading)
 rank reading 700 reviewed "synthetic-review/probe"
 ```
 
-For a dependent claim, use `[premises measured] via authored => followup`. This builds nested derivations through claims, including pattern instances. Inline argument declarations and nested or recursive pattern expansion are outside the grammar. See the [language reference](docs/language.md) for required fields, scope inheritance and reviewed ASPIC+ directives.
+For a dependent claim, use `[premises measured] via authored => followup`. This builds nested derivations through claims, including pattern instances. Argument blocks can contain local declarations. Compound patterns can call nested patterns and recurse over a decreasing typed list. Modules, source imports and pure expressions support larger cases; see [scoped composition](docs/eal3-composition.md). See the [language reference](docs/language.md) for required fields, scope inheritance and reviewed ASPIC+ directives.
 
 ## Install and check
 

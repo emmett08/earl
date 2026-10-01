@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Mapping
 from uuid import uuid4
 
+from .limits import ExecutionLimits, current_limits, bounded
 from .collection_scheduler import CollectionScheduler
 from .store import RunStore, utc_now
 from .tool_acquisition import (MAX_REQUEST_BYTES, ToolBinding, ToolRegistry, bounded_path, strict_json,
@@ -74,6 +75,8 @@ def acquisition_request(program, evidence_id: str, context: Mapping[str, Any]) -
     a producer genuinely measured the supplied value.
     """
     evidence = program.evidence[evidence_id]
+    from .evaluator import environment_context
+    context = environment_context(evidence.environment, context)
     tool = program.tools[evidence.tool]
     return {"tool": tool.name, "tool_version": tool.version,
             "input": evidence.input, "context": dict(context)}
@@ -90,6 +93,7 @@ class EvidenceRuntime:
         self.method_registry = default_registry() if method_registry is None else method_registry
         self.scheduler = CollectionScheduler() if scheduler is None else scheduler
 
+    @bounded
     def collect(self, program, context: Mapping[str, Any], evidence_ids: list[str] | None = None,
                 *, registry: ToolRegistry | None = None) -> dict:
         from .evaluator import canonical_digest
@@ -108,8 +112,8 @@ class EvidenceRuntime:
         if (not isinstance(names, list) or any(not isinstance(name, str) for name in names)
                 or len(set(names)) != len(names) or any(name not in program.evidence for name in names)):
             raise ValueError("evidence_ids must be unique declared evidence identifiers")
-        if len(names) > MAX_COLLECTION_EVIDENCE:
-            raise ValueError(f"Collection exceeds {MAX_COLLECTION_EVIDENCE} evidence requests")
+        if len(names) > current_limits().collection_evidence:
+            raise ValueError(f"Collection exceeds {current_limits().collection_evidence} evidence requests")
         selected_registry = self.registry if registry is None else registry
         # Check the complete selected plan before its first effectful call.
         # A missing binding is still collected as a durable error observation.
@@ -156,6 +160,8 @@ class EvidenceRuntime:
         from .evaluator import canonical_digest, environment_fingerprint
 
         declaration = program.evidence[name]
+        from .evaluator import environment_context
+        context = dict(environment_context(declaration.environment, context))
         declared_tool = program.tools[declaration.tool]
         run_id = str(uuid4())
         started_at = utc_now()
@@ -217,9 +223,12 @@ class ReasoningService:
 
     def __init__(self, workspace: str | Path, registry_path: str | Path | None = None,
                  database_path: str | Path | None = None, *, method_registry=None,
-                 scheduler: CollectionScheduler | None = None):
+                 scheduler: CollectionScheduler | None = None, limits: ExecutionLimits | None = None):
         from .methods import MethodRegistry, default_registry
 
+        self.limits = limits or ExecutionLimits()
+        if type(self.limits) is not ExecutionLimits:
+            raise TypeError("limits must be host-owned ExecutionLimits")
         self.method_registry = default_registry() if method_registry is None else method_registry
         if not isinstance(self.method_registry, MethodRegistry):
             raise TypeError("method_registry must be a MethodRegistry")
@@ -232,12 +241,29 @@ class ReasoningService:
             scheduler=scheduler,
         )
 
+    @bounded
+    def parse(self, source: str):
+        """Resolve source-only imports inside the operator workspace."""
+        from .parser import parse
+        return parse(source, resolver=self.parse_resolver, limits=self.limits)
+
+    def parse_resolver(self, relative):
+        target = bounded_path(self.workspace, relative)
+        if target.suffix != ".eal" or not target.is_file():
+            raise ValueError("An import must name a workspace .eal file")
+        with target.open('rb') as imported:
+            data = imported.read(self.limits.source_bytes + 1)
+        if len(data) > self.limits.source_bytes:
+            raise ValueError("Imported source exceeds the host byte budget")
+        return data.decode('utf-8')
+
+    @bounded
     def validate(self, source: str) -> dict:
         from .parser import parse
         from .semantics import validate
 
         try:
-            program = parse(source)
+            program = self.parse(source)
         except ValueError as exc:
             return {"valid": False, "diagnostics": [{"code": "syntax", "message": str(exc)}]}
         diagnostics = validate(program, registry=self.method_registry)
@@ -245,32 +271,37 @@ class ReasoningService:
                 "method_registry_fingerprint": self.method_registry.fingerprint,
                 "diagnostics": [dataclasses.asdict(d) for d in diagnostics]}
 
+    @bounded
     def describe(self) -> dict:
         from .discovery import describe_language
 
-        return describe_language(registry=self.method_registry)
+        return {**describe_language(registry=self.method_registry), "execution_limits": self.limits.describe()}
 
+    @bounded
     def format(self, source: str) -> dict:
         from .formatter import format_source
         from .parser import parse
 
-        formatted = format_source(source, registry=self.method_registry)
-        return {"source": formatted, "source_digest": parse(formatted).source_digest,
+        from .formatter import format_program
+        formatted = format_program(self.parse(source), registry=self.method_registry)
+        return {"source": formatted, "source_digest": self.parse(formatted).source_digest,
                 "new_collection_required": formatted != source}
 
+    @bounded
     def collect(self, source: str, context: dict, evidence_ids: list[str] | None = None) -> dict:
         from .parser import parse
 
         registry = ToolRegistry.load(self.registry_path) if self.registry_path is not None else self.runtime.registry
-        return self.runtime.collect(parse(source), context, evidence_ids, registry=registry)
+        return self.runtime.collect(self.parse(source), context, evidence_ids, registry=registry)
 
+    @bounded
     def plan(self, source: str, claim: str) -> dict:
         """List the complete acquisition closure for one declared claim."""
         from .parser import parse
         from .planning import EvidencePlanner
         from .semantics import validate
 
-        program = parse(source)
+        program = self.parse(source)
         diagnostics = validate(program, registry=self.method_registry)
         if diagnostics:
             raise ValueError("Cannot plan invalid EAL source: " + "; ".join(
@@ -360,12 +391,13 @@ class ReasoningService:
                 current[name] = None
         return current
 
+    @bounded
     def reason(self, source: str, context: dict, collection_id: str | None = None, now: str | None = None) -> dict:
         from .collection_identity import CollectionIdentityValidator
         from .evaluator import evaluate
         from .parser import parse
 
-        program = parse(source)
+        program = self.parse(source)
         if collection_id is not None and (not isinstance(collection_id, str) or not collection_id.strip()):
             raise ValueError("collection_id must be a nonempty string or null")
         collection = self.store.get(collection_id, kind="collection") if collection_id is not None else None
@@ -379,8 +411,10 @@ class ReasoningService:
         assessment_id = self.store.put("assessment", assessment)
         return {"assessment_id": assessment_id, **assessment}
 
+    @bounded
     def compile_aspic(self, source: str, context: dict, collection_id: str,
-                      goal: str, now: str | None = None) -> dict:
+                      goal: str, now: str | None = None, *, semantics='grounded',
+                      query_mode='sceptical', preference=None) -> dict:
         """Opt-in compilation of checked EAL routes into a bounded ASPIC+ snapshot.
 
         The ordinary ``reason`` operation retains EAL's authored dialectic.
@@ -393,14 +427,15 @@ class ReasoningService:
 
         if not isinstance(collection_id, str) or not collection_id.strip():
             raise ValueError("compile_aspic requires a stored collection_id")
-        program = parse(source)
+        program = self.parse(source)
         collection = self.store.get(collection_id, kind="collection")
         records = CollectionIdentityValidator().validate(
             collection, source_digest=program.source_digest, context=context)
         compiled = compile_eal_aspic(
             source, records, goal=goal,
             now=utc_now() if now is None else now, context=context,
-            registry=self.method_registry,
+            registry=self.method_registry, limits=self.limits, resolver=self.parse_resolver,
+            semantics=semantics, query_mode=query_mode, preference=preference,
             binding_digests=self.current_binding_digests(program),
         )
         return {"collection_id": collection_id, **compiled.to_dict()}

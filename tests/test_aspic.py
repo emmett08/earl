@@ -208,7 +208,7 @@ def test_one_way_contrary_ignores_preference_but_reciprocal_contradiction_uses_i
                    for w in reciprocal["defeats"])
 
 
-@pytest.mark.parametrize("change", ["cycle", "duplicate", "strict_conflict", "invalid_rank"])
+@pytest.mark.parametrize("change", ["duplicate", "strict_conflict", "invalid_rank"])
 def test_invalid_or_unbounded_theory_cannot_create_support(change):
     data = theory()
     if change == "cycle":

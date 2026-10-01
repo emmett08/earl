@@ -117,6 +117,7 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
+    parser.add_argument("--limits", type=Path, help="Host-owned execution budget TOML file")
     parser.add_argument("--known-entry", action="append", default=[], metavar="ENTRY_ID",
                         help="Registered source selected by the launcher; may be repeated")
     parser.add_argument("--timeout", type=float, default=120.0, help="Total MCP session deadline in seconds")
@@ -128,6 +129,8 @@ def main() -> None:
         server_args.extend(["--database", str(args.database.resolve())])
     if args.methods:
         server_args.extend(["--methods", args.methods])
+    if args.limits:
+        server_args.extend(["--limits", str(args.limits.resolve())])
     for identifier in args.known_entry:
         server_args.extend(["--known-entry", identifier])
     try:

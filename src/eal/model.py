@@ -4,12 +4,22 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from .limits import ExecutionLimits, current_limits
+
+
+@dataclass(frozen=True)
+class Expression:
+    kind: str
+    value: Any
+    arguments: tuple[Expression, ...] = ()
+
 
 @dataclass(frozen=True)
 class Predicate:
     path: str
     operator: str
     expected: Any
+    expression: Expression | None = None
 
 
 @dataclass(frozen=True)
@@ -52,6 +62,15 @@ class Reasoning:
     rationale: str
     backing: tuple[str, ...]
     predicates: tuple[Predicate, ...]
+    transfer: ScopeTransfer | None = None
+
+
+@dataclass(frozen=True)
+class ScopeTransfer:
+    source: str
+    target: str
+    assumption: str
+    review: str
 
 
 @dataclass(frozen=True)
@@ -112,12 +131,14 @@ class Pattern:
     assumptions: tuple[str, ...]
     premises: tuple[str, ...]
     binding: str | None = None
+    body: Block | None = None
+    decreases: str | None = None
 
 
 @dataclass(frozen=True)
 class PatternBinding:
     name: str
-    reference: str
+    reference: str | tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -160,6 +181,7 @@ class ArgumentationDirective:
     rank: int | None
     review: str
     span: SourceSpan
+    source_file: str | None = None
 
 
 @dataclass(frozen=True)
@@ -170,6 +192,52 @@ class Diagnostic:
     span: SourceSpan | None = None
     expected: str | None = None
     actual: str | None = None
+
+
+@dataclass(frozen=True)
+class Module:
+    name: str
+    body: Block
+
+
+@dataclass(frozen=True)
+class SourceImport:
+    name: str
+    path: str
+    body: Block
+    digest: str
+
+
+@dataclass(frozen=True)
+class Context:
+    defaults: dict[str, Any]
+    body: Block
+
+
+@dataclass(frozen=True)
+class ArgumentBlock:
+    name: str
+    body: Block
+    conclusion: Argument
+
+
+@dataclass(frozen=True)
+class PatternGuard:
+    parameter: str
+    body: Block
+    otherwise: Block | None = None
+
+
+@dataclass(frozen=True)
+class Declaration:
+    value: Environment | Tool | Evidence | Assumption | Reasoning | Claim | Argument | Objection | Pattern | Application | Module | SourceImport | Context | ArgumentBlock | PatternGuard | ArgumentationDirective
+    span: SourceSpan
+    source_file: str | None = None
+
+
+@dataclass(frozen=True)
+class Block:
+    declarations: tuple[Declaration, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -191,3 +259,8 @@ class Program:
     declaration_count: int = 0
     locations: dict[str, SourceSpan] = field(default_factory=dict)
     lowering_diagnostics: tuple[Diagnostic, ...] = ()
+    authored: Block | None = None
+    generated: tuple[str, ...] = ()
+    imports: dict[str, str] = field(default_factory=dict)
+    limits: ExecutionLimits = field(default_factory=current_limits)
+    source_files: dict[str, str] = field(default_factory=dict)

@@ -4,7 +4,7 @@ EAL/3 defines claims, evidence, reasoning methods, premises, assumptions and obj
 
 ## Developer workflow
 
-The developer writes a `.eal` file containing the claim and its supporting and opposing routes. Each `tool NAME { version "..."; }` selects an interface; a sibling TOML registry supplies the executable command or observation file, input limits and credentials available to the host. A collector may authenticate, query Kubernetes, run tests and transform several results before returning a scoped JSON observation. EAL predicates state which returned fields make the evidence usable; the `reasoning` declaration names the exact versioned method that interprets it.
+The developer writes a `.eal` file containing the claim and its supporting and opposing routes. Each `tool NAME` block declares its exact `version` and selects an interface; a sibling TOML registry supplies the executable command or observation file, input limits and credentials available to the host. A collector may authenticate, query Kubernetes, run tests and transform several results before returning a scoped JSON observation. EAL predicates state which returned fields make the evidence usable; the `reasoning` declaration names the exact versioned method that interprets it.
 
 The host registers validated source files and their claims under stable entry IDs. A changed file creates a new source revision with its own digest. Search by claim ID, statement or label helps a developer find a candidate, but an assessment names an exact entry and claim. The registered context supplies defaults for the one-call path; trusted Python and CLI callers can supply a different context explicitly. Model-facing calls use the registered context.
 
@@ -45,7 +45,7 @@ The operator-owned TOML binds tool versions to commands or files. The tool proce
 | `analogical/1` | `analogy` | Correspondence of declared scalar features | Feature relevance, omitted differences and conclusion-transfer warrant |
 | `temporal/1` | `trace` | Predicate over samples with endpoint and maximum-gap coverage | Any continuous-time or out-of-interval conclusion |
 
-The optional installed `argumentation/aspic/1` method consumes `aspic_theory` and evaluates its bounded formal profile. The separate `eal_compile_aspic` operation derives a formal snapshot from checked EAL routes; neither changes the ordinary authored argument status. See [reasoning modes](reasoning-modes.md) and [ASPIC+](aspic-method.md).
+The optional installed `argumentation/aspic/2` method consumes `aspic_theory` and evaluates its bounded formal profile. The separate `eal_compile_aspic` operation derives a formal snapshot from checked EAL routes; neither changes the ordinary authored argument status. See [reasoning modes](reasoning-modes.md) and [ASPIC+](aspic-method.md).
 
 A valid negative computation can support an explicitly authored negative route. An inconsistent deductive case, incomplete temporal trace, malformed method input or failed collection supplies no negative finding. Method result, result predicate, accepted argument, claim status and empirical adequacy remain separate. The ordinary solver composes premise claims, alternatives, assumptions, targeted objections and defences into `supported`, `contested`, `unsupported` or `out_of_scope`. It cannot discover an omitted premise or prove that a formalisation matches its prose claim.
 

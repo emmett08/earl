@@ -1,0 +1,7 @@
+[tools.probe]
+kind = "command"
+argv = ["python3", "examples/scoped-review/collector.py"]
+version = "1"
+timeout_seconds = 10
+max_output_bytes = 16384
+pinned_files = [{path = "examples/scoped-review/collector.py", sha256 = "fadd6506c228b6c1f5eadc76e56ed2284a9910a5dc301b61aceadb0a8b1b455c"}]

@@ -19,6 +19,16 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EALParser#moduleDecl.
+    def visitModuleDecl(self, ctx:EALParser.ModuleDeclContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#importDecl.
+    def visitImportDecl(self, ctx:EALParser.ImportDeclContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EALParser#contextDecl.
     def visitContextDecl(self, ctx:EALParser.ContextDeclContext):
         return self.visitChildren(ctx)
@@ -134,6 +144,11 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EALParser#transferField.
+    def visitTransferField(self, ctx:EALParser.TransferFieldContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EALParser#claimDecl.
     def visitClaimDecl(self, ctx:EALParser.ClaimDeclContext):
         return self.visitChildren(ctx)
@@ -234,6 +249,16 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EALParser#bindingValue.
+    def visitBindingValue(self, ctx:EALParser.BindingValueContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#patternGuard.
+    def visitPatternGuard(self, ctx:EALParser.PatternGuardContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EALParser#objectionDecl.
     def visitObjectionDecl(self, ctx:EALParser.ObjectionDeclContext):
         return self.visitChildren(ctx)
@@ -269,13 +294,58 @@ class EALVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by EALParser#reference.
+    def visitReference(self, ctx:EALParser.ReferenceContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#qualifiedName.
+    def visitQualifiedName(self, ctx:EALParser.QualifiedNameContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by EALParser#predicate.
     def visitPredicate(self, ctx:EALParser.PredicateContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by EALParser#key.
-    def visitKey(self, ctx:EALParser.KeyContext):
+    # Visit a parse tree produced by EALParser#expression.
+    def visitExpression(self, ctx:EALParser.ExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#orExpression.
+    def visitOrExpression(self, ctx:EALParser.OrExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#andExpression.
+    def visitAndExpression(self, ctx:EALParser.AndExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#comparisonExpression.
+    def visitComparisonExpression(self, ctx:EALParser.ComparisonExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#additiveExpression.
+    def visitAdditiveExpression(self, ctx:EALParser.AdditiveExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#multiplicativeExpression.
+    def visitMultiplicativeExpression(self, ctx:EALParser.MultiplicativeExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#unaryExpression.
+    def visitUnaryExpression(self, ctx:EALParser.UnaryExpressionContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#primaryExpression.
+    def visitPrimaryExpression(self, ctx:EALParser.PrimaryExpressionContext):
         return self.visitChildren(ctx)
 
 
@@ -301,6 +371,11 @@ class EALVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by EALParser#jsonScalar.
     def visitJsonScalar(self, ctx:EALParser.JsonScalarContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by EALParser#signedNumber.
+    def visitSignedNumber(self, ctx:EALParser.SignedNumberContext):
         return self.visitChildren(ctx)
 
 

@@ -106,13 +106,13 @@ def _digest(value):
 
 
 # Full-result hashes include source digests and spans for EAL/3,
-# typed evidence diagnostics and assumption applicability.
+# typed evidence diagnostics, assumption applicability and calculation completeness.
 @pytest.mark.parametrize('missing,stale,context,expected_digest', [
-    ((), (), CONTEXT, '7ace35d71c54c64477797b5761d02ab81010f990b97a78078120fc6441d9618f'),
-    (('defence',), (), CONTEXT, 'b754839e29d756dcd3ed2a2b6bfc55d0966b146a000b4f0ba8d7d3dae96795dc'),
-    (('positive',), (), CONTEXT, 'd0ec20f03d4dba508b4f329e3f16f645880e6004d8c0ba0ae9dff77b53a01b23'),
-    ((), ('negative',), CONTEXT, '2ba1e735b5cc83a07101fa23a3c6a01bcd51c6b1327597b622807e7df73d69f1'),
-    ((), (), {'site': 'elsewhere'}, 'e7af82c31e61438f3778f83141831e944ce7bae7a6a193d6312c8c26c7523275'),
+    ((), (), CONTEXT, 'fdd74c440b62c351ebf88f655655c9cf40138bf1f2ee80b9037b79bb3ab931a6'),
+    (('defence',), (), CONTEXT, '8853f08e13c35ca33412bcad13e59f96503b066aacd482aec78f7246e7cd079c'),
+    (('positive',), (), CONTEXT, '2dd5e7d11d7580527125de53612ee3a170240730b044fe841f2f7ee2188063c2'),
+    ((), ('negative',), CONTEXT, '64c93f89b75b39bc4a4e9ec2066bb1cf41c363f766636dd20cb79c68023d418c'),
+    ((), (), {'site': 'elsewhere'}, '64dc838cafb8677b9d4edbebeb1588547c465363d53f5da89dfc1e446913301b'),
 ])
 def test_full_result_is_stable_across_pipeline_stages(missing, stale, context, expected_digest):
     program = parse(SOURCE)
@@ -130,7 +130,7 @@ def test_validation_diagnostics_order_and_spans_are_stable():
         claims={**program.claims, 'outcome': replace(program.claims['outcome'], statement='')},
         arguments={**program.arguments, 'route': replace(program.arguments['route'],
                     reasoning='missing_reason', evidence=('missing_evidence',))})
-    diagnostics = [asdict(item) for item in validate(program)]
+    diagnostics = [asdict(item) for item in validate(replace(program, authored=None))]
     assert [(item['code'], item['declaration']) for item in diagnostics] == [
         ('empty_statement', 'outcome'), ('unknown_reference', 'route'),
         ('unknown_reference', 'route')]
@@ -147,18 +147,21 @@ def test_dependency_pass_keeps_cycle_and_depth_guards(monkeypatch):
     assert cycle.declaration == 'outcome'
     assert cycle.span == program.locations['outcome']
 
-    monkeypatch.setattr(semantics, 'MAX_PREMISE_DEPTH', 0)
-    assert any(item.code == 'resource_limit' for item in validate(program))
+    from eal.limits import ExecutionLimits
+    longer = replace(program, authored=None, arguments={**program.arguments,
+        'extra': replace(program.arguments['route'], name='extra', conclusion='extra_claim', premises=('dependent',))},
+        claims={**program.claims, 'extra_claim': replace(program.claims['outcome'], name='extra_claim')},
+        declaration_count=program.declaration_count + 2, limits=ExecutionLimits(premise_depth=1))
+    assert any(item.code == 'resource_limit' for item in validate(longer))
 
 
 def test_graph_construction_limit_keeps_partial_local_result(monkeypatch):
-    from eal import dialectic
-
-    monkeypatch.setattr(dialectic, 'MAX_COMPOSED_EDGES', 1)
-    program = parse(SOURCE)
+    from eal.limits import ExecutionLimits
+    program = parse(SOURCE, limits=ExecutionLimits(composed_edges=1))
     result = evaluate(program, {name: _record(program, name) for name in program.evidence},
                       now=NOW, context=CONTEXT)
     assert not result['valid']
+    assert not result['complete']
     assert [item['code'] for item in result['diagnostics']] == ['resource_limit']
     assert result['arguments'] == result['claims'] == result['objections'] == {}
     assert result['reasoning']['authored']['status'] == 'supported'

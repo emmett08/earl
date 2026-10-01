@@ -115,8 +115,9 @@ def test_direct_ir_checks_identity_duplicates_and_real_declaration_count(monkeyp
     duplicate = Claim("runner", "A separate claim", "lab")
     assert "duplicate_symbol" in codes(replace(program, claims={**program.claims, "runner": duplicate}))
     from eal import semantics
-    monkeypatch.setattr(semantics, "MAX_DECLARATIONS", program.declaration_count - 1)
-    assert "resource_limit" in codes(replace(program, declaration_count=0))
+    from eal.limits import ExecutionLimits
+    assert "resource_limit" in codes(replace(program, declaration_count=0,
+        limits=ExecutionLimits(declarations=program.declaration_count - 1)))
 
 
 def test_direct_ir_cannot_introduce_unrepresentable_names_or_operators():
