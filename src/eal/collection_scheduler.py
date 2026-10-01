@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+from contextvars import copy_context
 from typing import TypeVar
 
 
@@ -51,14 +52,14 @@ class CollectionScheduler:
                     in_flight = {}
                     for _ in range(min(self.max_workers, len(independent))):
                         name = next(remaining)
-                        in_flight[executor.submit(collect_one, name)] = name
+                        in_flight[executor.submit(copy_context().run, collect_one, name)] = name
                     while in_flight:
                         finished, _ = wait(in_flight, return_when=FIRST_COMPLETED)
                         for future in finished:
                             results[in_flight.pop(future)] = future.result()
                             name = next(remaining, None)
                             if name is not None:
-                                in_flight[executor.submit(collect_one, name)] = name
+                                in_flight[executor.submit(copy_context().run, collect_one, name)] = name
             independent.clear()
 
         for name in names:

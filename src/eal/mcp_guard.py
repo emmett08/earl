@@ -4,18 +4,16 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from functools import wraps
-import os
 from pathlib import Path
-import stat
 from typing import Any
 
 import anyio
-from filelock import FileLock
 from fastmcp.exceptions import ToolError
 from fastmcp.server.middleware import Middleware, MiddlewareContext
 from jsonschema import Draft202012Validator
 
 from .operation_contracts import ACQUISITION_OPERATIONS
+from .acquisition_coordination import WorkspaceAcquisition
 
 
 class OperationGuard(Middleware):
@@ -38,20 +36,6 @@ class OperationGuard(Middleware):
             return await call_next(context)
 
 
-def _lock_path(workspace: Path) -> Path:
-    directory = workspace / ".eal"
-    directory.mkdir(parents=True, exist_ok=True)
-    details = directory.lstat()
-    if not stat.S_ISDIR(details.st_mode):
-        raise PermissionError("The MCP acquisition directory must be a regular directory")
-    if os.name == "posix" and (details.st_uid != os.getuid() or details.st_mode & 0o022):
-        raise PermissionError("The MCP acquisition directory must be owned by the process and not writable by others")
-    path = directory / "mcp-acquisition.lock"
-    if path.is_symlink():
-        raise PermissionError("The MCP acquisition lock must not be a symlink")
-    return path
-
-
 def guard_acquisition(name: str, handler: Callable[..., dict[str, Any]],
                       workspace: Path) -> Callable[..., dict[str, Any]]:
     """Serialise complete acquisition operations across local server processes.
@@ -62,13 +46,11 @@ def guard_acquisition(name: str, handler: Callable[..., dict[str, Any]],
     """
     if name not in ACQUISITION_OPERATIONS:
         return handler
-    path = _lock_path(workspace)
+    coordinator = WorkspaceAcquisition(workspace)
 
     @wraps(handler)
     def guarded(*args, **kwargs):
-        # Each worker owns its OS lock until synchronous collection finishes,
-        # including when its client disconnects during an acquisition.
-        with FileLock(path, timeout=120, mode=0o600):
+        with coordinator.hold():
             return handler(*args, **kwargs)
 
     return guarded

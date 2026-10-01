@@ -56,7 +56,7 @@ eal-mcp --config examples/api-load-test/mcp.toml --transport stdio
 eal-mcp --config examples/api-load-test/mcp.toml --transport http
 ```
 
-Each command launches one process with its selected transport. HTTP defaults to `http://127.0.0.1:8000/mcp`; `eal-host --url http://127.0.0.1:8000/mcp` connects to an existing HTTP service. Host configuration resolves CLI options before `EAL_MCP_*` environment variables, TOML values and defaults. Configured non-loopback HTTP binds require a bearer token supplied through a named environment variable. An endpoint exposes one operator workspace or a fixed set of registered entries. See [MCP and tools](docs/mcp-and-tools.md) for configuration, authentication and model-host usage, and [MCP architecture](docs/mcp-architecture.md) for SOLID responsibilities and execution limits.
+Each command launches one process with its selected transport. HTTP defaults to `http://127.0.0.1:8000/mcp`; `eal-host --url http://127.0.0.1:8000/mcp` connects to an existing HTTP service. Host configuration resolves CLI options before `EAL_MCP_*` environment variables, TOML values and defaults. HTTP validates Host and Origin headers before MCP handling. Non-loopback binds and additional non-loopback trusted hosts/origins require a bearer token supplied through a named environment variable. An endpoint exposes one operator workspace or a fixed set of registered entries. Shared local launches coordinate database initialisation and retain acquisition exclusion until owned collector processes have stopped. See [MCP and tools](docs/mcp-and-tools.md) for configuration, authentication and model-host usage, and [MCP architecture](docs/mcp-architecture.md) for SOLID responsibilities and execution limits.
 
 ## Assess a known claim
 

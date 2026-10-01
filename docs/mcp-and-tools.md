@@ -50,9 +50,11 @@ host = "127.0.0.1"
 port = 8000
 path = "/mcp"
 # token_env = "EAL_MCP_TOKEN"
+# allowed_hosts = ["mcp.example.com"]
+# allowed_origins = ["https://app.example.com"]
 ```
 
-The server accepts only the documented tables and settings. Paths supplied by the file resolve relative to its parent directory. CLI and environment paths resolve relative to the current working directory. Precedence is **CLI > environment > TOML > defaults**. `--config` selects the file, with `EAL_MCP_CONFIG` as its environment alternative. A selected entry list replaces the lower-precedence list in full.
+The server accepts only the documented tables and settings. Paths supplied by the file resolve relative to its parent directory. CLI and environment paths resolve relative to the current working directory. Precedence is **CLI > environment > TOML > defaults**. `--config` selects the file, with `EAL_MCP_CONFIG` as its environment alternative. A selected list replaces the lower-precedence list in full, including registered entries and HTTP host/origin additions.
 
 | TOML setting | CLI option | Environment variable | Default |
 | --- | --- | --- | --- |
@@ -69,6 +71,8 @@ The server accepts only the documented tables and settings. Paths supplied by th
 | `server.http.port` | `--port` | `EAL_MCP_PORT` | `8000` |
 | `server.http.path` | `--path` | `EAL_MCP_PATH` | `/mcp` |
 | `server.http.token_env` | `--token-env` | `EAL_MCP_TOKEN_ENV` | Unauthenticated loopback HTTP |
+| `server.http.allowed_hosts` | Repeated `--allowed-host` | `EAL_MCP_ALLOWED_HOSTS` (JSON array) | No additional hosts |
+| `server.http.allowed_origins` | Repeated `--allowed-origin` | `EAL_MCP_ALLOWED_ORIGINS` (JSON array) | No additional origins |
 
 An empty entry selection chooses `operator` exposure; a non-empty selection chooses `registered` exposure. Explicit exposure must agree with that selection. A registered endpoint admits only its configured IDs and their registered claims, and uses their stored context. Transport changes preserve the selected exposure and operation contracts.
 
@@ -86,11 +90,25 @@ Stdio reserves stdout for MCP messages and writes framework logs to stderr. HTTP
 
 ## HTTP access and execution limits
 
-Loopback HTTP permits unauthenticated access by local clients. For a non-loopback bind, supply `token_env` and set the named environment variable before launch. For example, a process started with `--transport http --host 0.0.0.0 --token-env EAL_MCP_TOKEN` reads its bearer credential from `EAL_MCP_TOKEN`. Configuration stores the variable name, and the composition root reads its value. Requests must provide the corresponding `Authorization: Bearer …` header. Use HTTPS at the deployment boundary when the credential traverses a network; the launcher runs a plain HTTP listener.
+The HTTP launcher always enables FastMCP's strict Host/Origin guard before MCP handling. The accepted hostnames include `localhost`, `127.0.0.1`, `::1`, the configured host and the actual bound address. An absent Origin is accepted; a supplied Origin must match the request's origin, qualify as a loopback origin on a loopback request, or appear in `allowed_origins`. An untrusted Host receives HTTP 421; an untrusted Origin receives HTTP 403. Browser CORS response headers require separate deployment configuration.
+
+`allowed_hosts` adds literal hostnames or IP addresses without schemes, ports or wildcards. `allowed_origins` adds HTTP(S) origins containing a scheme, hostname and optional port, without credentials, paths, queries, fragments or wildcards. Each list accepts at most 128 unique entries. Configure these additions when a reverse proxy supplies a public Host or a trusted browser application uses a separate Origin. For example:
+
+```toml
+[server.http]
+host = "127.0.0.1"
+port = 8000
+path = "/mcp"
+token_env = "EAL_MCP_TOKEN"
+allowed_hosts = ["mcp.example.com"]
+allowed_origins = ["https://app.example.com"]
+```
+
+Loopback HTTP with only loopback trust entries permits unauthenticated local clients. A non-loopback bind or an additional non-loopback Host/Origin requires `token_env`, including a public proxy forwarding to a loopback listener. Set the named environment variable before launch. A process started with `--transport http --host 0.0.0.0 --token-env EAL_MCP_TOKEN` reads its bearer credential from `EAL_MCP_TOKEN`; add a client-facing hostname when it differs from the guard's accepted hosts. Configuration stores the variable name, and the composition root reads its value. Requests must provide the corresponding `Authorization: Bearer …` header. The host client treats the configured credential as an opaque bearer token, including the value `oauth`. Use HTTPS at the deployment boundary when the credential traverses a network; the launcher runs a plain HTTP listener.
 
 The credential authorises the endpoint's fixed exposure. An operator endpoint grants source-level operations over its configured workspace and stored results; a registered endpoint grants its selected catalogue and assessment operations. Each endpoint serves one host trust domain. Deploy separate workspaces/endpoints where callers need different access scopes. A fixed bearer credential requires operator-managed distribution and rotation; OAuth login and per-user data separation require an additional deployment design.
 
-`max_in_flight` bounds admitted tool calls per process, defaulting to one. The workspace acquisition lock coordinates MCP collection and the registered-assessment reuse/collection decision across participating threads and server processes. Eligible `parallel_safe` collectors can overlap inside an acquisition. The lock covers local filesystem deployments; replicas on independent hosts and network filesystems need a distributed coordinator. Raising admission concurrency does not imply a measured throughput gain. See [MCP architecture](mcp-architecture.md) for the responsibilities and verification scope.
+`max_in_flight` bounds admitted tool calls per process, defaulting to one. The workspace acquisition lease coordinates MCP collection and the registered-assessment reuse/collection decision across participating threads and server processes. A command supervisor inherits the POSIX lock descriptor and retains it while stopping and reaping the collector's process group after server loss, cancellation or timeout. A later acquisition waits until that cleanup releases the lease. Eligible `parallel_safe` collectors can overlap inside an acquisition. Store startup separately locks WAL, schema and index initialisation so simultaneous launches can establish one shared database. Both locks cover local filesystem deployments; replicas on independent hosts and network filesystems need a distributed coordinator. Raising admission concurrency does not imply a measured throughput gain. See [MCP architecture](mcp-architecture.md) for the responsibilities and verification scope.
 
 ## Registered developer workflow
 
@@ -121,6 +139,10 @@ JSON
 
 Add `--token-env EAL_MCP_TOKEN` for an authenticated endpoint. A configured `http` transport also connects to an existing server, using the configured host, port and path; a wildcard bind such as `0.0.0.0` requires an explicit client `--url`. An explicit URL overrides the configured transport. The server's launch configuration fixes its workspace, methods and tool exposure. The host validates the flat request and the discovered input schema before invoking the remote operation. The MCP client negotiates a supported protocol profile; EAL operation identities and persisted assessment bindings are independent of that profile.
 
+The host returns one JSON response. Credential sanitisation preserves its field names and public envelope metadata (`operation`, `protocol_version`, `is_error` and content-block `type`), while replacing credential occurrences in application string values and diagnostic text with `[redacted]`. JSON encoded within content text is decoded before sanitisation so its field names also remain stable. A credential may share its spelling with a public field name; preserving that name maintains the response contract.
+
+`--timeout SECONDS` sets the host's total MCP-session deadline, defaulting to 120 seconds. In the stdio route, ending the owned server process signals its command supervisor to stop the collector group; the inherited acquisition lease remains held until cleanup finishes. An HTTP host connects to an independently running server, so its session deadline ends that client interaction. The server continues to enforce acquisition ownership and configured collector timeouts.
+
 ## Tool registry and observation identity
 
 The EAL source declares a `tool NAME` block containing `version "VERSION"` and an evidence declaration supplies an `input`, `kind`, environment and `max_age`. A sibling TOML registry chooses the collector:
@@ -136,7 +158,7 @@ max_output_bytes = 16384
 
 The command receives a JSON object with `evidence_id`, `environment`, `tool`, `tool_version`, `input` and `context` on stdin. It emits one JSON object with `value` and optional `observed_at`, `context`, `request` and `details`. The collector may authenticate, query external systems, execute tests or aggregate data. Secrets and executable paths remain in the host configuration. A `json_file` binding uses a workspace path instead of a command and must supply its original observation time, request and context. Reading an old file again does not make its measurement new.
 
-Collection accepts at most 128 selected evidence IDs, 16 KiB of context, 1 MiB per request and 128 MiB total configured output allowance. Final collection JSON is limited to 32 MiB. A command's own timeout and output limit are set in TOML. Configured commands run with host access and are not an operating-system sandbox. A tool failure, malformed output or mismatched identity is stored as an error observation; it does not support the opposite claim.
+Collection accepts at most 128 selected evidence IDs, 16 KiB of context, 1 MiB per request and 128 MiB total configured output allowance. Final collection JSON is limited to 32 MiB. A command's own timeout and output limit are set in TOML. Configured commands run with host access and must keep their descendants in the collector's owned process group for cancellation and cleanup. The adapter requires POSIX and provides process supervision; operating-system isolation requires a separate deployment mechanism. Remotely started work and descendants that leave the owned group fall outside local process cleanup. A tool failure, malformed output or mismatched identity is stored as an error observation; it does not support the opposite claim.
 
 `parallel_safe = true` asserts that a command is independent and read-only; the default is serial. The scheduler overlaps eligible calls within bounded concurrency and preserves evidence IDs and result order. `inherit_env = ["PATH", "KUBECONFIG"]` limits which host environment variables enter a command; otherwise the command inherits the full process environment. Explicit `env` values are added. The effective process environment participates in reuse identity. Scheduling policy does not.
 

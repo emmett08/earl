@@ -17,6 +17,7 @@ from mcp import StdioServerParameters
 from jsonschema import Draft202012Validator
 
 from .client_transports import create_client_transport, create_http_transport, read_bearer_token
+from .host_redaction import sanitise_response
 from .operation_contracts import OPERATION_FIELDS
 from .runtime import strict_json
 from .server_settings import ServerSettings, parse_server_settings
@@ -129,19 +130,6 @@ def _configured_http_url(settings: ServerSettings) -> str:
     return f"http://{host}:{settings.port}{settings.path}"
 
 
-def _redact(value: Any, token: str | None) -> Any:
-    """Ensure a remote diagnostic cannot echo the host's credential."""
-    if token is None:
-        return value
-    if isinstance(value, str):
-        return value.replace(token, "[redacted]")
-    if isinstance(value, list):
-        return [_redact(item, token) for item in value]
-    if isinstance(value, dict):
-        return {_redact(key, token): _redact(item, token) for key, item in value.items()}
-    return value
-
-
 def main() -> None:
     parser = argparse.ArgumentParser(description="Send one JSON request to the EAL MCP server", exit_on_error=False,
         epilog="Service settings use the eal-mcp options, including --config, --workspace, "
@@ -171,7 +159,7 @@ def main() -> None:
                 env={key: value for key, value in os.environ.items() if not key.startswith("EAL_MCP_")})
         result = asyncio.run(dispatch_request(raw.decode("utf-8"), parameters,
                                               timeout_seconds=args.timeout))
-        print(json.dumps(_redact(result, token), ensure_ascii=False, allow_nan=False))
+        print(json.dumps(sanitise_response(result, token), ensure_ascii=False, allow_nan=False))
         if result.get("is_error"):
             raise SystemExit(1)
     except Exception as exc:
@@ -183,7 +171,7 @@ def main() -> None:
                 return "MCP session exceeded its configured deadline"
             return str(error)
 
-        print(json.dumps(_redact({"is_error": True, "error": describe(exc)}, token)))
+        print(json.dumps(sanitise_response({"is_error": True, "error": describe(exc)}, token)))
         raise SystemExit(2) from exc
 
 

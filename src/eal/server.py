@@ -57,7 +57,9 @@ def _run_stdio(server: FastMCP, settings: ServerSettings) -> None:
 def _run_http(server: FastMCP, settings: ServerSettings) -> None:
     server.run(transport="http", host=settings.host, port=settings.port,
                path=settings.path, stateless_http=True, show_banner=False,
-               log_level="warning")
+               log_level="warning", host_origin_protection=True,
+               allowed_hosts=[settings.host, *settings.allowed_hosts],
+               allowed_origins=list(settings.allowed_origins))
 
 
 _RUNNERS = {"stdio": _run_stdio, "http": _run_http}

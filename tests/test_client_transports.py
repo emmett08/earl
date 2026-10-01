@@ -1,6 +1,7 @@
 """Connection selection and credential handling for the text-only host."""
 
 import pytest
+from fastmcp.client.auth import BearerAuth
 from fastmcp.client.transports import StdioTransport, StreamableHttpTransport
 from mcp import StdioServerParameters
 
@@ -50,6 +51,14 @@ def test_remote_http_requires_explicit_environment_authentication():
     assert isinstance(transport, StreamableHttpTransport)
     assert "token-value" not in repr(transport)
     assert transport.httpx_client_factory is None
+
+
+@pytest.mark.parametrize("token", ["oauth", "is_error", "result", "operation"])
+def test_http_factory_treats_every_supported_token_as_an_opaque_bearer(token):
+    transport = create_http_transport("http://localhost/mcp", token_env="EAL_TOKEN",
+                                      environ={"EAL_TOKEN": token})
+    assert isinstance(transport.auth, BearerAuth)
+    assert transport.auth.token.get_secret_value() == token
 
 
 @pytest.mark.parametrize("token", ["", "secret\nvalue", "secret value", "secret\u00e9"])

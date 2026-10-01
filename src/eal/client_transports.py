@@ -11,6 +11,7 @@ from collections.abc import Mapping
 import ipaddress
 from urllib.parse import urlsplit, urlunsplit
 
+from fastmcp.client.auth import BearerAuth
 from fastmcp.client.transports import ClientTransport, StdioTransport, StreamableHttpTransport
 from mcp import StdioServerParameters
 
@@ -64,4 +65,5 @@ Ordinary clients retain the HTTP library's environment proxy configuration.
     if not loopback and token_env is None:
         raise ValueError("HTTP connections beyond loopback require --token-env authentication")
     token = read_bearer_token(token_env, environ)
-    return StreamableHttpTransport(url, auth=token, httpx_client_factory=httpx_client_factory)
+    return StreamableHttpTransport(url, auth=BearerAuth(token) if token is not None else None,
+                                   httpx_client_factory=httpx_client_factory)

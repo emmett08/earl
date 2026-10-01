@@ -25,11 +25,12 @@ from pathlib import Path
 import re
 import tomllib
 from typing import Any, Literal
+from urllib.parse import urlsplit
 
 
 _SERVICE_KEYS = frozenset({"workspace", "registry", "database", "methods", "limits", "known_entries"})
 _SERVER_KEYS = frozenset({"transport", "exposure", "max_in_flight", "http"})
-_HTTP_KEYS = frozenset({"host", "port", "path", "token_env"})
+_HTTP_KEYS = frozenset({"host", "port", "path", "token_env", "allowed_hosts", "allowed_origins"})
 _PATH_KEYS = frozenset({"workspace", "registry", "database", "limits"})
 _ENV_KEYS = _SERVICE_KEYS | (_SERVER_KEYS - {"http"}) | _HTTP_KEYS
 _METHOD_FACTORY = re.compile(r"[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*:[A-Za-z_]\w*", re.ASCII)
@@ -52,6 +53,33 @@ def _loopback_host(host: str) -> bool:
         return False
 
 
+def _host(value: Any, name: str) -> str:
+    value = _text(value, name)
+    try:
+        ipaddress.ip_address(value)
+    except ValueError:
+        if not _HOST_NAME.fullmatch(value):
+            raise ValueError(f"{name} must be an IP address or hostname without a URL, port or wildcard")
+    return value
+
+
+def _origin(value: Any) -> str:
+    value = _text(value, "allowed_origins")
+    try:
+        parsed = urlsplit(value)
+        port = parsed.port
+    except ValueError as exc:
+        raise ValueError("allowed_origins must contain HTTP(S) origins without paths or wildcards") from exc
+    if (parsed.scheme not in {"http", "https"} or not parsed.hostname
+            or parsed.username is not None or parsed.password is not None
+            or parsed.path or parsed.query or parsed.fragment
+            or (port is not None and not 1 <= port <= 65535)
+            or any(character.isspace() for character in value)):
+        raise ValueError("allowed_origins must contain HTTP(S) origins without paths or wildcards")
+    _host(parsed.hostname, "allowed_origins host")
+    return value
+
+
 @dataclass(frozen=True)
 class ServerSettings:
     """Validated immutable service and transport configuration."""
@@ -69,6 +97,8 @@ class ServerSettings:
     path: str = "/mcp"
     max_in_flight: int = 1
     token_env: str | None = None
+    allowed_hosts: tuple[str, ...] = ()
+    allowed_origins: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         for name in _PATH_KEYS:
@@ -98,12 +128,18 @@ class ServerSettings:
             raise ValueError("port must be an integer from 1 through 65535")
         if type(self.max_in_flight) is not int or not 1 <= self.max_in_flight <= 1024:
             raise ValueError("max_in_flight must be an integer from 1 through 1024")
-        host = _text(self.host, "host")
-        try:
-            ipaddress.ip_address(host)
-        except ValueError:
-            if not _HOST_NAME.fullmatch(host):
-                raise ValueError("host must be an IP address or hostname without a URL or port")
+        host = _host(self.host, "host")
+        for name in ("allowed_hosts", "allowed_origins"):
+            values = getattr(self, name)
+            if not isinstance(values, tuple) or len(values) > 128:
+                raise ValueError(f"{name} must contain up to 128 unique entries")
+            for value in values:
+                if name == "allowed_hosts":
+                    _host(value, name)
+                else:
+                    _origin(value)
+            if len(set(values)) != len(values):
+                raise ValueError(f"{name} must contain up to 128 unique entries")
         path = _text(self.path, "path")
         if (not path.startswith("/") or path.startswith("//")
                 or any(character.isspace() or ord(character) < 32 for character in path)
@@ -114,6 +150,11 @@ class ServerSettings:
             raise ValueError("token_env must name an environment variable")
         if self.transport == "http" and not _loopback_host(host) and self.token_env is None:
             raise ValueError("HTTP on a non-loopback host requires token_env authentication")
+        if (self.transport == "http" and self.token_env is None
+                and (any(not _loopback_host(item) for item in self.allowed_hosts)
+                     or any(not _loopback_host(urlsplit(item).hostname or "")
+                            for item in self.allowed_origins))):
+            raise ValueError("HTTP with non-loopback allowed hosts or origins requires token_env authentication")
 
 
 def _table(value: Any, name: str, permitted: frozenset[str]) -> dict[str, Any]:
@@ -145,13 +186,13 @@ def _parse_env(environ: Mapping[str, str], overridden: set[str]) -> dict[str, An
         if name not in environ or key in overridden:
             continue
         raw = environ[name]
-        if key == "known_entries":
+        if key in {"known_entries", "allowed_hosts", "allowed_origins"}:
             if not isinstance(raw, str):
-                raise ValueError("EAL_MCP_KNOWN_ENTRIES must be a JSON array of registered IDs")
+                raise ValueError(f"{name} must be a JSON array")
             try:
                 values[key] = json.loads(raw)
             except json.JSONDecodeError as exc:
-                raise ValueError("EAL_MCP_KNOWN_ENTRIES must be a JSON array of registered IDs") from exc
+                raise ValueError(f"{name} must be a JSON array") from exc
             continue
         raw = _text(raw, name)
         if key in {"port", "max_in_flight"}:
@@ -179,6 +220,10 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--path")
     parser.add_argument("--max-in-flight", type=int)
     parser.add_argument("--token-env", help="Environment variable containing the HTTP bearer token")
+    parser.add_argument("--allowed-host", dest="allowed_hosts", action="append", metavar="HOST",
+                        help="Additional trusted HTTP Host hostname or IP address; repeat per host")
+    parser.add_argument("--allowed-origin", dest="allowed_origins", action="append", metavar="ORIGIN",
+                        help="Additional trusted HTTP(S) browser origin; repeat per origin")
     return parser
 
 
@@ -203,11 +248,11 @@ def parse_server_settings(argv: Sequence[str] | None = None,
         raw = _text(values[name], name)
         base = config_path.parent if name in file_values and name not in env_values and name not in cli else cwd
         values[name] = (base / Path(raw).expanduser()).resolve()
-    if "known_entries" in values:
-        selected = values["known_entries"]
+    for name in {"known_entries", "allowed_hosts", "allowed_origins"} & values.keys():
+        selected = values[name]
         if not isinstance(selected, list):
-            raise ValueError("known_entries must be an array of registered IDs")
-        values["known_entries"] = tuple(selected)
+            raise ValueError(f"{name} must be an array")
+        values[name] = tuple(selected)
     if "exposure" not in values:
         values["exposure"] = "registered" if values.get("known_entries") else "operator"
     return ServerSettings(**values)

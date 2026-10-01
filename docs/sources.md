@@ -73,13 +73,15 @@ Generated parser code and its runtime must use compatible, explicitly selected v
 
 ## MCP integration
 
-**Model Context Protocol maintainers, architecture and protocol specification.** [Architecture](https://modelcontextprotocol.io/docs/learn/architecture), [dated tools specification](https://modelcontextprotocol.io/specification/2025-11-25/server/tools).
+**Model Context Protocol maintainers, architecture and protocol specification.** [Architecture](https://modelcontextprotocol.io/docs/learn/architecture), [dated tools specification](https://modelcontextprotocol.io/specification/2025-11-25/server/tools), [dated transport specification](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports).
 
 MCP connects application hosts and clients to server capabilities. A text-only model can produce a structured request for a host adapter to validate and dispatch. Protocol integration supplies that interaction boundary; native model tool invocation remains a capability of the model's application.
 
-**PrefectHQ, FastMCP 4 documentation and source.** [Server transports](https://gofastmcp.com/deployment/running-server), [HTTP deployment](https://gofastmcp.com/deployment/http), [middleware](https://gofastmcp.com/servers/middleware), [SDK v1 porting guide](https://gofastmcp.com/getting-started/upgrading/from-mcp-sdk-v1), [release source](https://github.com/PrefectHQ/fastmcp/tree/v4.0.10).
+The Streamable HTTP transport specification requires validating supplied Origin headers to prevent DNS rebinding. EAL's HTTP launcher enables FastMCP's strict Host/Origin guard and adds validated operator trust lists. Its authentication requirement also applies when public trust entries forward to a loopback listener.
 
-FastMCP supplies typed operation registration, stdio and Streamable HTTP runners, middleware and authentication hooks. EAL selects FastMCP `4.0.10` for one adapter over both transports. Its strict validation, exposure allowlist, immutable settings and acquisition coordination are EAL implementation choices; see [MCP architecture](mcp-architecture.md).
+**PrefectHQ, FastMCP 4 documentation and source.** [Server transports](https://gofastmcp.com/deployment/running-server), [HTTP deployment and Host/Origin protection](https://gofastmcp.com/deployment/http#host-and-origin-protection), [bearer client authentication](https://gofastmcp.com/clients/auth/bearer), [middleware](https://gofastmcp.com/servers/middleware), [SDK v1 porting guide](https://gofastmcp.com/getting-started/upgrading/from-mcp-sdk-v1), [release source](https://github.com/PrefectHQ/fastmcp/tree/v4.0.10).
+
+FastMCP supplies typed operation registration, stdio and Streamable HTTP runners, middleware and authentication hooks. EAL selects FastMCP `4.0.10` for one adapter over both transports and constructs explicit `BearerAuth` clients. Its strict validation, exposure allowlist, immutable settings, response sanitisation and acquisition supervision are EAL implementation choices; see [MCP architecture](mcp-architecture.md).
 
 **Model Context Protocol maintainers, Python SDK 2.** [SDK source](https://github.com/modelcontextprotocol/python-sdk/tree/v2.2.0), [v2 protocol and API changes](https://github.com/modelcontextprotocol/python-sdk/blob/v2.2.0/docs/whats-new.md).
 

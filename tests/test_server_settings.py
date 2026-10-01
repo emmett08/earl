@@ -190,3 +190,77 @@ def test_cli_unknown_option_uses_argparse_error():
     with pytest.raises(SystemExit) as error:
         parse_server_settings(["--tranport", "stdio"], {})
     assert error.value.code == 2
+
+
+def test_http_allowlists_use_cli_environment_file_precedence(tmp_path):
+    config = write_config(tmp_path, '''
+[server]
+transport = "http"
+[server.http]
+token_env = "EAL_TOKEN"
+allowed_hosts = ["file.example"]
+allowed_origins = ["https://file.example"]
+''')
+    settings = parse_server_settings(
+        ["--config", str(config), "--allowed-host", "proxy.example",
+         "--allowed-host", "proxy2.example"],
+        {"EAL_MCP_ALLOWED_HOSTS": "invalid-ignored",
+         "EAL_MCP_ALLOWED_ORIGINS": '["https://browser.example:8443"]'},
+    )
+    assert settings.allowed_hosts == ("proxy.example", "proxy2.example")
+    assert settings.allowed_origins == ("https://browser.example:8443",)
+    assert parse_server_settings(["--config", str(config)], {}).allowed_hosts == ("file.example",)
+
+
+@pytest.mark.parametrize("field, values", [
+    ("allowed_hosts", ["proxy.example"]),
+    ("allowed_hosts", ("*",)),
+    ("allowed_hosts", ("*.example",)),
+    ("allowed_hosts", ("proxy.example:8000",)),
+    ("allowed_hosts", ("https://proxy.example",)),
+    ("allowed_hosts", ("proxy.example", "proxy.example")),
+    ("allowed_hosts", (True,)),
+    ("allowed_hosts", tuple(f"host{n}.example" for n in range(129))),
+    ("allowed_origins", ["https://proxy.example"]),
+    ("allowed_origins", ("*",)),
+    ("allowed_origins", ("https://*.example",)),
+    ("allowed_origins", ("null",)),
+    ("allowed_origins", ("ftp://proxy.example",)),
+    ("allowed_origins", ("https://user:pass@proxy.example",)),
+    ("allowed_origins", ("https://proxy.example/path",)),
+    ("allowed_origins", ("https://proxy.example?q=x",)),
+    ("allowed_origins", ("https://proxy.example#x",)),
+    ("allowed_origins", ("https://proxy.example:0",)),
+    ("allowed_origins", ("https://proxy.example:65536",)),
+    ("allowed_origins", ("https://proxy.example", "https://proxy.example")),
+])
+def test_http_allowlists_reject_invalid_or_unbounded_entries(field, values):
+    with pytest.raises(ValueError, match=field):
+        ServerSettings(**{field: values})
+
+
+@pytest.mark.parametrize("arguments", [
+    ["--allowed-host", "proxy.example"],
+    ["--allowed-origin", "https://browser.example"],
+])
+def test_non_loopback_proxy_allowlist_requires_authentication(arguments):
+    with pytest.raises(ValueError, match="requires token_env"):
+        parse_server_settings(["--transport", "http", *arguments], {})
+
+
+def test_allowlists_accept_literal_ip_hosts_and_loopback_origins():
+    settings = parse_server_settings(
+        ["--transport", "http", "--allowed-host", "::1", "--allowed-host", "localhost",
+         "--allowed-origin", "http://[::1]:8000", "--allowed-origin", "http://localhost:9000"], {},
+    )
+    assert settings.allowed_hosts == ("::1", "localhost")
+    assert settings.allowed_origins == ("http://[::1]:8000", "http://localhost:9000")
+
+
+@pytest.mark.parametrize("name, value", [
+    ("EAL_MCP_ALLOWED_HOSTS", "proxy.example"),
+    ("EAL_MCP_ALLOWED_ORIGINS", '"https://proxy.example"'),
+])
+def test_allowlist_environment_requires_json_arrays(name, value):
+    with pytest.raises(ValueError, match="array"):
+        parse_server_settings([], {name: value})

@@ -14,6 +14,56 @@ from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+from filelock import FileLock
+
+
+def _check_private_directory(directory: Path) -> None:
+    details = directory.lstat()
+    if not stat.S_ISDIR(details.st_mode):
+        raise PermissionError("The run-store directory must be a regular directory")
+    if os.name == "posix" and (details.st_uid != os.getuid() or details.st_mode & 0o022):
+        raise PermissionError("The run-store directory must be owned by the process and not writable by others")
+
+
+@contextmanager
+def _store_initialisation_lock(database_path: Path, *, timeout: float = 30) -> Iterator[None]:
+    """Coordinate store setup before SQLite or its private identity is opened.
+
+    Keep the lock file in place after release: unlinking it could let another
+    process acquire a different inode while a contender still holds this one.
+    The private parent excludes replacement by other operating-system users.
+    """
+    _check_private_directory(database_path.parent)
+    path = database_path.with_name(database_path.name + ".initialisation.lock")
+    flags = os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(path, flags | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError:
+        # Check before opening an existing object: opening a FIFO or device
+        # can block or have effects before descriptor validation is possible.
+        details = path.lstat()
+        if not stat.S_ISREG(details.st_mode):
+            raise PermissionError("The run-store initialisation lock must be a private regular 0600 file")
+        descriptor = os.open(path, flags)
+    try:
+        details = os.fstat(descriptor)
+        named = path.lstat()
+        if (not stat.S_ISREG(details.st_mode) or not stat.S_ISREG(named.st_mode)
+                or (details.st_dev, details.st_ino) != (named.st_dev, named.st_ino)
+                or stat.S_IMODE(details.st_mode) != 0o600
+                or (os.name == "posix" and details.st_uid != os.getuid())):
+            raise PermissionError("The run-store initialisation lock must be a private regular 0600 file")
+    finally:
+        os.close(descriptor)
+    with FileLock(path, timeout=timeout, mode=0o600):
+        # FileLock owns a separate descriptor. Check the pathname once more
+        # before touching storage; participating processes retain the file.
+        details = path.lstat()
+        if (not stat.S_ISREG(details.st_mode) or stat.S_IMODE(details.st_mode) != 0o600
+                or (os.name == "posix" and details.st_uid != os.getuid())):
+            raise PermissionError("The run-store initialisation lock must be a private regular 0600 file")
+        yield
+
 
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
@@ -22,11 +72,7 @@ def utc_now() -> str:
 def _private_binding_key(database_path: Path) -> bytes:
     """Atomically establish a private store-local identity key outside SQLite."""
     parent = database_path.parent
-    if os.name == "posix":
-        directory = parent.stat()
-        if (not stat.S_ISDIR(directory.st_mode) or directory.st_uid != os.getuid()
-                or directory.st_mode & 0o022):
-            raise PermissionError("The run-store directory must be owned by the process and not writable by others")
+    _check_private_directory(parent)
     key_path = database_path.with_name(database_path.name + ".binding-key")
     temporary = key_path.with_name(key_path.name + "." + secrets.token_hex(16) + ".tmp")
     descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL |
@@ -87,10 +133,17 @@ class RunStore:
     def __init__(self, path: str | Path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self._binding_key = _private_binding_key(self.path)
-        _check_private_sqlite_files(self.path, create_database=True)
+        with _store_initialisation_lock(self.path):
+            self._binding_key = _private_binding_key(self.path)
+            _check_private_sqlite_files(self.path, create_database=True)
+            self._initialise_schema()
+            _check_private_sqlite_files(self.path)
+
+    def _initialise_schema(self) -> None:
+        """Establish the current schema and backfill its index atomically."""
         with self._connect() as connection:
             connection.execute("PRAGMA journal_mode=WAL")
+            connection.execute("BEGIN IMMEDIATE")
             connection.execute(
                 "CREATE TABLE IF NOT EXISTS records "
                 "(id TEXT PRIMARY KEY, kind TEXT NOT NULL, created_at TEXT NOT NULL, payload TEXT NOT NULL)"
@@ -125,7 +178,6 @@ class RunStore:
                 )
             elif indexed[0] != "1":
                 raise ValueError("Unsupported observation index version")
-        _check_private_sqlite_files(self.path)
 
     @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
