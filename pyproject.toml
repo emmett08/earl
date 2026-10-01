@@ -1,16 +1,40 @@
 [build-system]
-requires = ["setuptools>=77"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "engineering-argument-language"
-version = "3.2.0"
+version = "3.2.1"
 description = "An ANTLR4 language and MCP interpreter for engineering reasoning and argumentation"
+readme = "README.md"
+license = "Unlicense"
+license-files = ["LICENSE"]
+authors = [{name = "Emmett Miller"}]
+maintainers = [{name = "Emmett Miller"}]
 requires-python = ">=3.11"
+keywords = ["argumentation", "engineering", "reasoning", "mcp", "eal"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: POSIX",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering",
+]
 dependencies = ["antlr4-python3-runtime==4.13.2", "fastmcp==4.0.10", "mcp==2.2.0", "filelock>=3.20,<4", "jsonschema>=4.23,<5"]
+
+[project.urls]
+Homepage = "https://github.com/emmett08/earl"
+Documentation = "https://github.com/emmett08/earl/blob/main/README.md"
+Repository = "https://github.com/emmett08/earl"
+Issues = "https://github.com/emmett08/earl/issues"
+Changelog = "https://github.com/emmett08/earl/releases"
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "build>=1,<2"]
+release = ["build>=1,<2", "twine>=7,<8"]
 aspic-reference = ["python-argumentation==2.0.2"]
 
 [project.scripts]

@@ -1,4 +1,4 @@
-.PHONY: install test generate check-generated example build check scientific
+.PHONY: install test generate check-generated example build check check-distribution scientific
 PYTHON ?= python3
 
 install:
@@ -18,6 +18,10 @@ example:
 
 build:
 	$(PYTHON) -m build
+
+check-distribution: build
+	$(PYTHON) -m twine check --strict dist/*.whl dist/*.tar.gz
+	$(PYTHON) scripts/check_distribution.py dist
 
 scientific:
 	$(PYTHON) tools/investigation-validator/scripts/validate_investigation.py --self-test

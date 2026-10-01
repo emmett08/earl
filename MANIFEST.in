@@ -1,4 +1,5 @@
 include README.md
+include LICENSE
 recursive-include grammar *.g4
 recursive-include examples *.eal *.json *.toml *.py *.md
 recursive-include experiments *.py *.json *.md *.eal *.toml *.lock
@@ -8,7 +9,13 @@ prune experiments/model_transfer/runs
 recursive-include docs *.md *.json
 include scripts/generate_parser.py
 include scripts/experiment_pipeline.py
+include scripts/check_distribution.py scripts/distribution_smoke.py scripts/check_release_tag.py
 recursive-include .github/workflows *.yml
 
 include Makefile CONTRACT.md AGENTS.md
 recursive-include skills *.md *.yaml *.svg
+prune paper
+prune annotations
+prune build
+prune dist
+global-exclude __pycache__ *.py[cod]

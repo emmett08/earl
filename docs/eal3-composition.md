@@ -1,6 +1,6 @@
 # Scoped composition in EAL/3
 
-EAL/3 package 3.2.0 retains the typed evidence, assumption, reasoning, claim, argument, objection, proposition and reviewed-directive mappings. ANTLR recognition is followed by lexical binding, hygienic expansion, typed validation, local method evaluation and a separately selected argument calculus. [The syntax comparison](eal3-syntax-comparison.md) shows original-to-EAL/3 structural mappings. [EAL.g4](../grammar/EAL.g4) is the complete grammar; generated recognisers are committed and checked against ANTLR 4.13.2.
+EAL/3 package 3.2.1 retains the typed evidence, assumption, reasoning, claim, argument, objection, proposition and reviewed-directive mappings. ANTLR recognition is followed by lexical binding, hygienic expansion, typed validation, local method evaluation and a separately selected argument calculus. [The syntax comparison](eal3-syntax-comparison.md) shows original-to-EAL/3 structural mappings. [EAL.g4](../grammar/EAL.g4) is the complete grammar; generated recognisers are committed and checked against ANTLR 4.13.2.
 
 ## Names, modules and source imports
 
