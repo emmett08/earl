@@ -1,6 +1,6 @@
 # EAL/3 integration contract
 
-EAL/3 is the supported source language. The Python distribution is `engineering-argument-language` version `3.2.2`, imported as `eal`, and its source notation uses newline-terminated fields and typed flows. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/2` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
+EAL/3 is the supported source language. The Python distribution is `engineering-argument-language` version `3.2.3`, imported as `eal`, and its source notation uses newline-terminated fields and typed flows. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/2` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
 
 Source fields use newlines, contexts resolve metadata defaults, and typed support flows lower to the existing argument model. Package, source notation and stored observation versions remain separate. Strictness, ranks and contraries retain their opt-in ASPIC+ compilation effects.
 
