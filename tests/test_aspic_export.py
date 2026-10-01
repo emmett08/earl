@@ -15,7 +15,7 @@ from test_aspic_compiler import BASE, compare
 
 
 def compiled_view(*, missing=()):
-    source = BASE + 'objection challenge { target argument primary_route; evidence gap_data; }'
+    source = BASE + 'objection challenge = [evidence gap_data] -x> argument primary_route'
     return compare(source, missing=missing)[1]
 
 
@@ -57,13 +57,11 @@ def test_missing_observation_stays_unresolved_and_never_becomes_a_premise():
     assert result["routes"]["primary_route"]["status"] == "unconstructed"
 
 
-def test_previous_compiled_result_is_unclassified_without_guessing_from_prose():
+def test_current_compiled_result_requires_typed_issues_without_guessing_from_prose():
     result = compiled_view(missing=("primary_data",))
     del result["source_map"]["evidence"]["primary_data"]["availability_issues"]
-    view = export_aspic_view(result)
-    item = next(item for item in view["unavailable_evidence"]
-                if item["name"] == "primary_data")
-    assert item["availability_issues"] == ["unclassified_legacy"]
+    with pytest.raises(ValueError, match='availability issues'):
+        export_aspic_view(result)
 
 
 def test_rejects_untyped_or_forged_availability_issue_codes():
@@ -106,7 +104,7 @@ def test_supplied_prose_is_preserved_without_authentication_claim():
     dangerous = '</script><script>alert("bad")</script><img src=x onerror=alert(2)>'
     result["source_map"]["claims"]["run_passes"]["statement"] = dangerous
     view = export_aspic_view(result)
-    assert view["schema"] == "aspic-view/2"
+    assert view["schema"] == "aspic-view/3"
     assert view["validation"] == {"formal_result": "recomputed", "provenance": "supplied"}
     assert view["theory_digest"] == result["formal"]["theory_sha256"]
     assert view["evaluated_at"] == result["source_map"]["assessed_at"]
@@ -217,3 +215,16 @@ def test_cli_writes_graph_json_inside_workspace(tmp_path):
     oversized = subprocess.run(command, capture_output=True, text=True, timeout=20)
     assert oversized.returncode == 2
     assert "4 MiB" in json.loads(oversized.stdout)["error"]
+
+
+def test_export_retains_all_reviewed_directives_including_partial_preference():
+    source = BASE + '''
+rank primary_route 600 reviewed "review/rank"
+prefer primary_route over probe_route reviewed "review/priority"
+'''
+    result = compare(source)[1]
+    view = export_aspic_view(result)
+    assert view['formal_directives'] == result['source_map']['formal_directives']
+    assert {d['kind'] for d in view['formal_directives']} == {'rank', 'prefer'}
+    view['formal_directives'][0]['review'] = 'changed-view'
+    assert result['source_map']['formal_directives'][0]['review'] == 'review/rank'

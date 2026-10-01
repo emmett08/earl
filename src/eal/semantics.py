@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from collections import deque
-from dataclasses import fields, is_dataclass, replace
+from dataclasses import fields, is_dataclass, replace, asdict
 from datetime import datetime, timezone
 from functools import lru_cache
 import json
@@ -15,16 +15,18 @@ from .model import Diagnostic, Program
 from .abstractions import lower_patterns
 from .modes import evidence_kind, validate_mode
 from .propositions import proposition_errors
+from .limits import bounded, current_limits
+from .expressions import expression_errors, predicate_expression
 
 # Counts source declarations, reusable pattern bodies and generated arguments.
 MAX_DECLARATIONS = 4096
 MAX_PREMISE_DEPTH = 128
 _PATH = re.compile(r"[A-Za-z_][A-Za-z_0-9-]*(?:\.[A-Za-z_][A-Za-z_0-9-]*)*\Z")
-_IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z_0-9]*\Z")
+_IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z_0-9]*(?:\.[A-Za-z_][A-Za-z_0-9]*)*\Z")
 # Contextual words explicitly admitted by grammar/identifier are absent here.
 _RESERVED_NAMES = frozenset("""language environment tool version evidence kind max_age input assumption statement validate valid_from
 valid_until reasoning rationale backing claim argument conclusion assumptions premises
-objection target require true false null""".split())
+objection target require true false null and or not""".split())
 
 
 def parse_time(value: str | datetime) -> datetime:
@@ -48,7 +50,7 @@ def _check_json_resources(value):
     while pending:
         item, depth = pending.pop()
         nodes += 1
-        if depth > 64 or nodes > 100_000:
+        if depth > current_limits().json_depth or nodes > current_limits().json_nodes:
             raise ValueError("JSON resource limit exceeded")
         if type(item) is dict:
             if any(type(key) is not str for key in item):
@@ -85,14 +87,14 @@ def _ir_shape_errors(program):
     while pending:
         value, expected, path, declaration = pending.pop()
         visited += 1
-        if visited > 100_000:
-            return [Diagnostic("resource_limit", "Typed IR exceeds 100000 structural values")]
+        if visited > current_limits().structural_values:
+            return [Diagnostic("resource_limit", "Typed IR exceeds the structural-value budget")]
         if expected is Any:
             continue
         origin = get_origin(expected)
         if origin is UnionType:
             alternatives = get_args(expected)
-            expected = next((option for option in alternatives if type(value) is option), None)
+            expected = next((option for option in alternatives if type(value) is (get_origin(option) or option)), None)
             if expected is None:
                 errors.append(Diagnostic("invalid_ir", f"{path} has the wrong type", declaration,
                                          expected=str(alternatives), actual=type(value).__name__))
@@ -147,6 +149,7 @@ def _output_scalar_types(schema, path):
     return _output_scalar_types(child, rest) if isinstance(child, dict) else set()
 
 
+@bounded
 def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     """Run ordered typed-IR, identity, declaration, binding and graph passes."""
     shape_errors = _ir_shape_errors(program)
@@ -177,7 +180,7 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
                   expected=expected, actual=actual)
 
     def identifier(name, owner):
-        if not _IDENTIFIER.fullmatch(name) or name in _RESERVED_NAMES:
+        if not _IDENTIFIER.fullmatch(name) or any(part in _RESERVED_NAMES for part in name.split('.')):
             error("invalid_identifier", f"{name!r} cannot be represented as an EAL identifier", owner)
 
     if not _validate_declarations(program, error, identifier):
@@ -189,8 +192,44 @@ def validate(program: Program, *, registry=None) -> list[Diagnostic]:
     _validate_arguments(program, registry, error, reference, scope)
     _validate_objections(program, error, reference, scope)
     _validate_argumentation_directives(program, problems)
+    _validate_pattern_metadata(program, registry, problems)
     _validate_dependencies(program, error)
     return problems
+
+
+def _validate_pattern_metadata(program, registry, problems):
+    """Check declarative metadata in unused templates without inventing bindings."""
+    from .composition import TABLES
+    from .model import (Context, Module, ArgumentBlock, PatternGuard, Pattern)
+    for pattern in program.patterns.values():
+        if pattern.body is None:
+            continue
+        pending = list(pattern.body.declarations)
+        while pending:
+            declaration = pending.pop()
+            value = declaration.value
+            if isinstance(value, (Context, Module, ArgumentBlock, PatternGuard, Pattern)):
+                if getattr(value, 'body', None):
+                    pending.extend(value.body.declarations)
+                if isinstance(value, PatternGuard) and value.otherwise:
+                    pending.extend(value.otherwise.declarations)
+                continue
+            table = TABLES.get(type(value))
+            if table not in ('environments', 'tools', 'evidence', 'assumptions', 'reasoning', 'claims'):
+                continue
+            local = Program(language=program.language, source_digest=program.source_digest,
+                            limits=program.limits, **{table: {value.name: value}})
+            def error(code, message, owner=None, **details):
+                problems.append(Diagnostic(code, f'Local {value.name!r}: {message}', pattern.name,
+                                           declaration.span, details.get('expected'), details.get('actual')))
+            def identifier(name, owner):
+                if not _IDENTIFIER.fullmatch(name) or any(part in _RESERVED_NAMES for part in name.split('.')):
+                    error('invalid_identifier', f'Invalid identifier {name!r}')
+            reference = lambda *args: False  # Typed references are checked by lexical lowering.
+            _validate_predicates(local, error)
+            _validate_tools_and_evidence(local, error, reference, identifier)
+            _validate_assumptions(local, error, reference, lambda *args: None)
+            _validate_reasoning_and_claims(local, registry, error, reference)
 
 
 def _validate_declarations(program, error, identifier):
@@ -200,8 +239,8 @@ def _validate_declarations(program, error, identifier):
                    program.arguments, program.objections, program.patterns,
                    program.applications)
     actual_count = sum(len(table) for table in collections) + len(program.patterns) + len(program.argumentation_directives)
-    if max(actual_count, program.declaration_count) > MAX_DECLARATIONS:
-        error("resource_limit", f"At most {MAX_DECLARATIONS} declaration/body records after pattern expansion are supported")
+    if max(actual_count, program.declaration_count) > current_limits().declarations:
+        error("resource_limit", f"At most {current_limits().declarations} declaration/body records after pattern expansion are supported")
         return False
     # A mapping key and its declaration name are one identity, including for
     # callers using the Python IR API instead of the source recogniser.
@@ -213,7 +252,7 @@ def _validate_declarations(program, error, identifier):
             if name != value.name:
                 error("declaration_identity", "Declaration key must equal its declared name", name,
                       expected=name, actual=value.name)
-            generated = table is program.arguments and value.origin is not None
+            generated = name in program.generated or (table is program.arguments and value.origin is not None)
             if not generated:
                 if name in seen:
                     duplicate_names.add(name)
@@ -221,9 +260,13 @@ def _validate_declarations(program, error, identifier):
     for pattern in program.patterns.values():
         for parameter in pattern.parameters:
             identifier(parameter.name, pattern.name)
+            if '.' in parameter.name:
+                error('invalid_identifier', 'Parameter names must be unqualified identifiers', pattern.name)
     for application in program.applications.values():
         for binding in application.arguments:
             identifier(binding.name, application.name)
+            if '.' in binding.name:
+                error('invalid_identifier', 'Binding names must be unqualified identifiers', application.name)
     for name in sorted(duplicate_names):
         error("duplicate_symbol", f"Symbol {name!r} is declared more than once", name)
 
@@ -232,7 +275,17 @@ def _validate_declarations(program, error, identifier):
     lowered = lower_patterns(program)
     stored_diagnostics = tuple(replace(d, span=None) for d in program.lowering_diagnostics)
     fresh_diagnostics = tuple(replace(d, span=None) for d in lowered.lowering_diagnostics)
-    if (lowered.arguments != program.arguments or fresh_diagnostics != stored_diagnostics
+    def same_table(left, right):
+        try:
+            encode = lambda table: json.dumps({name: asdict(value) for name, value in table.items()},
+                                             sort_keys=True, allow_nan=False)
+            return encode(left) == encode(right)
+        except (ValueError, TypeError, RecursionError):
+            return False
+    changed_tables = any(not same_table(getattr(lowered, key), getattr(program, key)) for key in
+                         ('environments', 'tools', 'evidence', 'assumptions', 'reasoning', 'claims',
+                          'arguments', 'objections', 'patterns', 'applications'))
+    if (changed_tables or fresh_diagnostics != stored_diagnostics
             or lowered.declaration_count != program.declaration_count):
         changed = next((name for name in dict.fromkeys((*program.arguments, *lowered.arguments))
                         if program.arguments.get(name) != lowered.arguments.get(name)), None)
@@ -240,9 +293,9 @@ def _validate_declarations(program, error, identifier):
               "Stored arguments or diagnostics differ from the declared patterns and applications; lower the edited program again",
               changed)
 
-    if program.language != "EAL/2":
-        error("unsupported_language", f"Expected EAL/2, found {program.language!r}",
-              expected="EAL/2", actual=program.language)
+    if program.language != "EAL/3":
+        error("unsupported_language", f"Expected EAL/3, found {program.language!r}",
+              expected="EAL/3", actual=program.language)
     return True
 
 
@@ -253,6 +306,10 @@ def _validate_predicates(program, error):
             if collection is not program.reasoning and not value.predicates:
                 error("missing_predicate", "An environment or evidence declaration requires a predicate", value.name)
             for predicate in value.predicates:
+                if predicate.expression is not None:
+                    for message in expression_errors(predicate.expression):
+                        error("invalid_expression", message, value.name)
+                    continue
                 if not _PATH.fullmatch(predicate.path):
                     error("invalid_path", "Predicate paths must be dotted JSON object field names", value.name)
                 if predicate.operator not in ("==", "!=", "<", "<=", ">", ">="):
@@ -325,6 +382,10 @@ def _validate_reasoning_and_claims(program, registry, error, reference):
                   expected="registered versioned method identifier", actual=value.method)
         if contract is not None:
             for predicate in value.predicates:
+                if predicate.expression is not None:
+                    for message in expression_errors(predicate.expression, contract.output_schema):
+                        error("reasoning_predicate_type", message, value.name)
+                    continue
                 types = _output_scalar_types(contract.output_schema, predicate.path.split("."))
                 if types is None:
                     continue
@@ -343,14 +404,24 @@ def _validate_reasoning_and_claims(program, registry, error, reference):
             error("empty_rationale", "A reasoning declaration requires its rationale", value.name)
         for item in value.backing:
             reference(item, program.evidence, "backing evidence", value.name)
+        if value.transfer:
+            relation = value.transfer
+            reference(relation.source, program.environments, 'source environment', value.name)
+            reference(relation.target, program.environments, 'target environment', value.name)
+            reference(relation.assumption, program.assumptions, 'transfer assumption', value.name)
+            if not relation.review.strip():
+                error('missing_review', 'A scope-transfer relation requires a review reference', value.name)
     for value in program.claims.values():
         if not value.statement.strip():
             error("empty_statement", "A claim requires a statement", value.name)
         reference(value.environment, program.environments, "environment", value.name)
         if value.proposition is not None:
-            if not _PATH.fullmatch(value.proposition.result.path):
+            if value.proposition.result.expression is not None:
+                for message in expression_errors(value.proposition.result.expression):
+                    error("invalid_expression", message, value.name)
+            elif not _PATH.fullmatch(value.proposition.result.path):
                 error("invalid_path", "Proposition result paths must be dotted JSON object field names", value.name)
-            if value.proposition.result.operator not in ("==", "!=", "<", "<=", ">", ">="):
+            if value.proposition.result.expression is None and value.proposition.result.operator not in ("==", "!=", "<", "<=", ">", ">="):
                 error("invalid_comparison", "Proposition operator must be ==, !=, <, <=, > or >=", value.name)
             for message in proposition_errors(value.proposition, registry=registry):
                 error("invalid_proposition", message, value.name)
@@ -364,12 +435,13 @@ def _validate_arguments(program, registry, error, reference, scope):
         if not (value.evidence or value.assumptions or value.premises):
             error("empty_argument", "An argument requires evidence, assumptions or premise claims", value.name)
         expected = program.claims[value.conclusion].environment if conclusion_exists else None
+        relation = program.reasoning[value.reasoning].transfer if reasoning_exists else None
         for items, table, kind in ((value.evidence, program.evidence, "evidence"),
                                    (value.assumptions, program.assumptions, "assumption"),
                                    (value.premises, program.claims, "premise claim")):
             for item in items:
                 if reference(item, table, kind, value.name) and expected is not None:
-                    scope(table[item].environment, expected, value.name, item)
+                    scope(table[item].environment, relation.source if relation and kind == 'premise claim' else expected, value.name, item)
         if reasoning_exists:
             method = program.reasoning[value.reasoning]
             contract = registry.get(method.method)
@@ -377,7 +449,11 @@ def _validate_arguments(program, registry, error, reference, scope):
             source_ids.update(program.assumptions[a].validation for a in value.assumptions
                               if a in program.assumptions)
             proposition = program.claims[value.conclusion].proposition if conclusion_exists else None
-            if proposition is not None:
+            if relation is not None:
+                from .scope_transfer import transfer_errors
+                for message in transfer_errors(program, value):
+                    error('invalid_scope_transfer', message, value.name)
+            elif proposition is not None:
                 if value.binding is None:
                     error("missing_binding", "A typed conclusion requires an explicit evidence binding", value.name)
                 else:
@@ -487,6 +563,10 @@ def _validate_argumentation_directives(program, problems):
             valid = directive.rank is None and directive.other is not None
             key = (directive.kind, directive.name, directive.other)
             allowed = {"claim"}
+        elif directive.kind == 'prefer':
+            valid = directive.rank is None and directive.other is not None
+            key = (directive.kind, directive.name, directive.other)
+            allowed = {'evidence', 'assumption', 'argument'}
         else:
             valid = False
             key = (directive.kind, directive.name)
@@ -513,6 +593,28 @@ def _validate_argumentation_directives(program, problems):
                           expected=first, actual=second)
         if directive.kind == "strict" and directive.name in ranked_arguments:
             error("formal_strict_rank", "A strict rule cannot have a defeasible rank", directive)
+        if directive.kind == 'prefer' and directive.other is not None:
+            check_target(directive.other, allowed, directive)
+            a, b = kinds.get(directive.name, set()), kinds.get(directive.other, set())
+            if directive.name == directive.other or (a == {'evidence'}) != (b == {'evidence'}):
+                error('invalid_formal_preference', 'Priorities compare distinct evidence premises or distinct fallible rules', directive)
+            strict = {item.name for item in program.argumentation_directives if item.kind == 'strict'}
+            if directive.name in strict or directive.other in strict:
+                error('invalid_formal_preference', 'A strict rule cannot carry fallible priority', directive)
+    priorities = [(item.name, item.other, item) for item in program.argumentation_directives if item.kind == 'prefer']
+    graph = {}
+    for higher, lower, _ in priorities:
+        graph.setdefault(higher, set()).add(lower)
+    for higher, lower, directive in priorities:
+        pending, visited = [lower], set()
+        while pending:
+            node = pending.pop()
+            if node == higher:
+                error('cyclic_formal_preference', 'Strict priorities must be acyclic', directive)
+                break
+            if node not in visited:
+                visited.add(node)
+                pending.extend(graph.get(node, ()))
 
 
 def _validate_dependencies(program, error):
@@ -542,8 +644,8 @@ def _validate_dependencies(program, error):
     if visited != len(graph):
         blocked = next(name for name in graph if remaining[name])
         error("dependency_cycle", "Premise claims must form an acyclic dependency graph", blocked)
-    if depth and max(depth.values()) > MAX_PREMISE_DEPTH:
-        error("resource_limit", f"Premise chains may contain at most {MAX_PREMISE_DEPTH} edges",
+    if depth and max(depth.values()) > current_limits().premise_depth:
+        error("resource_limit", f"Premise chains may contain at most {current_limits().premise_depth} edges",
               max(depth, key=depth.get))
 
 

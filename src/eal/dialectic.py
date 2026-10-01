@@ -4,6 +4,7 @@ Argument identifiers and attacks are supplied explicitly by the caller. This
 module does not infer attacks from natural language or interpret EAL declarations.
 """
 from __future__ import annotations
+from .limits import current_limits
 
 MAX_ARGUMENTS = 4096
 MAX_ATTACKS = 65536
@@ -50,10 +51,10 @@ def solve_grounded(arguments: list[str], attacks: list[list[str]]) -> dict:
         raise ArgumentationError("arguments must be a list")
     if not isinstance(attacks, list):
         raise ArgumentationError("attacks must be a list")
-    if len(arguments) > MAX_ARGUMENTS:
-        raise ArgumentationError(f"arguments exceeds the limit of {MAX_ARGUMENTS}")
-    if len(attacks) > MAX_ATTACKS:
-        raise ArgumentationError(f"attacks exceeds the limit of {MAX_ATTACKS}")
+    if len(arguments) > current_limits().declarations:
+        raise ArgumentationError(f"arguments exceeds the limit of {current_limits().declarations}")
+    if len(attacks) > current_limits().abstract_attacks:
+        raise ArgumentationError(f"attacks exceeds the limit of {current_limits().abstract_attacks}")
 
     nodes: set[str] = set()
     for index, value in enumerate(arguments):
@@ -175,12 +176,12 @@ def solve_composed(nodes: dict[str, dict], claims: dict[str, list[str]],
         raise ArgumentationError("nodes and claims must be dictionaries")
     if not isinstance(attacks, list):
         raise ArgumentationError("attacks must be a list")
-    if len(nodes) > MAX_COMPOSED_NODES:
-        raise ArgumentationError(f"nodes exceeds the limit of {MAX_COMPOSED_NODES}")
-    if len(claims) > MAX_COMPOSED_CLAIMS:
-        raise ArgumentationError(f"claims exceeds the limit of {MAX_COMPOSED_CLAIMS}")
-    if len(attacks) > MAX_COMPOSED_EDGES:
-        raise ArgumentationError(f"relationships exceeds the limit of {MAX_COMPOSED_EDGES}")
+    if len(nodes) > current_limits().declarations:
+        raise ArgumentationError(f"nodes exceeds the limit of {current_limits().declarations}")
+    if len(claims) > current_limits().declarations:
+        raise ArgumentationError(f"claims exceeds the limit of {current_limits().declarations}")
+    if len(attacks) > current_limits().composed_edges:
+        raise ArgumentationError(f"relationships exceeds the limit of {current_limits().composed_edges}")
     for node in nodes:
         _identifier(node, "node identifier")
     for claim in claims:
@@ -193,8 +194,8 @@ def solve_composed(nodes: dict[str, dict], claims: dict[str, list[str]],
         if not isinstance(value, list):
             raise ArgumentationError(f"{location} must be a list")
         edge_count += len(value)
-        if edge_count > MAX_COMPOSED_EDGES:
-            raise ArgumentationError(f"relationships exceeds the limit of {MAX_COMPOSED_EDGES}")
+        if edge_count > current_limits().composed_edges:
+            raise ArgumentationError(f"relationships exceeds the limit of {current_limits().composed_edges}")
         found = set()
         for item in value:
             _identifier(item, location)

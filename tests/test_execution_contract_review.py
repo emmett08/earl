@@ -16,15 +16,36 @@ from eal.parser import parse
 from eal.runtime import ReasoningService, acquisition_request
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool reader { version "1"; }
-evidence reading { tool reader; kind measurement; environment lab; max_age 60;
-  input {"sensor":"A"}; require "passed" == true;
+SOURCE = '''language "EAL/3"
+
+environment lab {
+  require "site" == "bench"
 }
-reasoning support { method "structured/1"; rationale "The declared observation supports the bounded claim."; }
-claim works { statement "The requested check passes."; environment lab; }
-argument result { conclusion works; reasoning support; evidence reading; }
+
+tool reader {
+  version "1"
+}
+
+evidence reading {
+  tool reader
+  kind measurement
+  environment lab
+  max_age 60
+  input {"sensor": "A"}
+  require "passed" == true
+}
+
+reasoning support {
+  method "structured/1"
+  rationale "The declared observation supports the bounded claim."
+}
+
+claim works {
+  statement "The requested check passes."
+  environment lab
+}
+
+argument result = [evidence reading] via support => works
 '''
 CONTEXT = {"site": "bench"}
 NOW = "2026-09-23T12:00:00Z"
@@ -86,11 +107,11 @@ def test_import_requires_acquisition_identity_and_retains_measurement_age(tmp_pa
 
 def test_import_allows_local_renaming_but_rejects_changed_acquisition_input(tmp_path):
     service, _, _ = file_service(tmp_path)
-    renamed = SOURCE.replace("evidence reading", "evidence measurement").replace("evidence reading;", "evidence measurement;")
+    renamed = SOURCE.replace("evidence reading", "evidence measurement").replace('evidence reading', 'evidence measurement')
     renamed = renamed.replace("environment lab", "environment bench")
     collection = service.collect(renamed, CONTEXT)
     assert service.reason(renamed, CONTEXT, collection["collection_id"], NOW)["claims"]["works"]["status"] == "supported"
-    changed = renamed.replace('"sensor":"A"', '"sensor":"B"')
+    changed = renamed.replace('"sensor": "A"', '"sensor": "B"')
     record = service.collect(changed, CONTEXT)["records"]["measurement"]
     assert record["status"] == "error"
     assert "Observation request differs" in record["error"]["message"]

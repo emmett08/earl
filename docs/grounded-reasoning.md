@@ -1,6 +1,6 @@
 # Grounded reasoning over explicit argument graphs
 
-`eal_grounded` determines which arguments can be accepted in a finite, explicitly supplied attack graph. Its argument identifiers and attack relations are inputs. EAL/2 also integrates a support-and-attack computation into evaluation through `solve_composed`: argument and objection nodes retain their required premises, and alternative arguments can support the same claim. Neither operation discovers arguments or attacks from prose.
+`eal_grounded` determines which arguments can be accepted in a finite, explicitly supplied attack graph. Its argument identifiers and attack relations are inputs. EAL/3 also integrates a support-and-attack computation into evaluation through `solve_composed`: argument and objection nodes retain their required premises, and alternative arguments can support the same claim. Neither operation discovers arguments or attacks from prose.
 
 ## Meaning
 

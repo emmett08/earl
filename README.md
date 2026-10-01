@@ -1,8 +1,40 @@
-# Engineering Argument Language (EAL/2)
+# Engineering Argument Language (EAL/3)
 
-EAL/2 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
+EAL/3 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
 
-The package is **2.18.1** and requires Python **3.11 or later**. The supported source language is `EAL/2`. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
+The package is **3.1.0** and requires Python **3.11 or later**. The supported source language is `EAL/3`, with newline-terminated fields and typed flows. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
+
+## Author a bounded argument
+
+Fields end at newlines. Context defaults remove repeated metadata; role-labelled support lists preserve reference types:
+
+```eal
+language "EAL/3"
+environment lab {
+  require site == "bench"
+}
+tool probe {
+  version "1"
+}
+context environment lab, tool probe, max_age 60 {
+  evidence reading {
+    kind test
+    require passed == true
+  }
+  claim measured {
+    statement "The synthetic probe satisfies the declared acceptance condition."
+  }
+}
+reasoning authored {
+  method "structured/1"
+  rationale "The accepted probe supports this bounded claim."
+}
+pattern measured_route(c: claim, r: reasoning, e: evidence) = [evidence e] via r => c
+apply check = measured_route(c=measured, r=authored, e=reading)
+rank reading 700 reviewed "synthetic-review/probe"
+```
+
+For a dependent claim, use `[premises measured] via authored => followup`. This builds nested derivations through claims, including pattern instances. Argument blocks can contain local declarations. Compound patterns can call nested patterns and recurse over a decreasing typed list. Modules, source imports and pure expressions support larger cases; see [scoped composition](docs/eal3-composition.md). See the [language reference](docs/language.md) for required fields, scope inheritance and reviewed ASPIC+ directives.
 
 ## Install and check
 
@@ -54,7 +86,7 @@ The trusted TOML file binds tool names and versions to commands or JSON files. T
 
 ## Reasoning and example
 
-`reasoning NAME { method "name/version"; ... }` selects an installed method with its own typed input and output requirements. Built-in methods include structured, deductive, inductive, abductive, causal, counterfactual, analogical and temporal reasoning. The host checks their finite contracts, evidence predicates, premise dependencies, assumptions and targeted objections. `supported` means support under the authored scope and observations; it does not certify an omitted real-world premise. See [reasoning modes](docs/reasoning-modes.md) and the [argument service design](docs/argument-service.md).
+`method "name/version"` inside a reasoning declaration selects an installed method with its own typed input and output requirements. Built-in methods include structured, deductive, inductive, abductive, causal, counterfactual, analogical and temporal reasoning. The host checks their finite contracts, evidence predicates, premise dependencies, assumptions and targeted objections. `supported` means support under the authored scope and observations; it does not certify an omitted real-world premise. See [reasoning modes](docs/reasoning-modes.md) and the [argument service design](docs/argument-service.md).
 
 The [API load-test example](examples/api-load-test/README.md) uses synthetic request measurements to exercise the CLI and MCP with a custom typed method. Run `make example` for its deterministic assessment. The optional [ASPIC+ method](docs/aspic-method.md) and EAL-to-ASPIC+ compiler provide a separate bounded formal argument view.
 
@@ -65,13 +97,13 @@ The [developer and model handover experiment](experiments/transfer_study/README.
 | Document | Scope |
 | --- | --- |
 | [Argument service](docs/argument-service.md) | Registered workflow, tools, reuse and model packets |
-| [Language](docs/language.md) | EAL/2 syntax and evidence versus observation |
+| [Language](docs/language.md) | EAL/3 syntax and evidence versus observation |
 | [Argument model](docs/argument-model.md) | Support, objections and propagation |
 | [Reasoning modes](docs/reasoning-modes.md) | Built-in method contracts and extensions |
 | [MCP and tools](docs/mcp-and-tools.md) | Host adapters, persistence and operation schemas |
 | [ASPIC+ method](docs/aspic-method.md) | Optional formal method and compiler |
 | [Integration contract](CONTRACT.md) | Python, CLI, MCP and record interfaces |
-| [EAL/2 experiment methodology](docs/eal2-experiment-methodology.md) | Practical thresholds, pilot-informed allocation and cumulative fresh-session evaluation |
+| [EAL/3 experiment methodology](docs/eal3-experiment-methodology.md) | Practical thresholds, pilot-informed allocation and cumulative fresh-session evaluation |
 | [Experiment workflow and inputs](experiments/model_transfer/WORKFLOW.md) | One wrapper for free checks, automatic collection segments, annotation hand-off, analysis and evaluation planning |
 | [Handover experiment](experiments/transfer_study/README.md) | New-session developer and model comparison protocol |
 

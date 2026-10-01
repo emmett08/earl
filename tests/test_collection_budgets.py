@@ -19,19 +19,23 @@ from eal.tool_acquisition import MAX_REQUEST_BYTES
 def _source(count: int, *, large_input: str | None = None) -> str:
     declarations = []
     for index in range(count):
-        input_clause = (f'input {{"payload":"{large_input}"}}; ' if index == count - 1 and large_input else "")
+        input_clause = (f'input {{"payload":"{large_input}"}}\n ' if index == count - 1 and large_input else "")
         declarations.append(
-            f'evidence reading_{index} {{ tool runner; kind test; environment lab; '
-            f'max_age 60; {input_clause}require "ok" == true; }}'
+            f'''evidence reading_{index} {{ tool runner
+ kind test
+ environment lab
+ max_age 60
+ {input_clause}require "ok" == true
+ }}'''
         )
     return '\n'.join([
-        'language "EAL/2";',
-        'environment lab { require "site" == "bench"; }',
-        'tool runner { version "1"; }',
+        'language "EAL/3"\n',
+        'environment lab {\n  require "site" == "bench"\n}',
+        'tool runner {\n  version "1"\n}',
         *declarations,
-        'reasoning measured { method "structured/1"; rationale "These observations support the scoped claim."; }',
-        'claim works { statement "The checked operation works."; environment lab; }',
-        'argument support { conclusion works; reasoning measured; evidence reading_0; }',
+        'reasoning measured {\n  method "structured/1"\n  rationale "These observations support the scoped claim."\n}',
+        'claim works {\n  statement "The checked operation works."\n  environment lab\n}',
+        'argument support = [evidence reading_0] via measured => works',
     ])
 
 

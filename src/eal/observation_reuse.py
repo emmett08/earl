@@ -11,7 +11,7 @@ from copy import deepcopy
 from typing import Any, Mapping
 from uuid import uuid4
 
-from .evaluator import canonical_digest, environment_fingerprint
+from .evaluator import canonical_digest, environment_fingerprint, environment_context
 from .semantics import parse_time
 from .store import RunStore, utc_now
 
@@ -33,6 +33,7 @@ class ObservationRebinder:
         if not isinstance(binding_digest, str) or re.fullmatch(r"[0-9a-f]{64}", binding_digest) is None:
             raise ValueError(f"No current tool binding for evidence {evidence_id!r}")
         evidence = program.evidence[evidence_id]
+        context = environment_context(evidence.environment, context)
         acquisition = acquisition_request(program, evidence_id, context)
         expected = {
             "evidence_id": evidence_id,

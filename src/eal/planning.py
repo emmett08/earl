@@ -1,6 +1,6 @@
 """Plan the evidence needed to assess a claim's complete argument graph.
 
-Planning reads a validated EAL/2 programme. It has no collection, storage or
+Planning reads a validated EAL/3 programme. It has no collection, storage or
 reasoning effects: the host decides how to execute the selected requests.
 """
 

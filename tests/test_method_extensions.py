@@ -24,8 +24,8 @@ def run_method(payload, contract=RMS_CONTRACT):
 
 def custom_source():
     return (SOURCE.replace('kind experiment', 'kind measurement_series')
-            .replace('method "causal/1";', 'method "engineering/rms/1";')
-            .replace('query {"assignment":"randomised"}', 'query {"origin":0}')
+            .replace('method "causal/1"', 'method "engineering/rms/1"')
+            .replace('query {"assignment": "randomised"}', 'query {"origin":0}')
             .replace('result "estimate" >= 5', 'result "rms" == 5'))
 
 
@@ -48,7 +48,7 @@ def test_actual_rms_method_runs_through_unchanged_core_grammar_and_typed_claim()
 
 
 def test_custom_method_does_not_enable_an_obsolete_language_version():
-    source = custom_source().replace('EAL/2', 'EAL/0.3')
+    source = custom_source().replace('EAL/3', 'EAL/0.3')
     assert 'unsupported_language' in {item.code for item in validate(parse(source), registry=example_registry())}
 
 
@@ -88,7 +88,7 @@ def test_bad_output_exception_and_nontermination_never_become_support(callback):
     contract = replace(RMS_CONTRACT, identifier='test/failure/1', implementation=callback, timeout_seconds=.1)
     started = time.monotonic()
     result = run_method({'origin': 0, 'samples': [1]}, contract)
-    assert result['status'] == 'unsupported'
+    assert result['status'] == ('incomplete' if callback is _hang else 'unsupported')
     assert result['details'] == {}
     assert result['evidence_id'] == 'trial'
     assert time.monotonic() - started < 3

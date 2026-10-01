@@ -1,3 +1,3 @@
 """Engineering Argument Language: explicit, revisable engineering reasoning."""
 
-__version__ = "2.18.1"
+__version__ = "3.1.0"

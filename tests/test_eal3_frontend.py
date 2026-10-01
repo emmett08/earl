@@ -14,24 +14,49 @@ from test_evaluator import CONTEXT, NOW, record
 from test_typed_propositions import SOURCE, VALUE
 
 
-BASE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool runner { version "1"; }
-evidence samples { tool runner; kind test; environment lab; max_age 60; require "ok" == true; }
-assumption stable { statement "The same configuration persists."; environment lab; validate samples; }
-reasoning measured { method "structured/1"; rationale "The test supports the bounded claim."; }
-claim pressure { statement "Pressure is acceptable."; environment lab; }
-claim calibrated { statement "The instrument is calibrated."; environment lab; }
-'''
-PATTERN = '''pattern check(c: claim, r: reasoning, e: evidence, a: assumption, p: claim) {
-  conclusion c;
-  reasoning r;
-  evidence e;
-  assumptions a;
-  premises p;
+BASE = '''language "EAL/3"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool runner {
+  version "1"
+}
+
+evidence samples {
+  tool runner
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+assumption stable {
+  statement "The same configuration persists."
+  environment lab
+  validate samples
+}
+
+reasoning measured {
+  method "structured/1"
+  rationale "The test supports the bounded claim."
+}
+
+claim pressure {
+  statement "Pressure is acceptable."
+  environment lab
+}
+
+claim calibrated {
+  statement "The instrument is calibrated."
+  environment lab
 }
 '''
-APPLICATION = 'apply pressure_check = check(c=pressure, r=measured, e=samples, a=stable, p=calibrated);\n'
+PATTERN = '''pattern check(c: claim, r: reasoning, e: evidence, a: assumption, p: claim) = [evidence e, assumptions a, premises p] via r => c
+'''
+APPLICATION = '''apply pressure_check=check(c=pressure, r=measured, e=samples, a=stable, p=calibrated)
+'''
 
 
 def diagnostics(source):
@@ -54,8 +79,9 @@ def test_patterns_expand_typed_references_and_retain_authored_structure():
 
 
 def test_forward_references_and_alpha_renaming_cannot_capture_global_names():
-    original = parse('language "EAL/2";\n' + APPLICATION + BASE.split('\n', 1)[1] + PATTERN)
-    renamed = PATTERN.replace('c: claim', 'pressure: claim').replace('conclusion c;', 'conclusion pressure;')
+    original = parse('''language "EAL/3"
+''' + APPLICATION + BASE.split('\n', 1)[1] + PATTERN)
+    renamed = PATTERN.replace('c: claim', 'pressure: claim').replace('=> c', '=> pressure')
     alpha_renamed = parse(BASE + renamed + APPLICATION.replace('c=pressure', 'pressure=pressure'))
     assert original.arguments == alpha_renamed.arguments
     source = BASE + renamed + APPLICATION.replace('c=pressure', 'pressure=calibrated').replace('p=calibrated', 'p=pressure')
@@ -82,7 +108,7 @@ def test_same_evidence_and_assumption_identity_survive_multiple_applications():
     ('p: claim', 'p: assumption', 'pattern_reference_kind'),
     ('c: claim', 'c: imaginary', 'invalid_pattern_parameter_kind'),
     ('c: claim,', 'c: claim, c: claim,', 'duplicate_pattern_parameter'),
-    ('conclusion c;', 'conclusion pressure;', 'unbound_pattern_reference'),
+    ('=> c', '=> pressure', 'unbound_pattern_reference'),
 ])
 def test_unused_malformed_patterns_are_rejected(old, new, code):
     program = parse(BASE + PATTERN.replace(old, new))
@@ -107,19 +133,19 @@ def test_invalid_applications_never_generate_arguments(old, new, code):
 
 
 def test_pattern_binding_is_checked_as_an_evidence_parameter():
-    source = BASE + PATTERN.replace('premises p;', 'premises p; binding c;')
+    source = BASE + PATTERN.replace('=> c', '=> c binding c')
     diagnostic = next(d for d in parse(source).lowering_diagnostics if d.code == 'pattern_reference_kind')
     assert (diagnostic.expected, diagnostic.actual) == ('evidence', 'claim')
 
 
 def test_empty_unused_pattern_is_not_a_valid_definition():
-    source = BASE + 'pattern empty(c: claim, r: reasoning) { conclusion c; reasoning r; }'
+    source = BASE + 'pattern empty(c: claim, r: reasoning) = [] via r => c'
     assert 'empty_pattern' in diagnostics(source)
 
 
 def test_generated_names_cannot_replace_an_authored_declaration():
-    declaration = 'argument pressure_check { conclusion calibrated; reasoning measured; evidence samples; }'
-    program = parse(BASE + PATTERN + declaration + APPLICATION)
+    declaration = 'argument pressure_check = [evidence samples] via measured => calibrated'
+    program = parse(BASE + PATTERN + declaration + '\n' + APPLICATION)
     assert {'generated_symbol_collision', 'duplicate_symbol'} <= {d.code for d in validate(program)}
     assert program.arguments['pressure_check'].conclusion == 'calibrated'
     assert program.arguments['pressure_check'].origin is None
@@ -127,24 +153,30 @@ def test_generated_names_cannot_replace_an_authored_declaration():
 
 def test_recursion_and_nested_applications_are_not_grammar_productions():
     with pytest.raises(EALSyntaxError):
-        parse(BASE + PATTERN.replace('conclusion c;', 'apply inner = check(c=c); conclusion c;'))
+        parse(BASE + PATTERN.replace('=> c', 'apply inner=check(c=c)\n conclusion c'))
 
 
-def test_application_budget_and_expanded_reference_budget_are_enforced(monkeypatch):
+def test_application_budget_and_expanded_reference_budget_are_enforced():
+    from eal.limits import ExecutionLimits
     applications = ''.join(APPLICATION.replace('pressure_check', f'use_{i}') for i in range(1001))
     program = parse(BASE + PATTERN + applications)
     assert 'resource_limit' in {d.code for d in validate(program)}
     assert not program.arguments
-    monkeypatch.setattr(abstractions, 'MAX_EXPANDED_REFERENCES', 4)
-    program = parse(BASE + PATTERN + APPLICATION)
+    program = parse(BASE + PATTERN + APPLICATION, limits=ExecutionLimits(expanded_references=4))
     assert 'resource_limit' in {d.code for d in validate(program)}
     assert not program.arguments
 
 
 def test_declaration_locations_use_one_based_exclusive_end_positions():
-    source = 'language "EAL/2";\n  reasoning reason {\n    method "structured/1";\n    rationale "Test";\n  }\n'
+    source = '''language "EAL/3"
+
+reasoning reason {
+  method "structured/1"
+  rationale "Test"
+}
+'''
     program = parse(source)
-    assert program.locations['reason'] == SourceSpan(2, 3, 5, 4)
+    assert program.locations['reason'] == SourceSpan(3, 1, 6, 2)
     invalid = parse(source.replace('structured/1', 'missing/1'))
     diagnostic = next(d for d in validate(invalid) if d.declaration == 'reason')
     assert diagnostic.span == invalid.locations['reason']
@@ -157,20 +189,18 @@ def test_reasoning_method_and_tool_version_are_separate_contracts():
     assert program.tools['runner'].version == '1'
     assert not hasattr(program.tools['runner'], 'mode')
     with pytest.raises(EALSyntaxError):
-        parse(BASE.replace('method "structured/1";', 'mode structured;'))
+        parse(BASE.replace('method "structured/1"', 'mode structured;'))
 
 
 def test_obsolete_tool_execution_mode_is_rejected_at_recognition():
     with pytest.raises(EALSyntaxError):
-        parse(BASE.replace('version "1";', 'version "1"; mode deterministic;'))
+        parse(BASE.replace('version "1"', 'version "1"\n mode deterministic'))
 
 
 def test_pattern_roundtrip_retains_authoring_and_typed_runtime_meaning():
-    pattern = '''pattern compare(c: claim, r: reasoning, e: evidence) {
-      conclusion c; reasoning r; evidence e; binding e;
-    }
-    apply contrast = compare(c=raised, r=difference, e=trial);
-    '''
+    pattern = '''pattern compare(c: claim, r: reasoning, e: evidence) = [evidence e] via r => c binding e
+
+apply contrast=compare(c=raised, r=difference, e=trial)'''
     source = SOURCE[:SOURCE.index('argument contrast')] + pattern
     program = parse(source)
     formatted = format_source(source)

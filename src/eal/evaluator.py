@@ -19,6 +19,8 @@ from .model import Diagnostic, Environment, Predicate, Program
 from .modes import assess_mode
 from .semantics import parse_time, validate, objection_scopes
 from .propositions import prepare_binding, check_result
+from .limits import bounded, current_limits
+from .expressions import evaluate_expression, UNKNOWN, format_expression
 
 MAX_JSON_DEPTH = 64
 MAX_JSON_NODES = 100_000
@@ -27,9 +29,9 @@ MAX_RECORD_BYTES = 4 * 1024 * 1024
 
 def _json_value(value, depth=0, budget=None):
     if budget is None:
-        budget = [MAX_JSON_NODES]
+        budget = [current_limits().json_nodes]
     budget[0] -= 1
-    if depth > MAX_JSON_DEPTH or budget[0] < 0:
+    if depth > current_limits().json_depth or budget[0] < 0:
         raise ValueError("JSON resource limit exceeded")
     if value is None or isinstance(value, (str, bool)):
         return value
@@ -68,6 +70,16 @@ def environment_fingerprint(name: str, context: Mapping[str, Any]) -> str:
     return canonical_digest({"environment": name, "context": context})
 
 
+def environment_context(name: str, context: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Select an explicitly supplied environment context; never infer transfer."""
+    if '$environments' not in context:
+        return context
+    environments = context['$environments']
+    if not isinstance(environments, Mapping) or any(not isinstance(value, Mapping) for value in environments.values()):
+        raise ValueError('$environments must map environment names to JSON objects')
+    return environments.get(name, {})
+
+
 def _entry(status, reasons, **details):
     return {"status": status, "reasons": reasons, **details}
 
@@ -93,6 +105,14 @@ class EvidenceVerdict:
 
 
 def _check_predicate(predicate: Predicate, value) -> _PredicateCheck:
+    if predicate.expression is not None:
+        result = evaluate_expression(predicate.expression, value)
+        if result.value is UNKNOWN or type(result.value) is not bool:
+            return _PredicateCheck(False, False, result.reason or 'Expression requires a Boolean result',
+                                   result.issue or 'incompatible_type')
+        return _PredicateCheck(result.value, True,
+                               f'{format_expression(predicate.expression)} ' + ('holds' if result.value else 'does not hold'),
+                               None if result.value else 'not_met')
     actual = value
     for field in predicate.path.split("."):
         if not isinstance(actual, Mapping) or field not in actual:
@@ -125,6 +145,7 @@ def _predicate(predicate: Predicate, value) -> tuple[bool, str]:
 
 def assess_environment(environment: Environment, context: Mapping[str, Any]) -> dict:
     """Produce the same public scope entry for evaluation and packet checks."""
+    context = environment_context(environment.name, context)
     outcomes = [_predicate(predicate, context) for predicate in environment.predicates]
     return _entry("matched" if all(ok for ok, _ in outcomes) else "out_of_scope",
                   [reason for _, reason in outcomes])
@@ -137,6 +158,7 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
                            check_current_binding: bool = False) -> EvidenceVerdict:
     """Check a record once, independently of explanation wording."""
     evidence = program.evidence[name]
+    context = environment_context(evidence.environment, context)
     reasons = []
     issues = set()
     if not environment_matched:
@@ -205,7 +227,7 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
         if "value" not in record:
             raise ValueError("Record has no JSON value")
         encoded = _canonical_bytes(record["value"])
-        if len(encoded) > MAX_RECORD_BYTES:
+        if len(encoded) > current_limits().record_bytes:
             raise ValueError("Record value exceeds byte limit")
         if hashlib.sha256(encoded).hexdigest() != record.get("data_digest"):
             reasons.append("Record data_digest does not match its JSON value")
@@ -235,6 +257,7 @@ def assess_evidence_record(program: Program, name: str, record: Mapping | None, 
                                   tool_binding_digest=binding_digest, run_id=record.get("run_id")), complete)
 
 
+@bounded
 def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime | str,
              context: Mapping[str, Any], registry=None,
              binding_digests: Mapping[str, str | None] | None = None) -> dict:
@@ -250,14 +273,15 @@ def evaluate(program: Program, records: Mapping[str, Mapping], *, now: datetime 
         raise ValueError("Context and records must be mappings")
     if binding_digests is not None and not isinstance(binding_digests, Mapping):
         raise ValueError("binding_digests must map evidence IDs to current operator configurations")
-    if len(records) > 4096:
-        raise ValueError("At most 4096 evidence records may be supplied")
+    if len(records) > current_limits().declarations:
+        raise ValueError("Evidence records exceed the host declaration budget")
     diagnostics = validate(program, registry=registry)
     result = {"language": program.language, "source_digest": program.source_digest,
               "assessed_at": instant.isoformat().replace("+00:00", "Z"),
               "context_fingerprint": canonical_digest(context),
               "method_registry_fingerprint": registry.fingerprint,
-              "valid": not diagnostics, "diagnostics": [asdict(d) for d in diagnostics],
+              "valid": not diagnostics, "complete": not diagnostics,
+              "diagnostics": [asdict(d) for d in diagnostics],
               **{name: {} for name in ("environments", "evidence", "assumptions", "reasoning",
                                       "objections", "arguments", "claims")}}
     if diagnostics:
@@ -282,6 +306,12 @@ def _compute_argument(program, argument, claim, records, premises, registry):
     arguments. The support/attack solver separately decides final acceptance.
     """
     method = program.reasoning[argument.reasoning]
+    if method.transfer is not None:
+        from .scope_transfer import computation
+        outcome = computation(program, argument)
+        checks = [_predicate(p, outcome['details']) for p in method.predicates]
+        outcome['predicates'] = [{'holds': ok, 'reason': reason} for ok, reason in checks]
+        return outcome, all(ok for ok, _ in checks)
     source_ids = set(argument.evidence) | set(method.backing)
     source_ids.update(program.assumptions[a].validation for a in argument.assumptions)
     sources = [{"id": e, "kind": program.evidence[e].kind, "value": records[e]["value"]}
@@ -339,11 +369,14 @@ def _evaluate_arguments(program, records, instant, result, registry):
 
     _assess_local_declarations(program, instant, result)
     sources = _assess_source_claims(program, records, result, registry)
+    result['complete'] = not any(item.get('reasoning_result', {}).get('status') == 'incomplete'
+                                 for item in result['arguments'].values())
     try:
         graph = _construct_composed_graph(program, result, sources)
         grounded = _solve_composed_graph(graph)
     except ArgumentationError as exc:
         result["valid"] = False
+        result['complete'] = False
         result["diagnostics"].append(asdict(Diagnostic("resource_limit", str(exc))))
         for group in ("arguments", "claims", "objections"):
             result[group] = {}
@@ -463,7 +496,7 @@ def _assess_source_claims(program, records, result, registry) -> _SourceAssessme
 
 def _construct_composed_graph(program, result, sources: _SourceAssessment) -> _ComposedGraph:
     """Construct scoped support and attack edges within the edge limit."""
-    from .dialectic import ArgumentationError, MAX_COMPOSED_EDGES
+    from .dialectic import ArgumentationError
 
     by_conclusion = sources.by_conclusion
     source_claims = sources.source_claims
@@ -507,7 +540,7 @@ def _construct_composed_graph(program, result, sources: _SourceAssessment) -> _C
                     targets.append(f"argument:{argument_name}")
         for target in targets:
             attacks.add((source, target))
-            if len(attacks) + dependency_edges > MAX_COMPOSED_EDGES:
+            if len(attacks) + dependency_edges > current_limits().composed_edges:
                 raise ArgumentationError("Composed attack and support graph exceeds the edge limit")
     return _ComposedGraph(nodes, claims, attacks, objection_sources)
 
@@ -529,7 +562,7 @@ def _project_grounded_result(program, result, sources: _SourceAssessment,
     for source, target in sorted(attacks):
         attackers[target].append(source)
     result["dialectic"] = {**grounded, "attacks": [list(edge) for edge in sorted(attacks)],
-                            "construction": "EAL/2 scoped applications with conjunctive claim support"}
+                            "construction": "EAL/3 scoped applications with conjunctive claim support"}
     for name, argument in program.arguments.items():
         entry = result["arguments"][name]
         label = grounded["nodes"][f"argument:{name}"]

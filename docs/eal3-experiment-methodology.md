@@ -1,6 +1,6 @@
-# EAL/2 experiment methodology
+# EAL/3 experiment methodology
 
-Protocol 6.0.0 uses scientific-protocol schema 1.2 and has status **specified**.
+Protocol 7.0.0 uses scientific-protocol schema 1.2 and has status **specified**.
 The implementation and synthetic operating characteristics are checked separately
 from empirical feasibility. No live result under this protocol is claimed.
 

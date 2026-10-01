@@ -4,6 +4,7 @@ from __future__ import annotations
 from dataclasses import replace
 
 from .model import Argument, ArgumentOrigin, Diagnostic, Pattern, Program
+from .limits import bounded, current_limits
 
 MAX_PATTERN_APPLICATIONS = 1000
 MAX_EXPANDED_REFERENCES = 100_000
@@ -22,14 +23,18 @@ def _references(pattern: Pattern):
         yield pattern.binding, "evidence", "binding"
 
 
+@bounded
 def lower_patterns(program: Program) -> Program:
     """Check all definitions, resolve named arguments and expand valid uses.
 
-    Patterns have no global captures or nested applications. Substitution acts
-    only on typed reference fields, preserving the identity of each dependency.
+    Authored lexical trees use the compound composition pass. Direct core IR
+    supports compact closed patterns; substitution acts on typed references.
     Invalid lowering records diagnostics; static validation blocks execution.
     Reapplying this pass is idempotent, including its declaration accounting.
     """
+    if program.authored is not None:
+        from .composition import lower_program
+        return lower_program(program)
     diagnostics: list[Diagnostic] = []
 
     def error(code, message, declaration, expected=None, actual=None):
@@ -78,9 +83,9 @@ def lower_patterns(program: Program) -> Program:
     authored_names = set().union(*(set(table) for kind, table in tables.items()
                                   if kind not in ("argument", "application")), arguments)
     old_expansion_count = len(program.arguments) - len(arguments)
-    if len(program.applications) > MAX_PATTERN_APPLICATIONS:
+    if len(program.applications) > current_limits().applications:
         declaration = next(iter(program.applications))
-        error("resource_limit", f"At most {MAX_PATTERN_APPLICATIONS} pattern applications are supported",
+        error("resource_limit", f"At most {current_limits().applications} pattern applications are supported",
               declaration)
         return replace(program, arguments=arguments, lowering_diagnostics=tuple(diagnostics),
                        declaration_count=program.declaration_count - old_expansion_count)
@@ -122,9 +127,9 @@ def lower_patterns(program: Program) -> Program:
         if len(diagnostics) != before:
             continue
         reference_count = sum(1 for _ in _references(pattern))
-        if expanded_references + reference_count > MAX_EXPANDED_REFERENCES:
+        if expanded_references + reference_count > current_limits().expanded_references:
             error("resource_limit",
-                  f"Pattern expansion permits at most {MAX_EXPANDED_REFERENCES} references", application.name)
+                  f"Pattern expansion permits at most {current_limits().expanded_references} references", application.name)
             break
         expanded_references += reference_count
         arguments[application.name] = Argument(

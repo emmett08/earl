@@ -41,7 +41,7 @@ def test_task_context_uses_collected_reading_instead_of_fixture_answer(tmp_path)
 
 @pytest.mark.parametrize('old,new', [
     ('meets establishes ready', 'meets establishes not_ready'),
-    ('require "reading" >= 0;', ''),
+    ('require "reading" >= 0', ''),
     ('"direction" == "at_most"', '"direction" == "at_least"'),
     ('"threshold" == 200', '"threshold" == 201'),
     ('"unit" == "ms"', '"unit" == "s"'),

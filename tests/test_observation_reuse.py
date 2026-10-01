@@ -16,16 +16,36 @@ from eal.runtime import ReasoningService, acquisition_request
 from eal.store import RunStore
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool runner { version "1"; }
-evidence measured {
-  tool runner; kind test; environment lab; max_age 60;
-  input {"value": 7}; require "passed" == true;
+SOURCE = '''language "EAL/3"
+
+environment lab {
+  require "site" == "bench"
 }
-reasoning observation { method "structured/1"; rationale "Measurement supports the bounded claim."; }
-claim works { statement "The configured measurement passes."; environment lab; }
-argument result { conclusion works; reasoning observation; evidence measured; }
+
+tool runner {
+  version "1"
+}
+
+evidence measured {
+  tool runner
+  kind test
+  environment lab
+  max_age 60
+  input {"value": 7}
+  require "passed" == true
+}
+
+reasoning observation {
+  method "structured/1"
+  rationale "Measurement supports the bounded claim."
+}
+
+claim works {
+  statement "The configured measurement passes."
+  environment lab
+}
+
+argument result = [evidence measured] via observation => works
 '''
 CONTEXT = {"site": "bench"}
 
@@ -100,8 +120,10 @@ def test_reuse_rechecks_request_identity_and_distinct_evidence_ids(tmp_path):
         _prepare(service, renamed, old, evidence_id="another_id")
     with pytest.raises(ValueError, match="environment_fingerprint differs"):
         _prepare(service, SOURCE, old, context={"site": "other"})
-    changed_env = SOURCE.replace("environment lab; max_age", "environment altered; max_age")
-    changed_env = changed_env.replace("tool runner {", "environment altered { require \"site\" == \"bench\"; }\ntool runner {")
+    changed_env = SOURCE.replace('environment lab\n  max_age', 'environment altered\n  max_age')
+    changed_env = changed_env.replace("tool runner {", '''environment altered { require "site" == "bench"
+ }
+tool runner {''')
     with pytest.raises(ValueError, match="environment differs"):
         _prepare(service, changed_env, old)
     with pytest.raises(ValueError, match="tool_binding_digest differs"):

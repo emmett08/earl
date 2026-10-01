@@ -1,6 +1,6 @@
 # Sources for the current language and runtime
 
-These primary sources inform the language, inference methods and host interfaces. The implementation and [argument model](argument-model.md) define executable EAL/2 semantics. A citation to another calculus or package does not establish that EAL implements it or has its measured performance.
+These primary sources inform the language, inference methods and host interfaces. The implementation and [argument model](argument-model.md) define executable EAL/3 semantics. A citation to another calculus or package does not establish that EAL implements it or has its measured performance.
 
 ## Contents
 
@@ -55,7 +55,7 @@ The paper explains why partial observations require care when evaluating tempora
 
 ## Core language design
 
-The primary language-design sources and the precise EAL adaptations are recorded in [EAL/2 design decisions](eal2-design.md#primary-recommendations-and-adaptations): Hoare on simplicity, readability and error detection; Wirth on notation and checked extension boundaries; Steele on composable language growth; Felleisen on constrained translations and eliminability; and Parr on independent implementation passes. The source recommendations do not establish expert endorsement, a formal expressiveness theorem or measured model gains for EAL/2.
+The primary language-design sources and the precise EAL adaptations are recorded in [EAL/3 design decisions](eal3-design.md#primary-recommendations-and-adaptations): Hoare on simplicity, readability and error detection; Wirth on notation and checked extension boundaries; Steele on composable language growth; Felleisen on constrained translations and eliminability; and Parr on independent implementation passes. The source recommendations do not establish expert endorsement, a formal expressiveness theorem or measured model gains for EAL/3.
 
 ## Language implementation
 
@@ -97,7 +97,7 @@ Evidence freshness, environment identity, assumption intervals, binding digests,
 
 ## Model host interface
 
-The [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) implements the local stdio protocol path used by EAL. The Python `ModelContextAdapter` produces bounded messages for an application-selected model without requiring native tool calling. Model capabilities, costs and availability belong to that application's selected deployment; they are not properties of EAL/2 source or argument semantics.
+The [official MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk) implements the local stdio protocol path used by EAL. The Python `ModelContextAdapter` produces bounded messages for an application-selected model without requiring native tool calling. Model capabilities, costs and availability belong to that application's selected deployment; they are not properties of EAL/3 source or argument semantics.
 
 ### Model reasoning and tool use: applicability review, 28 September 2026
 

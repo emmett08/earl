@@ -1,66 +1,94 @@
-// Synthetic companion to the API load-test example. The independent probe and gap are stipulated fixture observations.
-language "EAL/2";
+// Synthetic API load-test fixture.
+language "EAL/3"
+
 environment test_run {
-  require "service" == "orders-api";
-  require "build_id" == "demo-build-42";
-  require "dataset" == "synthetic";
+  require service == "orders-api"
+  require build_id == "demo-build-42"
+  require dataset == "synthetic"
 }
-tool aspic_fixture { version "1"; }
-evidence formal_theory {
-  tool aspic_fixture; kind aspic_theory; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "schema" == "EAL/typed-input/1";
+
+tool aspic_fixture {
+  version "1"
 }
-evidence checked_record {
-  tool aspic_fixture; kind test; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "checked" == true;
-}
-evidence latency_record {
-  tool aspic_fixture; kind test; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "within_limit" == true;
-}
-evidence gap_record {
-  tool aspic_fixture; kind test; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "gap_found" == true;
-}
-evidence probe_record {
-  tool aspic_fixture; kind test; environment test_run; max_age 3600;
-  input {"run_id":"demo-load-001"}; require "within_limit" == true;
-}
-reasoning recorded {
-  method "structured/1";
-  rationale "The stipulated synthetic fixture supplies a bounded finding for the named run.";
-}
-reasoning formal_conflict {
-  method "argumentation/aspic/1";
-  rationale "The specified strict and defeasible rules and their undercut resolve the synthetic run-level conflict.";
-}
-claim report_checked {
-  statement "The synthetic report identity was checked."; environment test_run;
-}
-claim latency_ok {
-  statement "The synthetic primary latency sample meets its limit."; environment test_run;
-}
-claim trace_gap {
-  statement "The synthetic diagnostic reports a primary trace gap."; environment test_run;
-}
-claim alternate_probe_ok {
-  statement "An independent synthetic probe for this run meets the same latency limit."; environment test_run;
-}
-argument report_arg { conclusion report_checked; reasoning recorded; evidence checked_record; }
-argument latency_arg { conclusion latency_ok; reasoning recorded; evidence latency_record; }
-argument gap_arg { conclusion trace_gap; reasoning recorded; evidence gap_record; }
-argument probe_arg { conclusion alternate_probe_ok; reasoning recorded; evidence probe_record; }
-claim run_passes {
-  statement "For the synthetic fixture, the formal grounded theory accepts this run-level claim via the independent probe.";
-  environment test_run;
-  proposition {
-    subject "orders-api"; quantity "proposition"; unit "1"; scope "demo-load-001";
-    valid_from "2026-09-25T10:00:00Z"; valid_until "2026-09-25T10:00:01Z";
-    query {"theory":{"premises":[{"atom":"report_checked","kind":"axiom"},{"atom":"latency_ok","kind":"ordinary","rank":6},{"atom":"trace_gap","kind":"ordinary","rank":1},{"atom":"alternate_probe_ok","kind":"ordinary","rank":8}],"rules":[{"id":"r_pass","kind":"defeasible","antecedents":["report_checked","latency_ok"],"consequent":"run_passes","name":"applicable_pass","rank":7},{"id":"r_gap","kind":"strict","antecedents":["trace_gap"],"consequent":"~applicable_pass"},{"id":"r_probe","kind":"defeasible","antecedents":["alternate_probe_ok"],"consequent":"run_passes","name":"applicable_probe","rank":8}],"contraries":[{"attacker":"~applicable_pass","target":"applicable_pass"}],"goal":"run_passes"}};
-    result "grounded_accepted" == true;
+
+context environment test_run, tool aspic_fixture, max_age 3600.0 {
+  evidence formal_theory {
+    kind aspic_theory
+    input {"run_id": "demo-load-001"}
+    require schema == "EAL/typed-input/1"
   }
-}
-argument formal_run {
-  conclusion run_passes; reasoning formal_conflict; evidence formal_theory;
-  premises report_checked, latency_ok, trace_gap, alternate_probe_ok; binding formal_theory;
+
+  evidence checked_record {
+    kind test
+    input {"run_id": "demo-load-001"}
+    require checked == true
+  }
+
+  evidence latency_record {
+    kind test
+    input {"run_id": "demo-load-001"}
+    require within_limit == true
+  }
+
+  evidence gap_record {
+    kind test
+    input {"run_id": "demo-load-001"}
+    require gap_found == true
+  }
+
+  evidence probe_record {
+    kind test
+    input {"run_id": "demo-load-001"}
+    require within_limit == true
+  }
+
+  reasoning recorded {
+    method "structured/1"
+    rationale "The stipulated synthetic fixture supplies a bounded finding for the named run."
+  }
+
+  reasoning formal_conflict {
+    method "argumentation/aspic/2"
+    rationale "The specified strict and defeasible rules and their undercut resolve the synthetic run-level conflict."
+  }
+
+  claim report_checked {
+    statement "The synthetic report identity was checked."
+  }
+
+  claim latency_ok {
+    statement "The synthetic primary latency sample meets its limit."
+  }
+
+  claim trace_gap {
+    statement "The synthetic diagnostic reports a primary trace gap."
+  }
+
+  claim alternate_probe_ok {
+    statement "An independent synthetic probe for this run meets the same latency limit."
+  }
+
+  claim run_passes {
+    statement "For the synthetic fixture, the formal grounded theory accepts this run-level claim via the independent probe."
+    proposition {
+      subject "orders-api"
+      quantity "proposition"
+      unit "1"
+      scope "demo-load-001"
+      valid_from "2026-09-25T10:00:00Z"
+      valid_until "2026-09-25T10:00:01Z"
+      query {"theory": {"contraries": [{"attacker": "~applicable_pass", "target": "applicable_pass"}], "goal": "run_passes", "premises": [{"atom": "report_checked", "kind": "axiom"}, {"atom": "latency_ok", "kind": "ordinary", "rank": 6}, {"atom": "trace_gap", "kind": "ordinary", "rank": 1}, {"atom": "alternate_probe_ok", "kind": "ordinary", "rank": 8}], "rules": [{"antecedents": ["report_checked", "latency_ok"], "consequent": "run_passes", "id": "r_pass", "kind": "defeasible", "name": "applicable_pass", "rank": 7}, {"antecedents": ["trace_gap"], "consequent": "~applicable_pass", "id": "r_gap", "kind": "strict"}, {"antecedents": ["alternate_probe_ok"], "consequent": "run_passes", "id": "r_probe", "kind": "defeasible", "name": "applicable_probe", "rank": 8}]}}
+      result grounded_accepted == true
+    }
+  }
+
+  argument report_arg = [evidence checked_record] via recorded => report_checked
+
+  argument latency_arg = [evidence latency_record] via recorded => latency_ok
+
+  argument gap_arg = [evidence gap_record] via recorded => trace_gap
+
+  argument probe_arg = [evidence probe_record] via recorded => alternate_probe_ok
+
+  argument formal_run = [evidence formal_theory, premises report_checked, latency_ok, trace_gap, alternate_probe_ok] via formal_conflict => run_passes binding formal_theory
 }

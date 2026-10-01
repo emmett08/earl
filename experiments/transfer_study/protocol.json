@@ -1,10 +1,10 @@
 {
   "schema_version": "1.1",
   "investigation_id": "EAL-TRANSFER",
-  "title": "EAL/2 developer and model handover study",
-  "version": "1.0.0",
+  "title": "EAL/3 developer and model handover study",
+  "version": "2.0.0",
   "status": "specified",
-  "question": "Does the EAL/2 workflow improve correct engineering decisions within a fixed time budget in a new prompt session, and reduce time and repeated work, when developers and models change?",
+  "question": "Does the EAL/3 workflow improve correct engineering decisions within a fixed time budget in a new prompt session, and reduce time and repeated work, when developers and models change?",
   "primary_claim_id": "CLM-001",
   "scope": {
     "system_or_population": "Selected real developer teams, engineering cases and pinned model versions in a run plan.",
@@ -21,7 +21,7 @@
   "claims": [
     {
       "id": "CLM-001",
-      "statement": "Assignment to the EAL/2 workflow increases time-bounded later decision correctness by more than the predeclared practical threshold in the selected different-developer/different-model cases.",
+      "statement": "Assignment to the EAL/3 workflow increases time-bounded later decision correctness by more than the predeclared practical threshold in the selected different-developer/different-model cases.",
       "claim_type": "causal",
       "role": "primary",
       "scope_limit": "Average bundle effect in the selected cases and eligible teams under the tested adapter configurations.",
@@ -30,7 +30,7 @@
     },
     {
       "id": "CLM-002",
-      "statement": "Assignment to EAL/2 changes restricted time to a correct submitted decision and total active effort across the two sessions.",
+      "statement": "Assignment to EAL/3 changes restricted time to a correct submitted decision and total active effort across the two sessions.",
       "claim_type": "causal",
       "role": "secondary",
       "scope_limit": "Descriptive secondary estimates; no success-only analysis or simultaneous confirmatory inference.",
@@ -239,7 +239,7 @@
     {
       "id": "INT-001",
       "kind": "intervention",
-      "description": "EAL/2 authorship, registration, retained source/TOML/observations and delegated reasoning/tool assessment.",
+      "description": "EAL/3 authorship, registration, retained source/TOML/observations and delegated reasoning/tool assessment.",
       "target": "Whole developer workflow across sessions.",
       "implementation": "Existing EALKnowledgeBase and ModelContextAdapter through SessionOperations; developer selects source, entry and claim.",
       "dose_or_intensity": "Chosen by developer within equal stage time and call budgets.",
@@ -813,5 +813,6 @@
         ]
       }
     ]
-  }
+  },
+  "updated_at": "2026-09-30T00:00:00Z"
 }

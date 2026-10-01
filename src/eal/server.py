@@ -134,9 +134,11 @@ def create_server(service: ReasoningService, *,
 
         @server.tool(structured_output=True)
         def eal_compile_aspic(source: str, context: dict, collection_id: str,
-                              goal: str, now: str | None = None) -> dict[str, Any]:
+                              goal: str, now: str | None = None, semantics: str = 'grounded',
+                              query_mode: str = 'sceptical', preference: str | None = None) -> dict[str, Any]:
             """Compile checked EAL routes to an opt-in bounded ASPIC+ snapshot with a source map."""
-            return service.compile_aspic(source, context, collection_id, goal, now)
+            return service.compile_aspic(source, context, collection_id, goal, now,
+                                         semantics=semantics, query_mode=query_mode, preference=preference)
 
         @server.tool(structured_output=True)
         def eal_explain(assessment_id: str, claim: str | None = None) -> dict[str, Any]:
@@ -152,8 +154,9 @@ def create_server(service: ReasoningService, *,
         def eal_grounded(arguments: list[str], attacks: list[list[str]]) -> dict[str, Any]:
             """Compute Dung grounded semantics for an explicitly supplied finite attack graph."""
             from .dialectic import solve_grounded
-
-            return solve_grounded(arguments, attacks)
+            from .limits import using_limits
+            with using_limits(service.limits):
+                return solve_grounded(arguments, attacks)
 
     return server
 
@@ -164,12 +167,15 @@ def main() -> None:
     parser.add_argument("--registry", type=Path)
     parser.add_argument("--database", type=Path)
     parser.add_argument("--methods", help="Trusted host method-registry factory: package.module:function")
+    parser.add_argument("--limits", type=Path, help="Host-owned TOML execution budgets")
     parser.add_argument("--known-entry", action="append", default=[], metavar="ENTRY_ID",
                         help="Expose a registered source to the model; may be repeated")
     args = parser.parse_args()
+    from .limits import ExecutionLimits
     service = ReasoningService(
         args.workspace, args.registry, args.database,
         method_registry=load_method_registry(args.methods),
+        limits=ExecutionLimits.load(args.limits) if args.limits else ExecutionLimits(),
     )
     create_server(service, known_entries=args.known_entry).run(transport="stdio")
 

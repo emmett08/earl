@@ -104,9 +104,9 @@ class RegisteredAssessmentHost:
         source = entry["source"]
         plan = self.service.plan(source, claim)
         names = plan["evidence_ids"]
-        if len(names) > MAX_COLLECTION_EVIDENCE:
-            raise ValueError(f"Collection exceeds {MAX_COLLECTION_EVIDENCE} evidence requests")
-        program = parse(source)
+        if len(names) > self.service.limits.collection_evidence:
+            raise ValueError(f"Collection exceeds {self.service.limits.collection_evidence} evidence requests")
+        program = self.service.parse(source)
         if program.source_digest != entry["source_digest"]:
             raise ValueError("Registered source digest differs from its snapshot")
 

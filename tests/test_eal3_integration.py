@@ -1,4 +1,4 @@
-"""EAL/2 abstractions exercised through installed interfaces."""
+"""EAL/3 abstractions exercised through installed interfaces."""
 from dataclasses import replace
 import json
 import subprocess
@@ -23,6 +23,7 @@ def expanded_source():
     program = parse(SOURCE)
     arguments = {name: replace(arg, origin=None) for name, arg in program.arguments.items()}
     return format_program(replace(program, arguments=arguments, patterns={}, applications={},
+                                  authored=None, generated=(),
                                   declaration_count=program.declaration_count - len(program.patterns)))
 
 

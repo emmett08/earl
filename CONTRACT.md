@@ -1,15 +1,15 @@
-# EAL/2 integration contract
+# EAL/3 integration contract
 
-EAL/2 is the supported source language. The package is `2.18.0`. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/1` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
+EAL/3 is the supported source language. The package is `3.1.0` and its source notation uses newline-terminated fields and typed flows. The source language, persisted `EAL/observation-record/1`, typed `EAL/typed-input/1`, compact `EAL/assessment-packet/2` and registered `EAL/registered-assessment/1` results are separate contracts. See [language syntax](docs/language.md), [reasoning modes](docs/reasoning-modes.md) and the [argument service](docs/argument-service.md).
 
-Package 2.14.1 separates built-in strategy implementations without changing the source language, observation schemas, method identifiers, numerical contracts or recorded built-in implementation identities.
+Source fields use newlines, contexts resolve metadata defaults, and typed support flows lower to the existing argument model. Package, source notation and stored observation versions remain separate. Strictness, ranks and contraries retain their opt-in ASPIC+ compilation effects.
 
 
 ## Authored source and observations
 
-`parse(source: str) -> Program` parses exact EAL/2 UTF-8 text; `validate(program, *, registry=None)` returns structured diagnostics for references, types and method contracts. `format_source(source)` returns canonical source. `Program.source_digest` hashes exact source bytes, even when two programs have the same meaning.
+`parse(source: str) -> Program` parses exact EAL/3 UTF-8 text; `validate(program, *, registry=None)` returns structured diagnostics for references, types and method contracts. `format_source(source)` returns canonical source. `Program.source_digest` hashes exact source bytes, even when two programs have the same meaning.
 
-An EAL `tool NAME { version "VERSION"; }` declares an interface. An `evidence NAME` selects that tool, evidence `kind`, `environment`, `max_age` in seconds, optional JSON `input` and one or more `require "VALUE.FIELD" OP SCALAR` predicates. A `reasoning NAME` selects exactly one installed versioned method, rationale, optional evidence `backing` and optional output predicates. Claims, arguments, premises, assumptions, objections, patterns and optional formal directives state the argument graph. The host never treats prose as a mechanically proven warrant.
+An EAL a `tool NAME` block containing `version "VERSION"` declares an interface. An `evidence NAME` selects that tool, evidence `kind`, `environment`, `max_age` in seconds, optional JSON `input` and one or more `require "VALUE.FIELD" OP SCALAR` predicates. A `reasoning NAME` selects exactly one installed versioned method, rationale, optional evidence `backing` and optional output predicates. Claims, arguments, premises, assumptions, objections, patterns and optional formal directives state the argument graph. The host never treats prose as a mechanically proven warrant.
 
 An observation is not an EAL declaration. The configured tool returns JSON with `value` and optional `observed_at`, `context`, `request` and `details`; a file import must provide the latter acquisition fields and original time. The host persists the observation under `EAL/observation-record/1` with evidence ID, kind, environment, tool/version, input and request identity, context, source digest, original time, result digest, binding identity and a durable run ID. The original time is never advanced by reuse. A command receives one JSON object with `evidence_id`, `environment`, `tool`, `tool_version`, `input` and `context` on stdin and returns one JSON object on stdout. EAL source cannot select a command, file path, credential or Python method implementation.
 
@@ -41,13 +41,15 @@ Collections bind exact source bytes and context. The evaluator reports `supporte
 
 ## Bounds and persistence
 
-Collection preflight bounds context JSON to 16 KiB, 128 evidence IDs and each request to 1 MiB. The sum of configured tool output allowances is at most 128 MiB, individual command outputs at most 16 MiB, and the final collection JSON at most 32 MiB. Packet output defaults to a 16 KiB bound with explicit omission counts; it excludes raw observation values, command streams and arbitrary extension outputs. SQLite stores immutable observations, collections and assessments under private files. Stored records remain historical results; a new assessment checks current source, method, binding and observation freshness. See [MCP and tools](docs/mcp-and-tools.md) for exact adapter envelopes and failure handling.
+Source/graph/construction/search budgets are operator-owned `ExecutionLimits`. CLI, MCP and JSON launchers accept `--limits FILE`; source cannot raise them. `[limits]` TOML values are positive integers. Discovery advertises the selected budgets. Compile/export captures them in the checked snapshot, and exporting under a smaller current host budget is rejected. An exhausted calculation is incomplete and supplies no accepted or rejected conclusion. See [scoped composition](docs/eal3-composition.md).
+
+Collection preflight bounds context JSON to 16 KiB, a host-configurable evidence count (default 128) and each request to 1 MiB. The sum of configured tool output allowances is at most 128 MiB, individual command outputs at most 16 MiB, and the final collection JSON at most 32 MiB. Packet output defaults to a 16 KiB bound with explicit omission counts; it excludes raw observation values, command streams and arbitrary extension outputs. SQLite stores immutable observations, collections and assessments under private files. Stored records remain historical results; a new assessment checks current source, method, binding and observation freshness. See [MCP and tools](docs/mcp-and-tools.md) for exact adapter envelopes and failure handling.
 
 ## Investigation contracts
 
 Protocol 5.0.0 uses primary plan/report `/4`, diagnostic plan/report `/2`, and
 information-design configuration/result `/2`. These experiment contracts do not
-change EAL/2 semantics. The default population contains six evaluation cases;
+change EAL/3 semantics. The default population contains six evaluation cases;
 eight threshold cases serve calibration only. A frozen
 `EAL/evaluation-task-manifest/1` records independently supplied task provenance,
 reference-checked answer keys and explicit evidence revisions. Revisions enter
@@ -65,5 +67,5 @@ Matched-fact diagnostics independently vary withheld, EAL-derived and convention
 conclusions. Failed manipulation checks retain observations and costs but block
 component attribution. The optional `EAL/adoption-cost-ledger/1` binds measured
 activity to a run and plan digest; missing rates or coverage remain unknown.
-See [methodology](docs/eal2-experiment-methodology.md) and
+See [methodology](docs/eal3-experiment-methodology.md) and
 [verification](experiments/model_transfer/verification.md).

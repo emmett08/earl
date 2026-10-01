@@ -65,7 +65,7 @@ def test_changed_source_binding_and_tampered_rule_are_not_accepted(tmp_path):
     case = load_cases()[0]
     binding = TaskContract.from_case(case)
     with pytest.raises(TaskCorrespondenceError):
-        TaskContextBuilder(binding, case.source().replace('max_age 60;', 'max_age 600;'))
+        TaskContextBuilder(binding, case.source().replace('max_age 60', 'max_age 600'))
     project = Project(tmp_path, case, 'eal')
     report = deepcopy(case.measurement(0))
     report['value']['rule']['requirements'][0]['expected_value'] = 'tampered'

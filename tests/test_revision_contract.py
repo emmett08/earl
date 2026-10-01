@@ -16,23 +16,42 @@ KINDS = {"deductive": "logical_case", "causal": "experiment",
 
 
 def source(mode, query, *, quantity="proposition", unit="1", result='"entailed" == true'):
-    return f'''language "EAL/2";
-environment lab {{ require "site" == "bench"; }}
-tool collector {{ version "1"; }}
-evidence measured {{ tool collector; kind {KINDS[mode]}; environment lab;
-  max_age 60; require "schema" == "EAL/typed-input/1";
+    return f'''language "EAL/3"
+
+environment lab {{ require "site" == "bench"
+ }}
+tool collector {{ version "1"
+ }}
+evidence measured {{ tool collector
+ kind {KINDS[mode]}
+ environment lab
+
+  max_age 60
+ require "schema" == "EAL/typed-input/1"
+
 }}
-reasoning method {{ method "{mode}/1"; rationale "Apply the declared finite computation."; }}
-claim checked_claim {{ statement "This prose is an interpretation, not a checked formula.";
-  environment lab;
-  proposition {{ subject "controller"; quantity "{quantity}"; unit "{unit}";
-    scope "model-A/episode-1"; valid_from "2026-09-23T11:00:00Z";
-    valid_until "2026-09-23T13:00:00Z"; query {json.dumps(query)};
-    result {result};
+reasoning method {{ method "{mode}/1"
+ rationale "Apply the declared finite computation."
+ }}
+claim checked_claim {{ statement "This prose is an interpretation, not a checked formula."
+
+  environment lab
+
+  proposition {{ subject "controller"
+ quantity "{quantity}"
+ unit "{unit}"
+
+    scope "model-A/episode-1"
+ valid_from "2026-09-23T11:00:00Z"
+
+    valid_until "2026-09-23T13:00:00Z"
+ query {json.dumps(query)}
+
+    result {result}
+
   }}
 }}
-argument derivation {{ conclusion checked_claim; reasoning method; evidence measured; binding measured; }}
-'''
+argument derivation = [evidence measured] via method => checked_claim binding measured'''
 
 
 def envelope(mode, payload, *, quantity="proposition", unit="1"):

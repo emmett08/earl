@@ -9,12 +9,12 @@ from eal.methods import _worker
 from eal.modes import assess_mode
 
 
-def _worker_after_expensive_startup(payload, connection, contract):
+def _worker_after_expensive_startup(payload, connection, contract, limits):
     # Model imports in a spawned MCP process on a slower runner. RLIMIT_CPU
     # counts process CPU from birth, including work before _worker is entered.
     while time.process_time() < 1.2:
         pass
-    _worker(payload, connection, contract)
+    _worker(payload, connection, contract, limits)
 
 
 @pytest.mark.skipif(os.name != "posix", reason="POSIX worker resource limits")

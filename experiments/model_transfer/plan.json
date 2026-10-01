@@ -44,7 +44,7 @@
   ],
   "response_mode": "prose",
   "study_role": "pilot",
-  "study_id": "eal-model-transfer-pilot-6",
+  "study_id": "eal-model-transfer-pilot-7",
   "pilot_run_ids": [],
   "practical_decision": {
     "recipient_horizon": 10,
@@ -62,5 +62,7 @@
     "joint_power": 0.8
   },
   "time_limit_seconds": 21600,
-  "workers": 4
+  "workers": 4,
+  "source_language": "EAL/3",
+  "protocol_version": "7.0.0"
 }

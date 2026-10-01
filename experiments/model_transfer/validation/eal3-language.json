@@ -1,0 +1,92 @@
+{
+  "antlr": "4.13.2",
+  "cadence_calibration": {
+    "checks": 215,
+    "status": "passed"
+  },
+  "full_suite_passed": 1029,
+  "handover_protocol": "2.0.0",
+  "implementation_sha256_at_reporting": "02b502d4478045ef0dbe709e0dc0d69971b50893aec134f780ab57328b7ce39c",
+  "model_transfer_protocol": "7.0.0",
+  "package": "3.0.0",
+  "protocol_digests": {
+    "model_transfer": "5ee0c874dd0c654cfbb0cb0e6e2a2c7bc7128fd8f4e2f874c865289fef6a406e",
+    "transfer_study": "7e9f442d77b575c3fafa5c0fdab15d3531be9a7631e56ee0d37cc93818cfcae5"
+  },
+  "protocol_validation": "Both protocols valid with zero errors and warnings; validator self-test passed.",
+  "rehearsals": {
+    "cadence_diagnostic": {
+      "annotated_answers": 36,
+      "api_attempts": 42,
+      "calibration_checks": 23,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_blocks": 6,
+      "planned_sessions": 36,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed"
+    },
+    "diagnostic": {
+      "annotated_answers": 56,
+      "api_attempts": 66,
+      "calibration_checks": 27,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_blocks": 10,
+      "planned_sessions": 56,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed"
+    },
+    "principal_isolated": {
+      "annotated_answers": 4224,
+      "api_attempts": 6528,
+      "calibration_checks": 83,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_sequences": 384,
+      "planned_sessions": 4224,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed"
+    }
+  },
+  "scope": "Scripted software verification; no paid model requests or empirical performance result.",
+  "source_language": "EAL/3",
+  "storage_checks": [
+    {
+      "database_errors": [
+        {
+          "error": "database disk image is malformed",
+          "sequence_id": "block-0003.eal"
+        }
+      ],
+      "intact_stores": 191,
+      "missing_referenced_records": 392,
+      "referenced_records_checked": 4222,
+      "session_statuses": {
+        "failed": 1,
+        "submitted": 4223
+      }
+    },
+    {
+      "database_errors": [],
+      "intact_stores": 192,
+      "missing_referenced_records": 0,
+      "referenced_records_checked": 4224,
+      "session_statuses": {
+        "submitted": 4224
+      }
+    }
+  ],
+  "whole_assessment_comparison": {
+    "all_other_fields_equal": true,
+    "cases": 5,
+    "differences": [
+      "language",
+      "source_digest",
+      "dialectic.construction"
+    ]
+  }
+}

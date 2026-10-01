@@ -22,9 +22,9 @@ class EALKnowledgeBase:
     """Compose the persistent catalogue and assessment path for an application."""
 
     def __init__(self, workspace: str | Path, registry_path: str | Path | None = None,
-                 database_path: str | Path | None = None, *, method_registry: Any = None):
+                 database_path: str | Path | None = None, *, method_registry: Any = None, limits=None):
         self.service = ReasoningService(
-            workspace, registry_path, database_path, method_registry=method_registry,
+            workspace, registry_path, database_path, method_registry=method_registry, limits=limits,
         )
         self.catalogue = WorkspaceKnowledgeCatalogue(self.service)
         self.host = RegisteredAssessmentHost(self.service, self.catalogue)

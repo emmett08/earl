@@ -1,0 +1,85 @@
+{
+  "source_language": "EAL/3",
+  "package": "3.1.0",
+  "antlr": "4.13.2",
+  "full_suite_passed": 1080,
+  "make_check": "passed",
+  "distribution": "3.1.0 wheel and source archive built",
+  "implementation_sha256_at_reporting": "370d7deb7b0b96abbd4ac1406be94c247242775c70a98d34addaa80eb775b092",
+  "protocol_validation": "Validator self-test and both scientific protocols passed with no errors or warnings.",
+  "principal": {
+    "rehearsal": {
+      "annotated_answers": 4224,
+      "api_attempts": 6528,
+      "calibration_checks": 83,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_sequences": 384,
+      "planned_sessions": 4224,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed"
+    },
+    "implementation_sha256_at_execution": "2c51841ac8edabfda77ac45f85670c54711f515e64cb7638e17c532149af3b8e"
+  },
+  "storage": {
+    "execution_kind": "scripted",
+    "status": "passed",
+    "stores": 192,
+    "referenced_records": 4224,
+    "missing_references": [],
+    "integrity_errors": [],
+    "rows_sha256": "ac21c3f79b82785051a7d15ab5cb96bb12d97a31341c2de5a658b976a79dafb7"
+  },
+  "diagnostic": {
+    "rehearsal": {
+      "annotated_answers": 56,
+      "api_attempts": 66,
+      "calibration_checks": 27,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_blocks": 10,
+      "planned_sessions": 56,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed"
+    },
+    "implementation_sha256_at_execution": "7d5d99ecda0ba1a9401dffa0ad2379889b1dfb3d7024e4cbb3599b7437ed0f7f"
+  },
+  "cadence_diagnostic": {
+    "rehearsal": {
+      "annotated_answers": 36,
+      "api_attempts": 42,
+      "calibration_checks": 23,
+      "execution_kind": "scripted",
+      "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+      "planned_blocks": 6,
+      "planned_sessions": 36,
+      "raw_rows_unchanged": true,
+      "resources_reproduced": true,
+      "status": "passed"
+    },
+    "implementation_sha256_at_execution": "7d5d99ecda0ba1a9401dffa0ad2379889b1dfb3d7024e4cbb3599b7437ed0f7f"
+  },
+  "cadence_calibration": {
+    "checks": 215,
+    "status": "passed"
+  },
+  "later_targeted_changes": {
+    "paths": [
+      "src/eal/cli.py",
+      "src/eal/server.py"
+    ],
+    "purpose": "Carry the host budget into the raw grounded graph operation; principal experiment does not use that operation.",
+    "verification": "Two dedicated entrypoint budget tests plus full 1080-test publication suite."
+  },
+  "visualisation": {
+    "schema": "aspic-view/3",
+    "unit_tests": 52,
+    "python_bridge_tests": 6,
+    "browser_tests": 10,
+    "production_build": "passed",
+    "cloud_browser": "Existing tab was observed; refresh was refused by browser URL policy. No new-build cloud screenshot is claimed."
+  },
+  "scope": "Scripted software checks with fixed responses and synthetic usage/cost; no paid model requests, empirical performance or human-authoring benefit."
+}

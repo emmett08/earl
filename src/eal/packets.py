@@ -108,7 +108,7 @@ class AssessmentPacketBuilder:
 
     def build(self, assessment: Mapping[str, Any], *, claims: Sequence[str] | None = None,
               collection: Mapping[str, Any] | None = None) -> dict[str, Any]:
-        if not isinstance(assessment, Mapping) or assessment.get("valid") is not True:
+        if not isinstance(assessment, Mapping) or assessment.get("valid") is not True or assessment.get('complete') is False:
             raise ValueError("A packet requires a valid, completed assessment")
         assessment_id = assessment.get("assessment_id")
         if not isinstance(assessment_id, str) or not 1 <= len(assessment_id) <= 128 or any(

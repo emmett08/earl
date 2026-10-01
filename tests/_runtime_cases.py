@@ -7,30 +7,66 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-PRESSURE_SOURCE = """// Synthetic data and two model-conditional estimates.
-language "EAL/2";
-environment bench { require "site" == "bench"; require "revision" == "A"; }
-tool pressure_trial_tool { version "1"; }
-evidence pressure_trial { tool pressure_trial_tool; kind experiment; environment bench; max_age 7200; require "schema" == "EAL/typed-input/1"; }
+PRESSURE_SOURCE = '''language "EAL/3"
 
-reasoning pressure_difference { method "causal/1"; rationale "Difference of means for the identified pressure trial; units convert before checking the claim."; }
-claim pressure_increase { statement "The estimated pump-A pressure increase is at least five kilopascals for this trial interval."; environment bench;
-  proposition { subject "pump-A"; quantity "pressure"; unit "kPa"; scope "pressure-trial-A"; valid_from "2026-09-23T10:00:00Z"; valid_until "2026-09-23T11:00:00Z"; query {"assignment":"randomised"}; result "estimate" >= 5; }
-}
-claim pressure_bounded { statement "The estimated pump-A pressure increase is at most ten kilopascals for this trial interval."; environment bench;
-  proposition { subject "pump-A"; quantity "pressure"; unit "kPa"; scope "pressure-trial-A"; valid_from "2026-09-23T10:00:00Z"; valid_until "2026-09-23T11:00:00Z"; query {"assignment":"randomised"}; result "estimate" <= 10; }
+environment bench {
+  require "site" == "bench"
+  require "revision" == "A"
 }
 
-// One typed definition serves both conclusions. Each use binds the same trial.
-pattern estimate_from_trial(c: claim, r: reasoning, e: evidence) {
-  conclusion c;
-  reasoning r;
-  evidence e;
-  binding e;
+tool pressure_trial_tool {
+  version "1"
 }
-apply pressure_argument = estimate_from_trial(c=pressure_increase, r=pressure_difference, e=pressure_trial);
-apply upper_argument = estimate_from_trial(c=pressure_bounded, r=pressure_difference, e=pressure_trial);
-"""
+
+evidence pressure_trial {
+  tool pressure_trial_tool
+  kind experiment
+  environment bench
+  max_age 7200
+  require "schema" == "EAL/typed-input/1"
+}
+
+reasoning pressure_difference {
+  method "causal/1"
+  rationale "Difference of means for the identified pressure trial; units convert before checking the claim."
+}
+
+claim pressure_increase {
+  statement "The estimated pump-A pressure increase is at least five kilopascals for this trial interval."
+  environment bench
+  proposition {
+    subject "pump-A"
+    quantity "pressure"
+    unit "kPa"
+    scope "pressure-trial-A"
+    valid_from "2026-09-23T10:00:00Z"
+    valid_until "2026-09-23T11:00:00Z"
+    query {"assignment": "randomised"}
+    result "estimate" >= 5
+  }
+}
+
+claim pressure_bounded {
+  statement "The estimated pump-A pressure increase is at most ten kilopascals for this trial interval."
+  environment bench
+  proposition {
+    subject "pump-A"
+    quantity "pressure"
+    unit "kPa"
+    scope "pressure-trial-A"
+    valid_from "2026-09-23T10:00:00Z"
+    valid_until "2026-09-23T11:00:00Z"
+    query {"assignment": "randomised"}
+    result "estimate" <= 10
+  }
+}
+
+pattern estimate_from_trial(c: claim, r: reasoning, e: evidence) = [evidence e] via r => c binding e
+
+apply pressure_argument=estimate_from_trial(c=pressure_increase, r=pressure_difference, e=pressure_trial)
+
+apply upper_argument=estimate_from_trial(c=pressure_bounded, r=pressure_difference, e=pressure_trial)
+'''
 
 PRESSURE_OBSERVATION = json.loads("""{
   "value": {
@@ -70,41 +106,46 @@ PRESSURE_OBSERVATION = json.loads("""{
   }
 }""")
 
-RMS_SOURCE = """language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool readings { version "1"; }
+RMS_SOURCE = '''language "EAL/3"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool readings {
+  version "1"
+}
+
 evidence series {
-  tool readings;
-  kind measurement_series;
-  environment lab;
-  max_age 3600;
-  require "schema" == "EAL/typed-input/1";
+  tool readings
+  kind measurement_series
+  environment lab
+  max_age 3600
+  require "schema" == "EAL/typed-input/1"
 }
+
 reasoning rms_method {
-  method "engineering/rms/1";
-  rationale "Compute RMS deviation from zero over the supplied pressure samples.";
+  method "engineering/rms/1"
+  rationale "Compute RMS deviation from zero over the supplied pressure samples."
 }
+
 claim bounded_rms {
-  statement "RMS pressure relative to zero is at most 5 kPa for this sample.";
-  environment lab;
+  statement "RMS pressure relative to zero is at most 5 kPa for this sample."
+  environment lab
   proposition {
-    subject "pump-A";
-    quantity "pressure";
-    unit "kPa";
-    scope "sample-episode-v1";
-    valid_from "2026-09-23T10:00:00Z";
-    valid_until "2026-09-23T11:00:00Z";
-    query {"origin":0};
-    result "rms" <= 5;
+    subject "pump-A"
+    quantity "pressure"
+    unit "kPa"
+    scope "sample-episode-v1"
+    valid_from "2026-09-23T10:00:00Z"
+    valid_until "2026-09-23T11:00:00Z"
+    query {"origin": 0}
+    result "rms" <= 5
   }
 }
-argument sampled_rms {
-  conclusion bounded_rms;
-  reasoning rms_method;
-  evidence series;
-  binding series;
-}
-"""
+
+argument sampled_rms = [evidence series] via rms_method => bounded_rms binding series
+'''
 
 RMS_OBSERVATION = json.loads("""{
   "observed_at": "2026-09-23T12:00:00Z",
@@ -138,31 +179,46 @@ RMS_OBSERVATION = json.loads("""{
   }
 }""")
 
-REACHABILITY_SOURCE = """language "EAL/2";
-environment controller_bench { require "site" == "simulation"; }
-tool graph_reader { version "1"; }
+REACHABILITY_SOURCE = '''language "EAL/3"
+
+environment controller_bench {
+  require "site" == "simulation"
+}
+
+tool graph_reader {
+  version "1"
+}
+
 evidence graph_record {
-  tool graph_reader; kind finite_graph; environment controller_bench;
-  max_age 3600; require "schema" == "EAL/typed-input/1";
+  tool graph_reader
+  kind finite_graph
+  environment controller_bench
+  max_age 3600
+  require "schema" == "EAL/typed-input/1"
 }
+
 reasoning finite_check {
-  method "engineering/reachability/1";
-  rationale "Search every state reachable in at most three transitions in the recorded model.";
+  method "engineering/reachability/1"
+  rationale "Search every state reachable in at most three transitions in the recorded model."
 }
+
 claim bounded_safe {
-  statement "The supplied controller transition model has no path to state three within three steps.";
-  environment controller_bench;
+  statement "The supplied controller transition model has no path to state three within three steps."
+  environment controller_bench
   proposition {
-    subject "controller-X"; quantity "proposition"; unit "1"; scope "controller-model-X";
-    valid_from "2040-01-01T08:00:00Z"; valid_until "2040-01-01T10:00:00Z";
-    query {"start":0,"forbidden":[3],"horizon":3};
-    result "reachable" == false;
+    subject "controller-X"
+    quantity "proposition"
+    unit "1"
+    scope "controller-model-X"
+    valid_from "2040-01-01T08:00:00Z"
+    valid_until "2040-01-01T10:00:00Z"
+    query {"start": 0, "forbidden": [3], "horizon": 3}
+    result "reachable" == false
   }
 }
-argument safety_route {
-  conclusion bounded_safe; reasoning finite_check; evidence graph_record; binding graph_record;
-}
-"""
+
+argument safety_route = [evidence graph_record] via finite_check => bounded_safe binding graph_record
+'''
 
 REACHABILITY_OBSERVATION = json.loads("""{
   "observed_at": "2040-01-01T09:00:00Z",

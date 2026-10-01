@@ -21,23 +21,41 @@ CALIBRATION = {'detection_limit': .8, 'sensitivity_lower_bound': .98}
 
 
 def source(query, result='"finding" == true'):
-    return f'''language "EAL/2";
-environment lab {{ require "site" == "bench"; }}
-tool sampler {{ version "1"; }}
-evidence sampled {{ tool sampler; kind sampled_negative_trace; environment lab;
- max_age 60; require "schema" == "EAL/typed-input/1"; }}
-reasoning sampled_method {{ method "engineering/sampled-negative/1";
- rationale "Evaluate the bounded sampled question without a continuous-time inference."; }}
-claim finding {{ statement "The selected sampled finding meets its declared conditions.";
- environment lab;
- proposition {{ subject "regulator"; quantity "dimensionless"; unit "1";
-  scope "sampled-interval"; valid_from "2026-09-23T11:00:00Z";
-  valid_until "2026-09-23T13:00:00Z";
-  query {json.dumps(query, sort_keys=True)}; result {result}; }}
+    return f'''language "EAL/3"
+
+environment lab {{ require "site" == "bench"
+ }}
+tool sampler {{ version "1"
+ }}
+evidence sampled {{ tool sampler
+ kind sampled_negative_trace
+ environment lab
+
+ max_age 60
+ require "schema" == "EAL/typed-input/1"
+ }}
+reasoning sampled_method {{ method "engineering/sampled-negative/1"
+
+ rationale "Evaluate the bounded sampled question without a continuous-time inference."
+ }}
+claim finding {{ statement "The selected sampled finding meets its declared conditions."
+
+ environment lab
+
+ proposition {{ subject "regulator"
+ quantity "dimensionless"
+ unit "1"
+
+  scope "sampled-interval"
+ valid_from "2026-09-23T11:00:00Z"
+
+  valid_until "2026-09-23T13:00:00Z"
+
+  query {json.dumps(query, sort_keys=True)}
+ result {result}
+ }}
 }}
-argument finding_route {{ conclusion finding; reasoning sampled_method;
- evidence sampled; binding sampled; }}
-'''
+argument finding_route = [evidence sampled] via sampled_method => finding binding sampled'''
 
 
 def value(query, events, calibration=CALIBRATION):
@@ -189,15 +207,27 @@ def test_registered_method_is_opt_in_and_rejects_invalid_event_order():
 
 def test_a_partial_counterexample_can_activate_a_declared_objection():
     augmented = source(BASE_QUERY) + '''
-evidence baseline { tool sampler; kind validation; environment lab;
- max_age 60; require "passed" == true; }
-reasoning baseline_method { method "structured/1";
- rationale "The independent baseline observation supports the initial bounded result."; }
-claim initial_result { statement "The initial test supports the bounded result.";
- environment lab; }
-argument initial_route { conclusion initial_result; reasoning baseline_method;
- evidence baseline; }
-objection observed_violation { target argument initial_route; premises finding; }
+evidence baseline {
+  tool sampler
+  kind validation
+  environment lab
+  max_age 60
+  require "passed" == true
+}
+
+reasoning baseline_method {
+  method "structured/1"
+  rationale "The independent baseline observation supports the initial bounded result."
+}
+
+claim initial_result {
+  statement "The initial test supports the bounded result."
+  environment lab
+}
+
+argument initial_route = [evidence baseline] via baseline_method => initial_result
+
+objection observed_violation = [premises finding] -x> argument initial_route
 '''
     program = parse(augmented)
     registry = sampled_negative_registry()

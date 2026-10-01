@@ -8,23 +8,45 @@ from eal.parser import parse
 from eal.semantics import validate
 from test_evaluator import record, CONTEXT, NOW
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool readings { version "1"; }
-evidence trial { tool readings; kind experiment; environment lab; max_age 60;
- require "schema" == "EAL/typed-input/1";
+SOURCE = '''language "EAL/3"
+
+environment lab {
+  require "site" == "bench"
 }
-reasoning difference { method "causal/1"; rationale "Difference of means in the declared randomised experiment."; }
-claim raised { statement "The treatment mean pressure exceeds control by at least 5 kPa.";
- environment lab;
- proposition {
-  subject "pump-A"; quantity "pressure"; unit "kPa"; scope "experiment-v1";
-  valid_from "2026-09-23T10:00:00Z"; valid_until "2026-09-23T11:00:00Z";
-  query {"assignment":"randomised"};
-  result "estimate" >= 5;
- }
+
+tool readings {
+  version "1"
 }
-argument contrast { conclusion raised; reasoning difference; evidence trial; binding trial; }
+
+evidence trial {
+  tool readings
+  kind experiment
+  environment lab
+  max_age 60
+  require "schema" == "EAL/typed-input/1"
+}
+
+reasoning difference {
+  method "causal/1"
+  rationale "Difference of means in the declared randomised experiment."
+}
+
+claim raised {
+  statement "The treatment mean pressure exceeds control by at least 5 kPa."
+  environment lab
+  proposition {
+    subject "pump-A"
+    quantity "pressure"
+    unit "kPa"
+    scope "experiment-v1"
+    valid_from "2026-09-23T10:00:00Z"
+    valid_until "2026-09-23T11:00:00Z"
+    query {"assignment": "randomised"}
+    result "estimate" >= 5
+  }
+}
+
+argument contrast = [evidence trial] via difference => raised binding trial
 '''
 VALUE = {'schema': 'EAL/typed-input/1', 'method': 'causal/1', 'subject': 'pump-A',
          'quantity': 'pressure', 'unit': 'Pa', 'scope': 'experiment-v1',
@@ -91,14 +113,14 @@ def test_changed_query_is_rejected_even_if_numerical_result_would_pass():
 
 
 @pytest.mark.parametrize('old,new,code', [
-    ('EAL/2', 'EAL/0.2', 'unsupported_language'),
+    ('EAL/3', 'EAL/0.2', 'unsupported_language'),
     ('quantity "pressure"', 'quantity "flow"', 'invalid_proposition'),
     ('unit "kPa"', 'unit "L/s"', 'invalid_proposition'),
-    ('binding trial;', '', 'missing_binding'),
+    ('binding trial', '', 'missing_binding'),
     ('result "estimate" >= 5', 'result "estimate" == true', 'proposition_method'),
     ('result "estimate" >= 5', 'result "sample_size" >= 5', 'proposition_method'),
-    ('query {"assignment":"randomised"}', 'query {}', 'proposition_method'),
-    ('query {"assignment":"randomised"}', 'query {"assignment":"randomised","extra":1}', 'proposition_method'),
+    ('query {"assignment": "randomised"}', 'query {}', 'proposition_method'),
+    ('query {"assignment": "randomised"}', 'query {"assignment":"randomised","extra":1}', 'proposition_method'),
 ])
 def test_static_typed_contract_diagnostics(old, new, code):
     assert code in {d.code for d in validate(parse(SOURCE.replace(old, new)))}
@@ -107,8 +129,8 @@ def test_static_typed_contract_diagnostics(old, new, code):
 def test_negative_entailment_is_usable_and_whole_logical_query_is_bound():
     query = {'premises': ['p'], 'conclusion': 'q'}
     source = SOURCE.replace('kind experiment', 'kind logical_case').replace('method "causal/1"', 'method "deductive/1"')
-    source = source.replace('quantity "pressure"; unit "kPa"', 'quantity "proposition"; unit "1"')
-    source = source.replace('query {"assignment":"randomised"}', 'query {"premises":["p"],"conclusion":"q"}')
+    source = source.replace('quantity "pressure"', 'quantity "proposition"').replace('unit "kPa"', 'unit "1"')
+    source = source.replace('query {"assignment": "randomised"}', 'query {"premises":["p"],"conclusion":"q"}')
     source = source.replace('result "estimate" >= 5', 'result "entailed" == false')
     data = deepcopy(VALUE)
     data.update(method='deductive/1', quantity='proposition', unit='1', payload=query)
@@ -122,7 +144,7 @@ def test_negative_entailment_is_usable_and_whole_logical_query_is_bound():
 
 
 def test_untyped_alternative_cannot_bypass_typed_claim_binding():
-    source = SOURCE + '\nargument bypass { conclusion raised; reasoning difference; evidence trial; }'
+    source = SOURCE + '''argument bypass = [evidence trial] via difference => raised'''
     assert 'missing_binding' in {d.code for d in validate(parse(source))}
 
 

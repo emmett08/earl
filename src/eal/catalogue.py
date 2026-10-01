@@ -16,7 +16,6 @@ from pathlib import Path
 from typing import Any
 
 from .evaluator import canonical_digest
-from .parser import MAX_SOURCE_BYTES, parse
 from .runtime import ReasoningService, bounded_path
 from .store import utc_now
 
@@ -87,17 +86,16 @@ class WorkspaceKnowledgeCatalogue:
         if not stat.S_ISREG(path.stat().st_mode):
             raise ValueError("Registered source must be a regular EAL file")
         with path.open("rb") as stream:
-            data = stream.read(MAX_SOURCE_BYTES + 1)
-        if len(data) > MAX_SOURCE_BYTES:
+            data = stream.read(self.service.limits.source_bytes + 1)
+        if len(data) > self.service.limits.source_bytes:
             raise ValueError("Registered source exceeds the EAL source limit")
         try:
             return data.decode("utf-8")
         except UnicodeError as exc:
             raise ValueError("Registered source must be UTF-8") from exc
 
-    @staticmethod
-    def _metadata(source: str, selected_claims: tuple[str, ...] | None) -> tuple[str, dict[str, dict]]:
-        program = parse(source)
+    def _metadata(self, source: str, selected_claims: tuple[str, ...] | None) -> tuple[str, dict[str, dict]]:
+        program = self.service.parse(source)
         names = tuple(program.claims) if selected_claims is None else selected_claims
         missing = set(names) - set(program.claims)
         if missing:

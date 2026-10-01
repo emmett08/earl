@@ -6,13 +6,35 @@ from eal.parser import parse
 from eal.runtime import ReasoningService
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool runner { version "1"; }
-evidence measured { tool runner; kind test; environment lab; max_age 60; require "passed" == true; }
-reasoning observation { method "structured/1"; rationale "The declared observation supports the bounded claim."; }
-claim works { statement "The test passes."; environment lab; }
-argument result { conclusion works; reasoning observation; evidence measured; }
+SOURCE = '''language "EAL/3"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool runner {
+  version "1"
+}
+
+evidence measured {
+  tool runner
+  kind test
+  environment lab
+  max_age 60
+  require "passed" == true
+}
+
+reasoning observation {
+  method "structured/1"
+  rationale "The declared observation supports the bounded claim."
+}
+
+claim works {
+  statement "The test passes."
+  environment lab
+}
+
+argument result = [evidence measured] via observation => works
 '''
 
 

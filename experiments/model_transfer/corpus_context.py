@@ -1,7 +1,8 @@
 """Bind an authored task to checked runtime output, without access to answer keys."""
 from __future__ import annotations
 
-from dataclasses import dataclass, fields
+from dataclasses import dataclass
+import json
 
 from eal.model import Program
 from eal.parser import parse
@@ -22,9 +23,11 @@ class CorpusTaskContract:
     def validate(self, source: str):
         from .task_context import TaskCorrespondenceError
         expected, actual = parse(self.expected_source), parse(source)
-        excluded = {'source_digest', 'locations'}
-        changes = [field.name for field in fields(Program)
-                   if field.name not in excluded and getattr(expected, field.name) != getattr(actual, field.name)]
+        from eal.formatter import semantic_ir
+        left, right = semantic_ir(expected), semantic_ir(actual)
+        def identity(value):
+            return json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False)
+        changes = [key for key in left if identity(left[key]) != identity(right[key])]
         if changes:
             raise TaskCorrespondenceError('Source/task correspondence failed: ' + ', '.join(changes))
         return actual

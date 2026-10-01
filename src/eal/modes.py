@@ -8,6 +8,7 @@ from __future__ import annotations
 import hashlib
 import json
 
+from .limits import current_limits
 from .builtin_methods import BUILTIN_SPECS
 from .reasoning.validation import _check_json, _result
 
@@ -28,7 +29,7 @@ def validate_mode(method: str, kinds: list[str], registry=None) -> list[str]:
         return [f"Unknown registered reasoning method {method!r}; use an installed versioned identifier"]
     if not isinstance(kinds, list) or any(not isinstance(k, str) for k in kinds):
         return ["Evidence kinds must be a list of strings"]
-    if len(kinds) > 4096:
+    if len(kinds) > current_limits().declarations:
         return ["At most 4096 evidence entries are allowed"]
     required = contract.evidence_kind
     if required is not None and kinds.count(required) != 1:
@@ -50,10 +51,10 @@ def assess_mode(method: str, evidence: list[dict], premises: list[dict], registr
                 "reasons": [f"Method {method}: {reason}" for reason in result["reasons"]]}
 
     try:
-        if not isinstance(evidence, list) or len(evidence) > 4096:
-            raise ValueError("Evidence must be a list with at most 4096 entries")
-        if not isinstance(premises, list) or len(premises) > 4096:
-            raise ValueError("Premises must be a list with at most 4096 entries")
+        if not isinstance(evidence, list) or len(evidence) > current_limits().declarations:
+            raise ValueError("Evidence must be a list with within the host declaration budget")
+        if not isinstance(premises, list) or len(premises) > current_limits().declarations:
+            raise ValueError("Premises must be a list with within the host declaration budget")
         if any(not isinstance(item, dict) or not isinstance(item.get("kind"), str) or
                "value" not in item or not isinstance(item.get("id"), str) for item in evidence):
             raise ValueError("Each evidence entry requires id, kind and value")

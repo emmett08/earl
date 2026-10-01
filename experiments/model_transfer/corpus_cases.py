@@ -75,17 +75,33 @@ class CorpusCase:
         statement = json.dumps(self.task_specification['natural_language_rule'])
         digest = rule_digest(self.rule)
         target_digest = rule_digest(self.target_identity())
-        return f'''language "EAL/2";
-environment scope {{ require "task_id" == "{self.identifier}"; }}
-tool probe {{ version "1"; }}
-evidence report {{ tool probe; kind task_snapshot; environment scope; max_age {SNAPSHOT_MAX_AGE_SECONDS};
-  require "task_id" == "{self.identifier}"; require "rule_digest" == "{digest}";
-  require "target_identity_digest" == "{target_digest}"; }}
-reasoning task_rules {{ method "experiment/task-rules/1";
-  rationale "Evaluate eligible dated facts using the source-bound three-valued task rule; negative and unknown outcomes are completed calculations.";
-  require "snapshot_minute" >= 0; }}
-claim criterion_evaluated {{ statement {statement}; environment scope; }}
-argument result {{ conclusion criterion_evaluated; reasoning task_rules; evidence report; }}
+        return f'''language "EAL/3"
+
+environment scope {{
+  require "task_id" == "{self.identifier}"
+}}
+tool probe {{
+  version "1"
+}}
+evidence report {{
+  tool probe
+  kind task_snapshot
+  environment scope
+  max_age {SNAPSHOT_MAX_AGE_SECONDS}
+  require "task_id" == "{self.identifier}"
+  require "rule_digest" == "{digest}"
+  require "target_identity_digest" == "{target_digest}"
+}}
+reasoning task_rules {{
+  method "experiment/task-rules/1"
+  rationale "Evaluate eligible dated facts using the source-bound three-valued task rule; negative and unknown outcomes are completed calculations."
+  require "snapshot_minute" >= 0
+}}
+claim criterion_evaluated {{
+  statement {statement}
+  environment scope
+}}
+argument result = [evidence report] via task_rules => criterion_evaluated
 '''
 
 

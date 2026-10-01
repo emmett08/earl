@@ -11,17 +11,54 @@ from eal.runtime import ReasoningService
 from eal.knowledge import EALKnowledgeBase
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool reader { version "1"; }
-tool unrelated_reader { version "1"; }
-evidence reading { tool reader; kind test; environment lab; max_age 60; require "ok" == true; }
-evidence unrelated { tool unrelated_reader; kind test; environment lab; max_age 60; require "ok" == true; }
-reasoning measured { method "structured/1"; rationale "The check supports this bounded claim."; }
-claim works { statement "The check passed."; environment lab; }
-claim separate { statement "A separate check passed."; environment lab; }
-argument result { conclusion works; reasoning measured; evidence reading; }
-argument other { conclusion separate; reasoning measured; evidence unrelated; }
+SOURCE = '''language "EAL/3"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool reader {
+  version "1"
+}
+
+tool unrelated_reader {
+  version "1"
+}
+
+evidence reading {
+  tool reader
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+evidence unrelated {
+  tool unrelated_reader
+  kind test
+  environment lab
+  max_age 60
+  require "ok" == true
+}
+
+reasoning measured {
+  method "structured/1"
+  rationale "The check supports this bounded claim."
+}
+
+claim works {
+  statement "The check passed."
+  environment lab
+}
+
+claim separate {
+  statement "A separate check passed."
+  environment lab
+}
+
+argument result = [evidence reading] via measured => works
+
+argument other = [evidence unrelated] via measured => separate
 '''
 CONTEXT = {"site": "bench"}
 

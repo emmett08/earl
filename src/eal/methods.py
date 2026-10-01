@@ -350,7 +350,7 @@ def check_implementation_identity(contract):
         raise ValueError('Loaded method implementation differs from its registered code identity')
 
 
-def _worker(payload, connection, contract):
+def _worker(payload, connection, contract, limits):
     try:
         os.setsid()
         import resource
@@ -369,14 +369,18 @@ def _worker(payload, connection, contract):
             os.dup2(sink.fileno(), 2)
         check_implementation_identity(contract)
         connection.send_bytes(b'{"ready":true}')
-        output = contract.implementation(payload)
+        from .limits import using_limits
+        with using_limits(limits):
+            output = contract.implementation(payload)
         encoded = _canonical({'ok': True, 'output': output})
         if len(encoded) > contract.max_output_bytes:
             raise ValueError('Method output exceeds byte limit')
         connection.send_bytes(encoded)
     except BaseException as exc:
         try:
-            connection.send_bytes(_canonical({'ok': False, 'error': f'{type(exc).__name__}: {str(exc)[:512]}'}))
+            from .limits import BudgetExceeded
+            connection.send_bytes(_canonical({'ok': False, 'incomplete': isinstance(exc, (BudgetExceeded, MemoryError)),
+                                              'error': f'{type(exc).__name__}: {str(exc)[:512]}'}))
         except BaseException:
             pass
     finally:
@@ -385,6 +389,7 @@ def _worker(payload, connection, contract):
 
 def execute_extension(contract, payload):
     """Run one custom pure callback in a fresh, bounded POSIX worker."""
+    from .limits import current_limits, BudgetExceeded
     try:
         encoded = _canonical(payload)
         if len(encoded) > contract.max_input_bytes:
@@ -396,19 +401,21 @@ def execute_extension(contract, payload):
             raise ValueError('Bounded custom methods require POSIX resource limits')
         context = multiprocessing.get_context('spawn')
         reader, writer = context.Pipe(duplex=False)
-        worker = context.Process(target=_worker, args=(json.loads(encoded), writer, contract), daemon=True)
+        worker = context.Process(target=_worker, args=(json.loads(encoded), writer, contract, current_limits()), daemon=True)
         worker.start()
         writer.close()
         try:
             if not reader.poll(5.0):
-                raise ValueError('Method worker startup exceeded its timeout')
+                raise BudgetExceeded('Method worker startup exceeded its timeout')
             startup = json.loads(reader.recv_bytes(contract.max_output_bytes))
             if startup != {'ready': True}:
                 raise ValueError(f"Method worker startup failed: {startup.get('error', 'invalid startup message')}")
             if not reader.poll(contract.timeout_seconds):
-                raise ValueError('Method execution exceeded its timeout')
+                raise BudgetExceeded('Method execution exceeded its timeout')
             response = json.loads(reader.recv_bytes(contract.max_output_bytes))
             if not response['ok']:
+                if response.get('incomplete'):
+                    raise BudgetExceeded(response['error'])
                 raise ValueError(f"Method execution failed: {response['error']}")
             output = response['output']
             errors = schema_errors(output, contract.output_schema)
@@ -428,7 +435,8 @@ def execute_extension(contract, payload):
                 worker.kill()
                 worker.join(timeout=1)
     except (ValueError, TypeError, OverflowError, RecursionError, OSError, EOFError, KeyError) as exc:
-        return {'status': 'unsupported', 'reasons': [str(exc) or f'Method worker failed ({type(exc).__name__})'], 'details': {}, 'method_contract': contract.describe()}
+        return {'status': 'incomplete' if isinstance(exc, BudgetExceeded) else 'unsupported',
+                'reasons': [str(exc) or f'Method worker failed ({type(exc).__name__})'], 'details': {}, 'method_contract': contract.describe()}
 
 
 @lru_cache(maxsize=1)

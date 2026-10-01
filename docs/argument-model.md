@@ -1,6 +1,6 @@
-# EAL/2 argument model
+# EAL/3 argument model
 
-EAL/2 evaluates an authored argument graph against recorded observations, a selected method registry, an environment and an assessment time. It determines whether the *declared* routes to a claim have usable support under the rules below. The result does not establish that the author chose the right physical model, collected an authentic measurement or translated the engineering question faithfully.
+EAL/3 evaluates an authored argument graph against recorded observations, a selected method registry, an environment and an assessment time. It determines whether the *declared* routes to a claim have usable support under the rules below. The result does not establish that the author chose the right physical model, collected an authentic measurement or translated the engineering question faithfully.
 
 ## Contents
 
@@ -13,11 +13,11 @@ EAL/2 evaluates an authored argument graph against recorded observations, a sele
 
 ## Argument structure
 
-An `argument` declares a conclusion, a reasoning step and at least one source: evidence, an assumption or a premise claim. Every declared source is required for that particular derivation. Several arguments can support one claim; a premise claim may itself have several derivations. Premise dependencies must be acyclic, and reusing the same evidence in several arguments does not make independent observations. A `pattern` expands one argument with closed, typed parameters; each `apply` becomes an ordinary named argument without copying its evidence identity. See [language syntax](language.md) for the grammar and [vocabulary](vocabulary.md) for construct contracts.
+A compact flow or block `argument` declares a conclusion, a reasoning step and at least one source: evidence, an assumption or a premise claim. Every declared source is required for that particular derivation. Several arguments can support one claim; a premise claim may itself have several derivations. Premise dependencies must be acyclic, and reusing the same evidence in several arguments does not make independent observations. A compact `pattern` expands one argument; a compound pattern expands hygienic declarations and routes under its application namespace. Typed parameters and decreasing list recursion are checked without copying evidence identity. See [language syntax](language.md) for the grammar and [vocabulary](vocabulary.md) for construct contracts.
 
-Toulmin's distinction among claim, grounds, warrant, backing, qualifier and rebuttal informs this design; EAL/2 defines executable relations rather than adopting Toulmin as a formal calculus. See the [primary source](sources.md#argument-and-reasoning-models).
+Toulmin's distinction among claim, grounds, warrant, backing, qualifier and rebuttal informs this design; EAL/3 defines executable relations rather than adopting Toulmin as a formal calculus. See the [primary source](sources.md#argument-and-reasoning-models).
 
-| Toulmin function | EAL/2 relation |
+| Toulmin function | EAL/3 relation |
 | --- | --- |
 | Claim | A `claim` statement, environment and optional typed proposition |
 | Grounds | The argument's evidence, assumptions and premise claims |
@@ -43,15 +43,9 @@ Local usability precedes dialectical acceptance. A source-usable derivation has 
 An `objection` names one target and at least one source, either evidence or premise claims. Its premises can themselves have alternative supporting arguments. An objection to another objection is a defence; that defence can be challenged in turn. Its sources and scope-bearing targets share one declared environment; a reasoning target applies only to uses of that declaration in the objection's environment. An objection to a `claim` attacks *every* argument deriving it; an objection to an `argument` attacks that application only. An objection to `reasoning` or `assumption` attacks their directly dependent applications within the objection's environment. Attacks on premise claims propagate through the dependencies of arguments that require them.
 
 ```eal
-objection sampling_problem {
-  target argument lifetime_estimate;
-  premises samples_are_dependent;
-}
-objection independence_defence {
-  target objection sampling_problem;
-  evidence measured_independence;
-  premises independence_measurement_applies;
-}
+objection sampling_problem = [premises samples_are_dependent] -x> argument lifetime_estimate
+
+objection independence_defence = [evidence measured_independence, premises independence_measurement_applies] -x> objection sampling_problem
 ```
 
 The solver constructs one node for each argument application and objection, plus a claim node for each declared claim. Let $U(n)$ mean local source and computation usability for node $n$, $P(n)$ its required premise claims, $A(n)$ its attacking nodes and $D(c)$ the argument nodes deriving claim $c$. Starting with every label undecided, it repeatedly applies the following implications until no label changes:
@@ -73,7 +67,7 @@ $$
 
 The last conjunction is true for an empty derivation set, so a claim with no derivation is labelled rejected in this *acceptance* calculus; its engineering status is `unsupported`, and its negation is not established. A node becomes rejected if a required premise is rejected or an accepted attacker defeats it. A circular defence depending solely on the claim it should restore has no initial support and can remain undecided. An independent accepted defence can reject an objection and reinstate the original route. Alternative accepted derivations can keep a claim supported when one route is defeated.
 
-The trace identifies each newly settled node and the previous labels responsible. The composed graph permits attack and objection-support cycles; the ordinary argument-to-premise graph remains acyclic. The implementation bounds the graph to 4,096 nodes, 4,096 claims and 131,072 total attack, premise and derivation relationships. See [grounded reasoning](grounded-reasoning.md) for the separate abstract Dung operation, its API and verification.
+The trace identifies each newly settled node and the previous labels responsible. The composed graph permits attack and objection-support cycles; the ordinary argument-to-premise graph remains acyclic. Default host budgets allow 4,096 nodes/claims and 131,072 total attack, premise and derivation relationships; operators may configure these bounds. See [grounded reasoning](grounded-reasoning.md) for the separate abstract Dung operation, its API and verification.
 
 ## Result interpretation
 
@@ -98,6 +92,8 @@ An assessment identifies its source, observation set, context, evaluation time a
 
 The attack-only fragment of the composed solver, when all nodes are locally usable, agrees with Dung grounded labelling. The separate `eal_grounded` operation directly solves an explicitly supplied finite argument-and-attack graph. A complementary Dung-node construction has been used as an independent check of the composed equations; that construction and the finite tests are described in [grounded reasoning](grounded-reasoning.md).
 
-ASPIC+ distinguishes strict and defeasible rules, premise categories, contrariness and preference-sensitive attack/defeat. EAL/2's core targeted objections remain authored attacks under the equations above. The optional [`argumentation/aspic/1` method](aspic-method.md) separately constructs a bounded formal theory, its undermining, rebutting and undercutting defeats and grounded labels. The opt-in compiler obtains a theory from checked EAL routes and observations; reviewed top-level EAL directives declare strict inference, preference rank and directed claim contrariness. Each target kind follows from its unique declaration name. The authored EAL evaluator validates these directives without applying their inference effects. This instantiation does not implement all ASPIC+ variants or replace EAL evidence checks. The abstract `solve_grounded` operation still accepts only an already specified graph and cannot check how it was obtained. See [Modgil and Prakken](sources.md#argument-and-reasoning-models) for the framework.
+ASPIC+ distinguishes strict and defeasible rules, premise categories, contrariness and preference-sensitive attack/defeat. EAL/3's core targeted objections remain authored attacks under the equations above. The optional [`argumentation/aspic/2` method](aspic-method.md) separately constructs a bounded formal theory, its undermining, rebutting and undercutting defeats and grounded labels. The opt-in compiler obtains a theory from checked EAL routes and observations; reviewed top-level EAL directives declare strict inference, preference rank and directed claim contrariness. Each target kind follows from its unique declaration name. The authored EAL evaluator validates these directives without applying their inference effects. This instantiation does not implement all ASPIC+ variants or replace EAL evidence checks. The abstract `solve_grounded` operation still accepts only an already specified graph and cannot check how it was obtained. See [Modgil and Prakken](sources.md#argument-and-reasoning-models) for the framework.
 
 A richer deductive language, preference-sensitive defeat or probabilistic argument calculus would need a declared input model and inference rules, not simply another keyword or confidence score. In particular, multiplying support probabilities across reused evidence requires justified dependence assumptions: $P(A\cap B)=P(A)P(B\mid A)$. The present methods give method-specific numerical outputs without converting them into a probability that an engineering claim is true.
+
+Reviewed conditional scope transfer is described in [scoped composition](eal3-composition.md). It preserves proposition subject, quantity, unit, query and result, narrows the interval and requires an explicit validated target-scope assumption. It checks correspondence without proving physical transfer adequacy.

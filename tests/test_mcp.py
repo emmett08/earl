@@ -12,13 +12,35 @@ from eal.runtime import ReasoningService
 from eal.server import create_server
 
 
-SOURCE = '''language "EAL/2";
-environment lab { require "site" == "bench"; }
-tool runner { version "1"; }
-evidence measured { tool runner; kind test; environment lab; max_age 60; require "passed" == true; }
-reasoning measurement { method "structured/1"; rationale "The bounded observation supplies support."; }
-claim works { statement "The requested check passes."; environment lab; }
-argument result { conclusion works; reasoning measurement; evidence measured; }
+SOURCE = '''language "EAL/3"
+
+environment lab {
+  require "site" == "bench"
+}
+
+tool runner {
+  version "1"
+}
+
+evidence measured {
+  tool runner
+  kind test
+  environment lab
+  max_age 60
+  require "passed" == true
+}
+
+reasoning measurement {
+  method "structured/1"
+  rationale "The bounded observation supplies support."
+}
+
+claim works {
+  statement "The requested check passes."
+  environment lab
+}
+
+argument result = [evidence measured] via measurement => works
 '''
 
 
@@ -45,7 +67,7 @@ def test_real_mcp_stdio_lifecycle_collection_reason_explain(tmp_path):
                 assert not {"eal_sources", "eal_find_claims", "eal_assess_known"} & names
                 described = await session.call_tool("eal_describe", {})
                 assert not described.isError
-                assert "EAL/2" in described.structuredContent["languages"]
+                assert "EAL/3" in described.structuredContent["languages"]
                 formatted = await session.call_tool("eal_format", {"source": SOURCE})
                 assert not formatted.isError
                 assert "source_digest" in formatted.structuredContent

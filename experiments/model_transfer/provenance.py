@@ -20,6 +20,8 @@ class RunIdentity:
         if value['run_id'] in plan.get('pilot_run_ids', []):
             raise ValueError('Evaluation cannot reuse an allocation-pilot run identity')
         value.update(execution_kind=kind, study_id=plan.get('study_id'),
+                     source_language=plan.get('source_language'),
+                     protocol_version=plan.get('protocol_version'),
                      study_role=plan.get('study_role', 'diagnostics'),
                      pilot_run_ids=plan.get('pilot_run_ids', []))
         write_json(path, value)

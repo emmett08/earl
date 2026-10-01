@@ -240,12 +240,18 @@ def test_compiled_eal_routes_and_reviewed_strict_rule_match_reference_fragment()
     """Compare a source generated theory, rather than a manually authored JSON one."""
     from test_aspic_compiler import BASE, compare
 
-    source = BASE + '''
-claim run_fails { statement "This synthetic run fails."; environment lab; }
-argument failure_route { conclusion run_fails; reasoning authored; evidence gap_data; }
-objection challenge { target argument primary_route; evidence gap_data; }
-strict reporting_route reviewed "review/report-implication";
-contrary run_fails to run_passes reviewed "review/one-way-incompatibility";
+    source = BASE + '''claim run_fails {
+  statement "This synthetic run fails."
+  environment lab
+}
+
+argument failure_route = [evidence gap_data] via authored => run_fails
+
+objection challenge = [evidence gap_data] -x> argument primary_route
+
+strict reporting_route reviewed "review/report-implication"
+
+contrary run_fails to run_passes reviewed "review/one-way-incompatibility"
 '''
     _, result = compare(source)
     theory = result["theory"]

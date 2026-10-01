@@ -35,6 +35,8 @@ def keyed_digest(secret: bytes, domain: bytes, value: Any) -> str:
         raise ValueError("A private 32-byte store key is required")
     if not isinstance(domain, bytes) or not domain:
         raise ValueError("A domain separator is required")
+    # Frozen acquisition hash domain, independent of the authored source version.
+    # Retain these bytes so EAL/3 can reuse compatible observation-record/1 data.
     return hmac.new(secret, b"EAL/2\0" + domain + b"\0" +
                     bytes.fromhex(canonical_digest(value)), hashlib.sha256).hexdigest()
 

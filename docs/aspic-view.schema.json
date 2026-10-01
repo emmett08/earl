@@ -6,7 +6,7 @@
   "type": "object",
   "properties": {
     "schema": {
-      "const": "aspic-view/2"
+      "const": "aspic-view/3"
     },
     "profile": {
       "type": "string",
@@ -38,6 +38,300 @@
         "undecided",
         "unconstructed"
       ]
+    },
+    "semantics": {
+      "type": "string",
+      "enum": [
+        "grounded",
+        "preferred",
+        "stable"
+      ]
+    },
+    "query_mode": {
+      "type": "string",
+      "enum": [
+        "credulous",
+        "sceptical"
+      ]
+    },
+    "query_status": {
+      "type": "string",
+      "enum": [
+        "accepted",
+        "rejected",
+        "undecided",
+        "unconstructed",
+        "no_extension"
+      ]
+    },
+    "preference": {
+      "type": "string",
+      "enum": [
+        "minimum_rank",
+        "last_link_rank",
+        "last_link_partial"
+      ]
+    },
+    "extensions": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65
+        }
+      }
+    },
+    "execution_limits": {
+      "type": "object",
+      "properties": {
+        "source_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "structural_values": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "declarations": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "premise_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expansion_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "applications": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expanded_references": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expression_nodes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expression_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "json_depth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "json_nodes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "record_bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "collection_evidence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "composed_edges": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "abstract_attacks": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "formal_premises": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "formal_rules": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "formal_antecedents": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "formal_atoms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "formal_contraries": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "formal_arguments": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "formal_defeats": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "formal_construction": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "extension_search": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "source_bytes",
+        "source_tokens",
+        "structural_values",
+        "declarations",
+        "premise_depth",
+        "expansion_depth",
+        "applications",
+        "expanded_references",
+        "expression_nodes",
+        "expression_depth",
+        "json_depth",
+        "json_nodes",
+        "record_bytes",
+        "collection_evidence",
+        "composed_edges",
+        "abstract_attacks",
+        "formal_premises",
+        "formal_rules",
+        "formal_antecedents",
+        "formal_atoms",
+        "formal_contraries",
+        "formal_arguments",
+        "formal_defeats",
+        "formal_construction",
+        "extension_search"
+      ],
+      "additionalProperties": false
+    },
+    "formal_directives": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "enum": [
+              "strict",
+              "rank",
+              "contrary",
+              "prefer"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100000
+          },
+          "other": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "rank": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "review": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100000
+          },
+          "span": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "column": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "end_line": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "end_column": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                },
+                "required": [
+                  "line",
+                  "column",
+                  "end_line",
+                  "end_column"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "target_kind": {
+            "enum": [
+              "argument",
+              "assumption",
+              "objection",
+              "evidence",
+              "claim"
+            ]
+          },
+          "source_file": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "kind",
+          "name",
+          "other",
+          "rank",
+          "review",
+          "span",
+          "target_kind",
+          "source_file"
+        ],
+        "additionalProperties": false
+      }
     },
     "claim_status": {
       "anyOf": [
@@ -149,8 +443,7 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 65
-            },
-            "maxItems": 128
+            }
           },
           "direct_subarguments": {
             "type": "array",
@@ -158,8 +451,7 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 65
-            },
-            "maxItems": 8
+            }
           },
           "strength": {
             "type": "integer",
@@ -252,7 +544,8 @@
                         "enum": [
                           "strict",
                           "rank",
-                          "contrary"
+                          "contrary",
+                          "prefer"
                         ]
                       },
                       "name": {
@@ -332,6 +625,18 @@
                           "evidence",
                           "claim"
                         ]
+                      },
+                      "source_file": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
                       }
                     },
                     "required": [
@@ -341,7 +646,8 @@
                       "rank",
                       "review",
                       "span",
-                      "target_kind"
+                      "target_kind",
+                      "source_file"
                     ],
                     "additionalProperties": false
                   },
@@ -403,6 +709,43 @@
               "meaning": {
                 "type": "string",
                 "maxLength": 100000
+              },
+              "source_file": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100000
+              },
+              "scope_transfer": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100000
+                  },
+                  "target": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100000
+                  },
+                  "assumption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100000
+                  },
+                  "review": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100000
+                  }
+                },
+                "required": [
+                  "source",
+                  "target",
+                  "assumption",
+                  "review"
+                ],
+                "additionalProperties": false
               }
             },
             "required": [
@@ -433,8 +776,7 @@
         ],
         "additionalProperties": false
       },
-      "minItems": 1,
-      "maxItems": 128
+      "minItems": 1
     },
     "defeats": {
       "type": "array",
@@ -488,7 +830,8 @@
                         "enum": [
                           "strict",
                           "rank",
-                          "contrary"
+                          "contrary",
+                          "prefer"
                         ]
                       },
                       "name": {
@@ -568,6 +911,18 @@
                           "evidence",
                           "claim"
                         ]
+                      },
+                      "source_file": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 100000
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
                       }
                     },
                     "required": [
@@ -577,7 +932,8 @@
                       "rank",
                       "review",
                       "span",
-                      "target_kind"
+                      "target_kind",
+                      "source_file"
                     ],
                     "additionalProperties": false
                   },
@@ -601,12 +957,10 @@
           "kind"
         ],
         "additionalProperties": false
-      },
-      "maxItems": 4096
+      }
     },
     "unavailable_evidence": {
       "type": "array",
-      "maxItems": 64,
       "items": {
         "type": "object",
         "properties": {
@@ -633,8 +987,7 @@
                 "stale_observation",
                 "tool_error",
                 "invalid_observation",
-                "out_of_scope",
-                "unclassified_legacy"
+                "out_of_scope"
               ]
             }
           },
@@ -690,6 +1043,13 @@
     "goal",
     "goal_claim",
     "formal_status",
+    "semantics",
+    "query_mode",
+    "query_status",
+    "preference",
+    "extensions",
+    "execution_limits",
+    "formal_directives",
     "claim_status",
     "authored_claim_status",
     "source_digest",

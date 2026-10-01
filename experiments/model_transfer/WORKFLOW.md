@@ -1,6 +1,6 @@
 # Running the investigation
 
-This guide describes protocol 6.0.0 and package 2.18.1. The implementation supports
+This guide describes protocol 7.0.0 and package 3.1.0. The implementation supports
 collection, resumption, independent coding, offline analysis and prospective
 allocation. A completed software run is not a completed scientific investigation.
 Read `execution_status`, annotation counts, accounting flags and decision status
@@ -71,7 +71,7 @@ evaluation also finishes after analysis. Starting another paid evaluation always
 requires the explicit `evaluate` operation and a supported saved plan.
 
 The wrapper records orchestration schema `EAL/experiment-pipeline/1`. Collection
-protocol 6.0.0 and execution contracts are retained. Offline processing can use
+protocol 7.0.0 and execution contracts are retained. Offline processing can use
 the current package on a completed historical run; collection resume still
 requires the original implementation digest, dependencies, plan and run path.
 The assessor extension adds `EAL/annotation-provenance/1` to derived reports and
@@ -273,3 +273,5 @@ python -m experiments.model_transfer.benchmark --output /tmp/harness-benchmark.j
 This compares one and four workers with fixed synthetic latency and identical
 outcomes/call counts. Its speedup is software evidence, not a measured live-model
 speedup. See [verification.md](verification.md) for actual results and limits.
+
+Current EAL/3 package 3.1.0 composition, public contracts and experiment checks are recorded in [composition verification](verification-eal31.md). Previous verification files remain historical records.

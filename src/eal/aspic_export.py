@@ -13,15 +13,17 @@ from jsonschema import Draft202012Validator
 from .aspic import ASPIC_CONTRACT, OUTPUT_SCHEMA
 from .evaluator import canonical_digest
 from .methods import execute_extension, schema_errors
+from .limits import ExecutionLimits, current_limits, using_limits, bounded
 
-VIEW_VERSION = "aspic-view/2"
+VIEW_VERSION = "aspic-view/3"
 AVAILABILITY_ISSUES = ("predicate_not_met", "missing_observation",
                        "stale_observation", "tool_error", "invalid_observation",
-                       "out_of_scope", "unclassified_legacy")
+                       "out_of_scope")
 MAX_INPUT_BYTES = 4 * 1024 * 1024
 
 
-def export_aspic_view(result: dict) -> dict:
+@bounded
+def export_aspic_view(result: dict, *, limits=None) -> dict:
     """Recompute and export one supplied theory/result, without collection.
 
     Equality is exact, including argument order, labels, ranks and every defeat
@@ -39,12 +41,20 @@ def export_aspic_view(result: dict) -> dict:
     if not isinstance(result, dict) or not isinstance(result.get("theory"), dict):
         raise ValueError("Export requires a theory and its formal result")
     theory, formal = result["theory"], result.get("formal")
+    supplied_limits = result.get('source_map', {}).get('execution_limits', current_limits().describe())
+    try:
+        selected_limits = ExecutionLimits(**supplied_limits)
+    except (ValueError, TypeError) as exc:
+        raise ValueError('Invalid snapshot execution budgets') from exc
+    if any(value > current_limits().describe()[key] for key, value in selected_limits.describe().items()):
+        raise ValueError('Snapshot budgets exceed the exporter host policy; configure explicit host limits')
     errors = schema_errors(formal, OUTPUT_SCHEMA)
     if errors:
         raise ValueError("Invalid ASPIC+ result: " + "; ".join(errors[:4]))
     if canonical_digest(theory) != formal["theory_sha256"]:
         raise ValueError("Formal result does not match the supplied theory digest")
-    computation = execute_extension(ASPIC_CONTRACT, {"theory": theory})
+    with using_limits(selected_limits):
+        computation = execute_extension(ASPIC_CONTRACT, {"theory": theory})
     if computation["status"] != "supported":
         raise ValueError("Bounded ASPIC recomputation failed: " +
                          "; ".join(computation["reasons"]))
@@ -111,6 +121,9 @@ def export_aspic_view(result: dict) -> dict:
                                                **({"rationale": item.get("rationale"),
                                                    "reasoning": item.get("reasoning")}
                                                   if kind == "arguments" else {})}
+                    for key in ('source_file', 'scope_transfer'):
+                        if key in item:
+                            origin_by_rule[rule_id][key] = item[key]
         for name, item in origins("evidence").items():
             if item.get("available"):
                 atom = item.get("atom")
@@ -121,14 +134,14 @@ def export_aspic_view(result: dict) -> dict:
                                         "span": item.get("span"),
                                         "formal_review": item.get("rank_annotation"),
                                         "observation": item.get("identity")}
+                if 'source_file' in item:
+                    origin_by_atom[atom]['source_file'] = item['source_file']
             else:
                 if (not isinstance(item.get("reasons", []), list)
                         or any(not isinstance(reason, str)
                                for reason in item.get("reasons", []))):
                     raise ValueError("Unavailable evidence reasons must be text")
-                # Results compiled before typed evidence issues were introduced
-                # remain exportable, but their free-form reasons are not parsed.
-                issues = item.get("availability_issues", ["unclassified_legacy"])
+                issues = item.get("availability_issues")
                 if not issues:
                     raise ValueError("Unavailable evidence must have availability issues")
                 missing.append({"name": name, "reasons": item.get("reasons", []),
@@ -178,6 +191,9 @@ def export_aspic_view(result: dict) -> dict:
             "profile": result.get("profile", "supplied-formal-result"),
             "goal": theory["goal"], "goal_claim": source["goal"]["claim"] if source else result.get("claim"),
             "formal_status": formal["grounded_status"],
+            **{key: formal[key] for key in ('semantics', 'query_mode', 'query_status', 'preference', 'extensions')},
+            'execution_limits': selected_limits.describe(),
+            'formal_directives': deepcopy(source.get('formal_directives', [])) if source else [],
             "claim_status": result.get("claim_status"),
             "authored_claim_status": result.get("authored_claim_status"),
             "source_digest": result.get("source_digest"),
@@ -209,12 +225,14 @@ _DIGEST = {"type": "string", "pattern": "^[0-9a-f]{64}$"}
 _SPAN = _object({name: {"type": "integer", "minimum": 1}
                  for name in ("line", "column", "end_line", "end_column")})
 _REVIEW = _object({
-    "kind": {"enum": ["strict", "rank", "contrary"]}, "name": _NAME,
+    "kind": {"enum": ["strict", "rank", "contrary", "prefer"]}, "name": _NAME,
     "other": _nullable(_NAME),
     "rank": _nullable({"type": "integer", "minimum": 0, "maximum": 1000}),
     "review": _NAME, "span": _nullable(_SPAN),
     "target_kind": {"enum": ["argument", "assumption", "objection", "evidence", "claim"]},
+    'source_file': _nullable(_NAME),
 })
+_TRANSFER = _object({key: _NAME for key in ('source', 'target', 'assumption', 'review')})
 _OBSERVATION = _object({
     "run_id": _NAME, "data_digest": _DIGEST, "request_digest": _DIGEST,
     "collected_at": _NAME, "tool_binding_digest": _DIGEST,
@@ -225,6 +243,7 @@ _ORIGIN = _object({
     "name": _NAME, "span": _nullable(_SPAN), "formal_review": _nullable(_REVIEW),
     "observation": _nullable(_OBSERVATION), "reasoning": _TEXT,
     "rationale": _TEXT, "meaning": _TEXT,
+    'source_file': _NAME, 'scope_transfer': _TRANSFER,
 }, required=["kind", "name"])
 _NODE = deepcopy(OUTPUT_SCHEMA["properties"]["arguments"]["items"])
 _NODE["properties"].update({"origin": _ORIGIN, "display_conclusion": _TEXT,
@@ -243,14 +262,18 @@ VIEW_SCHEMA = {
         "schema": {"const": VIEW_VERSION}, "profile": _NAME, "goal": _NAME,
         "goal_claim": _nullable(_NAME),
         "formal_status": deepcopy(OUTPUT_SCHEMA["properties"]["grounded_status"]),
+        **{key: deepcopy(OUTPUT_SCHEMA['properties'][key]) for key in
+           ('semantics', 'query_mode', 'query_status', 'preference', 'extensions')},
+        'execution_limits': _object({key: {'type': 'integer', 'minimum': 1} for key in ExecutionLimits().describe()}),
+        'formal_directives': {'type': 'array', 'items': _REVIEW},
         "claim_status": _STATUS, "authored_claim_status": _STATUS,
         "source_digest": _nullable(_DIGEST), "snapshot_digest": _nullable(_DIGEST),
         "theory_digest": _DIGEST, "evaluated_at": _nullable(_NAME),
         "validation": _object({"formal_result": {"const": "recomputed"},
                                "provenance": {"const": "supplied"}}),
-        "arguments": {"type": "array", "items": _NODE, "minItems": 1, "maxItems": 128},
-        "defeats": {"type": "array", "items": _DEFEAT, "maxItems": 4096},
-        "unavailable_evidence": {"type": "array", "maxItems": 64, "items": _object({
+        "arguments": {"type": "array", "items": _NODE, "minItems": 1},
+        "defeats": {"type": "array", "items": _DEFEAT},
+        "unavailable_evidence": {"type": "array", "items": _object({
             "name": _NAME, "reasons": {"type": "array", "items": _TEXT},
             "availability_issues": {"type": "array", "minItems": 1,
                                     "uniqueItems": True,
@@ -272,9 +295,11 @@ _SOURCE_ENTRY = {
         "reasons": {"type": "array", "items": _TEXT},
         "availability_issues": {"type": "array", "uniqueItems": True,
                                 "items": {"enum": list(AVAILABILITY_ISSUES)}},
+        'source_file': _NAME, 'scope_transfer': _TRANSFER,
     },
 }
 _SOURCE_SCHEMA = {"type": "object", "properties": {
+    'formal_directives': {'type': 'array', 'items': _REVIEW},
     **{kind: {"type": "object", "additionalProperties": _SOURCE_ENTRY}
        for kind in ("claims", "arguments", "assumptions", "objections", "evidence")},
     "contraries": {"type": "array", "items": {"type": "object", "properties": {

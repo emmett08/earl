@@ -5,7 +5,7 @@ version = "1"
 timeout_seconds = 10
 max_output_bytes = 16384
 pinned_files = [
-  {path = "examples/api-load-test/aspic_fixture_collector.py", sha256 = "05f595b145901feee7fb3048b1bef4b1aae03564f037da992fe978705406da3d"},
+  {path = "examples/api-load-test/aspic_fixture_collector.py", sha256 = "372fd185894cb82ceb710e5982238af3ad4f53f95298aaecda2cacc8884f8508"},
   {path = "examples/api-load-test/aspic-fixture.json", sha256 = "db6b4760824491aab218acf47d8a8c314c60d0b8aebcd993df269008184c394f"}
 ]
 
