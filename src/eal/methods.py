@@ -177,6 +177,9 @@ def _code_digest(function):
         kind = type(value)
         if kind is CodeType:
             return ['code', code(value)]
+        if kind is slice:
+            return ['slice', constant(value.start), constant(value.stop),
+                    constant(value.step)]
         if kind in (tuple, frozenset):
             values = [constant(item) for item in value]
             if kind is frozenset:
