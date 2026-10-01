@@ -2,7 +2,7 @@
 
 EAL/3 records engineering claims, their evidence requirements, reasoning methods, assumptions and objections in reusable source files. A Python host binds declared tools to a separate TOML configuration, collects observations, assesses claims and stores the result. Later sessions and different models can find the same source and reuse compatible observations until they expire.
 
-The Python distribution is **`engineering-argument-language` 3.2.3** and requires Python **3.11 or later**; application code imports `eal`. The supported source language is `EAL/3`, with newline-terminated fields and typed flows. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
+The Python distribution is **`engineering-argument-language` 3.2.4** and requires Python **3.11 or later**; application code imports `eal`. The supported source language is `EAL/3`, with newline-terminated fields and typed flows. Stored tool results use `EAL/observation-record/1`; model-facing summaries use `EAL/assessment-packet/2`.
 
 ## Author a bounded argument
 
@@ -43,18 +43,18 @@ Create a virtual environment, then install a built or downloaded wheel:
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
-python -m pip install ./engineering_argument_language-3.2.3-py3-none-any.whl
+python -m pip install ./engineering_argument_language-3.2.4-py3-none-any.whl
 eal --help
 ```
 
-After the maintainer creates the `v3.2.3` release tag, a pinned source installation is also available:
+After the maintainer creates the `v3.2.4` release tag, a pinned source installation is also available:
 
 ```bash
 python -m pip install \
-  'engineering-argument-language @ git+https://github.com/emmett08/earl.git@v3.2.3'
+  'engineering-argument-language @ git+https://github.com/emmett08/earl.git@v3.2.4'
 ```
 
-PyPI installation becomes available when that version is published: `python -m pip install 'engineering-argument-language==3.2.3'`. See [packaging and releases](https://github.com/emmett08/earl/blob/main/docs/packaging.md) for artefact verification, supported Python imports and publication setup. Command collectors and custom reasoning methods require a POSIX host; the release workflow is configured to check distribution installation on Linux and macOS.
+PyPI installation becomes available when that version is published: `python -m pip install 'engineering-argument-language==3.2.4'`. See [packaging and releases](https://github.com/emmett08/earl/blob/main/docs/packaging.md) for artefact verification, supported Python imports and publication setup. Command collectors and custom reasoning methods require a POSIX host; the release workflow is configured to check distribution installation on Linux and macOS.
 
 Original EARL software is available under the [Unlicense](https://github.com/emmett08/earl/blob/main/LICENSE), permitting commercial and non-commercial use, modification and redistribution. Dependencies and any third-party material retain their own terms; see [licence scope](https://github.com/emmett08/earl/blob/main/docs/packaging.md#licence-scope).
 

@@ -14,6 +14,7 @@ import time
 
 import eal
 from eal.formatter import format_source
+from eal.host_redaction import sanitise_response
 from eal.knowledge import EALKnowledgeBase, ModelContextAdapter
 from eal.parser import parse
 from eal.runtime import ReasoningService
@@ -108,6 +109,19 @@ def main() -> None:
     assert Path(eal.__file__).resolve().is_relative_to(Path(sys.prefix).resolve()), eal.__file__
     assert eal.__version__ == arguments.expected_version
     assert importlib.metadata.version("engineering-argument-language") == arguments.expected_version
+    token = 'synthetic\\"bearer-key'
+    payload = {"nested": [{token: token}]}
+    sanitised = sanitise_response(
+        {"result": payload, "content": [{"type": "text", "text": json.dumps(payload)}]}, token,
+    )
+    assert sanitised["result"] == {"nested": [{"[redacted]": "[redacted]"}]}
+    assert json.loads(sanitised["content"][0]["text"]) == sanitised["result"]
+    try:
+        sanitise_response({"result": {token: "first", "[redacted]": "second"}}, token)
+    except ValueError as exc:
+        assert token not in str(exc)
+    else:
+        raise AssertionError("Installed redactor silently merged object keys")
     assert validate(parse(SOURCE)) == []
     assert validate(parse(format_source(SOURCE))) == []
 

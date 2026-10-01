@@ -1,6 +1,6 @@
 # Packaging and releases
 
-The Python distribution is `engineering-argument-language` version `3.2.3`; its import package is `eal`. It supplies the Python API, the `eal`, `eal-mcp` and `eal-host` commands, and one FastMCP server configurable for stdio or Streamable HTTP. Python 3.11 or later is required. Runtime dependencies are declared in [pyproject.toml](../pyproject.toml) and installed by pip; development dependencies are separate.
+The Python distribution is `engineering-argument-language` version `3.2.4`; its import package is `eal`. It supplies the Python API, the `eal`, `eal-mcp` and `eal-host` commands, and one FastMCP server configurable for stdio or Streamable HTTP. Python 3.11 or later is required. Runtime dependencies are declared in [pyproject.toml](../pyproject.toml) and installed by pip; development dependencies are separate.
 
 ## Install a distribution
 
@@ -9,14 +9,14 @@ Use a virtual environment. The commands below use a POSIX shell:
 ```bash
 python3 -m venv .venv
 . .venv/bin/activate
-python -m pip install ./engineering_argument_language-3.2.3-py3-none-any.whl
+python -m pip install ./engineering_argument_language-3.2.4-py3-none-any.whl
 python -m pip check
 eal --help
 eal-mcp --help
 eal-host --help
 ```
 
-Supply the path to a downloaded workflow artefact or a wheel built from the reviewed source. A downloaded workflow archive includes `dist/` and `SHA256SUMS`; from its extracted root, run `shasum -a 256 --check SHA256SUMS` before installing a file under `dist/`. A source distribution can be installed with `python -m pip install ./engineering_argument_language-3.2.3.tar.gz`; pip installs the build requirements and builds its wheel. The committed generated ANTLR parser makes Java unnecessary for ordinary installation and parsing.
+Supply the path to a downloaded workflow artefact or a wheel built from the reviewed source. A downloaded workflow archive includes `dist/` and `SHA256SUMS`; from its extracted root, run `shasum -a 256 --check SHA256SUMS` before installing a file under `dist/`. A source distribution can be installed with `python -m pip install ./engineering_argument_language-3.2.4.tar.gz`; pip installs the build requirements and builds its wheel. The committed generated ANTLR parser makes Java unnecessary for ordinary installation and parsing.
 
 For a reviewed GitHub revision, substitute its full commit SHA for `FULL_COMMIT_SHA`:
 
@@ -29,13 +29,13 @@ Git must be installed for this route. A pinned tag can replace the commit SHA af
 
 ```bash
 python -m pip install \
-  'engineering-argument-language @ git+https://github.com/emmett08/earl.git@v3.2.3'
+  'engineering-argument-language @ git+https://github.com/emmett08/earl.git@v3.2.4'
 ```
 
-The tag command requires an existing `v3.2.3` tag. PyPI installation requires publication of that version; once published, use:
+The tag command requires an existing `v3.2.4` tag. PyPI installation requires publication of that version; once published, use:
 
 ```bash
-python -m pip install 'engineering-argument-language==3.2.3'
+python -m pip install 'engineering-argument-language==3.2.4'
 ```
 
 The wheel is pure Python. Command collectors require POSIX process groups and file descriptors; bounded custom reasoning methods require POSIX resource limits. The release workflow is configured to check distribution installation on Linux with Python 3.11–3.14 and macOS with Python 3.12. Other Python/platform combinations require separate validation for the features used. Workspace coordination covers participating processes on one local filesystem; distributed replicas and network filesystems require another coordinator. See [MCP and tools](mcp-and-tools.md) for execution limits and [MCP architecture](mcp-architecture.md) for acquisition ownership.
@@ -81,7 +81,7 @@ canonical_source = format_source(source)
 
 This example checks a declaration's syntax and references. An assessment needs its authored support routes and observations. Private helpers, generated-parser classes and database tables are implementation details; integration code uses the documented interfaces. Pin a reviewed package release and consult the current contract before upgrading. This project develops the current EAL/3 language without a backwards-compatibility guarantee.
 
-Package `3.2.3` identifies this distributed implementation. `EAL/3` identifies source syntax and semantics. Schema identifiers describe different records: observations use `EAL/observation-record/1`, assessment packets use `EAL/assessment-packet/2`, and model messages use `EAL/model-context/2`. A packaging change does not itself revise those language or record contracts.
+Package `3.2.4` identifies this distributed implementation. `EAL/3` identifies source syntax and semantics. Schema identifiers describe different records: observations use `EAL/observation-record/1`, assessment packets use `EAL/assessment-packet/2`, and model messages use `EAL/model-context/2`. A packaging change does not itself revise those language or record contracts.
 
 ## Licence scope
 
@@ -128,26 +128,26 @@ Each publishing job receives `id-token: write` at job level. The PyPA action aut
 
 The initial release procedure is:
 
-1. Merge the reviewed packaging change. Ensure `pyproject.toml` and `eal.__version__` agree on `3.2.3`, then create `v3.2.3` at that reviewed commit on `main`.
+1. Merge the reviewed packaging change. Ensure `pyproject.toml` and `eal.__version__` agree on `3.2.4`, then create `v3.2.4` at that reviewed commit on `main`.
 2. Register the production Trusted Publisher with the exact identity above. Configure the repository environment `pypi.org` to permit release tags and apply any required deployment reviewers. For optional TestPyPI publication, register its separate Trusted Publisher and configure the `testpypi` environment's deployment rules. Each package index uses a pending publisher for a new project or a normal publisher for an existing project.
-3. Dispatch the workflow from the `v3.2.3` tag, with `release_tag=v3.2.3` and `destination=verify`, using the GitHub CLI command below. The workflow must first exist on the default branch. It requires a stable `vMAJOR.MINOR.PATCH` tag, checks its resolved commit and package version, and requires that commit to belong to `main`'s history.
+3. Dispatch the workflow from the `v3.2.4` tag, with `release_tag=v3.2.4` and `destination=verify`, using the GitHub CLI command below. The workflow must first exist on the default branch. It requires a stable `vMAJOR.MINOR.PATCH` tag, checks its resolved commit and package version, and requires that commit to belong to `main`'s history.
 4. Review the full check and artefact installation results, and download the retained wheel and source distribution. If TestPyPI is configured, dispatch from the same tag with `destination=testpypi` to exercise its publication path and check that release.
 5. Dispatch from the same tag with `destination=pypi` to publish the production release. Publication begins after all required verification jobs and the `pypi.org` environment's deployment rules pass.
 
 Dispatch verification with the matching tag ref and input:
 
 ```bash
-gh workflow run publish.yml --repo emmett08/earl --ref v3.2.3 \
-  -f release_tag=v3.2.3 -f destination=verify
+gh workflow run publish.yml --repo emmett08/earl --ref v3.2.4 \
+  -f release_tag=v3.2.4 -f destination=verify
 ```
 
 After verification and authentication setup, dispatch the optional TestPyPI release and the production PyPI release:
 
 ```bash
-gh workflow run publish.yml --repo emmett08/earl --ref v3.2.3 \
-  -f release_tag=v3.2.3 -f destination=testpypi
-gh workflow run publish.yml --repo emmett08/earl --ref v3.2.3 \
-  -f release_tag=v3.2.3 -f destination=pypi
+gh workflow run publish.yml --repo emmett08/earl --ref v3.2.4 \
+  -f release_tag=v3.2.4 -f destination=testpypi
+gh workflow run publish.yml --repo emmett08/earl --ref v3.2.4 \
+  -f release_tag=v3.2.4 -f destination=pypi
 ```
 
 The release workflow is configured to produce exactly one wheel and one source distribution with a SHA-256 checksum file. Linux and macOS installation jobs verify those artefacts; the publishing job verifies the checksum and consumes the same build's retained artefacts by immutable upload ID. Both publishing jobs run without checking out or installing the package. Only the publishing jobs receive `id-token: write`; build and verification jobs have read-only repository permissions. Each package index's Trusted Publisher registration must match the publishing job's repository, workflow and environment identity.
@@ -157,9 +157,9 @@ To check a published TestPyPI wheel while resolving dependencies through ordinar
 ```bash
 python -m pip download --no-deps --only-binary=:all: \
   --index-url https://test.pypi.org/simple/ --dest test-release \
-  'engineering-argument-language==3.2.3'
+  'engineering-argument-language==3.2.4'
 python -m pip install \
-  ./test-release/engineering_argument_language-3.2.3-py3-none-any.whl
+  ./test-release/engineering_argument_language-3.2.4-py3-none-any.whl
 python -m pip check
 ```
 
