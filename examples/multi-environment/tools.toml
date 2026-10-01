@@ -1,0 +1,7 @@
+[tools.temperature_samples]
+kind = "command"
+argv = ["python3", "examples/multi-environment/collector.py"]
+version = "1"
+timeout_seconds = 10
+max_output_bytes = 16384
+pinned_files = [{path = "examples/multi-environment/collector.py", sha256 = "bd7c6a67ea5b022989ef954e329dc2c9d15755cf73cf9ae61379d5f835cc0064"}, {path = "examples/multi-environment/fixtures.json", sha256 = "8e3109e8e08e81b59ea30d8b649f1a0272cb8b6fed5b0043bcf5e909702e3be3"}]

@@ -19,7 +19,7 @@ from .semantics import parse_time
 
 
 PACKET_SCHEMA = "EAL/assessment-packet/2"
-_IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z_0-9]{0,127}\Z", re.ASCII)
+_IDENTIFIER = re.compile(r"[A-Za-z_][A-Za-z_0-9]*(?:\.[A-Za-z_][A-Za-z_0-9]*)*\Z", re.ASCII)
 _METHOD = re.compile(r"(?:1|[A-Za-z_][A-Za-z_0-9./:-]{0,127})\Z", re.ASCII)
 _RECORD_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}\Z", re.ASCII)
 _DIGEST = re.compile(r"[0-9a-f]{64}\Z", re.ASCII)
@@ -38,8 +38,11 @@ _SAFE_METHOD_SCALARS = {
 
 
 def _identifier(value: Any) -> str:
-    if not isinstance(value, str) or _IDENTIFIER.fullmatch(value) is None:
-        raise ValueError("Assessment packet requires bounded EAL identifiers")
+    # Modules and argument-pattern applications qualify declaration identities.
+    # Keep the existing whole-name bound rather than allowing 128 per segment.
+    if (not isinstance(value, str) or not 1 <= len(value) <= 128
+            or _IDENTIFIER.fullmatch(value) is None):
+        raise ValueError("Assessment packet requires bounded EAL identifiers of at most 128 ASCII characters")
     return value
 
 
