@@ -110,15 +110,17 @@ make check-distribution
 
 ## Publish manually
 
-[publish.yml](../.github/workflows/publish.yml) runs only through `workflow_dispatch`. Its inputs are `release_tag` and `destination`, with destination choices `verify`, `testpypi` and `pypi`; `verify` is the default. The owner creates the release tag under the repository's tag ruleset. The workflow reads repository references and publishes artefacts through OpenID Connect; it does not change branches or tags.
+[publish.yml](../.github/workflows/publish.yml) runs only through `workflow_dispatch`. Its inputs are `release_tag` and `destination`, with destination choices `verify`, `testpypi` and `pypi`; `verify` is the default. The owner creates the release tag under the repository's tag ruleset. The workflow reads repository references and publishes verified artefacts using a PyPI API token for production or OpenID Connect for TestPyPI.
+
+Production publication uses the GitHub environment `pypi.org` and its `PYPI_TOKEN` secret. The PyPA action authenticates with the literal username `__token__` and that token as its password; the account username identifies the token owner. Production attestations are disabled because the action generates them through Trusted Publishing. TestPyPI uses the separate `testpypi` environment, a configured Trusted Publisher and signed attestations.
 
 The initial release procedure is:
 
 1. Merge the reviewed packaging change. Ensure `pyproject.toml` and `eal.__version__` agree on `3.2.1`, then create `v3.2.1` at that reviewed commit on `main`.
-2. Configure separate PyPI and TestPyPI Trusted Publishers for project `engineering-argument-language`, owner `emmett08`, repository `earl`, workflow `publish.yml`, and GitHub environment `pypi` or `testpypi` respectively. Configure the matching repository environments to permit the release tags and apply any required deployment reviewers. Each package index needs its own publisher registration; a new project uses a pending publisher.
+2. Store a PyPI API token with permission to publish `engineering-argument-language` as the `PYPI_TOKEN` secret in the repository environment `pypi.org`. Configure that environment to permit release tags and apply any required deployment reviewers. For optional TestPyPI publication, configure its Trusted Publisher for project `engineering-argument-language`, GitHub owner `emmett08`, repository `earl`, workflow `publish.yml` and environment `testpypi`, then configure that environment's deployment rules. A new TestPyPI project uses a pending publisher; its publisher registration is separate from production token authentication.
 3. Dispatch the workflow from the `v3.2.1` tag, with `release_tag=v3.2.1` and `destination=verify`, using the GitHub CLI command below. The workflow must first exist on the default branch. It requires a stable `vMAJOR.MINOR.PATCH` tag, checks its resolved commit and package version, and requires that commit to belong to `main`'s history.
-4. Review the full check and artefact installation results, and download the retained wheel and source distribution. Dispatch from the same tag with `destination=testpypi` to exercise publishing against TestPyPI.
-5. Check the TestPyPI release, then dispatch from the same tag with `destination=pypi` to publish the production release. Publication begins after all required verification jobs and the selected environment's deployment rules pass.
+4. Review the full check and artefact installation results, and download the retained wheel and source distribution. If TestPyPI is configured, dispatch from the same tag with `destination=testpypi` to exercise its publication path and check that release.
+5. Dispatch from the same tag with `destination=pypi` to publish the production release. Publication begins after all required verification jobs and the `pypi.org` environment's deployment rules pass.
 
 Dispatch verification with the matching tag ref and input:
 
@@ -127,7 +129,7 @@ gh workflow run publish.yml --repo emmett08/earl --ref v3.2.1 \
   -f release_tag=v3.2.1 -f destination=verify
 ```
 
-After verification and publisher setup, dispatch TestPyPI and subsequently PyPI:
+After verification and authentication setup, dispatch the optional TestPyPI release and the production PyPI release:
 
 ```bash
 gh workflow run publish.yml --repo emmett08/earl --ref v3.2.1 \
@@ -136,7 +138,7 @@ gh workflow run publish.yml --repo emmett08/earl --ref v3.2.1 \
   -f release_tag=v3.2.1 -f destination=pypi
 ```
 
-The release workflow is configured to produce exactly one wheel and one source distribution with a SHA-256 checksum file. Linux and macOS installation jobs verify those artefacts; the publishing job verifies the checksum and consumes the same build's retained artefacts by immutable upload ID. It receives `id-token: write` only for the selected package index and runs without checking out or installing the package. PyPI and TestPyPI publisher configuration is an account-level prerequisite, separate from committing the workflow.
+The release workflow is configured to produce exactly one wheel and one source distribution with a SHA-256 checksum file. Linux and macOS installation jobs verify those artefacts; the publishing job verifies the checksum and consumes the same build's retained artefacts by immutable upload ID. Both publishing jobs run without checking out or installing the package. The production job receives the environment's API token and read-only repository permissions; only the TestPyPI job receives `id-token: write`. Production publication requires a valid token, and TestPyPI publication requires its account-level Trusted Publisher registration. A later switch to production Trusted Publishing requires a matching publisher registration for environment `pypi.org`, removal of the explicit token input, `id-token: write` and enabled attestations.
 
 To check a published TestPyPI wheel while resolving dependencies through ordinary PyPI, download just EARL from TestPyPI and install the downloaded file:
 
@@ -153,4 +155,4 @@ The example keeps the test package index separate from dependency resolution. A 
 
 ## Packaging references
 
-The [Python Packaging User Guide](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) documents virtual environments and local archive installation. [pip's VCS documentation](https://pip.pypa.io/en/stable/topics/vcs-support/) defines pinned Git installations. [PyPI's Trusted Publisher guide](https://docs.pypi.org/trusted-publishers/adding-a-publisher/) specifies the repository, workflow and environment identity used for OpenID Connect publishing. [GitHub's CLI guide](https://cli.github.com/manual/gh_workflow_run) defines tag selection through `--ref`. [The Unlicense](https://unlicense.org/) supplies the original-software licence text and rationale. These sources explain the packaging mechanisms; the workflow and distribution checker define EARL's implemented release checks.
+The [Python Packaging User Guide](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/) documents virtual environments and local archive installation. [pip's VCS documentation](https://pip.pypa.io/en/stable/topics/vcs-support/) defines pinned Git installations. [PyPI's API token instructions](https://pypi.org/help/#apitoken) specify token permissions and the `__token__` upload username. [PyPI's Trusted Publisher guide](https://docs.pypi.org/trusted-publishers/adding-a-publisher/) specifies the repository, workflow and environment identity used for OpenID Connect publishing. The [PyPA publishing action](https://github.com/pypa/gh-action-pypi-publish) documents token authentication and the Trusted Publishing requirement for attestations. [GitHub's CLI guide](https://cli.github.com/manual/gh_workflow_run) defines tag selection through `--ref`. [The Unlicense](https://unlicense.org/) supplies the original-software licence text and rationale. These sources explain the packaging mechanisms; the workflow and distribution checker define EARL's implemented release checks.
