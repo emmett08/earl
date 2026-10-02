@@ -18,7 +18,7 @@ from experiments.model_transfer.diagnostic_design import load_diagnostic_plan
 from experiments.model_transfer.diagnostics import DiagnosticPilot
 from experiments.model_transfer.execution import ExecutionControl, ExecutionStopped
 from experiments.model_transfer.journal import AttemptJournal
-from experiments.model_transfer.provider import BudgetedClient
+from experiments.model_transfer.provider import BudgetedClient, ProviderResponseError
 from experiments.model_transfer.records import SequenceRecords
 from experiments.model_transfer.resources import ResourceSummary
 from experiments.model_transfer.run_state import RunState, digest
@@ -100,6 +100,51 @@ def test_atomic_budget_reserves_all_inflight_requests(tmp_path):
             release.set()
         first.result()
     assert transport.count == 1 and client._spent < p['budget_usd']
+
+
+def test_missing_usage_stops_other_lanes_before_any_later_request(tmp_path):
+    p = plan(2)
+    other_entered, release_other = threading.Event(), threading.Event()
+
+    class MissingUsage(Replies):
+        def send(self, payload, timeout):
+            with self.lock:
+                index = self.count
+                self.count += 1
+            response = {'model': payload['model'], 'status': 'completed',
+                        'output': [{'type': 'message', 'content': [
+                            {'type': 'output_text', 'text': 'Ready.'}]}]}
+            if index == 0:
+                assert other_entered.wait(3)
+                return response
+            other_entered.set()
+            assert release_other.wait(3)
+            response['usage'] = {'input_tokens': 80, 'output_tokens': 30}
+            return response
+
+    transport = MissingUsage()
+    control = ExecutionControl(30)
+    client = BudgetedClient(tmp_path, p, transport, control=control)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        failed = pool.submit(client.request, p['models']['plain'], [], [], 'missing-usage')
+        inflight = pool.submit(client.request, p['models']['plain'], [], [], 'already-started')
+        try:
+            with pytest.raises(ProviderResponseError, match='omitted complete usage'):
+                failed.result()
+            assert control.reason == 'Provider omitted complete usage; reservation retained'
+            blocked = pool.submit(client.request, p['models']['plain'], [], [], 'later-session')
+            with pytest.raises(ExecutionStopped, match='omitted complete usage'):
+                blocked.result()
+            assert transport.count == len(client.records) == 2
+        finally:
+            release_other.set()
+        inflight.result()
+    calls = AttemptJournal(tmp_path).read()
+    assert calls[0]['status'] == 'failed' and calls[0]['cost_estimate_usd'] is None
+    assert calls[0]['charged_or_reserved_usd'] == calls[0]['reserved_usd']
+    assert calls[0]['response']['output'][0]['content'][0]['text'] == 'Ready.'
+    assert calls[1]['status'] == 'completed'
+    assert client._spent == sum(call['charged_or_reserved_usd'] for call in calls)
 
 
 def test_resume_keeps_failed_session_and_cumulative_reservations(tmp_path):

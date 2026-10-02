@@ -1,0 +1,54 @@
+{
+  "schema": "EAL/followup-launch-readiness/1",
+  "recorded_at": "2026-10-02T14:52:11.322245+00:00",
+  "merged_base": "3015190f5880ec8f2669da8c9cac07e691e39b1d",
+  "merged_base_tree": "e4cd43385a4a17d816c970bd26fb14c1d30b7f26",
+  "plan_file_sha256": "8035f0fd15077047b20343f1d3b10005873bdbbee66ebb31b1dc4d93da21beb0",
+  "protocol_status": "Specified feasibility pilot; construction-stage planned fields are historical. This separate prospective launch receipt records subsequent source review and execution gates without regenerating the frozen plan.",
+  "scope": "Eight authored task blocks, five conditions and three host contexts; one pinned plain model, one repeat. No principal-study, population-reliability, independent human validation, factual-explanation accuracy or EAL-specific-superiority conclusion.",
+  "authorisation": "User explicitly requested cloud-browser start of the prepared Actions follow-up, capped at USD2.",
+  "prospective_correction": "Missing provider usage must halt subsequent request starts while retaining response text and the conservative failed-attempt reservation. The scientific material and frozen allocation remain unchanged.",
+  "collection_gates": [
+    "Source fix regression and repository checks must pass before dispatch.",
+    "Actions verify and fresh calibration/scripted rehearsal must pass before live collection.",
+    "First successful actual request establishes account access only for this pinned model at that time; do not substitute a model.",
+    "Shared cumulative USD2 ledger is retained across segments and resume; paid jobs are not rerun.",
+    "Missing usage, model mismatch, reservation overrun or provider access/quota failure stop further request starts. Already in-flight requests may finish and are retained."
+  ],
+  "coding_gate": {
+    "status": "required_before_substantive_coding",
+    "criterion": "Actual masked coder must pass independent calibration containing correct, incorrect, internally contradictory, conditional, ambiguous, absent and adverse examples. Fixed rehearsal labels do not calibrate a semantic coder. All primary conclusions remain suspended until this receipt and coding are complete."
+  },
+  "budget": {
+    "ceiling_usd": 2.0,
+    "maximum_sessions": 128,
+    "maximum_calls": 256,
+    "maximum_request_bytes": 32768,
+    "framing_token_reservation": 4096,
+    "maximum_output_tokens_per_call": 1024,
+    "conservative_reservation_envelope_usd": 1.048576,
+    "rates_checked_at": "2026-10-02",
+    "official_source": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+    "meaning": "Token-rate cost estimate/reservation; provider billing remains externally owned. Cached discounts are ignored."
+  },
+  "readiness": "scoped_fix_checks_passed_Actions_preflight_required",
+  "interpretation_control": "Undetermined is an authored reference state, not an automatic experiment failure. Failed/not-run/missing-coded recipients remain in planned denominators.",
+  "measured_implementation_sha256": "4ebf4871dee3c792da626482d2112be1cf5118198b94d129a5e105142451b2b9",
+  "normalised_plan_sha256": "2ef708aa38404bcfc8d750a91adf1c9a9d3ab92fb379fab8d2ae70eecf65e354",
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_model_transfer_execution.py tests/test_model_transfer_restoration.py",
+      "status": "passed",
+      "tests_passed": 56,
+      "elapsed_seconds": 37.54
+    },
+    {
+      "command": "make check",
+      "status": "running_local_and_required_in_Actions_verify_before_collection"
+    }
+  ],
+  "patched_source_sha256": {
+    "experiments/model_transfer/provider.py": "52717953b5bdec52877d514095324047be18a4ae5c45eecb6c48d621ce9821b2",
+    "experiments/model_transfer/session.py": "84ea54015dcb644f86e1f70d30492c2487f53b55d2b06a3b24f2d1209fa56de2"
+  }
+}

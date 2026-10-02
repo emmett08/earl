@@ -156,6 +156,49 @@ def test_provider_failure_retains_all_conditions_and_reservation(tmp_path):
                for group in report['evidence_restoration']['condition_outcomes'])
 
 
+@pytest.mark.parametrize('failed_attempt', [0, 1])
+@pytest.mark.parametrize('usage', [None, {}, {'input_tokens': 80},
+                                  {'input_tokens': 80, 'output_tokens': -1},
+                                  {'input_tokens': 80, 'output_tokens': True}])
+def test_missing_usage_stops_donor_or_recipient_and_preserves_text_and_budget(
+        tmp_path, failed_attempt, usage):
+    class MissingUsage(ScriptedTransport):
+        def __init__(self):
+            self.count = 0
+
+        def send(self, payload, timeout):
+            response = super().send(payload, timeout)
+            if self.count == failed_attempt:
+                if usage is None:
+                    response.pop('usage')
+                else:
+                    response['usage'] = usage
+            self.count += 1
+            return response
+
+    plan = plan_at(tmp_path / 'plan.json')
+    root = tmp_path / 'missing-usage'
+    transport = MissingUsage()
+    report = DiagnosticPilot(plan, root, transport).run()
+    assert report['execution_status'] == 'partial' and report['planned_sessions'] == 32
+    assert report['api_attempts'] == transport.count == failed_attempt + 1
+    assert report['unknown_cost_attempts'] == 1
+    assert 'omitted complete usage' in report['stop_reason']
+    calls = read_json(root / 'calls.json')
+    failed = calls[-1]
+    assert failed['status'] == 'failed' and failed['cost_estimate_usd'] is None
+    assert failed['charged_or_reserved_usd'] == failed['reserved_usd'] > 0
+    assert report['charged_or_reserved_usd'] == sum(c['charged_or_reserved_usd'] for c in calls)
+    row = next(row for row in read_json(root / 'rows.json') if row.get('donor_result'))
+    result = (row['donor_result'] if failed_attempt == 0 else
+              next(v['result'] for v in row['variants'] if v.get('result')))
+    assert result['status'] == 'failed' and result['api_attempt_ids'] == [failed_attempt]
+    assert result['raw_answer'] == failed['response']['output'][0]['content'][0]['text']
+    assert result['annotation']['status'] == 'pending' and result['answer'] is None
+    assert result['handoff']['status'] == 'not_retained'
+    assert result['stop_reason'] == 'Provider omitted complete usage; reservation retained'
+
+
 def test_restoration_plan_rejects_cause_metadata_that_matches_wrong_operation(tmp_path):
     plan = plan_at(tmp_path / 'plan.json')
     changed = deepcopy(plan)

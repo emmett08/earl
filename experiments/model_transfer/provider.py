@@ -22,10 +22,12 @@ from .execution import ExecutionStopped, ExecutionControl
 class ProviderResponseError(ValueError):
     """Retain text from a matched response that cannot continue model interaction."""
 
-    def __init__(self, message: str, response: dict, *, attempt_status: str = 'failed'):
+    def __init__(self, message: str, response: dict, *, attempt_status: str = 'failed',
+                 stop_collection: bool = False):
         super().__init__(message)
         self.response = response
         self.attempt_status = attempt_status
+        self.stop_collection = stop_collection
 
 
 class Transport(Protocol):
@@ -126,7 +128,8 @@ class BudgetedClient:
             if response.get("model") != profile["version"]:
                 raise ExecutionStopped("Provider reported a different model snapshot")
             if not usage_valid:
-                raise ProviderResponseError("Provider omitted complete usage; reservation retained", response)
+                raise ProviderResponseError("Provider omitted complete usage; reservation retained", response,
+                                            stop_collection=True)
             if response.get("status") != "completed":
                 raise ProviderResponseError(f"Provider result is {response.get('status')}; retain any answer text",
                                             response, attempt_status='incomplete')
@@ -136,7 +139,8 @@ class BudgetedClient:
             row["status"] = "completed"
             return response
         except Exception as exc:
-            if isinstance(exc, ExecutionStopped) and self.control:
+            if self.control and (isinstance(exc, ExecutionStopped) or
+                                 isinstance(exc, ProviderResponseError) and exc.stop_collection):
                 self.control.stop(str(exc))
             row["status"] = exc.attempt_status if isinstance(exc, ProviderResponseError) else "failed"
             row["error"] = {"type": type(exc).__name__, "message": str(exc)[:1000]}
