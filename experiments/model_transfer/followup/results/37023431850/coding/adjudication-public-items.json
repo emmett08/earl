@@ -1,0 +1,26 @@
+{
+  "schema": "EAL/model-transfer-annotations/1",
+  "rubric": "Code the decision explicitly communicated by this answer. Do not assess its factual correctness or infer a decision from measurements. Use ready for an affirmative readiness conclusion, not_ready for a negative readiness conclusion, undetermined for an explicit inability to establish readiness, no_answer for text that provides no task decision, and ambiguous for unresolved conflicting decisions. Distinguish historical or hypothetical statements from the current conclusion. Distinguish criterion failure from practical withholding because readiness is unknown: parentheses or a full explanation can clarify that meaning without the literal word correction. A lexical collision alone does not establish conflicting current verdicts; explicit incompatible criterion classifications can remain ambiguous. Tentative modal readiness wording may remain ambiguous. Supply an exact supporting quote from the answer and a brief note. Leave ambiguous answers unresolved; do not choose the most favourable reading. Also code explanation_consistency against the current communicated verdict and any JSON decision field: consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion; contradictory when it communicates an incompatible current verdict or reverses the JSON decision; ambiguous when consistency cannot be resolved, and no_explanation when no explanatory content is present. Read qualifications semantically: a phrase such as \"not ready (undetermined)\" may communicate inability to establish readiness, rather than a failed requirement. Do not impose a code from an isolated phrase. Do not infer task correctness from the wording. Preserve conflicting or ambiguous conclusions. Supply an exact consistency_quote and a brief consistency_note; an entire answer may be quoted when explaining absence.",
+  "items": [
+    {
+      "id": "871b27c8e1f34821965e1b551df22524",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"The latency measurement for asset 'followup-all_of-release-missing' with version 'current-3' is missing or not within the required parameters. The latest available fact shows a latency of 150 ms, which exceeds the threshold of 120 ms. Additionally, the assessment window for recent data (max 5 minutes) has passed, and no recent acceptable measurement is available.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "1d20c536aea94143a80ed6190c1ef18d",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"At 10:08 UTC, the required facts for primary delay and authentication are either missing or not within the specified age window; fallback route facts are unavailable, preventing confirmation of routing readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    }
+  ]
+}

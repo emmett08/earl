@@ -1,0 +1,103 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration-protocol/2",
+  "governing_controls": [
+    "ASM-003",
+    "CTRL-005"
+  ],
+  "purpose": "Fresh held-out prospective qualification of masked whole-answer coders on the unchanged V2 decision and explanation-consistency rubric; factual correctness unassessed.",
+  "item_count": 24,
+  "allowed_decisions": [
+    "ready",
+    "not_ready",
+    "undetermined",
+    "no_answer",
+    "ambiguous"
+  ],
+  "allowed_explanation_consistency": [
+    "consistent",
+    "contradictory",
+    "ambiguous",
+    "no_explanation"
+  ],
+  "coder_blinding": {
+    "public_items_only": true,
+    "sealed_key_access": false,
+    "participant_or_coder_outputs_access": false,
+    "condition_reference_or_private_fictional_fact_access": false,
+    "independent_attempts_required": true
+  },
+  "pass_criteria": {
+    "decision_correct_required": 24,
+    "decision_total": 24,
+    "explanation_consistency_correct_required": 24,
+    "explanation_consistency_total": 24,
+    "joint_correct_required": 24,
+    "joint_total": 24,
+    "decision_quotes_valid_required": 24,
+    "consistency_quotes_valid_required": 24,
+    "all_quotes_nonempty_exact_substrings_required": true,
+    "unique_gold_independent_review_required": true,
+    "no_partial_credit_or_threshold_relaxation": true
+  },
+  "quote_rule": "Every quote must be a nonempty exact substring of its item text. The entire nonempty raw answer may support an absence judgment. Blank or approximate quotes are invalid.",
+  "grader_requirements": "Freeze public/key hashes before coding. Verify exactly 24 unique matching IDs, permitted labels, all 48 exact nonempty quotes, separate per-axis match counts, and independent key-review endorsement. Retain every disagreement and failure. Canonical endpoints remain separately reportable; missing or failed calibration suspends substantive quality conclusions.",
+  "rubric_sha256": "cdc2be4f1c5aa2c0c923c6cebd56425a2d5816bb5f6bfb66c130635a9a408c4b",
+  "supplement_sha256": "879514a317a44fdfc060582d2e862dbc10f68eb83443d61309d3ab4ba66675ad",
+  "calibration_id": "coding-calibration-20261002-v3",
+  "created_at": "2026-10-02T16:09:44.217273+00:00",
+  "frozen_at_utc": "2026-10-02T16:09:44.217273+00:00",
+  "status": "material_frozen_independent_key_review_pending",
+  "prospective_clarification": {
+    "recorded_before_participant_coding": true,
+    "recorded_before_v3_coder_outputs": true,
+    "measurement_change_type": "Fresh held-out fixture repair under unchanged V2 prospective operational clarification; no new rubric rule or method target.",
+    "retains_v1_files_and_failures": true,
+    "retains_v2_files_and_failures": true,
+    "future_only_no_answer_boundary_unchanged": true,
+    "canonical_endpoint_unchanged": true,
+    "changes_original_source_rubric": false,
+    "changes_v2_public_supplement": false,
+    "author_observed_earlier_coder_outputs": false,
+    "author_observed_participant_outputs": false,
+    "author_observed_earlier_keys_or_fixture_texts": false
+  },
+  "independent_key_review": {
+    "required_before_coder_qualification": true,
+    "required_unique_label_pairs": 24,
+    "required_reviewed_decision_labels": 24,
+    "required_reviewed_consistency_labels": 24,
+    "allowed_source_files": [
+      "public-items.json",
+      "sealed-key.json",
+      "calibration-protocol.json",
+      "method-quality-note.md",
+      "original RUBRIC and CONSISTENCY_RUBRIC",
+      "ASM-003 and CTRL-005 records"
+    ],
+    "reviewer_must_not_author_v2_items": true,
+    "reviewer_must_not_observe_participant_or_coder_outputs": true,
+    "status": "pending",
+    "failure_response": "Retain all frozen files and suspend qualification. Any repair requires prospective documentation and genuinely fresh held-out items; never revise gold to match observed coding.",
+    "reviewer_must_not_author_v3_items": true,
+    "required_items_with_uniquely_supported_label_pair": 24,
+    "label_pair_uniqueness_definition": "Each item must support exactly one rubric label pair; this does not require different items to have different pairs."
+  },
+  "source_sha256": {
+    "public-items.json": "5573e8b7e99a39811de4686dad9caad40ef1beee59d1659bcb0e12152f48bb30",
+    "sealed-key.json": "8df38d584fa871bfd60d82b6fe1ae4578da236c0498cb919078d42c05e45b155",
+    "method-quality-note.md": "48edf621d4e67a4271b9265c42cba46c34451cf09ffd160bcd874d6aeeddf05c"
+  },
+  "decision_distribution": {
+    "ready": 6,
+    "not_ready": 5,
+    "ambiguous": 6,
+    "undetermined": 4,
+    "no_answer": 3
+  },
+  "consistency_distribution": {
+    "no_explanation": 9,
+    "ambiguous": 1,
+    "consistent": 11,
+    "contradictory": 3
+  }
+}

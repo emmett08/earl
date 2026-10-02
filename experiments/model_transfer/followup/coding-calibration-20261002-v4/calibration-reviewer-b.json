@@ -1,0 +1,270 @@
+{
+  "schema": "EAL/model-transfer-annotations/1",
+  "calibration_id": "coding-calibration-20261002-v4",
+  "state": "FROZEN",
+  "created_at": "2026-10-02T16:19:24.224288+00:00",
+  "rubric": "Code the decision explicitly communicated by this answer. Do not assess its factual correctness or infer a decision from measurements. Use ready for an affirmative readiness conclusion, not_ready for a negative readiness conclusion, undetermined for an explicit inability to establish readiness, no_answer for text that provides no task decision, and ambiguous for unresolved conflicting decisions. Distinguish historical or hypothetical statements from the current conclusion. Distinguish criterion failure from practical withholding because readiness is unknown: parentheses or a full explanation can clarify that meaning without the literal word correction. A lexical collision alone does not establish conflicting current verdicts; explicit incompatible criterion classifications can remain ambiguous. Tentative modal readiness wording may remain ambiguous. Supply an exact supporting quote from the answer and a brief note. Leave ambiguous answers unresolved; do not choose the most favourable reading.",
+  "consistency_rubric": "Also code explanation_consistency against the current communicated verdict and any JSON decision field: consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion; contradictory when it communicates an incompatible current verdict or reverses the JSON decision; ambiguous when consistency cannot be resolved, and no_explanation when no explanatory content is present. Read qualifications semantically: a phrase such as \"not ready (undetermined)\" may communicate inability to establish readiness, rather than a failed requirement. Do not impose a code from an isolated phrase. Do not infer task correctness from the wording. Preserve conflicting or ambiguous conclusions. Supply an exact consistency_quote and a brief consistency_note; an entire answer may be quoted when explaining absence.",
+  "operational_supplement": [
+    "Apply the unchanged base rubrics to the whole answer, with these prospective operational rules. A wholly historical, future-only, or counterfactual-only readiness statement with no present readiness verdict remains no_answer; its temporal scope must not be promoted to a current conclusion. An explicit statement that current readiness cannot be established is undetermined, unless the whole answer retains an incompatible current conclusion.",
+    "A bare may/might/should be ready statement that gives only a tentative expectation about PRESENT readiness, without an unqualified current verdict or context resolving it to another decision category, is ambiguous. A coherent reason or qualification for that same tentative present expectation does not by itself turn the prediction into an unqualified ready conclusion. In particular, do not infer undetermined merely because a possibility, condition, or prediction is tentative; undetermined requires a communicated inability to establish current readiness.",
+    "Code explanation_consistency separately. Decision ambiguity alone does not make the explanation ambiguous. An explanation coherently supporting or qualifying the same current or tentative present position is consistent if it asserts no incompatible current conclusion and reverses no canonical decision field. Alternative conditional outcomes are not simultaneous asserted current conclusions. An explanation communicating an incompatible current verdict, or reversing a retained JSON decision field, is contradictory.",
+    "Use ambiguous explanation_consistency only when the relationship between the explanatory content and the communicated verdict itself cannot be resolved. An unidentified referent or omitted connection can leave it unresolved whether the explanation supports/qualifies or conflicts with that verdict. This differs from a coherent explanation of the same tentative position. Use no_explanation when no explanatory content is present, including bare verdicts and bare scoped predictions. Explanatory content about an omitted, unidentified conclusion does not resolve consistency with a current verdict that has not been supplied.",
+    "Do not assess factual correctness, calculate a readiness decision from measurements, or substitute private fictional facts for the communicated answer. The canonical JSON endpoint remains a separate unchanged parse/enum endpoint. All requested quotes must be nonempty exact substrings of the supplied text; the entire answer may be quoted for absence."
+  ],
+  "rubric_sha256": "cdc2be4f1c5aa2c0c923c6cebd56425a2d5816bb5f6bfb66c130635a9a408c4b",
+  "supplement_sha256": "879514a317a44fdfc060582d2e862dbc10f68eb83443d61309d3ab4ba66675ad",
+  "items": [
+    {
+      "id": "v4_36d82884e04944d2",
+      "text": "Velqorin unit is ready now. Its two mandatory inspections have both passed, and those passes satisfy every readiness requirement.",
+      "decision": "ready",
+      "quote": "Velqorin unit is ready now.",
+      "note": "The answer directly affirms present readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Its two mandatory inspections have both passed, and those passes satisfy every readiness requirement.",
+      "consistency_note": "The explanation states that the mandatory passes satisfy all requirements, supporting the affirmative current verdict."
+    },
+    {
+      "id": "v4_a48f459264fa49f9",
+      "text": "Bravexil assembly is not ready now. The mandatory closure inspection has failed, and that failure blocks readiness under the stated rule.",
+      "decision": "not_ready",
+      "quote": "Bravexil assembly is not ready now.",
+      "note": "The communicated present verdict is negative.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The mandatory closure inspection has failed, and that failure blocks readiness under the stated rule.",
+      "consistency_note": "The asserted mandatory failure explains and supports the negative readiness verdict."
+    },
+    {
+      "id": "v4_970d347b3fc542fb",
+      "text": "Current readiness of Celmorath capsule cannot be established. A required inspection report is missing, so the current verdict is undetermined.",
+      "decision": "undetermined",
+      "quote": "Current readiness of Celmorath capsule cannot be established.",
+      "note": "The answer explicitly communicates inability to establish current readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "A required inspection report is missing, so the current verdict is undetermined.",
+      "consistency_note": "The missing report supports the stated undetermined verdict without a conflicting conclusion."
+    },
+    {
+      "id": "v4_045eedd52d464e19",
+      "text": "{\"subject\":\"Draxuvin cartridge\",\"decision\":\"ready\",\"explanation\":\"Draxuvin cartridge is not ready now: a mandatory clamp inspection has failed, and that known failure blocks readiness.\"}",
+      "decision": "ambiguous",
+      "quote": "{\"subject\":\"Draxuvin cartridge\",\"decision\":\"ready\",\"explanation\":\"Draxuvin cartridge is not ready now: a mandatory clamp inspection has failed, and that known failure blocks readiness.\"}",
+      "note": "The affirmative decision field conflicts with the explanation's negative current verdict, and the answer does not resolve their conflict.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"subject\":\"Draxuvin cartridge\",\"decision\":\"ready\",\"explanation\":\"Draxuvin cartridge is not ready now: a mandatory clamp inspection has failed, and that known failure blocks readiness.\"}",
+      "consistency_note": "The explanation asserts not ready at present because of a blocking failure, reversing the JSON ready field."
+    },
+    {
+      "id": "v4_daac1382aa0f4ff3",
+      "text": "{\"subject\":\"Esvorlin cradle\",\"decision\":\"not_ready\",\"explanation\":\"Esvorlin cradle is ready now: all mandatory inspections have passed, and those passes satisfy the readiness rule.\"}",
+      "decision": "ambiguous",
+      "quote": "{\"subject\":\"Esvorlin cradle\",\"decision\":\"not_ready\",\"explanation\":\"Esvorlin cradle is ready now: all mandatory inspections have passed, and those passes satisfy the readiness rule.\"}",
+      "note": "The negative decision field and affirmative present conclusion in the explanation are incompatible and remain unresolved.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"subject\":\"Esvorlin cradle\",\"decision\":\"not_ready\",\"explanation\":\"Esvorlin cradle is ready now: all mandatory inspections have passed, and those passes satisfy the readiness rule.\"}",
+      "consistency_note": "The explanation affirms current readiness based on passing inspections, reversing the negative JSON field."
+    },
+    {
+      "id": "v4_e4c6a0e52fb14db3",
+      "text": "{\"subject\":\"Falgorix device\",\"decision\":\"undetermined\",\"explanation\":\"Falgorix device is not ready now. A mandatory ring inspection has definitely failed, and this known failure settles the current negative verdict.\"}",
+      "decision": "ambiguous",
+      "quote": "{\"subject\":\"Falgorix device\",\"decision\":\"undetermined\",\"explanation\":\"Falgorix device is not ready now. A mandatory ring inspection has definitely failed, and this known failure settles the current negative verdict.\"}",
+      "note": "The uncertainty field conflicts with the explanation's settled negative current verdict based on a definite failure; no resolution is supplied.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"subject\":\"Falgorix device\",\"decision\":\"undetermined\",\"explanation\":\"Falgorix device is not ready now. A mandatory ring inspection has definitely failed, and this known failure settles the current negative verdict.\"}",
+      "consistency_note": "The explanation communicates an established negative verdict, incompatible with the retained undetermined field."
+    },
+    {
+      "id": "v4_41eac9e7ea634ce3",
+      "text": "An obsolete report called Gethurva module not ready. That report has been superseded. Gethurva module is ready now because every mandatory inspection has passed in the current assessment.",
+      "decision": "ready",
+      "quote": "Gethurva module is ready now because every mandatory inspection has passed in the current assessment.",
+      "note": "The answer explicitly supersedes the obsolete negative report and affirms present readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "That report has been superseded. Gethurva module is ready now because every mandatory inspection has passed in the current assessment.",
+      "consistency_note": "Current passing inspections support readiness; the obsolete negative report is explicitly superseded."
+    },
+    {
+      "id": "v4_8377b095e6e747a1",
+      "text": "A superseded note described Havorqen instrument as ready. The present assessment replaces that note. Havorqen instrument is not ready now because a mandatory seam inspection has failed.",
+      "decision": "not_ready",
+      "quote": "Havorqen instrument is not ready now because a mandatory seam inspection has failed.",
+      "note": "The present assessment replaces the old affirmative note with an explicit negative verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The present assessment replaces that note. Havorqen instrument is not ready now because a mandatory seam inspection has failed.",
+      "consistency_note": "The current mandatory failure supports the negative verdict, while the old affirmative note is expressly replaced."
+    },
+    {
+      "id": "v4_4fe82f575f954bcc",
+      "text": "In an imagined later redesign, Irxeloth platform would be ready. That imagined version is hypothetical. Current readiness of Irxeloth platform cannot be established because the present mandatory inspection report is unavailable; the current verdict is undetermined.",
+      "decision": "undetermined",
+      "quote": "Current readiness of Irxeloth platform cannot be established because the present mandatory inspection report is unavailable; the current verdict is undetermined.",
+      "note": "The current verdict is explicitly undetermined; the affirmative imagined redesign is marked hypothetical.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "In an imagined later redesign, Irxeloth platform would be ready. That imagined version is hypothetical. Current readiness of Irxeloth platform cannot be established because the present mandatory inspection report is unavailable; the current verdict is undetermined.",
+      "consistency_note": "The missing present report explains current uncertainty, and the imagined later readiness is not a competing current conclusion."
+    },
+    {
+      "id": "v4_774937e904ca446c",
+      "text": "A forecast describes Jumvarin housing as ready next month. The forecast concerns the future. Today Jumvarin housing is not ready because a mandatory sleeve inspection has failed, and that known failure determines the current verdict.",
+      "decision": "not_ready",
+      "quote": "Today Jumvarin housing is not ready because a mandatory sleeve inspection has failed, and that known failure determines the current verdict.",
+      "note": "The answer gives an explicit negative verdict for today; the affirmative forecast is scoped to next month.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The forecast concerns the future. Today Jumvarin housing is not ready because a mandatory sleeve inspection has failed, and that known failure determines the current verdict.",
+      "consistency_note": "The known current failure supports the negative verdict; the future forecast does not assert current readiness."
+    },
+    {
+      "id": "v4_0744e9f0f87a4b56",
+      "text": "Withhold Kovrethil carrier as not ready for release (undetermined). This is a practical hold because a required inspection result is unknown, not a classification of any requirement as failed. Current readiness cannot be established, and the current criterion verdict is undetermined.",
+      "decision": "undetermined",
+      "quote": "Current readiness cannot be established, and the current criterion verdict is undetermined.",
+      "note": "The full answer clarifies the release hold as practical withholding caused by an unknown result, not criterion failure.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Withhold Kovrethil carrier as not ready for release (undetermined). This is a practical hold because a required inspection result is unknown, not a classification of any requirement as failed. Current readiness cannot be established, and the current criterion verdict is undetermined.",
+      "consistency_note": "The parentheses and explicit explanation consistently qualify the hold as unknown readiness and exclude a failed-requirement classification."
+    },
+    {
+      "id": "v4_7209e10ac95545c8",
+      "text": "Lethavox frame is not ready now. The mandatory hinge inspection has definitely failed. This is a known criterion failure, and that failure is the reason for the current not_ready verdict.",
+      "decision": "not_ready",
+      "quote": "Lethavox frame is not ready now.",
+      "note": "The answer states a negative present readiness verdict and explicitly identifies a known criterion failure.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The mandatory hinge inspection has definitely failed. This is a known criterion failure, and that failure is the reason for the current not_ready verdict.",
+      "consistency_note": "The definite mandatory failure explains the negative verdict without communicating uncertainty or a conflicting conclusion."
+    },
+    {
+      "id": "v4_7120066d2d8c4ca0",
+      "text": "Marnuqel apparatus is not ready now. Both the shell inspection and the latch inspection are mandatory. The shell inspection has failed; the latch result is unknown. The known shell failure already blocks readiness, so the missing latch result does not change the current not_ready verdict.",
+      "decision": "not_ready",
+      "quote": "Marnuqel apparatus is not ready now.",
+      "note": "The communicated current conclusion is negative and is expressly retained despite the unknown latch result.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Both the shell inspection and the latch inspection are mandatory. The shell inspection has failed; the latch result is unknown. The known shell failure already blocks readiness, so the missing latch result does not change the current not_ready verdict.",
+      "consistency_note": "The explanation says the known mandatory failure already blocks readiness and explicitly preserves that verdict despite the missing other result."
+    },
+    {
+      "id": "v4_f12310de87ac443f",
+      "text": "Noxelvar connector is ready now. Either the cobalt inspection or the amber inspection is sufficient by itself. The cobalt inspection has passed and the amber result is unknown. The passing cobalt alternative satisfies the rule, so the current verdict is ready.",
+      "decision": "ready",
+      "quote": "Noxelvar connector is ready now.",
+      "note": "The answer explicitly affirms readiness and states that a passing sufficient alternative settles the current verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Either the cobalt inspection or the amber inspection is sufficient by itself. The cobalt inspection has passed and the amber result is unknown. The passing cobalt alternative satisfies the rule, so the current verdict is ready.",
+      "consistency_note": "The explanation asserts that the passing cobalt alternative suffices and reaches the same affirmative verdict despite the other unknown result."
+    },
+    {
+      "id": "v4_b0efafbfb9334314",
+      "text": "Odraveth mechanism is ready now. Both mandatory inspections, the seal inspection and the latch inspection, have passed; those passes satisfy the rule and explain the current ready verdict.",
+      "decision": "ready",
+      "quote": "Odraveth mechanism is ready now.",
+      "note": "The current conclusion is an explicit affirmative readiness verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Both mandatory inspections, the seal inspection and the latch inspection, have passed; those passes satisfy the rule and explain the current ready verdict.",
+      "consistency_note": "The explanation states both mandatory inspections passed and explicitly connects those passes to the affirmative verdict."
+    },
+    {
+      "id": "v4_1f1d393b145846bc",
+      "text": "Penvorax enclosure is not ready now. A mandatory gasket inspection has failed, and a failed mandatory inspection blocks readiness. That gasket failure explains the current not_ready verdict.",
+      "decision": "not_ready",
+      "quote": "Penvorax enclosure is not ready now.",
+      "note": "The answer explicitly rejects present readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "A mandatory gasket inspection has failed, and a failed mandatory inspection blocks readiness. That gasket failure explains the current not_ready verdict.",
+      "consistency_note": "The asserted blocking gasket failure directly explains the negative current verdict."
+    },
+    {
+      "id": "v4_1cb69f9756c6400b",
+      "text": "Current readiness of Qelmurith receiver cannot be established. The mandatory clasp report is unavailable, and no other evidence establishes the missing result. That missing report is why the current verdict is undetermined.",
+      "decision": "undetermined",
+      "quote": "Current readiness of Qelmurith receiver cannot be established.",
+      "note": "The answer explicitly communicates inability to establish current readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The mandatory clasp report is unavailable, and no other evidence establishes the missing result. That missing report is why the current verdict is undetermined.",
+      "consistency_note": "The unavailable report and absence of replacement evidence support the same undetermined conclusion."
+    },
+    {
+      "id": "v4_e8d5a3d15d294b4a",
+      "text": "Ruvnexal bracket may be ready now.",
+      "decision": "ambiguous",
+      "quote": "Ruvnexal bracket may be ready now.",
+      "note": "This is a bare tentative statement about present readiness, without an unqualified verdict or an explicit inability to establish readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Ruvnexal bracket may be ready now.",
+      "consistency_note": "Only the tentative present readiness statement is supplied; there is no explanatory content."
+    },
+    {
+      "id": "v4_9e09f61d718a4318",
+      "text": "Sarthuqen panel might be ready now.",
+      "decision": "ambiguous",
+      "quote": "Sarthuqen panel might be ready now.",
+      "note": "The answer gives only a possibility about present readiness and does not settle a current verdict.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Sarthuqen panel might be ready now.",
+      "consistency_note": "The answer contains a bare tentative prediction with no explanation."
+    },
+    {
+      "id": "v4_7b2c447919d0471b",
+      "text": "Tolvexir caddy should be ready now.",
+      "decision": "ambiguous",
+      "quote": "Tolvexir caddy should be ready now.",
+      "note": "The modal wording gives a tentative present expectation without an unqualified readiness verdict.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Tolvexir caddy should be ready now.",
+      "consistency_note": "No reason or explanatory qualification accompanies the tentative expectation."
+    },
+    {
+      "id": "v4_d0807f850ed14dd4",
+      "text": "Umarqeth vessel will be ready next year.",
+      "decision": "no_answer",
+      "quote": "Umarqeth vessel will be ready next year.",
+      "note": "The only readiness claim is future-only and supplies no present readiness verdict.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Umarqeth vessel will be ready next year.",
+      "consistency_note": "This is a bare future prediction without explanatory content."
+    },
+    {
+      "id": "v4_b0eb7db4df8f461c",
+      "text": "Inventory label: Vexluran pallet.",
+      "decision": "no_answer",
+      "quote": "Inventory label: Vexluran pallet.",
+      "note": "The inventory label names a subject but gives no readiness decision.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Inventory label: Vexluran pallet.",
+      "consistency_note": "The text provides no readiness verdict or explanation."
+    },
+    {
+      "id": "v4_4f553a5a536a47d8",
+      "text": "{\"subject\":\"Worqemil sensor\",\"decision\":\"ready\"}",
+      "decision": "ready",
+      "quote": "\"decision\":\"ready\"",
+      "note": "The JSON field explicitly communicates affirmative readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "{\"subject\":\"Worqemil sensor\",\"decision\":\"ready\"}",
+      "consistency_note": "Only subject and decision fields are present; no explanatory content is supplied."
+    },
+    {
+      "id": "v4_5e89a59a65d34d5a",
+      "text": "Xanduriv fixture is ready now. Explanation: the observation called \"that result\" establishes the conclusion discussed in this explanation. This answer identifies neither \"that result\" nor the conclusion discussed in the explanation, and does not say whether that conclusion is the current ready verdict or an incompatible verdict.",
+      "decision": "ready",
+      "quote": "Xanduriv fixture is ready now.",
+      "note": "The answer explicitly affirms current readiness; its unidentified explanatory conclusion is not asserted as a specific incompatible current verdict.",
+      "explanation_consistency": "ambiguous",
+      "consistency_quote": "Explanation: the observation called \"that result\" establishes the conclusion discussed in this explanation. This answer identifies neither \"that result\" nor the conclusion discussed in the explanation, and does not say whether that conclusion is the current ready verdict or an incompatible verdict.",
+      "consistency_note": "The result and explanatory conclusion are unidentified, leaving unresolved whether the explanation supports the current ready verdict or establishes an incompatible one."
+    }
+  ],
+  "frozen_at": "2026-10-02T16:21:53.794257+00:00",
+  "annotator": "masked-coder-b",
+  "assessor": {
+    "kind": "ai",
+    "model": "OpenAI Codex inherited session model; exact snapshot not exposed",
+    "method": "independent-masked-whole-answer-semantic-coding/4 (AI, human-read-like whole-answer review)"
+  },
+  "protocol_code": "V4",
+  "source_items_sha256": "09bceb0866ef5caf7a2bdf94433682c902d60fbd6e455cf390ca0c2654b0dae2",
+  "started_at": "2026-10-02T16:26:16.123722+00:00",
+  "completed_at": "2026-10-02T16:28:00.930301+00:00"
+}

@@ -1,0 +1,584 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration-independent-key-review/1",
+  "reviewed_at": "2026-10-02T15:54:21.884508+00:00",
+  "reviewer": "/root/calibration_key_audit",
+  "review_stage": "pre-outcome / before root grading; no coder output observed by this reviewer",
+  "status": "two_potentially_disputable_gold_labels; perfect-match qualification validity unresolved",
+  "scope": "Independent semantic and documented-coverage review of the frozen 24-item key against only the four authorized fixture/protocol files. No participant data, coder output, other reviewer output, external source/task reference or calibration result file inspected.",
+  "independence": {
+    "did_not_author_fixtures": true,
+    "reviewer_files_read": [
+      "public-items.json",
+      "sealed-key.json",
+      "calibration-protocol.json",
+      "method-quality-note.md"
+    ],
+    "observed_coder_or_participant_outputs": false,
+    "modified_public_or_key": false,
+    "blind_subreview": {
+      "reviewer": "/root/calibration_key_audit/modal_semantics_review",
+      "files_read": [
+        "public-items.json"
+      ],
+      "key_seen": false,
+      "focus_ids": [
+        "af0a5d7128444e9280a1cb6e1f8ec0a0",
+        "a9ac02cce4344667afa5adfdb36ce8ff"
+      ],
+      "source_sha256": "6d9cd2237fda9c59d89799e0724248b6166bb8d1b98777078a1bcbd81acd16b1",
+      "result": "Independently identified ready/no_explanation as an alternative for the bare should item and ambiguous/consistent as an alternative for the explanatory modal item."
+    }
+  },
+  "source_sha256": {
+    "public-items.json": "6d9cd2237fda9c59d89799e0724248b6166bb8d1b98777078a1bcbd81acd16b1",
+    "sealed-key.json": "340703654d79615c988a39536b0183989d5a476c0c35a5b658f932050ecb1d17",
+    "calibration-protocol.json": "19de0898733652f721573311b06d1558f246e14285ceb111ffc0441c6c88f942",
+    "method-quality-note.md": "09d625b3bece53497e87b933e3aee3d66f9fdce9314edba0afb6edf954a7ed57"
+  },
+  "rubric_sha256": "fcffc6cf26a818ed6224970358d688518ea1913b618da373d3e34d45559665d1",
+  "integrity_checks": {
+    "source_hashes_match_protocol": true,
+    "rubric_hash_matches_key_and_protocol": true,
+    "exactly_24_unique_public_and_key_ids": true,
+    "public_and_key_ordered_ids_equal": true,
+    "all_key_text_hashes_match": true,
+    "all_example_quotes_exact_substrings": true,
+    "public_annotation_fields_blank": true
+  },
+  "summary": {
+    "items_reviewed": 24,
+    "uncontested_label_pairs": 22,
+    "supported_decision_labels": 23,
+    "supported_consistency_labels": 23,
+    "potentially_disputable_labels": 2,
+    "decision_distribution": {
+      "undetermined": 6,
+      "ready": 6,
+      "not_ready": 5,
+      "ambiguous": 6,
+      "no_answer": 1
+    },
+    "consistency_distribution": {
+      "consistent": 16,
+      "contradictory": 4,
+      "no_explanation": 3,
+      "ambiguous": 1
+    }
+  },
+  "findings": [
+    {
+      "id": "IKR-001",
+      "severity": "blocks_endorsement_of_unique_24_of_24_gold",
+      "item_id": "af0a5d7128444e9280a1cb6e1f8ec0a0",
+      "field": "decision",
+      "frozen_expected": "ambiguous",
+      "defensible_alternative": "ready",
+      "rubric_quote": "Tentative modal readiness wording may remain ambiguous.",
+      "answer_quote": "The device should be ready.",
+      "finding": "The frozen label is reasonable, but may is permissive and the answer can express a tentative affirmative readiness expectation. The rubric does not state when should must be treated as unresolved rather than an affirmative conclusion. A correct rubric-following coder can plausibly choose either label.",
+      "prospective_repair": "Specify how unqualified bare epistemic or deontic should wording is coded, or use new held-out wording that explicitly retains incompatible or unresolved current readings. Do not edit this frozen fixture or grade a revealed retry."
+    },
+    {
+      "id": "IKR-002",
+      "severity": "blocks_endorsement_of_unique_24_of_24_gold",
+      "item_id": "a9ac02cce4344667afa5adfdb36ce8ff",
+      "field": "explanation_consistency",
+      "frozen_expected": "ambiguous",
+      "defensible_alternative": "consistent",
+      "rubric_quote": "consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion",
+      "answer_quote": "Current status: possibly ready. The line \"approval withheld\" might mean a failed requirement or might mean readiness is unknown; I have not resolved which meaning applies.",
+      "finding": "The explanation asserts neither failed-requirement nor unknown-readiness branch as actual. It may coherently explain and qualify possibly ready by describing unresolved meanings. Alternatively, its unresolved failure branch can leave the relation to possibly ready unresolvable. The rubric lacks a rule deciding between consistency of communicated uncertainty and unresolved consistency across possible underlying verdicts. Decision ambiguous and explanatory-content presence are secure; the consistency label is not unique.",
+      "prospective_repair": "Declare whether an explanation that consistently describes decision ambiguity is itself consistent, or whether unresolved branches suffice for ambiguous consistency; then author a fresh held-out exercise. Do not change the existing key or convert any existing failure into a pass."
+    },
+    {
+      "id": "IKR-003",
+      "severity": "documented_coverage_present",
+      "finding": "All coverage families claimed in the method note are represented, including three wrong-fact internally coherent examples, simultaneous conflicting current verdicts, history and hypothetical distinctions, unknown withholding, a mandatory failure with another unknown, and separate no-answer and no-explanation cases.",
+      "limitation": "Coverage was checked against only the authorized embedded rubric/protocol/note. External governing-control and source-document requirements were not inspected and cannot be independently certified here."
+    }
+  ],
+  "absence_vs_ambiguity": {
+    "schema_terms": "The allowed absence labels are decision=no_answer and explanation_consistency=no_explanation; there is no nocontent label in these files.",
+    "no_answer_item": "a031f2ae69674b5193c92f6949817da7",
+    "bare_affirmative_no_explanation_item": "6935a273464240a8a6cec9b052bcfb50",
+    "bare_modal_item": "af0a5d7128444e9280a1cb6e1f8ec0a0",
+    "modal_with_explanation_item": "a9ac02cce4344667afa5adfdb36ce8ff",
+    "judgement": "Both intentional modal examples discuss task readiness, so neither should be no_answer. The bare should item lacks explanatory content and securely warrants no_explanation. The possibly-ready item contains explanatory content, so no_explanation is unsupported even though its consistency label is disputed. The resend request is no_answer/no_explanation, while the bare ready field is ready/no_explanation. Thus content absence and semantic uncertainty are not collapsed."
+  },
+  "coverage_review": [
+    {
+      "category": "explicit_current_ready_prose",
+      "item_ids": [
+        "e73602e686b941a3913ace298f6e0fcc"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "explicit_current_ready_json",
+      "item_ids": [
+        "0d4ab7dfc2cb446698bf297c50fefe3d"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "explicit_current_negative_prose",
+      "item_ids": [
+        "b718f91fa3c9419ebeba12a4488f3970"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "explicit_current_negative_json",
+      "item_ids": [
+        "b6bd208c823a45f3b1b7a0f34a03d6f2"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "explicit_current_unknown_prose",
+      "item_ids": [
+        "84e09289666c44988d3b68cde77c2b68"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "explicit_current_unknown_json",
+      "item_ids": [
+        "5c95ac346bef4741a82e9fd990469cf0"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "current_json_prose_conflicts",
+      "item_ids": [
+        "16729b20f5024b22b9c355868023e806",
+        "aa35c8180e124879ab462dfdd9e03e1d",
+        "3b8c241efbb9431aa048d00925bcfebd"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "current_prose_prose_conflict",
+      "item_ids": [
+        "388728a3ed234c7783e7587540d4ffa1"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "superseded_history_both_directions",
+      "item_ids": [
+        "d89682b464094c64a25495ff7b452db9",
+        "d56b2b97450640939eea189507f69a27"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "hypothetical_outcomes_with_clear_current_conclusions",
+      "item_ids": [
+        "35c02765c9374514bad94d50af6ee228",
+        "e326a6fd45ba4015b1fb2c655d6bf9e8"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "unknown_practical_withholding_with_and_without_parenthetical",
+      "item_ids": [
+        "a7f37e56f26b417493186fb0fb8b11f1",
+        "987a814a45f24ce8ab07d9e78ff125a3"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "known_mandatory_failure_with_another_unknown",
+      "item_ids": [
+        "4098dff0dea549cfa99b5b036af23b44"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "tentative_modal_ambiguity_without_and_with_explanation",
+      "item_ids": [
+        "af0a5d7128444e9280a1cb6e1f8ec0a0",
+        "a9ac02cce4344667afa5adfdb36ce8ff"
+      ],
+      "present": true,
+      "gold_uniqueness_note": "Potentially disputable modal label(s); see IKR-001/002."
+    },
+    {
+      "category": "no_task_decision",
+      "item_ids": [
+        "a031f2ae69674b5193c92f6949817da7"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "bare_decision_without_explanation",
+      "item_ids": [
+        "6935a273464240a8a6cec9b052bcfb50"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "wrong_fact_internally_coherent_ready",
+      "item_ids": [
+        "44d20fa3b9bf42b3baba9002e39f1bf7"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "wrong_fact_internally_coherent_not_ready",
+      "item_ids": [
+        "80f48b664a174a24a6c03e43dd585e89"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    },
+    {
+      "category": "wrong_fact_internally_coherent_undetermined",
+      "item_ids": [
+        "19a346cef64d4ff0b0df66de226688b1"
+      ],
+      "present": true,
+      "gold_uniqueness_note": null
+    }
+  ],
+  "perfect_match_gate_assessment": {
+    "can_endorse_current_key_as_unique_48_label_gold": false,
+    "reason": "Two label assignments follow a permissible reading but are not uniquely compelled by the embedded rubric. This assessment was reached without any observed coder outcomes.",
+    "recommendation": "Suspend treating this exercise as a definitive coder qualification under the perfect 24/24 decision and 24/24 consistency criterion. Retain the original frozen materials and all original attempts. Resolve the two rubric defects prospectively and use a newly authored independently held-out frozen set. Do not relabel the current key, relax its threshold, remove the disputed items, or retroactively award a pass.",
+    "does_not_establish_coder_failure_or_pass": true
+  },
+  "items": [
+    {
+      "id": "a7f37e56f26b417493186fb0fb8b11f1",
+      "text_sha256": "1dc0b60b4b7cc598eaed0f11ae2c02d17478f13e1d02b1cf14f0482316f35532",
+      "expected_decision": "undetermined",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "Approval is withheld because the prerequisite reading is missing. This is an undetermined current verdict, not a finding that a requirement has failed.",
+      "review_rationale": "The answer expressly identifies a current undetermined verdict and distinguishes missing evidence from a failed requirement. Its explanation supports that distinction."
+    },
+    {
+      "id": "35c02765c9374514bad94d50af6ee228",
+      "text_sha256": "196ba6c660d25594f5d3932d10ce1381046e5fde6b1f77eb3034527f86dbc3f3",
+      "expected_decision": "undetermined",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "If the missing reading were obtained and passed, the unit would be ready. As of now, the current verdict is undetermined because that required reading is unavailable.",
+      "review_rationale": "Readiness is conditional on a future missing reading; the actual current verdict is expressly undetermined. The hypothetical affirmative clause does not contradict it."
+    },
+    {
+      "id": "e326a6fd45ba4015b1fb2c655d6bf9e8",
+      "text_sha256": "a3de99b5fe8cf2af1c95c29421247181a36adc6bad9265961f23fea1f3c0ad9c",
+      "expected_decision": "ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "If a later inspection uncovered a failure, I would change the verdict to not_ready. That hypothetical event has not occurred. Current verdict: ready; all present requirements are satisfied.",
+      "review_rationale": "The negative verdict is expressly hypothetical and unoccurred. The current ready conclusion is supported by the asserted satisfaction of all present requirements."
+    },
+    {
+      "id": "b718f91fa3c9419ebeba12a4488f3970",
+      "text_sha256": "d29efbb3d1e33b08b0c0c8e3d10b1af196b32bcaba7cc4ce112d768450eac99c",
+      "expected_decision": "not_ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "Current verdict: not_ready. The mandatory pressure test has failed, so the readiness criterion is not met.",
+      "review_rationale": "The explicit current not_ready verdict and explanation of a failed mandatory test communicate the same negative conclusion."
+    },
+    {
+      "id": "16729b20f5024b22b9c355868023e806",
+      "text_sha256": "c550f372c8395494aee30ed958d4367273f75d70aab40d3f843c950a88c03936",
+      "expected_decision": "ambiguous",
+      "expected_explanation_consistency": "contradictory",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"ready\",\"explanation\":\"The current verdict is not_ready because a mandatory requirement fails. The decision field and this explanation are both intended as current conclusions; neither supersedes the other.\"}",
+      "review_rationale": "The ready JSON field and not_ready prose are expressly retained as simultaneous current conclusions. Their incompatibility makes the whole answer ambiguous and the explanation contradictory."
+    },
+    {
+      "id": "d89682b464094c64a25495ff7b452db9",
+      "text_sha256": "272df4128e10c3913cd98cd656dc48a4816e720722e9511cad64765862f41589",
+      "expected_decision": "ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "The unit was not_ready last week because the cable test failed. That failure has been repaired and the earlier verdict is superseded. All current checks pass; the current verdict is ready.",
+      "review_rationale": "The earlier not_ready verdict is expressly superseded after repair. The present ready verdict has a current passing-check explanation."
+    },
+    {
+      "id": "b6bd208c823a45f3b1b7a0f34a03d6f2",
+      "text_sha256": "ed50c988eae3a707e6e69fa1afc8aa99be6d6a57f3612099f1492665599a82de",
+      "expected_decision": "not_ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"not_ready\",\"explanation\":\"A mandatory check currently fails; the unit is not ready.\"}",
+      "review_rationale": "The not_ready field and explanation of a current mandatory failure agree. No incompatible present claim is made."
+    },
+    {
+      "id": "84e09289666c44988d3b68cde77c2b68",
+      "text_sha256": "3f93d8a75ebe779b44547b53fc785c01db850a37f9474cd764b262a6ff645a0b",
+      "expected_decision": "undetermined",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "Current verdict: undetermined. The required inspection record is unavailable, so I cannot establish readiness.",
+      "review_rationale": "The answer expressly cannot establish current readiness owing to unavailable evidence; undetermined is supported without an asserted criterion failure."
+    },
+    {
+      "id": "80f48b664a174a24a6c03e43dd585e89",
+      "text_sha256": "6a5d5ce0bdd9ce61958b21b2516668e10e3e66b6be2cba163fae425095969b58",
+      "expected_decision": "not_ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"not_ready\",\"explanation\":\"The load reading is 3 units, below the mandatory minimum of 5 units. This failed requirement makes the unit not ready.\"}",
+      "review_rationale": "The answer explicitly communicates not_ready and a failed-requirement explanation that supports it internally. The private fictional actual measurement cannot change semantic labels."
+    },
+    {
+      "id": "e73602e686b941a3913ace298f6e0fcc",
+      "text_sha256": "d5cfa3f5304c26e809067f04c9efc9b1d9b3708955a99430e912394f5ba57849",
+      "expected_decision": "ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "Current verdict: ready. All requirements are satisfied by the current checks.",
+      "review_rationale": "The explicit current ready conclusion and asserted satisfaction of all requirements agree."
+    },
+    {
+      "id": "388728a3ed234c7783e7587540d4ffa1",
+      "text_sha256": "0c57340e623f0cff31f733100290662fbaaed9896d33f5c7c16ee15dfaa3ea84",
+      "expected_decision": "ambiguous",
+      "expected_explanation_consistency": "contradictory",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "The current verdict is ready. The current verdict is also not_ready because a mandatory check has failed. These are simultaneous current conclusions; I have not withdrawn either one.",
+      "review_rationale": "Two incompatible current conclusions are simultaneously retained in prose. Decision ambiguity and explanatory contradiction are directly supported."
+    },
+    {
+      "id": "4098dff0dea549cfa99b5b036af23b44",
+      "text_sha256": "82aaf4048611eb93eb810c18b3eca9324342025c288fe1481f760b3a5bd9f449",
+      "expected_decision": "not_ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "Current verdict: not_ready. Both checks are mandatory. Check A has failed; check B is unknown. A known failure is enough to reject readiness even while B is unknown.",
+      "review_rationale": "A current not_ready verdict is expressly based on a known mandatory failure. An additional unknown check is acknowledged without reversing that verdict."
+    },
+    {
+      "id": "af0a5d7128444e9280a1cb6e1f8ec0a0",
+      "text_sha256": "3cf4069747622108ec6249c8e116b35dee01048274cec5841c3023ccadc923b1",
+      "expected_decision": "ambiguous",
+      "expected_explanation_consistency": "no_explanation",
+      "decision_review": "disputable_under_embedded_rubric",
+      "consistency_review": "supported",
+      "overall_review": "potentially_disputable_gold",
+      "alternative_decisions": [
+        "ready"
+      ],
+      "alternative_consistency": [],
+      "supporting_quote": "The device should be ready.",
+      "review_rationale": "Ambiguous is a reasonable interpretation of the bare modal should, but the rubric says tentative modal wording may remain ambiguous rather than requiring that treatment. Reading this as an expected affirmative readiness conclusion makes ready defensible. No explanatory reason accompanies either reading."
+    },
+    {
+      "id": "a031f2ae69674b5193c92f6949817da7",
+      "text_sha256": "8cf499ec8f427e4f27675e8512889c38a4a19f47b70f328e01d89cc793945b87",
+      "expected_decision": "no_answer",
+      "expected_explanation_consistency": "no_explanation",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "Please resend the question.",
+      "review_rationale": "Requesting the question again communicates no readiness decision and supplies no explanation of a verdict. This is distinct from tentative readiness wording."
+    },
+    {
+      "id": "44d20fa3b9bf42b3baba9002e39f1bf7",
+      "text_sha256": "eecb9f98961764e3655f0b51e652c28295d2830e35c19060ff6be5d236df153e",
+      "expected_decision": "ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"ready\",\"explanation\":\"The latch reading is 9 units, above the required minimum of 5 units. This requirement passes, all other requirements pass, and the unit is ready.\"}",
+      "review_rationale": "The answer explicitly communicates ready and an internally coherent passing-requirement explanation. Its private fictional false measurement is outside this rubric."
+    },
+    {
+      "id": "987a814a45f24ce8ab07d9e78ff125a3",
+      "text_sha256": "0d5bd8fac87304eb65c759cf806dfb9cb04d20c66bb7f3ec7e5239dee88269ee",
+      "expected_decision": "undetermined",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "Not ready (undetermined): the prerequisite reading is missing, so readiness cannot be established. No requirement is known to have failed.",
+      "review_rationale": "The parenthetical undetermined and full explanation define practical withholding as inability to establish readiness and expressly exclude a known failure. The isolated not ready phrase does not establish an incompatible criterion verdict."
+    },
+    {
+      "id": "d56b2b97450640939eea189507f69a27",
+      "text_sha256": "359e0f113f45d76ffbdf882b62a1a520eb731114dd304a38b8c02f0d99b7dd16",
+      "expected_decision": "not_ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "Yesterday the verdict was ready. That earlier verdict is superseded: today the mandatory seal check has failed, and the current verdict is not_ready.",
+      "review_rationale": "The historical ready conclusion is expressly superseded. The current mandatory failure supports the current not_ready conclusion."
+    },
+    {
+      "id": "a9ac02cce4344667afa5adfdb36ce8ff",
+      "text_sha256": "e2a14159155792eedf7602c69aea26c943dc65fe858a1359c0c17b9285830c3b",
+      "expected_decision": "ambiguous",
+      "expected_explanation_consistency": "ambiguous",
+      "decision_review": "supported",
+      "consistency_review": "disputable_under_embedded_rubric",
+      "overall_review": "potentially_disputable_gold",
+      "alternative_decisions": [],
+      "alternative_consistency": [
+        "consistent"
+      ],
+      "supporting_quote": "Current status: possibly ready. The line \"approval withheld\" might mean a failed requirement or might mean readiness is unknown; I have not resolved which meaning applies.",
+      "review_rationale": "Unresolved failed-requirement versus unknown-readiness meanings support an ambiguous decision. There is explanatory content. Ambiguous consistency is supportable if the unresolved branch leaves its relation to possibly ready open; consistent is also defensible because the explanation describes and qualifies that uncertainty without asserting either incompatible branch as the actual conclusion. The rubric does not settle these competing applications."
+    },
+    {
+      "id": "19a346cef64d4ff0b0df66de226688b1",
+      "text_sha256": "d145bc07365a8fdcde6086f5885d602dcd18244a467d5fa88511e5b63883e59d",
+      "expected_decision": "undetermined",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"undetermined\",\"explanation\":\"The required calibration record is missing. I cannot establish readiness until it is available; I am not claiming that a requirement has failed.\"}",
+      "review_rationale": "The undetermined field and missing-record explanation agree internally. The private fictional record actually being present concerns factual correctness, not communicated decision or internal consistency."
+    },
+    {
+      "id": "5c95ac346bef4741a82e9fd990469cf0",
+      "text_sha256": "c595fcb77ad4554e20a65c4e7b430e64c23e303a7a43a9d5473b67d4267b6472",
+      "expected_decision": "undetermined",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"undetermined\",\"explanation\":\"A required current reading is missing. Readiness cannot be established.\"}",
+      "review_rationale": "The undetermined field and express inability to establish readiness from a missing current reading agree."
+    },
+    {
+      "id": "aa35c8180e124879ab462dfdd9e03e1d",
+      "text_sha256": "556e2c6ee77b470a39f32353034cd6ec8f4595506e38ca2d58e697817a7c9bd6",
+      "expected_decision": "ambiguous",
+      "expected_explanation_consistency": "contradictory",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"undetermined\",\"explanation\":\"The current verdict is not_ready: a mandatory requirement is known to fail. This is a failed requirement, not merely unknown readiness. Both this conclusion and the decision field remain asserted.\"}",
+      "review_rationale": "An undetermined field and explicit current failed-criterion not_ready explanation are both retained; the explanation excludes the unknown-only reading. Whole-answer ambiguity and contradiction are supported."
+    },
+    {
+      "id": "3b8c241efbb9431aa048d00925bcfebd",
+      "text_sha256": "1831d1e37e9807d32c6e3d260da10c9155930b2243bf572de9dcecb867550ef5",
+      "expected_decision": "ambiguous",
+      "expected_explanation_consistency": "contradictory",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"not_ready\",\"explanation\":\"The current verdict is ready because every requirement passes. The decision field and this explanation are both current; neither replaces the other.\"}",
+      "review_rationale": "The not_ready field and ready explanation are both expressly current and neither supersedes the other. They support whole-answer ambiguity and explanatory contradiction."
+    },
+    {
+      "id": "0d4ab7dfc2cb446698bf297c50fefe3d",
+      "text_sha256": "574ec666453e8db8f0844a5b5809420562e0de8c38cf560917c1119ecb7a0f03",
+      "expected_decision": "ready",
+      "expected_explanation_consistency": "consistent",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"ready\",\"explanation\":\"All required checks currently pass; the unit is ready.\"}",
+      "review_rationale": "The ready field and current passing-check explanation support the same current affirmative conclusion."
+    },
+    {
+      "id": "6935a273464240a8a6cec9b052bcfb50",
+      "text_sha256": "45a3bc640639576d79e8ddc0d1b54f46527abc6d316bf89e93c86ec96e1bfcf7",
+      "expected_decision": "ready",
+      "expected_explanation_consistency": "no_explanation",
+      "decision_review": "supported",
+      "consistency_review": "supported",
+      "overall_review": "supported",
+      "alternative_decisions": [],
+      "alternative_consistency": [],
+      "supporting_quote": "{\"decision\":\"ready\"}",
+      "review_rationale": "A bare ready decision field communicates an affirmative verdict but has no explanatory content."
+    }
+  ]
+}

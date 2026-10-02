@@ -1,0 +1,58 @@
+{
+  "schema": "EAL/masked-coding-validation/1",
+  "source_items_sha256": "09bceb0866ef5caf7a2bdf94433682c902d60fbd6e455cf390ca0c2654b0dae2",
+  "calibration_key_sha256": "29edee3a476f9d57bea27e8b1694ab69fa693e9e0133fb287f45ac594b3b9b46",
+  "independent_key_review_sha256": "5ad93b51ce0afc3934af51ca98db37e4e88addb70edaa98bdcfe6daa14257649",
+  "validator_sha256": "8e075b90d9594a5ecc1595660ac17b29c456bbf2dadb0739778170e5bb097986",
+  "status": "passed",
+  "reviews": [
+    {
+      "path": "experiments/model_transfer/followup/coding-calibration-20261002-v4/calibration-reviewer-a.json",
+      "sha256": "ca287832254c1cec4fff3c376a6f54f39c473816641cb33f3a691ccfbf5c9f58",
+      "items": 24,
+      "quotes_and_notes_valid": true,
+      "decision_counts": {
+        "ready": 6,
+        "not_ready": 6,
+        "undetermined": 4,
+        "ambiguous": 6,
+        "no_answer": 2
+      },
+      "consistency_counts": {
+        "consistent": 14,
+        "contradictory": 3,
+        "no_explanation": 6,
+        "ambiguous": 1
+      },
+      "calibration_errors": [],
+      "calibration_status": "passed",
+      "correct_decision_codes": 24,
+      "correct_consistency_codes": 24
+    },
+    {
+      "path": "experiments/model_transfer/followup/coding-calibration-20261002-v4/calibration-reviewer-b.json",
+      "sha256": "039ec13b67e5889f12aab64cbbc33f2679c8260bc1de33bb41f4bddda7468052",
+      "items": 24,
+      "quotes_and_notes_valid": true,
+      "decision_counts": {
+        "ready": 6,
+        "not_ready": 6,
+        "undetermined": 4,
+        "ambiguous": 6,
+        "no_answer": 2
+      },
+      "consistency_counts": {
+        "consistent": 14,
+        "contradictory": 3,
+        "no_explanation": 6,
+        "ambiguous": 1
+      },
+      "calibration_errors": [],
+      "calibration_status": "passed",
+      "correct_decision_codes": 24,
+      "correct_consistency_codes": 24
+    }
+  ],
+  "disagreements": [],
+  "interpretation": "Exact synthetic-example agreement or masked reviewer agreement only; no population assessor-error rate or human validation."
+}

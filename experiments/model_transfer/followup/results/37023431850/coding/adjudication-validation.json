@@ -1,0 +1,29 @@
+{
+  "schema": "EAL/masked-coding-validation/1",
+  "source_items_sha256": "5bc4ebd976d03acc75eeccddd49420045e7390c74be88740b729f82f14e85f2e",
+  "calibration_key_sha256": null,
+  "independent_key_review_sha256": null,
+  "validator_sha256": "8e075b90d9594a5ecc1595660ac17b29c456bbf2dadb0739778170e5bb097986",
+  "status": "passed",
+  "reviews": [
+    {
+      "path": "experiments/model_transfer/followup/results/37023431850/coding/participant-adjudication.json",
+      "sha256": "6d9a75159f96f5230525e016f976ed8a3db1d25e6ef2e2da748973b5d542ef9e",
+      "items": 2,
+      "quotes_and_notes_valid": true,
+      "decision_counts": {
+        "not_ready": 1,
+        "undetermined": 1
+      },
+      "consistency_counts": {
+        "consistent": 2
+      },
+      "calibration_errors": [],
+      "calibration_status": "not_applicable",
+      "correct_decision_codes": null,
+      "correct_consistency_codes": null
+    }
+  ],
+  "disagreements": [],
+  "interpretation": "Exact synthetic-example agreement or masked reviewer agreement only; no population assessor-error rate or human validation."
+}

@@ -1,0 +1,274 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration/2",
+  "rubric": "Code the decision explicitly communicated by this answer. Do not assess its factual correctness or infer a decision from measurements. Use ready for an affirmative readiness conclusion, not_ready for a negative readiness conclusion, undetermined for an explicit inability to establish readiness, no_answer for text that provides no task decision, and ambiguous for unresolved conflicting decisions. Distinguish historical or hypothetical statements from the current conclusion. Distinguish criterion failure from practical withholding because readiness is unknown: parentheses or a full explanation can clarify that meaning without the literal word correction. A lexical collision alone does not establish conflicting current verdicts; explicit incompatible criterion classifications can remain ambiguous. Tentative modal readiness wording may remain ambiguous. Supply an exact supporting quote from the answer and a brief note. Leave ambiguous answers unresolved; do not choose the most favourable reading.",
+  "consistency_rubric": "Also code explanation_consistency against the current communicated verdict and any JSON decision field: consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion; contradictory when it communicates an incompatible current verdict or reverses the JSON decision; ambiguous when consistency cannot be resolved, and no_explanation when no explanatory content is present. Read qualifications semantically: a phrase such as \"not ready (undetermined)\" may communicate inability to establish readiness, rather than a failed requirement. Do not impose a code from an isolated phrase. Do not infer task correctness from the wording. Preserve conflicting or ambiguous conclusions. Supply an exact consistency_quote and a brief consistency_note; an entire answer may be quoted when explaining absence.",
+  "operational_supplement": [
+    "Apply the unchanged base rubrics to the whole answer, with these prospective operational rules. A wholly historical, future-only, or counterfactual-only readiness statement with no present readiness verdict remains no_answer; its temporal scope must not be promoted to a current conclusion. An explicit statement that current readiness cannot be established is undetermined, unless the whole answer retains an incompatible current conclusion.",
+    "A bare may/might/should be ready statement that gives only a tentative expectation about PRESENT readiness, without an unqualified current verdict or context resolving it to another decision category, is ambiguous. A coherent reason or qualification for that same tentative present expectation does not by itself turn the prediction into an unqualified ready conclusion. In particular, do not infer undetermined merely because a possibility, condition, or prediction is tentative; undetermined requires a communicated inability to establish current readiness.",
+    "Code explanation_consistency separately. Decision ambiguity alone does not make the explanation ambiguous. An explanation coherently supporting or qualifying the same current or tentative present position is consistent if it asserts no incompatible current conclusion and reverses no canonical decision field. Alternative conditional outcomes are not simultaneous asserted current conclusions. An explanation communicating an incompatible current verdict, or reversing a retained JSON decision field, is contradictory.",
+    "Use ambiguous explanation_consistency only when the relationship between the explanatory content and the communicated verdict itself cannot be resolved. An unidentified referent or omitted connection can leave it unresolved whether the explanation supports/qualifies or conflicts with that verdict. This differs from a coherent explanation of the same tentative position. Use no_explanation when no explanatory content is present, including bare verdicts and bare scoped predictions. Explanatory content about an omitted, unidentified conclusion does not resolve consistency with a current verdict that has not been supplied.",
+    "Do not assess factual correctness, calculate a readiness decision from measurements, or substitute private fictional facts for the communicated answer. The canonical JSON endpoint remains a separate unchanged parse/enum endpoint. All requested quotes must be nonempty exact substrings of the supplied text; the entire answer may be quoted for absence."
+  ],
+  "rubric_sha256": "cdc2be4f1c5aa2c0c923c6cebd56425a2d5816bb5f6bfb66c130635a9a408c4b",
+  "supplement_sha256": "879514a317a44fdfc060582d2e862dbc10f68eb83443d61309d3ab4ba66675ad",
+  "instructions": "Code all 24 masked texts on both axes under the unchanged base rubrics and the unchanged V2 operational supplement. Fill every blank annotation field. Provide a nonempty exact quote and brief note for each axis. Do not resolve ambiguous answers by choosing a favorable reading. No task evidence, reference keys, private fictional facts, model/condition assignments, participant data, or sealed key is needed. Treat canonical parsing as a separate unchanged endpoint.",
+  "calibration_id": "coding-calibration-20261002-v3",
+  "created_at": "2026-10-02T16:09:44.217273+00:00",
+  "status": "fresh_public_exercise_frozen_pending_independent_key_review",
+  "items": [
+    {
+      "id": "4fd77aae88b8416e",
+      "text": "The Ilex carrier is ready now.",
+      "decision": "ready",
+      "quote": "The Ilex carrier is ready now.",
+      "note": "The answer explicitly affirms present readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "The Ilex carrier is ready now.",
+      "consistency_note": "The text supplies only a current verdict and no explanatory content."
+    },
+    {
+      "id": "95113e4ea05d4115",
+      "text": "The Tansy module is ready now. My reason is the verdict in an omitted note. That note either affirms readiness or denies readiness, and I have not identified which verdict it contains.",
+      "decision": "ready",
+      "quote": "The Tansy module is ready now.",
+      "note": "The only definite current readiness conclusion is affirmative. The omitted note is not identified as actually containing an opposing verdict.",
+      "explanation_consistency": "ambiguous",
+      "consistency_quote": "My reason is the verdict in an omitted note. That note either affirms readiness or denies readiness, and I have not identified which verdict it contains.",
+      "consistency_note": "The unidentified verdict in the explanatory note leaves unresolved whether the reason supports or contradicts the stated ready conclusion."
+    },
+    {
+      "id": "4a2e9a661ec5410a",
+      "text": "The Cobalt mast is not ready now. Its required coupling check has failed, so the current readiness requirement is not satisfied.",
+      "decision": "not_ready",
+      "quote": "The Cobalt mast is not ready now.",
+      "note": "The answer expressly communicates a current negative readiness verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Its required coupling check has failed, so the current readiness requirement is not satisfied.",
+      "consistency_note": "The explanation asserts failure of a required current check and supports the negative verdict."
+    },
+    {
+      "id": "ab1b2f131a5c492a",
+      "text": "The Juniper platform may be ready now.",
+      "decision": "ambiguous",
+      "quote": "The Juniper platform may be ready now.",
+      "note": "This is a tentative present expectation with no unqualified readiness verdict and no explicit inability to establish readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "The Juniper platform may be ready now.",
+      "consistency_note": "The answer provides only the tentative current prediction, without a reason or explanatory qualification."
+    },
+    {
+      "id": "95d43d1404d843c1",
+      "text": "The Aster carrier might be ready at present.",
+      "decision": "ambiguous",
+      "quote": "The Aster carrier might be ready at present.",
+      "note": "The wording gives a tentative present possibility without resolving current readiness to an unqualified verdict.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "The Aster carrier might be ready at present.",
+      "consistency_note": "Only a tentative present prediction is supplied; no explanatory content is present."
+    },
+    {
+      "id": "9f90939fc79e4f48",
+      "text": "Yesterday the Plover cartridge was undetermined because its required alignment result was missing. That assessment is superseded. The cartridge is not ready now because the current alignment check has failed; this is my only current conclusion.",
+      "decision": "not_ready",
+      "quote": "The cartridge is not ready now because the current alignment check has failed; this is my only current conclusion.",
+      "note": "The current verdict rejects readiness and expressly supersedes yesterday's undetermined assessment.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "That assessment is superseded. The cartridge is not ready now because the current alignment check has failed; this is my only current conclusion.",
+      "consistency_note": "The failed present check supports non-readiness, and the earlier uncertainty is expressly excluded from current applicability."
+    },
+    {
+      "id": "8d16d4a0e9bb4741",
+      "text": "The Vireo hatch is ready now because its required interlock check has passed. That passed check satisfies the present readiness requirement.",
+      "decision": "ready",
+      "quote": "The Vireo hatch is ready now because its required interlock check has passed.",
+      "note": "The answer explicitly affirms current readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "That passed check satisfies the present readiness requirement.",
+      "consistency_note": "The explanation states satisfaction of the present requirement and supports the affirmative verdict."
+    },
+    {
+      "id": "9c35865bc3514558",
+      "text": "The Fenwick vessel is not ready (undetermined) for present use: the required integrity result is unknown. I am withholding use solely because I cannot establish current readiness; this wording does not assert a failed criterion.",
+      "decision": "undetermined",
+      "quote": "I am withholding use solely because I cannot establish current readiness; this wording does not assert a failed criterion.",
+      "note": "The full answer clarifies that the withholding wording communicates inability to establish readiness, not known criterion failure.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The Fenwick vessel is not ready (undetermined) for present use: the required integrity result is unknown. I am withholding use solely because I cannot establish current readiness; this wording does not assert a failed criterion.",
+      "consistency_note": "The unknown required result and explicit qualification coherently support the clarified undetermined verdict."
+    },
+    {
+      "id": "ca9aae0d13304555",
+      "text": "The Sorrel beacon will be ready next season.",
+      "decision": "no_answer",
+      "quote": "The Sorrel beacon will be ready next season.",
+      "note": "The readiness statement is wholly future-scoped and supplies no present readiness verdict.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "The Sorrel beacon will be ready next season.",
+      "consistency_note": "This is a bare future readiness prediction without explanatory content."
+    },
+    {
+      "id": "0a3b222e46ea4f88",
+      "text": "For the Linden rig, the current any_of readiness rule has a true docking requirement and an unknown beacon requirement. The docking requirement is satisfied, so my current verdict is ready even though the beacon requirement is unknown.",
+      "decision": "ready",
+      "quote": "The docking requirement is satisfied, so my current verdict is ready even though the beacon requirement is unknown.",
+      "note": "The answer expressly affirms current readiness; the code follows that communicated conclusion rather than independently evaluating the rule.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "For the Linden rig, the current any_of readiness rule has a true docking requirement and an unknown beacon requirement. The docking requirement is satisfied, so my current verdict is ready even though the beacon requirement is unknown.",
+      "consistency_note": "The explanation identifies a satisfied branch under its stated any_of rule and maintains the ready conclusion while acknowledging an unknown branch."
+    },
+    {
+      "id": "49927ad9711149ce",
+      "text": "The Orin cradle is not ready now.",
+      "decision": "not_ready",
+      "quote": "The Orin cradle is not ready now.",
+      "note": "The answer directly rejects present readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "The Orin cradle is not ready now.",
+      "consistency_note": "The answer contains only the current negative verdict, without explanatory content."
+    },
+    {
+      "id": "88c14ba080ff4c7c",
+      "text": "The Mica platform is not ready now because its required restraint check has failed. This is a failed readiness criterion, and the current verdict is not ready.",
+      "decision": "not_ready",
+      "quote": "The Mica platform is not ready now because its required restraint check has failed.",
+      "note": "The answer explicitly communicates a current negative readiness conclusion based on a stated failed criterion.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "This is a failed readiness criterion, and the current verdict is not ready.",
+      "consistency_note": "The explanation expressly identifies criterion failure and repeats the same negative current verdict."
+    },
+    {
+      "id": "9db61215bb134f5d",
+      "text": "Catalog entry: the Marlow kiosk has a teal enclosure and the name Mosswing.",
+      "decision": "no_answer",
+      "quote": "Catalog entry: the Marlow kiosk has a teal enclosure and the name Mosswing.",
+      "note": "The catalog description communicates no readiness decision.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Catalog entry: the Marlow kiosk has a teal enclosure and the name Mosswing.",
+      "consistency_note": "The text supplies descriptive catalog information and no explanation of a readiness verdict."
+    },
+    {
+      "id": "fe7b6b8ebc9d4069",
+      "text": "I cannot establish the present readiness of the Yarrow capsule.",
+      "decision": "undetermined",
+      "quote": "I cannot establish the present readiness of the Yarrow capsule.",
+      "note": "The answer explicitly communicates inability to establish present readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "I cannot establish the present readiness of the Yarrow capsule.",
+      "consistency_note": "Only the inability-to-establish verdict is given; no reason or explanatory qualification is supplied."
+    },
+    {
+      "id": "c056d5070b364da8",
+      "text": "The Neris sampler is ready now. Its required tamper seal has passed, so the current readiness requirement is satisfied.",
+      "decision": "ready",
+      "quote": "The Neris sampler is ready now.",
+      "note": "The answer explicitly affirms current readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Its required tamper seal has passed, so the current readiness requirement is satisfied.",
+      "consistency_note": "The explanation states that the required check passes and the present requirement is satisfied, supporting ready."
+    },
+    {
+      "id": "42d4eb8faa094415",
+      "text": "For the Peregrine rig, the current all_of readiness rule has a false seal requirement and an unknown power requirement. The seal requirement has failed, so my current verdict is not ready even though the power requirement is unknown.",
+      "decision": "not_ready",
+      "quote": "The seal requirement has failed, so my current verdict is not ready even though the power requirement is unknown.",
+      "note": "The answer expressly rejects current readiness; the code follows the communicated verdict rather than inferring one independently from rule inputs.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "For the Peregrine rig, the current all_of readiness rule has a false seal requirement and an unknown power requirement. The seal requirement has failed, so my current verdict is not ready even though the power requirement is unknown.",
+      "consistency_note": "The explanation identifies a failed branch under its stated all_of rule and retains the negative conclusion despite another unknown branch."
+    },
+    {
+      "id": "18582b89c87a4a40",
+      "text": "The Verbena frame should be ready now.",
+      "decision": "ambiguous",
+      "quote": "The Verbena frame should be ready now.",
+      "note": "The answer gives only a tentative expectation about present readiness, without an unqualified conclusion or an explicit inability-to-establish conclusion.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "The Verbena frame should be ready now.",
+      "consistency_note": "The tentative present verdict is bare and no explanatory content is provided."
+    },
+    {
+      "id": "f90ddbea53d74412",
+      "text": "The old log called the Osier chamber not ready. That historical verdict is superseded. The chamber is ready now because its required seal check has passed; this is my only current conclusion.",
+      "decision": "ready",
+      "quote": "The chamber is ready now because its required seal check has passed; this is my only current conclusion.",
+      "note": "The answer affirms current readiness and expressly supersedes the historical negative verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "That historical verdict is superseded. The chamber is ready now because its required seal check has passed; this is my only current conclusion.",
+      "consistency_note": "The passed current check supports ready, and the earlier negative verdict is not retained as a current conclusion."
+    },
+    {
+      "id": "ac2e04f6553e448f",
+      "text": "If a future replacement passed the required valve check, the Bracken unit would be ready then. At present its readiness is undetermined because the current valve result is unknown. The future scenario supplies no present verdict; my present conclusion is inability to establish readiness.",
+      "decision": "undetermined",
+      "quote": "At present its readiness is undetermined because the current valve result is unknown.",
+      "note": "The answer explicitly states present inability to establish readiness; possible readiness after a future replacement is separately scoped.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The future scenario supplies no present verdict; my present conclusion is inability to establish readiness.",
+      "consistency_note": "The future scenario is expressly excluded from the present verdict, while the unknown current result supports undetermined."
+    },
+    {
+      "id": "70dada6734b94251",
+      "text": "The Selka relay's readiness is undetermined now. Its required inspection report is unavailable to me, so I cannot establish present readiness.",
+      "decision": "undetermined",
+      "quote": "The Selka relay's readiness is undetermined now.",
+      "note": "The answer explicitly communicates undetermined present readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Its required inspection report is unavailable to me, so I cannot establish present readiness.",
+      "consistency_note": "The unavailable required report explains the inability to establish readiness and supports the stated undetermined verdict."
+    },
+    {
+      "id": "6a3e4122c0cc4495",
+      "text": "{\"decision\":\"not_ready\"}\nMy current prose verdict for the Rowan enclosure is undetermined: readiness cannot be established because the required latch state is unknown. The JSON verdict and this prose verdict are both retained as current answers; neither supersedes the other.",
+      "decision": "ambiguous",
+      "quote": "{\"decision\":\"not_ready\"}\nMy current prose verdict for the Rowan enclosure is undetermined: readiness cannot be established because the required latch state is unknown. The JSON verdict and this prose verdict are both retained as current answers; neither supersedes the other.",
+      "note": "The negative JSON verdict and the explicit undetermined prose verdict are both retained as current answers, leaving an unresolved decision conflict.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"decision\":\"not_ready\"}\nMy current prose verdict for the Rowan enclosure is undetermined: readiness cannot be established because the required latch state is unknown. The JSON verdict and this prose verdict are both retained as current answers; neither supersedes the other.",
+      "consistency_note": "The explanation communicates unknown readiness incompatible with the retained negative decision field; neither current verdict supersedes the other."
+    },
+    {
+      "id": "e6bce92cefe34cf9",
+      "text": "I assert both of these present conclusions for the Hazel dock: it is ready now, and it is not ready now because its required interlock check has failed. I retain both conclusions without selecting one.",
+      "decision": "ambiguous",
+      "quote": "I assert both of these present conclusions for the Hazel dock: it is ready now, and it is not ready now because its required interlock check has failed. I retain both conclusions without selecting one.",
+      "note": "The answer explicitly retains affirmative and negative present readiness conclusions without resolving them.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "I assert both of these present conclusions for the Hazel dock: it is ready now, and it is not ready now because its required interlock check has failed. I retain both conclusions without selecting one.",
+      "consistency_note": "The failed-check explanation accompanies a retained negative current conclusion that directly conflicts with the retained affirmative conclusion."
+    },
+    {
+      "id": "d5931246e199430f",
+      "text": "Had the Elm capsule failed its required check last week, it would have been not ready then.",
+      "decision": "no_answer",
+      "quote": "Had the Elm capsule failed its required check last week, it would have been not ready then.",
+      "note": "The entire statement is a past counterfactual and supplies no present readiness decision.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Had the Elm capsule failed its required check last week, it would have been not ready then.",
+      "consistency_note": "Only a scoped counterfactual readiness prediction is supplied, rather than explanatory content about a present verdict."
+    },
+    {
+      "id": "752084e241ac4773",
+      "text": "{\"decision\":\"ready\"}\nMy current prose verdict for the Kestrel frame is not ready because its required latch check has failed. The JSON verdict and this prose verdict are both retained as current answers; neither supersedes the other.",
+      "decision": "ambiguous",
+      "quote": "{\"decision\":\"ready\"}\nMy current prose verdict for the Kestrel frame is not ready because its required latch check has failed. The JSON verdict and this prose verdict are both retained as current answers; neither supersedes the other.",
+      "note": "The affirmative JSON verdict and negative current prose verdict are both expressly retained, so the decision conflict remains unresolved.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"decision\":\"ready\"}\nMy current prose verdict for the Kestrel frame is not ready because its required latch check has failed. The JSON verdict and this prose verdict are both retained as current answers; neither supersedes the other.",
+      "consistency_note": "The failed-check explanation asserts a current negative verdict incompatible with the retained ready field."
+    }
+  ],
+  "annotator": "stablemasked-coder-a",
+  "assessor": {
+    "kind": "ai",
+    "model": "OpenAI Codex inherited session model; exact snapshot not exposed",
+    "method": "semantic-human-readlike-whole-answer-actual-AI/v3",
+    "protocol_code": "V3",
+    "source_items_sha256": "5573e8b7e99a39811de4686dad9caad40ef1beee59d1659bcb0e12152f48bb30",
+    "started_at_utc": "2026-10-02T16:10:42.477Z",
+    "completed_at_utc": "2026-10-02T16:12:42.039927+00:00"
+  },
+  "protocol_code": "V3",
+  "source_items_sha256": "5573e8b7e99a39811de4686dad9caad40ef1beee59d1659bcb0e12152f48bb30",
+  "started_at_utc": "2026-10-02T16:10:42.477Z",
+  "completed_at_utc": "2026-10-02T16:12:42.039927+00:00"
+}

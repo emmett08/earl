@@ -1,0 +1,274 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration/2",
+  "calibration_id": "coding-calibration-20261002-v2",
+  "created_at": "2026-10-02T16:00:46.972018+00:00",
+  "status": "fresh_public_exercise_ready_for_independent_key_review",
+  "rubric": "Code the decision explicitly communicated by this answer. Do not assess its factual correctness or infer a decision from measurements. Use ready for an affirmative readiness conclusion, not_ready for a negative readiness conclusion, undetermined for an explicit inability to establish readiness, no_answer for text that provides no task decision, and ambiguous for unresolved conflicting decisions. Distinguish historical or hypothetical statements from the current conclusion. Distinguish criterion failure from practical withholding because readiness is unknown: parentheses or a full explanation can clarify that meaning without the literal word correction. A lexical collision alone does not establish conflicting current verdicts; explicit incompatible criterion classifications can remain ambiguous. Tentative modal readiness wording may remain ambiguous. Supply an exact supporting quote from the answer and a brief note. Leave ambiguous answers unresolved; do not choose the most favourable reading.",
+  "consistency_rubric": "Also code explanation_consistency against the current communicated verdict and any JSON decision field: consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion; contradictory when it communicates an incompatible current verdict or reverses the JSON decision; ambiguous when consistency cannot be resolved, and no_explanation when no explanatory content is present. Read qualifications semantically: a phrase such as \"not ready (undetermined)\" may communicate inability to establish readiness, rather than a failed requirement. Do not impose a code from an isolated phrase. Do not infer task correctness from the wording. Preserve conflicting or ambiguous conclusions. Supply an exact consistency_quote and a brief consistency_note; an entire answer may be quoted when explaining absence.",
+  "operational_supplement": [
+    "Apply the unchanged base rubrics to the whole answer, with these prospective operational rules. A wholly historical, future-only, or counterfactual-only readiness statement with no present readiness verdict remains no_answer; its temporal scope must not be promoted to a current conclusion. An explicit statement that current readiness cannot be established is undetermined, unless the whole answer retains an incompatible current conclusion.",
+    "A bare may/might/should be ready statement that gives only a tentative expectation about PRESENT readiness, without an unqualified current verdict or context resolving it to another decision category, is ambiguous. A coherent reason or qualification for that same tentative present expectation does not by itself turn the prediction into an unqualified ready conclusion. In particular, do not infer undetermined merely because a possibility, condition, or prediction is tentative; undetermined requires a communicated inability to establish current readiness.",
+    "Code explanation_consistency separately. Decision ambiguity alone does not make the explanation ambiguous. An explanation coherently supporting or qualifying the same current or tentative present position is consistent if it asserts no incompatible current conclusion and reverses no canonical decision field. Alternative conditional outcomes are not simultaneous asserted current conclusions. An explanation communicating an incompatible current verdict, or reversing a retained JSON decision field, is contradictory.",
+    "Use ambiguous explanation_consistency only when the relationship between the explanatory content and the communicated verdict itself cannot be resolved. An unidentified referent or omitted connection can leave it unresolved whether the explanation supports/qualifies or conflicts with that verdict. This differs from a coherent explanation of the same tentative position. Use no_explanation when no explanatory content is present, including bare verdicts and bare scoped predictions. Explanatory content about an omitted, unidentified conclusion does not resolve consistency with a current verdict that has not been supplied.",
+    "Do not assess factual correctness, calculate a readiness decision from measurements, or substitute private fictional facts for the communicated answer. The canonical JSON endpoint remains a separate unchanged parse/enum endpoint. All requested quotes must be nonempty exact substrings of the supplied text; the entire answer may be quoted for absence."
+  ],
+  "rubric_sha256": "cdc2be4f1c5aa2c0c923c6cebd56425a2d5816bb5f6bfb66c130635a9a408c4b",
+  "supplement_sha256": "879514a317a44fdfc060582d2e862dbc10f68eb83443d61309d3ab4ba66675ad",
+  "instructions": "Code all 24 masked texts on both axes under the base rubrics plus the prospective supplement. Fill every blank annotation field. Provide a nonempty exact quote and brief note for each axis. Do not resolve ambiguous answers by choosing a favorable reading. No task evidence, reference keys, private fictional facts, model/condition assignments, participant data, or sealed key is needed. Treat canonical parsing as a separate unchanged endpoint.",
+  "items": [
+    {
+      "id": "b1ce18f599524ea593213f064857da6b",
+      "text": "{\"decision\":\"undetermined\",\"explanation\":\"The assay bench was ready at its earlier inspection, but that inspection has expired. A required present inspection is absent, so current readiness cannot be established.\"}",
+      "decision": "undetermined",
+      "quote": "A required present inspection is absent, so current readiness cannot be established.",
+      "note": "The current conclusion expressly states inability to establish readiness; earlier readiness belongs to an expired inspection.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The assay bench was ready at its earlier inspection, but that inspection has expired. A required present inspection is absent, so current readiness cannot be established.",
+      "consistency_note": "The explanation distinguishes the expired historical finding from present missing evidence and supports the undetermined field."
+    },
+    {
+      "id": "3fdcf2f492774ceca9838b3b1e8723e5",
+      "text": "The packing conveyor failed its inspection last month. That historical conclusion has been superseded: the replacement guard now passes every required check, and the conveyor is ready today.",
+      "decision": "ready",
+      "quote": "the replacement guard now passes every required check, and the conveyor is ready today.",
+      "note": "The answer explicitly affirms readiness today and supersedes the historical failure.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "That historical conclusion has been superseded: the replacement guard now passes every required check, and the conveyor is ready today.",
+      "consistency_note": "The present passing checks support the affirmative verdict; the past failure is expressly superseded."
+    },
+    {
+      "id": "d73ba2f4a4e24487826df80329020855",
+      "text": "The ferry may be ready now.",
+      "decision": "ambiguous",
+      "quote": "The ferry may be ready now.",
+      "note": "This is a bare tentative expectation about present readiness, without an unqualified verdict or explicit inability to establish readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "The ferry may be ready now.",
+      "consistency_note": "Only a tentative present prediction is supplied, with no reason or explanatory qualification."
+    },
+    {
+      "id": "dbd72bc009ae4ced888f2db611efa96b",
+      "text": "{\"decision\":\"ready\",\"explanation\":\"The hover-platform is not ready at present because its required stabilizer check failed. This current negative conclusion and the ready field are both retained.\"}",
+      "decision": "ambiguous",
+      "quote": "{\"decision\":\"ready\",\"explanation\":\"The hover-platform is not ready at present because its required stabilizer check failed. This current negative conclusion and the ready field are both retained.\"}",
+      "note": "The affirmative JSON field and the explicit present negative conclusion are both retained, leaving incompatible current decisions unresolved.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"decision\":\"ready\",\"explanation\":\"The hover-platform is not ready at present because its required stabilizer check failed. This current negative conclusion and the ready field are both retained.\"}",
+      "consistency_note": "The explanation asserts a negative current verdict incompatible with the retained ready field."
+    },
+    {
+      "id": "152d9697bde347cbb33308fedaffd04b",
+      "text": "The tram is not ready now. Explanation: \"approved\" was recorded, but this answer does not identify whether that approval is the present readiness verdict or a travel authorization unrelated to readiness.",
+      "decision": "not_ready",
+      "quote": "The tram is not ready now.",
+      "note": "A negative current verdict is explicitly communicated. The unidentified approval does not itself assert a definite competing readiness verdict.",
+      "explanation_consistency": "ambiguous",
+      "consistency_quote": "Explanation: \"approved\" was recorded, but this answer does not identify whether that approval is the present readiness verdict or a travel authorization unrelated to readiness.",
+      "consistency_note": "The unidentified role of the approval leaves unresolved whether it conflicts with the negative readiness verdict or concerns an unrelated authorization."
+    },
+    {
+      "id": "25f7398776a449148fac0290ca0619d0",
+      "text": "The resin printer is not ready now: its mandatory access interlock has failed. The color-display reading is unknown, but that uncertainty does not withdraw the interlock failure or this current negative verdict.",
+      "decision": "not_ready",
+      "quote": "The resin printer is not ready now: its mandatory access interlock has failed.",
+      "note": "The answer explicitly communicates non-readiness from a stated mandatory failure and retains that conclusion despite another unknown reading.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The color-display reading is unknown, but that uncertainty does not withdraw the interlock failure or this current negative verdict.",
+      "consistency_note": "The explanation expressly maintains the failure and negative verdict; the unknown reading introduces no incompatible current conclusion."
+    },
+    {
+      "id": "47a57437afa546f98c39c3a7479e0f2a",
+      "text": "My current conclusion for the survey sled is ready: all mandatory checks pass. My current conclusion for the same sled is also not_ready: a mandatory check fails. Neither conclusion is withdrawn or historical.",
+      "decision": "ambiguous",
+      "quote": "My current conclusion for the survey sled is ready: all mandatory checks pass. My current conclusion for the same sled is also not_ready: a mandatory check fails. Neither conclusion is withdrawn or historical.",
+      "note": "The same device receives two incompatible current verdicts, both expressly retained.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "My current conclusion for the survey sled is ready: all mandatory checks pass. My current conclusion for the same sled is also not_ready: a mandatory check fails. Neither conclusion is withdrawn or historical.",
+      "consistency_note": "The retained affirmative and negative conclusions, with incompatible explanatory criterion classifications, contradict each other."
+    },
+    {
+      "id": "6b833fe0830a4eeb9b79810925f9211c",
+      "text": "For the present decision, readiness is conditional: if the attestation is authentic, the storage cabinet is ready; if it is forged, the cabinet is not ready. These are alternative conditional outcomes, and neither branch is selected here.",
+      "decision": "ambiguous",
+      "quote": "For the present decision, readiness is conditional: if the attestation is authentic, the storage cabinet is ready; if it is forged, the cabinet is not ready. These are alternative conditional outcomes, and neither branch is selected here.",
+      "note": "The answer offers alternative conditions for present readiness without selecting a current outcome or expressly saying current readiness cannot be established.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "These are alternative conditional outcomes, and neither branch is selected here.",
+      "consistency_note": "The qualification coherently explains the conditional present position; the branches are alternatives rather than simultaneous asserted current conclusions."
+    },
+    {
+      "id": "ab4d6e22e6b74059a76fa6b94143384e",
+      "text": "The parcel kite should be ready now because its routine inspection usually finishes before this hour. This is an expectation about the present, with no unqualified readiness verdict.",
+      "decision": "ambiguous",
+      "quote": "The parcel kite should be ready now because its routine inspection usually finishes before this hour. This is an expectation about the present, with no unqualified readiness verdict.",
+      "note": "The answer explicitly remains a tentative expectation about present readiness; its reason does not convert that expectation into an unqualified verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "because its routine inspection usually finishes before this hour. This is an expectation about the present, with no unqualified readiness verdict.",
+      "consistency_note": "The routine-timing reason and expectation qualification support the same tentative present position without asserting an incompatible verdict."
+    },
+    {
+      "id": "3f1a34e718e04f589329b5b63b4387b6",
+      "text": "The laboratory cart might be ready tomorrow. Current readiness cannot be established because the required endurance result has not been supplied.",
+      "decision": "undetermined",
+      "quote": "Current readiness cannot be established because the required endurance result has not been supplied.",
+      "note": "The answer explicitly states inability to establish current readiness. The possible readiness tomorrow is scoped to the future.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The laboratory cart might be ready tomorrow. Current readiness cannot be established because the required endurance result has not been supplied.",
+      "consistency_note": "The missing result explains the present undetermined conclusion; the future prediction does not conflict with it."
+    },
+    {
+      "id": "dbf2782f83954459a6739755b9f33692",
+      "text": "Blue folder received.",
+      "decision": "no_answer",
+      "quote": "Blue folder received.",
+      "note": "The receipt statement communicates no readiness decision.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Blue folder received.",
+      "consistency_note": "No explanatory content concerning a readiness conclusion is supplied."
+    },
+    {
+      "id": "688cb2c38dd64d69bf45368f0f2736ca",
+      "text": "Cold-store dispatch is not ready to authorize (undetermined). Current readiness cannot be established because the required permit record is missing; this is practical withholding, not a claim that a readiness requirement failed.",
+      "decision": "undetermined",
+      "quote": "Current readiness cannot be established because the required permit record is missing; this is practical withholding, not a claim that a readiness requirement failed.",
+      "note": "The answer expressly clarifies that authorization is withheld because readiness is unknown, and excludes a failed-requirement conclusion.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Cold-store dispatch is not ready to authorize (undetermined). Current readiness cannot be established because the required permit record is missing; this is practical withholding, not a claim that a readiness requirement failed.",
+      "consistency_note": "The full explanation clarifies the withholding phrase and supports the undetermined present verdict without a separate negative criterion verdict."
+    },
+    {
+      "id": "183afca412ce47aeb37ffd81b99eb24c",
+      "text": "The microscope is ready now. Explanation: the recorded failure concerns either a mandatory readiness check or a check unrelated to readiness; this answer does not identify which check failed.",
+      "decision": "ready",
+      "quote": "The microscope is ready now.",
+      "note": "The answer explicitly affirms current readiness. The explanation does not identify a definite incompatible current readiness conclusion.",
+      "explanation_consistency": "ambiguous",
+      "consistency_quote": "Explanation: the recorded failure concerns either a mandatory readiness check or a check unrelated to readiness; this answer does not identify which check failed.",
+      "consistency_note": "The unidentified failed check leaves unresolved whether the explanatory failure conflicts with the ready verdict or is unrelated to readiness."
+    },
+    {
+      "id": "e3cd344cb1e64d8daa3ad62d01be1e18",
+      "text": "{\"decision\":null,\"explanation\":\"\"}",
+      "decision": "no_answer",
+      "quote": "{\"decision\":null,\"explanation\":\"\"}",
+      "note": "The null decision and empty explanation communicate no task decision; canonical parsing is a separate endpoint.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "{\"decision\":null,\"explanation\":\"\"}",
+      "consistency_note": "The explanation is empty and no other explanatory content is present."
+    },
+    {
+      "id": "f6d6b9bc621f4b199ee1a5e2aa7e3a3a",
+      "text": "The freight cradle would be ready if its broken brake were replaced. The brake is still broken and fails a mandatory requirement, so my present decision is not_ready.",
+      "decision": "not_ready",
+      "quote": "The brake is still broken and fails a mandatory requirement, so my present decision is not_ready.",
+      "note": "The present decision expressly rejects readiness. Affirmative readiness is confined to an unrealised repair condition.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The freight cradle would be ready if its broken brake were replaced. The brake is still broken and fails a mandatory requirement, so my present decision is not_ready.",
+      "consistency_note": "The unrepaired mandatory failure supports the current negative verdict; the conditional repaired state is not a conflicting current conclusion."
+    },
+    {
+      "id": "6549d599556f464a96cc8a92eae3b346",
+      "text": "In an imagined inspection next year, the glider would be ready.",
+      "decision": "no_answer",
+      "quote": "In an imagined inspection next year, the glider would be ready.",
+      "note": "The only readiness statement concerns an imagined future inspection and supplies no present readiness verdict.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "In an imagined inspection next year, the glider would be ready.",
+      "consistency_note": "This is a bare scoped prediction without explanatory content."
+    },
+    {
+      "id": "8b8860af4ecb4ca3996f361bdec7b775",
+      "text": "Current readiness of the telescope cannot be established.",
+      "decision": "undetermined",
+      "quote": "Current readiness of the telescope cannot be established.",
+      "note": "The answer expressly communicates inability to establish current readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Current readiness of the telescope cannot be established.",
+      "consistency_note": "Only the current inability-to-establish verdict is supplied, without a reason or explanatory qualification."
+    },
+    {
+      "id": "30b377dce0d34149b48e33365f4f88e8",
+      "text": "Ready.",
+      "decision": "ready",
+      "quote": "Ready.",
+      "note": "The bare verdict directly affirms readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Ready.",
+      "consistency_note": "The answer contains a verdict only and no explanatory content."
+    },
+    {
+      "id": "8a37c3e7cdd943c389b967e6e5663a3a",
+      "text": "The relay may be ready now. Explanation: \"that assessment is confirmed\" is recorded, but this answer does not identify whether \"that assessment\" names this tentative prediction or an opposite current assessment.",
+      "decision": "ambiguous",
+      "quote": "The relay may be ready now.",
+      "note": "The communicated present position is tentative; the unidentified confirmed assessment does not resolve it to a definite readiness category.",
+      "explanation_consistency": "ambiguous",
+      "consistency_quote": "Explanation: \"that assessment is confirmed\" is recorded, but this answer does not identify whether \"that assessment\" names this tentative prediction or an opposite current assessment.",
+      "consistency_note": "The referent of the confirmed assessment is unidentified, leaving unresolved whether the explanation supports the tentative position or conflicts with it."
+    },
+    {
+      "id": "2c192cfa4e994b89b92b6e1be9fa1119",
+      "text": "{\"decision\":\"not_ready\",\"explanation\":\"Current readiness of the acoustic rig cannot be established because its certification is unavailable. No criterion is known to fail. The not_ready enum and this undetermined conclusion both remain current.\"}",
+      "decision": "ambiguous",
+      "quote": "{\"decision\":\"not_ready\",\"explanation\":\"Current readiness of the acoustic rig cannot be established because its certification is unavailable. No criterion is known to fail. The not_ready enum and this undetermined conclusion both remain current.\"}",
+      "note": "The negative enum and the explicit undetermined current conclusion are both retained, with the explanation excluding known criterion failure, so no single current decision is resolved.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"decision\":\"not_ready\",\"explanation\":\"Current readiness of the acoustic rig cannot be established because its certification is unavailable. No criterion is known to fail. The not_ready enum and this undetermined conclusion both remain current.\"}",
+      "consistency_note": "The explanation communicates unknown current readiness and explicitly retains that conclusion alongside the incompatible negative decision field."
+    },
+    {
+      "id": "acb9fb52f99f49a2b0d3923a4d62cf36",
+      "text": "A readiness conclusion has been omitted. Explanation: the result justified that omitted conclusion, but this text identifies neither the conclusion nor the result.",
+      "decision": "no_answer",
+      "quote": "A readiness conclusion has been omitted.",
+      "note": "The text says the conclusion is omitted and communicates no identifiable current readiness decision.",
+      "explanation_consistency": "ambiguous",
+      "consistency_quote": "Explanation: the result justified that omitted conclusion, but this text identifies neither the conclusion nor the result.",
+      "consistency_note": "Explanatory content exists, but neither its result nor its target conclusion is identified, so its relationship to a current verdict cannot be resolved."
+    },
+    {
+      "id": "03098143ced44fa58b748f89e95447c6",
+      "text": "{\"decision\":\"not_ready\"}",
+      "decision": "not_ready",
+      "quote": "{\"decision\":\"not_ready\"}",
+      "note": "The JSON field directly communicates a negative readiness verdict.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "{\"decision\":\"not_ready\"}",
+      "consistency_note": "The answer provides only the decision field and no explanatory content."
+    },
+    {
+      "id": "8fc27528a26f40b0997f75973a3c455c",
+      "text": "The beacon mast is ready now because every required check currently passes. If its battery were removed next week, it would cease to be ready; that imagined future change does not describe the present mast.",
+      "decision": "ready",
+      "quote": "The beacon mast is ready now because every required check currently passes.",
+      "note": "The answer explicitly affirms present readiness; the imagined battery removal is confined to a future counterfactual.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "If its battery were removed next week, it would cease to be ready; that imagined future change does not describe the present mast.",
+      "consistency_note": "The current passing checks support ready, and the future qualification explicitly says it does not describe the present state."
+    },
+    {
+      "id": "090b13aa0b4e425abda13d95e8373f2c",
+      "text": "{\"decision\":\"ready\",\"explanation\":\"The drilling cassette has a valid calibration certificate, all its other required checks pass, and the cassette is ready now.\"}",
+      "decision": "ready",
+      "quote": "The drilling cassette has a valid calibration certificate, all its other required checks pass, and the cassette is ready now.",
+      "note": "The field and the explanation expressly affirm current readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The drilling cassette has a valid calibration certificate, all its other required checks pass, and the cassette is ready now.",
+      "consistency_note": "The stated certificate and passing required checks support the same affirmative current verdict as the field."
+    }
+  ],
+  "annotator": "stablemasked-coder-a",
+  "assessor": {
+    "kind": "ai",
+    "model": "OpenAI Codex inherited session model; exact snapshot not exposed",
+    "method": "semantic-human-readlike-whole-answer-actual-AI/v2",
+    "protocol_code": "V2",
+    "source_items_sha256": "07ee2a75e760ff19c22ea0cdf1129d887767e68cb135452d0c36f2ec78decfce",
+    "started_at_utc": "2026-10-02T16:01:23.624Z",
+    "completed_at_utc": "2026-10-02T16:03:34.724549+00:00"
+  },
+  "protocol_code": "V2",
+  "source_items_sha256": "07ee2a75e760ff19c22ea0cdf1129d887767e68cb135452d0c36f2ec78decfce",
+  "started_at_utc": "2026-10-02T16:01:23.624Z",
+  "completed_at_utc": "2026-10-02T16:03:34.724549+00:00"
+}

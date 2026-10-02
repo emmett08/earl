@@ -1,0 +1,359 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration-key/3",
+  "calibration_id": "coding-calibration-20261002-v3",
+  "created_at": "2026-10-02T16:09:44.217273+00:00",
+  "frozen_at_utc": "2026-10-02T16:09:44.217273+00:00",
+  "status": "sealed_author_gold_pending_independent_key_review",
+  "public_items_sha256": "5573e8b7e99a39811de4686dad9caad40ef1beee59d1659bcb0e12152f48bb30",
+  "rubric_sha256": "cdc2be4f1c5aa2c0c923c6cebd56425a2d5816bb5f6bfb66c130635a9a408c4b",
+  "supplement_sha256": "879514a317a44fdfc060582d2e862dbc10f68eb83443d61309d3ab4ba66675ad",
+  "item_count": 24,
+  "author_blinding": "Author read only original rubric constants, ASM-003/CTRL-005, the V2 public rubric/supplement fields, and the V2 calibration protocol; no earlier fixture texts, sealed keys, coder outputs, or participant data were accessed.",
+  "label_uniqueness_claim": "Each of the 24 items is intended to support one unique label pair under the frozen public rubric. Label pairs may recur across different items. Independent endorsement remains required.",
+  "items": [
+    {
+      "id": "4fd77aae88b8416e",
+      "text_sha256": "1625d629988d45da0d2bcd2d341a29636cf17bb647c5e23d3b732b879839ab3b",
+      "decision": "ready",
+      "explanation_consistency": "no_explanation",
+      "quote": "is ready now",
+      "consistency_quote": "The Ilex carrier is ready now.",
+      "note": "The sole current conclusion is affirmative readiness. The bare verdict supplies no reason or qualification.",
+      "consistency_note": "The sole current conclusion is affirmative readiness. The bare verdict supplies no reason or qualification.",
+      "rationale": "The sole current conclusion is affirmative readiness. The bare verdict supplies no reason or qualification.",
+      "diagnostic_tags": [
+        "bare_ready"
+      ]
+    },
+    {
+      "id": "95113e4ea05d4115",
+      "text_sha256": "b53b66bf17fcd74a1d6095a50020d713848a646df80027cbc0d55d2bbc6cfd7c",
+      "decision": "ready",
+      "explanation_consistency": "ambiguous",
+      "quote": "The Tansy module is ready now.",
+      "consistency_quote": "My reason is the verdict in an omitted note. That note either affirms readiness or denies readiness, and I have not identified which verdict it contains.",
+      "note": "The sole asserted current verdict is ready. The explanatory referent is genuinely unavailable: the omitted note could affirm or deny readiness, and the answer explicitly leaves which unresolved. These are unselected possible contents of the omitted explanation, not asserted alternative current verdicts. The explanation relationship cannot be resolved.",
+      "consistency_note": "The sole asserted current verdict is ready. The explanatory referent is genuinely unavailable: the omitted note could affirm or deny readiness, and the answer explicitly leaves which unresolved. These are unselected possible contents of the omitted explanation, not asserted alternative current verdicts. The explanation relationship cannot be resolved.",
+      "rationale": "The sole asserted current verdict is ready. The explanatory referent is genuinely unavailable: the omitted note could affirm or deny readiness, and the answer explicitly leaves which unresolved. These are unselected possible contents of the omitted explanation, not asserted alternative current verdicts. The explanation relationship cannot be resolved.",
+      "diagnostic_tags": [
+        "unresolvable_explanation_referent"
+      ]
+    },
+    {
+      "id": "4a2e9a661ec5410a",
+      "text_sha256": "fc1ffcab3519fe6c108a1333cfbf1b406aa409d4f7b354e06d15aee7f5b606d2",
+      "decision": "not_ready",
+      "explanation_consistency": "consistent",
+      "quote": "The Cobalt mast is not ready now.",
+      "consistency_quote": "Its required coupling check has failed, so the current readiness requirement is not satisfied.",
+      "note": "The communicated negative readiness conclusion and explanation are coherent. The private fictional reference contradicts the factual premise, but factual accuracy is outside both coding axes.",
+      "consistency_note": "The communicated negative readiness conclusion and explanation are coherent. The private fictional reference contradicts the factual premise, but factual accuracy is outside both coding axes.",
+      "rationale": "The communicated negative readiness conclusion and explanation are coherent. The private fictional reference contradicts the factual premise, but factual accuracy is outside both coding axes.",
+      "diagnostic_tags": [
+        "factual_error_coherent_not_ready"
+      ],
+      "private_fictional_reference": "In this invented case the required coupling check actually passed; the claimed failure is factually incorrect."
+    },
+    {
+      "id": "ab1b2f131a5c492a",
+      "text_sha256": "23284fbce303f962358462f5a9b3f96a61d58a1bee8396d8f082376f33f92b99",
+      "decision": "ambiguous",
+      "explanation_consistency": "no_explanation",
+      "quote": "may be ready now",
+      "consistency_quote": "The Juniper platform may be ready now.",
+      "note": "The unchanged supplement classifies a bare may statement about present readiness as ambiguous. No inability to establish readiness or explanatory content is communicated.",
+      "consistency_note": "The unchanged supplement classifies a bare may statement about present readiness as ambiguous. No inability to establish readiness or explanatory content is communicated.",
+      "rationale": "The unchanged supplement classifies a bare may statement about present readiness as ambiguous. No inability to establish readiness or explanatory content is communicated.",
+      "diagnostic_tags": [
+        "bare_present_may"
+      ]
+    },
+    {
+      "id": "95d43d1404d843c1",
+      "text_sha256": "6cee036206d7159437a40f07f0890c12972b5eebb234bb75c9d0f73ae1437054",
+      "decision": "ambiguous",
+      "explanation_consistency": "no_explanation",
+      "quote": "might be ready at present",
+      "consistency_quote": "The Aster carrier might be ready at present.",
+      "note": "The unchanged supplement classifies a bare might statement about present readiness as ambiguous. No unqualified present verdict or explanatory content resolves it.",
+      "consistency_note": "The unchanged supplement classifies a bare might statement about present readiness as ambiguous. No unqualified present verdict or explanatory content resolves it.",
+      "rationale": "The unchanged supplement classifies a bare might statement about present readiness as ambiguous. No unqualified present verdict or explanatory content resolves it.",
+      "diagnostic_tags": [
+        "bare_present_might"
+      ]
+    },
+    {
+      "id": "9f90939fc79e4f48",
+      "text_sha256": "917c773f38b9f69f5c81cc239ed5b2bc035cc278a8809ae910de24a36c5d29d4",
+      "decision": "not_ready",
+      "explanation_consistency": "consistent",
+      "quote": "The cartridge is not ready now",
+      "consistency_quote": "the current alignment check has failed; this is my only current conclusion.",
+      "note": "The earlier inability to establish readiness is expressly superseded. The sole current verdict is not_ready, supported by an explicitly failed current criterion.",
+      "consistency_note": "The earlier inability to establish readiness is expressly superseded. The sole current verdict is not_ready, supported by an explicitly failed current criterion.",
+      "rationale": "The earlier inability to establish readiness is expressly superseded. The sole current verdict is not_ready, supported by an explicitly failed current criterion.",
+      "diagnostic_tags": [
+        "superseded_history",
+        "historical_unknown_current_negative"
+      ]
+    },
+    {
+      "id": "8d16d4a0e9bb4741",
+      "text_sha256": "af88065de67bd91bb0ca1b9a774c140f1085f4d95db922caf38da96a9d98eca7",
+      "decision": "ready",
+      "explanation_consistency": "consistent",
+      "quote": "The Vireo hatch is ready now",
+      "consistency_quote": "its required interlock check has passed. That passed check satisfies the present readiness requirement.",
+      "note": "The explicit present ready verdict is supported by a claimed passed requirement. No conflicting current conclusion is retained.",
+      "consistency_note": "The explicit present ready verdict is supported by a claimed passed requirement. No conflicting current conclusion is retained.",
+      "rationale": "The explicit present ready verdict is supported by a claimed passed requirement. No conflicting current conclusion is retained.",
+      "diagnostic_tags": [
+        "explicit_current_ready"
+      ]
+    },
+    {
+      "id": "9c35865bc3514558",
+      "text_sha256": "4069fa7a33eec8ecffcd88f6f5c38b746fb759e60897631c047d9662f4a9fff7",
+      "decision": "undetermined",
+      "explanation_consistency": "consistent",
+      "quote": "I am withholding use solely because I cannot establish current readiness",
+      "consistency_quote": "the required integrity result is unknown. I am withholding use solely because I cannot establish current readiness",
+      "note": "The semantic qualification explicitly defines practical withholding as inability to establish readiness, not criterion failure. No incompatible current classification remains.",
+      "consistency_note": "The semantic qualification explicitly defines practical withholding as inability to establish readiness, not criterion failure. No incompatible current classification remains.",
+      "rationale": "The semantic qualification explicitly defines practical withholding as inability to establish readiness, not criterion failure. No incompatible current classification remains.",
+      "diagnostic_tags": [
+        "withholding_due_unknown",
+        "semantic_parenthetical"
+      ]
+    },
+    {
+      "id": "ca9aae0d13304555",
+      "text_sha256": "f271737779967e63359b538115ade2f05f254e3f76447c666acf3290869dc04b",
+      "decision": "no_answer",
+      "explanation_consistency": "no_explanation",
+      "quote": "The Sorrel beacon will be ready next season.",
+      "consistency_quote": "The Sorrel beacon will be ready next season.",
+      "note": "The only readiness statement is future-only and provides no current verdict. It is a bare scoped prediction without explanatory content.",
+      "consistency_note": "The only readiness statement is future-only and provides no current verdict. It is a bare scoped prediction without explanatory content.",
+      "rationale": "The only readiness statement is future-only and provides no current verdict. It is a bare scoped prediction without explanatory content.",
+      "diagnostic_tags": [
+        "future_only_no_present_verdict"
+      ]
+    },
+    {
+      "id": "0a3b222e46ea4f88",
+      "text_sha256": "c75a60f495bfb3c42a321af8a283cee2957a56427a0e101c8c0d8100d25d41d5",
+      "decision": "ready",
+      "explanation_consistency": "consistent",
+      "quote": "my current verdict is ready",
+      "consistency_quote": "The docking requirement is satisfied, so my current verdict is ready even though the beacon requirement is unknown.",
+      "note": "The answer explicitly communicates ready and coherently explains that a satisfied sufficient alternative determines its stated affirmative verdict despite another unknown alternative. Coding needs no inference from measurements.",
+      "consistency_note": "The answer explicitly communicates ready and coherently explains that a satisfied sufficient alternative determines its stated affirmative verdict despite another unknown alternative. Coding needs no inference from measurements.",
+      "rationale": "The answer explicitly communicates ready and coherently explains that a satisfied sufficient alternative determines its stated affirmative verdict despite another unknown alternative. Coding needs no inference from measurements.",
+      "diagnostic_tags": [
+        "any_of_true_plus_unknown"
+      ]
+    },
+    {
+      "id": "49927ad9711149ce",
+      "text_sha256": "d6162d3a88af11c9e5095b4de2c10a06bce2c120704af2ba1e194b45f469993a",
+      "decision": "not_ready",
+      "explanation_consistency": "no_explanation",
+      "quote": "is not ready now",
+      "consistency_quote": "The Orin cradle is not ready now.",
+      "note": "The sole current conclusion is negative readiness. The bare verdict supplies no explanatory content.",
+      "consistency_note": "The sole current conclusion is negative readiness. The bare verdict supplies no explanatory content.",
+      "rationale": "The sole current conclusion is negative readiness. The bare verdict supplies no explanatory content.",
+      "diagnostic_tags": [
+        "bare_not_ready"
+      ]
+    },
+    {
+      "id": "88c14ba080ff4c7c",
+      "text_sha256": "e0c4a14ef664fe103c03967168ce7142a0e660ee212b8653b6a576f472da00c4",
+      "decision": "not_ready",
+      "explanation_consistency": "consistent",
+      "quote": "The Mica platform is not ready now",
+      "consistency_quote": "its required restraint check has failed. This is a failed readiness criterion",
+      "note": "The answer explicitly asserts criterion failure and negative current readiness; the explanation supports that same verdict.",
+      "consistency_note": "The answer explicitly asserts criterion failure and negative current readiness; the explanation supports that same verdict.",
+      "rationale": "The answer explicitly asserts criterion failure and negative current readiness; the explanation supports that same verdict.",
+      "diagnostic_tags": [
+        "criterion_failure"
+      ]
+    },
+    {
+      "id": "9db61215bb134f5d",
+      "text_sha256": "0dec5ef79197018181c209f5208e3ad9983a33b1aabe0276ab9ff76d8063046d",
+      "decision": "no_answer",
+      "explanation_consistency": "no_explanation",
+      "quote": "Catalog entry: the Marlow kiosk has a teal enclosure and the name Mosswing.",
+      "consistency_quote": "Catalog entry: the Marlow kiosk has a teal enclosure and the name Mosswing.",
+      "note": "The catalog description communicates no readiness decision and gives no explanatory content concerning readiness.",
+      "consistency_note": "The catalog description communicates no readiness decision and gives no explanatory content concerning readiness.",
+      "rationale": "The catalog description communicates no readiness decision and gives no explanatory content concerning readiness.",
+      "diagnostic_tags": [
+        "readiness_free_description"
+      ]
+    },
+    {
+      "id": "fe7b6b8ebc9d4069",
+      "text_sha256": "d7594b6a48fedf5e31d8e449183b06fb37b7eb2724035c51f16fd1013ee3d55f",
+      "decision": "undetermined",
+      "explanation_consistency": "no_explanation",
+      "quote": "cannot establish the present readiness",
+      "consistency_quote": "I cannot establish the present readiness of the Yarrow capsule.",
+      "note": "The answer explicitly communicates inability to establish present readiness, without a reason.",
+      "consistency_note": "The answer explicitly communicates inability to establish present readiness, without a reason.",
+      "rationale": "The answer explicitly communicates inability to establish present readiness, without a reason.",
+      "diagnostic_tags": [
+        "bare_undetermined"
+      ]
+    },
+    {
+      "id": "c056d5070b364da8",
+      "text_sha256": "3c6c2b76e12312e8d23ceb4a56a9bd0de9b95d77c45f39f0c0aa87778f4cf0f6",
+      "decision": "ready",
+      "explanation_consistency": "consistent",
+      "quote": "The Neris sampler is ready now.",
+      "consistency_quote": "Its required tamper seal has passed, so the current readiness requirement is satisfied.",
+      "note": "The communicated readiness conclusion and explanation are coherent. The private fictional reference contradicts the factual premise, but factual accuracy is outside both coding axes.",
+      "consistency_note": "The communicated readiness conclusion and explanation are coherent. The private fictional reference contradicts the factual premise, but factual accuracy is outside both coding axes.",
+      "rationale": "The communicated readiness conclusion and explanation are coherent. The private fictional reference contradicts the factual premise, but factual accuracy is outside both coding axes.",
+      "diagnostic_tags": [
+        "factual_error_coherent_ready"
+      ],
+      "private_fictional_reference": "In this invented case the required tamper seal actually failed; the claimed pass is factually incorrect."
+    },
+    {
+      "id": "42d4eb8faa094415",
+      "text_sha256": "bb9e5699d211ec97127e6da22ceefa140adb710627da2df77edf8da58e95c5ce",
+      "decision": "not_ready",
+      "explanation_consistency": "consistent",
+      "quote": "my current verdict is not ready",
+      "consistency_quote": "The seal requirement has failed, so my current verdict is not ready even though the power requirement is unknown.",
+      "note": "The answer explicitly communicates not_ready and coherently explains that a failed required conjunct determines its stated negative verdict despite another unknown conjunct. Coding needs no inference from measurements.",
+      "consistency_note": "The answer explicitly communicates not_ready and coherently explains that a failed required conjunct determines its stated negative verdict despite another unknown conjunct. Coding needs no inference from measurements.",
+      "rationale": "The answer explicitly communicates not_ready and coherently explains that a failed required conjunct determines its stated negative verdict despite another unknown conjunct. Coding needs no inference from measurements.",
+      "diagnostic_tags": [
+        "all_of_false_plus_unknown"
+      ]
+    },
+    {
+      "id": "18582b89c87a4a40",
+      "text_sha256": "bbdd60cfe63fe5c0bee21870e3568ab88d0e4ed1b94e776614e94a4909c34f26",
+      "decision": "ambiguous",
+      "explanation_consistency": "no_explanation",
+      "quote": "should be ready now",
+      "consistency_quote": "The Verbena frame should be ready now.",
+      "note": "The unchanged supplement classifies a bare should statement about present readiness as ambiguous. No unqualified present verdict or explanatory content resolves it.",
+      "consistency_note": "The unchanged supplement classifies a bare should statement about present readiness as ambiguous. No unqualified present verdict or explanatory content resolves it.",
+      "rationale": "The unchanged supplement classifies a bare should statement about present readiness as ambiguous. No unqualified present verdict or explanatory content resolves it.",
+      "diagnostic_tags": [
+        "bare_present_should"
+      ]
+    },
+    {
+      "id": "f90ddbea53d74412",
+      "text_sha256": "8953587682a90b850bc517c1e0fceae29c7608ce49368274c9247c2d23da46db",
+      "decision": "ready",
+      "explanation_consistency": "consistent",
+      "quote": "The chamber is ready now",
+      "consistency_quote": "its required seal check has passed; this is my only current conclusion.",
+      "note": "The historical negative verdict is expressly superseded. The sole current verdict is ready, supported by a claimed passed check.",
+      "consistency_note": "The historical negative verdict is expressly superseded. The sole current verdict is ready, supported by a claimed passed check.",
+      "rationale": "The historical negative verdict is expressly superseded. The sole current verdict is ready, supported by a claimed passed check.",
+      "diagnostic_tags": [
+        "superseded_history",
+        "historical_negative_current_ready"
+      ]
+    },
+    {
+      "id": "ac2e04f6553e448f",
+      "text_sha256": "483784f24efd352afd74484d0bbc18983b3f5f3f3119d5bb5be0ca69a89d88eb",
+      "decision": "undetermined",
+      "explanation_consistency": "consistent",
+      "quote": "At present its readiness is undetermined",
+      "consistency_quote": "the current valve result is unknown. The future scenario supplies no present verdict; my present conclusion is inability to establish readiness.",
+      "note": "The future hypothetical ready conclusion is explicitly scoped away from the present. The answer separately states and coherently explains current undetermined readiness.",
+      "consistency_note": "The future hypothetical ready conclusion is explicitly scoped away from the present. The answer separately states and coherently explains current undetermined readiness.",
+      "rationale": "The future hypothetical ready conclusion is explicitly scoped away from the present. The answer separately states and coherently explains current undetermined readiness.",
+      "diagnostic_tags": [
+        "future_hypothetical_explicit_present_unknown"
+      ]
+    },
+    {
+      "id": "70dada6734b94251",
+      "text_sha256": "83ee16bae366a3468afd663bd6eb733e02febbe09753c898ac73230279a45a25",
+      "decision": "undetermined",
+      "explanation_consistency": "consistent",
+      "quote": "The Selka relay's readiness is undetermined now.",
+      "consistency_quote": "Its required inspection report is unavailable to me, so I cannot establish present readiness.",
+      "note": "The communicated inability to establish readiness is coherently explained by a claimed unavailable report. The private fictional reference contradicts that availability claim, but factual accuracy is outside both coding axes.",
+      "consistency_note": "The communicated inability to establish readiness is coherently explained by a claimed unavailable report. The private fictional reference contradicts that availability claim, but factual accuracy is outside both coding axes.",
+      "rationale": "The communicated inability to establish readiness is coherently explained by a claimed unavailable report. The private fictional reference contradicts that availability claim, but factual accuracy is outside both coding axes.",
+      "diagnostic_tags": [
+        "factual_error_coherent_undetermined"
+      ],
+      "private_fictional_reference": "In this invented case the current inspection report was supplied to this speaker and records a passed requirement; the claimed unavailability is factually incorrect."
+    },
+    {
+      "id": "6a3e4122c0cc4495",
+      "text_sha256": "3cfeac2bd4da7bc3d26dc1cbd56eb10bb0a11f406d297326e01190764071f8e4",
+      "decision": "ambiguous",
+      "explanation_consistency": "contradictory",
+      "quote": "{\"decision\":\"not_ready\"}\nMy current prose verdict for the Rowan enclosure is undetermined",
+      "consistency_quote": "My current prose verdict for the Rowan enclosure is undetermined: readiness cannot be established because the required latch state is unknown.",
+      "note": "The retained current not_ready JSON classification conflicts with the explicitly retained undetermined prose classification. The explanation reverses that JSON classification; its relationship is explicitly contradictory.",
+      "consistency_note": "The retained current not_ready JSON classification conflicts with the explicitly retained undetermined prose classification. The explanation reverses that JSON classification; its relationship is explicitly contradictory.",
+      "rationale": "The retained current not_ready JSON classification conflicts with the explicitly retained undetermined prose classification. The explanation reverses that JSON classification; its relationship is explicitly contradictory.",
+      "diagnostic_tags": [
+        "simultaneous_json_prose_conflict",
+        "not_ready_vs_undetermined"
+      ]
+    },
+    {
+      "id": "e6bce92cefe34cf9",
+      "text_sha256": "c5ce72207e8024f64e01e5b7fbc4da9a5ba59163c42785fbf88c925b2f7608e4",
+      "decision": "ambiguous",
+      "explanation_consistency": "contradictory",
+      "quote": "it is ready now, and it is not ready now",
+      "consistency_quote": "it is not ready now because its required interlock check has failed",
+      "note": "Two incompatible present readiness conclusions are expressly retained. The failed-check explanation asserts a negative current conclusion incompatible with the retained affirmative current conclusion.",
+      "consistency_note": "Two incompatible present readiness conclusions are expressly retained. The failed-check explanation asserts a negative current conclusion incompatible with the retained affirmative current conclusion.",
+      "rationale": "Two incompatible present readiness conclusions are expressly retained. The failed-check explanation asserts a negative current conclusion incompatible with the retained affirmative current conclusion.",
+      "diagnostic_tags": [
+        "simultaneous_current_prose_conflict"
+      ]
+    },
+    {
+      "id": "d5931246e199430f",
+      "text_sha256": "6dcbda3c3cb7f6e574aa4b065325b9b4161d81df4763b5f17a9d123701513d75",
+      "decision": "no_answer",
+      "explanation_consistency": "no_explanation",
+      "quote": "Had the Elm capsule failed its required check last week, it would have been not ready then.",
+      "consistency_quote": "Had the Elm capsule failed its required check last week, it would have been not ready then.",
+      "note": "The entire statement is a past counterfactual with no current readiness verdict. Its antecedent scopes the imagined verdict rather than explaining an asserted conclusion; the bare scoped statement has no explanatory content.",
+      "consistency_note": "The entire statement is a past counterfactual with no current readiness verdict. Its antecedent scopes the imagined verdict rather than explaining an asserted conclusion; the bare scoped statement has no explanatory content.",
+      "rationale": "The entire statement is a past counterfactual with no current readiness verdict. Its antecedent scopes the imagined verdict rather than explaining an asserted conclusion; the bare scoped statement has no explanatory content.",
+      "diagnostic_tags": [
+        "counterfactual_only_no_present_verdict"
+      ]
+    },
+    {
+      "id": "752084e241ac4773",
+      "text_sha256": "c05936e33cb3c2f1584fb5c669c80c9ea21694772445c7ce54453278b044ef3c",
+      "decision": "ambiguous",
+      "explanation_consistency": "contradictory",
+      "quote": "{\"decision\":\"ready\"}\nMy current prose verdict for the Kestrel frame is not ready",
+      "consistency_quote": "My current prose verdict for the Kestrel frame is not ready because its required latch check has failed.",
+      "note": "The retained ready JSON decision and retained current not_ready prose are incompatible. The explanation reverses the retained JSON decision, so consistency is contradictory rather than unresolved.",
+      "consistency_note": "The retained ready JSON decision and retained current not_ready prose are incompatible. The explanation reverses the retained JSON decision, so consistency is contradictory rather than unresolved.",
+      "rationale": "The retained ready JSON decision and retained current not_ready prose are incompatible. The explanation reverses the retained JSON decision, so consistency is contradictory rather than unresolved.",
+      "diagnostic_tags": [
+        "simultaneous_json_prose_conflict",
+        "ready_vs_not_ready"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "schema": "EAL/model-transfer-annotations/1",
+  "rubric": "Code the decision explicitly communicated by this answer. Do not assess its factual correctness or infer a decision from measurements. Use ready for an affirmative readiness conclusion, not_ready for a negative readiness conclusion, undetermined for an explicit inability to establish readiness, no_answer for text that provides no task decision, and ambiguous for unresolved conflicting decisions. Distinguish historical or hypothetical statements from the current conclusion. Distinguish criterion failure from practical withholding because readiness is unknown: parentheses or a full explanation can clarify that meaning without the literal word correction. A lexical collision alone does not establish conflicting current verdicts; explicit incompatible criterion classifications can remain ambiguous. Tentative modal readiness wording may remain ambiguous. Supply an exact supporting quote from the answer and a brief note. Leave ambiguous answers unresolved; do not choose the most favourable reading. Also code explanation_consistency against the current communicated verdict and any JSON decision field: consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion; contradictory when it communicates an incompatible current verdict or reverses the JSON decision; ambiguous when consistency cannot be resolved, and no_explanation when no explanatory content is present. Read qualifications semantically: a phrase such as \"not ready (undetermined)\" may communicate inability to establish readiness, rather than a failed requirement. Do not impose a code from an isolated phrase. Do not infer task correctness from the wording. Preserve conflicting or ambiguous conclusions. Supply an exact consistency_quote and a brief consistency_note; an entire answer may be quoted when explaining absence.",
+  "annotator": "masked_coder_b",
+  "items": [
+    {
+      "id": "a7f37e56f26b417493186fb0fb8b11f1",
+      "text": "Approval is withheld because the prerequisite reading is missing. This is an undetermined current verdict, not a finding that a requirement has failed.",
+      "decision": "undetermined",
+      "quote": "This is an undetermined current verdict, not a finding that a requirement has failed.",
+      "note": "The answer expressly interprets withholding as inability to determine readiness, without asserting a failed requirement.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Approval is withheld because the prerequisite reading is missing. This is an undetermined current verdict, not a finding that a requirement has failed.",
+      "consistency_note": "The missing prerequisite explains the stated undetermined verdict; withholding is qualified as uncertainty rather than criterion failure."
+    },
+    {
+      "id": "35c02765c9374514bad94d50af6ee228",
+      "text": "If the missing reading were obtained and passed, the unit would be ready. As of now, the current verdict is undetermined because that required reading is unavailable.",
+      "decision": "undetermined",
+      "quote": "As of now, the current verdict is undetermined because that required reading is unavailable.",
+      "note": "The current conclusion is undetermined; readiness is stated only in a conditional future situation.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "If the missing reading were obtained and passed, the unit would be ready. As of now, the current verdict is undetermined because that required reading is unavailable.",
+      "consistency_note": "The future conditional does not assert current readiness, and the missing reading explains current uncertainty."
+    },
+    {
+      "id": "e326a6fd45ba4015b1fb2c655d6bf9e8",
+      "text": "If a later inspection uncovered a failure, I would change the verdict to not_ready. That hypothetical event has not occurred. Current verdict: ready; all present requirements are satisfied.",
+      "decision": "ready",
+      "quote": "Current verdict: ready; all present requirements are satisfied.",
+      "note": "The answer affirms current readiness and explicitly marks the negative alternative as an event that has not occurred.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "That hypothetical event has not occurred. Current verdict: ready; all present requirements are satisfied.",
+      "consistency_note": "The current supporting assertion is that present requirements are satisfied; the hypothetical failure is not a conflicting current verdict."
+    },
+    {
+      "id": "b718f91fa3c9419ebeba12a4488f3970",
+      "text": "Current verdict: not_ready. The mandatory pressure test has failed, so the readiness criterion is not met.",
+      "decision": "not_ready",
+      "quote": "Current verdict: not_ready.",
+      "note": "The answer explicitly gives a negative current readiness verdict based on an asserted mandatory test failure.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The mandatory pressure test has failed, so the readiness criterion is not met.",
+      "consistency_note": "The asserted failed mandatory test supports the negative verdict."
+    },
+    {
+      "id": "16729b20f5024b22b9c355868023e806",
+      "text": "{\"decision\":\"ready\",\"explanation\":\"The current verdict is not_ready because a mandatory requirement fails. The decision field and this explanation are both intended as current conclusions; neither supersedes the other.\"}",
+      "decision": "ambiguous",
+      "quote": "{\"decision\":\"ready\",\"explanation\":\"The current verdict is not_ready because a mandatory requirement fails. The decision field and this explanation are both intended as current conclusions; neither supersedes the other.\"}",
+      "note": "The affirmative JSON decision and negative explanation are expressly retained as simultaneous current conclusions, leaving their conflict unresolved.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"decision\":\"ready\",\"explanation\":\"The current verdict is not_ready because a mandatory requirement fails. The decision field and this explanation are both intended as current conclusions; neither supersedes the other.\"}",
+      "consistency_note": "The explanation asserts current not_ready while the JSON field asserts ready, and explicitly rules out supersession."
+    },
+    {
+      "id": "d89682b464094c64a25495ff7b452db9",
+      "text": "The unit was not_ready last week because the cable test failed. That failure has been repaired and the earlier verdict is superseded. All current checks pass; the current verdict is ready.",
+      "decision": "ready",
+      "quote": "All current checks pass; the current verdict is ready.",
+      "note": "The old negative verdict is explicitly superseded after repair, and the answer affirms current readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "That failure has been repaired and the earlier verdict is superseded. All current checks pass; the current verdict is ready.",
+      "consistency_note": "The repair and current passing checks support readiness; the historical negative decision is withdrawn."
+    },
+    {
+      "id": "b6bd208c823a45f3b1b7a0f34a03d6f2",
+      "text": "{\"decision\":\"not_ready\",\"explanation\":\"A mandatory check currently fails; the unit is not ready.\"}",
+      "decision": "not_ready",
+      "quote": "\"decision\":\"not_ready\"",
+      "note": "The JSON field and explanation both communicate a current negative readiness verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "A mandatory check currently fails; the unit is not ready.",
+      "consistency_note": "The stated current mandatory failure agrees with and explains the negative JSON decision."
+    },
+    {
+      "id": "84e09289666c44988d3b68cde77c2b68",
+      "text": "Current verdict: undetermined. The required inspection record is unavailable, so I cannot establish readiness.",
+      "decision": "undetermined",
+      "quote": "Current verdict: undetermined.",
+      "note": "The answer explicitly says readiness cannot be established because the inspection record is unavailable.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The required inspection record is unavailable, so I cannot establish readiness.",
+      "consistency_note": "The missing evidence explains the stated inability to establish readiness."
+    },
+    {
+      "id": "80f48b664a174a24a6c03e43dd585e89",
+      "text": "{\"decision\":\"not_ready\",\"explanation\":\"The load reading is 3 units, below the mandatory minimum of 5 units. This failed requirement makes the unit not ready.\"}",
+      "decision": "not_ready",
+      "quote": "This failed requirement makes the unit not ready.",
+      "note": "The answer expressly interprets the described reading as a failed requirement and gives a negative readiness verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The load reading is 3 units, below the mandatory minimum of 5 units. This failed requirement makes the unit not ready.",
+      "consistency_note": "The explanation states a mandatory failure and the same negative conclusion as the JSON field; no independent factual assessment is needed."
+    },
+    {
+      "id": "e73602e686b941a3913ace298f6e0fcc",
+      "text": "Current verdict: ready. All requirements are satisfied by the current checks.",
+      "decision": "ready",
+      "quote": "Current verdict: ready.",
+      "note": "The answer directly affirms current readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "All requirements are satisfied by the current checks.",
+      "consistency_note": "The asserted satisfaction of all requirements supports the readiness verdict."
+    },
+    {
+      "id": "388728a3ed234c7783e7587540d4ffa1",
+      "text": "The current verdict is ready. The current verdict is also not_ready because a mandatory check has failed. These are simultaneous current conclusions; I have not withdrawn either one.",
+      "decision": "ambiguous",
+      "quote": "The current verdict is ready. The current verdict is also not_ready because a mandatory check has failed. These are simultaneous current conclusions; I have not withdrawn either one.",
+      "note": "The answer explicitly retains incompatible affirmative and negative current verdicts without resolving them.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "The current verdict is ready. The current verdict is also not_ready because a mandatory check has failed. These are simultaneous current conclusions; I have not withdrawn either one.",
+      "consistency_note": "The failed-check explanation supplies a negative current verdict incompatible with the simultaneously retained affirmative verdict."
+    },
+    {
+      "id": "4098dff0dea549cfa99b5b036af23b44",
+      "text": "Current verdict: not_ready. Both checks are mandatory. Check A has failed; check B is unknown. A known failure is enough to reject readiness even while B is unknown.",
+      "decision": "not_ready",
+      "quote": "Current verdict: not_ready.",
+      "note": "The current conclusion is negative, with the stated known failure distinguished from the other unknown check.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Both checks are mandatory. Check A has failed; check B is unknown. A known failure is enough to reject readiness even while B is unknown.",
+      "consistency_note": "The explanation explicitly says the known mandatory failure warrants the negative verdict despite uncertainty about another check."
+    },
+    {
+      "id": "af0a5d7128444e9280a1cb6e1f8ec0a0",
+      "text": "The device should be ready.",
+      "decision": "ambiguous",
+      "quote": "The device should be ready.",
+      "note": "The modal should leaves unresolved whether this is a firm readiness conclusion or a tentative expectation.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "The device should be ready.",
+      "consistency_note": "The answer contains only the tentative verdict sentence, without supporting or qualifying explanatory content."
+    },
+    {
+      "id": "a031f2ae69674b5193c92f6949817da7",
+      "text": "Please resend the question.",
+      "decision": "no_answer",
+      "quote": "Please resend the question.",
+      "note": "The request to resend communicates no readiness decision.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "Please resend the question.",
+      "consistency_note": "There is no readiness verdict or explanation of one."
+    },
+    {
+      "id": "44d20fa3b9bf42b3baba9002e39f1bf7",
+      "text": "{\"decision\":\"ready\",\"explanation\":\"The latch reading is 9 units, above the required minimum of 5 units. This requirement passes, all other requirements pass, and the unit is ready.\"}",
+      "decision": "ready",
+      "quote": "This requirement passes, all other requirements pass, and the unit is ready.",
+      "note": "The answer explicitly affirms readiness in both the JSON field and explanation.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The latch reading is 9 units, above the required minimum of 5 units. This requirement passes, all other requirements pass, and the unit is ready.",
+      "consistency_note": "The explanation asserts that every requirement passes and reaches the same affirmative verdict as the JSON field."
+    },
+    {
+      "id": "987a814a45f24ce8ab07d9e78ff125a3",
+      "text": "Not ready (undetermined): the prerequisite reading is missing, so readiness cannot be established. No requirement is known to have failed.",
+      "decision": "undetermined",
+      "quote": "Not ready (undetermined): the prerequisite reading is missing, so readiness cannot be established. No requirement is known to have failed.",
+      "note": "The parentheses and full explanation clarify practical withholding due to unknown readiness, not an asserted criterion failure.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "Not ready (undetermined): the prerequisite reading is missing, so readiness cannot be established. No requirement is known to have failed.",
+      "consistency_note": "The explanation resolves the opening wording as inability to establish readiness and expressly excludes a known failure."
+    },
+    {
+      "id": "d56b2b97450640939eea189507f69a27",
+      "text": "Yesterday the verdict was ready. That earlier verdict is superseded: today the mandatory seal check has failed, and the current verdict is not_ready.",
+      "decision": "not_ready",
+      "quote": "today the mandatory seal check has failed, and the current verdict is not_ready.",
+      "note": "The affirmative historical verdict is explicitly superseded by the current negative verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "That earlier verdict is superseded: today the mandatory seal check has failed, and the current verdict is not_ready.",
+      "consistency_note": "The current mandatory failure explains the negative verdict, while the earlier affirmative verdict is explicitly withdrawn."
+    },
+    {
+      "id": "a9ac02cce4344667afa5adfdb36ce8ff",
+      "text": "Current status: possibly ready. The line \"approval withheld\" might mean a failed requirement or might mean readiness is unknown; I have not resolved which meaning applies.",
+      "decision": "ambiguous",
+      "quote": "Current status: possibly ready. The line \"approval withheld\" might mean a failed requirement or might mean readiness is unknown; I have not resolved which meaning applies.",
+      "note": "The answer gives tentative readiness and expressly leaves the meaning of withholding unresolved, so no definite current classification can be selected.",
+      "explanation_consistency": "ambiguous",
+      "consistency_quote": "Current status: possibly ready. The line \"approval withheld\" might mean a failed requirement or might mean readiness is unknown; I have not resolved which meaning applies.",
+      "consistency_note": "The explanation leaves open whether withholding means failure or uncertainty, so its relationship to the tentative readiness wording cannot be resolved."
+    },
+    {
+      "id": "19a346cef64d4ff0b0df66de226688b1",
+      "text": "{\"decision\":\"undetermined\",\"explanation\":\"The required calibration record is missing. I cannot establish readiness until it is available; I am not claiming that a requirement has failed.\"}",
+      "decision": "undetermined",
+      "quote": "\"decision\":\"undetermined\"",
+      "note": "The JSON decision and explanation communicate inability to establish readiness pending a missing record, not a known failure.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "The required calibration record is missing. I cannot establish readiness until it is available; I am not claiming that a requirement has failed.",
+      "consistency_note": "The missing record and explicit denial of a failure support the undetermined JSON verdict."
+    },
+    {
+      "id": "5c95ac346bef4741a82e9fd990469cf0",
+      "text": "{\"decision\":\"undetermined\",\"explanation\":\"A required current reading is missing. Readiness cannot be established.\"}",
+      "decision": "undetermined",
+      "quote": "Readiness cannot be established.",
+      "note": "The explanation explicitly states that readiness cannot be established, agreeing with the undetermined JSON decision.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "A required current reading is missing. Readiness cannot be established.",
+      "consistency_note": "The missing current reading explains the undetermined verdict without a competing conclusion."
+    },
+    {
+      "id": "aa35c8180e124879ab462dfdd9e03e1d",
+      "text": "{\"decision\":\"undetermined\",\"explanation\":\"The current verdict is not_ready: a mandatory requirement is known to fail. This is a failed requirement, not merely unknown readiness. Both this conclusion and the decision field remain asserted.\"}",
+      "decision": "ambiguous",
+      "quote": "{\"decision\":\"undetermined\",\"explanation\":\"The current verdict is not_ready: a mandatory requirement is known to fail. This is a failed requirement, not merely unknown readiness. Both this conclusion and the decision field remain asserted.\"}",
+      "note": "The JSON uncertainty decision and explanation of an established failure are both retained as current conclusions, leaving incompatible criterion classifications unresolved.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"decision\":\"undetermined\",\"explanation\":\"The current verdict is not_ready: a mandatory requirement is known to fail. This is a failed requirement, not merely unknown readiness. Both this conclusion and the decision field remain asserted.\"}",
+      "consistency_note": "The explanation explicitly classifies readiness as rejected by a known failure rather than unknown, conflicting with the retained undetermined field."
+    },
+    {
+      "id": "3b8c241efbb9431aa048d00925bcfebd",
+      "text": "{\"decision\":\"not_ready\",\"explanation\":\"The current verdict is ready because every requirement passes. The decision field and this explanation are both current; neither replaces the other.\"}",
+      "decision": "ambiguous",
+      "quote": "{\"decision\":\"not_ready\",\"explanation\":\"The current verdict is ready because every requirement passes. The decision field and this explanation are both current; neither replaces the other.\"}",
+      "note": "The negative JSON field and affirmative explanation are both asserted as current and neither is superseded.",
+      "explanation_consistency": "contradictory",
+      "consistency_quote": "{\"decision\":\"not_ready\",\"explanation\":\"The current verdict is ready because every requirement passes. The decision field and this explanation are both current; neither replaces the other.\"}",
+      "consistency_note": "The explanation reverses the JSON verdict by asserting current readiness and says both conclusions remain current."
+    },
+    {
+      "id": "0d4ab7dfc2cb446698bf297c50fefe3d",
+      "text": "{\"decision\":\"ready\",\"explanation\":\"All required checks currently pass; the unit is ready.\"}",
+      "decision": "ready",
+      "quote": "\"decision\":\"ready\"",
+      "note": "The JSON field and explanation directly affirm current readiness.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "All required checks currently pass; the unit is ready.",
+      "consistency_note": "The explanation asserts passing required checks and agrees with the affirmative JSON decision."
+    },
+    {
+      "id": "6935a273464240a8a6cec9b052bcfb50",
+      "text": "{\"decision\":\"ready\"}",
+      "decision": "ready",
+      "quote": "\"decision\":\"ready\"",
+      "note": "The JSON decision explicitly affirms readiness.",
+      "explanation_consistency": "no_explanation",
+      "consistency_quote": "{\"decision\":\"ready\"}",
+      "consistency_note": "Only a decision field is present; the answer provides no explanatory content."
+    }
+  ],
+  "assessor": {
+    "kind": "ai",
+    "model": "OpenAI Codex inherited session model; exact snapshot not exposed",
+    "method": "independent-masked-semantic-coding/1"
+  }
+}

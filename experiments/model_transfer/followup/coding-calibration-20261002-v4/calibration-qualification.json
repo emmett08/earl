@@ -1,0 +1,51 @@
+{
+  "schema": "EAL/actual-coder-qualification/1",
+  "status": "passed",
+  "frozen_at": "2026-10-02T16:37:42.557934+00:00",
+  "protocol": "whole-answer-coder-calibration/4",
+  "public_items_sha256": "09bceb0866ef5caf7a2bdf94433682c902d60fbd6e455cf390ca0c2654b0dae2",
+  "key_sha256": "29edee3a476f9d57bea27e8b1694ab69fa693e9e0133fb287f45ac594b3b9b46",
+  "independent_key_review_sha256": "5ad93b51ce0afc3934af51ca98db37e4e88addb70edaa98bdcfe6daa14257649",
+  "grade_sha256": "8b2732b3a7314650be187e8e1b1e44c073391168c9178e7b24a0a965a576c0d9",
+  "semantic_quote_review_sha256": "ca6f358b57863a3ea7e9dda969b077907200425278c95bdbb422bde2b12fe717",
+  "assessors": [
+    {
+      "file": "calibration-reviewer-a.json",
+      "sha256": "ca287832254c1cec4fff3c376a6f54f39c473816641cb33f3a691ccfbf5c9f58",
+      "decision_matches": 24,
+      "decision_total": 24,
+      "consistency_matches": 24,
+      "consistency_total": 24,
+      "exact_and_relevant_quotes": 48,
+      "quote_total": 48
+    },
+    {
+      "file": "calibration-reviewer-b.json",
+      "sha256": "039ec13b67e5889f12aab64cbbc33f2679c8260bc1de33bb41f4bddda7468052",
+      "decision_matches": 24,
+      "decision_total": 24,
+      "consistency_matches": 24,
+      "consistency_total": 24,
+      "exact_and_relevant_quotes": 48,
+      "quote_total": 48
+    },
+    {
+      "file": "calibration-adjudicator.json",
+      "sha256": "8af1760ff454fe355d52fab202302ddb0bcf1902f8fb2b198635cb6bcc577488",
+      "decision_matches": 24,
+      "decision_total": 24,
+      "consistency_matches": 24,
+      "consistency_total": 24,
+      "exact_and_relevant_quotes": 48,
+      "quote_total": 48
+    }
+  ],
+  "prior_material_gate_disposition": {
+    "v1": "invalid nonunique gold; original two attempts ungraded for qualification",
+    "v2": "invalid nonunique gold; original two attempts ungraded for qualification",
+    "v3": "invalid nonunique gold; original A attempt retained, B not administered"
+  },
+  "method_timing": "Materials, operational clarification and actual-coder qualification completed after collection but before participant semantic coding. References and primary endpoint remain frozen; new V4 rubric is identical to V2 clarification.",
+  "scope": "Qualification for this declared whole-answer procedure on 24 independently authored synthetic texts per actual assessor; no population error-rate, human validation, factual-grounding accuracy or independent investigator replication.",
+  "participant_semantic_coding_started": false
+}

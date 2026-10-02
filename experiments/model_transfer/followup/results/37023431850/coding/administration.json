@@ -1,0 +1,15 @@
+{
+  "schema": "EAL/participant-coding-administration/1",
+  "started_at": "2026-10-02T16:38:21.660005+00:00",
+  "items": 128,
+  "source_items_sha256": "bb61a50744982366023064d5ca220ba40d012b50f106987900312372548d79ff",
+  "qualification_sha256": "a46003fec860dc61f562fbba3c83b1f3cf3f3e062f5709217a9783ff76d03d1e",
+  "coders": [
+    "stablemasked-coder-a",
+    "masked-coder-b"
+  ],
+  "masking": "Only opaque IDs and unmodified answer text supplied; allocation, task/time/reference and first-coder labels withheld. Answer wording can disclose context.",
+  "rubric": "Original answer-export rubric with the prospectively declared V2 operational supplement, unchanged through V4 and actual-coder qualification.",
+  "adjudication": "A separately qualified fresh masked AI adjudicator receives only answer texts for disagreements; ambiguity may remain.",
+  "paid_experiment_calls": 0
+}

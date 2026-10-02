@@ -1,0 +1,20 @@
+{
+  "schema": "EAL/coder-calibration-disposition/1",
+  "recorded_at": "2026-10-02T16:20:27.236618+00:00",
+  "status": "suspended_invalid_gold",
+  "qualification": "neither coder qualified or failed by this exercise",
+  "reason": "Independent pre-grading review found counterfactual-only conditional antecedent does not uniquely support no_explanation. All 24 decision gold labels secure; one consistency gold is not unique.",
+  "independent_review_sha256": "20337c56aaffff954a9046707bf62ca9615401250514567ece316dbfeecd4288",
+  "all_original_files_sha256": {
+    "public-items.json": "5573e8b7e99a39811de4686dad9caad40ef1beee59d1659bcb0e12152f48bb30",
+    "independent-key-review.md": "0ffe9b0fb80d71becb3e010d19a687ce437344b7989cdb63f7c4a67109432d70",
+    "independent-key-review.json": "20337c56aaffff954a9046707bf62ca9615401250514567ece316dbfeecd4288",
+    "calibration-protocol.json": "5e5aeb7c5d88ee121247dc698525c72bd2f93e464c65e38496378bef3d877ff5",
+    "method-quality-note.md": "48edf621d4e67a4271b9265c42cba46c34451cf09ffd160bcd874d6aeeddf05c",
+    "calibration-reviewer-a.json": "64e1c8317b20e54ad75f6955dec821a30c7d9835a72af4dc5c0728d3dd1aeb75",
+    "sealed-key.json": "8df38d584fa871bfd60d82b6fe1ae4578da236c0498cb919078d42c05e45b155"
+  },
+  "grading": "Not used for qualification; coder A completed answer retained ungraded; coder B not administered this exercise.",
+  "repair": "Fresh fourth held-out exercise by a new independent author, reviewed as draft before freeze and any administration, using unchanged V2 supplement and original thresholds.",
+  "participant_semantic_coding_started": false
+}

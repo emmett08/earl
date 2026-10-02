@@ -1,0 +1,19 @@
+{
+  "schema": "EAL/followup-processing-source/1",
+  "source_run_id": 37023431850,
+  "source_artifact_id": 11234337488,
+  "source_artifact_name": "experiment-export-37023431850-1",
+  "source_workflow_sha": "054c27354e1d3ed15d9c1c20f4b2110169b84a4e",
+  "zip_sha256": "c6e409e56258bd888cf7dea538adc3517afc14cb44a63f3a20dda808d2a135ff",
+  "experiment_identity": "adc97f7b-113d-4404-811d-16c5857e9d20",
+  "execution_kind": "live",
+  "raw_files_sha256": {
+    "annotation-bundle/items.json": "bb61a50744982366023064d5ca220ba40d012b50f106987900312372548d79ff",
+    "rows.json": "84185cbb87a3cf1d4443527c8494fdc26e6be25202f5b55536c63e7c5000b129",
+    "calls.json": "9163678f26a2ebcd5a724aca9d6451957df697640393d35fb46644c36a2e2d8b",
+    "plan.json": "618d5effa176f86bd0f45926c911f8ec9e25d50bb40e484a9603f0a656762f06",
+    "provenance.json": "3db1d1a6fa3661883b31052d916b6af68f87a8490fcabce5c8915895f6ffd5d5",
+    "execution-contract.json": "a380fc61c5be095d1702ccbf7f3c7414adf344ca270de2da3acfc94b9ea9ee41"
+  },
+  "coding_rule": "Each reviewer receives only unchanged masked answer text and the frozen rubric; calibration expected keys are withheld. No model/reasoner/task/reference metadata is supplied. All failures/ambiguous outcomes are retained."
+}

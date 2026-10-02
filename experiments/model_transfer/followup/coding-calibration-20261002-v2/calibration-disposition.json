@@ -1,0 +1,21 @@
+{
+  "schema": "EAL/coder-calibration-disposition/1",
+  "recorded_at": "2026-10-02T16:08:13.100773+00:00",
+  "status": "suspended_invalid_gold",
+  "qualification": "neither coder qualified by this exercise",
+  "reason": "Independent pre-grading review found the unselected present-conditional item permits ambiguous or no_answer. The perfect-match qualification gate is invalid for this exercise.",
+  "independent_review_sha256": "5a7f831ac342b949a3ff916933cc3ae01c31f66cbc00fc14e7590478c4efa9a2",
+  "all_original_files_sha256": {
+    "public-items.json": "07ee2a75e760ff19c22ea0cdf1129d887767e68cb135452d0c36f2ec78decfce",
+    "independent-key-review.md": "049e7a3459767b88b6959c7b385960f2cd1ce07ac0624cd7e89aa8bddb549d78",
+    "independent-key-review.json": "5a7f831ac342b949a3ff916933cc3ae01c31f66cbc00fc14e7590478c4efa9a2",
+    "calibration-reviewer-b.json": "435ff274a29636c87cc33b0dcfac6865dd635606cffaae5b90fd5d20520d67b1",
+    "calibration-protocol.json": "89dc3822ea15fe81ef0be50f4503b4ccaacba898bbb37952fefb8062f5aa856c",
+    "method-quality-note.md": "86ffe2dc89e09fe6321bbdcdd9693f8a83e9c0d3f80cac2e45c88a5a36780d97",
+    "calibration-reviewer-a.json": "967e0c2f94e66c80261833a1336f7be63cbe6a48cf6d1883f9fe86bb8d6b3264",
+    "sealed-key.json": "8baf3394b7cd1fd618a8198c22c6af89af697b0f54bf2b10ed2298374abb2639"
+  },
+  "grading": "Not used for qualification; both original completed coder answers retained without gold feedback.",
+  "repair": "Fresh third held-out exercise by a new independent author under the unchanged V2 supplement. No key editing, outcome-based relabelling, or threshold relaxation.",
+  "participant_semantic_coding_started": false
+}

@@ -1,0 +1,108 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration-protocol/2",
+  "calibration_id": "coding-calibration-20261002-v4",
+  "created_at": "2026-10-02T16:19:24.224288+00:00",
+  "governing_controls": [
+    "ASM-003",
+    "CTRL-005"
+  ],
+  "purpose": "Fresh prospective qualification of masked whole-answer coders on separate decision and explanation-consistency axes, after independent pre-administration material validation; factual correctness unassessed.",
+  "prospective_clarification": {
+    "recorded_before_participant_coding": true,
+    "measurement_change_type": "none; unchanged V2 base rubrics and operational supplement",
+    "retains_all_prior_frozen_exercises": true,
+    "future_only_no_answer_boundary_unchanged": true,
+    "canonical_endpoint_unchanged": true,
+    "changes_original_source_rubric": false,
+    "author_did_not_observe_prior_fixture_texts_keys_coder_outputs_or_participant_outcomes": true
+  },
+  "item_count": 24,
+  "allowed_decisions": [
+    "ready",
+    "not_ready",
+    "undetermined",
+    "no_answer",
+    "ambiguous"
+  ],
+  "allowed_explanation_consistency": [
+    "consistent",
+    "contradictory",
+    "ambiguous",
+    "no_explanation"
+  ],
+  "independent_key_review": {
+    "required_before_freeze_or_administration": true,
+    "required_before_coder_qualification": true,
+    "required_unique_label_pairs": 24,
+    "required_reviewed_decision_labels": 24,
+    "required_reviewed_consistency_labels": 24,
+    "allowed_source_files": [
+      "public-items.json",
+      "sealed-key.json",
+      "calibration-protocol.json",
+      "method-quality-note.md",
+      "original RUBRIC and CONSISTENCY_RUBRIC",
+      "ASM-003 and CTRL-005 records"
+    ],
+    "reviewer_must_not_author_v4_items": true,
+    "reviewer_must_not_observe_participant_or_coder_outputs": true,
+    "status": "endorsed_before_freeze",
+    "qualification_gate_valid": true,
+    "unresolved_label_count": 0,
+    "draft_repair_rule": "The independent reviewer may flag material ambiguity and recommend prospective DRAFT repairs before any coder administration. The author may repair only this DRAFT, using no outcome evidence; every revised pair must receive independent re-review.",
+    "failure_response": "Keep this DRAFT unadministered while unresolved material issues remain. Retain all prior frozen exercises. After freezing/administration, any material defect requires retention of frozen files and genuinely fresh prospective repair; never revise gold to match observed coding.",
+    "reviewed_decision_labels": 24,
+    "reviewed_consistency_labels": 24,
+    "unique_label_pairs_endorsed": 24,
+    "draft_review_endorsement_recorded_at": "2026-10-02T16:21:53.794257+00:00",
+    "reviewer_task": "/root/calibration_v4_key_audit",
+    "author_distinct_from_reviewer": true,
+    "draft_repairs_needed": false,
+    "final_four_hash_receipt_required_before_administration": true
+  },
+  "coder_blinding": {
+    "public_items_only": true,
+    "sealed_key_access": false,
+    "participant_or_coder_outputs_access": false,
+    "condition_reference_or_private_fictional_fact_access": false,
+    "independent_attempts_required": true
+  },
+  "pass_criteria": {
+    "decision_correct_required": 24,
+    "decision_total": 24,
+    "explanation_consistency_correct_required": 24,
+    "explanation_consistency_total": 24,
+    "joint_correct_required": 24,
+    "joint_total": 24,
+    "decision_quotes_valid_required": 24,
+    "consistency_quotes_valid_required": 24,
+    "all_quotes_nonempty_exact_substrings_required": true,
+    "unique_gold_independent_review_required": true,
+    "no_partial_credit_or_threshold_relaxation": true
+  },
+  "quote_rule": "Every quote must be a nonempty exact substring of its item text. The entire nonempty raw answer may support an absence judgment. Blank or approximate quotes are invalid.",
+  "grader_requirements": "Independent pre-administration review must endorse all 24 unique gold label pairs with zero unresolved labels before freezing any files or starting coder attempts. Freeze the four final file hashes in an independent receipt. Before grading, verify frozen public/key hashes, exactly 24 unique matching IDs, permitted labels, all 24 item-text hashes, all 48 exact nonempty quotes, separate per-axis match counts, and the valid independent review endorsement. Retain every disagreement and failure. Canonical endpoints remain separately reportable; missing or failed calibration suspends substantive quality conclusions.",
+  "source_sha256": {
+    "public-items.json": "09bceb0866ef5caf7a2bdf94433682c902d60fbd6e455cf390ca0c2654b0dae2",
+    "sealed-key.json": "29edee3a476f9d57bea27e8b1694ab69fa693e9e0133fb287f45ac594b3b9b46",
+    "method-quality-note.md": "b2ddb8a07e5533572ec9432ae2e9fe3cbe03455f0737668c7cc13593a82ec787"
+  },
+  "rubric_sha256": "cdc2be4f1c5aa2c0c923c6cebd56425a2d5816bb5f6bfb66c130635a9a408c4b",
+  "supplement_sha256": "879514a317a44fdfc060582d2e862dbc10f68eb83443d61309d3ab4ba66675ad",
+  "decision_distribution": {
+    "ready": 6,
+    "not_ready": 6,
+    "undetermined": 4,
+    "ambiguous": 6,
+    "no_answer": 2
+  },
+  "consistency_distribution": {
+    "consistent": 14,
+    "contradictory": 3,
+    "no_explanation": 6,
+    "ambiguous": 1
+  },
+  "state": "FROZEN",
+  "frozen": true,
+  "frozen_at": "2026-10-02T16:21:53.794257+00:00"
+}

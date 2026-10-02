@@ -1,0 +1,2715 @@
+{
+  "all_control_checks_passed": true,
+  "authored_reference_agreements": 40,
+  "computed_at": "2026-10-02T15:48:28.160353+00:00",
+  "condition_distribution": {
+    "complete": {
+      "ready": 8
+    },
+    "critical_gap": {
+      "undetermined": 8
+    },
+    "noncritical_gap": {
+      "not_ready": 4,
+      "ready": 4
+    },
+    "restored_negative": {
+      "not_ready": 8
+    },
+    "restored_positive": {
+      "ready": 8
+    }
+  },
+  "control_task_count": 8,
+  "controls": [
+    {
+      "checks": {
+        "all_explicit_requirement_patterns": true,
+        "complete_ready": true,
+        "critical_gap_undetermined": true,
+        "family_specific_noncritical_comparator": true,
+        "negative_restoration_not_ready": true,
+        "negative_restoration_r0_eligible_false": true,
+        "noncritical_same_decisive_decision": true,
+        "positive_restoration_r0_eligible_true": true,
+        "positive_restoration_ready": true,
+        "single_critical_gap_r0": true,
+        "single_noncritical_gap": true
+      },
+      "comparator_session": 8,
+      "family": "all_of",
+      "task_id": "followup-all_of-release-missing"
+    },
+    {
+      "checks": {
+        "all_explicit_requirement_patterns": true,
+        "complete_ready": true,
+        "critical_gap_undetermined": true,
+        "family_specific_noncritical_comparator": true,
+        "negative_restoration_not_ready": true,
+        "negative_restoration_r0_eligible_false": true,
+        "noncritical_same_decisive_decision": true,
+        "positive_restoration_r0_eligible_true": true,
+        "positive_restoration_ready": true,
+        "single_critical_gap_r0": true,
+        "single_noncritical_gap": true
+      },
+      "comparator_session": 8,
+      "family": "all_of",
+      "task_id": "followup-all_of-backup-stale"
+    },
+    {
+      "checks": {
+        "all_explicit_requirement_patterns": true,
+        "complete_ready": true,
+        "critical_gap_undetermined": true,
+        "family_specific_noncritical_comparator": true,
+        "negative_restoration_not_ready": true,
+        "negative_restoration_r0_eligible_false": true,
+        "noncritical_same_decisive_decision": true,
+        "positive_restoration_r0_eligible_true": true,
+        "positive_restoration_ready": true,
+        "single_critical_gap_r0": true,
+        "single_noncritical_gap": true
+      },
+      "comparator_session": 8,
+      "family": "all_of",
+      "task_id": "followup-all_of-assembly-invalidated"
+    },
+    {
+      "checks": {
+        "all_explicit_requirement_patterns": true,
+        "complete_ready": true,
+        "critical_gap_undetermined": true,
+        "family_specific_noncritical_comparator": true,
+        "negative_restoration_not_ready": true,
+        "negative_restoration_r0_eligible_false": true,
+        "noncritical_same_decisive_decision": true,
+        "positive_restoration_r0_eligible_true": true,
+        "positive_restoration_ready": true,
+        "single_critical_gap_r0": true,
+        "single_noncritical_gap": true
+      },
+      "comparator_session": 8,
+      "family": "all_of",
+      "task_id": "followup-all_of-export-version_mismatch"
+    },
+    {
+      "checks": {
+        "all_explicit_requirement_patterns": true,
+        "complete_ready": true,
+        "critical_gap_undetermined": true,
+        "family_specific_noncritical_comparator": true,
+        "negative_restoration_not_ready": true,
+        "negative_restoration_r0_eligible_false": true,
+        "noncritical_same_decisive_decision": true,
+        "positive_restoration_r0_eligible_true": true,
+        "positive_restoration_ready": true,
+        "single_critical_gap_r0": true,
+        "single_noncritical_gap": true
+      },
+      "comparator_session": 6,
+      "family": "any_of",
+      "task_id": "followup-any_of-routing-missing"
+    },
+    {
+      "checks": {
+        "all_explicit_requirement_patterns": true,
+        "complete_ready": true,
+        "critical_gap_undetermined": true,
+        "family_specific_noncritical_comparator": true,
+        "negative_restoration_not_ready": true,
+        "negative_restoration_r0_eligible_false": true,
+        "noncritical_same_decisive_decision": true,
+        "positive_restoration_r0_eligible_true": true,
+        "positive_restoration_ready": true,
+        "single_critical_gap_r0": true,
+        "single_noncritical_gap": true
+      },
+      "comparator_session": 6,
+      "family": "any_of",
+      "task_id": "followup-any_of-restore-stale"
+    },
+    {
+      "checks": {
+        "all_explicit_requirement_patterns": true,
+        "complete_ready": true,
+        "critical_gap_undetermined": true,
+        "family_specific_noncritical_comparator": true,
+        "negative_restoration_not_ready": true,
+        "negative_restoration_r0_eligible_false": true,
+        "noncritical_same_decisive_decision": true,
+        "positive_restoration_r0_eligible_true": true,
+        "positive_restoration_ready": true,
+        "single_critical_gap_r0": true,
+        "single_noncritical_gap": true
+      },
+      "comparator_session": 6,
+      "family": "any_of",
+      "task_id": "followup-any_of-cooling-invalidated"
+    },
+    {
+      "checks": {
+        "all_explicit_requirement_patterns": true,
+        "complete_ready": true,
+        "critical_gap_undetermined": true,
+        "family_specific_noncritical_comparator": true,
+        "negative_restoration_not_ready": true,
+        "negative_restoration_r0_eligible_false": true,
+        "noncritical_same_decisive_decision": true,
+        "positive_restoration_r0_eligible_true": true,
+        "positive_restoration_ready": true,
+        "single_critical_gap_r0": true,
+        "single_noncritical_gap": true
+      },
+      "comparator_session": 6,
+      "family": "any_of",
+      "task_id": "followup-any_of-readpath-version_mismatch"
+    }
+  ],
+  "failures": [],
+  "inputs": {
+    "manifest_path": "experiments/model_transfer/followup/task-manifest.json",
+    "manifest_sha256": "80f067e1c3edbc77aa13146b56398c06ba475e83516d7577c19b515faada8c1c",
+    "protocol_path": "experiments/model_transfer/followup/protocol.json",
+    "protocol_sha256": "dd3802582db38e847a44ee193b498d42182f231a996e0ac45cbf289e5b6a0e4e"
+  },
+  "method": {
+    "comparison": "Type-aware equality for eq; numeric <= for lte.",
+    "composition": "all_of: false dominates, otherwise unknown unless all true. any_of: conjunction within each alternative, true alternative dominates, otherwise unknown unless all alternatives false.",
+    "consultation_of_authored_expected": "Compared only after independent raw-fact calculation.",
+    "eligibility": "Matching fact key; active status; required scope keys equal snapshot target; observed age from 0 to max_age_minutes inclusive; select uniquely newest eligible observation. Missing or tied newest yields unknown."
+  },
+  "passed": true,
+  "positions": [
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "missing",
+      "condition": "complete",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 2,
+      "task_id": "followup-all_of-release-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "undetermined",
+      "availability_cause": "missing",
+      "condition": "critical_gap",
+      "decision": "undetermined",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "unknown",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 4,
+      "task_id": "followup-all_of-release-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "missing",
+      "condition": "restored_positive",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 6,
+      "task_id": "followup-all_of-release-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "missing",
+      "condition": "restored_negative",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 8,
+      "task_id": "followup-all_of-release-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "missing",
+      "condition": "noncritical_gap",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-release-missing-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "unknown",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 10,
+      "task_id": "followup-all_of-release-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "stale",
+      "condition": "complete",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 2,
+      "task_id": "followup-all_of-backup-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "undetermined",
+      "availability_cause": "stale",
+      "condition": "critical_gap",
+      "decision": "undetermined",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 6,
+              "fact_id": "followup-all_of-backup-stale-fact-0",
+              "reasons": [
+                "too_old"
+              ]
+            }
+          ],
+          "requirement_id": "r0",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "unknown",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 4,
+      "task_id": "followup-all_of-backup-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "stale",
+      "condition": "restored_positive",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 6,
+      "task_id": "followup-all_of-backup-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "stale",
+      "condition": "restored_negative",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 8,
+      "task_id": "followup-all_of-backup-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "stale",
+      "condition": "noncritical_gap",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 6,
+              "fact_id": "followup-all_of-backup-stale-fact-1",
+              "reasons": [
+                "too_old"
+              ]
+            }
+          ],
+          "requirement_id": "r1",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-backup-stale-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "unknown",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 10,
+      "task_id": "followup-all_of-backup-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "invalidated",
+      "condition": "complete",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 2,
+      "task_id": "followup-all_of-assembly-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "undetermined",
+      "availability_cause": "invalidated",
+      "condition": "critical_gap",
+      "decision": "undetermined",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 0,
+              "fact_id": "followup-all_of-assembly-invalidated-fact-0",
+              "reasons": [
+                "not_active"
+              ]
+            }
+          ],
+          "requirement_id": "r0",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "unknown",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 4,
+      "task_id": "followup-all_of-assembly-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "invalidated",
+      "condition": "restored_positive",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 6,
+      "task_id": "followup-all_of-assembly-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "invalidated",
+      "condition": "restored_negative",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 8,
+      "task_id": "followup-all_of-assembly-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "invalidated",
+      "condition": "noncritical_gap",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 0,
+              "fact_id": "followup-all_of-assembly-invalidated-fact-1",
+              "reasons": [
+                "not_active"
+              ]
+            }
+          ],
+          "requirement_id": "r1",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-assembly-invalidated-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "unknown",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 10,
+      "task_id": "followup-all_of-assembly-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "version_mismatch",
+      "condition": "complete",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 2,
+      "task_id": "followup-all_of-export-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "undetermined",
+      "availability_cause": "version_mismatch",
+      "condition": "critical_gap",
+      "decision": "undetermined",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 0,
+              "fact_id": "followup-all_of-export-version_mismatch-fact-0",
+              "reasons": [
+                "scope_mismatch"
+              ]
+            }
+          ],
+          "requirement_id": "r0",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "unknown",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 4,
+      "task_id": "followup-all_of-export-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "version_mismatch",
+      "condition": "restored_positive",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 6,
+      "task_id": "followup-all_of-export-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "version_mismatch",
+      "condition": "restored_negative",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "true",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 8,
+      "task_id": "followup-all_of-export-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "version_mismatch",
+      "condition": "noncritical_gap",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 0,
+              "fact_id": "followup-all_of-export-version_mismatch-fact-1",
+              "reasons": [
+                "scope_mismatch"
+              ]
+            }
+          ],
+          "requirement_id": "r1",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-all_of-export-version_mismatch-fact-2"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "all_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "unknown",
+        "r2": "true"
+      },
+      "route_states": {},
+      "session": 10,
+      "task_id": "followup-all_of-export-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "missing",
+      "condition": "complete",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "false"
+      },
+      "session": 2,
+      "task_id": "followup-any_of-routing-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "undetermined",
+      "availability_cause": "missing",
+      "condition": "critical_gap",
+      "decision": "undetermined",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "unknown",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "unknown",
+        "reserve": "false"
+      },
+      "session": 4,
+      "task_id": "followup-any_of-routing-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "missing",
+      "condition": "restored_positive",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "false"
+      },
+      "session": 6,
+      "task_id": "followup-any_of-routing-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "missing",
+      "condition": "restored_negative",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "false",
+        "reserve": "false"
+      },
+      "session": 8,
+      "task_id": "followup-any_of-routing-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "missing",
+      "condition": "noncritical_gap",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-routing-missing-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "unknown",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "unknown"
+      },
+      "session": 10,
+      "task_id": "followup-any_of-routing-missing"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "stale",
+      "condition": "complete",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "false"
+      },
+      "session": 2,
+      "task_id": "followup-any_of-restore-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "undetermined",
+      "availability_cause": "stale",
+      "condition": "critical_gap",
+      "decision": "undetermined",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 6,
+              "fact_id": "followup-any_of-restore-stale-fact-0",
+              "reasons": [
+                "too_old"
+              ]
+            }
+          ],
+          "requirement_id": "r0",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "unknown",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "unknown",
+        "reserve": "false"
+      },
+      "session": 4,
+      "task_id": "followup-any_of-restore-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "stale",
+      "condition": "restored_positive",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "false"
+      },
+      "session": 6,
+      "task_id": "followup-any_of-restore-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "stale",
+      "condition": "restored_negative",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "false",
+        "reserve": "false"
+      },
+      "session": 8,
+      "task_id": "followup-any_of-restore-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "stale",
+      "condition": "noncritical_gap",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 6,
+              "fact_id": "followup-any_of-restore-stale-fact-2",
+              "reasons": [
+                "too_old"
+              ]
+            }
+          ],
+          "requirement_id": "r2",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-restore-stale-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "unknown",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "unknown"
+      },
+      "session": 10,
+      "task_id": "followup-any_of-restore-stale"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "invalidated",
+      "condition": "complete",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "false"
+      },
+      "session": 2,
+      "task_id": "followup-any_of-cooling-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "undetermined",
+      "availability_cause": "invalidated",
+      "condition": "critical_gap",
+      "decision": "undetermined",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 0,
+              "fact_id": "followup-any_of-cooling-invalidated-fact-0",
+              "reasons": [
+                "not_active"
+              ]
+            }
+          ],
+          "requirement_id": "r0",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "unknown",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "unknown",
+        "reserve": "false"
+      },
+      "session": 4,
+      "task_id": "followup-any_of-cooling-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "invalidated",
+      "condition": "restored_positive",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "false"
+      },
+      "session": 6,
+      "task_id": "followup-any_of-cooling-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "invalidated",
+      "condition": "restored_negative",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "false",
+        "reserve": "false"
+      },
+      "session": 8,
+      "task_id": "followup-any_of-cooling-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "invalidated",
+      "condition": "noncritical_gap",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 0,
+              "fact_id": "followup-any_of-cooling-invalidated-fact-2",
+              "reasons": [
+                "not_active"
+              ]
+            }
+          ],
+          "requirement_id": "r2",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-cooling-invalidated-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "unknown",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "unknown"
+      },
+      "session": 10,
+      "task_id": "followup-any_of-cooling-invalidated"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "version_mismatch",
+      "condition": "complete",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "false"
+      },
+      "session": 2,
+      "task_id": "followup-any_of-readpath-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "undetermined",
+      "availability_cause": "version_mismatch",
+      "condition": "critical_gap",
+      "decision": "undetermined",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 0,
+              "fact_id": "followup-any_of-readpath-version_mismatch-fact-0",
+              "reasons": [
+                "scope_mismatch"
+              ]
+            }
+          ],
+          "requirement_id": "r0",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "unknown",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "unknown",
+        "reserve": "false"
+      },
+      "session": 4,
+      "task_id": "followup-any_of-readpath-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "version_mismatch",
+      "condition": "restored_positive",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "false"
+      },
+      "session": 6,
+      "task_id": "followup-any_of-readpath-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "not_ready",
+      "availability_cause": "version_mismatch",
+      "condition": "restored_negative",
+      "decision": "not_ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-0"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-2"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r2",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-2"
+          ],
+          "state": "false"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "false",
+        "r1": "true",
+        "r2": "false",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "false",
+        "reserve": "false"
+      },
+      "session": 8,
+      "task_id": "followup-any_of-readpath-version_mismatch"
+    },
+    {
+      "agrees_with_authored_expected": true,
+      "authored_expected": "ready",
+      "availability_cause": "version_mismatch",
+      "condition": "noncritical_gap",
+      "decision": "ready",
+      "eligibility": [
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-0"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r0",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-0"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r1",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-1"
+          ],
+          "state": "true"
+        },
+        {
+          "eligible_fact_ids": [],
+          "reason": "no_eligible_fact",
+          "rejected_facts": [
+            {
+              "age_minutes": 0,
+              "fact_id": "followup-any_of-readpath-version_mismatch-fact-2",
+              "reasons": [
+                "scope_mismatch"
+              ]
+            }
+          ],
+          "requirement_id": "r2",
+          "selected_fact_ids": [],
+          "state": "unknown"
+        },
+        {
+          "eligible_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "reason": "unique_newest_eligible",
+          "rejected_facts": [],
+          "requirement_id": "r3",
+          "selected_fact_ids": [
+            "followup-any_of-readpath-version_mismatch-fact-3"
+          ],
+          "state": "true"
+        }
+      ],
+      "family": "any_of",
+      "requirement_states": {
+        "r0": "true",
+        "r1": "true",
+        "r2": "unknown",
+        "r3": "true"
+      },
+      "route_states": {
+        "primary": "true",
+        "reserve": "unknown"
+      },
+      "session": 10,
+      "task_id": "followup-any_of-readpath-version_mismatch"
+    }
+  ],
+  "read_limits": "Only manifest and protocol read; no participant answers, calibration, coder outputs, existing reference-review calculation, task/scorer implementation, or live reference output read.",
+  "reference_distribution": {
+    "not_ready": 12,
+    "ready": 20,
+    "undetermined": 8
+  },
+  "reviewer": "/root/followup_live_audit/reference_check; separate AI agent in the same orchestration, not external human validation",
+  "run_id": "37023431850",
+  "scheduled_count": 40,
+  "scheduled_positions": [
+    2,
+    4,
+    6,
+    8,
+    10
+  ],
+  "schema": "independent-raw-fact-reference-crosscheck/1"
+}
