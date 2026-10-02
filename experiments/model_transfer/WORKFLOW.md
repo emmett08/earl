@@ -53,7 +53,10 @@ AI assessment is supported when explicitly declared in the completed labels.
 Supply the assessor fields documented in [README.md](README.md); AI-coded
 decisions are recorded as AI, and their measurement limits remain visible in
 analysis and allocation reports. The current pilot's post-collection amendment
-and reproducible coding procedure are in [AI-CODING.md](../../annotations/AI-CODING.md).
+and reproducible coding procedure are in the
+[EAL/3 pilot coding record](../../annotations/pilot-36985062352-AI-CODING.md).
+The [retained EAL/2 coding record](../../annotations/AI-CODING.md) describes the
+earlier collection separately.
 
 | Operation | Required inputs | Ordered work and stopping point |
 |---|---|---|

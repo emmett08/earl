@@ -70,7 +70,8 @@ and `source_items_sha256` (the SHA-256 of the original masked `items.json`).
 The importer preserves this provenance, records AI decisions as `ai`, and never
 identifies them as human assessments. Analysis and allocation reports carry
 `EAL/annotation-provenance/1` and qualify inference conditional on AI labels.
-See [the retained pilot coding amendment](../../annotations/AI-CODING.md).
+See [the EAL/3 pilot coding amendment](../../annotations/pilot-36985062352-AI-CODING.md)
+and [the retained EAL/2 pilot assessment](../../annotations/AI-CODING.md).
 Save the completed assessor file as `/tmp/eal-labels.json`, then import it:
 
 ```bash
