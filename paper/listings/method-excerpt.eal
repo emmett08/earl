@@ -1,11 +1,7 @@
 reasoning task_rules {
-  method "experiment/task-rules/1";
-  rationale "Evaluate eligible dated facts using the source-bound three-valued task rule; negative and unknown outcomes are completed calculations.";
-  require "snapshot_minute" >= 0;
+  method "experiment/task-rules/1"
+  rationale "Evaluate eligible dated facts using the source-bound three-valued task rule; negative and unknown outcomes are completed calculations."
+  require (snapshot_minute >= 0)
 }
 
-argument result {
-  conclusion criterion_evaluated;
-  reasoning task_rules;
-  evidence report;
-}
+argument result = [evidence report] via task_rules => criterion_evaluated

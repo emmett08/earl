@@ -1,0 +1,204 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-09-paired-tradeoff",
+  "purpose": {
+    "reader_question": "Do the token and accumulated-time contrasts occur in the same paired trajectories?",
+    "expected_reading": "All 192 paired positions retain both numerical contrasts, zero boundaries and observed quadrant counts; model markers identify assignment without reattributing donor usage.",
+    "claim": "136 of 192 matched trajectories combine fewer EAL tokens with higher summed session and setup time, while 54 combine fewer tokens with lower summed time.",
+    "scope": "Original resources from GitHub Actions run 36985062352, with AI-only decision coding added by finish run 36997861629 to the same 192 paired trajectories across six selected authored cases, two donor profiles, two recipient profiles and two tool modes; no additional experimental observations or independently validated assessor accuracy.",
+    "permitted_inferences": [
+      "Descriptive resource contrasts for the explicitly included recorded sessions.",
+      "Comparison of recorded quantities under the declared denominators and transformations."
+    ],
+    "prohibited_inferences": [
+      "Population-wide or causal superiority of EAL.",
+      "Independent answer correctness, explanation quality, assessor accuracy or reliability from these records.",
+      "Net lifecycle cost savings after unmeasured authoring, review, maintenance or acquisition costs."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "pairs",
+      "path": "analysis/paired_resources.csv",
+      "status": "derived",
+      "source_reference": "Whole-sequence matched resources derived from export rows.json and calls.json for run 36985062352.",
+      "sha256": "04c0032b5f8cb403cfee4bf12b491e1a5d1f8193db02d2a54ccced287f5c1a84"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "reduction",
+      "label": "Paired whole-trajectory token reduction",
+      "unit": "%",
+      "definition": "100(1 - EAL whole-trajectory total tokens / ordinary whole-trajectory total tokens).",
+      "input_ids": [
+        "pairs"
+      ],
+      "transformation": "Sum input plus output within each arm and matched trajectory; form the paired ratio.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "matched whole trajectories",
+        "inclusion": "All 192 matched trajectories, donor plus ten recipients in each arm."
+      }
+    },
+    {
+      "id": "time",
+      "label": "Difference in summed session and setup time",
+      "unit": "seconds",
+      "definition": "EAL summed donor/recipient session time and setup minus the corresponding ordinary sum.",
+      "input_ids": [
+        "pairs"
+      ],
+      "transformation": "Use the retained matched whole-trajectory accumulated-time difference, retaining measured sequence setup.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "matched whole trajectories",
+        "inclusion": "All 192 matched trajectories, including all eleven session durations and measured setup in each arm."
+      }
+    },
+    {
+      "id": "recipient",
+      "label": "Assigned recipient model",
+      "unit": "category",
+      "definition": "The recipient model assignment of the paired trajectory, even though both donor and recipient costs are included.",
+      "input_ids": [
+        "pairs"
+      ],
+      "transformation": "Retain receiver identity from the matched-block table.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "horizontal",
+      "marks": "square and triangle point data markers",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Signed paired total-token reduction; positive means fewer EAL tokens.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "reduction"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Signed paired total-token reduction; positive means fewer EAL tokens.",
+        "domain": [
+          -10,
+          60
+        ]
+      }
+    },
+    {
+      "id": "vertical",
+      "marks": "square and triangle point data markers",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "EAL minus ordinary summed session and setup time; positive means a higher EAL accumulated-time sum.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "time"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "EAL minus ordinary summed session and setup time; positive means a higher EAL accumulated-time sum.",
+        "domain": [
+          -20,
+          27
+        ]
+      }
+    },
+    {
+      "id": "recipientmarks",
+      "marks": "square and triangle data markers",
+      "mark_role": "data_mark",
+      "channel": "shape",
+      "represents": "Squares denote assigned plain recipients and triangles assigned reasoning recipients; these are data marks.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "recipient"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Squares denote assigned plain recipients and triangles assigned reasoning recipients; these are data marks.",
+        "domain": [
+          "plain",
+          "reasoning"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [],
+    "prohibit_block_circle_diagrams": true
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "source": "figures/09-paired-tradeoff.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_figures.py"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "figures/09-paired-tradeoff.tikz.tex",
+        "--spec",
+        "09-paired-tradeoff.spec.json",
+        "--output",
+        "figures/09-paired-tradeoff.pdf",
+        "--audit",
+        "figures/09-paired-tradeoff.audit.json",
+        "--preview",
+        "figures/09-paired-tradeoff.png",
+        "--qa-dir",
+        "qa/09-paired-tradeoff"
+      ]
+    ],
+    "outputs": {
+      "pdf": "figures/09-paired-tradeoff.pdf",
+      "preview": "figures/09-paired-tradeoff.png",
+      "audit": "figures/09-paired-tradeoff.audit.json",
+      "review": "figures/09-paired-tradeoff.review.json"
+    },
+    "dependencies": [
+      "captions/09-paired-tradeoff.caption.txt"
+    ]
+  }
+}

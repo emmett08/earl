@@ -1,0 +1,98 @@
+% Required packages: pgfplots, lmodern
+% Required TikZ libraries: none
+% Target width: 160 mm maximum
+% Minimum text size: 9 pt
+% Colour/greyscale intent: colour_and_greyscale, direct labels and line styles
+\begin{tikzpicture}
+\definecolor{ealblue}{HTML}{165D81}
+\definecolor{ordinaryorange}{HTML}{C27021}
+\definecolor{neutralgrey}{HTML}{616970}
+\pgfplotsset{compat=1.18,
+  every axis/.append style={
+    width=148mm,height=66mm,
+    font=\fontsize{9}{11}\selectfont,
+    tick label style={font=\fontsize{9}{11}\selectfont},
+    label style={font=\fontsize{9}{11}\selectfont},
+    title style={font=\fontsize{10}{12}\selectfont},
+    legend style={font=\fontsize{9}{11}\selectfont,draw=none,fill=none},
+    axis lines=left,axis line style={line width=0.5pt},
+    tick style={line width=0.5pt},
+    grid style={line width=0.4pt,black!12},
+    scaled ticks=false,clip=false}}
+\begin{scope}[x=14.5mm,y=12mm,every node/.style={font=\fontsize{9}{11}\selectfont}]
+\node[font=\fontsize{10}{12}\selectfont] at (4.2,5.05) {AI-coded communicated decision};
+\node[anchor=east] at (-0.12,3.85) {Reference};
+\node[font=\fontsize{10}{12}\selectfont] at (2,4.4) {Ordinary};
+\node[align=center,text width=13.5mm] at (0.5,3.75) {Ready};
+\node[align=center,text width=13.5mm] at (1.5,3.75) {Not\\ready};
+\node[align=center,text width=13.5mm] at (2.5,3.75) {Undet.};
+\node[align=center,text width=13.5mm] at (3.5,3.75) {Ambig.};
+\node[anchor=east,align=right,text width=27mm] at (-0.12,3) {Ready\\$N=768$};
+\path[fill=black!48.445312,draw=black!30,line width=0.4pt] (0.0,2.57) rectangle (1.0,3.43);
+\node[text=white] at (0.5,3) {477};
+\path[fill=black!9.953125,draw=black!30,line width=0.4pt] (1.0,2.57) rectangle (2.0,3.43);
+\node[text=black] at (1.5,3) {98};
+\path[fill=black!19.195312,draw=black!30,line width=0.4pt] (2.0,2.57) rectangle (3.0,3.43);
+\node[text=black] at (2.5,3) {189};
+\path[fill=black!0.406250,draw=black!30,line width=0.4pt] (3.0,2.57) rectangle (4.0,3.43);
+\node[text=black] at (3.5,3) {4};
+\node[anchor=east,align=right,text width=27mm] at (-0.12,2) {Not ready\\$N=512$};
+\path[fill=black!44.332031,draw=black!30,line width=0.4pt] (0.0,1.57) rectangle (1.0,2.43);
+\node[text=black] at (0.5,2) {291};
+\path[fill=black!12.796875,draw=black!30,line width=0.4pt] (1.0,1.57) rectangle (2.0,2.43);
+\node[text=black] at (1.5,2) {84};
+\path[fill=black!19.957031,draw=black!30,line width=0.4pt] (2.0,1.57) rectangle (3.0,2.43);
+\node[text=black] at (2.5,2) {131};
+\path[fill=black!0.914062,draw=black!30,line width=0.4pt] (3.0,1.57) rectangle (4.0,2.43);
+\node[text=black] at (3.5,2) {6};
+\node[anchor=east,align=right,text width=27mm] at (-0.12,1) {Undetermined\\$N=640$};
+\path[fill=black!44.118750,draw=black!30,line width=0.4pt] (0.0,0.5700000000000001) rectangle (1.0,1.43);
+\node[text=black] at (0.5,1) {362};
+\path[fill=black!12.187500,draw=black!30,line width=0.4pt] (1.0,0.5700000000000001) rectangle (2.0,1.43);
+\node[text=black] at (1.5,1) {100};
+\path[fill=black!21.693750,draw=black!30,line width=0.4pt] (2.0,0.5700000000000001) rectangle (3.0,1.43);
+\node[text=black] at (2.5,1) {178};
+\path[fill=black!0.000000,draw=black!30,line width=0.4pt] (3.0,0.5700000000000001) rectangle (4.0,1.43);
+\node[text=black] at (3.5,1) {0};
+\node[font=\fontsize{10}{12}\selectfont] at (6.45,4.4) {EAL};
+\node[align=center,text width=13.5mm] at (4.95,3.75) {Ready};
+\node[align=center,text width=13.5mm] at (5.95,3.75) {Not\\ready};
+\node[align=center,text width=13.5mm] at (6.95,3.75) {Undet.};
+\node[align=center,text width=13.5mm] at (7.95,3.75) {Ambig.};
+\path[fill=black!76.984375,draw=black!30,line width=0.4pt] (4.45,2.57) rectangle (5.45,3.43);
+\node[text=white] at (4.95,3) {758};
+\path[fill=black!1.015625,draw=black!30,line width=0.4pt] (5.45,2.57) rectangle (6.45,3.43);
+\node[text=black] at (5.95,3) {10};
+\path[fill=black!0.000000,draw=black!30,line width=0.4pt] (6.45,2.57) rectangle (7.45,3.43);
+\node[text=black] at (6.95,3) {0};
+\path[fill=black!0.000000,draw=black!30,line width=0.4pt] (7.45,2.57) rectangle (8.45,3.43);
+\node[text=black] at (7.95,3) {0};
+\path[fill=black!0.304688,draw=black!30,line width=0.4pt] (4.45,1.57) rectangle (5.45,2.43);
+\node[text=black] at (4.95,2) {2};
+\path[fill=black!77.390625,draw=black!30,line width=0.4pt] (5.45,1.57) rectangle (6.45,2.43);
+\node[text=white] at (5.95,2) {508};
+\path[fill=black!0.000000,draw=black!30,line width=0.4pt] (6.45,1.57) rectangle (7.45,2.43);
+\node[text=black] at (6.95,2) {0};
+\path[fill=black!0.304688,draw=black!30,line width=0.4pt] (7.45,1.57) rectangle (8.45,2.43);
+\node[text=black] at (7.95,2) {2};
+\path[fill=black!0.731250,draw=black!30,line width=0.4pt] (4.45,0.5700000000000001) rectangle (5.45,1.43);
+\node[text=black] at (4.95,1) {6};
+\path[fill=black!2.803125,draw=black!30,line width=0.4pt] (5.45,0.5700000000000001) rectangle (6.45,1.43);
+\node[text=black] at (5.95,1) {23};
+\path[fill=black!73.125000,draw=black!30,line width=0.4pt] (6.45,0.5700000000000001) rectangle (7.45,1.43);
+\node[text=white] at (6.95,1) {600};
+\path[fill=black!1.340625,draw=black!30,line width=0.4pt] (7.45,0.5700000000000001) rectangle (8.45,1.43);
+\node[text=black] at (7.95,1) {11};
+\node at (4.2,0.1) {Tone: percentage within each reference row};
+\path[fill=black!0.0,draw=black!30,line width=0.4pt] (1.9500000000000002,-0.65) rectangle (2.45,-0.35);
+\node at (2.2,-1) {0\%};
+\path[fill=black!19.5,draw=black!30,line width=0.4pt] (2.95,-0.65) rectangle (3.45,-0.35);
+\node at (3.2,-1) {25\%};
+\path[fill=black!39.0,draw=black!30,line width=0.4pt] (3.95,-0.65) rectangle (4.45,-0.35);
+\node at (4.2,-1) {50\%};
+\path[fill=black!58.5,draw=black!30,line width=0.4pt] (4.95,-0.65) rectangle (5.45,-0.35);
+\node at (5.2,-1) {75\%};
+\path[fill=black!78.0,draw=black!30,line width=0.4pt] (5.95,-0.65) rectangle (6.45,-0.35);
+\node at (6.2,-1) {100\%};
+\end{scope}
+\end{tikzpicture}

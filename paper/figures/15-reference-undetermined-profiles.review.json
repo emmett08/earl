@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-15-reference-undetermined-profiles",
+  "spec_sha256": "5bdfc29c26ebcebe5879473bc82e36e76ced0a7cd52f233bd2b9e3492d347609",
+  "audit_sha256": "ece60278e08dd6acd9531dc833cffafecd5a43515bbd6bced73c0724623629a7",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/15-reference-undetermined-profiles.pdf",
+      "sha256": "d30ec4749b5dd3512e6a48c409a837019a35c78dac6bf9c4fd3eae2adddca28c"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/15-reference-undetermined-profiles.png",
+      "sha256": "27f130d1b0b717288f5da69bb6608f1f22f63c960d2462ba5b2c3397ebec46a1"
+    }
+  ],
+  "reviewer": {
+    "id": "/root/followup_scientific_review: separate AI reviewer, did not construct figure or choose encoding; figure-specific reconstruction recorded before spec, source, data and audit access",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "direct-labelled-position-plot",
+      "prototype": "figures/15-reference-undetermined-profiles.png",
+      "observations": {
+        "reading": "Read six disjoint categorical rows and exact linear-axis count positions. The two count locations are 128 and 256; direct annotations give both expanded counts and unique-position denominators. A single existing form was reviewed: the user requested a semantic check of this authored rendering rather than new candidate design; alternatives would not change these exact categories or their multiplicity.",
+        "annotation_burden": "Every row has a category, expanded count and unique-position annotation. The multiplier is printed in the figure, and the caption supplies historical-fallback meaning and inference limits. No colour legend decoding or uncertainty estimation is needed.",
+        "reproduction": "Inspected original colour render and final-size 96 dpi greyscale preview. All six category labels, count labels, multiplier and axis remain readable. Marks retain position meaning in greyscale; no clipping or label collision observed. Mechanical audit has no errors or warnings."
+      }
+    }
+  ],
+  "selected_candidate": "direct-labelled-position-plot",
+  "initial_reconstruction": {
+    "claim": "The 1,280 reference-undetermined recipient references in the authored synthetic mixture decompose into six mutually exclusive task/time-position profiles.",
+    "quantities": [
+      "20 unique reference-undetermined task/time positions, repeated 32 times per arm across 2 arms = 1,280 references; 640 per arm; one third of 3,840 recipient references.",
+      "Stale: 128 expanded references from 2 positions; missing observation: 256 from 4; invalidated: 128 from 2; invalidated + stale: 256 from 4; scope/version mismatch: 256 from 4; scope/version mismatch + stale: 256 from 4.",
+      "The horizontal linear axis is recipient references pooled across both arms; the tick marks run from 0 to 320 in 64-reference increments."
+    ],
+    "evidence_status": "Derived exact descriptive counts of constructed synthetic reference inputs. The plotted values are not measured model participant outputs, estimated causal effects or population frequencies.",
+    "scope": "Six disjoint rejection-reason profiles classify the twenty authored task/time positions with reference-undetermined states. Mixed profiles collect reasons for decision-relevant unknown requirements on unrefuted routes, including historical fallback records. Trajectory and arm expansion produces repeated references rather than new independent task cases.",
+    "unintended_inferences": [
+      "The 128/256 values could be mistaken for independent failure counts if detached from the printed multiplier and proposed caption; the displayed and captioned context explicitly prevents that reading.",
+      "No model accuracy, model-output ambiguity, communication-code ambiguity, separate causal cause effects or deployment prevalence is supported."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "The initial reconstruction agrees with the specification claim, all six profile counts, unique-position counts, linear count encoding, two-arm expansion and exact-derived status.",
+      "Caption and specification both distinguish the union of historical rejection reasons from independent failures and causal effects; the plot contains no model-output series.",
+      "The exact finite reference mixture explains the absence of sampling intervals. The row order is nominal, with no chronology or causal ranking implied.",
+      "Proposed caption inspected before specification; SHA256 02470f0a5745fb2bdfad6f41f06fd52863a187eff3cf5eda623879e310952342. Initial wording: The constructed mixture behind 1,280 reference-undetermined recipient references. The six disjoint profiles classify twenty task/time positions in the authored synthetic cases; each position is repeated across 32 trajectories per arm and two arms, yielding 640 references per arm and one third of all 3,840 recipient references. Direct labels give expanded references and unique positions. Profiles collect rejection reasons for decision-relevant unknown requirements on unrefuted routes, including historical fallback records; mixed profiles are not independent failures or causal-effect estimates. These counts describe the constructed reference mixture, not model outputs, communication-code ambiguities or deployment prevalence.",
+      "Alternative text was checked after the blind reconstruction and matches the displayed counts/status; SHA256 22451bbf6105dcb980dae992fed3862b92ef03ed51a2bfc7858965983b6b4a07. Both caption and alternative text are current declared build dependencies covered by the exact audit hash."
+    ],
+    "findings": [
+      {
+        "id": "repeated-reference-denominator",
+        "severity": "informational",
+        "description": "Expanded references are repeated views of twenty task/time positions; they are not 1,280 independent unknown cases.",
+        "disposition": "accepted",
+        "reason": "The multiplier is printed directly above the plot, every count is paired with its unique-position count, and the proposed caption explicitly names the authored construction and repeated trajectories."
+      },
+      {
+        "id": "mixed-profile-history",
+        "severity": "informational",
+        "description": "Mixed profile labels combine historical blocker reasons and should not be read as distinct independent causal failures.",
+        "disposition": "accepted",
+        "reason": "The caption explicitly names historical fallback records, decision-relevant unknown requirements on unrefuted routes, and prohibits independent-failure and causal-effect readings."
+      }
+    ],
+    "audit_warning_dispositions": []
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "Review is figure-level AI screening by an agent distinct from the constructor within the same orchestration session; it is not an independent human reader experiment.",
+    "The figure-specific blind reconstruction was recorded before specification/source/data/audit access. A separately spawned fresh helper thread was unavailable at the thread limit; no fresh-thread or human-reading claim is made.",
+    "Only the existing selected rendering was reviewed; no comparative human search-time or comprehension evidence is available.",
+    "The counts describe the constructed finite reference mixture only. Real-task prevalence, model capability and causal effects are outside the figure scope.",
+    "The final manuscript page remains to be compiled and visually inspected by the parent; acceptance here binds the current standalone figure PDF, preview, specification, caption dependencies and mechanical audit."
+  ]
+}

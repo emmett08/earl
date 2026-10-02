@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-06-latency-distribution",
+  "spec_sha256": "a5232271430fb7b8cbcec1c497e1a952175cda1b75de416bd001361875068e27",
+  "audit_sha256": "d9a0dc716d6dc967e7f4a5dd1e02d35cf843f22afdf47efea986b7afffe991f0",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/06-latency-distribution.pdf",
+      "sha256": "2bfd48d9d5e81f7a495ce1459cb2d2c66a50bee8d22e9d9df5444ce12cb50576"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/06-latency-distribution.pdf",
+      "sha256": "2bfd48d9d5e81f7a495ce1459cb2d2c66a50bee8d22e9d9df5444ce12cb50576"
+    }
+  ],
+  "reviewer": {
+    "id": "/root",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "selected",
+      "prototype": "figures/06-latency-distribution.pdf",
+      "observations": {
+        "reading": "The ECDF describes 192 paired EAL-minus-ordinary summed session times plus setup. Positive means a higher EAL accumulated-time sum. 138 pairs have positive differences and the median is +3.01 seconds. Complete zero and unity tails span the displayed domain.",
+        "annotation_burden": "Direct axis labels, category labels and explicit caption retain units, sign, denominator and evidence status. The independent reviewer recovered the stated quantities.",
+        "reproduction": "The exact current colour PNG and caption were independently accepted by root. Current mechanical audits meet the 160 mm maximum width, 9 pt lettering and 0.4 pt stroke floors; retained shape, line-pattern, order and direct-label mappings also support greyscale inspection."
+      }
+    }
+  ],
+  "selected_candidate": "selected",
+  "initial_reconstruction": {
+    "claim": "The ECDF describes 192 paired EAL-minus-ordinary summed session times plus setup. Positive means a higher EAL accumulated-time sum. 138 pairs have positive differences and the median is +3.01 seconds.",
+    "quantities": [
+      "Paired difference in summed session and setup time, seconds",
+      "Empirical cumulative fraction, percent",
+      "192 matched whole trajectories"
+    ],
+    "evidence_status": "Derived distribution of observed timing records, retaining faster and slower pairs.",
+    "scope": "Selected donor-plus-ten-recipient trajectories, with measured sequence setup.",
+    "unintended_inferences": [
+      "Summed concurrent activity is not independent workflow wall-clock duration."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "Root independently inspected the exact current PNG and caption, and accepted their labels, glyphs, sign meanings, quantities, inclusion rules and fixed-run scope against the raw numerical reconstruction.",
+      "Current source, specification, retained data, caption and mechanical audit agree. Caption dependencies and exact source/specification/PDF hashes are retained by the audit.",
+      "Earlier independent colour and greyscale screening retained the same data-marker and line-pattern mappings; the current changes complete ECDF tails or clarify boundaries and sample metadata.",
+      "Completion-stage root semantic acceptance: analysis/completion-resource-semantic-acceptance.json SHA-256 82db48c92e3d127d31780c2afd6113d4ed17a2dffde7607ec9c6bdcb08e4be62. All ten current resource PNGs equal their independently accepted pre-completion versions; final captions and two-stage scope were freshly compared.",
+      "Completion-stage independent numerical audit of all fourteen canonical figures: analysis/completion-figure-numerical-audit.json SHA-256 7f19166c06865828a1de73ce1afc1b51738ff61fdaad40117ce2d58d52eeedce."
+    ],
+    "findings": [
+      {
+        "id": "grid-annotation-clearance",
+        "severity": "minor",
+        "description": "A faint horizontal grid line intersected the count annotation font bounds.",
+        "disposition": "resolved",
+        "reason": "The annotation has been raised clear of the grid without changing any recorded value."
+      },
+      {
+        "id": "final-grid-clearance",
+        "severity": "minor",
+        "description": "Mechanical font-bound diagnostics identified optional grid or reference-line contacts in an earlier render.",
+        "disposition": "resolved",
+        "reason": "Annotation placement or optional grids were revised; the current exact audit reports zero measurement warnings, and root inspected the current colour and greyscale render."
+      },
+      {
+        "id": "summed-time-boundary",
+        "severity": "minor",
+        "description": "Earlier standalone longer/slower phrasing was ambiguous for concurrent summed activity; ECDF tails also stopped at observed range.",
+        "disposition": "resolved",
+        "reason": "The axis and annotation explicitly describe higher summed session plus setup time, and complete zero/unity tails span the domain without changing observed values."
+      },
+      {
+        "id": "two-stage-scope",
+        "severity": "informational",
+        "description": "The finish run adds AI communication codes to unchanged resource records. Earlier resource-only acceptance alone did not bind the updated scope.",
+        "disposition": "accepted",
+        "reason": "Root compared all current captions and updated scope, checked unchanged PNGs and exact model/role denominators, accounting/time boundaries, acquisitions/reuse and descriptive estimands. Resource plots make no independent quality or adoption claim."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "Shell escape is intentionally disabled; retained literal source coordinates render without external TeX execution."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "PGFPlots emits this package-initialisation compatibility notice before the include-ready source sets compat=1.18. Exact coordinates, labels and glyphs were independently inspected; no visible defect results."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This is figure semantic and mechanical screening, not independent human validation of communicated decisions, factual content or explanation correctness. Resolved AI-code error and trajectory independence remain unmeasured.",
+    "The six selected cases and fixed task/model/tool mixture do not establish a task-population effect, causal component attribution or practical adoption. Statistical endpoint bounds retain their stated conditional assumptions and approximate resource component.",
+    "Manuscript placement is covered by the separate final PDF proof; this contract binds the standalone figure source, specifications, audit and exact final/prototype PDFs."
+  ]
+}

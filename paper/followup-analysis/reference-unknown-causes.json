@@ -1,0 +1,3216 @@
+{
+  "source_sha256": {
+    "cases.json": "8404edf1cfc6afa7be1c1f6514aa70e1dd6c3977194ac9716aa08d22a96c6bdc",
+    "rows.json": "22def9bf2b0902190ae65f34124bd6f73bb9e2a1350a31ffb60127d92ad0730c",
+    "annotated-rows.json": "927d14d61ad67dceb1bf72e3e5c8dda0e73e6c29407dec660f9490fdf02460ef",
+    "plan.json": "19f2c1e468c3a2b0ce5cc5a107469b2cef524c40a4344f1db4c3e120769a6ce9"
+  },
+  "scope": "Retained six-case completed pilot, independent raw fixture calculation; no model calls or relabelling.",
+  "unique_task_time_points": 66,
+  "unique_recipient_unknown_points": 20,
+  "replication": {
+    "pairs": 192,
+    "pairs_per_case": {
+      "migration-cutover-obligations": 32,
+      "migration-multiple-version-bindings": 32,
+      "release-three-obligations": 32,
+      "dispatch-direct-or-tunnel": 32,
+      "database-alternative-read-routes": 32,
+      "firmware-selective-applicability": 32
+    },
+    "arms": 2,
+    "donor_models": 2,
+    "recipient_models": 2,
+    "native_tool_settings": 2,
+    "repetitions_per_cell": 4,
+    "expanded_unknown_total": 1280,
+    "unknown_per_arm": 640
+  },
+  "reference_counts_recipient_by_arm": {
+    "ordinary": {
+      "ready": 768,
+      "not_ready": 512,
+      "undetermined": 640
+    },
+    "eal": {
+      "ready": 768,
+      "not_ready": 512,
+      "undetermined": 640
+    }
+  },
+  "unknown_by_case_both_arms": {
+    "migration-cutover-obligations": 128,
+    "migration-multiple-version-bindings": 256,
+    "release-three-obligations": 256,
+    "dispatch-direct-or-tunnel": 192,
+    "database-alternative-read-routes": 192,
+    "firmware-selective-applicability": 256
+  },
+  "unknown_by_session_position_both_arms": {
+    "0": 0,
+    "1": 0,
+    "2": 128,
+    "3": 128,
+    "4": 128,
+    "5": 128,
+    "6": 128,
+    "7": 128,
+    "8": 192,
+    "9": 192,
+    "10": 128
+  },
+  "disjoint_blocker_profiles": {
+    "invalidated": {
+      "unique_points": 2,
+      "per_arm": 64,
+      "both_arms": 128
+    },
+    "invalidated + stale": {
+      "unique_points": 4,
+      "per_arm": 128,
+      "both_arms": 256
+    },
+    "missing_observation": {
+      "unique_points": 4,
+      "per_arm": 128,
+      "both_arms": 256
+    },
+    "scope_mismatch": {
+      "unique_points": 4,
+      "per_arm": 128,
+      "both_arms": 256
+    },
+    "scope_mismatch + stale": {
+      "unique_points": 4,
+      "per_arm": 128,
+      "both_arms": 256
+    },
+    "stale": {
+      "unique_points": 2,
+      "per_arm": 64,
+      "both_arms": 128
+    }
+  },
+  "profile_definition": "Union of rejection reasons among same-key candidate records for unknown requirements on unrefuted routes. Historical fallback blockers are included. Profiles are disjoint descriptions, not additive causal-effect estimates.",
+  "communicated_decisions_all_4224": {
+    "ready": 2259,
+    "not_ready": 827,
+    "undetermined": 1113,
+    "ambiguous": 25
+  },
+  "annotation_statuses_all_4224": {
+    "ai": 4199,
+    "ambiguous": 25
+  },
+  "communicated_decisions_given_reference_unknown": {
+    "ordinary": {
+      "not_ready": 100,
+      "ready": 362,
+      "undetermined": 178
+    },
+    "eal": {
+      "undetermined": 600,
+      "not_ready": 23,
+      "ready": 6,
+      "ambiguous": 11
+    }
+  },
+  "host": {
+    "all_task_context_reference_matches": 2112,
+    "host_task_contexts": 2112,
+    "status_on_reference_unknown": {
+      "supported": 640
+    },
+    "snapshot_collections_reuses_by_position": {
+      "0": {
+        "collections": 192,
+        "reuses": 0
+      },
+      "1": {
+        "collections": 0,
+        "reuses": 192
+      },
+      "2": {
+        "collections": 192,
+        "reuses": 0
+      },
+      "3": {
+        "collections": 0,
+        "reuses": 192
+      },
+      "4": {
+        "collections": 192,
+        "reuses": 0
+      },
+      "5": {
+        "collections": 0,
+        "reuses": 192
+      },
+      "6": {
+        "collections": 192,
+        "reuses": 0
+      },
+      "7": {
+        "collections": 0,
+        "reuses": 192
+      },
+      "8": {
+        "collections": 192,
+        "reuses": 0
+      },
+      "9": {
+        "collections": 0,
+        "reuses": 192
+      },
+      "10": {
+        "collections": 192,
+        "reuses": 0
+      }
+    }
+  },
+  "zero_occurrence_causes": [
+    "missing fact value/time/status JSON field",
+    "unknown current scope key",
+    "target identity mismatch",
+    "future-dated evidence",
+    "tied newest eligible facts",
+    "expired/not-started operating assumption",
+    "stale outer snapshot"
+  ],
+  "unknown_points": [
+    {
+      "case": "release-three-obligations",
+      "family": "conjunctive_release",
+      "session": 4,
+      "event": "Tests recover, but initial rollback evidence has exceeded its three-minute freshness limit.",
+      "decision": "undetermined",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": null
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "rollback"
+      ],
+      "blocker_signature": [
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "tests": {
+          "state": true,
+          "selected_fact_id": "release-three-obligations:e05",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e01",
+              "value": true,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "signature": {
+          "state": true,
+          "selected_fact_id": "release-three-obligations:e02",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        },
+        "rollback": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e03",
+              "value": true,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "stale"
+          ]
+        }
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "family": "conjunctive_release",
+      "session": 5,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": null
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "rollback"
+      ],
+      "blocker_signature": [
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "tests": {
+          "state": true,
+          "selected_fact_id": "release-three-obligations:e05",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e01",
+              "value": true,
+              "age_minutes": 5,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "signature": {
+          "state": true,
+          "selected_fact_id": "release-three-obligations:e02",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        },
+        "rollback": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e03",
+              "value": true,
+              "age_minutes": 5,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "stale"
+          ]
+        }
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "family": "conjunctive_release",
+      "session": 8,
+      "event": "The signature evidence is explicitly invalidated; integration-test support has also expired.",
+      "decision": "undetermined",
+      "states": {
+        "tests": null,
+        "signature": null,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "signature",
+        "tests"
+      ],
+      "blocker_signature": [
+        "invalidated",
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "tests": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e01",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "release-three-obligations:e04",
+              "value": false,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "release-three-obligations:e05",
+              "value": true,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "stale"
+          ]
+        },
+        "signature": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e02",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "invalidated",
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "invalidated",
+            "stale"
+          ]
+        },
+        "rollback": {
+          "state": true,
+          "selected_fact_id": "release-three-obligations:e06",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e03",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "family": "conjunctive_release",
+      "session": 9,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "tests": null,
+        "signature": null,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "signature",
+        "tests"
+      ],
+      "blocker_signature": [
+        "invalidated",
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "tests": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e01",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "release-three-obligations:e04",
+              "value": false,
+              "age_minutes": 7,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "release-three-obligations:e05",
+              "value": true,
+              "age_minutes": 5,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "stale"
+          ]
+        },
+        "signature": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e02",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "invalidated",
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "invalidated",
+            "stale"
+          ]
+        },
+        "rollback": {
+          "state": true,
+          "selected_fact_id": "release-three-obligations:e06",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "environment",
+            "release"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "release-three-obligations:e03",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "family": "conjunctive_release",
+      "session": 4,
+      "event": "The complete snapshot contains no lag observation; the other obligations are still supported.",
+      "decision": "undetermined",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": null
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "lag"
+      ],
+      "blocker_signature": [
+        "missing_observation"
+      ],
+      "requirement_diagnostics": {
+        "schema": {
+          "state": true,
+          "selected_fact_id": "migration-cutover-obligations:e01",
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "dataset",
+            "environment",
+            "migration"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        },
+        "restore": {
+          "state": true,
+          "selected_fact_id": "migration-cutover-obligations:e02",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "dataset",
+            "environment",
+            "migration"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        },
+        "lag": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "dataset",
+            "environment",
+            "migration"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": [
+            "missing_observation"
+          ]
+        }
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "family": "conjunctive_release",
+      "session": 5,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": null
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "lag"
+      ],
+      "blocker_signature": [
+        "missing_observation"
+      ],
+      "requirement_diagnostics": {
+        "schema": {
+          "state": true,
+          "selected_fact_id": "migration-cutover-obligations:e01",
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "dataset",
+            "environment",
+            "migration"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        },
+        "restore": {
+          "state": true,
+          "selected_fact_id": "migration-cutover-obligations:e02",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "dataset",
+            "environment",
+            "migration"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        },
+        "lag": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "dataset",
+            "environment",
+            "migration"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": [
+            "missing_observation"
+          ]
+        }
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "family": "alternative_routes",
+      "session": 6,
+      "event": "The primary route is refuted by its lease; the replica is reachable but has no lag evidence.",
+      "decision": "undetermined",
+      "states": {
+        "primary_link": null,
+        "primary_lease": false,
+        "replica_link": true,
+        "replica_lag": null
+      },
+      "route_states": {
+        "primary": false,
+        "replica": null
+      },
+      "decision_relevant_unknowns": [
+        "replica_lag"
+      ],
+      "blocker_signature": [
+        "missing_observation"
+      ],
+      "requirement_diagnostics": {
+        "primary_link": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e01",
+              "value": true,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e05",
+              "value": false,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "stale"
+          ]
+        },
+        "primary_lease": {
+          "state": false,
+          "selected_fact_id": "database-alternative-read-routes:e08",
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e02",
+              "value": true,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "replica_link": {
+          "state": true,
+          "selected_fact_id": "database-alternative-read-routes:e10",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e03",
+              "value": false,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e06",
+              "value": true,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "replica_lag": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": [
+            "missing_observation"
+          ]
+        }
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "family": "alternative_routes",
+      "session": 7,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "primary_link": null,
+        "primary_lease": false,
+        "replica_link": true,
+        "replica_lag": null
+      },
+      "route_states": {
+        "primary": false,
+        "replica": null
+      },
+      "decision_relevant_unknowns": [
+        "replica_lag"
+      ],
+      "blocker_signature": [
+        "missing_observation"
+      ],
+      "requirement_diagnostics": {
+        "primary_link": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e01",
+              "value": true,
+              "age_minutes": 7,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e05",
+              "value": false,
+              "age_minutes": 5,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "stale"
+          ]
+        },
+        "primary_lease": {
+          "state": false,
+          "selected_fact_id": "database-alternative-read-routes:e08",
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e02",
+              "value": true,
+              "age_minutes": 7,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "replica_link": {
+          "state": true,
+          "selected_fact_id": "database-alternative-read-routes:e10",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e03",
+              "value": false,
+              "age_minutes": 7,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e06",
+              "value": true,
+              "age_minutes": 5,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "replica_lag": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": [
+            "missing_observation"
+          ]
+        }
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "family": "alternative_routes",
+      "session": 10,
+      "event": "Primary reachability support is invalidated; the replica remains refuted.",
+      "decision": "undetermined",
+      "states": {
+        "primary_link": null,
+        "primary_lease": true,
+        "replica_link": false,
+        "replica_lag": null
+      },
+      "route_states": {
+        "primary": null,
+        "replica": false
+      },
+      "decision_relevant_unknowns": [
+        "primary_link"
+      ],
+      "blocker_signature": [
+        "invalidated",
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "primary_link": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e01",
+              "value": true,
+              "age_minutes": 10,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e05",
+              "value": false,
+              "age_minutes": 8,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e11",
+              "value": true,
+              "age_minutes": 2,
+              "reasons": [
+                "invalidated"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "invalidated",
+            "stale"
+          ]
+        },
+        "primary_lease": {
+          "state": true,
+          "selected_fact_id": "database-alternative-read-routes:e12",
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e02",
+              "value": true,
+              "age_minutes": 10,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e08",
+              "value": false,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "replica_link": {
+          "state": false,
+          "selected_fact_id": "database-alternative-read-routes:e13",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "database-alternative-read-routes:e03",
+              "value": false,
+              "age_minutes": 10,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e06",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "database-alternative-read-routes:e10",
+              "value": true,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "replica_lag": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": [
+            "missing_observation"
+          ]
+        }
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "family": "alternative_routes",
+      "session": 6,
+      "event": "TLS evidence is invalidated; the authenticated tunnel lacks sufficient capacity.",
+      "decision": "undetermined",
+      "states": {
+        "direct_dns": true,
+        "direct_tls": null,
+        "tunnel_auth": true,
+        "tunnel_capacity": false
+      },
+      "route_states": {
+        "direct": null,
+        "tunnel": false
+      },
+      "decision_relevant_unknowns": [
+        "direct_tls"
+      ],
+      "blocker_signature": [
+        "invalidated"
+      ],
+      "requirement_diagnostics": {
+        "direct_dns": {
+          "state": true,
+          "selected_fact_id": "dispatch-direct-or-tunnel:e06",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e01",
+              "value": false,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "direct_tls": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e02",
+              "value": true,
+              "age_minutes": 6,
+              "reasons": [
+                "invalidated"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "invalidated"
+          ]
+        },
+        "tunnel_auth": {
+          "state": true,
+          "selected_fact_id": "dispatch-direct-or-tunnel:e07",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e03",
+              "value": true,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e05",
+              "value": false,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "tunnel_capacity": {
+          "state": false,
+          "selected_fact_id": "dispatch-direct-or-tunnel:e08",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e04",
+              "value": 4,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "family": "alternative_routes",
+      "session": 7,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "direct_dns": true,
+        "direct_tls": null,
+        "tunnel_auth": true,
+        "tunnel_capacity": false
+      },
+      "route_states": {
+        "direct": null,
+        "tunnel": false
+      },
+      "decision_relevant_unknowns": [
+        "direct_tls"
+      ],
+      "blocker_signature": [
+        "invalidated"
+      ],
+      "requirement_diagnostics": {
+        "direct_dns": {
+          "state": true,
+          "selected_fact_id": "dispatch-direct-or-tunnel:e06",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e01",
+              "value": false,
+              "age_minutes": 7,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "direct_tls": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e02",
+              "value": true,
+              "age_minutes": 7,
+              "reasons": [
+                "invalidated"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "invalidated"
+          ]
+        },
+        "tunnel_auth": {
+          "state": true,
+          "selected_fact_id": "dispatch-direct-or-tunnel:e07",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e03",
+              "value": true,
+              "age_minutes": 7,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e05",
+              "value": false,
+              "age_minutes": 5,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "tunnel_capacity": {
+          "state": false,
+          "selected_fact_id": "dispatch-direct-or-tunnel:e08",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e04",
+              "value": 4,
+              "age_minutes": 7,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "family": "alternative_routes",
+      "session": 10,
+      "event": "The latest tunnel authentication observation is invalidated and its older success is stale; direct DNS remains refuted.",
+      "decision": "undetermined",
+      "states": {
+        "direct_dns": false,
+        "direct_tls": null,
+        "tunnel_auth": null,
+        "tunnel_capacity": true
+      },
+      "route_states": {
+        "direct": false,
+        "tunnel": null
+      },
+      "decision_relevant_unknowns": [
+        "tunnel_auth"
+      ],
+      "blocker_signature": [
+        "invalidated",
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "direct_dns": {
+          "state": false,
+          "selected_fact_id": "dispatch-direct-or-tunnel:e09",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e01",
+              "value": false,
+              "age_minutes": 10,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e06",
+              "value": true,
+              "age_minutes": 6,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        },
+        "direct_tls": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e02",
+              "value": true,
+              "age_minutes": 10,
+              "reasons": [
+                "invalidated",
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "invalidated",
+            "stale"
+          ]
+        },
+        "tunnel_auth": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e03",
+              "value": true,
+              "age_minutes": 10,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e05",
+              "value": false,
+              "age_minutes": 8,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e07",
+              "value": true,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e10",
+              "value": true,
+              "age_minutes": 2,
+              "reasons": [
+                "invalidated"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": [
+            "invalidated",
+            "stale"
+          ]
+        },
+        "tunnel_capacity": {
+          "state": true,
+          "selected_fact_id": "dispatch-direct-or-tunnel:e11",
+          "max_age_minutes": 3,
+          "scope_keys": [
+            "service",
+            "region"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e04",
+              "value": 4,
+              "age_minutes": 10,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            },
+            {
+              "fact_id": "dispatch-direct-or-tunnel:e08",
+              "value": 1,
+              "age_minutes": 4,
+              "reasons": [
+                "stale"
+              ],
+              "mismatch_keys": []
+            }
+          ],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "family": "version_applicability",
+      "session": 2,
+      "event": "The firmware changes to fw2; old safety observations bind fw1 only, while other evidence remains applicable.",
+      "decision": "undetermined",
+      "states": {
+        "safety": null,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "safety"
+      ],
+      "blocker_signature": [
+        "scope_mismatch"
+      ],
+      "requirement_diagnostics": {
+        "safety": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "robot",
+            "site",
+            "firmware_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "firmware-selective-applicability:e01",
+              "value": true,
+              "age_minutes": 2,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "firmware_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch"
+          ]
+        },
+        "calibration": {
+          "state": true,
+          "selected_fact_id": "firmware-selective-applicability:e02",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "robot",
+            "site",
+            "configuration_version"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        },
+        "authorization": {
+          "state": true,
+          "selected_fact_id": "firmware-selective-applicability:e03",
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "robot",
+            "site",
+            "policy_version"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "family": "version_applicability",
+      "session": 3,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "safety": null,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "safety"
+      ],
+      "blocker_signature": [
+        "scope_mismatch"
+      ],
+      "requirement_diagnostics": {
+        "safety": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "robot",
+            "site",
+            "firmware_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "firmware-selective-applicability:e01",
+              "value": true,
+              "age_minutes": 3,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "firmware_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch"
+          ]
+        },
+        "calibration": {
+          "state": true,
+          "selected_fact_id": "firmware-selective-applicability:e02",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "robot",
+            "site",
+            "configuration_version"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        },
+        "authorization": {
+          "state": true,
+          "selected_fact_id": "firmware-selective-applicability:e03",
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "robot",
+            "site",
+            "policy_version"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "family": "version_applicability",
+      "session": 8,
+      "event": "Configuration and policy change, so calibration and authorization need matching observations; firmware safety remains applicable.",
+      "decision": "undetermined",
+      "states": {
+        "safety": true,
+        "calibration": null,
+        "authorization": null
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "authorization",
+        "calibration"
+      ],
+      "blocker_signature": [
+        "scope_mismatch",
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "safety": {
+          "state": true,
+          "selected_fact_id": "firmware-selective-applicability:e05",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "robot",
+            "site",
+            "firmware_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "firmware-selective-applicability:e01",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "firmware_version"
+              ]
+            }
+          ],
+          "blocker_tags": []
+        },
+        "calibration": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "robot",
+            "site",
+            "configuration_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "firmware-selective-applicability:e02",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "configuration_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch",
+            "stale"
+          ]
+        },
+        "authorization": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "robot",
+            "site",
+            "policy_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "firmware-selective-applicability:e03",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "policy_version"
+              ]
+            },
+            {
+              "fact_id": "firmware-selective-applicability:e06",
+              "value": true,
+              "age_minutes": 2,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "policy_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch",
+            "stale"
+          ]
+        }
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "family": "version_applicability",
+      "session": 9,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "safety": true,
+        "calibration": null,
+        "authorization": null
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "authorization",
+        "calibration"
+      ],
+      "blocker_signature": [
+        "scope_mismatch",
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "safety": {
+          "state": true,
+          "selected_fact_id": "firmware-selective-applicability:e05",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "robot",
+            "site",
+            "firmware_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "firmware-selective-applicability:e01",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "firmware_version"
+              ]
+            }
+          ],
+          "blocker_tags": []
+        },
+        "calibration": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "robot",
+            "site",
+            "configuration_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "firmware-selective-applicability:e02",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "configuration_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch",
+            "stale"
+          ]
+        },
+        "authorization": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "robot",
+            "site",
+            "policy_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "firmware-selective-applicability:e03",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "policy_version"
+              ]
+            },
+            {
+              "fact_id": "firmware-selective-applicability:e06",
+              "value": true,
+              "age_minutes": 3,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "policy_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch",
+            "stale"
+          ]
+        }
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "family": "version_applicability",
+      "session": 2,
+      "event": "Schema changes invalidate applicability of backup and dry-run observations, while the runbook remains applicable.",
+      "decision": "undetermined",
+      "states": {
+        "backup": null,
+        "dry_run": null,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "backup",
+        "dry_run"
+      ],
+      "blocker_signature": [
+        "scope_mismatch"
+      ],
+      "requirement_diagnostics": {
+        "backup": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "database",
+            "environment",
+            "schema_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e01",
+              "value": true,
+              "age_minutes": 2,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "schema_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch"
+          ]
+        },
+        "dry_run": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "database",
+            "environment",
+            "schema_version",
+            "migration_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e02",
+              "value": true,
+              "age_minutes": 2,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "schema_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch"
+          ]
+        },
+        "runbook": {
+          "state": true,
+          "selected_fact_id": "migration-multiple-version-bindings:e03",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "database",
+            "environment",
+            "migration_version",
+            "policy_revision"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "family": "version_applicability",
+      "session": 3,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "backup": null,
+        "dry_run": null,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "backup",
+        "dry_run"
+      ],
+      "blocker_signature": [
+        "scope_mismatch"
+      ],
+      "requirement_diagnostics": {
+        "backup": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "database",
+            "environment",
+            "schema_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e01",
+              "value": true,
+              "age_minutes": 3,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "schema_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch"
+          ]
+        },
+        "dry_run": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "database",
+            "environment",
+            "schema_version",
+            "migration_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e02",
+              "value": true,
+              "age_minutes": 3,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "schema_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch"
+          ]
+        },
+        "runbook": {
+          "state": true,
+          "selected_fact_id": "migration-multiple-version-bindings:e03",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "database",
+            "environment",
+            "migration_version",
+            "policy_revision"
+          ],
+          "rejected_candidates": [],
+          "blocker_tags": []
+        }
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "family": "version_applicability",
+      "session": 8,
+      "event": "Migration changes invalidate applicability of dry run and runbook approval; backup coverage for unchanged schema s5 remains usable.",
+      "decision": "undetermined",
+      "states": {
+        "backup": true,
+        "dry_run": null,
+        "runbook": null
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "dry_run",
+        "runbook"
+      ],
+      "blocker_signature": [
+        "scope_mismatch",
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "backup": {
+          "state": true,
+          "selected_fact_id": "migration-multiple-version-bindings:e04",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "database",
+            "environment",
+            "schema_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e01",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "schema_version"
+              ]
+            }
+          ],
+          "blocker_tags": []
+        },
+        "dry_run": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "database",
+            "environment",
+            "schema_version",
+            "migration_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e02",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "schema_version",
+                "migration_version"
+              ]
+            },
+            {
+              "fact_id": "migration-multiple-version-bindings:e05",
+              "value": false,
+              "age_minutes": 4,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "migration_version"
+              ]
+            },
+            {
+              "fact_id": "migration-multiple-version-bindings:e06",
+              "value": true,
+              "age_minutes": 2,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "migration_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch",
+            "stale"
+          ]
+        },
+        "runbook": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "database",
+            "environment",
+            "migration_version",
+            "policy_revision"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e03",
+              "value": true,
+              "age_minutes": 8,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "migration_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch",
+            "stale"
+          ]
+        }
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "family": "version_applicability",
+      "session": 9,
+      "event": "No fact or scope changes; the preceding conclusion remains valid as observation ages advance by one minute.",
+      "decision": "undetermined",
+      "states": {
+        "backup": true,
+        "dry_run": null,
+        "runbook": null
+      },
+      "route_states": {
+        "conjunction": null
+      },
+      "decision_relevant_unknowns": [
+        "dry_run",
+        "runbook"
+      ],
+      "blocker_signature": [
+        "scope_mismatch",
+        "stale"
+      ],
+      "requirement_diagnostics": {
+        "backup": {
+          "state": true,
+          "selected_fact_id": "migration-multiple-version-bindings:e04",
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "database",
+            "environment",
+            "schema_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e01",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "schema_version"
+              ]
+            }
+          ],
+          "blocker_tags": []
+        },
+        "dry_run": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 5,
+          "scope_keys": [
+            "database",
+            "environment",
+            "schema_version",
+            "migration_version"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e02",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "schema_version",
+                "migration_version"
+              ]
+            },
+            {
+              "fact_id": "migration-multiple-version-bindings:e05",
+              "value": false,
+              "age_minutes": 5,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "migration_version"
+              ]
+            },
+            {
+              "fact_id": "migration-multiple-version-bindings:e06",
+              "value": true,
+              "age_minutes": 3,
+              "reasons": [
+                "scope_mismatch"
+              ],
+              "mismatch_keys": [
+                "migration_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch",
+            "stale"
+          ]
+        },
+        "runbook": {
+          "state": null,
+          "selected_fact_id": null,
+          "max_age_minutes": 7,
+          "scope_keys": [
+            "database",
+            "environment",
+            "migration_version",
+            "policy_revision"
+          ],
+          "rejected_candidates": [
+            {
+              "fact_id": "migration-multiple-version-bindings:e03",
+              "value": true,
+              "age_minutes": 9,
+              "reasons": [
+                "scope_mismatch",
+                "stale"
+              ],
+              "mismatch_keys": [
+                "migration_version"
+              ]
+            }
+          ],
+          "blocker_tags": [
+            "scope_mismatch",
+            "stale"
+          ]
+        }
+      }
+    }
+  ],
+  "all_point_states": [
+    {
+      "case": "release-three-obligations",
+      "session": 0,
+      "decision": "ready",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 1,
+      "decision": "ready",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 2,
+      "decision": "not_ready",
+      "states": {
+        "tests": false,
+        "signature": true,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 3,
+      "decision": "not_ready",
+      "states": {
+        "tests": false,
+        "signature": true,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 4,
+      "decision": "undetermined",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": null
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 5,
+      "decision": "undetermined",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": null
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 6,
+      "decision": "ready",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 7,
+      "decision": "ready",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 8,
+      "decision": "undetermined",
+      "states": {
+        "tests": null,
+        "signature": null,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 9,
+      "decision": "undetermined",
+      "states": {
+        "tests": null,
+        "signature": null,
+        "rollback": true
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "release-three-obligations",
+      "session": 10,
+      "decision": "not_ready",
+      "states": {
+        "tests": true,
+        "signature": true,
+        "rollback": false
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 0,
+      "decision": "ready",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 1,
+      "decision": "ready",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 2,
+      "decision": "not_ready",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": false
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 3,
+      "decision": "not_ready",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": false
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 4,
+      "decision": "undetermined",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": null
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 5,
+      "decision": "undetermined",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": null
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 6,
+      "decision": "ready",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 7,
+      "decision": "ready",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 8,
+      "decision": "not_ready",
+      "states": {
+        "schema": true,
+        "restore": false,
+        "lag": true
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 9,
+      "decision": "not_ready",
+      "states": {
+        "schema": true,
+        "restore": false,
+        "lag": true
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "migration-cutover-obligations",
+      "session": 10,
+      "decision": "ready",
+      "states": {
+        "schema": true,
+        "restore": true,
+        "lag": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 0,
+      "decision": "ready",
+      "states": {
+        "primary_link": true,
+        "primary_lease": true,
+        "replica_link": false,
+        "replica_lag": false
+      },
+      "route_states": {
+        "primary": true,
+        "replica": false
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 1,
+      "decision": "ready",
+      "states": {
+        "primary_link": true,
+        "primary_lease": true,
+        "replica_link": false,
+        "replica_lag": false
+      },
+      "route_states": {
+        "primary": true,
+        "replica": false
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 2,
+      "decision": "ready",
+      "states": {
+        "primary_link": false,
+        "primary_lease": true,
+        "replica_link": true,
+        "replica_lag": true
+      },
+      "route_states": {
+        "primary": false,
+        "replica": true
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 3,
+      "decision": "ready",
+      "states": {
+        "primary_link": false,
+        "primary_lease": true,
+        "replica_link": true,
+        "replica_lag": true
+      },
+      "route_states": {
+        "primary": false,
+        "replica": true
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 4,
+      "decision": "not_ready",
+      "states": {
+        "primary_link": false,
+        "primary_lease": false,
+        "replica_link": true,
+        "replica_lag": false
+      },
+      "route_states": {
+        "primary": false,
+        "replica": false
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 5,
+      "decision": "not_ready",
+      "states": {
+        "primary_link": false,
+        "primary_lease": false,
+        "replica_link": true,
+        "replica_lag": false
+      },
+      "route_states": {
+        "primary": false,
+        "replica": false
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 6,
+      "decision": "undetermined",
+      "states": {
+        "primary_link": null,
+        "primary_lease": false,
+        "replica_link": true,
+        "replica_lag": null
+      },
+      "route_states": {
+        "primary": false,
+        "replica": null
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 7,
+      "decision": "undetermined",
+      "states": {
+        "primary_link": null,
+        "primary_lease": false,
+        "replica_link": true,
+        "replica_lag": null
+      },
+      "route_states": {
+        "primary": false,
+        "replica": null
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 8,
+      "decision": "ready",
+      "states": {
+        "primary_link": true,
+        "primary_lease": true,
+        "replica_link": false,
+        "replica_lag": null
+      },
+      "route_states": {
+        "primary": true,
+        "replica": false
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 9,
+      "decision": "ready",
+      "states": {
+        "primary_link": true,
+        "primary_lease": true,
+        "replica_link": false,
+        "replica_lag": null
+      },
+      "route_states": {
+        "primary": true,
+        "replica": false
+      }
+    },
+    {
+      "case": "database-alternative-read-routes",
+      "session": 10,
+      "decision": "undetermined",
+      "states": {
+        "primary_link": null,
+        "primary_lease": true,
+        "replica_link": false,
+        "replica_lag": null
+      },
+      "route_states": {
+        "primary": null,
+        "replica": false
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 0,
+      "decision": "ready",
+      "states": {
+        "direct_dns": false,
+        "direct_tls": true,
+        "tunnel_auth": true,
+        "tunnel_capacity": true
+      },
+      "route_states": {
+        "direct": false,
+        "tunnel": true
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 1,
+      "decision": "ready",
+      "states": {
+        "direct_dns": false,
+        "direct_tls": true,
+        "tunnel_auth": true,
+        "tunnel_capacity": true
+      },
+      "route_states": {
+        "direct": false,
+        "tunnel": true
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 2,
+      "decision": "not_ready",
+      "states": {
+        "direct_dns": false,
+        "direct_tls": true,
+        "tunnel_auth": false,
+        "tunnel_capacity": true
+      },
+      "route_states": {
+        "direct": false,
+        "tunnel": false
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 3,
+      "decision": "not_ready",
+      "states": {
+        "direct_dns": false,
+        "direct_tls": true,
+        "tunnel_auth": false,
+        "tunnel_capacity": true
+      },
+      "route_states": {
+        "direct": false,
+        "tunnel": false
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 4,
+      "decision": "ready",
+      "states": {
+        "direct_dns": true,
+        "direct_tls": true,
+        "tunnel_auth": false,
+        "tunnel_capacity": null
+      },
+      "route_states": {
+        "direct": true,
+        "tunnel": false
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 5,
+      "decision": "ready",
+      "states": {
+        "direct_dns": true,
+        "direct_tls": true,
+        "tunnel_auth": false,
+        "tunnel_capacity": null
+      },
+      "route_states": {
+        "direct": true,
+        "tunnel": false
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 6,
+      "decision": "undetermined",
+      "states": {
+        "direct_dns": true,
+        "direct_tls": null,
+        "tunnel_auth": true,
+        "tunnel_capacity": false
+      },
+      "route_states": {
+        "direct": null,
+        "tunnel": false
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 7,
+      "decision": "undetermined",
+      "states": {
+        "direct_dns": true,
+        "direct_tls": null,
+        "tunnel_auth": true,
+        "tunnel_capacity": false
+      },
+      "route_states": {
+        "direct": null,
+        "tunnel": false
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 8,
+      "decision": "ready",
+      "states": {
+        "direct_dns": false,
+        "direct_tls": null,
+        "tunnel_auth": true,
+        "tunnel_capacity": true
+      },
+      "route_states": {
+        "direct": false,
+        "tunnel": true
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 9,
+      "decision": "ready",
+      "states": {
+        "direct_dns": false,
+        "direct_tls": null,
+        "tunnel_auth": true,
+        "tunnel_capacity": true
+      },
+      "route_states": {
+        "direct": false,
+        "tunnel": true
+      }
+    },
+    {
+      "case": "dispatch-direct-or-tunnel",
+      "session": 10,
+      "decision": "undetermined",
+      "states": {
+        "direct_dns": false,
+        "direct_tls": null,
+        "tunnel_auth": null,
+        "tunnel_capacity": true
+      },
+      "route_states": {
+        "direct": false,
+        "tunnel": null
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 0,
+      "decision": "ready",
+      "states": {
+        "safety": true,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 1,
+      "decision": "ready",
+      "states": {
+        "safety": true,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 2,
+      "decision": "undetermined",
+      "states": {
+        "safety": null,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 3,
+      "decision": "undetermined",
+      "states": {
+        "safety": null,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 4,
+      "decision": "not_ready",
+      "states": {
+        "safety": false,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 5,
+      "decision": "not_ready",
+      "states": {
+        "safety": false,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 6,
+      "decision": "ready",
+      "states": {
+        "safety": true,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 7,
+      "decision": "ready",
+      "states": {
+        "safety": true,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 8,
+      "decision": "undetermined",
+      "states": {
+        "safety": true,
+        "calibration": null,
+        "authorization": null
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 9,
+      "decision": "undetermined",
+      "states": {
+        "safety": true,
+        "calibration": null,
+        "authorization": null
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "firmware-selective-applicability",
+      "session": 10,
+      "decision": "ready",
+      "states": {
+        "safety": true,
+        "calibration": true,
+        "authorization": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 0,
+      "decision": "ready",
+      "states": {
+        "backup": true,
+        "dry_run": true,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 1,
+      "decision": "ready",
+      "states": {
+        "backup": true,
+        "dry_run": true,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 2,
+      "decision": "undetermined",
+      "states": {
+        "backup": null,
+        "dry_run": null,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 3,
+      "decision": "undetermined",
+      "states": {
+        "backup": null,
+        "dry_run": null,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 4,
+      "decision": "not_ready",
+      "states": {
+        "backup": true,
+        "dry_run": false,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 5,
+      "decision": "not_ready",
+      "states": {
+        "backup": true,
+        "dry_run": false,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 6,
+      "decision": "ready",
+      "states": {
+        "backup": true,
+        "dry_run": true,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 7,
+      "decision": "ready",
+      "states": {
+        "backup": true,
+        "dry_run": true,
+        "runbook": true
+      },
+      "route_states": {
+        "conjunction": true
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 8,
+      "decision": "undetermined",
+      "states": {
+        "backup": true,
+        "dry_run": null,
+        "runbook": null
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 9,
+      "decision": "undetermined",
+      "states": {
+        "backup": true,
+        "dry_run": null,
+        "runbook": null
+      },
+      "route_states": {
+        "conjunction": null
+      }
+    },
+    {
+      "case": "migration-multiple-version-bindings",
+      "session": 10,
+      "decision": "not_ready",
+      "states": {
+        "backup": true,
+        "dry_run": true,
+        "runbook": false
+      },
+      "route_states": {
+        "conjunction": false
+      }
+    }
+  ]
+}

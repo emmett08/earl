@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-07-acquisition-horizon",
+  "purpose": {
+    "reader_question": "How do evidence acquisition and snapshot reuse change with repeated handovers?",
+    "expected_reading": "Solid/dashed acquisition totals and separately labelled host events prevent treating reuse as an acquisition reduction.",
+    "claim": "Recorded EAL host snapshot reuse accompanies more total evidence acquisitions than ordinary at the final horizon.",
+    "scope": "Original resources from GitHub Actions run 36985062352, with AI-only decision coding added by finish run 36997861629 to the same 192 paired trajectories across six selected authored cases, two donor profiles, two recipient profiles and two tool modes; no additional experimental observations or independently validated assessor accuracy.",
+    "permitted_inferences": [
+      "Descriptive resource contrasts for the explicitly included recorded sessions.",
+      "Comparison of recorded quantities under the declared denominators and transformations."
+    ],
+    "prohibited_inferences": [
+      "Population-wide or causal superiority of EAL.",
+      "Independent answer correctness, explanation quality, assessor accuracy or reliability from these records.",
+      "Net lifecycle cost savings after unmeasured authoring, review, maintenance or acquisition costs."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "horizons",
+      "path": "analysis/cumulative_resources.csv",
+      "status": "derived",
+      "source_reference": "Recorded resource sums including donor session 0 and recipient sessions 1 through each shown horizon.",
+      "sha256": "5b57b55fce052625cf570ae9adf2198ec8bb6c3e9bf9afca17606a0c3fc26ab4"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "acquisitions",
+      "label": "Evidence acquisitions",
+      "unit": "recorded events",
+      "definition": "Native probe events plus EAL host collected_count, excluding reused_count.",
+      "input_ids": [
+        "horizons"
+      ],
+      "transformation": "Sum all recorded acquisition events through each donor-inclusive horizon separately by arm; show EAL host subset separately.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "trajectory per arm",
+        "inclusion": "All 192 donor-inclusive trajectories within each arm; the input table contains 384 arm-specific trajectories overall."
+      }
+    },
+    {
+      "id": "reuses",
+      "label": "Host snapshot reuses",
+      "unit": "recorded events",
+      "definition": "Recorded EAL host reused_count; not a fresh collection.",
+      "input_ids": [
+        "horizons"
+      ],
+      "transformation": "Sum host reused_count through each donor-inclusive horizon, keeping separate from acquisitions.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "trajectory per arm",
+        "inclusion": "All 192 donor-inclusive trajectories within each arm; the input table contains 384 arm-specific trajectories overall."
+      }
+    },
+    {
+      "id": "horizon",
+      "label": "Recipient horizon",
+      "unit": "recipients",
+      "definition": "Number of recipient sessions included after donor session zero, from zero through ten.",
+      "input_ids": [
+        "horizons"
+      ],
+      "transformation": "Use retained integer recipient_horizon; zero includes the donor only.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "horizontal",
+      "marks": "positions and connecting line",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Horizontal order is the number of recipient sessions completed after the donor.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "horizon"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Horizontal order is the number of recipient sessions completed after the donor.",
+        "domain": [
+          0,
+          10
+        ]
+      }
+    },
+    {
+      "id": "vertical",
+      "marks": "positions and connecting line",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Vertical position counts the precisely named recorded event type; host reuses are excluded from all acquisitions.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "acquisitions",
+        "reuses"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Vertical position counts the precisely named recorded event type; host reuses are excluded from all acquisitions.",
+        "domain": [
+          0,
+          1800
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [],
+    "prohibit_block_circle_diagrams": true
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "source": "figures/07-acquisition-horizon.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_figures.py"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "figures/07-acquisition-horizon.tikz.tex",
+        "--spec",
+        "07-acquisition-horizon.spec.json",
+        "--output",
+        "figures/07-acquisition-horizon.pdf",
+        "--audit",
+        "figures/07-acquisition-horizon.audit.json",
+        "--preview",
+        "figures/07-acquisition-horizon.png",
+        "--qa-dir",
+        "qa/07-acquisition-horizon"
+      ]
+    ],
+    "outputs": {
+      "pdf": "figures/07-acquisition-horizon.pdf",
+      "preview": "figures/07-acquisition-horizon.png",
+      "audit": "figures/07-acquisition-horizon.audit.json",
+      "review": "figures/07-acquisition-horizon.review.json"
+    },
+    "dependencies": [
+      "captions/07-acquisition-horizon.caption.txt"
+    ]
+  }
+}

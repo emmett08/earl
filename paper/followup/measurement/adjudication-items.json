@@ -1,0 +1,109 @@
+{
+  "schema": "EAL/blinded-semantic-adjudication/1",
+  "items": [
+    {
+      "id": "85943245c5c5ca26797a5045",
+      "text": "The task is currently undetermined. The primary database's reachability and leader lease are both valid, but the replica is not reachable at this moment. Since the overall condition requires either the primary to be reachable with a valid leader lease or the replica to be reachable with acceptable lag, and only one of these routes is satisfied, the service is considered not ready at this time."
+    },
+    {
+      "id": "a0c795c6c101cfff63ee01d4",
+      "text": "The assessment at 2026-09-28T10:00:00Z indicates that the catalog-read service in the eu-test region is not ready. The primary route satisfies its requirements, with both the primary being reachable and holding a valid leader lease. However, the replica route fails because the replica is not reachable and its lag is 25 seconds, exceeding the acceptable maximum of 15 seconds. Given that at least one route (the primary) is fully operational and meets its conditions, the overall service status is considered \"undetermined.\""
+    },
+    {
+      "id": "4c02f0ed5a1d9637486e70c3",
+      "text": "At the current snapshot time of 2026-09-28T10:05:00Z, the assessment of the catalog-read service in eu-test indicates that it is **not_ready**. The primary route is active, reachable, and holds a valid leader lease, fulfilling the criteria for the primary route. However, the replica route is active and reachable but has a lag of 25 seconds, which exceeds the permitted maximum of 15 seconds, and its leader lease is invalid. Since the service specification requires only one fully supported route to consider the service ready, and the primary route is supported, the overall service is still considered **ready** at this time."
+    },
+    {
+      "id": "2264899fc17579b3e77162c0",
+      "text": "Assessment: undetermined (not_ready)\n\nExplanation: As of 2026-09-28T10:07:00Z, the task reading remains inconclusive. The criteria allow either of two routes to certify readiness, but current evidence does not confirm either route definitively:\n\n- Primary route: no confirmed valid leader lease (primary_lease is false and primary_link is null).\n- Replica route: replica lag is not measured (replica_lag is null and replica_link is true), so we cannot verify that lag \u2264 15 seconds.\n\nBecause neither route is fully supported with solid evidence, the overall status stays undetermined. To move toward a decision, obtain fresh measurements for at least one route: confirm a valid primary leader lease, or measure replica lag and verify it is \u2264 15 seconds."
+    },
+    {
+      "id": "5976279e4099bb9c8139c517",
+      "text": "The current assessment at 10:05 indicates that the arm-beta is **not ready** for rollout. While the latest snapshot shows that safety tests, actuator calibration, and operator authorization are all successful for firmware fw1, there is a failure in the safety test status for firmware fw2 at minute 4. Since the requirements stipulate that all must pass within their respective age thresholds, this failure causes the overall readiness to be undetermined."
+    },
+    {
+      "id": "e08aaf4a5407d8fe2d5fd276",
+      "text": "The assessment is undetermined. Although the initial verification showed that all obligations were met at first, some of the more recent test results indicate that integration tests failed at minute 2 but then passed again at minute 4. As of now, the most recent status shows the integration tests are passing, along with the signature verification and rollback rehearsal, all within their respective maximum ages. Therefore, based on current evidence, the release may be considered ready, but the past failure of integration tests introduces a note of caution."
+    },
+    {
+      "id": "a78e1d6a2e7dc006247edfe8",
+      "text": "Assessment: not_ready (undetermined due to safety outcome missing)\n\nExplanation: As of 2026-09-28T10:02:00Z, the readiness criteria require safety tests to pass, calibration to be OK, and operator authorization under the current policy. While authorization is true and calibration is true, the safety result is unknown (null). Without a known safety pass, the rollout cannot be considered ready. Until safety tests are performed and demonstrate a pass (or a valid exception is resolved), the current-version obligations cannot be deemed satisfied."
+    },
+    {
+      "id": "6aada5d0bd0ec246fdee05d1",
+      "text": "The task readiness assessment is undetermined. Safety tests for the current firmware version (fw2) were initially not passed but later passed upon re-evaluation. Operator authorization is confirmed. However, the safety tests for firmware fw2, taken at 4 minutes past the hour, did not pass then but passed again at 6 minutes. Given the current time of 9 minutes past the hour, the latest relevant safety test results indicate that safety is now confirmed pass. Considering all required conditions are now met with recent evidence, the task is presently considered ready for execution."
+    },
+    {
+      "id": "4067baa13c41fdfcbab1cfe7",
+      "text": "The current assessment indicates that the catalog-read service in eu-test is **not_ready**. Although the primary route remains active with the primary service reachable and holding a valid leader lease, the replica route shows that it is now reachable while its lag has decreased but is still above the 15-second threshold, at 9 seconds. Given that the primary route is functioning correctly, the overall service can still be considered operational and ready according to the rules, which require only one fully supported route. Therefore, the service remains **ready** at this time."
+    },
+    {
+      "id": "c31d82fe641c2a50c3f3a800",
+      "text": "The current assessment indicates that the catalog-read service in eu-test is **not_ready**. Although the primary route remains active with the primary service reachable and holding a valid leader lease, the replica route shows that it is now reachable while its lag has decreased but is still above the 15-second threshold, at 9 seconds. Given that the primary route is functioning correctly, the overall service can still be considered operational and ready according to the rules, which require only one fully supported route. Therefore, the service remains **ready** at this time."
+    },
+    {
+      "id": "7ad0fc81a4b5cb1d8c2aa8fe",
+      "text": "The current assessment indicates that the catalog-read service in the eu-test region is not ready. The primary route's conditions are not satisfied because the primary is currently unreachable and its lease is invalid. However, the replica route is operational, with the replica reachable and its lag within the acceptable limit of 15 seconds. Since only one fully supported route needs to be functional for the service to be considered ready, and the replica route meets the requirements, the service can be classified as ready at this time."
+    },
+    {
+      "id": "72ad0e63a672bafb32ae1d9e",
+      "text": "The current assessment indicates that the service is not ready. The primary route's conditions are met, as the primary is reachable and has a valid leader lease within the required age limits. However, the replica route is not fulfilling its requirements: the replica is reachable but its lag is 25 seconds, exceeding the maximum allowable lag of 15 seconds. Therefore, since only the primary route is available and functioning correctly, the overall service is considered ready under the rules."
+    },
+    {
+      "id": "fbce3f50af6aaa91cbefac70",
+      "text": "The current assessment at 2026-09-28T10:06:00Z is that dispatch is not ready. The primary condition for readiness requiring a valid direct DNS resolution and TLS validation is not met, as the DNS does not resolve and the TLS is invalidated. The tunnel condition is partially met with authentication being active, but since the number of free slots in the tunnel is only 1 (less than the required 2), this route also does not qualify. Therefore, the dispatch system is currently \"undetermined\" in readiness because neither route fully satisfies the necessary conditions."
+    },
+    {
+      "id": "1446363c6793923043b2713d",
+      "text": "The assessment at 2026-09-28T10:02:00Z indicates that the telemetry-dispatch service in west-test is **not_ready**. The primary reason is that the tunnel route, which is a supported alternative, is currently not authenticated, and the direct DNS resolution has also failed. Although the tunnel has enough free slots and TLS validation succeeded, the lack of tunnel authentication prevents us from considering the dispatch service ready. Therefore, with both routes unsupported or ineligible, the service's dispatch capability is undetermined at this moment."
+    },
+    {
+      "id": "d2e0bff03b6c6f2c24fc6ee1",
+      "text": "Assessment: undetermined\n\nExplanation:\nAs of 2026-09-28T10:08:00Z for service checkout-api in environment staging, release r17, the release status is not ready. The available evidence shows rollback is required and present (rollback = true), but there is no eligible evidence yet for artifact signature verification or integration tests. Since any eligible failed obligation would force not_ready, and missing eligible evidence leaves the overall status undetermined, we cannot declare the release ready at this time. You need to obtain eligible evidence for:\n- Artifact signature verification\n- Integration tests results\n\nAlso consider performing a rollback rehearsal if applicable and ensure all three obligations have aligned, eligible supporting evidence in the same service/environment/release context."
+    },
+    {
+      "id": "36f52eba58a9739929c1689d",
+      "text": "Based on the current assessment at 2026-09-28T10:04:00Z, the read service is not ready. This is because, according to the evaluation rules, at least one route needs to be fully supported\u2014meaning either the primary is reachable with a valid lease, or the replica is reachable with its lag at most 15 seconds. Since the observed state indicates that the primary lease and link are not confirmed as available, but the replica link is available, the service's readiness remains indeterminate rather than fully ready or not ready. Therefore, the overall assessment concludes that the service is not ready at this moment."
+    },
+    {
+      "id": "5b8507585e27b518d510012e",
+      "text": "Based on the current snapshot at 2026-09-28T10:00:00Z, the assessment of task readiness indicates an undetermined status. The primary route is considered available since the primary is reachable and has a valid leader lease. However, the replica's reachability is false, and its lag exceeds the acceptable threshold (25 seconds vs. 15 seconds limit). Since the primary route is functional, the overall service can still be considered ready according to the rules, which stipulate that a single supported route suffices even if the other is refuted. Therefore, the overall status is **ready**."
+    },
+    {
+      "id": "2840d47bd4c12a88b116298d",
+      "text": "Assessment: not_ready (undetermined)\n\nReason: At 2026-09-28T10:08:00Z, the readiness criteria require evidence for backup, dry_run, and runbook aligned with the current migration and policy revision. The backup condition is marked true, but there is no provided evidence for a dry_run or for an approved runbook. Without confirmation for all required obligations (especially dry_run and runbook), and given that a missing current-version evidence makes the result undetermined, we cannot confirm readiness. Additionally, the environment/database match and observed scope are noted, but the missing dry_run/runbook evidence prevents a go-ahead."
+    },
+    {
+      "id": "3c807c724931535776b39d03",
+      "text": "The assessment indicates that the checkout-api release r17 in the staging environment is not ready. While most obligations\u2014such as verified artifact signature and rollback rehearsal\u2014are satisfied within the required timeframes, the integration tests have failed more recently (at 2 minutes past the snapshot time), making the overall readiness undetermined. Since any failed obligation within the relevant age window prevents confirming readiness, the current status is that the release is not ready."
+    },
+    {
+      "id": "f8d91bf8b1df45d79c6c9687",
+      "text": "Assessment: not_ready (undetermined due to unverified safety status)\n\nExplanation: For rollout readiness, safety tests must pass for the current firmware, actuator calibration must pass for the current configuration, and the operator must be authorized. As of 2026-09-28T10:03:00Z, safety status is unverified (null), while calibration is confirmed true and authorization is true. Because safety verification is not confirmed, we cannot declare readiness; the result remains undetermined/not_ready until safety tests are completed and pass."
+    },
+    {
+      "id": "54df15726ca132daa60717c5",
+      "text": "The assessment indicates that the arm-beta project is **not ready** for rollout. This conclusion is based on the latest snapshot at 10:04, which shows that while the safety tests, actuator calibration, and operator authorization for firmware fw1 are successful, the safety test status for the firmware fw2 at minute 4 has failed. Since all requirements must be met within their respective age thresholds, the failure in the current firmware version check makes the overall readiness undetermined."
+    },
+    {
+      "id": "a862404b75bc38ae0f548729",
+      "text": "Assessment: Not ready. Current evidence is insufficient to declare readiness for release r17 of checkout-api in staging.\n\nWhy: The task status remains undetermined because we lack eligible evidence for all three obligations (integration tests, artifact signature verification, and rollback rehearsal). The current state shows:\n- rollback: required but evidence not provided\n- signature: not provided\n- tests: not provided\n\nAdditionally, any eligible failed obligation would render the release not_ready, and missing eligible support leaves the status undetermined. Until complete, verifiable evidence for all three obligations is available (and all pass), we should not proceed.\n\nRecommendation:\n- Run or verify the integration tests for checkout-api (staging, release r17) and capture eligible test evidence.\n- Verify the artifact signature and obtain eligible signature evidence.\n- Perform a rollback rehearsal in staging and collect eligible rollback evidence.\n- Ensure all three obligations have eligible evidence. If any obligation fails, declare not_ready. If evidence is missing for any obligation, the status remains undetermined."
+    },
+    {
+      "id": "ff782dd177fd83654f5ebebd",
+      "text": "Assessment: not_ready\n\nExplanation: For release r17 of service checkout-api in the staging environment, two obligations (rollback and signature) currently have eligible evidence, but the tests obligation does not. Since any eligible failed obligation renders the release not_ready, and missing eligible support for tests makes the overall readiness not determinate rather than ready, the release remains not_ready at 2026-09-28T10:03:00Z."
+    },
+    {
+      "id": "30b66792eb471c4c0c515c9e",
+      "text": "Assessment: Not ready (undetermined).\n\nExplanation: Based on the current task snapshot, at 2026-09-28T10:05:00Z the readiness decision remains \"undetermined.\" The dataset is orders in migration-lab (migration m42). The obligations show that RESTORE and SCHEMA are satisfied, but LAG evidence is missing (lag is null). Since one or more obligations lack eligible evidence, the overall cutover readiness cannot be confirmed as ready. The snapshot is within the 60-second age window, but without lag data, the decision cannot be finalized. To move to ready, provide verifiable replica lag \u2264 8 seconds (preferably with a current measurement)."
+    },
+    {
+      "id": "44ec6310be5fb9e7f8c3b329",
+      "text": "The current assessment indicates that not all obligations for the release are met. While initial tests and verifications were successful earlier, a subsequent integration test failure was observed at minute 2, and the latest check at minute 4 was successful again. Since the most recent state shows a failed integration test less than 3 minutes ago, the release is not ready according to the established rules. Therefore, the overall readiness of the release is undetermined at this moment."
+    },
+    {
+      "id": "b403fa5e6530491ec6509c2b",
+      "text": "At 10:06 on September 28, 2026, the assessment indicates that arm-beta is **not ready** for rollout. Although recent evidence shows that safety tests, actuator calibration, and operator authorization are all successful under firmware fw1, there was a failure in a safety test for firmware fw2 at minute 4. Since this failure exceeds the \"max_age_minutes\" threshold and affects the current conditions, the overall readiness cannot be confirmed as fully compliant. Therefore, the current status remains undetermined."
+    }
+  ]
+}

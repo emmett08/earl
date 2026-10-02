@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-10-phase-contrasts",
+  "spec_sha256": "c236a5a6c694072570871b9602ea70e19c5315740a9cc27d56cb4f1dde644e0f",
+  "audit_sha256": "b8ba181e6b5c0fbbe6cff6dc023af65a903900dbffbfb09899db77c72cf66419",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/10-phase-contrasts.pdf",
+      "sha256": "af9995f9945f204d1cf19a04c4b78c44c15212fe06228cafe6e5f87534d1a15f"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/10-phase-contrasts.pdf",
+      "sha256": "af9995f9945f204d1cf19a04c4b78c44c15212fe06228cafe6e5f87534d1a15f"
+    }
+  ],
+  "reviewer": {
+    "id": "/root",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "selected",
+      "prototype": "figures/10-phase-contrasts.pdf",
+      "observations": {
+        "reading": "Blind reading matches all twelve phase-specific ratio-of-sums coordinates, separate ordinary denominators, four heterogeneous metrics, whole=sum of disjoint phases and setup exclusion. Negative recipient count reductions are visible and agree with 2386-to-2406 API and 466-to-486 probe counts.",
+        "annotation_burden": "The signed dot plot permits phase comparison using ratios while retaining labels for different resource units; the caption prevents summing percentages or interpreting native probe counts as costs.",
+        "reproduction": "Square, triangle and cross shapes retain all three roles; direct signs/values and zero line preserve higher versus lower use. Expanded left domain leaves negative labels clear of the metric labels."
+      }
+    }
+  ],
+  "selected_candidate": "selected",
+  "initial_reconstruction": {
+    "claim": "Most pooled token/API/native-probe reductions originate in the donor phase. Recipients use fewer total tokens but have slightly more API attempts and native probes, and greater summed session time. Whole session time increases despite a small donor timing reduction.",
+    "quantities": [
+      "Horizontal positions are pooled resource reductions in percent using 100(1 - EAL / ordinary). Rows are four distinct resources: summed session time, native probe call counts, API attempt counts and total tokens. Positive means lower EAL use, negative higher EAL use.",
+      "Blue squares, orange triangles and gray crosses match donor, ten recipients and whole (1+10), respectively. All four rows contain those three glyphs. Whole is explicitly a sum of phases rather than a third phase."
+    ],
+    "evidence_status": "Derived descriptive reductions from observed accounting and timing/count instrumentation. No inferential interval. Native probes are counts, not costs.",
+    "scope": "For each row and each role, the denominator is the ordinary pooled resource total for that role. The same 192 paired trajectories contain 192 donors, 1,920 recipients and 2,112 whole sessions per arm. Timing excludes sequence setup so disjoint donor and recipient time sums add exactly to whole session time. The percentage reductions themselves are not additive.",
+    "unintended_inferences": [
+      "Donor gains dominate whole count reductions, while recipient increases are visible. Metrics cannot be treated as equivalent costs despite sharing a percent axis. Whole percent is a denominator-weighted reduction and not a sum of phase percentages. No temporal causal decomposition is established."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "Blind reading matches all twelve phase-specific ratio-of-sums coordinates, separate ordinary denominators, four heterogeneous metrics, whole=sum of disjoint phases and setup exclusion. Negative recipient count reductions are visible and agree with 2386-to-2406 API and 466-to-486 probe counts.",
+      "Current specification, source, table, audit, caption, PDF and accessibility previews match the independently accepted exact binding hashes.",
+      "Completion-stage root semantic acceptance: analysis/completion-resource-semantic-acceptance.json SHA-256 82db48c92e3d127d31780c2afd6113d4ed17a2dffde7607ec9c6bdcb08e4be62. All ten current resource PNGs equal their independently accepted pre-completion versions; final captions and two-stage scope were freshly compared.",
+      "Completion-stage independent numerical audit of all fourteen canonical figures: analysis/completion-figure-numerical-audit.json SHA-256 7f19166c06865828a1de73ce1afc1b51738ff61fdaad40117ce2d58d52eeedce."
+    ],
+    "findings": [
+      {
+        "id": "accurate-mark-metadata",
+        "severity": "minor",
+        "description": "Several channel descriptions inherited generic connecting-line mark wording.",
+        "disposition": "resolved",
+        "reason": "Latest specifications now name actual unconnected point/bar/segment marks and matching categorical rows, rather than the inaccurate generic connecting-line wording."
+      },
+      {
+        "id": "legend-plot-queue",
+        "severity": "blocking",
+        "description": "Root initial render screening rejected legend glyphs consumed by reference or data plot queues.",
+        "disposition": "resolved",
+        "reason": "References and individual data plots now use forget plot or immediate entries, with explicit glyphs. The independent current blind reader recovered the corrected model or phase marker meanings."
+      },
+      {
+        "id": "negative-label-clearance",
+        "severity": "minor",
+        "description": "Negative phase labels initially collided with the session-time category and left axis.",
+        "disposition": "resolved",
+        "reason": "The expanded left domain contains the negative labels clear of the category labels, zero reference and data marks."
+      },
+      {
+        "id": "two-stage-scope",
+        "severity": "informational",
+        "description": "The finish run adds AI communication codes to unchanged resource records. Earlier resource-only acceptance alone did not bind the updated scope.",
+        "disposition": "accepted",
+        "reason": "Root compared all current captions and updated scope, checked unchanged PNGs and exact model/role denominators, accounting/time boundaries, acquisitions/reuse and descriptive estimands. Resource plots make no independent quality or adoption claim."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "Shell escape is intentionally disabled; retained literal source coordinates render without external TeX execution."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "PGFPlots emits this package-initialisation compatibility notice before the include-ready source sets compat=1.18. Exact coordinates, labels and glyphs were independently inspected; no visible defect results."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This is figure semantic and mechanical screening, not independent human validation of communicated decisions, factual content or explanation correctness. Resolved AI-code error and trajectory independence remain unmeasured.",
+    "The six selected cases and fixed task/model/tool mixture do not establish a task-population effect, causal component attribution or practical adoption. Statistical endpoint bounds retain their stated conditional assumptions and approximate resource component.",
+    "Manuscript placement is covered by the separate final PDF proof; this contract binds the standalone figure source, specifications, audit and exact final/prototype PDFs."
+  ]
+}

@@ -48,6 +48,7 @@ class AnswerParser:
         # File schema/permission failure is a separately measured side effect.
         return {'answer': {key: value.get(key) for key in
                            ('decision', 'basis', 'reading', 'observed_at', 'explanation')},
+                'canonical_decision': value.get('decision') if value.get('decision') in DECISIONS else None,
                 'format_valid': format_valid, 'files': value.get('files', []),
                 'annotation': {'status': 'pending',
                                'reason': 'Code the whole JSON answer independently, including its explanation',

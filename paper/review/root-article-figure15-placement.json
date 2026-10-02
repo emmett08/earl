@@ -1,0 +1,33 @@
+{
+  "schema": "EAL/figure-manuscript-placement-review/1",
+  "figure_id": "fig-15-reference-undetermined-profiles",
+  "reviewer": {
+    "id": "/root",
+    "kind": "agent",
+    "scope": "manuscript placement and caption consistency"
+  },
+  "decision": "accept",
+  "recorded_at_utc": "2026-10-02T14:11:03.584668+00:00",
+  "manuscript": {
+    "path": "eal-handover-data-story.pdf",
+    "sha256": "ef6b44efa1e3953f84efd96d18352af824dd88249ade7fe6f905582b34a7628a",
+    "page": 22,
+    "printed_figure": 15
+  },
+  "bound_inputs": {
+    "15-reference-undetermined-profiles.spec.json": "5bdfc29c26ebcebe5879473bc82e36e76ced0a7cd52f233bd2b9e3492d347609",
+    "figures/15-reference-undetermined-profiles.pdf": "d30ec4749b5dd3512e6a48c409a837019a35c78dac6bf9c4fd3eae2adddca28c",
+    "figures/15-reference-undetermined-profiles.audit.json": "ece60278e08dd6acd9531dc833cffafecd5a43515bbd6bced73c0724623629a7",
+    "figures/15-reference-undetermined-profiles.review.json": "6409232454fb3785344189288891cec107e54120fb9dcd8298ef2661c72c1dca",
+    "captions/15-reference-undetermined-profiles.caption.txt": "02470f0a5745fb2bdfad6f41f06fd52863a187eff3cf5eda623879e310952342"
+  },
+  "observations": [
+    "Full-size rendered page22 inspected; all six labels and direct counts are legible, align with the common numeric scale and fit within the text area.",
+    "Caption states uniform replication and authored-reference scope, including 640 per arm; it excludes model outputs, coding ambiguity, independent failures and causal/prevalence interpretations.",
+    "Adjacent examples and mitigation paragraph preserve the difference between fresh host snapshot acquisition and underlying stale evidence; conjunctive/alternative-route decisive controls motivate the following table."
+  ],
+  "limits": [
+    "Agent screening; not a human reader study or independent validation of the original AI codes.",
+    "Standalone numerical and figure-first semantic reviews retain their separate exact artifacts; this receipt covers placement."
+  ]
+}

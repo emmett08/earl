@@ -1,0 +1,112 @@
+{
+  "status": "pass",
+  "scope": "Independent arithmetic screen of retained original finish CSV and frozen formulas; supplemental posthoc measurement is excluded. No scientific theorem or human reader validation is claimed.",
+  "source_sha256": {
+    "tables/completion-session-decisions.csv": "b5bc475e472163c58146322fbd5dafd5155f4957e108bec99d599dba58a0ab55",
+    "tables/completion-confusion.csv": "c5ab82ccc779e9111dba5ec7ec80bfc93aad65946b568b9e378c48bd7afdcf13",
+    "tables/completion-correctness-groups.csv": "0c0b002835e3ffed0b2e6803320d3d21eb319477ec726ae5b7df66a35c34a301",
+    "tables/completion-endpoints.csv": "2f18b7601b12fb40b7bc951278f36c05296dd834178ba367e44a4d0c0867cb0d"
+  },
+  "session_counts": {
+    "all": 4224,
+    "resolved": 4199,
+    "ambiguous": 25
+  },
+  "recipient_false_ready": {
+    "ordinary": 653,
+    "eal": 8
+  },
+  "group_bounds": {
+    "eal/plain/False": {
+      "n": 480,
+      "matches": 479,
+      "ambiguous": 1,
+      "lower": 0.9979166666666667,
+      "upper": 1.0
+    },
+    "eal/plain/True": {
+      "n": 480,
+      "matches": 442,
+      "ambiguous": 5,
+      "lower": 0.9208333333333333,
+      "upper": 0.93125
+    },
+    "eal/reasoning/False": {
+      "n": 480,
+      "matches": 475,
+      "ambiguous": 5,
+      "lower": 0.9895833333333334,
+      "upper": 1.0
+    },
+    "eal/reasoning/True": {
+      "n": 480,
+      "matches": 470,
+      "ambiguous": 2,
+      "lower": 0.9791666666666666,
+      "upper": 0.9833333333333333
+    },
+    "ordinary/plain/False": {
+      "n": 480,
+      "matches": 185,
+      "ambiguous": 0,
+      "lower": 0.3854166666666667,
+      "upper": 0.3854166666666667
+    },
+    "ordinary/plain/True": {
+      "n": 480,
+      "matches": 180,
+      "ambiguous": 10,
+      "lower": 0.375,
+      "upper": 0.3958333333333333
+    },
+    "ordinary/reasoning/False": {
+      "n": 480,
+      "matches": 186,
+      "ambiguous": 0,
+      "lower": 0.3875,
+      "upper": 0.3875
+    },
+    "ordinary/reasoning/True": {
+      "n": 480,
+      "matches": 188,
+      "ambiguous": 0,
+      "lower": 0.39166666666666666,
+      "upper": 0.39166666666666666
+    }
+  },
+  "reconstructed_endpoints": {
+    "quality_difference": {
+      "observation_lower": 0.5817708333333333,
+      "observation_upper": 0.59375,
+      "family_interval_lower": 0.41504020310161593,
+      "family_interval_upper": 0.7604806302317174,
+      "one_sided_decision_lower": 0.46471260096080524,
+      "threshold": -0.05
+    },
+    "eal_correctness": {
+      "observation_lower": 0.971875,
+      "observation_upper": 0.9786458333333333,
+      "family_interval_lower": 0.8870838264451801,
+      "family_interval_upper": 1,
+      "one_sided_decision_lower": 0.9121760934305096,
+      "threshold": 0.9
+    },
+    "token_reduction": {
+      "observation_lower": 0.3360920873730253,
+      "observation_upper": 0.3360920873730253,
+      "family_interval_lower": 0.32327773475042715,
+      "family_interval_upper": 0.3489064399956235,
+      "one_sided_decision_lower": 0.3274494073397548,
+      "threshold": 0.2
+    }
+  },
+  "paired_trajectories": 192,
+  "strata": 48,
+  "minimum_fully_scored_reruns": 2,
+  "fully_scored_pairs": 173,
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "All agreement results condition on retained AI codes; resolved-code error is unbounded.",
+    "Inference conditions on independent trajectory reruns; token inference remains approximate."
+  ]
+}

@@ -29,7 +29,10 @@ def annotation_provenance(rows: list[dict]) -> dict:
                     assessors.append(record)
     return {'schema': 'EAL/annotation-provenance/1', 'session_counts': dict(counts),
             'assessors': assessors, 'contains_ai_assessment': bool(counts['ai']),
-            'qualification': ('AI-coded decisions; assessor error has not been independently measured. '
+            'contains_scripted_assessment': bool(counts['scripted']),
+            'qualification': ('Deterministic fixture labels in a scripted rehearsal; no human or model assessment measurements.'
+                              if counts['scripted'] else
+                              'AI-coded decisions; assessor error has not been independently measured. '
                               'Outcome estimates and allocation calculations are conditional on these labels; '
                               'they do not establish human-validated accuracy.' if counts['ai'] else
                               'Interpret outcome measurements using the recorded assessment methods.')}

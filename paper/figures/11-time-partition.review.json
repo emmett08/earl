@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-11-time-partition",
+  "spec_sha256": "cb5692ff1a986001c32022d2cfec97e4035719395912244aed71db7ca02e05cc",
+  "audit_sha256": "c5a066798e8dbc3d6f3fb99933eadf5dbcebddde9bc97c6ab8ff5017ca67e261",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/11-time-partition.pdf",
+      "sha256": "814579de1f832b763e303cdf07996534dacc902609d7c6246e474b041b1458b6"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/11-time-partition.pdf",
+      "sha256": "814579de1f832b763e303cdf07996534dacc902609d7c6246e474b041b1458b6"
+    }
+  ],
+  "reviewer": {
+    "id": "/root",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "selected",
+      "prototype": "figures/11-time-partition.pdf",
+      "observations": {
+        "reading": "Blind reading matches operational client API/context boundaries, subtraction-derived positive residual, 2112 sessions per arm, additive session partition and separately scaled/setup-once interpretation. Neutral black lower setup segments resolve initial top Context-hue reuse. All table partitions reconcile.",
+        "annotation_burden": "Separate setup scale makes small setup totals inspectable without adding them incorrectly to session bars; axis explicitly warns that lengths use different scales.",
+        "reproduction": "Client API/context boundary, arm totals and black lower setup marks remain clear. Residuals and ordinary context are too small to quantify from marks at final scale; caption supplies their positive numerical values and retained table preserves exact data."
+      }
+    }
+  ],
+  "selected_candidate": "selected",
+  "initial_reconstruction": {
+    "claim": "Summed EAL session time is longer than ordinary, with a substantial EAL context-construction component. Measured EAL sequence setup also exceeds ordinary but is shown on a much smaller separate scale. API-attempt transport/decode/accounting time dominates both session totals.",
+    "quantities": [
+      "Top stacked bars show summed session time in seconds, partitioned into client API attempts, context construction and positive residual. Bottom horizontal marks show total measured sequence setup seconds on an explicitly separate 0-12 second scale; they are not additional context portions within the upper bars.",
+      "Upper stacked bars use gray for client API attempts, blue for context and orange for residual. Small residuals are visible only as thin right-edge orange slivers and ordinary context is too small to see, with exact values in caption. Lower setup marks also use blue, although the unqualified top legend labels that hue Context; the lower axis explicitly identifies setup."
+    ],
+    "evidence_status": "Observed instrumented timing components and a derived positive residual (session minus two recorded components). Sequence setup is measured separately. Operational boundaries cannot be interpreted as infrastructure costs.",
+    "scope": "All recorded donor and recipient sessions: 2,112 per arm, 4,224 combined. Components add once to each session-time sum and setup is added once separately if forming a whole run total. API attempt timing is a client boundary, not provider compute.",
+    "unintended_inferences": [
+      "This descriptive timing partition supports locating recorded overhead in these operational components, and does not estimate provider internal compute, CPU time, infrastructure costs or end-to-end concurrent wall duration. Upper and lower lengths cannot be compared without accounting for their different scales."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "Blind reading matches operational client API/context boundaries, subtraction-derived positive residual, 2112 sessions per arm, additive session partition and separately scaled/setup-once interpretation. Neutral black lower setup segments resolve initial top Context-hue reuse. All table partitions reconcile.",
+      "Current specification, source, table, audit, caption, PDF and accessibility previews match the independently accepted exact binding hashes.",
+      "Completion-stage root semantic acceptance: analysis/completion-resource-semantic-acceptance.json SHA-256 82db48c92e3d127d31780c2afd6113d4ed17a2dffde7607ec9c6bdcb08e4be62. All ten current resource PNGs equal their independently accepted pre-completion versions; final captions and two-stage scope were freshly compared.",
+      "Completion-stage independent numerical audit of all fourteen canonical figures: analysis/completion-figure-numerical-audit.json SHA-256 7f19166c06865828a1de73ce1afc1b51738ff61fdaad40117ce2d58d52eeedce."
+    ],
+    "findings": [
+      {
+        "id": "accurate-mark-metadata",
+        "severity": "minor",
+        "description": "Several channel descriptions inherited generic connecting-line mark wording.",
+        "disposition": "resolved",
+        "reason": "Latest specifications now name actual unconnected point/bar/segment marks and matching categorical rows, rather than the inaccurate generic connecting-line wording."
+      },
+      {
+        "id": "legend-panel-scope",
+        "severity": "minor",
+        "description": "The top Context color is reused for the separately scaled lower setup marks. The lower axis and caption disambiguate it, but a reader treating the legend as figure-wide could mistake setup for context. Scope the legend to the upper panel or use a neutral separate setup mark.",
+        "disposition": "resolved",
+        "reason": "Setup marks are now neutral black; upper component legend no longer maps the setup hue to Context."
+      },
+      {
+        "id": "two-stage-scope",
+        "severity": "informational",
+        "description": "The finish run adds AI communication codes to unchanged resource records. Earlier resource-only acceptance alone did not bind the updated scope.",
+        "disposition": "accepted",
+        "reason": "Root compared all current captions and updated scope, checked unchanged PNGs and exact model/role denominators, accounting/time boundaries, acquisitions/reuse and descriptive estimands. Resource plots make no independent quality or adoption claim."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "Shell escape is intentionally disabled; retained literal source coordinates render without external TeX execution."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "PGFPlots emits this package-initialisation compatibility notice before the include-ready source sets compat=1.18. Exact coordinates, labels and glyphs were independently inspected; no visible defect results."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This is figure semantic and mechanical screening, not independent human validation of communicated decisions, factual content or explanation correctness. Resolved AI-code error and trajectory independence remain unmeasured.",
+    "The six selected cases and fixed task/model/tool mixture do not establish a task-population effect, causal component attribution or practical adoption. Statistical endpoint bounds retain their stated conditional assumptions and approximate resource component.",
+    "Manuscript placement is covered by the separate final PDF proof; this contract binds the standalone figure source, specifications, audit and exact final/prototype PDFs."
+  ]
+}

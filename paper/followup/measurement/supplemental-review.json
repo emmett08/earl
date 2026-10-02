@@ -1,0 +1,225 @@
+{
+  "schema": "EAL/supplemental-measurement-review/1",
+  "input_rows_sha256": "927d14d61ad67dceb1bf72e3e5c8dda0e73e6c29407dec660f9490fdf02460ef",
+  "masked_items_sha256": "d7693c3ce1046896e8ffb03d53a3f101981db74437820d3db32963fbe60d54fe",
+  "review_hashes": {
+    "reviewer-a.json": "b8221c7dbf826c54601840ceaa335e7ab76427f43477305288dfa03376f40b67",
+    "reviewer-b.json": "09092d1af49981733b67fcb8e11c8e0f255832337007b2a950a5b3102546592e",
+    "adjudicator.json": "0a73c34e948825fac2b52c079753e962db93c74934c34d82b993430e39df74b6"
+  },
+  "sample_n": 169,
+  "original_ambiguity_census_n": 25,
+  "resolved_stratified_sample_n": 144,
+  "sampling": "Census of original ambiguities, one random resolved recipient per arm/recipient/tool/task/reference stratum; no population accuracy estimate",
+  "first_review_disagreements": 0,
+  "supplemental_counts_by_selection": {
+    "all_ambiguous": {
+      "ambiguous": 19,
+      "undetermined": 6
+    },
+    "stratified_resolved": {
+      "ready": 63,
+      "not_ready": 36,
+      "undetermined": 45
+    }
+  },
+  "flagged_records": [
+    {
+      "id": "2264899fc17579b3e77162c0",
+      "session_id": "block-0127.eal.session-7",
+      "selection": "all_ambiguous",
+      "arm": "eal",
+      "recipient": "reasoning",
+      "donor": "reasoning",
+      "tools": true,
+      "case": "database-alternative-read-routes",
+      "reference": "undetermined",
+      "original_code": "ambiguous",
+      "sha256": "fb99dedf3747a8fcc8a8b32c5365ad17575170efdc94557391602e964f209f64",
+      "first_review_a": "ambiguous",
+      "first_review_b": "ambiguous",
+      "initial_consensus": "ambiguous",
+      "supplemental_code": "undetermined",
+      "adjudication": {
+        "id": "2264899fc17579b3e77162c0",
+        "decision": "undetermined",
+        "quote": "Assessment: undetermined (not_ready)\n\nExplanation: As of 2026-09-28T10:07:00Z, the task reading remains inconclusive. The criteria allow either of two routes to certify readiness, but current evidence does not confirm either route definitively:\n\n- Primary route: no confirmed valid leader lease (primary_lease is false and primary_link is null).\n- Replica route: replica lag is not measured (replica_lag is null and replica_link is true), so we cannot verify that lag \u2264 15 seconds.\n\nBecause neither route is fully supported with solid evidence, the overall status stays undetermined. To move toward a decision, obtain fresh measurements for at least one route: confirm a valid primary leader lease, or measure replica lag and verify it is \u2264 15 seconds.",
+        "note": "The main assessment is undetermined; the body repeatedly defines the current reading as inconclusive, says neither route is definitively confirmed, and says the overall status stays undetermined. This full explanation clarifies the parenthetical not_ready as withholding certification of readiness. It does not communicate an established failed whole-task criterion.",
+        "conflict": false
+      }
+    },
+    {
+      "id": "a78e1d6a2e7dc006247edfe8",
+      "session_id": "block-0039.eal.session-2",
+      "selection": "all_ambiguous",
+      "arm": "eal",
+      "recipient": "reasoning",
+      "donor": "plain",
+      "tools": false,
+      "case": "firmware-selective-applicability",
+      "reference": "undetermined",
+      "original_code": "ambiguous",
+      "sha256": "32324af9ad59a3ec43d966c87057c23888f0732418d6066982531a8e5eccd560",
+      "first_review_a": "ambiguous",
+      "first_review_b": "ambiguous",
+      "initial_consensus": "ambiguous",
+      "supplemental_code": "undetermined",
+      "adjudication": {
+        "id": "a78e1d6a2e7dc006247edfe8",
+        "decision": "undetermined",
+        "quote": "Assessment: not_ready (undetermined due to safety outcome missing)\n\nExplanation: As of 2026-09-28T10:02:00Z, the readiness criteria require safety tests to pass, calibration to be OK, and operator authorization under the current policy. While authorization is true and calibration is true, the safety result is unknown (null). Without a known safety pass, the rollout cannot be considered ready. Until safety tests are performed and demonstrate a pass (or a valid exception is resolved), the current-version obligations cannot be deemed satisfied.",
+        "note": "The parenthetical immediately explains the headline as undetermined due to a missing safety outcome. The complete explanation says the result is unknown, no known safety pass permits readiness, and satisfaction cannot yet be established. In this qualified usage, not_ready withholds rollout readiness rather than declaring an established failed current criterion.",
+        "conflict": false
+      }
+    },
+    {
+      "id": "d2e0bff03b6c6f2c24fc6ee1",
+      "session_id": "block-0058.eal.session-8",
+      "selection": "all_ambiguous",
+      "arm": "eal",
+      "recipient": "reasoning",
+      "donor": "plain",
+      "tools": false,
+      "case": "release-three-obligations",
+      "reference": "undetermined",
+      "original_code": "ambiguous",
+      "sha256": "4408a060c9768acd3ce33db41b32b00594a2c5168a1576fa9279fb1d1ba557bc",
+      "first_review_a": "ambiguous",
+      "first_review_b": "ambiguous",
+      "initial_consensus": "ambiguous",
+      "supplemental_code": "undetermined",
+      "adjudication": {
+        "id": "d2e0bff03b6c6f2c24fc6ee1",
+        "decision": "undetermined",
+        "quote": "Assessment: undetermined\n\nExplanation:\nAs of 2026-09-28T10:08:00Z for service checkout-api in environment staging, release r17, the release status is not ready. The available evidence shows rollback is required and present (rollback = true), but there is no eligible evidence yet for artifact signature verification or integration tests. Since any eligible failed obligation would force not_ready, and missing eligible evidence leaves the overall status undetermined, we cannot declare the release ready at this time. You need to obtain eligible evidence for:\n- Artifact signature verification\n- Integration tests results\n\nAlso consider performing a rollback rehearsal if applicable and ensure all three obligations have aligned, eligible supporting evidence in the same service/environment/release context.",
+        "note": "The headline gives undetermined, and the explanation explicitly distinguishes a failed obligation yielding not_ready from missing eligible evidence leaving overall status undetermined. It identifies missing evidence and says readiness cannot be declared. That distinction clarifies the intervening plain-language not ready as lack of established readiness, not an asserted failed criterion.",
+        "conflict": false
+      }
+    },
+    {
+      "id": "36f52eba58a9739929c1689d",
+      "session_id": "block-0084.eal.session-4",
+      "selection": "all_ambiguous",
+      "arm": "eal",
+      "recipient": "plain",
+      "donor": "reasoning",
+      "tools": false,
+      "case": "database-alternative-read-routes",
+      "reference": "not_ready",
+      "original_code": "ambiguous",
+      "sha256": "64263ec70927c3aa06f3091fc1f00d791b7460f9ad8e5c44c226dd31921974c9",
+      "first_review_a": "ambiguous",
+      "first_review_b": "ambiguous",
+      "initial_consensus": "ambiguous",
+      "supplemental_code": "undetermined",
+      "adjudication": {
+        "id": "36f52eba58a9739929c1689d",
+        "decision": "undetermined",
+        "quote": "Based on the current assessment at 2026-09-28T10:04:00Z, the read service is not ready. This is because, according to the evaluation rules, at least one route needs to be fully supported\u2014meaning either the primary is reachable with a valid lease, or the replica is reachable with its lag at most 15 seconds. Since the observed state indicates that the primary lease and link are not confirmed as available, but the replica link is available, the service's readiness remains indeterminate rather than fully ready or not ready. Therefore, the overall assessment concludes that the service is not ready at this moment.",
+        "note": "The answer explicitly says readiness remains indeterminate rather than fully ready or not ready, and grounds this in unconfirmed availability. That qualification supplies the communicated criterion category. In the full text the opening and closing plain-language not ready express that readiness has not been established, despite the imprecise use of overall assessment in the last sentence; the explanation expressly excludes a determinate not-ready criterion verdict.",
+        "conflict": false
+      }
+    },
+    {
+      "id": "2840d47bd4c12a88b116298d",
+      "session_id": "block-0025.eal.session-8",
+      "selection": "all_ambiguous",
+      "arm": "eal",
+      "recipient": "reasoning",
+      "donor": "plain",
+      "tools": false,
+      "case": "migration-multiple-version-bindings",
+      "reference": "undetermined",
+      "original_code": "ambiguous",
+      "sha256": "521787fc9697f1e730a3b2b2cb9a7052953c83294a9b3bfdf9422c08f401bc12",
+      "first_review_a": "ambiguous",
+      "first_review_b": "ambiguous",
+      "initial_consensus": "ambiguous",
+      "supplemental_code": "undetermined",
+      "adjudication": {
+        "id": "2840d47bd4c12a88b116298d",
+        "decision": "undetermined",
+        "quote": "Assessment: not_ready (undetermined)\n\nReason: At 2026-09-28T10:08:00Z, the readiness criteria require evidence for backup, dry_run, and runbook aligned with the current migration and policy revision. The backup condition is marked true, but there is no provided evidence for a dry_run or for an approved runbook. Without confirmation for all required obligations (especially dry_run and runbook), and given that a missing current-version evidence makes the result undetermined, we cannot confirm readiness. Additionally, the environment/database match and observed scope are noted, but the missing dry_run/runbook evidence prevents a go-ahead.",
+        "note": "The parenthetical qualifies not_ready as undetermined, and the body explicitly says missing current-version evidence makes the result undetermined. Its practical conclusion is that missing confirmation prevents a go-ahead. The full answer therefore communicates an undetermined criterion and a withheld operational decision, not two conflicting determinate criterion verdicts.",
+        "conflict": false
+      }
+    },
+    {
+      "id": "a862404b75bc38ae0f548729",
+      "session_id": "block-0081.eal.session-9",
+      "selection": "all_ambiguous",
+      "arm": "eal",
+      "recipient": "reasoning",
+      "donor": "reasoning",
+      "tools": false,
+      "case": "release-three-obligations",
+      "reference": "undetermined",
+      "original_code": "ambiguous",
+      "sha256": "a9252376dff19914853d70456604268c116dec6e8635c313017c5b07a9c4d719",
+      "first_review_a": "ambiguous",
+      "first_review_b": "ambiguous",
+      "initial_consensus": "ambiguous",
+      "supplemental_code": "undetermined",
+      "adjudication": {
+        "id": "a862404b75bc38ae0f548729",
+        "decision": "undetermined",
+        "quote": "Assessment: Not ready. Current evidence is insufficient to declare readiness for release r17 of checkout-api in staging.\n\nWhy: The task status remains undetermined because we lack eligible evidence for all three obligations (integration tests, artifact signature verification, and rollback rehearsal). The current state shows:\n- rollback: required but evidence not provided\n- signature: not provided\n- tests: not provided\n\nAdditionally, any eligible failed obligation would render the release not_ready, and missing eligible support leaves the status undetermined. Until complete, verifiable evidence for all three obligations is available (and all pass), we should not proceed.\n\nRecommendation:\n- Run or verify the integration tests for checkout-api (staging, release r17) and capture eligible test evidence.\n- Verify the artifact signature and obtain eligible signature evidence.\n- Perform a rollback rehearsal in staging and collect eligible rollback evidence.\n- Ensure all three obligations have eligible evidence. If any obligation fails, declare not_ready. If evidence is missing for any obligation, the status remains undetermined.",
+        "note": "The headline immediately defines Not ready as insufficient evidence to declare readiness. The body repeatedly assigns undetermined to the task, expressly distinguishes missing evidence from a failed obligation yielding not_ready, and separately recommends not proceeding. These qualifications establish an undetermined current criterion with a practical hold.",
+        "conflict": false
+      }
+    },
+    {
+      "id": "30b66792eb471c4c0c515c9e",
+      "session_id": "block-0152.eal.session-5",
+      "selection": "stratified_resolved",
+      "arm": "eal",
+      "recipient": "reasoning",
+      "donor": "reasoning",
+      "tools": true,
+      "case": "migration-cutover-obligations",
+      "reference": "undetermined",
+      "original_code": "undetermined",
+      "sha256": "2ff83409c9522b168a28cf8ac6b611b319f4ca862b62aff8ad9499a5a3ec99a2",
+      "first_review_a": "ambiguous",
+      "first_review_b": "ambiguous",
+      "initial_consensus": "ambiguous",
+      "supplemental_code": "undetermined",
+      "adjudication": {
+        "id": "30b66792eb471c4c0c515c9e",
+        "decision": "undetermined",
+        "quote": "Assessment: Not ready (undetermined).\n\nExplanation: Based on the current task snapshot, at 2026-09-28T10:05:00Z the readiness decision remains \"undetermined.\" The dataset is orders in migration-lab (migration m42). The obligations show that RESTORE and SCHEMA are satisfied, but LAG evidence is missing (lag is null). Since one or more obligations lack eligible evidence, the overall cutover readiness cannot be confirmed as ready. The snapshot is within the 60-second age window, but without lag data, the decision cannot be finalized. To move to ready, provide verifiable replica lag \u2264 8 seconds (preferably with a current measurement).",
+        "note": "The parenthetical qualifies Not ready as undetermined. The explanation explicitly calls the current readiness decision undetermined, says missing evidence prevents confirming readiness, and says the decision cannot be finalized. The qualified headline thus withholds readiness while the criterion remains undetermined; it does not declare a failed criterion.",
+        "conflict": false
+      }
+    }
+  ],
+  "supplemental_recipient_reference_agreement": {
+    "ordinary": {
+      "match": 739,
+      "mismatch": 1171,
+      "unknown": 10,
+      "n": 1920,
+      "bounds": [
+        0.3848958333333333,
+        0.39010416666666664
+      ]
+    },
+    "eal": {
+      "match": 1871,
+      "mismatch": 42,
+      "unknown": 7,
+      "n": 1920,
+      "bounds": [
+        0.9744791666666667,
+        0.978125
+      ]
+    }
+  },
+  "status": "supplemental_ai_review; completed pilot and its published primary codes unchanged",
+  "limits": [
+    "Separate masked AI contexts share model-family and rubric risks.",
+    "Reviewer agreement does not establish independent coding accuracy.",
+    "Purposive census plus one-per-stratum sample does not estimate a population error rate.",
+    "Alternative coding bounds address interpretations, not assessor error or sampling uncertainty."
+  ]
+}

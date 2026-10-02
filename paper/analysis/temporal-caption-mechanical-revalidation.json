@@ -1,0 +1,124 @@
+{
+  "purpose": "Temporal scope correction for four original-finish coding figures; supplemental ambiguities excluded from their unchanged plotted values.",
+  "historical_snapshot": "analysis/caption-snapshot-before/snapshot-receipt.json",
+  "exact_reproduction_check": {
+    "result": "pass",
+    "method": "Invoke unchanged complete calculation through generator with write_figure scoped to the four owned figures, then compare exact current caption/spec/TikZ/alt bytes.",
+    "paths_and_sha256": {
+      "figures/alternative-text.json": "9663ee3755774c43617ed3189ae9429e8f804fd4beac20d03e9cfde421805820",
+      "08-measurement-status.spec.json": "fdd51d328efd737d348a0ea0325cbc998b63308e926d49eeb2a5ce3dbd162931",
+      "12-recipient-decisions.spec.json": "4e2b54b1c03cf0408fbe01956c0b8ebaccec4583df2dd0513ffd79d6558d5720",
+      "13-recipient-match-bounds.spec.json": "637b6c8ed08ee7aee55c5f06171daaa798a3f96d42cc5bd8c2c2b50ddfbdfa88",
+      "14-frozen-endpoint-bounds.spec.json": "302d10b6c297dec21d9de21ba42b1fc572e1d7566949cb6e4b868456863987b0",
+      "figures/08-measurement-status.tikz.tex": "6caf1ec80b77bce5151ed730ba70b1f07d65e3b1a8b6346dbb99f75580f11680",
+      "figures/12-recipient-decisions.tikz.tex": "9511f50793158cc6991c241155bb4c39c3204be3b8a86b0d36d060e7d2ef54fb",
+      "figures/13-recipient-match-bounds.tikz.tex": "4a8a77f82cf85495cfffecad0a6ba550138fceb31e5e8dbfe71cc39b97cd8483",
+      "figures/14-frozen-endpoint-bounds.tikz.tex": "9fe4c92529b201d4dda39a7ddf437ad2ba9a8c19d40879b7cdeca4e26c204dec",
+      "captions/08-measurement-status.caption.txt": "3f2a020cb5fc3ba0917f70ea86b91a72af2f9b8bc3cd7510631fa55be922d575",
+      "captions/08-measurement-status.alt.txt": "d84cfd8e85b73897257e3d7e13e6b6499286b2b2769436196c0a2513bca7d734",
+      "captions/12-recipient-decisions.caption.txt": "0f18a274195f7e5338e299fc76a1a915639cdc63fbad18ab2030b68c49e1063d",
+      "captions/12-recipient-decisions.alt.txt": "6595d939a385cf3b53e9ba2beaa8cd8780476b4dbfe4904dd5fede5f3e6d27d9",
+      "captions/13-recipient-match-bounds.caption.txt": "4bb5aeaf20184730168048cf5af8d6dd873ced9c12e143cfe9da16cd3c27d33e",
+      "captions/13-recipient-match-bounds.alt.txt": "e78578ab0b70e6071e5ddfb5cdbdc626d8d877bd76c419037f7a98eb50608754",
+      "captions/14-frozen-endpoint-bounds.caption.txt": "932a3b708674167f4d7924fa2cf6cca078d650a02e2e257c38f4d5a5d740e593",
+      "captions/14-frozen-endpoint-bounds.alt.txt": "eb7e2a9e6407e79eef6bfcede2dd559603bdc072191604e7a29488bb213faa22"
+    }
+  },
+  "figures": [
+    {
+      "figure_id": "fig-08-measurement-status",
+      "source_and_png_byte_identical_to_history": true,
+      "quantities_encodings_inputs_target_identical_to_history": true,
+      "caption_numeric_tokens_identical_to_history": true,
+      "spec_valid_with_files": true,
+      "fresh_mechanical_audit_ok": true,
+      "fresh_pdf_rebuilt": true,
+      "audit_warnings": [],
+      "typesetting_warnings": [
+        "Package shellesc Warning: Shell escape disabled on input line 73.",
+        "Package pgfplots Warning: running in backwards compatibility mode (unsuitable t"
+      ],
+      "sha256": {
+        "08-measurement-status.spec.json": "fdd51d328efd737d348a0ea0325cbc998b63308e926d49eeb2a5ce3dbd162931",
+        "figures/08-measurement-status.tikz.tex": "6caf1ec80b77bce5151ed730ba70b1f07d65e3b1a8b6346dbb99f75580f11680",
+        "figures/08-measurement-status.pdf": "e71c248e1c2f90221f9e8330fee93763bfed029013eb1d0e9fdc5e0ad414ce59",
+        "figures/08-measurement-status.png": "cfb3fc6f255a42d3210880c444a256e87ca2fb140a2505c0af52ee20da9fef94",
+        "figures/08-measurement-status.audit.json": "869b7519c25aa59f1264af4cacf74d6ea4856ff6779a7f6eff17484e1e1a7a13",
+        "captions/08-measurement-status.caption.txt": "3f2a020cb5fc3ba0917f70ea86b91a72af2f9b8bc3cd7510631fa55be922d575",
+        "captions/08-measurement-status.alt.txt": "d84cfd8e85b73897257e3d7e13e6b6499286b2b2769436196c0a2513bca7d734"
+      }
+    },
+    {
+      "figure_id": "fig-12-recipient-decisions",
+      "source_and_png_byte_identical_to_history": true,
+      "quantities_encodings_inputs_target_identical_to_history": true,
+      "caption_numeric_tokens_identical_to_history": true,
+      "spec_valid_with_files": true,
+      "fresh_mechanical_audit_ok": true,
+      "fresh_pdf_rebuilt": true,
+      "audit_warnings": [],
+      "typesetting_warnings": [
+        "Package shellesc Warning: Shell escape disabled on input line 73.",
+        "Package pgfplots Warning: running in backwards compatibility mode (unsuitable t",
+        "Underfull \\hbox (badness 2119) in paragraph at lines 30--30"
+      ],
+      "sha256": {
+        "12-recipient-decisions.spec.json": "4e2b54b1c03cf0408fbe01956c0b8ebaccec4583df2dd0513ffd79d6558d5720",
+        "figures/12-recipient-decisions.tikz.tex": "9511f50793158cc6991c241155bb4c39c3204be3b8a86b0d36d060e7d2ef54fb",
+        "figures/12-recipient-decisions.pdf": "ff2bf9e85c62f6d48f3e8471c98d793f72a06ac2011742e1994b67c184df140e",
+        "figures/12-recipient-decisions.png": "51d7fb50b77d3a9dbc9188c3aa0c06c708cb9ccefbd1f304b30270c7ba1c0662",
+        "figures/12-recipient-decisions.audit.json": "102ad6aa54a1276f68e146632780d2add2d739f94b14995131c9c6dccc161e66",
+        "captions/12-recipient-decisions.caption.txt": "0f18a274195f7e5338e299fc76a1a915639cdc63fbad18ab2030b68c49e1063d",
+        "captions/12-recipient-decisions.alt.txt": "6595d939a385cf3b53e9ba2beaa8cd8780476b4dbfe4904dd5fede5f3e6d27d9"
+      }
+    },
+    {
+      "figure_id": "fig-13-recipient-match-bounds",
+      "source_and_png_byte_identical_to_history": true,
+      "quantities_encodings_inputs_target_identical_to_history": true,
+      "caption_numeric_tokens_identical_to_history": true,
+      "spec_valid_with_files": true,
+      "fresh_mechanical_audit_ok": true,
+      "fresh_pdf_rebuilt": true,
+      "audit_warnings": [],
+      "typesetting_warnings": [
+        "Package shellesc Warning: Shell escape disabled on input line 73.",
+        "Package pgfplots Warning: running in backwards compatibility mode (unsuitable t"
+      ],
+      "sha256": {
+        "13-recipient-match-bounds.spec.json": "637b6c8ed08ee7aee55c5f06171daaa798a3f96d42cc5bd8c2c2b50ddfbdfa88",
+        "figures/13-recipient-match-bounds.tikz.tex": "4a8a77f82cf85495cfffecad0a6ba550138fceb31e5e8dbfe71cc39b97cd8483",
+        "figures/13-recipient-match-bounds.pdf": "0f3c2887064ba0863b821a9a640de3bdd582a28c631063ec0111c2fd2d8121d0",
+        "figures/13-recipient-match-bounds.png": "6a02af0abe164a625d2f475a26bd4706cd8cc8859154b6fab3fbb9bb998e06a2",
+        "figures/13-recipient-match-bounds.audit.json": "3e02435743cae9efdadab1c0d939b0b8ca727d378d4cd9379fb1ed89854dcc1f",
+        "captions/13-recipient-match-bounds.caption.txt": "4bb5aeaf20184730168048cf5af8d6dd873ced9c12e143cfe9da16cd3c27d33e",
+        "captions/13-recipient-match-bounds.alt.txt": "e78578ab0b70e6071e5ddfb5cdbdc626d8d877bd76c419037f7a98eb50608754"
+      }
+    },
+    {
+      "figure_id": "fig-14-frozen-endpoint-bounds",
+      "source_and_png_byte_identical_to_history": true,
+      "quantities_encodings_inputs_target_identical_to_history": true,
+      "caption_numeric_tokens_identical_to_history": true,
+      "spec_valid_with_files": true,
+      "fresh_mechanical_audit_ok": true,
+      "fresh_pdf_rebuilt": true,
+      "audit_warnings": [],
+      "typesetting_warnings": [
+        "Package shellesc Warning: Shell escape disabled on input line 73.",
+        "Package pgfplots Warning: running in backwards compatibility mode (unsuitable t"
+      ],
+      "sha256": {
+        "14-frozen-endpoint-bounds.spec.json": "302d10b6c297dec21d9de21ba42b1fc572e1d7566949cb6e4b868456863987b0",
+        "figures/14-frozen-endpoint-bounds.tikz.tex": "9fe4c92529b201d4dda39a7ddf437ad2ba9a8c19d40879b7cdeca4e26c204dec",
+        "figures/14-frozen-endpoint-bounds.pdf": "556e8ec3cbd28e0316f48c0dde45dc91539476a8ff7468e1c038c66ca70aacd7",
+        "figures/14-frozen-endpoint-bounds.png": "9c755f83d81d5af56d801d5efa9bee6593879170a0f028c77223d52690a0a735",
+        "figures/14-frozen-endpoint-bounds.audit.json": "01a4bb3fb13a61efdbf510aceef9c01a9c4d41513f04de283308b38903822a40",
+        "captions/14-frozen-endpoint-bounds.caption.txt": "932a3b708674167f4d7924fa2cf6cca078d650a02e2e257c38f4d5a5d740e593",
+        "captions/14-frozen-endpoint-bounds.alt.txt": "eb7e2a9e6407e79eef6bfcede2dd559603bdc072191604e7a29488bb213faa22"
+      }
+    }
+  ],
+  "review_status": "Independent fresh blind caption reconstruction and review binding are owned by /root/temporal_caption_review. This receipt is mechanical verification, not semantic acceptance.",
+  "manuscript_pdf_binding_status": "Root will compile and proof current manuscript, then bind final PDF."
+}

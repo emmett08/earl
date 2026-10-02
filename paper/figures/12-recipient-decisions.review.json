@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-12-recipient-decisions",
+  "spec_sha256": "4e2b54b1c03cf0408fbe01956c0b8ebaccec4583df2dd0513ffd79d6558d5720",
+  "audit_sha256": "102ad6aa54a1276f68e146632780d2add2d739f94b14995131c9c6dccc161e66",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/12-recipient-decisions.pdf",
+      "sha256": "ff2bf9e85c62f6d48f3e8471c98d793f72a06ac2011742e1994b67c184df140e"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/12-recipient-decisions.pdf",
+      "sha256": "ff2bf9e85c62f6d48f3e8471c98d793f72a06ac2011742e1994b67c184df140e"
+    }
+  ],
+  "reviewer": {
+    "id": "temporal-caption-fresh-reader-agent",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "current-temporal-caption",
+      "prototype": "figures/12-recipient-decisions.pdf",
+      "observations": {
+        "reading": "Both recipient matrices show the full original finish reference/communication routing with printed counts and a common within-reference tone scale. The specific 653-versus-eight ready-against-non-ready contrast is recoverable from the two affected rows. The existing count matrix is canonical for this routing question; a temporal caption amendment does not require alternative geometries.",
+        "annotation_burden": "Readers must keep counts distinct from within-reference tone percentages. The shared legend, row denominators, direct arm labels and explicit ambiguous column carry this burden; caption abbreviations and donor exclusion remain necessary.",
+        "reproduction": "Inspected exact current colour preview, greyscale preview and thumbnail; current successful mechanical audit binds current source, specification, PDF, caption and alt bytes. The current PDF remains below the 160mm maximum, all declared 9pt text and 0.4pt stroke floors pass, and no label clipping/collision was seen. Also inspected the complete stable integrated manuscript page6, printed Figure2, from eal-handover-data-story.pdf SHA256 ef6b44efa1e3953f84efd96d18352af824dd88249ade7fe6f905582b34a7628a. The page render and inspection record are retained in analysis/temporal-caption-integrated-inspection/. Printed Figure2 on page6: the two matrices, row denominators, communication headers, tone legend and full caption remain readable and separated. The historical original finish scope, retained recipient ambiguity and AI-coding qualification are preserved in the caption."
+      }
+    }
+  ],
+  "selected_candidate": "current-temporal-caption",
+  "initial_reconstruction": {
+    "claim": "The original finish AI communication codes agree far more often with authored recipient references in EAL than in ordinary communications, while ambiguity remains explicitly retained.",
+    "quantities": [
+      "1,920 recipient sessions per arm, donors excluded",
+      "Reference row denominators ready 768, not ready 512, undetermined 640 per arm",
+      "Ordinary counts by row: 477/98/189/4; 291/84/131/6; 362/100/178/0",
+      "EAL counts by row: 758/10/0/0; 2/508/0/2; 6/23/600/11",
+      "Ambiguous recipients ordinary 10 and EAL 13; no-answer counts zero",
+      "Ready communication against non-ready references ordinary 653 and EAL 8"
+    ],
+    "evidence_status": "Observed coded counts conditional on AI interpretation of communicated decisions and comparison with authored references; factual correctness and explanation correctness have no independent human validation here.",
+    "scope": "Historical original finish recipient communication coding with authored ready/not_ready/undetermined references, 1,920 recipients in each arm and no donor sessions. The matrix does not show supplemental measurement results.",
+    "unintended_inferences": [
+      "Darkness could be misread as raw cell count rather than within-reference percentage if the tone legend is skipped.",
+      "The large EAL diagonal could be misread as independently validated correctness.",
+      "Original finish wording must remain attached when this figure is cited after supplemental review."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "The historical original finish snapshot is explicit and distinct from posthoc supplemental measurement.",
+      "Every displayed count and row denominator reproduces from session CSV and completion-confusion.csv; recipient ambiguity totals are 10 ordinary and 13 EAL, and no-answer counts are zero.",
+      "Tone is a shared linear mapping of the percentage within each reference row, not the raw count; matrix cells are data marks rather than diagram nodes.",
+      "AI-code/reference agreement, factual correctness and explanation correctness remain distinguished.",
+      "The stable integrated manuscript page6 (printed Figure2) preserves the reviewed graphic and temporal caption without clipping or collision."
+    ],
+    "findings": [
+      {
+        "id": "counts-versus-tone",
+        "severity": "informational",
+        "description": "Printed counts and cell tone represent different quantities.",
+        "disposition": "accepted",
+        "reason": "The figure labels tone as percentage within each reference row, prints row denominators and includes a common 0\u2013100% legend; both arm mappings were numerically checked."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "The exact current figure compiled successfully using retained local inputs with shell escape disabled; visual inspection and numerical checks found no missing external material."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "The compatibility warning is a package configuration notice. The exact current values, scales and annotations were inspected in colour and greyscale and independently compared with retained historical CSV calculations; no resulting encoding defect was found."
+      },
+      {
+        "index": 2,
+        "disposition": "accepted",
+        "reason": "The current matrix labels, including the wrapped Not ready column labels, were inspected at final preview size and thumbnail. The ragged text causes no clipping, collision or semantic ambiguity; all cell counts remain legible."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This acceptance is independent agent screening of the graphic plus its current temporal caption and alt text; it is not independent human validation of codes, assessor accuracy or comprehension.",
+    "The original all-four figure-first reconstruction, including scale and limits, is retained unchanged in analysis/temporal-caption-fresh-reader-stage1.json before project specifications or numerical sources were opened.",
+    "The four figures retain original finish primary coding. The separate posthoc measurement amendment is not plotted, substituted into frozen inference, or adjudicated by this review."
+  ]
+}

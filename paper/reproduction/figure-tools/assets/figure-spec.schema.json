@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:design-evidence-visualisation:figure-spec:1.0",
+  "title": "Inspectable figure specification",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "figure_id", "purpose", "inputs", "encodings", "target", "build"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "figure_id": {"$ref": "#/$defs/id"},
+    "purpose": {
+      "type": "object", "additionalProperties": false,
+      "required": ["reader_question", "expected_reading", "claim", "scope", "permitted_inferences", "prohibited_inferences"],
+      "properties": {
+        "reader_question": {"$ref": "#/$defs/text"},
+        "expected_reading": {"$ref": "#/$defs/text"},
+        "claim": {"$ref": "#/$defs/text"},
+        "scope": {"$ref": "#/$defs/text"},
+        "permitted_inferences": {"$ref": "#/$defs/texts"},
+        "prohibited_inferences": {"$ref": "#/$defs/texts"}
+      }
+    },
+    "inputs": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "status", "source_reference"],
+        "anyOf": [{"required": ["path"]}, {"required": ["url"]}],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "path": {"$ref": "#/$defs/path"},
+          "url": {"type": "string", "pattern": "^https?://[^\\s]+$"},
+          "status": {"enum": ["observed", "simulated", "derived", "illustrative"]},
+          "source_reference": {"$ref": "#/$defs/text"},
+          "sha256": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}
+        }
+      }
+    },
+    "quantities": {
+      "type": "array", "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "label", "unit", "definition", "input_ids", "transformation", "missingness", "uncertainty"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"}, "label": {"$ref": "#/$defs/text"},
+          "unit": {"$ref": "#/$defs/text"}, "definition": {"$ref": "#/$defs/text"},
+          "input_ids": {"$ref": "#/$defs/refs"}, "transformation": {"$ref": "#/$defs/text"},
+          "status": {"enum": ["available", "missing"], "default": "available"},
+          "statistical_role": {"enum": ["measurement", "estimate", "parameter", "derived"]},
+          "sample": {
+            "type": "object", "additionalProperties": false,
+            "required": ["denominator", "unit", "inclusion"],
+            "properties": {
+              "denominator": {"type": "integer", "minimum": 0},
+              "unit": {"$ref": "#/$defs/text"}, "inclusion": {"$ref": "#/$defs/text"}
+            }
+          },
+          "missingness": {
+            "type": "object", "additionalProperties": false,
+            "required": ["state", "treatment"],
+            "properties": {
+              "state": {"enum": ["complete", "partial", "missing", "not_applicable"]},
+              "treatment": {"$ref": "#/$defs/text"},
+              "fill_missing_with": {"type": ["number", "string", "null"]},
+              "justification": {"$ref": "#/$defs/text"}
+            }
+          },
+          "uncertainty": {
+            "type": "object", "additionalProperties": false,
+            "required": ["kind", "definition"],
+            "properties": {
+              "kind": {"enum": ["none", "interval", "distribution", "unquantified", "not_applicable"]},
+              "definition": {"$ref": "#/$defs/text"},
+              "coverage": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+              "method": {"$ref": "#/$defs/text"}
+            }
+          }
+        },
+        "allOf": [{
+          "if": {"properties": {"statistical_role": {"const": "estimate"}}, "required": ["statistical_role"]},
+          "then": {"required": ["sample"], "properties": {
+            "sample": {"properties": {"denominator": {"exclusiveMinimum": 0}}},
+            "status": {"const": "available"}
+          }}
+        }]
+      }
+    },
+    "constructions": {
+      "type": "array", "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "kind", "definition", "method", "input_ids"],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"},
+          "kind": {"enum": ["constraint_region", "projection", "topology", "other"]},
+          "definition": {"$ref": "#/$defs/text"},
+          "method": {"$ref": "#/$defs/text"}, "input_ids": {"$ref": "#/$defs/refs"}
+        }
+      }
+    },
+    "encodings": {
+      "type": "array", "minItems": 1, "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "marks", "mark_role", "channel", "represents", "interpretation", "scale_or_mapping"],
+        "anyOf": [{"required": ["quantity_ids"]}, {"required": ["construction_ids"]}],
+        "properties": {
+          "id": {"$ref": "#/$defs/id"}, "marks": {"$ref": "#/$defs/text"},
+          "mark_role": {"enum": ["diagram_node", "data_mark", "boundary", "annotation"]},
+          "channel": {"enum": ["position", "length", "area", "colour", "tone", "angle", "thickness", "distance", "shape", "texture", "text", "incidence", "continuity"]},
+          "represents": {"$ref": "#/$defs/text"},
+          "interpretation": {"enum": ["quantitative", "categorical", "relational"]},
+          "quantity_ids": {"$ref": "#/$defs/refs"}, "construction_ids": {"$ref": "#/$defs/refs"},
+          "scale_or_mapping": {
+            "type": "object", "additionalProperties": false,
+            "required": ["type", "definition"],
+            "properties": {
+              "type": {"enum": ["linear", "log", "ordinal", "nominal", "nonmetric", "explicit"]},
+              "definition": {"$ref": "#/$defs/text"},
+              "domain": {"type": "array", "minItems": 1, "items": {"type": ["number", "string"]}},
+              "range": {"type": "array", "minItems": 1, "items": {"type": ["number", "string"]}}
+            }
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object", "additionalProperties": false,
+      "required": ["width_mm", "min_text_pt", "colour_intent"],
+      "properties": {
+        "width_mm": {"type": "number", "exclusiveMinimum": 0},
+        "width_mode": {"enum": ["maximum", "exact"], "default": "maximum"},
+        "width_tolerance_mm": {"type": "number", "minimum": 0, "default": 0.5},
+        "min_text_pt": {"type": "number", "minimum": 6},
+        "min_math_script_pt": {"type": "number", "minimum": 6, "default": 6},
+        "min_stroke_pt": {"type": "number", "minimum": 0.35, "default": 0.35},
+        "minimum_raster_dpi": {"type": "number", "exclusiveMinimum": 0, "default": 300},
+        "colour_intent": {"enum": ["greyscale", "colour_and_greyscale"]},
+        "expected_labels": {"$ref": "#/$defs/texts", "default": []},
+        "prohibit_block_circle_diagrams": {"type": "boolean", "default": true},
+        "manuscript_profile": {"$ref": "#/$defs/path"},
+        "font_exceptions": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["text", "min_text_pt", "reason", "role"],
+          "properties": {
+            "text": {"$ref": "#/$defs/text"},
+            "min_text_pt": {"type": "number", "exclusiveMinimum": 0},
+            "reason": {"$ref": "#/$defs/text"}, "role": {"const": "mathematical_script"}
+          }
+        }}
+      }
+    },
+    "build": {
+      "type": "object", "additionalProperties": false,
+      "required": ["renderer", "source", "recipe", "outputs", "dependencies"],
+      "properties": {
+        "renderer": {"enum": ["tikz", "pgfplots"]}, "source": {"$ref": "#/$defs/path"},
+        "engine": {"enum": ["pdflatex", "lualatex", "xelatex"]},
+        "profile": {"$ref": "#/$defs/path"},
+        "recipe": {"type": "array", "minItems": 1, "items": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/text"}}},
+        "outputs": {
+          "type": "object", "additionalProperties": false, "required": ["pdf"],
+          "properties": {
+            "pdf": {"$ref": "#/$defs/path"}, "preview": {"$ref": "#/$defs/path"},
+            "audit": {"$ref": "#/$defs/path"}, "review": {"$ref": "#/$defs/path"}
+          }
+        },
+        "dependencies": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/path"}},
+        "seed": {"type": "integer", "minimum": 0}
+      }
+    }
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "texts": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"},
+    "refs": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/id"}},
+    "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)[^\\u0000-\\u001f]+$"}
+  }
+}

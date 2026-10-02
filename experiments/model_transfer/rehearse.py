@@ -51,7 +51,7 @@ class PipelineRehearsal:
         root.mkdir(parents=True, exist_ok=False)
         write_json(root / 'plan.json', plan)
         write_json(root / 'cases.json', [asdict(case) for case in cases_for_plan(plan) if case.identifier in plan['cases']])
-        write_json(root / 'protocol.json', read_json(Path(__file__).with_name('protocol.json')))
+        write_json(root / 'protocol.json', plan.get('study_protocol') or read_json(Path(__file__).with_name('protocol.json')))
         calibration = ContractCalibration().check(plan)
         write_json(root / 'calibration.json', calibration)
         if calibration['status'] != 'passed':
@@ -66,9 +66,13 @@ class PipelineRehearsal:
         exchange.export(root, bundle, include_all=True)
         labels = read_json(bundle / 'items.json')
         labels['annotator'] = 'scripted-pipeline-check-not-human-data'
+        labels['assessor'] = {'kind': 'scripted', 'method': 'fixed-scripted-labels/1'}
         for item in labels['items']:
             item.update(decision='ready', quote=item['text'],
                         note='Fixed scripted response explicitly states ready; no reference answer consulted.')
+            if 'explanation_consistency' in item:
+                item.update(explanation_consistency='consistent', consistency_quote=item['text'],
+                            consistency_note='The fixed scripted verdict and explanation do not conflict.')
         write_json(root / 'scripted-labels.json', labels)
         exchange.import_labels(root, bundle, root / 'scripted-labels.json', root / 'annotated-rows.json')
         subprocess.run([sys.executable, '-m', 'experiments.model_transfer.analyse', str(root),

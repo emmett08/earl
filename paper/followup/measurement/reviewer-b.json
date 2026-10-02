@@ -1,0 +1,1209 @@
+{
+  "schema": "EAL/blinded-supplemental-coding-review/1",
+  "assessor": {
+    "kind": "ai",
+    "model_identifier": "unavailable"
+  },
+  "method": "fresh blinded whole-answer semantic review",
+  "input_sha256": "d7693c3ce1046896e8ffb03d53a3f101981db74437820d3db32963fbe60d54fe",
+  "input_item_count": 169,
+  "masking_limits": [
+    "Answer wording can reveal the workflow despite opaque item identifiers.",
+    "Assessment by a shared AI family is not independent human validation."
+  ],
+  "coding_policy": [
+    "Every retained answer was read in full and its communicated current whole-task decision was judged semantically.",
+    "No experiment mappings, prior annotations, or other reviewers files were inspected.",
+    "Component-level, historical, hypothetical, and general-rule statements do not override a clear current whole-task verdict.",
+    "Conflicting current whole-task verdicts without an explicit announced correction are ambiguous; favourable or fact-derived interpretations are not substituted.",
+    "Conflict flags concern incompatible current whole-task verdicts, not merely inconsistent component facts; other wording concerns appear in item notes.",
+    "Quotes are exact contiguous substrings; ambiguous cases generally quote the complete answer to retain both verdicts.",
+    "These labels describe the answers communicated decisions and do not establish correct or independently human-validated ground truth."
+  ],
+  "labels_frozen": true,
+  "items": [
+    {
+      "id": "85943245c5c5ca26797a5045",
+      "decision": "ambiguous",
+      "quote": "The task is currently undetermined. The primary database's reachability and leader lease are both valid, but the replica is not reachable at this moment. Since the overall condition requires either the primary to be reachable with a valid leader lease or the replica to be reachable with acceptable lag, and only one of these routes is satisfied, the service is considered not ready at this time.",
+      "note": "Opening undetermined verdict and closing not-ready verdict both concern the current whole task; no explicit correction resolves them.",
+      "conflict": true
+    },
+    {
+      "id": "aeecf1ae61563d4496c38f11",
+      "decision": "ready",
+      "quote": "is that it is **ready**.",
+      "note": "Explicit current whole-task readiness; rationale reinforces the verdict.",
+      "conflict": false
+    },
+    {
+      "id": "a36268d05513d559d6e990da",
+      "decision": "not_ready",
+      "quote": "indicates that the task is not ready.",
+      "note": "Explicit current negative task verdict; unmet dry run supports the stated conclusion.",
+      "conflict": false
+    },
+    {
+      "id": "2e3248fe6cfdb2549c959686",
+      "decision": "undetermined",
+      "quote": "the task status is \"undetermined\" at this moment.",
+      "note": "Explicit inability to decide current readiness; missing route evidence remains unresolved.",
+      "conflict": false
+    },
+    {
+      "id": "8705ebd45b111fe794f43257",
+      "decision": "not_ready",
+      "quote": "Assessment: not_ready",
+      "note": "Explicit negative task assessment repeated in the explanation.",
+      "conflict": false
+    },
+    {
+      "id": "d12cf2242298f90b9770c590",
+      "decision": "undetermined",
+      "quote": "The assessment is undetermined.",
+      "note": "Explicit inconclusive task assessment; a component failure is not a separate whole-task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "8eb27efb3ae0995e49ab3be6",
+      "decision": "ready",
+      "quote": "The current service task is thus ready for arm-beta in hardware-lab.",
+      "note": "Explicit affirmative task verdict. Concern: the answer's 60-second timing claim is internally questionable, without an opposing task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "a0c795c6c101cfff63ee01d4",
+      "decision": "ambiguous",
+      "quote": "The assessment at 2026-09-28T10:00:00Z indicates that the catalog-read service in the eu-test region is not ready. The primary route satisfies its requirements, with both the primary being reachable and holding a valid leader lease. However, the replica route fails because the replica is not reachable and its lag is 25 seconds, exceeding the acceptable maximum of 15 seconds. Given that at least one route (the primary) is fully operational and meets its conditions, the overall service status is considered \"undetermined.\"",
+      "note": "Current opening not-ready and closing undetermined whole-service verdicts conflict without an announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "68797c4bce9743217b461206",
+      "decision": "undetermined",
+      "quote": "For now, status remains undetermined until new evidence is obtained.",
+      "note": "Explicit present inconclusive assessment; ready and not-ready alternatives are conditional future cases.",
+      "conflict": false
+    },
+    {
+      "id": "22484c8d54fde38490f1cf5c",
+      "decision": "ready",
+      "quote": "Therefore, the migration is ready.",
+      "note": "Explicit whole-migration readiness; explanation consistently affirms the current conclusion.",
+      "conflict": false
+    },
+    {
+      "id": "eee5bb5078540a872bfbdeb1",
+      "decision": "not_ready",
+      "quote": "the overall assessment is that the release is not ready for deployment.",
+      "note": "Explicit current negative release verdict; historical passing observations do not override it.",
+      "conflict": false
+    },
+    {
+      "id": "48c6216ab78190e0e7647cd2",
+      "decision": "ready",
+      "quote": "Therefore, the release is ready.",
+      "note": "Explicit current release readiness; no competing whole-task conclusion.",
+      "conflict": false
+    },
+    {
+      "id": "89f9978941479b4519aa61a8",
+      "decision": "ready",
+      "quote": "The release is ready.",
+      "note": "Explicit current affirmative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "4c02f0ed5a1d9637486e70c3",
+      "decision": "ambiguous",
+      "quote": "At the current snapshot time of 2026-09-28T10:05:00Z, the assessment of the catalog-read service in eu-test indicates that it is **not_ready**. The primary route is active, reachable, and holds a valid leader lease, fulfilling the criteria for the primary route. However, the replica route is active and reachable but has a lag of 25 seconds, which exceeds the permitted maximum of 15 seconds, and its leader lease is invalid. Since the service specification requires only one fully supported route to consider the service ready, and the primary route is supported, the overall service is still considered **ready** at this time.",
+      "note": "The answer declares the same current service both not_ready and ready; the latter is not announced as a correction.",
+      "conflict": true
+    },
+    {
+      "id": "1a44aeb4eb10c2f74fc3701b",
+      "decision": "not_ready",
+      "quote": "the overall status is **not_ready**.",
+      "note": "Explicit current negative service verdict. The supported primary is component-level evidence, not a competing whole-task readiness conclusion.",
+      "conflict": false
+    },
+    {
+      "id": "59a58990bccb93157b466406",
+      "decision": "ready",
+      "quote": "the conjunction of requirements is true and the rollout is ready.",
+      "note": "Explicit current rollout readiness.",
+      "conflict": false
+    },
+    {
+      "id": "11a0a0357e03b46e59e53e4e",
+      "decision": "ready",
+      "quote": "the task is assessed as **ready**.",
+      "note": "Explicit current task readiness; a direct-route failure is component-level and the tunnel supports the stated whole-task conclusion.",
+      "conflict": false
+    },
+    {
+      "id": "8f582d53e40fe797e8904e96",
+      "decision": "not_ready",
+      "quote": "The task is assessed as **not ready** at this moment.",
+      "note": "Explicit current negative task verdict; inability to confirm readiness is explanatory rather than a distinct undetermined decision.",
+      "conflict": false
+    },
+    {
+      "id": "3788c3abbfa3906b9a639699",
+      "decision": "undetermined",
+      "quote": "Therefore, the result remains undetermined.",
+      "note": "Explicit inability to decide the current whole-task result.",
+      "conflict": false
+    },
+    {
+      "id": "2264899fc17579b3e77162c0",
+      "decision": "ambiguous",
+      "quote": "Assessment: undetermined (not_ready)",
+      "note": "The assessment simultaneously assigns incompatible whole-task categories. Later undetermined wording does not explicitly retract the parenthetical not_ready.",
+      "conflict": true
+    },
+    {
+      "id": "fc0ededa19db1aebfab05944",
+      "decision": "ready",
+      "quote": "the assessment indicates that the orders migration (m42) in the migration-lab is **ready**.",
+      "note": "Explicit present migration readiness and authorization to proceed.",
+      "conflict": false
+    },
+    {
+      "id": "3ae797c18682389da2c8dbbf",
+      "decision": "undetermined",
+      "quote": "Without fresh probe data for west-test telemetry-dispatch, we cannot conclusively declare ready or not_ready.",
+      "note": "Explicit inability to choose either current task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "680102a9d8cc94ef33c0ee5e",
+      "decision": "not_ready",
+      "quote": "This violation means the task is not ready for the cutover at this time.",
+      "note": "Explicit current negative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "1407653358a988764bb3ae85",
+      "decision": "ready",
+      "quote": "Therefore, the cutover is ready.",
+      "note": "Explicit whole-cutover readiness; component facts support rather than compete with the verdict.",
+      "conflict": false
+    },
+    {
+      "id": "7352b8b5395445897f3569b1",
+      "decision": "not_ready",
+      "quote": "Therefore, the overall readiness status is not_ready.",
+      "note": "Explicit current negative rollout verdict despite historical passing observations.",
+      "conflict": false
+    },
+    {
+      "id": "5976279e4099bb9c8139c517",
+      "decision": "ambiguous",
+      "quote": "The current assessment at 10:05 indicates that the arm-beta is **not ready** for rollout. While the latest snapshot shows that safety tests, actuator calibration, and operator authorization are all successful for firmware fw1, there is a failure in the safety test status for firmware fw2 at minute 4. Since the requirements stipulate that all must pass within their respective age thresholds, this failure causes the overall readiness to be undetermined.",
+      "note": "Opening current not-ready rollout verdict conflicts with closing undetermined overall readiness; no announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "17313c6ab43cb606b5a286cd",
+      "decision": "not_ready",
+      "quote": "Therefore, the assessment is that the release is not ready.",
+      "note": "Explicit current negative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "cacdc97952f22bb092a1470d",
+      "decision": "not_ready",
+      "quote": "the dispatch readiness remains not_ready.",
+      "note": "Explicit current negative dispatch decision.",
+      "conflict": false
+    },
+    {
+      "id": "07bdd698f1cf3124236c2430",
+      "decision": "not_ready",
+      "quote": "The task is not ready for cutover.",
+      "note": "Explicit current negative cutover verdict.",
+      "conflict": false
+    },
+    {
+      "id": "5057a3fef6f1bafdfe2b8150",
+      "decision": "ready",
+      "quote": "The task is assessed as \"ready\" at the current time.",
+      "note": "Explicit current affirmative task decision.",
+      "conflict": false
+    },
+    {
+      "id": "100ae9d646e4eb6c054ef966",
+      "decision": "undetermined",
+      "quote": "The assessment of the task readiness at 2026-09-28T10:08:00Z is undetermined.",
+      "note": "Explicit current inconclusive task verdict. Conflicting component observations are the rationale, not conflicting whole-task decisions.",
+      "conflict": false
+    },
+    {
+      "id": "feb0611c3a3e5ef193c99690",
+      "decision": "ready",
+      "quote": "the overall service is considered ready at this time.",
+      "note": "Explicit current whole-service readiness. Concern: replica-lag wording is internally inconsistent, but both whole-service verdicts are ready.",
+      "conflict": false
+    },
+    {
+      "id": "45d4413217023246dc955bf8",
+      "decision": "undetermined",
+      "quote": "the overall readiness remains undetermined rather than ready or not_ready.",
+      "note": "Explicit present inconclusive readiness verdict; other labels are rejected alternatives.",
+      "conflict": false
+    },
+    {
+      "id": "e08aaf4a5407d8fe2d5fd276",
+      "decision": "ambiguous",
+      "quote": "The assessment is undetermined. Although the initial verification showed that all obligations were met at first, some of the more recent test results indicate that integration tests failed at minute 2 but then passed again at minute 4. As of now, the most recent status shows the integration tests are passing, along with the signature verification and rollback rehearsal, all within their respective maximum ages. Therefore, based on current evidence, the release may be considered ready, but the past failure of integration tests introduces a note of caution.",
+      "note": "Opening undetermined verdict conflicts with a current-evidence conclusion that the release may be considered ready. Caution does not explicitly retract either decision.",
+      "conflict": true
+    },
+    {
+      "id": "0cf9a1f2da692f47ea3deba6",
+      "decision": "ready",
+      "quote": "is **ready** for the cutover.",
+      "note": "Explicit current affirmative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "a78e1d6a2e7dc006247edfe8",
+      "decision": "ambiguous",
+      "quote": "Assessment: not_ready (undetermined due to safety outcome missing)",
+      "note": "The assessment combines negative and undetermined categories for the same current rollout, without clarifying that one is superseded.",
+      "conflict": true
+    },
+    {
+      "id": "6e902e4c7f2a86fe7d30e529",
+      "decision": "ready",
+      "quote": "The task is ready to proceed.",
+      "note": "Explicit current affirmative task decision.",
+      "conflict": false
+    },
+    {
+      "id": "8d02f43029c0fe1ed243b052",
+      "decision": "ready",
+      "quote": "The migration task is ready.",
+      "note": "Explicit current affirmative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "6aada5d0bd0ec246fdee05d1",
+      "decision": "ambiguous",
+      "quote": "The task readiness assessment is undetermined. Safety tests for the current firmware version (fw2) were initially not passed but later passed upon re-evaluation. Operator authorization is confirmed. However, the safety tests for firmware fw2, taken at 4 minutes past the hour, did not pass then but passed again at 6 minutes. Given the current time of 9 minutes past the hour, the latest relevant safety test results indicate that safety is now confirmed pass. Considering all required conditions are now met with recent evidence, the task is presently considered ready for execution.",
+      "note": "Opening whole-task undetermined verdict conflicts with closing present ready-for-execution verdict. Historical test re-evaluation does not announce a correction to the answer's initial task verdict.",
+      "conflict": true
+    },
+    {
+      "id": "4067baa13c41fdfcbab1cfe7",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that the catalog-read service in eu-test is **not_ready**. Although the primary route remains active with the primary service reachable and holding a valid leader lease, the replica route shows that it is now reachable while its lag has decreased but is still above the 15-second threshold, at 9 seconds. Given that the primary route is functioning correctly, the overall service can still be considered operational and ready according to the rules, which require only one fully supported route. Therefore, the service remains **ready** at this time.",
+      "note": "Current not_ready opening conflicts with current ready conclusion; no announced correction. Concern: lag wording is also inconsistent, but no task correctness is inferred.",
+      "conflict": true
+    },
+    {
+      "id": "ed7d2eae07c9ee29511ecd66",
+      "decision": "not_ready",
+      "quote": "arm-beta in the hardware-lab is not ready for rollout as of 2026-09-28T10:04:00Z.",
+      "note": "Explicit current negative rollout verdict; earlier/current component facts are not separate task verdicts.",
+      "conflict": false
+    },
+    {
+      "id": "65af1e35593d4b762dc8442f",
+      "decision": "ready",
+      "quote": "Assessment: READY",
+      "note": "Explicit current affirmative cutover verdict; caveats about future evidence are hypothetical.",
+      "conflict": false
+    },
+    {
+      "id": "deb74e3c5eb559ec80335f63",
+      "decision": "undetermined",
+      "quote": "The current assessment indicates that the task is undetermined.",
+      "note": "Explicit current inconclusive task decision. Concern: the component/version rationale is internally difficult to reconcile, without an opposing whole-task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "5e3b78cca36604404aae1983",
+      "decision": "ready",
+      "quote": "the service task is considered ready at this time.",
+      "note": "Explicit current whole-service readiness despite a missing direct-route observation.",
+      "conflict": false
+    },
+    {
+      "id": "a82bb02a8f9d8183a35b8f45",
+      "decision": "ready",
+      "quote": "The task is ready for cutover.",
+      "note": "Explicit current affirmative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "72a8875f1fb5fe61b3b2eb6e",
+      "decision": "ready",
+      "quote": "Assessment at 2026-09-28T10:01:00Z: READY",
+      "note": "Explicit current affirmative migration assessment; verification caveats do not withdraw the decision.",
+      "conflict": false
+    },
+    {
+      "id": "7be741eb1a9c1a746578a66e",
+      "decision": "ready",
+      "quote": "the inventory migration in change-lab is **ready**.",
+      "note": "Explicit current affirmative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "c31d82fe641c2a50c3f3a800",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that the catalog-read service in eu-test is **not_ready**. Although the primary route remains active with the primary service reachable and holding a valid leader lease, the replica route shows that it is now reachable while its lag has decreased but is still above the 15-second threshold, at 9 seconds. Given that the primary route is functioning correctly, the overall service can still be considered operational and ready according to the rules, which require only one fully supported route. Therefore, the service remains **ready** at this time.",
+      "note": "Current not_ready opening conflicts with current ready conclusion; no announced correction. Concern: lag wording is also inconsistent, without inferring task correctness.",
+      "conflict": true
+    },
+    {
+      "id": "7ad0fc81a4b5cb1d8c2aa8fe",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that the catalog-read service in the eu-test region is not ready. The primary route's conditions are not satisfied because the primary is currently unreachable and its lease is invalid. However, the replica route is operational, with the replica reachable and its lag within the acceptable limit of 15 seconds. Since only one fully supported route needs to be functional for the service to be considered ready, and the replica route meets the requirements, the service can be classified as ready at this time.",
+      "note": "The same current service is declared not ready and then ready, with no explicit correction or temporal separation of verdicts.",
+      "conflict": true
+    },
+    {
+      "id": "72ad0e63a672bafb32ae1d9e",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that the service is not ready. The primary route's conditions are met, as the primary is reachable and has a valid leader lease within the required age limits. However, the replica route is not fulfilling its requirements: the replica is reachable but its lag is 25 seconds, exceeding the maximum allowable lag of 15 seconds. Therefore, since only the primary route is available and functioning correctly, the overall service is considered ready under the rules.",
+      "note": "Current opening not-ready service assessment conflicts with closing ready service assessment; no announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "d5387475838e883ec97da6c5",
+      "decision": "ready",
+      "quote": "dispatch is ready even though tunnel authentication is not required",
+      "note": "Explicit current whole-dispatch readiness; tunnel remarks and metadata caveats do not constitute competing task verdicts.",
+      "conflict": false
+    },
+    {
+      "id": "f4fc4f8d2522b71441bd4ad9",
+      "decision": "ready",
+      "quote": "the service continues to be ready at 10:10:00Z.",
+      "note": "Explicit current whole-service readiness; the earlier assessment is supporting historical context.",
+      "conflict": false
+    },
+    {
+      "id": "4f998c415836c1dcebc27d1e",
+      "decision": "not_ready",
+      "quote": "the task is **not ready** for robot rollout.",
+      "note": "Explicit current negative rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "fbce3f50af6aaa91cbefac70",
+      "decision": "ambiguous",
+      "quote": "The current assessment at 2026-09-28T10:06:00Z is that dispatch is not ready. The primary condition for readiness requiring a valid direct DNS resolution and TLS validation is not met, as the DNS does not resolve and the TLS is invalidated. The tunnel condition is partially met with authentication being active, but since the number of free slots in the tunnel is only 1 (less than the required 2), this route also does not qualify. Therefore, the dispatch system is currently \"undetermined\" in readiness because neither route fully satisfies the necessary conditions.",
+      "note": "Current dispatch not-ready verdict conflicts with closing current undetermined verdict; no explicit correction.",
+      "conflict": true
+    },
+    {
+      "id": "dc22aea12595c1f2cc71c01b",
+      "decision": "ready",
+      "quote": "the release can be confidently considered ready at this moment.",
+      "note": "Explicit current affirmative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "d13c9985046d3d95425ffd93",
+      "decision": "undetermined",
+      "quote": "the task readiness cannot be determined from the expired snapshot.",
+      "note": "Explicit current inability to decide; ready/not-ready outcomes are conditional on new evidence.",
+      "conflict": false
+    },
+    {
+      "id": "82391b7883254ccc9a683ba6",
+      "decision": "undetermined",
+      "quote": "Therefore the current status remains undetermined.",
+      "note": "Explicit current inability to determine the task's readiness.",
+      "conflict": false
+    },
+    {
+      "id": "81fa9a6729b7e3407d1a3547",
+      "decision": "not_ready",
+      "quote": "The task is not ready at this moment.",
+      "note": "Explicit current negative rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "65526d426aabcd2584f6269c",
+      "decision": "undetermined",
+      "quote": "the overall status remains undetermined rather than ready or not_ready.",
+      "note": "Explicit current inconclusive service assessment; ready and not_ready are excluded alternatives.",
+      "conflict": false
+    },
+    {
+      "id": "1446363c6793923043b2713d",
+      "decision": "ambiguous",
+      "quote": "The assessment at 2026-09-28T10:02:00Z indicates that the telemetry-dispatch service in west-test is **not_ready**. The primary reason is that the tunnel route, which is a supported alternative, is currently not authenticated, and the direct DNS resolution has also failed. Although the tunnel has enough free slots and TLS validation succeeded, the lack of tunnel authentication prevents us from considering the dispatch service ready. Therefore, with both routes unsupported or ineligible, the service's dispatch capability is undetermined at this moment.",
+      "note": "Current not_ready service verdict conflicts with closing undetermined dispatch capability; no announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "8992a8776912634bb8619709",
+      "decision": "ready",
+      "quote": "the checkout-api release r17 in staging is considered ready for deployment.",
+      "note": "Explicit current affirmative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "49259599af2c77078c563740",
+      "decision": "undetermined",
+      "quote": "Assessment (2026-09-28T10:10:00Z): undetermined",
+      "note": "Explicit current inconclusive dispatch assessment; the referenced prior assessment agrees.",
+      "conflict": false
+    },
+    {
+      "id": "b0efb254d50e085cc1ed61a9",
+      "decision": "undetermined",
+      "quote": "the decision remains undetermined.",
+      "note": "Explicit current inconclusive rollout assessment.",
+      "conflict": false
+    },
+    {
+      "id": "3902948d38c15c80c88087fe",
+      "decision": "undetermined",
+      "quote": "Because eligible facts within the required age windows are not available, the result is undetermined.",
+      "note": "Explicit current inconclusive cutover decision; instructions for future true/false outcomes are hypothetical.",
+      "conflict": false
+    },
+    {
+      "id": "2284bf47a9496eedda4685cc",
+      "decision": "not_ready",
+      "quote": "Assessment: Not ready.",
+      "note": "Explicit current negative migration decision; recommended future work does not change it.",
+      "conflict": false
+    },
+    {
+      "id": "f11015b385b328fa80187d68",
+      "decision": "undetermined",
+      "quote": "the overall status cannot be determined as ready or not_ready.",
+      "note": "Explicit inability to choose a current readiness verdict.",
+      "conflict": false
+    },
+    {
+      "id": "d2e0bff03b6c6f2c24fc6ee1",
+      "decision": "ambiguous",
+      "quote": "Assessment: undetermined\n\nExplanation:\nAs of 2026-09-28T10:08:00Z for service checkout-api in environment staging, release r17, the release status is not ready. The available evidence shows rollback is required and present (rollback = true), but there is no eligible evidence yet for artifact signature verification or integration tests. Since any eligible failed obligation would force not_ready, and missing eligible evidence leaves the overall status undetermined, we cannot declare the release ready at this time. You need to obtain eligible evidence for:\n- Artifact signature verification\n- Integration tests results\n\nAlso consider performing a rollback rehearsal if applicable and ensure all three obligations have aligned, eligible supporting evidence in the same service/environment/release context.",
+      "note": "The answer's current undetermined assessment conflicts with an explicit current not-ready release status. Generic evidence rules and inability to declare ready do not explicitly retract the negative verdict.",
+      "conflict": true
+    },
+    {
+      "id": "0727bef35801039008aabc1f",
+      "decision": "not_ready",
+      "quote": "the checkout-api release r17 in staging is not ready.",
+      "note": "Explicit current negative release decision; earlier fulfilled obligations are historical.",
+      "conflict": false
+    },
+    {
+      "id": "2310bf9e451fee2a6d2054dc",
+      "decision": "ready",
+      "quote": "the telemetry-dispatch service in the west-test region is \"ready.\"",
+      "note": "Explicit current affirmative dispatch decision; direct-route failure is component-level.",
+      "conflict": false
+    },
+    {
+      "id": "534b89293e21f1acb60f8c72",
+      "decision": "ready",
+      "quote": "the release is considered ready per the stated rule.",
+      "note": "Explicit current affirmative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "7e2a7a16935ab0ae58c34f77",
+      "decision": "ready",
+      "quote": "all conditions are satisfied and the release is ready.",
+      "note": "Explicit current affirmative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "65383d1904d75d0bec75995d",
+      "decision": "ready",
+      "quote": "the primary route renders the service ready.",
+      "note": "Explicit current whole-service readiness; replica failure does not constitute a task-level negative decision.",
+      "conflict": false
+    },
+    {
+      "id": "287bef59ee5af0860a79fc2b",
+      "decision": "undetermined",
+      "quote": "we cannot declare ready or not_ready.",
+      "note": "Explicit current inability to decide release readiness.",
+      "conflict": false
+    },
+    {
+      "id": "b60739bf413ec7eef87291f9",
+      "decision": "ready",
+      "quote": "The task is ready for cutover.",
+      "note": "Explicit current affirmative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "1e5b340541134094b644bded",
+      "decision": "undetermined",
+      "quote": "the task is in an \"undetermined\" state regarding readiness.",
+      "note": "Explicit current inconclusive dispatch decision.",
+      "conflict": false
+    },
+    {
+      "id": "af57546ebeaf4c1817095ac2",
+      "decision": "not_ready",
+      "quote": "the overall service readiness is deemed not ready.",
+      "note": "Explicit current negative whole-service conclusion. Concern: primary lease is described both valid and invalid, but there is no affirmative whole-task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "dafaf4036ea20e5c9ce58e81",
+      "decision": "undetermined",
+      "quote": "the result cannot be declared ready or not_ready without the missing evidence.",
+      "note": "Explicit current inability to decide migration readiness; later ready outcome is conditional future work.",
+      "conflict": false
+    },
+    {
+      "id": "36f52eba58a9739929c1689d",
+      "decision": "ambiguous",
+      "quote": "Based on the current assessment at 2026-09-28T10:04:00Z, the read service is not ready. This is because, according to the evaluation rules, at least one route needs to be fully supported—meaning either the primary is reachable with a valid lease, or the replica is reachable with its lag at most 15 seconds. Since the observed state indicates that the primary lease and link are not confirmed as available, but the replica link is available, the service's readiness remains indeterminate rather than fully ready or not ready. Therefore, the overall assessment concludes that the service is not ready at this moment.",
+      "note": "The answer states current not-ready service verdicts around an explicit indeterminate whole-service verdict, without an announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "c6aa340bc3526cb5fe7492e2",
+      "decision": "undetermined",
+      "quote": "A new probe snapshot valid within 60 seconds of 10:10Z is required to render a ready or not_ready determination.",
+      "note": "Explicit inability to render either current task decision.",
+      "conflict": false
+    },
+    {
+      "id": "07321a7c025a267ac5f51131",
+      "decision": "ready",
+      "quote": "the inventory migration in change-lab is currently ready.",
+      "note": "Explicit current affirmative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "d7aa88b468c8a52b2a4fd04b",
+      "decision": "not_ready",
+      "quote": "the assessment of the catalog-read service in eu-test is that it is not ready.",
+      "note": "Explicit current negative whole-service assessment. The supported replica is component-level; it is not an affirmative whole-task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "ae1178f762ec14efb558e31a",
+      "decision": "undetermined",
+      "quote": "the overall readiness is undetermined.",
+      "note": "Explicit current inconclusive cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "5b8507585e27b518d510012e",
+      "decision": "ambiguous",
+      "quote": "Based on the current snapshot at 2026-09-28T10:00:00Z, the assessment of task readiness indicates an undetermined status. The primary route is considered available since the primary is reachable and has a valid leader lease. However, the replica's reachability is false, and its lag exceeds the acceptable threshold (25 seconds vs. 15 seconds limit). Since the primary route is functional, the overall service can still be considered ready according to the rules, which stipulate that a single supported route suffices even if the other is refuted. Therefore, the overall status is **ready**.",
+      "note": "The current snapshot yields an initial undetermined task status and a later ready overall status without an announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "b070c41a8c90b6d72eb090ed",
+      "decision": "undetermined",
+      "quote": "the status remains undetermined within the 60-second validity window.",
+      "note": "Explicit current inconclusive whole-service assessment.",
+      "conflict": false
+    },
+    {
+      "id": "4264cd370d55372d32e87b50",
+      "decision": "ready",
+      "quote": "The task is ready.",
+      "note": "Explicit current affirmative dispatch decision; invalid tunnel authentication is component-level.",
+      "conflict": false
+    },
+    {
+      "id": "3a629c4da38d7907c4e68e1a",
+      "decision": "undetermined",
+      "quote": "Therefore, the result is undetermined.",
+      "note": "Explicit current inability to decide migration readiness.",
+      "conflict": false
+    },
+    {
+      "id": "0adc2f51399087bf86a1c8f8",
+      "decision": "ready",
+      "quote": "the service is ready even if the other route is refuted or unknown.",
+      "note": "Explicit current whole-service readiness; other-route outcomes do not compete with the decision.",
+      "conflict": false
+    },
+    {
+      "id": "69804ee274a37dc2853291a3",
+      "decision": "ready",
+      "quote": "the overall task is ready for the current service task.",
+      "note": "Explicit current affirmative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "b4c912fd9cfa2b29a96dde45",
+      "decision": "ready",
+      "quote": "is **ready** to proceed with the cutover.",
+      "note": "Explicit current affirmative cutover decision despite reliance on an older snapshot.",
+      "conflict": false
+    },
+    {
+      "id": "d220f9b0336ae35d21cc0faf",
+      "decision": "not_ready",
+      "quote": "the overall cutover readiness remains not_ready.",
+      "note": "Explicit current negative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "4e8640e858269df6d62b3eac",
+      "decision": "undetermined",
+      "quote": "Therefore, the task status remains undetermined based on the available facts.",
+      "note": "Explicit current inconclusive whole-task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "b7be5c75557a9fba7df9753b",
+      "decision": "ready",
+      "quote": "The task is ready.",
+      "note": "Explicit current affirmative rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "0117cd09f15969a43f69fe84",
+      "decision": "ready",
+      "quote": "the current service task is considered ready.",
+      "note": "Explicit current affirmative dispatch decision; direct-route failure is component-level.",
+      "conflict": false
+    },
+    {
+      "id": "902b4c159d0cdc99e940b6e8",
+      "decision": "undetermined",
+      "quote": "we cannot conclusively determine the service's readiness now.",
+      "note": "Explicit current inconclusive whole-service decision. Concern: replica reachability wording is inconsistent, without a competing task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "33dc72902f4d5661e02c116b",
+      "decision": "not_ready",
+      "quote": "the overall service status remains **not_ready**.",
+      "note": "Explicit current negative whole-service verdict; primary readiness is component-level and is not reclassified as a whole-task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "749988ab7b6d777ee8513626",
+      "decision": "ready",
+      "quote": "The task is ready.",
+      "note": "Explicit current affirmative whole-service decision.",
+      "conflict": false
+    },
+    {
+      "id": "7fc50b102fcbacb88fa68735",
+      "decision": "undetermined",
+      "quote": "we cannot determine if either route satisfies the required conditions",
+      "note": "Explicit current inability to decide whole-service readiness.",
+      "conflict": false
+    },
+    {
+      "id": "2840d47bd4c12a88b116298d",
+      "decision": "ambiguous",
+      "quote": "Assessment: not_ready (undetermined)",
+      "note": "The assessment assigns not_ready and undetermined simultaneously to the current migration; explanatory missing-evidence wording does not announce a correction.",
+      "conflict": true
+    },
+    {
+      "id": "96cb89e8f91db0e3113a2957",
+      "decision": "undetermined",
+      "quote": "the task's readiness for the orders dataset migration cutover is currently undetermined.",
+      "note": "Explicit current inconclusive cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "1cf4d33206ca893d719d3cf2",
+      "decision": "ready",
+      "quote": "Assessment: ready",
+      "note": "Explicit current affirmative rollout decision; snapshot and verification caveats do not withdraw it.",
+      "conflict": false
+    },
+    {
+      "id": "54d6550f09b34a64ddeb9f87",
+      "decision": "undetermined",
+      "quote": "it is not possible to definitively determine whether the migration is ready to proceed.",
+      "note": "Explicit current inability to decide migration readiness.",
+      "conflict": false
+    },
+    {
+      "id": "e0bf0672367c4a59cfe68528",
+      "decision": "not_ready",
+      "quote": "the service remains not_ready as of 2026-09-28T10:05:00Z.",
+      "note": "Explicit current negative whole-service decision; future changes are hypothetical.",
+      "conflict": false
+    },
+    {
+      "id": "b915278df5625f68de050ff6",
+      "decision": "ready",
+      "quote": "The task is currently ready.",
+      "note": "Explicit current affirmative rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "04f588c6017fb8be3dc2359b",
+      "decision": "ready",
+      "quote": "the inventory migration in change-lab is ready.",
+      "note": "Explicit current affirmative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "3c807c724931535776b39d03",
+      "decision": "ambiguous",
+      "quote": "The assessment indicates that the checkout-api release r17 in the staging environment is not ready. While most obligations—such as verified artifact signature and rollback rehearsal—are satisfied within the required timeframes, the integration tests have failed more recently (at 2 minutes past the snapshot time), making the overall readiness undetermined. Since any failed obligation within the relevant age window prevents confirming readiness, the current status is that the release is not ready.",
+      "note": "Current not-ready release verdicts conflict with an explicit undetermined overall readiness statement in the same answer; no announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "d70180bfdebdd3d7c2c20ef8",
+      "decision": "undetermined",
+      "quote": "we cannot conclusively determine readiness.",
+      "note": "Explicit current inability to decide rollout readiness.",
+      "conflict": false
+    },
+    {
+      "id": "b82e4c3f61e57b0979c12117",
+      "decision": "ready",
+      "quote": "Assessment: ready",
+      "note": "Explicit current affirmative dispatch decision; the tunnel is presented as sufficient.",
+      "conflict": false
+    },
+    {
+      "id": "2583d1e501fc0f44eecb3b27",
+      "decision": "ready",
+      "quote": "the release is deemed ready per the stated rules.",
+      "note": "Explicit current affirmative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "238a512fd911a24393304deb",
+      "decision": "undetermined",
+      "quote": "Missing or ineligible evidence leads to an undetermined status per the rules.",
+      "note": "Explicit current inconclusive cutover assessment; future ready/not-ready decisions depend on fresh evidence.",
+      "conflict": false
+    },
+    {
+      "id": "7829ba1066dfea4df93b6370",
+      "decision": "undetermined",
+      "quote": "the readiness cannot be determined and remains unknown.",
+      "note": "Explicit current inability to decide dispatch readiness.",
+      "conflict": false
+    },
+    {
+      "id": "994eb251c8e99554398b3f66",
+      "decision": "ready",
+      "quote": "The task is assessed as \"ready\" at 2026-09-28T10:01:00Z.",
+      "note": "Explicit current affirmative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "32885220e95f120129af7111",
+      "decision": "undetermined",
+      "quote": "Assessment: undetermined",
+      "note": "Explicit current inconclusive release assessment; later positive and negative outcomes are hypothetical.",
+      "conflict": false
+    },
+    {
+      "id": "0b78bb7bc96b47c5f372e9b7",
+      "decision": "undetermined",
+      "quote": "the overall assessment is \"undetermined.\"",
+      "note": "Explicit current inconclusive cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "6a0a97bec13dd368f8924bc5",
+      "decision": "undetermined",
+      "quote": "Assessment: undetermined.",
+      "note": "Explicit current inconclusive cutover decision; final ready/not-ready statements are conditional future outcomes.",
+      "conflict": false
+    },
+    {
+      "id": "85436c23a4193737ed70db39",
+      "decision": "not_ready",
+      "quote": "dispatch remains not_ready.",
+      "note": "Explicit current negative dispatch decision.",
+      "conflict": false
+    },
+    {
+      "id": "66a6997d972ff9e456a949f7",
+      "decision": "not_ready",
+      "quote": "Assessment at 2026-09-28T10:10:00Z: Not ready",
+      "note": "Explicit current negative release decision despite mixed component evidence; no competing whole-task decision.",
+      "conflict": false
+    },
+    {
+      "id": "b6d2e7e2be85506efc16454f",
+      "decision": "ready",
+      "quote": "Assessment at 2026-09-28T10:05:00Z: ready",
+      "note": "Explicit current affirmative dispatch decision, with prior assessment presented as continuing to hold.",
+      "conflict": false
+    },
+    {
+      "id": "263eac100ef70a22c8e0386c",
+      "decision": "not_ready",
+      "quote": "Based on the current data, the task is not ready.",
+      "note": "Explicit current negative dispatch decision.",
+      "conflict": false
+    },
+    {
+      "id": "8551f21b40ff7da42c174e55",
+      "decision": "undetermined",
+      "quote": "Therefore the status remains undetermined for the 60-second validity window.",
+      "note": "Explicit current inconclusive whole-service decision; route definitions are general rules.",
+      "conflict": false
+    },
+    {
+      "id": "652c2e0c4623425fe5208dc4",
+      "decision": "undetermined",
+      "quote": "we cannot reliably conclude ready or not_ready.",
+      "note": "Explicit current inability to decide whole-service readiness.",
+      "conflict": false
+    },
+    {
+      "id": "559205a6bd99aee2437f36fc",
+      "decision": "not_ready",
+      "quote": "the service is considered not ready at this time.",
+      "note": "Explicit current negative whole-service verdict; a satisfied replica component does not override it.",
+      "conflict": false
+    },
+    {
+      "id": "58f61d48a53fd7cff40d21c8",
+      "decision": "ready",
+      "quote": "the migration is deemed ready.",
+      "note": "Explicit current affirmative migration decision; version-change caveats are hypothetical.",
+      "conflict": false
+    },
+    {
+      "id": "c2505eb4d2fbc4611665f03d",
+      "decision": "ready",
+      "quote": "the dispatch is considered ready.",
+      "note": "Explicit current affirmative dispatch decision; direct-route failure is component-level.",
+      "conflict": false
+    },
+    {
+      "id": "f67a7244ccb8854023f7d73e",
+      "decision": "ready",
+      "quote": "the migration cutover for orders in the migration-lab environment is currently ready.",
+      "note": "Explicit current affirmative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "66aa02e184f983b7372e1118",
+      "decision": "not_ready",
+      "quote": "the release is considered not ready.",
+      "note": "Explicit current negative release decision despite initial passing observations.",
+      "conflict": false
+    },
+    {
+      "id": "635f9cda0bcce3469bcbf37f",
+      "decision": "not_ready",
+      "quote": "the task is assessed as **not ready** for release.",
+      "note": "Explicit current negative release decision.",
+      "conflict": false
+    },
+    {
+      "id": "1e297a917e2dced77f80a627",
+      "decision": "ready",
+      "quote": "the current assessment is that the service is ready.",
+      "note": "Explicit current affirmative dispatch decision.",
+      "conflict": false
+    },
+    {
+      "id": "313f6788584bf7799327342c",
+      "decision": "undetermined",
+      "quote": "the overall status remains undetermined rather than ready or not_ready.",
+      "note": "Explicit current inconclusive whole-service decision; route criteria are generic.",
+      "conflict": false
+    },
+    {
+      "id": "ed33a8bb0b8597dec007b465",
+      "decision": "ready",
+      "quote": "Therefore, the task is considered ready.",
+      "note": "Explicit current affirmative migration decision. Concern: stated snapshot timing appears inconsistent with its own 60-second claim, without an opposing task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "98798ffe289ca0d10ae1c97e",
+      "decision": "ready",
+      "quote": "the assessment remains **ready** for the arm-beta robot in the hardware-lab.",
+      "note": "Explicit current affirmative rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "f8d91bf8b1df45d79c6c9687",
+      "decision": "ambiguous",
+      "quote": "Assessment: not_ready (undetermined due to unverified safety status)\n\nExplanation: For rollout readiness, safety tests must pass for the current firmware, actuator calibration must pass for the current configuration, and the operator must be authorized. As of 2026-09-28T10:03:00Z, safety status is unverified (null), while calibration is confirmed true and authorization is true. Because safety verification is not confirmed, we cannot declare readiness; the result remains undetermined/not_ready until safety tests are completed and pass.",
+      "note": "The current assessment and final result jointly assign not_ready and undetermined, without resolving their category conflict.",
+      "conflict": true
+    },
+    {
+      "id": "54df15726ca132daa60717c5",
+      "decision": "ambiguous",
+      "quote": "The assessment indicates that the arm-beta project is **not ready** for rollout. This conclusion is based on the latest snapshot at 10:04, which shows that while the safety tests, actuator calibration, and operator authorization for firmware fw1 are successful, the safety test status for the firmware fw2 at minute 4 has failed. Since all requirements must be met within their respective age thresholds, the failure in the current firmware version check makes the overall readiness undetermined.",
+      "note": "Current opening not-ready rollout verdict conflicts with closing undetermined overall readiness; no announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "a862404b75bc38ae0f548729",
+      "decision": "ambiguous",
+      "quote": "Assessment: Not ready. Current evidence is insufficient to declare readiness for release r17 of checkout-api in staging.\n\nWhy: The task status remains undetermined because we lack eligible evidence for all three obligations (integration tests, artifact signature verification, and rollback rehearsal). The current state shows:\n- rollback: required but evidence not provided\n- signature: not provided\n- tests: not provided\n\nAdditionally, any eligible failed obligation would render the release not_ready, and missing eligible support leaves the status undetermined. Until complete, verifiable evidence for all three obligations is available (and all pass), we should not proceed.\n\nRecommendation:\n- Run or verify the integration tests for checkout-api (staging, release r17) and capture eligible test evidence.\n- Verify the artifact signature and obtain eligible signature evidence.\n- Perform a rollback rehearsal in staging and collect eligible rollback evidence.\n- Ensure all three obligations have eligible evidence. If any obligation fails, declare not_ready. If evidence is missing for any obligation, the status remains undetermined.",
+      "note": "A current not-ready assessment conflicts with an explicit current undetermined task status; missing-evidence explanation does not announce a correction.",
+      "conflict": true
+    },
+    {
+      "id": "c6ec7079633e650fcbcf817b",
+      "decision": "undetermined",
+      "quote": "the readiness verdict cannot be determined as either ready or not_ready.",
+      "note": "Explicit current inability to decide release readiness.",
+      "conflict": false
+    },
+    {
+      "id": "ff782dd177fd83654f5ebebd",
+      "decision": "ambiguous",
+      "quote": "Assessment: not_ready\n\nExplanation: For release r17 of service checkout-api in the staging environment, two obligations (rollback and signature) currently have eligible evidence, but the tests obligation does not. Since any eligible failed obligation renders the release not_ready, and missing eligible support for tests makes the overall readiness not determinate rather than ready, the release remains not_ready at 2026-09-28T10:03:00Z.",
+      "note": "Current not_ready assessment and conclusion conflict with a statement that missing tests make the overall readiness not determinate; no correction resolves the whole-task verdicts.",
+      "conflict": true
+    },
+    {
+      "id": "1923276105a717e990fc2509",
+      "decision": "not_ready",
+      "quote": "the system is not ready at 2026-09-28T10:04:00Z.",
+      "note": "Explicit current negative whole-service decision; route-level requirements are explanatory.",
+      "conflict": false
+    },
+    {
+      "id": "0ffe572e4fc2be8ec8b1827a",
+      "decision": "not_ready",
+      "quote": "The current assessment at 2026-09-28T10:09:00Z is **not_ready**.",
+      "note": "Explicit current negative migration decision despite subsequent historical dry-run pass.",
+      "conflict": false
+    },
+    {
+      "id": "2cf17c4ded66dbc17b7624b1",
+      "decision": "not_ready",
+      "quote": "The task is currently not ready for execution.",
+      "note": "Explicit current negative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "4324d2a89597d69274b7c6da",
+      "decision": "ready",
+      "quote": "the overall task status is **ready** based on current evidence.",
+      "note": "Explicit current affirmative dispatch decision.",
+      "conflict": false
+    },
+    {
+      "id": "bea7f4451eefcc9a513b7348",
+      "decision": "ready",
+      "quote": "the inventory migration in change-lab is **ready**.",
+      "note": "Explicit current affirmative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "76e1366e43f5d9ebed4b27be",
+      "decision": "ready",
+      "quote": "the release is considered ready.",
+      "note": "Explicit current affirmative release decision; possible future failures are hypothetical.",
+      "conflict": false
+    },
+    {
+      "id": "bbda772ae8df1dcaef0dd011",
+      "decision": "not_ready",
+      "quote": "Assessment: Not ready.",
+      "note": "Explicit current negative rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "b911a6c69c5af18f4bb1e080",
+      "decision": "ready",
+      "quote": "The task is ready.",
+      "note": "Explicit current affirmative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "f73fe8fcd4a935ce8aec4702",
+      "decision": "ready",
+      "quote": "the assessment is that the task is **\"ready.\"**",
+      "note": "Explicit affirmative task assessment; explanation supports the same current migration verdict.",
+      "conflict": false
+    },
+    {
+      "id": "3b83150fb800d9225101e2b4",
+      "decision": "undetermined",
+      "quote": "the readiness status of the task is **undetermined**.",
+      "note": "Explicit current inconclusive rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "5455d8ea4650a96e15797045",
+      "decision": "ready",
+      "quote": "Assessment: ready",
+      "note": "Explicit current affirmative rollout decision; snapshot caveats do not withdraw it.",
+      "conflict": false
+    },
+    {
+      "id": "0084091691f3520c4a878da3",
+      "decision": "not_ready",
+      "quote": "the dispatch is not ready.",
+      "note": "Explicit current negative dispatch verdict; a qualified tunnel is component-level evidence, not an affirmative whole-task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "f7e1ef33f7b7ac77174bc6ff",
+      "decision": "ready",
+      "quote": "Therefore the task is ready for the current service task.",
+      "note": "Explicit current affirmative migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "b9cbc429550ad4c72fe2ff18",
+      "decision": "ready",
+      "quote": "the task is now ready.",
+      "note": "Explicit current affirmative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "ff9bb1f2433f12fbdc5c0c6b",
+      "decision": "ready",
+      "quote": "the service task remains considered ready at the current assessment time.",
+      "note": "Explicit current affirmative dispatch decision despite relying on an earlier snapshot.",
+      "conflict": false
+    },
+    {
+      "id": "d957b858a68d34214005504c",
+      "decision": "not_ready",
+      "quote": "the cutover readiness remains not_ready.",
+      "note": "Explicit current negative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "58ea736f2879c6ee9520ba4d",
+      "decision": "undetermined",
+      "quote": "the current status remains undetermined pending a new probe with a recent snapshot.",
+      "note": "Explicit current inconclusive whole-service decision; hypothetical readiness using fresh evidence does not override it.",
+      "conflict": false
+    },
+    {
+      "id": "30b66792eb471c4c0c515c9e",
+      "decision": "ambiguous",
+      "quote": "Assessment: Not ready (undetermined).\n\nExplanation: Based on the current task snapshot, at 2026-09-28T10:05:00Z the readiness decision remains \"undetermined.\" The dataset is orders in migration-lab (migration m42). The obligations show that RESTORE and SCHEMA are satisfied, but LAG evidence is missing (lag is null). Since one or more obligations lack eligible evidence, the overall cutover readiness cannot be confirmed as ready. The snapshot is within the 60-second age window, but without lag data, the decision cannot be finalized. To move to ready, provide verifiable replica lag ≤ 8 seconds (preferably with a current measurement).",
+      "note": "Current combined Not ready/undetermined assessment conflicts at the category level; the later undetermined decision does not explicitly retract Not ready.",
+      "conflict": true
+    },
+    {
+      "id": "f779596300a70f53299422a5",
+      "decision": "ready",
+      "quote": "the overall service is ready.",
+      "note": "Explicit current affirmative whole-service decision; route rules and snapshot caveats do not compete with it.",
+      "conflict": false
+    },
+    {
+      "id": "416bfa3d357793cf3b1559a3",
+      "decision": "not_ready",
+      "quote": "The task is currently **not ready** for the cutover.",
+      "note": "Explicit current negative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "d4444eb27b6a9b4ef8d0b018",
+      "decision": "not_ready",
+      "quote": "the presence of an eligible safety failure makes the result not_ready.",
+      "note": "Explicit current negative rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "7faddfe168a3f6d4d84a28f8",
+      "decision": "ready",
+      "quote": "The cutover is deemed ready",
+      "note": "Explicit current affirmative cutover decision.",
+      "conflict": false
+    },
+    {
+      "id": "4c57d4999faf731008bfb2f9",
+      "decision": "undetermined",
+      "quote": "the task readiness status is undetermined.",
+      "note": "Explicit current inconclusive release decision.",
+      "conflict": false
+    },
+    {
+      "id": "44ec6310be5fb9e7f8c3b329",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that not all obligations for the release are met. While initial tests and verifications were successful earlier, a subsequent integration test failure was observed at minute 2, and the latest check at minute 4 was successful again. Since the most recent state shows a failed integration test less than 3 minutes ago, the release is not ready according to the established rules. Therefore, the overall readiness of the release is undetermined at this moment.",
+      "note": "Current not-ready release conclusion conflicts with the final current undetermined overall readiness conclusion, without an announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "b403fa5e6530491ec6509c2b",
+      "decision": "ambiguous",
+      "quote": "At 10:06 on September 28, 2026, the assessment indicates that arm-beta is **not ready** for rollout. Although recent evidence shows that safety tests, actuator calibration, and operator authorization are all successful under firmware fw1, there was a failure in a safety test for firmware fw2 at minute 4. Since this failure exceeds the \"max_age_minutes\" threshold and affects the current conditions, the overall readiness cannot be confirmed as fully compliant. Therefore, the current status remains undetermined.",
+      "note": "Current not-ready rollout assessment conflicts with the final current undetermined status, without an announced correction.",
+      "conflict": true
+    },
+    {
+      "id": "7e8092ba6f2cc4be6e9aa614",
+      "decision": "undetermined",
+      "quote": "the assessment for the readiness of the checkout-api release r17 in staging is **undetermined**.",
+      "note": "Explicit current inconclusive release decision.",
+      "conflict": false
+    },
+    {
+      "id": "30826cebacd02fccab15f474",
+      "decision": "undetermined",
+      "quote": "Assessment: undetermined.",
+      "note": "Explicit current inconclusive release decision; generic failed-obligation rules are not current negative verdicts.",
+      "conflict": false
+    },
+    {
+      "id": "07ef510689410577cdbba168",
+      "decision": "ready",
+      "quote": "arm-beta in the hardware-lab is **ready** for rollout.",
+      "note": "Explicit current affirmative rollout decision despite use of an earlier snapshot.",
+      "conflict": false
+    },
+    {
+      "id": "7283798655e7c29706a4116c",
+      "decision": "undetermined",
+      "quote": "missing current-version evidence keeps the assessment in an undetermined state.",
+      "note": "Explicit current inconclusive migration decision.",
+      "conflict": false
+    },
+    {
+      "id": "f81f674e8bb7783dec24f010",
+      "decision": "not_ready",
+      "quote": "the robot is not_ready under the current versioned_all_of rule.",
+      "note": "Explicit current negative rollout decision; component-level uncertainty does not override it.",
+      "conflict": false
+    },
+    {
+      "id": "2ac7b7c5dfec6f50ffd612bc",
+      "decision": "undetermined",
+      "quote": "Therefore the result remains undetermined.",
+      "note": "Explicit current inconclusive cutover decision; later ready/not-ready alternatives are hypothetical.",
+      "conflict": false
+    },
+    {
+      "id": "04fa29b754a7bb2f37b873bd",
+      "decision": "ready",
+      "quote": "the arm-beta robot in the hardware-lab is considered **ready**.",
+      "note": "Explicit current affirmative rollout decision.",
+      "conflict": false
+    },
+    {
+      "id": "f28dcf5aa41418ea785c0f8c",
+      "decision": "ready",
+      "quote": "the cutover readiness is ready.",
+      "note": "Explicit current affirmative cutover decision. Concern: the answer's 60-second timing claim is internally inconsistent, without an opposing task verdict.",
+      "conflict": false
+    },
+    {
+      "id": "6fbda3d6e84ba6b8ec716171",
+      "decision": "not_ready",
+      "quote": "the overall status remains not_ready.",
+      "note": "Explicit current negative release decision; proposed next steps do not change the current verdict.",
+      "conflict": false
+    }
+  ]
+}

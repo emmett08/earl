@@ -1,0 +1,160 @@
+{
+  "schema": "EAL/followup-independent-protocol-source-review/1",
+  "reviewer": "/root/followup_scientific_review: separate AI reviewer in the same orchestration session",
+  "reviewed_at": "2026-10-02",
+  "decision": "pass_for_specified_nonstatistical_feasibility_pilot",
+  "reviewed_artifacts_sha256": {
+    "protocol.json": "dd3802582db38e847a44ee193b498d42182f231a996e0ac45cbf289e5b6a0e4e",
+    "plan.json": "8035f0fd15077047b20343f1d3b10005873bdbbee66ebb31b1dc4d93da21beb0",
+    "README.md": "07f7fd81705a2eb0190f649c3a1f5f78284bf8fdade285d13e94ab2eda9afc01",
+    "author_inputs.py": "e20f470bf74ed96e49ff297f1bfc80ea6cdff41aa581244fd4629ea3fcff999c",
+    "author_protocol.py": "a6254f4ef19af8d601b99c5189e247bc2f628c3e5867ba0591d2292b0216025b",
+    "author_plan.py": "584e19f7ddec40c015aa69eef72030a07c4a415ce49e9c1652913f96a27ce3ae",
+    "independent-reference-review.json": "2640ad8a8d2031268f6dd0c9ea162c09cc585a684a878bac759e00758f5429b2",
+    "independent-execution-review.json": "61846f158764bfb2d26f5b8600d1a6c83fa2b3a2ccf69e6927617a534dbcce88"
+  },
+  "status_boundary": "Protocol remains specified and live execution is not reviewed here. Scripted rehearsal establishes tested machinery delivery, not actual participant capability, empirical cost or live account availability.",
+  "counts": {
+    "authored_task_instances": 8,
+    "logic_families": 2,
+    "availability_causes_per_family": 4,
+    "timeline_references_independently_recomputed": 88,
+    "scheduled_unique_case_positions": 40,
+    "scheduled_unique_position_decisions": {
+      "ready": 20,
+      "not_ready": 12,
+      "undetermined": 8
+    },
+    "scheduled_unique_decisive_positions": 32,
+    "common_donor_blocks": 8,
+    "reasoners": 3,
+    "planned_recipient_outputs": 120,
+    "planned_total_sessions": 128,
+    "recipient_reference_expansion": {
+      "ready": 60,
+      "not_ready": 36,
+      "undetermined": 24
+    },
+    "mixed_history_patterns": 6,
+    "mixed_history_fixture_evaluations_across_two_families": 12
+  },
+  "scientific_checks": [
+    {
+      "check": "genuine critical evidence loss",
+      "result": "passed",
+      "basis": "All eight critical r0 losses have unknown references; remaining all_of conjuncts are true and any_of reserve routes false, so neither false nor true dominance masks the critical loss."
+    },
+    {
+      "check": "positive and negative restoration",
+      "result": "passed",
+      "basis": "Both restoration polarities supply eligible r0 and decisively produce ready/not_ready; negative restoration is a new adverse value rather than a physical reversal of the original passing evidence."
+    },
+    {
+      "check": "noncritical controls",
+      "result": "passed",
+      "basis": "all_of retains false r0 and makes r1 unknown, compared with negative-restored position 8; any_of retains a true primary route and makes reserve r2 unknown, compared with positive-restored position 6."
+    },
+    {
+      "check": "immutable rules and admissibility",
+      "result": "passed",
+      "basis": "One case-level rule fixes operators, thresholds, age windows, scope keys and routes. Fact scope/status/date manipulations deliver missing/stale/invalidated/wrong-version conditions; admission rules are not changed to manufacture answer keys."
+    },
+    {
+      "check": "mixed eligibility histories",
+      "result": "passed",
+      "basis": "Six adversarial fixture patterns per logic family cover simultaneous stale/inactive/wrong-version blockers, retaining blocked history during positive/negative restoration, future/wrong-version records and inclusive age-five versus age-six boundaries. These are calibration fixtures outside the recipient denominator."
+    },
+    {
+      "check": "matched reasoner information and state",
+      "result": "passed",
+      "basis": "Final scripted wire review checks 120 exact inputs and clone states, 40 three-reasoner position groups, common donor files/observations across positions, actual first request equality and computed EAL/conventional conclusions against the independent raw-fact evaluator."
+    },
+    {
+      "check": "prompt information leaks",
+      "result": "passed within reviewed paths",
+      "basis": "Prompt packets omit expected_decisions, authored answers, condition/cause metadata, manipulation labels and comparator labels; donor notes are absent. Public expected_value fields are criterion bounds. Asset names contain cause labels identically across reasoners, so they remain a shared cue and cause-domain confounding limit."
+    },
+    {
+      "check": "endpoint contract",
+      "result": "passed after prospective repair",
+      "basis": "Primary is communicated verdict correctness plus internal explanatory consistency; canonical enum correctness is separate. Masked coders receive answer text only. Factual explanation accuracy/grounding remains unassessed. Ambiguity and no explanation cannot establish primary success."
+    },
+    {
+      "check": "failures and denominator retention",
+      "result": "passed in source and exercised fixtures",
+      "basis": "Raw response fragments, malformed/incomplete/provider-error outputs, missing labels, contradictions, API reservations and not-run assignments are retained. Invalid delivery suspends attribution while observed errors remain reported; no favorable manipulation-based exclusion changes planned denominators."
+    },
+    {
+      "check": "purpose, identification and scope",
+      "result": "passed",
+      "basis": "The nonstatistical feasibility/measurement purpose matches exact finite tables and checks; no principal-study power or sensitivity claim is made. Host calculation and representation are part of the intervention, so pure model reasoning mechanism is not identified."
+    },
+    {
+      "check": "authorship and sample dependence",
+      "result": "passed with explicit limits",
+      "basis": "Eight purposively constructed fictional AI-authored instances from two logic families; distinct author/reviewer agents in one orchestration. No human-sampled independent population, source independence or open-domain judge accuracy claim. Repeated conditions/reasoners and common donors are not additional independent cases."
+    },
+    {
+      "check": "prospective protocol and allocation",
+      "result": "passed for specified status",
+      "basis": "Current plan contains exact final protocol/manifest; fixed seed precedes collection; principal prior pilot outcomes are motivation only and are not pooled. Local versioned protocol is not external preregistration."
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "endpoint-factual-internal-mismatch",
+      "initial_issue": "Protocol originally required explanation consistency with task evidence, while answer-only coding measured internal verdict/enum consistency.",
+      "resolution": "Author prospectively narrowed construct, masking, README and plan; implementation and summary explicitly mark factual explanation accuracy unassessed.",
+      "remaining_limit": "A coherent but factually wrong explanation agreeing with a correct verdict may satisfy this declared primary endpoint; no explanation accuracy claim follows."
+    },
+    {
+      "id": "scripted-assessor-human-default",
+      "initial_issue": "Preliminary scripted annotation records inherited a human default despite deterministic fixture coding.",
+      "resolution": "Final rehearsal now has explicit scripted assessor/method; all 128 fixture annotations are scripted and none are presented as human or AI model coding."
+    }
+  ],
+  "source_checks": [
+    {
+      "url": "https://psychclassics.yorku.ca/Cronbach/construct.htm",
+      "checked_at": "2026-10-02",
+      "type": "Primary 1955 paper reproduced by York University; bibliographic identity agrees with Cronbach and Meehl, Psychological Bulletin 52, 281\u2013302.",
+      "supports": "Separating an operational measurement from a stronger underlying construct interpretation.",
+      "reviewer_inference": "Applying that distinction to LLM verdict/format/internal-consistency measures is a design inference; the 1955 paper does not validate this scorer, these synthetic tasks, model comprehension or the 40/40 operational decision rule."
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-4.1-nano",
+      "checked_at": "2026-10-02",
+      "type": "Official current model/pricing page.",
+      "supports": "Listed gpt-4.1-nano-2025-04-14 snapshot, input USD 0.10/output USD 0.40 per million tokens, structured-output support and Deprecated label.",
+      "limit": "Public listing is not evidence of account access or successful live provider availability; never silently substitute another snapshot."
+    }
+  ],
+  "budget_calculation": {
+    "rates_usd_per_million": {
+      "input": 0.1,
+      "output": 0.4
+    },
+    "maximum_calls": 256,
+    "reservation_per_call_usd": 0.004096,
+    "reservation_envelope_usd": 1.048576,
+    "two_repeat_envelope_usd": 2.097152,
+    "shared_cap_usd": 2.0
+  },
+  "budget_limits": [
+    "At configured official rates,256 maximum calls have conservative reservation USD 1.048576; two repeats would reserve USD 2.097152 and exceed the USD 2 cap.",
+    "UTF-8 request bytes plus 4096 framing tokens supply the existing input reservation; provider usage/cost and every failed attempt must still be retained.",
+    "Synthetic rehearsal usage and synthetic USD 0.00256 cost are apparatus fixtures, not empirical participant resource measurements. Model deprecation/account access, provider failures and incomplete usage can prevent complete live feasibility."
+  ],
+  "reproduction_commands": [
+    "python3 experiments/model_transfer/followup/review/independent_reference_review.py",
+    "python3 experiments/model_transfer/followup/review/independent_execution_review.py --run /tmp/earl-restoration-rehearsal-verified-20261002",
+    "python3 tools/investigation-validator/scripts/validate_investigation.py experiments/model_transfer/followup/protocol.json"
+  ],
+  "unresolved_scientific_findings": [],
+  "remaining_empirical_questions": [
+    "Actual provider availability,128-session completion and cost within cumulative USD 2",
+    "Actual communicated verdict and canonical accuracy, ambiguity, contradictions and internal-consistency coding",
+    "Shared-family judge error and assessor calibration on actual participant answers",
+    "Stochastic repeatability, external human task validity and principal-study adequacy remain unestablished"
+  ]
+}

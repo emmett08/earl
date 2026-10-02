@@ -1,0 +1,42 @@
+% Required packages: pgfplots, lmodern
+% Required TikZ libraries: none
+% Target width: 160 mm maximum
+% Minimum text size: 9 pt
+% Colour/greyscale intent: colour_and_greyscale, direct labels and line styles
+\begin{tikzpicture}
+\definecolor{ealblue}{HTML}{165D81}
+\definecolor{ordinaryorange}{HTML}{C27021}
+\definecolor{neutralgrey}{HTML}{616970}
+\pgfplotsset{compat=1.18,
+  every axis/.append style={
+    width=148mm,height=66mm,
+    font=\fontsize{9}{11}\selectfont,
+    tick label style={font=\fontsize{9}{11}\selectfont},
+    label style={font=\fontsize{9}{11}\selectfont},
+    title style={font=\fontsize{10}{12}\selectfont},
+    legend style={font=\fontsize{9}{11}\selectfont,draw=none,fill=none},
+    axis lines=left,axis line style={line width=0.5pt},
+    tick style={line width=0.5pt},
+    grid style={line width=0.4pt,black!12},
+    scaled ticks=false,clip=false}}
+\begin{axis}[width=138mm,height=77mm,xmin=0,xmax=55,ymin=0.5,ymax=4.5,ytick={1,2,3,4},yticklabels={{Plain / no tools},{Plain / tools},{Reasoning / no tools},{Reasoning / tools}},xlabel={Pooled total-token reduction (\%)},xtick={0,10,20,30,40,50},xmajorgrids=false,legend columns=2,legend style={at={(0.5,1.06)},anchor=south,column sep=4mm}]
+\addplot[forget plot,only marks,mark=square*,mark size=2pt,ealblue,line width=0.5pt] coordinates {(43.94568623,1.18)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:44.6456862335492,1.18) {43.9\%};
+\addplot[forget plot,only marks,mark=square*,mark size=2pt,ealblue,line width=0.5pt] coordinates {(22.82204438,2.18)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:23.522044383820937,2.18) {22.8\%};
+\addplot[forget plot,only marks,mark=square*,mark size=2pt,ealblue,line width=0.5pt] coordinates {(35.51570765,3.18)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:36.2157076474167,3.18) {35.5\%};
+\addplot[forget plot,only marks,mark=square*,mark size=2pt,ealblue,line width=0.5pt] coordinates {(40.80710484,4.18)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:41.50710484048752,4.18) {40.8\%};
+\addlegendimage{only marks,mark=square*,mark size=2pt,ealblue,line width=0.5pt}\addlegendentry{Donor + ten recipients}
+\addplot[forget plot,only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.5pt] coordinates {(43.04824895,0.82)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:43.74824894968451,0.8200000000000001) {43.0\%};
+\addplot[forget plot,only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.5pt] coordinates {(20.3546031,1.82)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:21.054603096228764,1.82) {20.4\%};
+\addplot[forget plot,only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.5pt] coordinates {(33.77705306,2.82)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:34.47705305702925,2.82) {33.8\%};
+\addplot[forget plot,only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.5pt] coordinates {(39.45530504,3.82)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:40.15530504017151,3.82) {39.5\%};
+\addlegendimage{only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.5pt}\addlegendentry{Ten recipients only}
+\end{axis}
+\end{tikzpicture}

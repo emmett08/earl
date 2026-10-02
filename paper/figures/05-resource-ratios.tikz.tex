@@ -1,0 +1,46 @@
+% Required packages: pgfplots, lmodern
+% Required TikZ libraries: none
+% Target width: 160 mm maximum
+% Minimum text size: 9 pt
+% Colour/greyscale intent: colour_and_greyscale, direct labels and line styles
+\begin{tikzpicture}
+\definecolor{ealblue}{HTML}{165D81}
+\definecolor{ordinaryorange}{HTML}{C27021}
+\definecolor{neutralgrey}{HTML}{616970}
+\pgfplotsset{compat=1.18,
+  every axis/.append style={
+    width=148mm,height=66mm,
+    font=\fontsize{9}{11}\selectfont,
+    tick label style={font=\fontsize{9}{11}\selectfont},
+    label style={font=\fontsize{9}{11}\selectfont},
+    title style={font=\fontsize{10}{12}\selectfont},
+    legend style={font=\fontsize{9}{11}\selectfont,draw=none,fill=none},
+    axis lines=left,axis line style={line width=0.5pt},
+    tick style={line width=0.5pt},
+    grid style={line width=0.4pt,black!12},
+    scaled ticks=false,clip=false}}
+\begin{axis}[width=138mm,height=79mm,xmin=0,xmax=3.15,ymin=0.4,ymax=7.6,xtick={0,0.5,1,1.5,2,2.5,3},ytick={1,2,3,4,5,6,7},yticklabels={{Total tokens},{API price subtotal},{API attempts},{API-call time},{Session + setup time},{Native acquisitions},{All acquisitions}},xlabel={EAL / ordinary recorded resource ratio},xmajorgrids=false]
+\addplot[neutralgrey,dashed,line width=0.5pt,no marks] coordinates {(1,0.4) (1,7.6)};
+\addplot[ealblue,line width=0.7pt,no marks] coordinates {(1,1) (0.6639079126,1)};
+\addplot[ealblue,only marks,mark=square*,mark size=2pt,line width=0.5pt] coordinates {(0.6639079126,1)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:0.6239079126269746,1) {-33.6\%};
+\addplot[ealblue,line width=0.7pt,no marks] coordinates {(1,2) (0.7671268254,2)};
+\addplot[ealblue,only marks,mark=square*,mark size=2pt,line width=0.5pt] coordinates {(0.7671268254,2)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:0.727126825397853,2) {-23.3\%};
+\addplot[ealblue,line width=0.7pt,no marks] coordinates {(1,3) (0.973168963,3)};
+\addplot[ealblue,only marks,mark=square*,mark size=2pt,line width=0.5pt] coordinates {(0.973168963,3)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:0.9331689630166787,3) {-2.7\%};
+\addplot[ealblue,line width=0.7pt,no marks] coordinates {(1,4) (0.9141025509,4)};
+\addplot[ealblue,only marks,mark=square*,mark size=2pt,line width=0.5pt] coordinates {(0.9141025509,4)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:0.8741025508715988,4) {-8.6\%};
+\addplot[ordinaryorange,line width=0.7pt,no marks] coordinates {(1,5) (1.085333217,5)};
+\addplot[ordinaryorange,only marks,mark=square*,mark size=2pt,line width=0.5pt] coordinates {(1.085333217,5)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:1.1253332173256374,5) {+8.5\%};
+\addplot[ealblue,line width=0.7pt,no marks] coordinates {(1,6) (0.8854489164,6)};
+\addplot[ealblue,only marks,mark=square*,mark size=2pt,line width=0.5pt] coordinates {(0.8854489164,6)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:0.8454489164086687,6) {-11.5\%};
+\addplot[ordinaryorange,line width=0.7pt,no marks] coordinates {(1,7) (2.66873065,7)};
+\addplot[ordinaryorange,only marks,mark=square*,mark size=2pt,line width=0.5pt] coordinates {(2.66873065,7)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:2.708730650154799,7) {+166.9\%};
+\end{axis}
+\end{tikzpicture}

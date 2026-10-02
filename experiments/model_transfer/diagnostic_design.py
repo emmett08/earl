@@ -28,6 +28,15 @@ BASELINE = {'reasoner': 'workflow', 'context_style': 'compact', 'include_notes':
             'response_mode': 'prose', 'reuse': 'compatible'}
 
 
+def diagnostic_baseline(plan: dict) -> dict:
+    return {**BASELINE, **plan.get('diagnostic_baseline', {})}
+
+
+def recipient_positions(plan: dict) -> tuple[int, ...]:
+    """Explicit snapshot positions; each recipient remains a fresh donor clone."""
+    return tuple(plan.get('recipient_positions', [1]))
+
+
 def diagnostic_levels(plan: dict, factor: str) -> tuple:
     return tuple(plan['response_modes']) if factor == 'format' else FACTORS[factor].levels
 
@@ -50,6 +59,22 @@ def load_diagnostic_plan(path: Path) -> dict:
         raise ValueError('An integer seed is required')
     if plan.get('response_mode') != 'prose' or type(plan.get('recipient_sessions')) is not int or plan['recipient_sessions'] != 1:
         raise ValueError('Diagnostics use one recipient session per clone and a prose donor response')
+    positions = recipient_positions(plan)
+    if (not positions or len(set(positions)) != len(positions) or
+            any(type(position) is not int or not 1 <= position <= 10 for position in positions)):
+        raise ValueError('Select distinct recipient snapshot positions from 1 through 10')
+    override = plan.get('diagnostic_baseline', {})
+    if not isinstance(override, dict) or not set(override) <= set(BASELINE):
+        raise ValueError('Invalid diagnostic baseline override')
+    baseline = diagnostic_baseline(plan)
+    if type(baseline['include_notes']) is not bool:
+        raise ValueError('Diagnostic include_notes must be Boolean')
+    for factor in FACTORS.values():
+        value = baseline[factor.parameter]
+        if value not in factor.levels and not (factor.parameter == 'reasoner' and value == 'workflow'):
+            raise ValueError('Invalid diagnostic baseline level')
+    if type(plan.get('donor_native_tools', True)) is not bool:
+        raise ValueError('The donor native-tool mask must be Boolean')
     models = plan.get('models')
     if not isinstance(models, dict) or not models or len(models) > 4:
         raise ValueError('Configure one to four model profiles')
@@ -76,6 +101,9 @@ def load_diagnostic_plan(path: Path) -> dict:
             raise ValueError(f'Invalid {field}')
     if plan.get('donor') not in models:
         raise ValueError('Select a configured donor profile')
+    if baseline['response_mode'] == 'json_schema' and any(
+            not models[name].get('supports_structured_output', False) for name in plan['recipients']):
+        raise ValueError('Schema baseline requires declared structured-output support')
     masks = plan.get('native_tools')
     if (not isinstance(masks, list) or not masks or any(type(v) is not bool for v in masks)
             or len(set(masks)) != len(masks)):
@@ -101,6 +129,9 @@ def load_diagnostic_plan(path: Path) -> dict:
         raise ValueError('Every case must participate in a diagnostic contrast')
     if len(DiagnosticSchedule(plan).allocations()) > 256:
         raise ValueError('Diagnostic plans are limited to 256 donor blocks')
+    if plan.get('evidence_restoration'):
+        from .restoration import validate_restoration_plan
+        validate_restoration_plan(plan)
     return plan
 
 
@@ -115,6 +146,7 @@ class DiagnosticSchedule:
         rng = random.Random(plan['seed'])
         rng.shuffle(blocks)
         assignments = []
+        cases = {case.identifier: case for case in cases_for_plan(plan)}
         for index, (case, receiver, tools, repeat) in enumerate(blocks):
             block_id = f'diagnostic-{index:04d}'
             variants = []
@@ -122,12 +154,22 @@ class DiagnosticSchedule:
                 if case not in selected:
                     continue
                 specification = FACTORS[factor]
-                for level_index, level in enumerate(diagnostic_levels(plan, factor)):
-                    variants.append({'factor': factor, 'level': level, 'level_index': level_index,
-                                     'options': {**BASELINE, specification.parameter: level},
-                                     'session_id': f'{block_id}.{factor}-{level_index}.session-1'})
+                for position in recipient_positions(plan):
+                    for level_index, level in enumerate(diagnostic_levels(plan, factor)):
+                        variant = {'factor': factor, 'level': level, 'level_index': level_index,
+                                   'options': {**diagnostic_baseline(plan), specification.parameter: level},
+                                   'session_id': f'{block_id}.{factor}-{level_index}.session-{position}'}
+                        if 'recipient_positions' in plan:
+                            variant['recipient_session'] = position
+                        if plan.get('evidence_restoration'):
+                            from .restoration import condition_metadata
+                            variant['evidence_condition'] = condition_metadata(cases[case], position)
+                        variants.append(variant)
             rng.shuffle(variants)
-            assignments.append({'block_id': block_id, 'case': case, 'donor': plan['donor'],
+            assignment = {'block_id': block_id, 'case': case, 'donor': plan['donor'],
                                 'receiver': receiver, 'native_tools': tools, 'repeat': repeat,
-                                'donor_session_id': f'{block_id}.donor.session-0', 'variants': variants})
+                                'donor_session_id': f'{block_id}.donor.session-0', 'variants': variants}
+            if plan.get('evidence_restoration'):
+                assignment['task_family'] = cases[case].family
+            assignments.append(assignment)
         return assignments

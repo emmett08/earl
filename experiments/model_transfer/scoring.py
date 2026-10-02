@@ -37,6 +37,20 @@ class ReferenceScorer:
                 'observed_at': measurement['observed_at']}
 
     def score(self, case: TaskCase, session: int, result: dict) -> dict:
+        scored = self._score(case, session, result)
+        if result.get('whole_answer_consistency_required'):
+            canonical = result.get('canonical_decision')
+            scored['canonical_decision_match'] = (canonical == scored['reference']['decision']
+                if canonical in ('ready', 'not_ready', 'undetermined') else None)
+            consistency = (result.get('annotation') or {}).get('explanation_consistency')
+            explanation = {'consistent': True, 'contradictory': False}.get(consistency)
+            scored['explanation_consistent'] = explanation
+            decision = scored['decision_match']
+            scored['substantive_match'] = (False if decision is False or explanation is False else
+                True if decision is True and explanation is True else None)
+        return scored
+
+    def _score(self, case: TaskCase, session: int, result: dict) -> dict:
         reference = self.reference(case, session)
         answer = result.get('answer') or {}
         if not isinstance(answer, dict):

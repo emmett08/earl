@@ -1,0 +1,790 @@
+{
+  "schema": "EAL/completion-figure-independent-numerical-audit/1",
+  "decision": "accepted_numerically",
+  "basis": "Fresh independent resource reconstruction from immutable finish rows/calls; independently verified coding/estimator tables; exact current TikZ coordinate/category/tone parsing. No producer calculation functions used.",
+  "inputs": {
+    "rows.json": "22def9bf2b0902190ae65f34124bd6f73bb9e2a1350a31ffb60127d92ad0730c",
+    "calls.json": "fc3dd28a2058b0267102c2f4e66b630a0fc949f003d4c2092442678f5242d4ca",
+    "annotated-rows.json": "927d14d61ad67dceb1bf72e3e5c8dda0e73e6c29407dec660f9490fdf02460ef",
+    "plan.json": "19f2c1e468c3a2b0ce5cc5a107469b2cef524c40a4344f1db4c3e120769a6ce9"
+  },
+  "completion_outcome_audit_sha256": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e",
+  "raw_resource_reconstruction_script_sha256": "050cb5cabda8a6281a178fa3a3d6525417c4287779cf1df6e995170093770c8c",
+  "table_bindings": {
+    "completion-allocation.csv": "7f7588ccba7b1bd88da0ecbb9e4ee99437c9dd8c243cd0d9fe2f432deeef8c8d",
+    "completion-ambiguous.csv": "54914a8671948f71d0c0f75e62f22e3a4af21f446139ed9392cd9ff5d2a07ff6",
+    "completion-arm-phase.csv": "15bab1eaaea9d490a683825e9d2aaf60e74f480c51c34550188c90960149539f",
+    "completion-confusion.csv": "c5ab82ccc779e9111dba5ec7ec80bfc93aad65946b568b9e378c48bd7afdcf13",
+    "completion-correctness-groups.csv": "0c0b002835e3ffed0b2e6803320d3d21eb319477ec726ae5b7df66a35c34a301",
+    "completion-endpoints.csv": "2f18b7601b12fb40b7bc951278f36c05296dd834178ba367e44a4d0c0867cb0d",
+    "completion-horizon.csv": "aae6b8ea51dc095fdb18db2377cc063bc16028505b50d7026b84b706d9e1bec0",
+    "completion-pairs.csv": "aa005f4e940fee2c795e4e225d56d7572ce7674b6e5804eaa5be64d1749f3ff9",
+    "completion-session-decisions.csv": "b5bc475e472163c58146322fbd5dafd5155f4957e108bec99d599dba58a0ab55"
+  },
+  "all_14_canonical_figures_numerically_checked": true,
+  "checks": {
+    "01-token-distribution": {
+      "passed": true,
+      "data_observations": 192,
+      "plotted_coordinates": 194,
+      "complete_ecdf_tails": true
+    },
+    "06-latency-distribution": {
+      "passed": true,
+      "data_observations": 192,
+      "plotted_coordinates": 194,
+      "complete_ecdf_tails": true
+    },
+    "02-token-subgroups": {
+      "passed": true,
+      "groups": 4,
+      "pairs_per_group": 48,
+      "whole_sessions_per_arm_group": 528,
+      "recipient_sessions_per_arm_group": 480
+    },
+    "03-cumulative-tokens": {
+      "passed": true,
+      "integer_positions_per_arm": 11,
+      "pairs_per_arm": 192,
+      "includes_donor": true
+    },
+    "04-token-composition": {
+      "passed": true,
+      "recipient_sessions_per_arm_group": 480,
+      "disjoint_stack_components": true,
+      "plain_recipient_reasoning_zero": true
+    },
+    "05-resource-ratios": {
+      "passed": true,
+      "ratios": 7,
+      "includes_donor": true,
+      "whole_sessions_per_arm": 2112
+    },
+    "07-acquisition-horizon": {
+      "passed": true,
+      "series": 4,
+      "integer_positions_per_series": 11,
+      "host_reuses_excluded_from_collector_calls": true
+    },
+    "09-paired-tradeoff": {
+      "passed": true,
+      "paired_points": 192,
+      "quadrants": {
+        "fewer/lower": 54,
+        "fewer/higher": 136,
+        "more/higher": 2
+      },
+      "includes_donor_and_setup": true
+    },
+    "10-phase-contrasts": {
+      "passed": true,
+      "metrics": 4,
+      "phases": 3,
+      "phase_denominators_per_arm": [
+        192,
+        1920,
+        2112
+      ],
+      "time_excludes_setup": true
+    },
+    "11-time-partition": {
+      "passed": true,
+      "disjoint_session_parts": 3,
+      "setup_separate": true,
+      "residual_is_derived": true
+    },
+    "08-measurement-status": {
+      "passed": true,
+      "counts_in_display_order": [
+        4224,
+        4224,
+        4224,
+        4199,
+        25
+      ],
+      "first_three_rows_overlap": true,
+      "last_two_partition_coding_entries": true
+    },
+    "12-recipient-decisions": {
+      "passed": true,
+      "cells": [
+        {
+          "arm": "ordinary",
+          "reference": "ready",
+          "communication": "ready",
+          "count": 477,
+          "reference_denominator": 768,
+          "fraction": 0.62109375
+        },
+        {
+          "arm": "ordinary",
+          "reference": "ready",
+          "communication": "not_ready",
+          "count": 98,
+          "reference_denominator": 768,
+          "fraction": 0.12760416666666666
+        },
+        {
+          "arm": "ordinary",
+          "reference": "ready",
+          "communication": "undetermined",
+          "count": 189,
+          "reference_denominator": 768,
+          "fraction": 0.24609375
+        },
+        {
+          "arm": "ordinary",
+          "reference": "ready",
+          "communication": "ambiguous",
+          "count": 4,
+          "reference_denominator": 768,
+          "fraction": 0.005208333333333333
+        },
+        {
+          "arm": "ordinary",
+          "reference": "not_ready",
+          "communication": "ready",
+          "count": 291,
+          "reference_denominator": 512,
+          "fraction": 0.568359375
+        },
+        {
+          "arm": "ordinary",
+          "reference": "not_ready",
+          "communication": "not_ready",
+          "count": 84,
+          "reference_denominator": 512,
+          "fraction": 0.1640625
+        },
+        {
+          "arm": "ordinary",
+          "reference": "not_ready",
+          "communication": "undetermined",
+          "count": 131,
+          "reference_denominator": 512,
+          "fraction": 0.255859375
+        },
+        {
+          "arm": "ordinary",
+          "reference": "not_ready",
+          "communication": "ambiguous",
+          "count": 6,
+          "reference_denominator": 512,
+          "fraction": 0.01171875
+        },
+        {
+          "arm": "ordinary",
+          "reference": "undetermined",
+          "communication": "ready",
+          "count": 362,
+          "reference_denominator": 640,
+          "fraction": 0.565625
+        },
+        {
+          "arm": "ordinary",
+          "reference": "undetermined",
+          "communication": "not_ready",
+          "count": 100,
+          "reference_denominator": 640,
+          "fraction": 0.15625
+        },
+        {
+          "arm": "ordinary",
+          "reference": "undetermined",
+          "communication": "undetermined",
+          "count": 178,
+          "reference_denominator": 640,
+          "fraction": 0.278125
+        },
+        {
+          "arm": "ordinary",
+          "reference": "undetermined",
+          "communication": "ambiguous",
+          "count": 0,
+          "reference_denominator": 640,
+          "fraction": 0.0
+        },
+        {
+          "arm": "eal",
+          "reference": "ready",
+          "communication": "ready",
+          "count": 758,
+          "reference_denominator": 768,
+          "fraction": 0.9869791666666666
+        },
+        {
+          "arm": "eal",
+          "reference": "ready",
+          "communication": "not_ready",
+          "count": 10,
+          "reference_denominator": 768,
+          "fraction": 0.013020833333333334
+        },
+        {
+          "arm": "eal",
+          "reference": "ready",
+          "communication": "undetermined",
+          "count": 0,
+          "reference_denominator": 768,
+          "fraction": 0.0
+        },
+        {
+          "arm": "eal",
+          "reference": "ready",
+          "communication": "ambiguous",
+          "count": 0,
+          "reference_denominator": 768,
+          "fraction": 0.0
+        },
+        {
+          "arm": "eal",
+          "reference": "not_ready",
+          "communication": "ready",
+          "count": 2,
+          "reference_denominator": 512,
+          "fraction": 0.00390625
+        },
+        {
+          "arm": "eal",
+          "reference": "not_ready",
+          "communication": "not_ready",
+          "count": 508,
+          "reference_denominator": 512,
+          "fraction": 0.9921875
+        },
+        {
+          "arm": "eal",
+          "reference": "not_ready",
+          "communication": "undetermined",
+          "count": 0,
+          "reference_denominator": 512,
+          "fraction": 0.0
+        },
+        {
+          "arm": "eal",
+          "reference": "not_ready",
+          "communication": "ambiguous",
+          "count": 2,
+          "reference_denominator": 512,
+          "fraction": 0.00390625
+        },
+        {
+          "arm": "eal",
+          "reference": "undetermined",
+          "communication": "ready",
+          "count": 6,
+          "reference_denominator": 640,
+          "fraction": 0.009375
+        },
+        {
+          "arm": "eal",
+          "reference": "undetermined",
+          "communication": "not_ready",
+          "count": 23,
+          "reference_denominator": 640,
+          "fraction": 0.0359375
+        },
+        {
+          "arm": "eal",
+          "reference": "undetermined",
+          "communication": "undetermined",
+          "count": 600,
+          "reference_denominator": 640,
+          "fraction": 0.9375
+        },
+        {
+          "arm": "eal",
+          "reference": "undetermined",
+          "communication": "ambiguous",
+          "count": 11,
+          "reference_denominator": 640,
+          "fraction": 0.0171875
+        }
+      ],
+      "same_tone_mapping": "black tone=78*count/reference_n; legend maps100%to black78",
+      "per_arm_recipients": 1920,
+      "ordinary_ambiguous": 10,
+      "eal_ambiguous": 13,
+      "no_answer_omitted_because_all_zero": true
+    },
+    "13-recipient-match-bounds": {
+      "passed": true,
+      "ranges": [
+        {
+          "arm": "ordinary",
+          "model": "plain",
+          "native_tools": false,
+          "n": 480,
+          "lower_pct": 38.541666666666664,
+          "upper_pct": 38.541666666666664,
+          "ambiguities": 0
+        },
+        {
+          "arm": "ordinary",
+          "model": "plain",
+          "native_tools": true,
+          "n": 480,
+          "lower_pct": 37.5,
+          "upper_pct": 39.583333333333336,
+          "ambiguities": 10
+        },
+        {
+          "arm": "ordinary",
+          "model": "reasoning",
+          "native_tools": false,
+          "n": 480,
+          "lower_pct": 38.75,
+          "upper_pct": 38.75,
+          "ambiguities": 0
+        },
+        {
+          "arm": "ordinary",
+          "model": "reasoning",
+          "native_tools": true,
+          "n": 480,
+          "lower_pct": 39.166666666666664,
+          "upper_pct": 39.166666666666664,
+          "ambiguities": 0
+        },
+        {
+          "arm": "eal",
+          "model": "plain",
+          "native_tools": false,
+          "n": 480,
+          "lower_pct": 99.79166666666667,
+          "upper_pct": 100.0,
+          "ambiguities": 1
+        },
+        {
+          "arm": "eal",
+          "model": "plain",
+          "native_tools": true,
+          "n": 480,
+          "lower_pct": 92.08333333333333,
+          "upper_pct": 93.125,
+          "ambiguities": 5
+        },
+        {
+          "arm": "eal",
+          "model": "reasoning",
+          "native_tools": false,
+          "n": 480,
+          "lower_pct": 98.95833333333333,
+          "upper_pct": 100.0,
+          "ambiguities": 5
+        },
+        {
+          "arm": "eal",
+          "model": "reasoning",
+          "native_tools": true,
+          "n": 480,
+          "lower_pct": 97.91666666666667,
+          "upper_pct": 98.33333333333333,
+          "ambiguities": 2
+        }
+      ],
+      "actual_recipient_groups": true,
+      "finite_record_ambiguity_envelopes": true,
+      "not_sampling_intervals": true
+    },
+    "14-frozen-endpoint-bounds": {
+      "passed": true,
+      "panels": [
+        {
+          "endpoint": "quality_difference",
+          "observation_bounds": [
+            58.177083333333336,
+            59.375
+          ],
+          "family_interval": [
+            41.50402031016159,
+            76.04806302317174
+          ],
+          "one_sided_lower": 46.47126009608053,
+          "threshold": -5.0,
+          "one_sided_pass": true
+        },
+        {
+          "endpoint": "eal_correctness",
+          "observation_bounds": [
+            97.1875,
+            97.86458333333333
+          ],
+          "family_interval": [
+            88.70838264451803,
+            100.0
+          ],
+          "one_sided_lower": 91.21760934305097,
+          "threshold": 90.0,
+          "one_sided_pass": true
+        },
+        {
+          "endpoint": "token_reduction",
+          "observation_bounds": [
+            33.60920873730253,
+            33.60920873730253
+          ],
+          "family_interval": [
+            32.32777347504271,
+            34.89064399956235
+          ],
+          "one_sided_lower": 32.74494073397548,
+          "threshold": 20.0,
+          "one_sided_pass": true
+        }
+      ],
+      "separate_scales_explicit": true,
+      "finite_record_and_expected_rerun_targets_distinct": true,
+      "IUT_lower_bounds_not_simultaneous_family": true
+    }
+  },
+  "artifact_bindings": {
+    "01-token-distribution": {
+      "source": {
+        "path": "figures/01-token-distribution.tikz.tex",
+        "sha256": "30c7e0fe1d82b23aa3bf0e8e9c7d40d5befa808af6e907d576f32f67a8df0cd2"
+      },
+      "pdf": {
+        "path": "figures/01-token-distribution.pdf",
+        "sha256": "f74a48cfe5a82c20605562cb3db89f73f43d99b41f00739e20ddc2fcb8a9831b"
+      },
+      "preview": {
+        "path": "figures/01-token-distribution.png",
+        "sha256": "3c7cde442b85521fe46b4eac13ec0a6336f96996ada70fc08459062489bd9dd6"
+      }
+    },
+    "02-token-subgroups": {
+      "source": {
+        "path": "figures/02-token-subgroups.tikz.tex",
+        "sha256": "1af3233be7f7a6cdb0377035c2f30d628daec8fef789082344935584d33d7730"
+      },
+      "pdf": {
+        "path": "figures/02-token-subgroups.pdf",
+        "sha256": "6175601423ebfbf2bbac1b9583a4ce16bf7c7339e09f6b2890f0c0de717dffc9"
+      },
+      "preview": {
+        "path": "figures/02-token-subgroups.png",
+        "sha256": "eff3f6cea036f2263f068cb6c9e1d02761eb583625d0f18055b98ac9e577f727"
+      }
+    },
+    "03-cumulative-tokens": {
+      "source": {
+        "path": "figures/03-cumulative-tokens.tikz.tex",
+        "sha256": "71d6de425fc74ab51cd0d141cec0bec3a51a4e7242601cd527ec20fcf0283e70"
+      },
+      "pdf": {
+        "path": "figures/03-cumulative-tokens.pdf",
+        "sha256": "672eb4faf89a9ce5c3a7d20a09a7297df8ea68cb242e633d71e36c01e2741ecf"
+      },
+      "preview": {
+        "path": "figures/03-cumulative-tokens.png",
+        "sha256": "080f8b17bf2321f99b1067f1ad1d639cdca52e782c45039d230fd6eed6ee82fa"
+      }
+    },
+    "04-token-composition": {
+      "source": {
+        "path": "figures/04-token-composition.tikz.tex",
+        "sha256": "a7d7b3d131857a4459d58caa2709523170566cb25220b4bf9a15f3820d5195f5"
+      },
+      "pdf": {
+        "path": "figures/04-token-composition.pdf",
+        "sha256": "097b75f6ab436b059a50c66c3265c9af2480156efedabefd2537c86357e5a5ea"
+      },
+      "preview": {
+        "path": "figures/04-token-composition.png",
+        "sha256": "b4c61c81b1dc4eddc8e04ad9f0c1d29438005e351bacd973511253d9004433d6"
+      }
+    },
+    "05-resource-ratios": {
+      "source": {
+        "path": "figures/05-resource-ratios.tikz.tex",
+        "sha256": "8369c54baf93003fb49616e1db5ef93b8b5b7826be121579de75a7ec619e8585"
+      },
+      "pdf": {
+        "path": "figures/05-resource-ratios.pdf",
+        "sha256": "ca1ef4c5e2c2cd4027738265a22fbfc2bb187d91b0845482fcb0a8fef01e68e5"
+      },
+      "preview": {
+        "path": "figures/05-resource-ratios.png",
+        "sha256": "38060f753957dd7dbb18970e173408f7bbd5a44acaa569f37825fed50efc01e8"
+      }
+    },
+    "06-latency-distribution": {
+      "source": {
+        "path": "figures/06-latency-distribution.tikz.tex",
+        "sha256": "03ed1c355ea9563f57d733142eede301465fe9803d3441016a72d57e168cf710"
+      },
+      "pdf": {
+        "path": "figures/06-latency-distribution.pdf",
+        "sha256": "2bfd48d9d5e81f7a495ce1459cb2d2c66a50bee8d22e9d9df5444ce12cb50576"
+      },
+      "preview": {
+        "path": "figures/06-latency-distribution.png",
+        "sha256": "be2f08b355b23fba4f8c2ea941afdab8f538e3c72bc0f5c185156650c4691e5b"
+      }
+    },
+    "07-acquisition-horizon": {
+      "source": {
+        "path": "figures/07-acquisition-horizon.tikz.tex",
+        "sha256": "f953e7e1fa0cd2dbb0cb16fb72e3d32ff34d5c222bf82bd701569068074d7e16"
+      },
+      "pdf": {
+        "path": "figures/07-acquisition-horizon.pdf",
+        "sha256": "dbf6c6dcc1d71e007af3936501ba068d5ad3198f5699c7d063f18cc4ede0914d"
+      },
+      "preview": {
+        "path": "figures/07-acquisition-horizon.png",
+        "sha256": "baebc57b654763cdbe44330d00ae4de961305772d5ca3176bc140ba98c24fa2e"
+      }
+    },
+    "08-measurement-status": {
+      "source": {
+        "path": "figures/08-measurement-status.tikz.tex",
+        "sha256": "6caf1ec80b77bce5151ed730ba70b1f07d65e3b1a8b6346dbb99f75580f11680"
+      },
+      "pdf": {
+        "path": "figures/08-measurement-status.pdf",
+        "sha256": "3359341620c2dafe953f326677e8e1b2b4ad0d49bbffb263e0b1441177f793a6"
+      },
+      "preview": {
+        "path": "figures/08-measurement-status.png",
+        "sha256": "cfb3fc6f255a42d3210880c444a256e87ca2fb140a2505c0af52ee20da9fef94"
+      },
+      "caption": {
+        "path": "captions/08-measurement-status.caption.txt",
+        "sha256": "667618afe30457354259cbc4fc4901847fc8f5b0755c36f4b483a758a180f56c"
+      },
+      "specification": {
+        "path": "08-measurement-status.spec.json",
+        "sha256": "bea1ed1a2ac5a66c4a53fc3da227666015dd6a940110d6d57bf015cda4ee646c"
+      }
+    },
+    "09-paired-tradeoff": {
+      "source": {
+        "path": "figures/09-paired-tradeoff.tikz.tex",
+        "sha256": "25989e6d4f819ddc3f40107e46b5b5063a3fedaf3fcdfd7b1a2900e982f495c8"
+      },
+      "pdf": {
+        "path": "figures/09-paired-tradeoff.pdf",
+        "sha256": "7e0af8eb18e9685884a169e00793effdc587a258d073a453b5b352d837ce399c"
+      },
+      "preview": {
+        "path": "figures/09-paired-tradeoff.png",
+        "sha256": "fea666952fe88e9199e3688ec63999298c31c43826801d58fe5818b49444e6df"
+      }
+    },
+    "10-phase-contrasts": {
+      "source": {
+        "path": "figures/10-phase-contrasts.tikz.tex",
+        "sha256": "02c545edeab34fc328adfd574434f76ddd52dcd1db67f17248888d52656311fa"
+      },
+      "pdf": {
+        "path": "figures/10-phase-contrasts.pdf",
+        "sha256": "af9995f9945f204d1cf19a04c4b78c44c15212fe06228cafe6e5f87534d1a15f"
+      },
+      "preview": {
+        "path": "figures/10-phase-contrasts.png",
+        "sha256": "7cc8cddb3f013f73f5b9f4539a244cf2d11ef6f83fbf474faa843d4ba1076b0e"
+      }
+    },
+    "11-time-partition": {
+      "source": {
+        "path": "figures/11-time-partition.tikz.tex",
+        "sha256": "28102e2b6035540374b306b707f1ffb3e202537a5c082f261c8c3ac734540c74"
+      },
+      "pdf": {
+        "path": "figures/11-time-partition.pdf",
+        "sha256": "814579de1f832b763e303cdf07996534dacc902609d7c6246e474b041b1458b6"
+      },
+      "preview": {
+        "path": "figures/11-time-partition.png",
+        "sha256": "ff821ec6b2dc1321dde9c48a9931cbddfc4bb2b842bcdd7e03e70bb3ce6e7d52"
+      }
+    },
+    "12-recipient-decisions": {
+      "source": {
+        "path": "figures/12-recipient-decisions.tikz.tex",
+        "sha256": "9511f50793158cc6991c241155bb4c39c3204be3b8a86b0d36d060e7d2ef54fb"
+      },
+      "pdf": {
+        "path": "figures/12-recipient-decisions.pdf",
+        "sha256": "7baebdf0e69b1aa7f556f20567340aac7492845f8f520c781fd2db4402661787"
+      },
+      "preview": {
+        "path": "figures/12-recipient-decisions.png",
+        "sha256": "51d7fb50b77d3a9dbc9188c3aa0c06c708cb9ccefbd1f304b30270c7ba1c0662"
+      },
+      "caption": {
+        "path": "captions/12-recipient-decisions.caption.txt",
+        "sha256": "f83de16987396ac9907fd0a089535d35aeb35da8aa63874d579599b74017714e"
+      },
+      "specification": {
+        "path": "12-recipient-decisions.spec.json",
+        "sha256": "daee670c32e63f15def6fd2c8125b513271d5aaad5bd6afea632807b28920345"
+      }
+    },
+    "13-recipient-match-bounds": {
+      "source": {
+        "path": "figures/13-recipient-match-bounds.tikz.tex",
+        "sha256": "4a8a77f82cf85495cfffecad0a6ba550138fceb31e5e8dbfe71cc39b97cd8483"
+      },
+      "pdf": {
+        "path": "figures/13-recipient-match-bounds.pdf",
+        "sha256": "40f65cec11bab174d43a75cc7072969b23372f8ca4a21fa9e7ddfb23f4883085"
+      },
+      "preview": {
+        "path": "figures/13-recipient-match-bounds.png",
+        "sha256": "6a02af0abe164a625d2f475a26bd4706cd8cc8859154b6fab3fbb9bb998e06a2"
+      },
+      "caption": {
+        "path": "captions/13-recipient-match-bounds.caption.txt",
+        "sha256": "f3d439613cb8ffc6cef1c8f190cd01d3ebb33abb74d87bbfc770a4b60e90a071"
+      },
+      "specification": {
+        "path": "13-recipient-match-bounds.spec.json",
+        "sha256": "54c094f72c40e7062fb8b61139ac5e0a5b8eb0f3d2ec0cad031675736f3e9e91"
+      }
+    },
+    "14-frozen-endpoint-bounds": {
+      "source": {
+        "path": "figures/14-frozen-endpoint-bounds.tikz.tex",
+        "sha256": "9fe4c92529b201d4dda39a7ddf437ad2ba9a8c19d40879b7cdeca4e26c204dec"
+      },
+      "pdf": {
+        "path": "figures/14-frozen-endpoint-bounds.pdf",
+        "sha256": "75664c87805c2bcd4fc78ab35e8daffc4ecd8ad79defc60a10cd33b3ea55e5b4"
+      },
+      "preview": {
+        "path": "figures/14-frozen-endpoint-bounds.png",
+        "sha256": "9c755f83d81d5af56d801d5efa9bee6593879170a0f028c77223d52690a0a735"
+      },
+      "caption": {
+        "path": "captions/14-frozen-endpoint-bounds.caption.txt",
+        "sha256": "ae987866d72112fcd095e94562daac990600226a311720b7743370a2e8b9d837"
+      },
+      "specification": {
+        "path": "14-frozen-endpoint-bounds.spec.json",
+        "sha256": "a348d0b24f80a23d719114ddf7f8a06cf052f200e7ab1824dc509eed33a8f14f"
+      }
+    }
+  },
+  "unchanged_resource_source_bindings": {
+    "01-token-distribution": {
+      "baseline_sha256": "30c7e0fe1d82b23aa3bf0e8e9c7d40d5befa808af6e907d576f32f67a8df0cd2",
+      "current_sha256": "30c7e0fe1d82b23aa3bf0e8e9c7d40d5befa808af6e907d576f32f67a8df0cd2",
+      "identical": true
+    },
+    "02-token-subgroups": {
+      "baseline_sha256": "1af3233be7f7a6cdb0377035c2f30d628daec8fef789082344935584d33d7730",
+      "current_sha256": "1af3233be7f7a6cdb0377035c2f30d628daec8fef789082344935584d33d7730",
+      "identical": true
+    },
+    "03-cumulative-tokens": {
+      "baseline_sha256": "71d6de425fc74ab51cd0d141cec0bec3a51a4e7242601cd527ec20fcf0283e70",
+      "current_sha256": "71d6de425fc74ab51cd0d141cec0bec3a51a4e7242601cd527ec20fcf0283e70",
+      "identical": true
+    },
+    "04-token-composition": {
+      "baseline_sha256": "a7d7b3d131857a4459d58caa2709523170566cb25220b4bf9a15f3820d5195f5",
+      "current_sha256": "a7d7b3d131857a4459d58caa2709523170566cb25220b4bf9a15f3820d5195f5",
+      "identical": true
+    },
+    "05-resource-ratios": {
+      "baseline_sha256": "8369c54baf93003fb49616e1db5ef93b8b5b7826be121579de75a7ec619e8585",
+      "current_sha256": "8369c54baf93003fb49616e1db5ef93b8b5b7826be121579de75a7ec619e8585",
+      "identical": true
+    },
+    "06-latency-distribution": {
+      "baseline_sha256": "03ed1c355ea9563f57d733142eede301465fe9803d3441016a72d57e168cf710",
+      "current_sha256": "03ed1c355ea9563f57d733142eede301465fe9803d3441016a72d57e168cf710",
+      "identical": true
+    },
+    "07-acquisition-horizon": {
+      "baseline_sha256": "f953e7e1fa0cd2dbb0cb16fb72e3d32ff34d5c222bf82bd701569068074d7e16",
+      "current_sha256": "f953e7e1fa0cd2dbb0cb16fb72e3d32ff34d5c222bf82bd701569068074d7e16",
+      "identical": true
+    },
+    "09-paired-tradeoff": {
+      "baseline_sha256": "25989e6d4f819ddc3f40107e46b5b5063a3fedaf3fcdfd7b1a2900e982f495c8",
+      "current_sha256": "25989e6d4f819ddc3f40107e46b5b5063a3fedaf3fcdfd7b1a2900e982f495c8",
+      "identical": true
+    },
+    "10-phase-contrasts": {
+      "baseline_sha256": "02c545edeab34fc328adfd574434f76ddd52dcd1db67f17248888d52656311fa",
+      "current_sha256": "02c545edeab34fc328adfd574434f76ddd52dcd1db67f17248888d52656311fa",
+      "identical": true
+    },
+    "11-time-partition": {
+      "baseline_sha256": "28102e2b6035540374b306b707f1ffb3e202537a5c082f261c8c3ac734540c74",
+      "current_sha256": "28102e2b6035540374b306b707f1ffb3e202537a5c082f261c8c3ac734540c74",
+      "identical": true
+    }
+  },
+  "new_specification_input_bindings": {
+    "08-measurement-status": [
+      {
+        "path": "analysis/resource_summary.json",
+        "sha256": "dd9ac051bd122ad4599da82013b855c5890b7016101a51723947819de3009fe8",
+        "passed": true
+      },
+      {
+        "path": "analysis/completion-outcomes.json",
+        "sha256": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e",
+        "passed": true
+      }
+    ],
+    "12-recipient-decisions": [
+      {
+        "path": "tables/completion-confusion.csv",
+        "sha256": "c5ab82ccc779e9111dba5ec7ec80bfc93aad65946b568b9e378c48bd7afdcf13",
+        "passed": true
+      },
+      {
+        "path": "analysis/completion-outcomes.json",
+        "sha256": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e",
+        "passed": true
+      }
+    ],
+    "13-recipient-match-bounds": [
+      {
+        "path": "tables/completion-correctness-groups.csv",
+        "sha256": "0c0b002835e3ffed0b2e6803320d3d21eb319477ec726ae5b7df66a35c34a301",
+        "passed": true
+      },
+      {
+        "path": "analysis/completion-outcomes.json",
+        "sha256": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e",
+        "passed": true
+      }
+    ],
+    "14-frozen-endpoint-bounds": [
+      {
+        "path": "tables/completion-endpoints.csv",
+        "sha256": "2f18b7601b12fb40b7bc951278f36c05296dd834178ba367e44a4d0c0867cb0d",
+        "passed": true
+      },
+      {
+        "path": "analysis/completion-outcomes.json",
+        "sha256": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e",
+        "passed": true
+      },
+      {
+        "path": "analysis/completion-inference-audit.json",
+        "sha256": "765bd5f8fb5476eddceb034996adbe1c2fe991694cb0229b68352fbbd6ed81b0",
+        "passed": true
+      }
+    ]
+  },
+  "coverage": {
+    "sessions": 4224,
+    "recipient_sessions_per_arm": 1920,
+    "paired_trajectories": 192,
+    "api_attempts": 5442
+  },
+  "errors": [],
+  "limitations": [
+    "Numerical acceptance does not validate independent rerun assumptions, retained resolved AI codes, generalisability or explanation correctness.",
+    "Ambiguity envelopes condition on resolved codes; sampling bounds target expected fixed-condition reruns rather than the finite data.",
+    "This numerical review does not replace the separate rendered semantic/visual review."
+  ]
+}

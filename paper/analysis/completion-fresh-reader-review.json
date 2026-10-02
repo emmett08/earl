@@ -1,0 +1,521 @@
+{
+  "schema": "EAL/completion-fresh-reader-review/1",
+  "created_utc": "2026-10-02T12:33:35.302133+00:00",
+  "reviewer_kind": "independent model reader",
+  "stage1": {
+    "note_path": "article/analysis/completion-fresh-reader-stage1.md",
+    "sha256": "f033e4fe53cbb0ceea05cec4fc8ab8d71be8a1d5746bbe0fbec24a26769fcfaa",
+    "frozen_before_spec_table_manuscript_or_prior_audit_access": true,
+    "initial_bindings_path": "article/analysis/completion-reader-initial-bindings.json",
+    "initial_bindings_sha256": "eb4c1df9c808c3a4ce08a3c145ee517942c7c0df44ab390e874b837aa4ca85f6"
+  },
+  "human_comprehension_validation": false,
+  "independent_human_coding_validation": false,
+  "theorem_applicability_reaudit": false,
+  "scope": "Observed canonical PNGs and captions compared with current specifications and numerical tables. PDF hashes bind identity; separate PDF proof review remains separate.",
+  "overall_decision": "pass",
+  "blocking_findings": [],
+  "final_bindings": {
+    "08-measurement-status": {
+      "article/figures/08-measurement-status.png": "cfb3fc6f255a42d3210880c444a256e87ca2fb140a2505c0af52ee20da9fef94",
+      "article/figures/08-measurement-status.pdf": "3359341620c2dafe953f326677e8e1b2b4ad0d49bbffb263e0b1441177f793a6",
+      "article/figures/08-measurement-status.tikz.tex": "6caf1ec80b77bce5151ed730ba70b1f07d65e3b1a8b6346dbb99f75580f11680",
+      "article/captions/08-measurement-status.caption.txt": "667618afe30457354259cbc4fc4901847fc8f5b0755c36f4b483a758a180f56c",
+      "article/08-measurement-status.spec.json": "bea1ed1a2ac5a66c4a53fc3da227666015dd6a940110d6d57bf015cda4ee646c"
+    },
+    "12-recipient-decisions": {
+      "article/figures/12-recipient-decisions.png": "51d7fb50b77d3a9dbc9188c3aa0c06c708cb9ccefbd1f304b30270c7ba1c0662",
+      "article/figures/12-recipient-decisions.pdf": "7baebdf0e69b1aa7f556f20567340aac7492845f8f520c781fd2db4402661787",
+      "article/figures/12-recipient-decisions.tikz.tex": "9511f50793158cc6991c241155bb4c39c3204be3b8a86b0d36d060e7d2ef54fb",
+      "article/captions/12-recipient-decisions.caption.txt": "f83de16987396ac9907fd0a089535d35aeb35da8aa63874d579599b74017714e",
+      "article/12-recipient-decisions.spec.json": "daee670c32e63f15def6fd2c8125b513271d5aaad5bd6afea632807b28920345"
+    },
+    "13-recipient-match-bounds": {
+      "article/figures/13-recipient-match-bounds.png": "6a02af0abe164a625d2f475a26bd4706cd8cc8859154b6fab3fbb9bb998e06a2",
+      "article/figures/13-recipient-match-bounds.pdf": "40f65cec11bab174d43a75cc7072969b23372f8ca4a21fa9e7ddfb23f4883085",
+      "article/figures/13-recipient-match-bounds.tikz.tex": "4a8a77f82cf85495cfffecad0a6ba550138fceb31e5e8dbfe71cc39b97cd8483",
+      "article/captions/13-recipient-match-bounds.caption.txt": "f3d439613cb8ffc6cef1c8f190cd01d3ebb33abb74d87bbfc770a4b60e90a071",
+      "article/13-recipient-match-bounds.spec.json": "54c094f72c40e7062fb8b61139ac5e0a5b8eb0f3d2ec0cad031675736f3e9e91"
+    },
+    "14-frozen-endpoint-bounds": {
+      "article/figures/14-frozen-endpoint-bounds.png": "9c755f83d81d5af56d801d5efa9bee6593879170a0f028c77223d52690a0a735",
+      "article/figures/14-frozen-endpoint-bounds.pdf": "75664c87805c2bcd4fc78ab35e8daffc4ecd8ad79defc60a10cd33b3ea55e5b4",
+      "article/figures/14-frozen-endpoint-bounds.tikz.tex": "9fe4c92529b201d4dda39a7ddf437ad2ba9a8c19d40879b7cdeca4e26c204dec",
+      "article/captions/14-frozen-endpoint-bounds.caption.txt": "ae987866d72112fcd095e94562daac990600226a311720b7743370a2e8b9d837",
+      "article/14-frozen-endpoint-bounds.spec.json": "a348d0b24f80a23d719114ddf7f8a06cf052f200e7ab1824dc509eed33a8f14f"
+    },
+    "12-recipient-decision-profiles": {
+      "article/figures/12-recipient-decision-profiles.png": "fdcf74b5cb49a0a30bd235970964ef00765a8fa49edb1beee27ab5146896ce4d",
+      "article/figures/12-recipient-decision-profiles.pdf": "d174dfa483e44512685278844b95484b1de222ae811326f5d9ec3d6ca552d8c1",
+      "article/figures/12-recipient-decision-profiles.tikz.tex": "f04adae24924897453ed7c829bd368e27fec7476ddc38036945be1a314e7e42f",
+      "article/captions/12-recipient-decision-profiles.caption.txt": "3c15d9daf10a26a67a25e363185862b4e3dcd57e1ee90b3aae3338c4066d85d4",
+      "article/12-recipient-decision-profiles.spec.json": "58e3059080bbd0f5a384821fab6042ee8c8110f7c6807c7ef7f17b89bb910faf"
+    }
+  },
+  "source_bindings": {
+    "article/analysis/resource_summary.json": "dd9ac051bd122ad4599da82013b855c5890b7016101a51723947819de3009fe8",
+    "article/analysis/completion-outcomes.json": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e",
+    "article/tables/completion-confusion.csv": "c5ab82ccc779e9111dba5ec7ec80bfc93aad65946b568b9e378c48bd7afdcf13",
+    "article/tables/completion-correctness-groups.csv": "0c0b002835e3ffed0b2e6803320d3d21eb319477ec726ae5b7df66a35c34a301",
+    "article/tables/completion-endpoints.csv": "2f18b7601b12fb40b7bc951278f36c05296dd834178ba367e44a4d0c0867cb0d",
+    "article/analysis/completion-inference-audit.json": "765bd5f8fb5476eddceb034996adbe1c2fe991694cb0229b68352fbbd6ed81b0",
+    "article/tables/completion-session-decisions.csv": "b5bc475e472163c58146322fbd5dafd5155f4957e108bec99d599dba58a0ab55",
+    "article/tables/completion-pairs.csv": "aa005f4e940fee2c795e4e225d56d7572ce7674b6e5804eaa5be64d1749f3ff9"
+  },
+  "declared_input_hash_checks": [
+    {
+      "figure": "08-measurement-status",
+      "path": "article/analysis/resource_summary.json",
+      "matches_declared": true
+    },
+    {
+      "figure": "08-measurement-status",
+      "path": "article/analysis/completion-outcomes.json",
+      "matches_declared": true
+    },
+    {
+      "figure": "12-recipient-decisions",
+      "path": "article/tables/completion-confusion.csv",
+      "matches_declared": true
+    },
+    {
+      "figure": "12-recipient-decisions",
+      "path": "article/analysis/completion-outcomes.json",
+      "matches_declared": true
+    },
+    {
+      "figure": "13-recipient-match-bounds",
+      "path": "article/tables/completion-correctness-groups.csv",
+      "matches_declared": true
+    },
+    {
+      "figure": "13-recipient-match-bounds",
+      "path": "article/analysis/completion-outcomes.json",
+      "matches_declared": true
+    },
+    {
+      "figure": "14-frozen-endpoint-bounds",
+      "path": "article/tables/completion-endpoints.csv",
+      "matches_declared": true
+    },
+    {
+      "figure": "14-frozen-endpoint-bounds",
+      "path": "article/analysis/completion-outcomes.json",
+      "matches_declared": true
+    },
+    {
+      "figure": "14-frozen-endpoint-bounds",
+      "path": "article/analysis/completion-inference-audit.json",
+      "matches_declared": true
+    },
+    {
+      "figure": "12-recipient-decision-profiles",
+      "path": "article/tables/completion-confusion.csv",
+      "matches_declared": true
+    },
+    {
+      "figure": "12-recipient-decision-profiles",
+      "path": "article/analysis/completion-outcomes.json",
+      "matches_declared": true
+    }
+  ],
+  "changes_since_initial_reading": {
+    "08-measurement-status": {
+      "png_changed": false,
+      "caption_changed": false
+    },
+    "12-recipient-decisions": {
+      "png_changed": false,
+      "caption_changed": true
+    },
+    "13-recipient-match-bounds": {
+      "png_changed": false,
+      "caption_changed": true
+    },
+    "14-frozen-endpoint-bounds": {
+      "png_changed": false,
+      "caption_changed": true
+    }
+  },
+  "repair_history": [
+    {
+      "figure": "14-frozen-endpoint-bounds",
+      "origin": "Stage-1 reader identified absent inference sample count/unit.",
+      "resolution": "Final caption states 192 matched whole trajectories, 48 fixed strata, four reruns; ten-recipient quality average versus donor plus ten recipient token totals. It further distinguishes exact token point from quality ambiguity and fully scored reruns from recorded reruns.",
+      "png_unchanged": true,
+      "status": "resolved"
+    },
+    {
+      "figure": "12-recipient-decisions",
+      "origin": "Later independent PDF preparation review found ambiguous These are agreements antecedent after false-ready counts; stage 1 did not flag it.",
+      "resolution": "Final caption names the matrix agreement and disagreement scope.",
+      "png_unchanged": true,
+      "status": "resolved"
+    },
+    {
+      "figure": "13-recipient-match-bounds",
+      "origin": "Final scope clarification.",
+      "resolution": "Caption specifies both donor model assignments and six selected cases pooled, avoiding unlimited all donor profiles wording.",
+      "png_unchanged": true,
+      "status": "resolved"
+    }
+  ],
+  "sample_unit_checks": {
+    "unique_sessions": 4224,
+    "paired_trajectories": 192,
+    "fixed_strata": 48,
+    "recorded_pairs_per_stratum_distribution": {
+      "4": 48
+    },
+    "descriptive_recipient_session_count_is_not_inference_independent_N": true,
+    "quality_recipients_per_trajectory": 10,
+    "token_endpoint_includes_donor_plus_ten_recipients": true,
+    "trajectory_independence_unverified_and_disclosed": true
+  },
+  "numerical_checks": {
+    "status": {
+      "recorded": 4224,
+      "resolved": 4199,
+      "ambiguous": 25,
+      "pass": true
+    },
+    "matrix": {
+      "ordinary": {
+        "printed_counts": [
+          [
+            477,
+            98,
+            189,
+            4
+          ],
+          [
+            291,
+            84,
+            131,
+            6
+          ],
+          [
+            362,
+            100,
+            178,
+            0
+          ]
+        ],
+        "row_sums": [
+          768,
+          512,
+          640
+        ],
+        "total": 1920,
+        "no_answer": 0,
+        "ambiguities": 10,
+        "ready_against_nonready": 653,
+        "all_observed_counts_match_source": true
+      },
+      "eal": {
+        "printed_counts": [
+          [
+            758,
+            10,
+            0,
+            0
+          ],
+          [
+            2,
+            508,
+            0,
+            2
+          ],
+          [
+            6,
+            23,
+            600,
+            11
+          ]
+        ],
+        "row_sums": [
+          768,
+          512,
+          640
+        ],
+        "total": 1920,
+        "no_answer": 0,
+        "ambiguities": 13,
+        "ready_against_nonready": 8,
+        "all_observed_counts_match_source": true
+      }
+    },
+    "group_envelopes": [
+      {
+        "arm": "eal",
+        "recipient": "plain",
+        "native_tools": false,
+        "sessions": 480,
+        "trajectories": 48,
+        "known_matches": 479,
+        "ambiguities": 1,
+        "observed_labels": [
+          "99.79",
+          "100.00"
+        ],
+        "pass": true
+      },
+      {
+        "arm": "eal",
+        "recipient": "plain",
+        "native_tools": true,
+        "sessions": 480,
+        "trajectories": 48,
+        "known_matches": 442,
+        "ambiguities": 5,
+        "observed_labels": [
+          "92.08",
+          "93.12"
+        ],
+        "pass": true
+      },
+      {
+        "arm": "eal",
+        "recipient": "reasoning",
+        "native_tools": false,
+        "sessions": 480,
+        "trajectories": 48,
+        "known_matches": 475,
+        "ambiguities": 5,
+        "observed_labels": [
+          "98.96",
+          "100.00"
+        ],
+        "pass": true
+      },
+      {
+        "arm": "eal",
+        "recipient": "reasoning",
+        "native_tools": true,
+        "sessions": 480,
+        "trajectories": 48,
+        "known_matches": 470,
+        "ambiguities": 2,
+        "observed_labels": [
+          "97.92",
+          "98.33"
+        ],
+        "pass": true
+      },
+      {
+        "arm": "ordinary",
+        "recipient": "plain",
+        "native_tools": false,
+        "sessions": 480,
+        "trajectories": 48,
+        "known_matches": 185,
+        "ambiguities": 0,
+        "observed_labels": [
+          "38.54",
+          "38.54"
+        ],
+        "pass": true
+      },
+      {
+        "arm": "ordinary",
+        "recipient": "plain",
+        "native_tools": true,
+        "sessions": 480,
+        "trajectories": 48,
+        "known_matches": 180,
+        "ambiguities": 10,
+        "observed_labels": [
+          "37.50",
+          "39.58"
+        ],
+        "pass": true
+      },
+      {
+        "arm": "ordinary",
+        "recipient": "reasoning",
+        "native_tools": false,
+        "sessions": 480,
+        "trajectories": 48,
+        "known_matches": 186,
+        "ambiguities": 0,
+        "observed_labels": [
+          "38.75",
+          "38.75"
+        ],
+        "pass": true
+      },
+      {
+        "arm": "ordinary",
+        "recipient": "reasoning",
+        "native_tools": true,
+        "sessions": 480,
+        "trajectories": 48,
+        "known_matches": 188,
+        "ambiguities": 0,
+        "observed_labels": [
+          "39.17",
+          "39.17"
+        ],
+        "pass": true
+      }
+    ],
+    "endpoints": [
+      {
+        "endpoint": "quality_difference",
+        "observed_labels": [
+          [
+            "58.18",
+            "59.38"
+          ],
+          [
+            "41.50",
+            "76.05"
+          ],
+          "46.47",
+          "-5.00"
+        ],
+        "one_sided_bound_exceeds_threshold": true,
+        "pass": true
+      },
+      {
+        "endpoint": "eal_correctness",
+        "observed_labels": [
+          [
+            "97.19",
+            "97.86"
+          ],
+          [
+            "88.71",
+            "100.00"
+          ],
+          "91.22",
+          "90.00"
+        ],
+        "one_sided_bound_exceeds_threshold": true,
+        "pass": true
+      },
+      {
+        "endpoint": "token_reduction",
+        "observed_labels": [
+          [
+            "33.61",
+            "33.61"
+          ],
+          [
+            "32.33",
+            "34.89"
+          ],
+          "32.74",
+          "20.00"
+        ],
+        "one_sided_bound_exceeds_threshold": true,
+        "pass": true
+      }
+    ],
+    "observed_endpoints_reproduced_from_pair_table": {
+      "quality_lower": 0.5817708333333333,
+      "quality_upper": 0.59375,
+      "eal_lower": 0.9718749999999999,
+      "eal_upper": 0.9786458333333333,
+      "pooled_total_token_reduction": 0.3360920873730253
+    }
+  },
+  "per_figure_decisions": {
+    "08-measurement-status": {
+      "decision": "pass",
+      "source_semantics": "pass",
+      "denominator_and_unit": "pass",
+      "ambiguity_vs_assessor_error": "pass",
+      "greyscale": "pass",
+      "thumbnail_640px": "pass",
+      "observed_layout": "pass",
+      "remaining_blockers": []
+    },
+    "12-recipient-decisions": {
+      "decision": "pass",
+      "source_semantics": "pass",
+      "denominator_and_unit": "pass",
+      "ambiguity_vs_assessor_error": "pass",
+      "greyscale": "pass",
+      "thumbnail_640px": "pass",
+      "observed_layout": "pass",
+      "remaining_blockers": []
+    },
+    "13-recipient-match-bounds": {
+      "decision": "pass",
+      "source_semantics": "pass",
+      "denominator_and_unit": "pass",
+      "ambiguity_vs_assessor_error": "pass",
+      "greyscale": "pass",
+      "thumbnail_640px": "pass",
+      "observed_layout": "pass",
+      "remaining_blockers": []
+    },
+    "14-frozen-endpoint-bounds": {
+      "decision": "pass",
+      "source_semantics": "pass",
+      "denominator_and_unit": "pass",
+      "ambiguity_vs_assessor_error": "pass",
+      "greyscale": "pass",
+      "thumbnail_640px": "pass",
+      "observed_layout": "pass",
+      "remaining_blockers": []
+    }
+  },
+  "inferential_distinctions": {
+    "black": "quality finite-record ambiguity envelopes; exact recorded token point",
+    "grey": "Nominal 98.333% two-sided components of nominal 95% three-endpoint family; approximate token component disclosed",
+    "blue": "One-sided alpha=.05 component lower bounds/rays; intersection-union conjunction is not simultaneous 95% lower-bound coverage",
+    "orange": "Fixed engineering criteria, not estimates",
+    "eal_family_crosses_90_without_contradicting_separate_one_sided_pass": true,
+    "allocation_block_and_no_adoption_claim_explicit": true
+  },
+  "accessibility": {
+    "derivative_directory": "article/analysis/completion-fresh-reader-accessibility",
+    "actual_visual_inspection": true,
+    "greyscale_pngs": [
+      "08-measurement-status",
+      "12-recipient-decisions",
+      "13-recipient-match-bounds",
+      "14-frozen-endpoint-bounds"
+    ],
+    "colour_thumbnail_max_dimension_px": 640,
+    "greyscale_thumbnail_figures": [
+      "13-recipient-match-bounds",
+      "14-frozen-endpoint-bounds"
+    ],
+    "findings": "Chief finding and exact labels remain inspectable; shapes, line type/direction, row identity and text preserve semantics without hue. No clipping or overlap observed.",
+    "limits": "Model inspection of these renders, not human comprehension validation or a universal publication-size guarantee."
+  },
+  "alternative_comparison": {
+    "figure": "12-recipient-decision-profiles",
+    "inspected_after_stage1": true,
+    "greyscale_and_thumbnail_inspected": true,
+    "decision": "retain as comparison prototype; select canonical count matrix",
+    "reason": "Sub-12-percentage-point segments retain counts in data and share in bars but omit printed exact counts. Rare EAL errors and ambiguities become hairlines at thumbnail size; row denominators are unprinted. Matrix supplies all exact cell routes and row N.",
+    "prototype_numerical_faithfulness": "pass",
+    "preferred_for_exact_cell_reader_question": "12-recipient-decisions"
+  },
+  "review_note_path": "article/analysis/completion-fresh-reader-review.md",
+  "review_note_sha256": "8168d103b9385b5563a1ffe359b2d7319426b99c76724f80dec51b12c5760f78",
+  "acceptance_invalidated_by_bound_canonical_png_caption_spec_or_tikz_change": true,
+  "binding_refresh_history": [
+    {
+      "timestamp_utc": "2026-10-02T12:38:23.206679+00:00",
+      "figure": "14-frozen-endpoint-bounds",
+      "kind": "metadata-only compiled PDF identity refresh",
+      "path": "article/figures/14-frozen-endpoint-bounds.pdf",
+      "previous_sha256": "29260ca9443f7fb324ad8d242691c8fc5fc9fe2a83bfc2675cfff9a5e4c217c2",
+      "current_sha256": "75664c87805c2bcd4fc78ab35e8daffc4ecd8ad79defc60a10cd33b3ea55e5b4",
+      "mechanical_audit_path": "article/figures/14-frozen-endpoint-bounds.audit.json",
+      "mechanical_audit_sha256": "0bbc328a720bc2c33415cf28899770744038522e901978c99b05a528c679869f",
+      "verified_unchanged_accepted_paths": [
+        "article/figures/14-frozen-endpoint-bounds.png",
+        "article/figures/14-frozen-endpoint-bounds.tikz.tex",
+        "article/captions/14-frozen-endpoint-bounds.caption.txt",
+        "article/14-frozen-endpoint-bounds.spec.json"
+      ],
+      "new_graphic_or_caption_inspection_required": false
+    }
+  ]
+}

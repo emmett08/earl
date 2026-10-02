@@ -62,12 +62,20 @@ class Project:
     def registration_context(self) -> dict:
         return self.case.context_at(self.session) if hasattr(self.case, 'context_at') else self.case.context()
 
-    def probe(self) -> dict:
+    def probe(self, *, host_snapshot: bool = False) -> dict:
         start = time.monotonic()
-        result = read_json(self.state)
-        self.events.append({'session': self.session, 'kind': 'native_probe', 'output': result,
-                            'elapsed_seconds': time.monotonic() - start})
-        return result
+        event = {'session': self.session,
+                 'kind': 'host_raw_snapshot_read' if host_snapshot else 'native_probe', 'status': 'started'}
+        self.events.append(event)
+        try:
+            result = read_json(self.state)
+            event.update(status='completed', output=result)
+            return result
+        except Exception as exc:
+            event.update(status='failed', error={'type': type(exc).__name__, 'message': str(exc)[:1000]})
+            raise
+        finally:
+            event['elapsed_seconds'] = time.monotonic() - start
 
     def context(self, question: str, *, style: str = 'full', reuse: str = 'compatible', reasoner: str = 'workflow') -> list[dict]:
         if reasoner != 'workflow':

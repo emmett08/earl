@@ -1,11 +1,27 @@
-language "EAL/2";
-environment scope { require "task_id" == "migration-cutover-obligations"; }
-tool probe { version "1"; }
-evidence report { tool probe; kind task_snapshot; environment scope; max_age 60;
-  require "task_id" == "migration-cutover-obligations"; require "rule_digest" == "b8b86e7eebaaf414fa893f4fce6352ec45da6a5552dd26d5f0b5602fb689ee03";
-  require "target_identity_digest" == "114da7d79ea81d87bbfc5d422d00f434b6f1fb553f0c48fa1909c05bc2584e36"; }
-reasoning task_rules { method "experiment/task-rules/1";
-  rationale "Evaluate eligible dated facts using the source-bound three-valued task rule; negative and unknown outcomes are completed calculations.";
-  require "snapshot_minute" >= 0; }
-claim criterion_evaluated { statement "The orders cutover is ready exactly when the target schema is compatible, a backup restore is verified, and replica lag is at most 8 seconds. These are independent obligations for the named dataset, environment, and migration. An eligible incompatible-schema result, failed restore, or lag above 8 seconds makes the cutover not_ready. If none is refuted but any obligation lacks eligible evidence, the result is undetermined."; environment scope; }
-argument result { conclusion criterion_evaluated; reasoning task_rules; evidence report; }
+language "EAL/3"
+
+environment scope {
+  require "task_id" == "migration-cutover-obligations"
+}
+tool probe {
+  version "1"
+}
+evidence report {
+  tool probe
+  kind task_snapshot
+  environment scope
+  max_age 60
+  require "task_id" == "migration-cutover-obligations"
+  require "rule_digest" == "b8b86e7eebaaf414fa893f4fce6352ec45da6a5552dd26d5f0b5602fb689ee03"
+  require "target_identity_digest" == "114da7d79ea81d87bbfc5d422d00f434b6f1fb553f0c48fa1909c05bc2584e36"
+}
+reasoning task_rules {
+  method "experiment/task-rules/1"
+  rationale "Evaluate eligible dated facts using the source-bound three-valued task rule; negative and unknown outcomes are completed calculations."
+  require "snapshot_minute" >= 0
+}
+claim criterion_evaluated {
+  statement "The orders cutover is ready exactly when the target schema is compatible, a backup restore is verified, and replica lag is at most 8 seconds. These are independent obligations for the named dataset, environment, and migration. An eligible incompatible-schema result, failed restore, or lag above 8 seconds makes the cutover not_ready. If none is refuted but any obligation lacks eligible evidence, the result is undetermined."
+  environment scope
+}
+argument result = [evidence report] via task_rules => criterion_evaluated

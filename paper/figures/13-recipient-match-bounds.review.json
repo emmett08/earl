@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-13-recipient-match-bounds",
+  "spec_sha256": "637b6c8ed08ee7aee55c5f06171daaa798a3f96d42cc5bd8c2c2b50ddfbdfa88",
+  "audit_sha256": "3e02435743cae9efdadab1c0d939b0b8ca727d378d4cd9379fb1ed89854dcc1f",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/13-recipient-match-bounds.pdf",
+      "sha256": "0f3c2887064ba0863b821a9a640de3bdd582a28c631063ec0111c2fd2d8121d0"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/13-recipient-match-bounds.pdf",
+      "sha256": "0f3c2887064ba0863b821a9a640de3bdd582a28c631063ec0111c2fd2d8121d0"
+    }
+  ],
+  "reviewer": {
+    "id": "temporal-caption-fresh-reader-agent",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "current-temporal-caption",
+      "prototype": "figures/13-recipient-match-bounds.pdf",
+      "observations": {
+        "reading": "EAL lower endpoints exceed ordinary upper endpoints in all four actual recipient-model/tool groups. The point/range form serves an ambiguity-envelope question and preserves arm separation, shared percent scale and lower-endpoint semantics. No alternative rendering is needed for unchanged quantitative content and a temporal-caption review.",
+        "annotation_burden": "Direct endpoint labels and distinct triangle/square shapes reduce colour dependence. The ambiguity-only title and caption are essential because a range could otherwise be mistaken for a confidence interval or an assessor-error bound.",
+        "reproduction": "Inspected exact current colour preview, greyscale preview and thumbnail; current successful mechanical audit binds current source, specification, PDF, caption and alt bytes. The current PDF remains below the 160mm maximum, all declared 9pt text and 0.4pt stroke floors pass, and no label clipping/collision was seen. Also inspected the complete stable integrated manuscript page7, printed Figure3, from eal-handover-data-story.pdf SHA256 ef6b44efa1e3953f84efd96d18352af824dd88249ade7fe6f905582b34a7628a. The page render and inspection record are retained in analysis/temporal-caption-integrated-inspection/. Printed Figure3 on page7: all group rows, markers, endpoint annotations, arm legend and full caption fit. The caption labels ambiguity envelopes as historical original finish coding. Adjacent task comparison and Table3 retain the same historical scope; no supplemental result is substituted."
+      }
+    }
+  ],
+  "selected_candidate": "current-temporal-caption",
+  "initial_reconstruction": {
+    "claim": "In every historical recipient model/tool group, EAL reference agreement conditional on resolved AI codes is higher than ordinary even allowing every ambiguous code to match or mismatch.",
+    "quantities": [
+      "480 actual recipient sessions per arm/group from 48 matched trajectories",
+      "Ordinary plain/no tools 38.54 percent; plain/tools 37.50\u201339.58; reasoning/no tools 38.75; reasoning/tools 39.17",
+      "EAL plain/no tools 99.79\u2013100.00 percent; plain/tools 92.08\u201393.12; reasoning/no tools 98.96\u2013100.00; reasoning/tools 97.92\u201398.33"
+    ],
+    "evidence_status": "Finite-record derived ambiguity bounds conditional on resolved AI codes, not confidence intervals. A single point signals no ambiguous codes for the arm/group, not statistical certainty.",
+    "scope": "Four actual recipient-model/native-tool groups in the original finish snapshot. Both donor model assignments and six cases are pooled; this is not a result of supplemental measurement.",
+    "unintended_inferences": [
+      "Intervals could be mistaken for confidence intervals without the ambiguity-only title and caption.",
+      "Values close to 100 percent could be mistaken for independently verified correctness.",
+      "Single points could be mistaken for no uncertainty despite the caption distinction."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "The current caption clearly retains original finish codes and supplies no posthoc measurement result.",
+      "All eight arm/group denominators of 480 and all lower/upper match shares reproduce directly from retained recipient session rows.",
+      "Points locate known-match lower endpoints and capped ranges assign ambiguous records to mismatch or match while holding resolved AI codes fixed.",
+      "Case and donor pooling, absence of human validation and absence of assessor-error bounds are declared.",
+      "The stable integrated manuscript page7 (printed Figure3) preserves the reviewed graphic and temporal caption without clipping or collision."
+    ],
+    "findings": [
+      {
+        "id": "range-meaning",
+        "severity": "informational",
+        "description": "Very short and degenerate ranges can visually resemble statistically certain estimates.",
+        "disposition": "accepted",
+        "reason": "The figure title says ambiguity only; the caption explains finite-record envelopes and explicitly denies confidence-interval, assessor-error and certainty interpretations. Printed endpoints remain inspectable even where range width is small."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "The exact current figure compiled successfully using retained local inputs with shell escape disabled; visual inspection and numerical checks found no missing external material."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "The compatibility warning is a package configuration notice. The exact current values, scales and annotations were inspected in colour and greyscale and independently compared with retained historical CSV calculations; no resulting encoding defect was found."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This acceptance is independent agent screening of the graphic plus its current temporal caption and alt text; it is not independent human validation of codes, assessor accuracy or comprehension.",
+    "The original all-four figure-first reconstruction, including scale and limits, is retained unchanged in analysis/temporal-caption-fresh-reader-stage1.json before project specifications or numerical sources were opened.",
+    "The four figures retain original finish primary coding. The separate posthoc measurement amendment is not plotted, substituted into frozen inference, or adjudicated by this review."
+  ]
+}

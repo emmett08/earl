@@ -1,51 +1,79 @@
 {
+  "analysis_status": "pending_annotation",
   "annotation_codes": {
-    "ambiguous": 31,
-    "not_ready": 850,
-    "ready": 2345,
-    "undetermined": 998
+    "ambiguous": 25,
+    "not_ready": 827,
+    "ready": 2259,
+    "undetermined": 1113
   },
+  "annotation_provenance": {
+    "assessors": [
+      {
+        "adjudications_sha256": "eacc3cb43085c86a8f90ccc7098b1fda62a32b3f043ec57c8b70e6b9bd138340",
+        "annotator": "OpenAI ChatGPT/Codex, reviewed masked AI coding, 2026-10-02",
+        "baseline_script_sha256": "f729c436fcb0cc9d3c9d2428a46cfffae0915354611161ccc31b857aafa86d6e",
+        "coding_script_sha256": "cb669619f9d4f63683694a5015ec75328538a81c62ad7e8582e7e39febb1239b",
+        "collection_changed": false,
+        "kind": "ai",
+        "masking": "Only masked answer text used for coding; no mapping or reference outcomes consulted before label freeze. Answer wording can reveal the workflow; prior project context is available.",
+        "method": "masked-ai-rule-assisted-decision/2",
+        "model": "OpenAI ChatGPT/Codex; exact serving identifier not exposed",
+        "protocol": "annotations/pilot-36985062352-AI-CODING.md",
+        "source_items_sha256": "b3d3c4def9abd3110e9b8e072edd87b368f23328aaf872b911eefb868bb0cf2e",
+        "validation": "All answer values checked twice; 392 flagged answers reviewed in full; all provisional ambiguities rechecked. No independent human validation or measured assessor error rate."
+      }
+    ],
+    "contains_ai_assessment": true,
+    "qualification": "AI-coded decisions; assessor error has not been independently measured. Outcome estimates and allocation calculations are conditional on these labels; they do not establish human-validated accuracy.",
+    "schema": "EAL/annotation-provenance/1",
+    "session_counts": {
+      "ai": 4224
+    }
+  },
+  "api_attempts": 5442,
+  "archive_sha256": "491df25b38bd22554143c0e146a7ac547d0686ea1022b1c9bf87b6093482b69a",
+  "artifact_id": 11222114140,
   "by_case": {
     "database-alternative-read-routes": {
       "eal": {
         "bounds": [
-          0.99375,
-          0.996875
+          0.984375,
+          0.99375
         ],
-        "correct": 318,
-        "incorrect": 1,
+        "correct": 315,
+        "incorrect": 2,
         "n": 320,
-        "unknown": 1
+        "unknown": 3
       },
       "ordinary": {
         "bounds": [
-          0.484375,
-          0.484375
+          0.44375,
+          0.459375
         ],
-        "correct": 155,
-        "incorrect": 165,
+        "correct": 142,
+        "incorrect": 173,
         "n": 320,
-        "unknown": 0
+        "unknown": 5
       }
     },
     "dispatch-direct-or-tunnel": {
       "eal": {
         "bounds": [
-          0.96875,
-          0.9875
+          0.95625,
+          0.959375
         ],
-        "correct": 310,
-        "incorrect": 4,
+        "correct": 306,
+        "incorrect": 13,
         "n": 320,
-        "unknown": 6
+        "unknown": 1
       },
       "ordinary": {
         "bounds": [
-          0.43125,
-          0.434375
+          0.434375,
+          0.4375
         ],
-        "correct": 138,
-        "incorrect": 181,
+        "correct": 139,
+        "incorrect": 180,
         "n": 320,
         "unknown": 1
       }
@@ -53,43 +81,43 @@
     "firmware-selective-applicability": {
       "eal": {
         "bounds": [
-          0.95625,
-          0.9875
+          0.9625,
+          0.971875
         ],
-        "correct": 306,
-        "incorrect": 4,
+        "correct": 308,
+        "incorrect": 9,
         "n": 320,
-        "unknown": 10
+        "unknown": 3
       },
       "ordinary": {
         "bounds": [
-          0.403125,
-          0.403125
+          0.3875,
+          0.396875
         ],
-        "correct": 129,
-        "incorrect": 191,
+        "correct": 124,
+        "incorrect": 193,
         "n": 320,
-        "unknown": 0
+        "unknown": 3
       }
     },
     "migration-cutover-obligations": {
       "eal": {
         "bounds": [
-          0.9875,
-          0.99375
+          0.996875,
+          0.996875
         ],
-        "correct": 316,
-        "incorrect": 2,
+        "correct": 319,
+        "incorrect": 1,
         "n": 320,
-        "unknown": 2
+        "unknown": 0
       },
       "ordinary": {
         "bounds": [
-          0.340625,
-          0.340625
+          0.3375,
+          0.3375
         ],
-        "correct": 109,
-        "incorrect": 211,
+        "correct": 108,
+        "incorrect": 212,
         "n": 320,
         "unknown": 0
       }
@@ -97,13 +125,13 @@
     "migration-multiple-version-bindings": {
       "eal": {
         "bounds": [
-          0.990625,
-          1.0
+          0.9875,
+          0.990625
         ],
-        "correct": 317,
-        "incorrect": 0,
+        "correct": 316,
+        "incorrect": 3,
         "n": 320,
-        "unknown": 3
+        "unknown": 1
       },
       "ordinary": {
         "bounds": [
@@ -119,23 +147,23 @@
     "release-three-obligations": {
       "eal": {
         "bounds": [
-          0.965625,
-          0.98125
+          0.94375,
+          0.959375
         ],
-        "correct": 309,
-        "incorrect": 6,
+        "correct": 302,
+        "incorrect": 13,
         "n": 320,
         "unknown": 5
       },
       "ordinary": {
         "bounds": [
-          0.33125,
-          0.33125
+          0.365625,
+          0.36875
         ],
-        "correct": 106,
-        "incorrect": 214,
+        "correct": 117,
+        "incorrect": 202,
         "n": 320,
-        "unknown": 0
+        "unknown": 1
       }
     }
   },
@@ -143,24 +171,24 @@
     {
       "arm": "eal",
       "bounds": [
-        1.0,
+        0.9979166666666667,
         1.0
       ],
-      "correct": 480,
+      "correct": 479,
       "incorrect": 0,
       "n": 480,
       "native_tools": false,
       "receiver": "plain",
-      "unknown": 0
+      "unknown": 1
     },
     {
       "arm": "ordinary",
       "bounds": [
-        0.39375,
-        0.39375
+        0.3854166666666667,
+        0.3854166666666667
       ],
-      "correct": 189,
-      "incorrect": 291,
+      "correct": 185,
+      "incorrect": 295,
       "n": 480,
       "native_tools": false,
       "receiver": "plain",
@@ -182,11 +210,11 @@
     {
       "arm": "ordinary",
       "bounds": [
-        0.3770833333333333,
-        0.3770833333333333
+        0.3875,
+        0.3875
       ],
-      "correct": 181,
-      "incorrect": 299,
+      "correct": 186,
+      "incorrect": 294,
       "n": 480,
       "native_tools": false,
       "receiver": "reasoning",
@@ -195,50 +223,50 @@
     {
       "arm": "eal",
       "bounds": [
-        0.93125,
-        0.9666666666666667
+        0.9208333333333333,
+        0.93125
       ],
-      "correct": 447,
-      "incorrect": 16,
+      "correct": 442,
+      "incorrect": 33,
       "n": 480,
       "native_tools": true,
       "receiver": "plain",
-      "unknown": 17
-    },
-    {
-      "arm": "ordinary",
-      "bounds": [
-        0.38958333333333334,
-        0.39166666666666666
-      ],
-      "correct": 187,
-      "incorrect": 292,
-      "n": 480,
-      "native_tools": true,
-      "receiver": "plain",
-      "unknown": 1
-    },
-    {
-      "arm": "eal",
-      "bounds": [
-        0.9875,
-        0.9979166666666667
-      ],
-      "correct": 474,
-      "incorrect": 1,
-      "n": 480,
-      "native_tools": true,
-      "receiver": "reasoning",
       "unknown": 5
     },
     {
       "arm": "ordinary",
       "bounds": [
-        0.39375,
-        0.39375
+        0.375,
+        0.3958333333333333
       ],
-      "correct": 189,
-      "incorrect": 291,
+      "correct": 180,
+      "incorrect": 290,
+      "n": 480,
+      "native_tools": true,
+      "receiver": "plain",
+      "unknown": 10
+    },
+    {
+      "arm": "eal",
+      "bounds": [
+        0.9791666666666666,
+        0.9833333333333333
+      ],
+      "correct": 470,
+      "incorrect": 8,
+      "n": 480,
+      "native_tools": true,
+      "receiver": "reasoning",
+      "unknown": 2
+    },
+    {
+      "arm": "ordinary",
+      "bounds": [
+        0.39166666666666666,
+        0.39166666666666666
+      ],
+      "correct": 188,
+      "incorrect": 292,
       "n": 480,
       "native_tools": true,
       "receiver": "reasoning",
@@ -280,41 +308,51 @@
         },
         {
           "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.9375,
+            0.96875,
             0.96875
           ],
-          "correct": 30,
+          "correct": 31,
           "incorrect": 1,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.96875,
+            1.0
+          ],
+          "correct": 31,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 1
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.96875,
+            0.96875
+          ],
+          "correct": 31,
+          "incorrect": 1,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.96875,
+            1.0
+          ],
+          "correct": 31,
+          "incorrect": 0,
           "n": 32,
           "unknown": 1
         },
@@ -340,23 +378,13 @@
         },
         {
           "bounds": [
-            1.0,
+            0.96875,
             1.0
           ],
-          "correct": 32,
+          "correct": 31,
           "incorrect": 0,
           "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
+          "unknown": 1
         }
       ],
       "ordinary": [
@@ -372,101 +400,101 @@
         },
         {
           "bounds": [
-            0.90625,
-            0.90625
+            0.84375,
+            0.84375
           ],
-          "correct": 29,
-          "incorrect": 3,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.8125,
-            0.8125
-          ],
-          "correct": 26,
-          "incorrect": 6,
+          "correct": 27,
+          "incorrect": 5,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
             0.75,
-            0.75
+            0.78125
           ],
           "correct": 24,
-          "incorrect": 8,
+          "incorrect": 7,
           "n": 32,
-          "unknown": 0
+          "unknown": 1
         },
         {
           "bounds": [
-            0.0625,
-            0.0625
+            0.59375,
+            0.65625
           ],
-          "correct": 2,
-          "incorrect": 30,
+          "correct": 19,
+          "incorrect": 11,
           "n": 32,
-          "unknown": 0
+          "unknown": 2
         },
         {
           "bounds": [
             0.15625,
-            0.15625
+            0.1875
           ],
           "correct": 5,
-          "incorrect": 27,
+          "incorrect": 26,
+          "n": 32,
+          "unknown": 1
+        },
+        {
+          "bounds": [
+            0.1875,
+            0.21875
+          ],
+          "correct": 6,
+          "incorrect": 25,
+          "n": 32,
+          "unknown": 1
+        },
+        {
+          "bounds": [
+            0.40625,
+            0.40625
+          ],
+          "correct": 13,
+          "incorrect": 19,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.375,
-            0.375
+            0.40625,
+            0.40625
           ],
-          "correct": 12,
-          "incorrect": 20,
+          "correct": 13,
+          "incorrect": 19,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.375,
-            0.375
+            0.3125,
+            0.3125
           ],
-          "correct": 12,
-          "incorrect": 20,
+          "correct": 10,
+          "incorrect": 22,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.5,
-            0.5
+            0.34375,
+            0.34375
           ],
-          "correct": 16,
-          "incorrect": 16,
+          "correct": 11,
+          "incorrect": 21,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.53125,
-            0.53125
+            0.4375,
+            0.4375
           ],
-          "correct": 17,
-          "incorrect": 15,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.375,
-            0.375
-          ],
-          "correct": 12,
-          "incorrect": 20,
+          "correct": 14,
+          "incorrect": 18,
           "n": 32,
           "unknown": 0
         }
@@ -474,6 +502,66 @@
     },
     "dispatch-direct-or-tunnel": {
       "eal": [
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.96875,
+            0.96875
+          ],
+          "correct": 31,
+          "incorrect": 1,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.96875,
+            0.96875
+          ],
+          "correct": 31,
+          "incorrect": 1,
+          "n": 32,
+          "unknown": 0
+        },
         {
           "bounds": [
             0.9375,
@@ -486,73 +574,13 @@
         },
         {
           "bounds": [
-            1.0,
-            1.0
+            0.90625,
+            0.90625
           ],
-          "correct": 32,
-          "incorrect": 0,
+          "correct": 29,
+          "incorrect": 3,
           "n": 32,
           "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.875,
-            1.0
-          ],
-          "correct": 28,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 4
-        },
-        {
-          "bounds": [
-            0.96875,
-            1.0
-          ],
-          "correct": 31,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 1
         },
         {
           "bounds": [
@@ -566,6 +594,16 @@
         },
         {
           "bounds": [
+            0.875,
+            0.875
+          ],
+          "correct": 28,
+          "incorrect": 4,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
             0.96875,
             0.96875
           ],
@@ -573,96 +611,56 @@
           "incorrect": 1,
           "n": 32,
           "unknown": 0
-        },
-        {
-          "bounds": [
-            0.9375,
-            0.96875
-          ],
-          "correct": 30,
-          "incorrect": 1,
-          "n": 32,
-          "unknown": 1
         }
       ],
       "ordinary": [
         {
           "bounds": [
-            0.84375,
-            0.84375
+            0.875,
+            0.875
           ],
-          "correct": 27,
-          "incorrect": 5,
+          "correct": 28,
+          "incorrect": 4,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.84375,
-            0.84375
+            0.875,
+            0.875
           ],
-          "correct": 27,
-          "incorrect": 5,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.03125,
-            0.03125
-          ],
-          "correct": 1,
-          "incorrect": 31,
+          "correct": 28,
+          "incorrect": 4,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
             0.03125,
-            0.03125
+            0.0625
           ],
           "correct": 1,
-          "incorrect": 31,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.78125,
-            0.78125
-          ],
-          "correct": 25,
-          "incorrect": 7,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.78125,
-            0.8125
-          ],
-          "correct": 25,
-          "incorrect": 6,
+          "incorrect": 30,
           "n": 32,
           "unknown": 1
         },
         {
           "bounds": [
-            0.15625,
-            0.15625
+            0.0625,
+            0.0625
           ],
-          "correct": 5,
-          "incorrect": 27,
+          "correct": 2,
+          "incorrect": 30,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.15625,
-            0.15625
+            0.71875,
+            0.71875
           ],
-          "correct": 5,
-          "incorrect": 27,
+          "correct": 23,
+          "incorrect": 9,
           "n": 32,
           "unknown": 0
         },
@@ -678,21 +676,51 @@
         },
         {
           "bounds": [
-            0.65625,
-            0.65625
+            0.25,
+            0.25
           ],
-          "correct": 21,
-          "incorrect": 11,
+          "correct": 8,
+          "incorrect": 24,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.1875,
-            0.1875
+            0.25,
+            0.25
           ],
-          "correct": 6,
-          "incorrect": 26,
+          "correct": 8,
+          "incorrect": 24,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.625,
+            0.625
+          ],
+          "correct": 20,
+          "incorrect": 12,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.5625,
+            0.5625
+          ],
+          "correct": 18,
+          "incorrect": 14,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.28125,
+            0.28125
+          ],
+          "correct": 9,
+          "incorrect": 23,
           "n": 32,
           "unknown": 0
         }
@@ -722,83 +750,83 @@
         },
         {
           "bounds": [
-            0.84375,
+            0.90625,
             0.9375
           ],
-          "correct": 27,
+          "correct": 29,
           "incorrect": 2,
-          "n": 32,
-          "unknown": 3
-        },
-        {
-          "bounds": [
-            0.875,
-            0.96875
-          ],
-          "correct": 28,
-          "incorrect": 1,
-          "n": 32,
-          "unknown": 3
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.96875,
-            1.0
-          ],
-          "correct": 31,
-          "incorrect": 0,
           "n": 32,
           "unknown": 1
         },
         {
           "bounds": [
+            0.90625,
+            0.9375
+          ],
+          "correct": 29,
+          "incorrect": 2,
+          "n": 32,
+          "unknown": 1
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.9375,
+            0.9375
+          ],
+          "correct": 30,
+          "incorrect": 2,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
             0.875,
-            0.96875
+            0.90625
           ],
           "correct": 28,
-          "incorrect": 1,
+          "incorrect": 3,
           "n": 32,
-          "unknown": 3
+          "unknown": 1
         },
         {
           "bounds": [
@@ -854,41 +882,51 @@
         },
         {
           "bounds": [
-            0.1875,
-            0.1875
+            0.25,
+            0.28125
           ],
-          "correct": 6,
-          "incorrect": 26,
+          "correct": 8,
+          "incorrect": 23,
           "n": 32,
-          "unknown": 0
+          "unknown": 1
         },
         {
           "bounds": [
             0.28125,
-            0.28125
+            0.3125
           ],
           "correct": 9,
-          "incorrect": 23,
+          "incorrect": 22,
+          "n": 32,
+          "unknown": 1
+        },
+        {
+          "bounds": [
+            0.46875,
+            0.5
+          ],
+          "correct": 15,
+          "incorrect": 16,
+          "n": 32,
+          "unknown": 1
+        },
+        {
+          "bounds": [
+            0.5,
+            0.5
+          ],
+          "correct": 16,
+          "incorrect": 16,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.53125,
-            0.53125
+            0.25,
+            0.25
           ],
-          "correct": 17,
-          "incorrect": 15,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.53125,
-            0.53125
-          ],
-          "correct": 17,
-          "incorrect": 15,
+          "correct": 8,
+          "incorrect": 24,
           "n": 32,
           "unknown": 0
         },
@@ -904,21 +942,11 @@
         },
         {
           "bounds": [
-            0.28125,
-            0.28125
+            0.5,
+            0.5
           ],
-          "correct": 9,
-          "incorrect": 23,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.59375,
-            0.59375
-          ],
-          "correct": 19,
-          "incorrect": 13,
+          "correct": 16,
+          "incorrect": 16,
           "n": 32,
           "unknown": 0
         }
@@ -948,6 +976,16 @@
         },
         {
           "bounds": [
+            0.96875,
+            0.96875
+          ],
+          "correct": 31,
+          "incorrect": 1,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
             1.0,
             1.0
           ],
@@ -958,33 +996,23 @@
         },
         {
           "bounds": [
-            0.96875,
-            0.96875
-          ],
-          "correct": 31,
-          "incorrect": 1,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.96875,
-            0.96875
-          ],
-          "correct": 31,
-          "incorrect": 1,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.9375,
+            1.0,
             1.0
           ],
-          "correct": 30,
+          "correct": 32,
           "incorrect": 0,
           "n": 32,
-          "unknown": 2
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
         },
         {
           "bounds": [
@@ -1040,11 +1068,11 @@
       "ordinary": [
         {
           "bounds": [
-            0.75,
-            0.75
+            0.8125,
+            0.8125
           ],
-          "correct": 24,
-          "incorrect": 8,
+          "correct": 26,
+          "incorrect": 6,
           "n": 32,
           "unknown": 0
         },
@@ -1060,11 +1088,61 @@
         },
         {
           "bounds": [
-            0.15625,
-            0.15625
+            0.0625,
+            0.0625
           ],
-          "correct": 5,
-          "incorrect": 27,
+          "correct": 2,
+          "incorrect": 30,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.09375,
+            0.09375
+          ],
+          "correct": 3,
+          "incorrect": 29,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.40625,
+            0.40625
+          ],
+          "correct": 13,
+          "incorrect": 19,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.40625,
+            0.40625
+          ],
+          "correct": 13,
+          "incorrect": 19,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.4375,
+            0.4375
+          ],
+          "correct": 14,
+          "incorrect": 18,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.4375,
+            0.4375
+          ],
+          "correct": 14,
+          "incorrect": 18,
           "n": 32,
           "unknown": 0
         },
@@ -1080,61 +1158,11 @@
         },
         {
           "bounds": [
-            0.25,
-            0.25
+            0.21875,
+            0.21875
           ],
-          "correct": 8,
-          "incorrect": 24,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.3125,
-            0.3125
-          ],
-          "correct": 10,
-          "incorrect": 22,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.40625,
-            0.40625
-          ],
-          "correct": 13,
-          "incorrect": 19,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.40625,
-            0.40625
-          ],
-          "correct": 13,
-          "incorrect": 19,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.28125,
-            0.28125
-          ],
-          "correct": 9,
-          "incorrect": 23,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.28125,
-            0.28125
-          ],
-          "correct": 9,
-          "incorrect": 23,
+          "correct": 7,
+          "incorrect": 25,
           "n": 32,
           "unknown": 0
         },
@@ -1174,6 +1202,46 @@
         },
         {
           "bounds": [
+            0.9375,
+            0.9375
+          ],
+          "correct": 30,
+          "incorrect": 2,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.96875,
+            0.96875
+          ],
+          "correct": 31,
+          "incorrect": 1,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            1.0,
+            1.0
+          ],
+          "correct": 32,
+          "incorrect": 0,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
             1.0,
             1.0
           ],
@@ -1221,126 +1289,36 @@
           "incorrect": 0,
           "n": 32,
           "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.96875,
-            1.0
-          ],
-          "correct": 31,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 1
-        },
-        {
-          "bounds": [
-            0.96875,
-            1.0
-          ],
-          "correct": 31,
-          "incorrect": 0,
-          "n": 32,
-          "unknown": 1
         }
       ],
       "ordinary": [
         {
           "bounds": [
-            0.96875,
-            0.96875
+            1.0,
+            1.0
           ],
-          "correct": 31,
-          "incorrect": 1,
+          "correct": 32,
+          "incorrect": 0,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.96875,
-            0.96875
+            1.0,
+            1.0
           ],
-          "correct": 31,
-          "incorrect": 1,
+          "correct": 32,
+          "incorrect": 0,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.0625,
-            0.0625
+            0.03125,
+            0.03125
           ],
-          "correct": 2,
-          "incorrect": 30,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.09375,
-            0.09375
-          ],
-          "correct": 3,
-          "incorrect": 29,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.125,
-            0.125
-          ],
-          "correct": 4,
-          "incorrect": 28,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.21875,
-            0.21875
-          ],
-          "correct": 7,
-          "incorrect": 25,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.59375,
-            0.59375
-          ],
-          "correct": 19,
-          "incorrect": 13,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.5625,
-            0.5625
-          ],
-          "correct": 18,
-          "incorrect": 14,
+          "correct": 1,
+          "incorrect": 31,
           "n": 32,
           "unknown": 0
         },
@@ -1356,21 +1334,71 @@
         },
         {
           "bounds": [
-            0.25,
-            0.25
+            0.03125,
+            0.03125
           ],
-          "correct": 8,
-          "incorrect": 24,
+          "correct": 1,
+          "incorrect": 31,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.34375,
-            0.34375
+            0.0625,
+            0.0625
           ],
-          "correct": 11,
-          "incorrect": 21,
+          "correct": 2,
+          "incorrect": 30,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.6875,
+            0.6875
+          ],
+          "correct": 22,
+          "incorrect": 10,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.6875,
+            0.6875
+          ],
+          "correct": 22,
+          "incorrect": 10,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.21875,
+            0.21875
+          ],
+          "correct": 7,
+          "incorrect": 25,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.28125,
+            0.28125
+          ],
+          "correct": 9,
+          "incorrect": 23,
+          "n": 32,
+          "unknown": 0
+        },
+        {
+          "bounds": [
+            0.21875,
+            0.21875
+          ],
+          "correct": 7,
+          "incorrect": 25,
           "n": 32,
           "unknown": 0
         }
@@ -1410,23 +1438,13 @@
         },
         {
           "bounds": [
-            1.0,
+            0.96875,
             1.0
           ],
-          "correct": 32,
+          "correct": 31,
           "incorrect": 0,
           "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.84375,
-            0.96875
-          ],
-          "correct": 27,
-          "incorrect": 1,
-          "n": 32,
-          "unknown": 4
+          "unknown": 1
         },
         {
           "bounds": [
@@ -1440,31 +1458,31 @@
         },
         {
           "bounds": [
-            1.0,
-            1.0
+            0.84375,
+            0.90625
           ],
-          "correct": 32,
-          "incorrect": 0,
+          "correct": 27,
+          "incorrect": 3,
+          "n": 32,
+          "unknown": 2
+        },
+        {
+          "bounds": [
+            0.96875,
+            0.96875
+          ],
+          "correct": 31,
+          "incorrect": 1,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.9375,
-            0.9375
+            0.96875,
+            0.96875
           ],
-          "correct": 30,
-          "incorrect": 2,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            1.0,
-            1.0
-          ],
-          "correct": 32,
-          "incorrect": 0,
+          "correct": 31,
+          "incorrect": 1,
           "n": 32,
           "unknown": 0
         },
@@ -1475,6 +1493,16 @@
           ],
           "correct": 31,
           "incorrect": 0,
+          "n": 32,
+          "unknown": 1
+        },
+        {
+          "bounds": [
+            0.8125,
+            0.84375
+          ],
+          "correct": 26,
+          "incorrect": 5,
           "n": 32,
           "unknown": 1
         },
@@ -1513,1755 +1541,1757 @@
         {
           "bounds": [
             0.1875,
-            0.1875
+            0.21875
           ],
           "correct": 6,
-          "incorrect": 26,
+          "incorrect": 25,
+          "n": 32,
+          "unknown": 1
+        },
+        {
+          "bounds": [
+            0.28125,
+            0.28125
+          ],
+          "correct": 9,
+          "incorrect": 23,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.1875,
-            0.1875
+            0.21875,
+            0.21875
           ],
-          "correct": 6,
-          "incorrect": 26,
+          "correct": 7,
+          "incorrect": 25,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.0625,
-            0.0625
+            0.28125,
+            0.28125
           ],
-          "correct": 2,
-          "incorrect": 30,
+          "correct": 9,
+          "incorrect": 23,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.09375,
-            0.09375
+            0.40625,
+            0.40625
           ],
-          "correct": 3,
-          "incorrect": 29,
+          "correct": 13,
+          "incorrect": 19,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.625,
-            0.625
+            0.40625,
+            0.40625
           ],
-          "correct": 20,
-          "incorrect": 12,
+          "correct": 13,
+          "incorrect": 19,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.59375,
-            0.59375
+            0.3125,
+            0.3125
           ],
-          "correct": 19,
-          "incorrect": 13,
+          "correct": 10,
+          "incorrect": 22,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.125,
-            0.125
+            0.3125,
+            0.3125
           ],
-          "correct": 4,
-          "incorrect": 28,
+          "correct": 10,
+          "incorrect": 22,
           "n": 32,
           "unknown": 0
         },
         {
           "bounds": [
-            0.125,
-            0.125
+            0.3125,
+            0.3125
           ],
-          "correct": 4,
-          "incorrect": 28,
-          "n": 32,
-          "unknown": 0
-        },
-        {
-          "bounds": [
-            0.375,
-            0.375
-          ],
-          "correct": 12,
-          "incorrect": 20,
+          "correct": 10,
+          "incorrect": 22,
           "n": 32,
           "unknown": 0
         }
       ]
     }
   },
-  "collection_segment_seconds": 2874.541451059,
+  "collection_revision": "c0974bc6bb6a2df30d1423b6248bfc51b4d2a9d7",
+  "collection_run": 36985062352,
+  "collection_segment_seconds": 3521.130396645,
   "cumulative": [
     {
       "eal": {
-        "attempts": 284,
+        "attempts": 278,
         "cached_input_tokens": 0,
-        "cost_usd": 0.0296163,
+        "cost_usd": 0.0293747,
         "host_collections": 192,
         "host_reuses": 0,
-        "input_tokens": 178630,
-        "native_probes": 92,
-        "output_tokens": 35425,
-        "reasoning_tokens": 12480,
-        "summed_session_seconds": 526.6309075819995,
-        "total_tokens": 214055
+        "input_tokens": 171727,
+        "native_probes": 86,
+        "output_tokens": 36217,
+        "reasoning_tokens": 12864,
+        "summed_session_seconds": 507.0024035380004,
+        "total_tokens": 207944
       },
       "ordinary": {
-        "attempts": 371,
-        "cached_input_tokens": 15488,
-        "cost_usd": 0.04255985,
+        "attempts": 372,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.04317625,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 351933,
-        "native_probes": 179,
-        "output_tokens": 40578,
-        "reasoning_tokens": 9664,
-        "summed_session_seconds": 521.737599655001,
-        "total_tokens": 392511
+        "input_tokens": 353877,
+        "native_probes": 180,
+        "output_tokens": 41876,
+        "reasoning_tokens": 10624,
+        "summed_session_seconds": 508.8325779650014,
+        "total_tokens": 395753
       }
     },
     {
       "eal": {
-        "attempts": 521,
+        "attempts": 520,
         "cached_input_tokens": 0,
-        "cost_usd": 0.054534400000000004,
+        "cost_usd": 0.05531345,
         "host_collections": 192,
         "host_reuses": 192,
-        "input_tokens": 302107,
-        "native_probes": 137,
-        "output_tokens": 71915,
-        "reasoning_tokens": 26624,
-        "summed_session_seconds": 985.1059765120002,
-        "total_tokens": 374022
+        "input_tokens": 300734,
+        "native_probes": 136,
+        "output_tokens": 74183,
+        "reasoning_tokens": 26944,
+        "summed_session_seconds": 985.1858505760017,
+        "total_tokens": 374917
       },
       "ordinary": {
-        "attempts": 591,
-        "cached_input_tokens": 15488,
-        "cost_usd": 0.07307615,
+        "attempts": 596,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.07498955,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 527670,
-        "native_probes": 207,
-        "output_tokens": 82509,
-        "reasoning_tokens": 25856,
-        "summed_session_seconds": 955.1537310190002,
-        "total_tokens": 610179
+        "input_tokens": 535223,
+        "native_probes": 212,
+        "output_tokens": 86498,
+        "reasoning_tokens": 28736,
+        "summed_session_seconds": 954.4852301049983,
+        "total_tokens": 621721
       }
     },
     {
       "eal": {
-        "attempts": 755,
+        "attempts": 758,
         "cached_input_tokens": 1024,
-        "cost_usd": 0.0806816,
+        "cost_usd": 0.0824854,
         "host_collections": 384,
         "host_reuses": 192,
-        "input_tokens": 424423,
-        "native_probes": 179,
-        "output_tokens": 111786,
-        "reasoning_tokens": 41408,
-        "summed_session_seconds": 1489.8671527409995,
-        "total_tokens": 536209
+        "input_tokens": 428035,
+        "native_probes": 182,
+        "output_tokens": 115518,
+        "reasoning_tokens": 42368,
+        "summed_session_seconds": 1501.2352946350034,
+        "total_tokens": 543553
       },
       "ordinary": {
-        "attempts": 830,
-        "cached_input_tokens": 16512,
-        "cost_usd": 0.10731885000000001,
+        "attempts": 836,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.11108100000000001,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 730890,
-        "native_probes": 254,
-        "output_tokens": 127391,
-        "reasoning_tokens": 44096,
-        "summed_session_seconds": 1457.8655563219995,
-        "total_tokens": 858281
+        "input_tokens": 742206,
+        "native_probes": 260,
+        "output_tokens": 135859,
+        "reasoning_tokens": 50240,
+        "summed_session_seconds": 1423.7990855139933,
+        "total_tokens": 878065
       }
     },
     {
       "eal": {
-        "attempts": 997,
+        "attempts": 1001,
         "cached_input_tokens": 2048,
-        "cost_usd": 0.1087954,
+        "cost_usd": 0.1112883,
         "host_collections": 384,
         "host_reuses": 384,
-        "input_tokens": 557363,
-        "native_probes": 229,
-        "output_tokens": 154296,
-        "reasoning_tokens": 58944,
-        "summed_session_seconds": 1996.0490163580023,
-        "total_tokens": 711659
+        "input_tokens": 561877,
+        "native_probes": 233,
+        "output_tokens": 159638,
+        "reasoning_tokens": 60928,
+        "summed_session_seconds": 2021.7645068450026,
+        "total_tokens": 721515
       },
       "ordinary": {
         "attempts": 1071,
-        "cached_input_tokens": 16512,
-        "cost_usd": 0.14147085,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.14522225,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 938843,
+        "input_tokens": 941393,
         "native_probes": 303,
-        "output_tokens": 171111,
-        "reasoning_tokens": 61248,
-        "summed_session_seconds": 1904.2138109989999,
-        "total_tokens": 1109954
+        "output_tokens": 181435,
+        "reasoning_tokens": 68992,
+        "summed_session_seconds": 1866.873597018996,
+        "total_tokens": 1122828
       }
     },
     {
       "eal": {
-        "attempts": 1237,
-        "cached_input_tokens": 5376,
-        "cost_usd": 0.1354142,
+        "attempts": 1242,
+        "cached_input_tokens": 7168,
+        "cost_usd": 0.13898255,
         "host_collections": 576,
         "host_reuses": 384,
-        "input_tokens": 690219,
-        "native_probes": 277,
-        "output_tokens": 192711,
-        "reasoning_tokens": 72448,
-        "summed_session_seconds": 2483.723494333,
-        "total_tokens": 882930
+        "input_tokens": 695930,
+        "native_probes": 282,
+        "output_tokens": 200592,
+        "reasoning_tokens": 76672,
+        "summed_session_seconds": 2535.3661215380025,
+        "total_tokens": 896522
       },
       "ordinary": {
-        "attempts": 1313,
-        "cached_input_tokens": 16512,
-        "cost_usd": 0.1772478,
+        "attempts": 1311,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.1814917,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 1150805,
-        "native_probes": 353,
-        "output_tokens": 218167,
-        "reasoning_tokens": 81664,
-        "summed_session_seconds": 2404.9471077570006,
-        "total_tokens": 1368972
+        "input_tokens": 1150045,
+        "native_probes": 351,
+        "output_tokens": 229745,
+        "reasoning_tokens": 89344,
+        "summed_session_seconds": 2365.0002388489984,
+        "total_tokens": 1379790
       }
     },
     {
       "eal": {
-        "attempts": 1478,
-        "cached_input_tokens": 7680,
-        "cost_usd": 0.1631495,
+        "attempts": 1484,
+        "cached_input_tokens": 12544,
+        "cost_usd": 0.16812180000000002,
         "host_collections": 576,
         "host_reuses": 576,
-        "input_tokens": 824261,
-        "native_probes": 326,
-        "output_tokens": 233769,
-        "reasoning_tokens": 88000,
-        "summed_session_seconds": 2962.8459226469995,
-        "total_tokens": 1058030
+        "input_tokens": 831635,
+        "native_probes": 332,
+        "output_tokens": 244952,
+        "reasoning_tokens": 94592,
+        "summed_session_seconds": 3038.998862338003,
+        "total_tokens": 1076587
       },
       "ordinary": {
-        "attempts": 1560,
-        "cached_input_tokens": 16512,
-        "cost_usd": 0.21379075,
+        "attempts": 1550,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.2172309,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 1372016,
-        "native_probes": 408,
-        "output_tokens": 265731,
-        "reasoning_tokens": 101312,
-        "summed_session_seconds": 2924.878517441001,
-        "total_tokens": 1637747
+        "input_tokens": 1358817,
+        "native_probes": 398,
+        "output_tokens": 277050,
+        "reasoning_tokens": 108288,
+        "summed_session_seconds": 2814.0576980690007,
+        "total_tokens": 1635867
       }
     },
     {
       "eal": {
-        "attempts": 1718,
-        "cached_input_tokens": 12288,
-        "cost_usd": 0.1888639,
+        "attempts": 1725,
+        "cached_input_tokens": 13696,
+        "cost_usd": 0.19489130000000002,
         "host_collections": 768,
         "host_reuses": 576,
-        "input_tokens": 961189,
-        "native_probes": 374,
-        "output_tokens": 268899,
-        "reasoning_tokens": 99200,
-        "summed_session_seconds": 3413.928125559001,
-        "total_tokens": 1230088
+        "input_tokens": 970049,
+        "native_probes": 381,
+        "output_tokens": 282534,
+        "reasoning_tokens": 107392,
+        "summed_session_seconds": 3530.707641273002,
+        "total_tokens": 1252583
       },
       "ordinary": {
-        "attempts": 1806,
-        "cached_input_tokens": 17536,
-        "cost_usd": 0.25030105,
+        "attempts": 1788,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.2535487,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 1596974,
-        "native_probes": 462,
-        "output_tokens": 311610,
-        "reasoning_tokens": 119552,
-        "summed_session_seconds": 3445.27792601,
-        "total_tokens": 1908584
+        "input_tokens": 1571422,
+        "native_probes": 444,
+        "output_tokens": 325186,
+        "reasoning_tokens": 128384,
+        "summed_session_seconds": 3286.0886718310007,
+        "total_tokens": 1896608
       }
     },
     {
       "eal": {
-        "attempts": 1960,
-        "cached_input_tokens": 12288,
-        "cost_usd": 0.2160932,
+        "attempts": 1968,
+        "cached_input_tokens": 20608,
+        "cost_usd": 0.22287755,
         "host_collections": 768,
         "host_reuses": 768,
-        "input_tokens": 1100727,
-        "native_probes": 424,
-        "output_tokens": 307490,
-        "reasoning_tokens": 113216,
-        "summed_session_seconds": 3886.596395542,
-        "total_tokens": 1408217
+        "input_tokens": 1111870,
+        "native_probes": 432,
+        "output_tokens": 322732,
+        "reasoning_tokens": 121984,
+        "summed_session_seconds": 4006.2191780860035,
+        "total_tokens": 1434602
       },
       "ordinary": {
-        "attempts": 2056,
-        "cached_input_tokens": 17536,
-        "cost_usd": 0.28735900000000003,
+        "attempts": 2030,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.28934165,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 1828471,
-        "native_probes": 520,
-        "output_tokens": 358025,
-        "reasoning_tokens": 137280,
-        "summed_session_seconds": 3945.5454152289985,
-        "total_tokens": 2186496
+        "input_tokens": 1790333,
+        "native_probes": 494,
+        "output_tokens": 370630,
+        "reasoning_tokens": 144832,
+        "summed_session_seconds": 3748.9233863420022,
+        "total_tokens": 2160963
       }
     },
     {
       "eal": {
-        "attempts": 2196,
-        "cached_input_tokens": 13568,
-        "cost_usd": 0.24260455,
+        "attempts": 2204,
+        "cached_input_tokens": 22912,
+        "cost_usd": 0.2504957,
         "host_collections": 960,
         "host_reuses": 768,
-        "input_tokens": 1235307,
-        "native_probes": 468,
-        "output_tokens": 345366,
-        "reasoning_tokens": 125632,
-        "summed_session_seconds": 4351.992826851002,
-        "total_tokens": 1580673
+        "input_tokens": 1246626,
+        "native_probes": 476,
+        "output_tokens": 363353,
+        "reasoning_tokens": 137152,
+        "summed_session_seconds": 4541.636348975002,
+        "total_tokens": 1609979
       },
       "ordinary": {
-        "attempts": 2299,
-        "cached_input_tokens": 17536,
-        "cost_usd": 0.32408380000000003,
+        "attempts": 2274,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.3268896,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 2052148,
-        "native_probes": 571,
-        "output_tokens": 404564,
-        "reasoning_tokens": 155008,
-        "summed_session_seconds": 4431.035767799998,
-        "total_tokens": 2456712
+        "input_tokens": 2016000,
+        "native_probes": 546,
+        "output_tokens": 419030,
+        "reasoning_tokens": 164416,
+        "summed_session_seconds": 4219.103020308001,
+        "total_tokens": 2435030
       }
     },
     {
       "eal": {
-        "attempts": 2436,
-        "cached_input_tokens": 17024,
-        "cost_usd": 0.27112365,
+        "attempts": 2444,
+        "cached_input_tokens": 28672,
+        "cost_usd": 0.2791224,
         "host_collections": 960,
         "host_reuses": 960,
-        "input_tokens": 1376118,
-        "native_probes": 516,
-        "output_tokens": 386760,
-        "reasoning_tokens": 141184,
-        "summed_session_seconds": 4829.792715835999,
-        "total_tokens": 1762878
+        "input_tokens": 1386989,
+        "native_probes": 524,
+        "output_tokens": 405072,
+        "reasoning_tokens": 152896,
+        "summed_session_seconds": 5040.809582493003,
+        "total_tokens": 1792061
       },
       "ordinary": {
-        "attempts": 2539,
-        "cached_input_tokens": 18560,
-        "cost_usd": 0.3599682,
+        "attempts": 2518,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.3641277,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 2272042,
-        "native_probes": 619,
-        "output_tokens": 449792,
-        "reasoning_tokens": 170816,
-        "summed_session_seconds": 4938.927402731998,
-        "total_tokens": 2721834
+        "input_tokens": 2241954,
+        "native_probes": 598,
+        "output_tokens": 466343,
+        "reasoning_tokens": 182464,
+        "summed_session_seconds": 4682.262430239998,
+        "total_tokens": 2708297
       }
     },
     {
       "eal": {
-        "attempts": 2674,
-        "cached_input_tokens": 19584,
-        "cost_usd": 0.29840445000000004,
+        "attempts": 2684,
+        "cached_input_tokens": 33536,
+        "cost_usd": 0.30803410000000003,
         "host_collections": 1152,
         "host_reuses": 960,
-        "input_tokens": 1519422,
-        "native_probes": 562,
-        "output_tokens": 424216,
-        "reasoning_tokens": 154176,
-        "summed_session_seconds": 5290.063714284998,
-        "total_tokens": 1943638
+        "input_tokens": 1533871,
+        "native_probes": 572,
+        "output_tokens": 446158,
+        "reasoning_tokens": 167680,
+        "summed_session_seconds": 5597.7050822180045,
+        "total_tokens": 1980029
       },
       "ordinary": {
-        "attempts": 2779,
+        "attempts": 2758,
         "cached_input_tokens": 19712,
-        "cost_usd": 0.39637595000000003,
+        "cost_usd": 0.4015426,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 2497404,
-        "native_probes": 667,
-        "output_tokens": 495335,
-        "reasoning_tokens": 187904,
-        "summed_session_seconds": 5406.383182622001,
-        "total_tokens": 2992739
+        "input_tokens": 2468145,
+        "native_probes": 646,
+        "output_tokens": 514240,
+        "reasoning_tokens": 201088,
+        "summed_session_seconds": 5166.340566334999,
+        "total_tokens": 2982385
       }
     }
   ],
   "paired_blocks": 192,
   "paired_token_ratios": [
     {
-      "eal_tokens": 16773,
-      "ordinary_tokens": 22282,
+      "eal_tokens": 16756,
+      "ordinary_tokens": 22484,
       "pair_id": "block-0000",
-      "ratio": 0.7527600753971816,
+      "ratio": 0.7452410603095535,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 5316,
-      "ordinary_tokens": 9411,
+      "eal_tokens": 5225,
+      "ordinary_tokens": 9587,
       "pair_id": "block-0001",
-      "ratio": 0.5648708957602805,
+      "ratio": 0.5450088661729425,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 7961,
-      "ordinary_tokens": 10500,
+      "eal_tokens": 8104,
+      "ordinary_tokens": 11189,
       "pair_id": "block-0002",
-      "ratio": 0.7581904761904762,
+      "ratio": 0.7242827777281259,
       "receiver": "reasoning"
     },
     {
-      "eal_tokens": 8608,
-      "ordinary_tokens": 16801,
+      "eal_tokens": 14101,
+      "ordinary_tokens": 17081,
       "pair_id": "block-0003",
-      "ratio": 0.5123504553300399,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 18481,
-      "ordinary_tokens": 19610,
-      "pair_id": "block-0004",
-      "ratio": 0.9424273329933708,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8900,
-      "ordinary_tokens": 13321,
-      "pair_id": "block-0005",
-      "ratio": 0.6681180091584716,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16000,
-      "ordinary_tokens": 21345,
-      "pair_id": "block-0006",
-      "ratio": 0.7495900679315999,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5896,
-      "ordinary_tokens": 9384,
-      "pair_id": "block-0007",
-      "ratio": 0.6283034953111679,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 16093,
-      "ordinary_tokens": 22204,
-      "pair_id": "block-0008",
-      "ratio": 0.7247793190416141,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 6363,
-      "ordinary_tokens": 9686,
-      "pair_id": "block-0009",
-      "ratio": 0.6569275242618212,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5683,
-      "ordinary_tokens": 8706,
-      "pair_id": "block-0010",
-      "ratio": 0.6527682058350562,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7992,
-      "ordinary_tokens": 13350,
-      "pair_id": "block-0011",
-      "ratio": 0.5986516853932584,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8473,
-      "ordinary_tokens": 14183,
-      "pair_id": "block-0012",
-      "ratio": 0.597405344426426,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5140,
-      "ordinary_tokens": 10183,
-      "pair_id": "block-0013",
-      "ratio": 0.5047628400274968,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5404,
-      "ordinary_tokens": 9970,
-      "pair_id": "block-0014",
-      "ratio": 0.5420260782347042,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7538,
-      "ordinary_tokens": 12627,
-      "pair_id": "block-0015",
-      "ratio": 0.5969747366753781,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7774,
-      "ordinary_tokens": 12723,
-      "pair_id": "block-0016",
-      "ratio": 0.6110194136603002,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8196,
-      "ordinary_tokens": 12706,
-      "pair_id": "block-0017",
-      "ratio": 0.6450495828742326,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 17750,
-      "ordinary_tokens": 24476,
-      "pair_id": "block-0018",
-      "ratio": 0.7252001961104756,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 16106,
-      "ordinary_tokens": 21815,
-      "pair_id": "block-0019",
-      "ratio": 0.7382993353197341,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 18626,
-      "ordinary_tokens": 24606,
-      "pair_id": "block-0020",
-      "ratio": 0.7569698447533122,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 18264,
-      "ordinary_tokens": 22031,
-      "pair_id": "block-0021",
-      "ratio": 0.8290136625663838,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 18941,
-      "ordinary_tokens": 24247,
-      "pair_id": "block-0022",
-      "ratio": 0.7811688043881717,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 15496,
-      "ordinary_tokens": 22331,
-      "pair_id": "block-0023",
-      "ratio": 0.6939232457122386,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 6071,
-      "ordinary_tokens": 10835,
-      "pair_id": "block-0024",
-      "ratio": 0.5603137978772497,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9005,
-      "ordinary_tokens": 11828,
-      "pair_id": "block-0025",
-      "ratio": 0.7613290497125464,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 6168,
-      "ordinary_tokens": 10830,
-      "pair_id": "block-0026",
-      "ratio": 0.5695290858725762,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8094,
-      "ordinary_tokens": 12759,
-      "pair_id": "block-0027",
-      "ratio": 0.6343757347754526,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7243,
-      "ordinary_tokens": 13248,
-      "pair_id": "block-0028",
-      "ratio": 0.5467240338164251,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 18851,
-      "ordinary_tokens": 21988,
-      "pair_id": "block-0029",
-      "ratio": 0.8573312716026924,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9387,
-      "ordinary_tokens": 13704,
-      "pair_id": "block-0030",
-      "ratio": 0.6849824868651488,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 17590,
-      "ordinary_tokens": 25205,
-      "pair_id": "block-0031",
-      "ratio": 0.6978774052767308,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 18738,
-      "ordinary_tokens": 22951,
-      "pair_id": "block-0032",
-      "ratio": 0.8164350137248921,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9624,
-      "ordinary_tokens": 15329,
-      "pair_id": "block-0033",
-      "ratio": 0.6278296040185269,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5619,
-      "ordinary_tokens": 8869,
-      "pair_id": "block-0034",
-      "ratio": 0.6335550794903597,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8136,
-      "ordinary_tokens": 13744,
-      "pair_id": "block-0035",
-      "ratio": 0.5919674039580908,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8463,
-      "ordinary_tokens": 18301,
-      "pair_id": "block-0036",
-      "ratio": 0.46243374678979293,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8976,
-      "ordinary_tokens": 15513,
-      "pair_id": "block-0037",
-      "ratio": 0.5786114871398182,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9897,
-      "ordinary_tokens": 13240,
-      "pair_id": "block-0038",
-      "ratio": 0.7475075528700906,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8524,
-      "ordinary_tokens": 12780,
-      "pair_id": "block-0039",
-      "ratio": 0.6669796557120501,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 4911,
-      "ordinary_tokens": 9351,
-      "pair_id": "block-0040",
-      "ratio": 0.5251844722489574,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8802,
-      "ordinary_tokens": 12096,
-      "pair_id": "block-0041",
-      "ratio": 0.7276785714285714,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5379,
-      "ordinary_tokens": 10230,
-      "pair_id": "block-0042",
-      "ratio": 0.5258064516129032,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8033,
-      "ordinary_tokens": 11811,
-      "pair_id": "block-0043",
-      "ratio": 0.6801286935907205,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9166,
-      "ordinary_tokens": 25268,
-      "pair_id": "block-0044",
-      "ratio": 0.3627513059996834,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5195,
-      "ordinary_tokens": 10823,
-      "pair_id": "block-0045",
-      "ratio": 0.47999630416705164,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8922,
-      "ordinary_tokens": 20288,
-      "pair_id": "block-0046",
-      "ratio": 0.4397673501577287,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 17476,
-      "ordinary_tokens": 26341,
-      "pair_id": "block-0047",
-      "ratio": 0.66345241258874,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7749,
-      "ordinary_tokens": 11902,
-      "pair_id": "block-0048",
-      "ratio": 0.6510670475550328,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8382,
-      "ordinary_tokens": 10447,
-      "pair_id": "block-0049",
-      "ratio": 0.8023355987364794,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9208,
-      "ordinary_tokens": 15431,
-      "pair_id": "block-0050",
-      "ratio": 0.5967208865271207,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5983,
-      "ordinary_tokens": 10693,
-      "pair_id": "block-0051",
-      "ratio": 0.5595249228467222,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8129,
-      "ordinary_tokens": 11560,
-      "pair_id": "block-0052",
-      "ratio": 0.7032006920415225,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8489,
-      "ordinary_tokens": 11812,
-      "pair_id": "block-0053",
-      "ratio": 0.7186759227903826,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8802,
-      "ordinary_tokens": 22086,
-      "pair_id": "block-0054",
-      "ratio": 0.39853300733496333,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16885,
-      "ordinary_tokens": 22731,
-      "pair_id": "block-0055",
-      "ratio": 0.7428181778188377,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8533,
-      "ordinary_tokens": 14687,
-      "pair_id": "block-0056",
-      "ratio": 0.5809899911486348,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 10135,
-      "ordinary_tokens": 14509,
-      "pair_id": "block-0057",
-      "ratio": 0.6985319456888828,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7957,
-      "ordinary_tokens": 11862,
-      "pair_id": "block-0058",
-      "ratio": 0.6707975046366549,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9314,
-      "ordinary_tokens": 17559,
-      "pair_id": "block-0059",
-      "ratio": 0.5304402300814397,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5223,
-      "ordinary_tokens": 11760,
-      "pair_id": "block-0060",
-      "ratio": 0.4441326530612245,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 11288,
-      "ordinary_tokens": 14348,
-      "pair_id": "block-0061",
-      "ratio": 0.7867298578199052,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5070,
-      "ordinary_tokens": 9177,
-      "pair_id": "block-0062",
-      "ratio": 0.5524681268388362,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 15801,
-      "ordinary_tokens": 21637,
-      "pair_id": "block-0063",
-      "ratio": 0.7302768405971253,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7030,
-      "ordinary_tokens": 10335,
-      "pair_id": "block-0064",
-      "ratio": 0.6802128688921142,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9186,
-      "ordinary_tokens": 15297,
-      "pair_id": "block-0065",
-      "ratio": 0.6005099039027261,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9880,
-      "ordinary_tokens": 17981,
-      "pair_id": "block-0066",
-      "ratio": 0.5494688838218119,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8421,
-      "ordinary_tokens": 20300,
-      "pair_id": "block-0067",
-      "ratio": 0.4148275862068965,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9116,
-      "ordinary_tokens": 14806,
-      "pair_id": "block-0068",
-      "ratio": 0.6156963393218965,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 6171,
-      "ordinary_tokens": 9222,
-      "pair_id": "block-0069",
-      "ratio": 0.6691607026675341,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5560,
-      "ordinary_tokens": 10404,
-      "pair_id": "block-0070",
-      "ratio": 0.5344098423683199,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5272,
-      "ordinary_tokens": 11880,
-      "pair_id": "block-0071",
-      "ratio": 0.44377104377104376,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8282,
-      "ordinary_tokens": 13548,
-      "pair_id": "block-0072",
-      "ratio": 0.6113079421316799,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 17074,
-      "ordinary_tokens": 25087,
-      "pair_id": "block-0073",
-      "ratio": 0.6805915414358034,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9908,
-      "ordinary_tokens": 12363,
-      "pair_id": "block-0074",
-      "ratio": 0.8014236026854323,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8397,
-      "ordinary_tokens": 13543,
-      "pair_id": "block-0075",
-      "ratio": 0.6200251052204091,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 14768,
-      "ordinary_tokens": 21875,
-      "pair_id": "block-0076",
-      "ratio": 0.6751085714285714,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8471,
-      "ordinary_tokens": 17357,
-      "pair_id": "block-0077",
-      "ratio": 0.48804516909604195,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7430,
-      "ordinary_tokens": 13010,
-      "pair_id": "block-0078",
-      "ratio": 0.5710991544965411,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9036,
-      "ordinary_tokens": 20178,
-      "pair_id": "block-0079",
-      "ratio": 0.44781445138269405,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8215,
-      "ordinary_tokens": 13889,
-      "pair_id": "block-0080",
-      "ratio": 0.5914752681978545,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 6955,
-      "ordinary_tokens": 10774,
-      "pair_id": "block-0081",
-      "ratio": 0.6455355485427882,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 6149,
-      "ordinary_tokens": 9511,
-      "pair_id": "block-0082",
-      "ratio": 0.6465145620860057,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5901,
-      "ordinary_tokens": 9372,
-      "pair_id": "block-0083",
-      "ratio": 0.6296414852752881,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5349,
-      "ordinary_tokens": 11539,
-      "pair_id": "block-0084",
-      "ratio": 0.46355836727619376,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8854,
-      "ordinary_tokens": 22898,
-      "pair_id": "block-0085",
-      "ratio": 0.38667132500655077,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9142,
-      "ordinary_tokens": 13738,
-      "pair_id": "block-0086",
-      "ratio": 0.6654534866792837,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5751,
-      "ordinary_tokens": 10411,
-      "pair_id": "block-0087",
-      "ratio": 0.5523965036980117,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7645,
-      "ordinary_tokens": 13966,
-      "pair_id": "block-0088",
-      "ratio": 0.5474008305885723,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9007,
-      "ordinary_tokens": 13830,
-      "pair_id": "block-0089",
-      "ratio": 0.6512653651482285,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 17794,
-      "ordinary_tokens": 23862,
-      "pair_id": "block-0090",
-      "ratio": 0.7457044673539519,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 18233,
-      "ordinary_tokens": 21951,
-      "pair_id": "block-0091",
-      "ratio": 0.8306227506719511,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5154,
-      "ordinary_tokens": 9926,
-      "pair_id": "block-0092",
-      "ratio": 0.5192423937134798,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9338,
-      "ordinary_tokens": 15924,
-      "pair_id": "block-0093",
-      "ratio": 0.5864104496357699,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8174,
-      "ordinary_tokens": 12858,
-      "pair_id": "block-0094",
-      "ratio": 0.6357131746772438,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16912,
-      "ordinary_tokens": 24185,
-      "pair_id": "block-0095",
-      "ratio": 0.6992764109985529,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 19354,
-      "ordinary_tokens": 24158,
-      "pair_id": "block-0096",
-      "ratio": 0.80114247868201,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8385,
-      "ordinary_tokens": 13176,
-      "pair_id": "block-0097",
-      "ratio": 0.636384335154827,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8576,
-      "ordinary_tokens": 11941,
-      "pair_id": "block-0098",
-      "ratio": 0.7181978058789046,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 18704,
-      "ordinary_tokens": 22921,
-      "pair_id": "block-0099",
-      "ratio": 0.8160202434448759,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 16166,
-      "ordinary_tokens": 21820,
-      "pair_id": "block-0100",
-      "ratio": 0.7408799266727772,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 6075,
-      "ordinary_tokens": 10911,
-      "pair_id": "block-0101",
-      "ratio": 0.556777563926313,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9303,
-      "ordinary_tokens": 18213,
-      "pair_id": "block-0102",
-      "ratio": 0.5107889968703673,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16807,
-      "ordinary_tokens": 22806,
-      "pair_id": "block-0103",
-      "ratio": 0.7369551872314303,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7878,
-      "ordinary_tokens": 10102,
-      "pair_id": "block-0104",
-      "ratio": 0.779845575133637,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5217,
-      "ordinary_tokens": 11602,
-      "pair_id": "block-0105",
-      "ratio": 0.44966385106016205,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 19223,
-      "ordinary_tokens": 25738,
-      "pair_id": "block-0106",
-      "ratio": 0.7468723288522807,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8414,
-      "ordinary_tokens": 12954,
-      "pair_id": "block-0107",
-      "ratio": 0.6495291029797746,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9610,
-      "ordinary_tokens": 22520,
-      "pair_id": "block-0108",
-      "ratio": 0.42673179396092364,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5311,
-      "ordinary_tokens": 11547,
-      "pair_id": "block-0109",
-      "ratio": 0.4599463063999307,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 4966,
-      "ordinary_tokens": 9414,
-      "pair_id": "block-0110",
-      "ratio": 0.527512215848736,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 19178,
-      "ordinary_tokens": 25438,
-      "pair_id": "block-0111",
-      "ratio": 0.7539114710275965,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5906,
-      "ordinary_tokens": 9143,
-      "pair_id": "block-0112",
-      "ratio": 0.645958656895986,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5316,
-      "ordinary_tokens": 9890,
-      "pair_id": "block-0113",
-      "ratio": 0.5375126390293226,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 18590,
-      "ordinary_tokens": 14581,
-      "pair_id": "block-0114",
-      "ratio": 1.2749468486386393,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5976,
-      "ordinary_tokens": 10710,
-      "pair_id": "block-0115",
-      "ratio": 0.5579831932773109,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5983,
-      "ordinary_tokens": 10622,
-      "pair_id": "block-0116",
-      "ratio": 0.56326492186029,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8409,
-      "ordinary_tokens": 12192,
-      "pair_id": "block-0117",
-      "ratio": 0.6897145669291339,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7481,
-      "ordinary_tokens": 10751,
-      "pair_id": "block-0118",
-      "ratio": 0.6958422472328155,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16888,
-      "ordinary_tokens": 24493,
-      "pair_id": "block-0119",
-      "ratio": 0.6895031233413629,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 18638,
-      "ordinary_tokens": 24533,
-      "pair_id": "block-0120",
-      "ratio": 0.7597114091224065,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 17981,
-      "ordinary_tokens": 24095,
-      "pair_id": "block-0121",
-      "ratio": 0.7462544096285536,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7987,
-      "ordinary_tokens": 10068,
-      "pair_id": "block-0122",
-      "ratio": 0.793305522447358,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9228,
-      "ordinary_tokens": 12875,
-      "pair_id": "block-0123",
-      "ratio": 0.7167378640776699,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8709,
-      "ordinary_tokens": 20305,
-      "pair_id": "block-0124",
-      "ratio": 0.4289091356808668,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8804,
-      "ordinary_tokens": 11705,
-      "pair_id": "block-0125",
-      "ratio": 0.752157197778727,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 18977,
-      "ordinary_tokens": 25366,
-      "pair_id": "block-0126",
-      "ratio": 0.7481274146495309,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 12593,
-      "ordinary_tokens": 15353,
-      "pair_id": "block-0127",
-      "ratio": 0.820230573829219,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 6396,
-      "ordinary_tokens": 9687,
-      "pair_id": "block-0128",
-      "ratio": 0.6602663363270362,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5098,
-      "ordinary_tokens": 7956,
-      "pair_id": "block-0129",
-      "ratio": 0.6407742584213173,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8930,
-      "ordinary_tokens": 11519,
-      "pair_id": "block-0130",
-      "ratio": 0.7752409063286744,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5876,
-      "ordinary_tokens": 9064,
-      "pair_id": "block-0131",
-      "ratio": 0.648278905560459,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8194,
-      "ordinary_tokens": 13097,
-      "pair_id": "block-0132",
-      "ratio": 0.6256394594181873,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5268,
-      "ordinary_tokens": 10116,
-      "pair_id": "block-0133",
-      "ratio": 0.5207591933570581,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8552,
-      "ordinary_tokens": 18192,
-      "pair_id": "block-0134",
-      "ratio": 0.4700967458223395,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16244,
-      "ordinary_tokens": 21623,
-      "pair_id": "block-0135",
-      "ratio": 0.7512371086343246,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 16839,
-      "ordinary_tokens": 21438,
-      "pair_id": "block-0136",
-      "ratio": 0.7854743912678421,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9849,
-      "ordinary_tokens": 21828,
-      "pair_id": "block-0137",
-      "ratio": 0.4512094557449148,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 17954,
-      "ordinary_tokens": 21472,
-      "pair_id": "block-0138",
-      "ratio": 0.8361587183308494,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7574,
-      "ordinary_tokens": 13334,
-      "pair_id": "block-0139",
-      "ratio": 0.568021598920054,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9266,
-      "ordinary_tokens": 16530,
-      "pair_id": "block-0140",
-      "ratio": 0.5605565638233515,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8754,
-      "ordinary_tokens": 14349,
-      "pair_id": "block-0141",
-      "ratio": 0.6100773573071294,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7705,
-      "ordinary_tokens": 15202,
-      "pair_id": "block-0142",
-      "ratio": 0.5068412051045915,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 9199,
-      "ordinary_tokens": 11486,
-      "pair_id": "block-0143",
-      "ratio": 0.8008880376110047,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 6134,
-      "ordinary_tokens": 9344,
-      "pair_id": "block-0144",
-      "ratio": 0.6564640410958904,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7690,
-      "ordinary_tokens": 13141,
-      "pair_id": "block-0145",
-      "ratio": 0.5851913857392892,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5633,
-      "ordinary_tokens": 9236,
-      "pair_id": "block-0146",
-      "ratio": 0.6098960588999567,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5638,
-      "ordinary_tokens": 8970,
-      "pair_id": "block-0147",
-      "ratio": 0.6285395763656634,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9620,
-      "ordinary_tokens": 14356,
-      "pair_id": "block-0148",
-      "ratio": 0.6701030927835051,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 6186,
-      "ordinary_tokens": 11205,
-      "pair_id": "block-0149",
-      "ratio": 0.5520749665327979,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7024,
-      "ordinary_tokens": 13767,
-      "pair_id": "block-0150",
-      "ratio": 0.5102055640299267,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8538,
-      "ordinary_tokens": 12445,
-      "pair_id": "block-0151",
-      "ratio": 0.6860586580956207,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 8465,
-      "ordinary_tokens": 14408,
-      "pair_id": "block-0152",
-      "ratio": 0.5875208217656858,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7936,
-      "ordinary_tokens": 11720,
-      "pair_id": "block-0153",
-      "ratio": 0.6771331058020478,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7665,
-      "ordinary_tokens": 10645,
-      "pair_id": "block-0154",
-      "ratio": 0.720056364490371,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 10285,
-      "ordinary_tokens": 18420,
-      "pair_id": "block-0155",
-      "ratio": 0.5583604777415853,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16073,
-      "ordinary_tokens": 20743,
-      "pair_id": "block-0156",
-      "ratio": 0.7748638094778961,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9071,
-      "ordinary_tokens": 16268,
-      "pair_id": "block-0157",
-      "ratio": 0.5575977378903368,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 18062,
-      "ordinary_tokens": 24553,
-      "pair_id": "block-0158",
-      "ratio": 0.735633120188979,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8315,
-      "ordinary_tokens": 13938,
-      "pair_id": "block-0159",
-      "ratio": 0.5965705266178791,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 17925,
-      "ordinary_tokens": 24675,
-      "pair_id": "block-0160",
-      "ratio": 0.7264437689969605,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 6310,
-      "ordinary_tokens": 9636,
-      "pair_id": "block-0161",
-      "ratio": 0.6548360315483603,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 7744,
-      "ordinary_tokens": 12211,
-      "pair_id": "block-0162",
-      "ratio": 0.6341822946523626,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 10098,
-      "ordinary_tokens": 14215,
-      "pair_id": "block-0163",
-      "ratio": 0.7103763629968344,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16765,
-      "ordinary_tokens": 22344,
-      "pair_id": "block-0164",
-      "ratio": 0.75031328320802,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9262,
-      "ordinary_tokens": 20056,
-      "pair_id": "block-0165",
-      "ratio": 0.461806940566414,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16992,
-      "ordinary_tokens": 26311,
-      "pair_id": "block-0166",
-      "ratio": 0.6458135380639276,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5224,
-      "ordinary_tokens": 11246,
-      "pair_id": "block-0167",
-      "ratio": 0.46452071847768095,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9061,
-      "ordinary_tokens": 15650,
-      "pair_id": "block-0168",
-      "ratio": 0.5789776357827476,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 7096,
-      "ordinary_tokens": 11788,
-      "pair_id": "block-0169",
-      "ratio": 0.6019681031557517,
+      "ratio": 0.825537146537088,
       "receiver": "reasoning"
     },
     {
       "eal_tokens": 18700,
-      "ordinary_tokens": 24229,
-      "pair_id": "block-0170",
-      "ratio": 0.77180238557101,
+      "ordinary_tokens": 21121,
+      "pair_id": "block-0004",
+      "ratio": 0.8853747455139435,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 5268,
-      "ordinary_tokens": 9848,
-      "pair_id": "block-0171",
-      "ratio": 0.5349309504467912,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 17824,
-      "ordinary_tokens": 23025,
-      "pair_id": "block-0172",
-      "ratio": 0.7741150922909881,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 19188,
-      "ordinary_tokens": 25741,
-      "pair_id": "block-0173",
-      "ratio": 0.7454255856415835,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8238,
-      "ordinary_tokens": 11998,
-      "pair_id": "block-0174",
-      "ratio": 0.6866144357392899,
+      "eal_tokens": 8406,
+      "ordinary_tokens": 19160,
+      "pair_id": "block-0005",
+      "ratio": 0.43872651356993736,
       "receiver": "reasoning"
     },
     {
-      "eal_tokens": 6158,
-      "ordinary_tokens": 10989,
-      "pair_id": "block-0175",
-      "ratio": 0.5603785603785604,
+      "eal_tokens": 16011,
+      "ordinary_tokens": 21575,
+      "pair_id": "block-0006",
+      "ratio": 0.7421089223638471,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 16746,
-      "ordinary_tokens": 20005,
-      "pair_id": "block-0176",
-      "ratio": 0.8370907273181705,
+      "eal_tokens": 5917,
+      "ordinary_tokens": 9500,
+      "pair_id": "block-0007",
+      "ratio": 0.6228421052631579,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 18356,
-      "ordinary_tokens": 24083,
-      "pair_id": "block-0177",
-      "ratio": 0.7621974006560644,
+      "eal_tokens": 16116,
+      "ordinary_tokens": 23214,
+      "pair_id": "block-0008",
+      "ratio": 0.6942362367536831,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 8493,
-      "ordinary_tokens": 12897,
-      "pair_id": "block-0178",
-      "ratio": 0.6585252384275413,
+      "eal_tokens": 5255,
+      "ordinary_tokens": 9660,
+      "pair_id": "block-0009",
+      "ratio": 0.5439958592132506,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5598,
+      "ordinary_tokens": 8876,
+      "pair_id": "block-0010",
+      "ratio": 0.6306894997746733,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8602,
+      "ordinary_tokens": 11324,
+      "pair_id": "block-0011",
+      "ratio": 0.7596255740021194,
       "receiver": "reasoning"
     },
     {
-      "eal_tokens": 6153,
-      "ordinary_tokens": 9449,
-      "pair_id": "block-0179",
-      "ratio": 0.6511800190496349,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 14556,
-      "ordinary_tokens": 23506,
-      "pair_id": "block-0180",
-      "ratio": 0.6192461499191696,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 5204,
-      "ordinary_tokens": 10113,
-      "pair_id": "block-0181",
-      "ratio": 0.5145851873825769,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 8911,
-      "ordinary_tokens": 18267,
-      "pair_id": "block-0182",
-      "ratio": 0.487819565336399,
+      "eal_tokens": 9498,
+      "ordinary_tokens": 14773,
+      "pair_id": "block-0012",
+      "ratio": 0.6429296689907263,
       "receiver": "reasoning"
     },
     {
-      "eal_tokens": 7572,
-      "ordinary_tokens": 13986,
-      "pair_id": "block-0183",
-      "ratio": 0.5413985413985414,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 5095,
-      "ordinary_tokens": 11369,
-      "pair_id": "block-0184",
-      "ratio": 0.4481484739203096,
+      "eal_tokens": 5211,
+      "ordinary_tokens": 9892,
+      "pair_id": "block-0013",
+      "ratio": 0.5267893247068338,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 7288,
-      "ordinary_tokens": 10512,
-      "pair_id": "block-0185",
-      "ratio": 0.693302891933029,
-      "receiver": "reasoning"
-    },
-    {
-      "eal_tokens": 16049,
-      "ordinary_tokens": 19239,
-      "pair_id": "block-0186",
-      "ratio": 0.834190966266438,
+      "eal_tokens": 5348,
+      "ordinary_tokens": 9762,
+      "pair_id": "block-0014",
+      "ratio": 0.547838557672608,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 7687,
-      "ordinary_tokens": 10140,
-      "pair_id": "block-0187",
-      "ratio": 0.7580867850098619,
+      "eal_tokens": 8152,
+      "ordinary_tokens": 13460,
+      "pair_id": "block-0015",
+      "ratio": 0.6056463595839524,
       "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7590,
+      "ordinary_tokens": 11750,
+      "pair_id": "block-0016",
+      "ratio": 0.6459574468085106,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8500,
+      "ordinary_tokens": 13353,
+      "pair_id": "block-0017",
+      "ratio": 0.6365610724181832,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 18828,
+      "ordinary_tokens": 24668,
+      "pair_id": "block-0018",
+      "ratio": 0.7632560402140425,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 16142,
+      "ordinary_tokens": 23121,
+      "pair_id": "block-0019",
+      "ratio": 0.6981531940660006,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18706,
+      "ordinary_tokens": 20217,
+      "pair_id": "block-0020",
+      "ratio": 0.9252609190285404,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18152,
+      "ordinary_tokens": 17805,
+      "pair_id": "block-0021",
+      "ratio": 1.0194889076102218,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18950,
+      "ordinary_tokens": 24247,
+      "pair_id": "block-0022",
+      "ratio": 0.7815399843279581,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 16755,
+      "ordinary_tokens": 21198,
+      "pair_id": "block-0023",
+      "ratio": 0.7904047551655816,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 6118,
+      "ordinary_tokens": 10776,
+      "pair_id": "block-0024",
+      "ratio": 0.567743132887899,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 7674,
+      "ordinary_tokens": 12182,
+      "pair_id": "block-0025",
+      "ratio": 0.6299458217041537,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 6148,
+      "ordinary_tokens": 11870,
+      "pair_id": "block-0026",
+      "ratio": 0.517944397641112,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8797,
+      "ordinary_tokens": 13244,
+      "pair_id": "block-0027",
+      "ratio": 0.6642253095741468,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7954,
+      "ordinary_tokens": 14371,
+      "pair_id": "block-0028",
+      "ratio": 0.5534757497738502,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 17909,
+      "ordinary_tokens": 22996,
+      "pair_id": "block-0029",
+      "ratio": 0.7787876152374326,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9447,
+      "ordinary_tokens": 14307,
+      "pair_id": "block-0030",
+      "ratio": 0.66030614384567,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 16111,
+      "ordinary_tokens": 23221,
+      "pair_id": "block-0031",
+      "ratio": 0.6938116360191207,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18692,
+      "ordinary_tokens": 24577,
+      "pair_id": "block-0032",
+      "ratio": 0.7605484802864467,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9386,
+      "ordinary_tokens": 18971,
+      "pair_id": "block-0033",
+      "ratio": 0.4947551526013389,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5655,
+      "ordinary_tokens": 8987,
+      "pair_id": "block-0034",
+      "ratio": 0.6292422387893624,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8320,
+      "ordinary_tokens": 12788,
+      "pair_id": "block-0035",
+      "ratio": 0.6506099468251486,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 10648,
+      "ordinary_tokens": 20511,
+      "pair_id": "block-0036",
+      "ratio": 0.5191360733265077,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8513,
+      "ordinary_tokens": 12734,
+      "pair_id": "block-0037",
+      "ratio": 0.6685252081042877,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9726,
+      "ordinary_tokens": 22282,
+      "pair_id": "block-0038",
+      "ratio": 0.43649582622744815,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8938,
+      "ordinary_tokens": 12563,
+      "pair_id": "block-0039",
+      "ratio": 0.711454270476797,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 4915,
+      "ordinary_tokens": 9175,
+      "pair_id": "block-0040",
+      "ratio": 0.5356948228882834,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 10358,
+      "ordinary_tokens": 15751,
+      "pair_id": "block-0041",
+      "ratio": 0.6576090406958288,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5364,
+      "ordinary_tokens": 9866,
+      "pair_id": "block-0042",
+      "ratio": 0.5436853841475775,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 7921,
+      "ordinary_tokens": 12785,
+      "pair_id": "block-0043",
+      "ratio": 0.6195541650371529,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9897,
+      "ordinary_tokens": 17391,
+      "pair_id": "block-0044",
+      "ratio": 0.569087459030533,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5193,
+      "ordinary_tokens": 10079,
+      "pair_id": "block-0045",
+      "ratio": 0.5152296854846711,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 12480,
+      "ordinary_tokens": 16103,
+      "pair_id": "block-0046",
+      "ratio": 0.7750108675402099,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 15939,
+      "ordinary_tokens": 25188,
+      "pair_id": "block-0047",
+      "ratio": 0.6328013339685564,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8119,
+      "ordinary_tokens": 11884,
+      "pair_id": "block-0048",
+      "ratio": 0.683187478963312,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8476,
+      "ordinary_tokens": 12675,
+      "pair_id": "block-0049",
+      "ratio": 0.6687179487179488,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 11526,
+      "ordinary_tokens": 16961,
+      "pair_id": "block-0050",
+      "ratio": 0.6795589882672012,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5935,
+      "ordinary_tokens": 10628,
+      "pair_id": "block-0051",
+      "ratio": 0.5584305607828378,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8914,
+      "ordinary_tokens": 13469,
+      "pair_id": "block-0052",
+      "ratio": 0.6618160219763902,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8454,
+      "ordinary_tokens": 12828,
+      "pair_id": "block-0053",
+      "ratio": 0.6590271281571563,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8714,
+      "ordinary_tokens": 14361,
+      "pair_id": "block-0054",
+      "ratio": 0.6067822575029594,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 16788,
+      "ordinary_tokens": 22220,
+      "pair_id": "block-0055",
+      "ratio": 0.7555355535553555,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8580,
+      "ordinary_tokens": 18530,
+      "pair_id": "block-0056",
+      "ratio": 0.46303291958985426,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8315,
+      "ordinary_tokens": 13866,
+      "pair_id": "block-0057",
+      "ratio": 0.5996682532814077,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8349,
+      "ordinary_tokens": 11446,
+      "pair_id": "block-0058",
+      "ratio": 0.7294251266818103,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9326,
+      "ordinary_tokens": 17088,
+      "pair_id": "block-0059",
+      "ratio": 0.5457631086142322,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5286,
+      "ordinary_tokens": 11276,
+      "pair_id": "block-0060",
+      "ratio": 0.46878325647392693,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9302,
+      "ordinary_tokens": 16488,
+      "pair_id": "block-0061",
+      "ratio": 0.5641678796700631,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 4995,
+      "ordinary_tokens": 8246,
+      "pair_id": "block-0062",
+      "ratio": 0.6057482415716711,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 15473,
+      "ordinary_tokens": 22744,
+      "pair_id": "block-0063",
+      "ratio": 0.680311290889905,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5619,
+      "ordinary_tokens": 10432,
+      "pair_id": "block-0064",
+      "ratio": 0.5386311349693251,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8896,
+      "ordinary_tokens": 19388,
+      "pair_id": "block-0065",
+      "ratio": 0.4588405199092222,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 10101,
+      "ordinary_tokens": 17288,
+      "pair_id": "block-0066",
+      "ratio": 0.5842781119851921,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8840,
+      "ordinary_tokens": 12187,
+      "pair_id": "block-0067",
+      "ratio": 0.7253630918191516,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9288,
+      "ordinary_tokens": 15064,
+      "pair_id": "block-0068",
+      "ratio": 0.6165693043016464,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 6135,
+      "ordinary_tokens": 9505,
+      "pair_id": "block-0069",
+      "ratio": 0.6454497632824829,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5669,
+      "ordinary_tokens": 10279,
+      "pair_id": "block-0070",
+      "ratio": 0.5515127930732562,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5367,
+      "ordinary_tokens": 11181,
+      "pair_id": "block-0071",
+      "ratio": 0.4800107324926214,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8568,
+      "ordinary_tokens": 14335,
+      "pair_id": "block-0072",
+      "ratio": 0.5976979420997558,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 18195,
+      "ordinary_tokens": 23524,
+      "pair_id": "block-0073",
+      "ratio": 0.7734653970413196,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9198,
+      "ordinary_tokens": 13014,
+      "pair_id": "block-0074",
+      "ratio": 0.706777316735823,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8536,
+      "ordinary_tokens": 12539,
+      "pair_id": "block-0075",
+      "ratio": 0.680756041151607,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 16058,
+      "ordinary_tokens": 21994,
+      "pair_id": "block-0076",
+      "ratio": 0.7301082113303629,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9966,
+      "ordinary_tokens": 18243,
+      "pair_id": "block-0077",
+      "ratio": 0.5462917283341555,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7696,
+      "ordinary_tokens": 12571,
+      "pair_id": "block-0078",
+      "ratio": 0.6122026887280249,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8897,
+      "ordinary_tokens": 17295,
+      "pair_id": "block-0079",
+      "ratio": 0.5144261347210176,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 10605,
+      "ordinary_tokens": 15166,
+      "pair_id": "block-0080",
+      "ratio": 0.6992615060002637,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7493,
+      "ordinary_tokens": 12664,
+      "pair_id": "block-0081",
+      "ratio": 0.5916771951989893,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 6101,
+      "ordinary_tokens": 9427,
+      "pair_id": "block-0082",
+      "ratio": 0.6471836215126764,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5834,
+      "ordinary_tokens": 9371,
+      "pair_id": "block-0083",
+      "ratio": 0.6225589584889553,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5432,
+      "ordinary_tokens": 11606,
+      "pair_id": "block-0084",
+      "ratio": 0.4680337756332931,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9102,
+      "ordinary_tokens": 18397,
+      "pair_id": "block-0085",
+      "ratio": 0.49475457955101376,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9339,
+      "ordinary_tokens": 13979,
+      "pair_id": "block-0086",
+      "ratio": 0.6680735388797482,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5611,
+      "ordinary_tokens": 10084,
+      "pair_id": "block-0087",
+      "ratio": 0.5564260214200714,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8116,
+      "ordinary_tokens": 12047,
+      "pair_id": "block-0088",
+      "ratio": 0.6736946957748817,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8965,
+      "ordinary_tokens": 14600,
+      "pair_id": "block-0089",
+      "ratio": 0.614041095890411,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 17932,
+      "ordinary_tokens": 22374,
+      "pair_id": "block-0090",
+      "ratio": 0.8014659873066953,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18143,
+      "ordinary_tokens": 22105,
+      "pair_id": "block-0091",
+      "ratio": 0.8207645329111061,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5172,
+      "ordinary_tokens": 11132,
+      "pair_id": "block-0092",
+      "ratio": 0.4646065397053539,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9795,
+      "ordinary_tokens": 16294,
+      "pair_id": "block-0093",
+      "ratio": 0.6011415244875414,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8239,
+      "ordinary_tokens": 13505,
+      "pair_id": "block-0094",
+      "ratio": 0.6100703443169196,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 15874,
+      "ordinary_tokens": 23154,
+      "pair_id": "block-0095",
+      "ratio": 0.6855834844951196,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 19198,
+      "ordinary_tokens": 24888,
+      "pair_id": "block-0096",
+      "ratio": 0.7713757634201222,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8462,
+      "ordinary_tokens": 13159,
+      "pair_id": "block-0097",
+      "ratio": 0.6430579831294171,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8787,
+      "ordinary_tokens": 14276,
+      "pair_id": "block-0098",
+      "ratio": 0.6155085458111516,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 18700,
+      "ordinary_tokens": 23331,
+      "pair_id": "block-0099",
+      "ratio": 0.8015087223008015,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 16200,
+      "ordinary_tokens": 23000,
+      "pair_id": "block-0100",
+      "ratio": 0.7043478260869566,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5991,
+      "ordinary_tokens": 10682,
+      "pair_id": "block-0101",
+      "ratio": 0.5608500280846284,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 11692,
+      "ordinary_tokens": 17127,
+      "pair_id": "block-0102",
+      "ratio": 0.6826647982717347,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 16773,
+      "ordinary_tokens": 23038,
+      "pair_id": "block-0103",
+      "ratio": 0.7280579911450646,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8028,
+      "ordinary_tokens": 14954,
+      "pair_id": "block-0104",
+      "ratio": 0.5368463287414739,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5314,
+      "ordinary_tokens": 11032,
+      "pair_id": "block-0105",
+      "ratio": 0.4816896301667875,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 19244,
+      "ordinary_tokens": 23997,
+      "pair_id": "block-0106",
+      "ratio": 0.8019335750302121,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8079,
+      "ordinary_tokens": 14321,
+      "pair_id": "block-0107",
+      "ratio": 0.5641365826408771,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9788,
+      "ordinary_tokens": 19624,
+      "pair_id": "block-0108",
+      "ratio": 0.4987770077456176,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5349,
+      "ordinary_tokens": 11135,
+      "pair_id": "block-0109",
+      "ratio": 0.48037718904355636,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5120,
+      "ordinary_tokens": 8163,
+      "pair_id": "block-0110",
+      "ratio": 0.6272203846625015,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 19231,
+      "ordinary_tokens": 26115,
+      "pair_id": "block-0111",
+      "ratio": 0.7363967068734444,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5928,
+      "ordinary_tokens": 9231,
+      "pair_id": "block-0112",
+      "ratio": 0.6421839454013649,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5450,
+      "ordinary_tokens": 9774,
+      "pair_id": "block-0113",
+      "ratio": 0.5576018006957233,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18495,
+      "ordinary_tokens": 20812,
+      "pair_id": "block-0114",
+      "ratio": 0.8886699980780319,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5966,
+      "ordinary_tokens": 10695,
+      "pair_id": "block-0115",
+      "ratio": 0.5578307620383357,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 6030,
+      "ordinary_tokens": 10822,
+      "pair_id": "block-0116",
+      "ratio": 0.5571982997597487,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8592,
+      "ordinary_tokens": 13653,
+      "pair_id": "block-0117",
+      "ratio": 0.6293122390683367,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7745,
+      "ordinary_tokens": 10776,
+      "pair_id": "block-0118",
+      "ratio": 0.7187268002969562,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 19676,
+      "ordinary_tokens": 27706,
+      "pair_id": "block-0119",
+      "ratio": 0.7101710820760846,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18791,
+      "ordinary_tokens": 17831,
+      "pair_id": "block-0120",
+      "ratio": 1.0538388200325277,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 17917,
+      "ordinary_tokens": 20734,
+      "pair_id": "block-0121",
+      "ratio": 0.8641362014083148,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 7989,
+      "ordinary_tokens": 10428,
+      "pair_id": "block-0122",
+      "ratio": 0.7661104718066744,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9038,
+      "ordinary_tokens": 12591,
+      "pair_id": "block-0123",
+      "ratio": 0.7178143118100231,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 10352,
+      "ordinary_tokens": 22827,
+      "pair_id": "block-0124",
+      "ratio": 0.4534980505541683,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8490,
+      "ordinary_tokens": 12678,
+      "pair_id": "block-0125",
+      "ratio": 0.6696639848556555,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 17550,
+      "ordinary_tokens": 25174,
+      "pair_id": "block-0126",
+      "ratio": 0.6971478509573369,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8976,
+      "ordinary_tokens": 14729,
+      "pair_id": "block-0127",
+      "ratio": 0.6094100074682599,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 6296,
+      "ordinary_tokens": 9543,
+      "pair_id": "block-0128",
+      "ratio": 0.6597506025358901,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5032,
+      "ordinary_tokens": 9217,
+      "pair_id": "block-0129",
+      "ratio": 0.5459477053271129,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8147,
+      "ordinary_tokens": 11961,
+      "pair_id": "block-0130",
+      "ratio": 0.6811303402725525,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5799,
+      "ordinary_tokens": 9240,
+      "pair_id": "block-0131",
+      "ratio": 0.6275974025974026,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8714,
+      "ordinary_tokens": 13106,
+      "pair_id": "block-0132",
+      "ratio": 0.6648863116130017,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5348,
+      "ordinary_tokens": 11246,
+      "pair_id": "block-0133",
+      "ratio": 0.47554686110617106,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8780,
+      "ordinary_tokens": 14444,
+      "pair_id": "block-0134",
+      "ratio": 0.6078648573802271,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 16248,
+      "ordinary_tokens": 22951,
+      "pair_id": "block-0135",
+      "ratio": 0.7079430090192148,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 16773,
+      "ordinary_tokens": 22963,
+      "pair_id": "block-0136",
+      "ratio": 0.7304359186517441,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9650,
+      "ordinary_tokens": 16235,
+      "pair_id": "block-0137",
+      "ratio": 0.5943948259932245,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 17874,
+      "ordinary_tokens": 23291,
+      "pair_id": "block-0138",
+      "ratio": 0.7674208921901163,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 7437,
+      "ordinary_tokens": 14416,
+      "pair_id": "block-0139",
+      "ratio": 0.5158851276359601,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9085,
+      "ordinary_tokens": 13719,
+      "pair_id": "block-0140",
+      "ratio": 0.6622202784459509,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8892,
+      "ordinary_tokens": 15377,
+      "pair_id": "block-0141",
+      "ratio": 0.5782662417896859,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7977,
+      "ordinary_tokens": 13749,
+      "pair_id": "block-0142",
+      "ratio": 0.5801876500109099,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 11268,
+      "ordinary_tokens": 12390,
+      "pair_id": "block-0143",
+      "ratio": 0.9094430992736078,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 6110,
+      "ordinary_tokens": 9077,
+      "pair_id": "block-0144",
+      "ratio": 0.6731298887297565,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 7636,
+      "ordinary_tokens": 12195,
+      "pair_id": "block-0145",
+      "ratio": 0.6261582615826158,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5709,
+      "ordinary_tokens": 8678,
+      "pair_id": "block-0146",
+      "ratio": 0.6578704770684489,
+      "receiver": "plain"
     },
     {
       "eal_tokens": 5616,
-      "ordinary_tokens": 10139,
-      "pair_id": "block-0188",
-      "ratio": 0.5539007791695434,
+      "ordinary_tokens": 8707,
+      "pair_id": "block-0147",
+      "ratio": 0.6449982772481911,
       "receiver": "plain"
     },
     {
-      "eal_tokens": 18256,
-      "ordinary_tokens": 27538,
-      "pair_id": "block-0189",
-      "ratio": 0.6629384850025419,
-      "receiver": "plain"
-    },
-    {
-      "eal_tokens": 9642,
-      "ordinary_tokens": 25416,
-      "pair_id": "block-0190",
-      "ratio": 0.37936732766761094,
+      "eal_tokens": 11905,
+      "ordinary_tokens": 13656,
+      "pair_id": "block-0148",
+      "ratio": 0.8717779730521382,
       "receiver": "reasoning"
     },
     {
-      "eal_tokens": 11928,
-      "ordinary_tokens": 16272,
+      "eal_tokens": 6200,
+      "ordinary_tokens": 10871,
+      "pair_id": "block-0149",
+      "ratio": 0.5703247171373379,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 7902,
+      "ordinary_tokens": 12314,
+      "pair_id": "block-0150",
+      "ratio": 0.6417086243300308,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9089,
+      "ordinary_tokens": 11874,
+      "pair_id": "block-0151",
+      "ratio": 0.7654539329627759,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8905,
+      "ordinary_tokens": 17379,
+      "pair_id": "block-0152",
+      "ratio": 0.5124000230162841,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8977,
+      "ordinary_tokens": 12253,
+      "pair_id": "block-0153",
+      "ratio": 0.7326369052476944,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7455,
+      "ordinary_tokens": 13435,
+      "pair_id": "block-0154",
+      "ratio": 0.5548939337551172,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 9639,
+      "ordinary_tokens": 16598,
+      "pair_id": "block-0155",
+      "ratio": 0.5807326183877576,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 16075,
+      "ordinary_tokens": 21524,
+      "pair_id": "block-0156",
+      "ratio": 0.746840735922691,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9385,
+      "ordinary_tokens": 15569,
+      "pair_id": "block-0157",
+      "ratio": 0.6028004367653671,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 18117,
+      "ordinary_tokens": 21443,
+      "pair_id": "block-0158",
+      "ratio": 0.8448911066548525,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8329,
+      "ordinary_tokens": 13240,
+      "pair_id": "block-0159",
+      "ratio": 0.6290785498489426,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 18036,
+      "ordinary_tokens": 22062,
+      "pair_id": "block-0160",
+      "ratio": 0.817514277943976,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5210,
+      "ordinary_tokens": 9778,
+      "pair_id": "block-0161",
+      "ratio": 0.5328287993454695,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 7839,
+      "ordinary_tokens": 14300,
+      "pair_id": "block-0162",
+      "ratio": 0.5481818181818182,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 8738,
+      "ordinary_tokens": 14345,
+      "pair_id": "block-0163",
+      "ratio": 0.6091321017776229,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 16729,
+      "ordinary_tokens": 22644,
+      "pair_id": "block-0164",
+      "ratio": 0.7387829005476064,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9726,
+      "ordinary_tokens": 21239,
+      "pair_id": "block-0165",
+      "ratio": 0.45793116436743725,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 18372,
+      "ordinary_tokens": 23164,
+      "pair_id": "block-0166",
+      "ratio": 0.7931272664479364,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5163,
+      "ordinary_tokens": 10308,
+      "pair_id": "block-0167",
+      "ratio": 0.5008731082654249,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9073,
+      "ordinary_tokens": 11982,
+      "pair_id": "block-0168",
+      "ratio": 0.757219162076448,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7046,
+      "ordinary_tokens": 12184,
+      "pair_id": "block-0169",
+      "ratio": 0.5782994090610637,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 18680,
+      "ordinary_tokens": 24621,
+      "pair_id": "block-0170",
+      "ratio": 0.7587019211242435,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5411,
+      "ordinary_tokens": 9903,
+      "pair_id": "block-0171",
+      "ratio": 0.5464000807836009,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18860,
+      "ordinary_tokens": 20588,
+      "pair_id": "block-0172",
+      "ratio": 0.9160676122012823,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 19272,
+      "ordinary_tokens": 27097,
+      "pair_id": "block-0173",
+      "ratio": 0.7112226445732,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9594,
+      "ordinary_tokens": 12496,
+      "pair_id": "block-0174",
+      "ratio": 0.7677656850192062,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 6139,
+      "ordinary_tokens": 11699,
+      "pair_id": "block-0175",
+      "ratio": 0.5247457047610907,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 16785,
+      "ordinary_tokens": 21036,
+      "pair_id": "block-0176",
+      "ratio": 0.7979178551055334,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18746,
+      "ordinary_tokens": 23010,
+      "pair_id": "block-0177",
+      "ratio": 0.8146892655367232,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8877,
+      "ordinary_tokens": 12325,
+      "pair_id": "block-0178",
+      "ratio": 0.7202434077079107,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 6121,
+      "ordinary_tokens": 9287,
+      "pair_id": "block-0179",
+      "ratio": 0.6590933563045117,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18808,
+      "ordinary_tokens": 26776,
+      "pair_id": "block-0180",
+      "ratio": 0.7024200776815058,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 5226,
+      "ordinary_tokens": 8411,
+      "pair_id": "block-0181",
+      "ratio": 0.6213292117465224,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 10710,
+      "ordinary_tokens": 19197,
+      "pair_id": "block-0182",
+      "ratio": 0.5578996718237225,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 7710,
+      "ordinary_tokens": 12618,
+      "pair_id": "block-0183",
+      "ratio": 0.6110318592486923,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5195,
+      "ordinary_tokens": 9744,
+      "pair_id": "block-0184",
+      "ratio": 0.5331486042692939,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 7643,
+      "ordinary_tokens": 12020,
+      "pair_id": "block-0185",
+      "ratio": 0.6358569051580699,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 14835,
+      "ordinary_tokens": 21961,
+      "pair_id": "block-0186",
+      "ratio": 0.6755156868995037,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 8105,
+      "ordinary_tokens": 12392,
+      "pair_id": "block-0187",
+      "ratio": 0.6540510006455778,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 5506,
+      "ordinary_tokens": 10260,
+      "pair_id": "block-0188",
+      "ratio": 0.5366471734892787,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 18235,
+      "ordinary_tokens": 21247,
+      "pair_id": "block-0189",
+      "ratio": 0.8582388101849673,
+      "receiver": "plain"
+    },
+    {
+      "eal_tokens": 9918,
+      "ordinary_tokens": 22071,
+      "pair_id": "block-0190",
+      "ratio": 0.4493679488922115,
+      "receiver": "reasoning"
+    },
+    {
+      "eal_tokens": 12351,
+      "ordinary_tokens": 18467,
       "pair_id": "block-0191",
-      "ratio": 0.7330383480825958,
+      "ratio": 0.6688146423349759,
       "receiver": "reasoning"
     }
   ],
-  "pairs_using_fewer_eal_tokens": 191,
+  "pairs_using_fewer_eal_tokens": 190,
   "planner": {
     "blockers": [
       "Pilot replication is below the declared minimum for nuisance estimation",
@@ -3269,141 +3299,149 @@
     ],
     "status": "no_supported_allocation"
   },
+  "practical_decision_status": "pilot_only",
+  "processing_revision": "cea2b59e686d57e0c071924f184b497919ec91a7",
+  "processing_run": 36997861629,
   "quality_difference_bounds": [
-    0.5880208333333333,
-    0.6026041666666666
+    0.5817708333333333,
+    0.59375
   ],
+  "recomputed_sampling_half_widths": {
+    "absolute_quality_sampling_half_width": 0.08479117355481985,
+    "quality_sampling_half_width": 0.16673063023171744
+  },
   "resources": {
     "eal": {
       "initial": {
-        "attempts": 284,
+        "attempts": 278,
         "cached_input_tokens": 0,
-        "cost_usd": 0.0296163,
+        "cost_usd": 0.0293747,
         "host_collections": 192,
         "host_reuses": 0,
-        "input_tokens": 178630,
-        "native_probes": 92,
-        "output_tokens": 35425,
-        "reasoning_tokens": 12480,
-        "summed_session_seconds": 526.6309075819995,
-        "total_tokens": 214055
+        "input_tokens": 171727,
+        "native_probes": 86,
+        "output_tokens": 36217,
+        "reasoning_tokens": 12864,
+        "summed_session_seconds": 507.0024035380004,
+        "total_tokens": 207944
       },
       "recipients": {
-        "attempts": 2390,
-        "cached_input_tokens": 19584,
-        "cost_usd": 0.26878815,
+        "attempts": 2406,
+        "cached_input_tokens": 33536,
+        "cost_usd": 0.2786594,
         "host_collections": 960,
         "host_reuses": 960,
-        "input_tokens": 1340792,
-        "native_probes": 470,
-        "output_tokens": 388791,
-        "reasoning_tokens": 141696,
-        "summed_session_seconds": 4763.432806702999,
-        "total_tokens": 1729583
+        "input_tokens": 1362144,
+        "native_probes": 486,
+        "output_tokens": 409941,
+        "reasoning_tokens": 154816,
+        "summed_session_seconds": 5090.702678680004,
+        "total_tokens": 1772085
       },
-      "setup_seconds": 15.516961342998414,
+      "setup_seconds": 9.93285142499792,
       "total": {
-        "attempts": 2674,
-        "cached_input_tokens": 19584,
-        "cost_usd": 0.29840445000000004,
+        "attempts": 2684,
+        "cached_input_tokens": 33536,
+        "cost_usd": 0.30803410000000003,
         "host_collections": 1152,
         "host_reuses": 960,
-        "input_tokens": 1519422,
-        "native_probes": 562,
-        "output_tokens": 424216,
-        "reasoning_tokens": 154176,
-        "summed_session_seconds": 5290.063714284998,
-        "total_tokens": 1943638
+        "input_tokens": 1533871,
+        "native_probes": 572,
+        "output_tokens": 446158,
+        "reasoning_tokens": 167680,
+        "summed_session_seconds": 5597.7050822180045,
+        "total_tokens": 1980029
       }
     },
     "ordinary": {
       "initial": {
-        "attempts": 371,
-        "cached_input_tokens": 15488,
-        "cost_usd": 0.04255985,
+        "attempts": 372,
+        "cached_input_tokens": 19712,
+        "cost_usd": 0.04317625,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 351933,
-        "native_probes": 179,
-        "output_tokens": 40578,
-        "reasoning_tokens": 9664,
-        "summed_session_seconds": 521.737599655001,
-        "total_tokens": 392511
+        "input_tokens": 353877,
+        "native_probes": 180,
+        "output_tokens": 41876,
+        "reasoning_tokens": 10624,
+        "summed_session_seconds": 508.8325779650014,
+        "total_tokens": 395753
       },
       "recipients": {
-        "attempts": 2408,
-        "cached_input_tokens": 4224,
-        "cost_usd": 0.3538161,
+        "attempts": 2386,
+        "cached_input_tokens": 0,
+        "cost_usd": 0.35836635,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 2145471,
-        "native_probes": 488,
-        "output_tokens": 454757,
-        "reasoning_tokens": 178240,
-        "summed_session_seconds": 4884.645582967,
-        "total_tokens": 2600228
+        "input_tokens": 2114268,
+        "native_probes": 466,
+        "output_tokens": 472364,
+        "reasoning_tokens": 190464,
+        "summed_session_seconds": 4657.507988369997,
+        "total_tokens": 2586632
       },
-      "setup_seconds": 0.31931235899779153,
+      "setup_seconds": 0.4025537740001255,
       "total": {
-        "attempts": 2779,
+        "attempts": 2758,
         "cached_input_tokens": 19712,
-        "cost_usd": 0.39637595000000003,
+        "cost_usd": 0.4015426,
         "host_collections": 0,
         "host_reuses": 0,
-        "input_tokens": 2497404,
-        "native_probes": 667,
-        "output_tokens": 495335,
-        "reasoning_tokens": 187904,
-        "summed_session_seconds": 5406.383182622001,
-        "total_tokens": 2992739
+        "input_tokens": 2468145,
+        "native_probes": 646,
+        "output_tokens": 514240,
+        "reasoning_tokens": 201088,
+        "summed_session_seconds": 5166.340566334999,
+        "total_tokens": 2982385
       }
     }
   },
   "retained_conditional_intervals": {
     "decision_lower_bounds": {
-      "eal_correctness": 0.9207126906301665,
-      "quality_difference": 0.47155105096822614,
-      "token_reduction": 0.3410100704328479
+      "eal_correctness": 0.9121760934305095,
+      "quality_difference": 0.46471260096080524,
+      "token_reduction": 0.32744940733975486
     },
     "eal_correctness_interval": [
-      0.8963489832820527,
+      0.8870838264451801,
       1
     ],
     "quality_interval": [
-      0.4220074652889436,
-      0.7686175347110564
+      0.41504020310161593,
+      0.7604806302317174
     ],
-    "resource_degrees_of_freedom": 44.72884737113485,
+    "resource_degrees_of_freedom": 41.8811142154685,
     "token_reduction_interval": [
-      0.3364230041809899,
-      0.36467455227147716
+      0.3232777347504271,
+      0.34890643999562354
     ]
   },
-  "run_id": "984bd05d-6366-41c3-b9ae-ee8766835b08",
+  "run_id": "45488cb5-624e-4267-b12c-97fe503ff4d1",
   "schema": "earl-jss-results/1",
   "sequences": 384,
   "sessions": 4224,
-  "token_reduction": 0.35054877822623354,
+  "source_language": "EAL/3",
+  "token_reduction": 0.3360920873730253,
   "totals": {
     "eal": {
       "bounds": [
-        0.9770833333333333,
-        0.9911458333333333
+        0.971875,
+        0.9786458333333333
       ],
-      "correct": 1876,
-      "incorrect": 17,
+      "correct": 1866,
+      "incorrect": 41,
       "n": 1920,
-      "unknown": 27
+      "unknown": 13
     },
     "ordinary": {
       "bounds": [
-        0.3885416666666667,
-        0.3890625
+        0.3848958333333333,
+        0.39010416666666664
       ],
-      "correct": 746,
-      "incorrect": 1173,
+      "correct": 739,
+      "incorrect": 1171,
       "n": 1920,
-      "unknown": 1
+      "unknown": 10
     }
   }
 }

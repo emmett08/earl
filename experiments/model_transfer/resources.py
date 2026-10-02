@@ -25,6 +25,7 @@ class ResourceSummary:
         host_events = [e for e in events if e['kind'] == 'eal_assess']
         host = [e['assessment'] for e in host_events if e.get('assessment') is not None]
         native = sum(e['kind'] == 'native_probe' for e in events)
+        raw_snapshots = sum(e['kind'] == 'host_raw_snapshot_read' for e in events)
         result = {
             'elapsed_seconds': sum(s['elapsed_seconds'] for s in sessions),
             'timed_sessions': sum(s.get('timing_complete', True) for s in sessions),
@@ -39,6 +40,8 @@ class ResourceSummary:
             'known_cost_usd': sum(c['cost_estimate_usd'] for c in selected if _cost(c.get('cost_estimate_usd'))),
             'unknown_cost_attempts': sum(not _cost(c.get('cost_estimate_usd')) for c in selected),
             'native_tool_calls': native,
+            'host_raw_snapshot_reads': raw_snapshots,
+            'failed_host_raw_snapshot_reads': sum(e['kind'] == 'host_raw_snapshot_read' and e.get('status') == 'failed' for e in events),
             'host_collections': sum(a['collected_count'] for a in host),
             'host_reuses': sum(a['reused_count'] for a in host),
             'unknown_host_assessments': len(host_events) - len(host),
@@ -46,7 +49,7 @@ class ResourceSummary:
                                            and all(s.get('timing_complete', True) for s in sessions)),
         }
         result['cost_accounting_complete'] = accounting.complete and result['unknown_cost_attempts'] == 0
-        result['total_collector_calls'] = native + result['host_collections']
+        result['total_collector_calls'] = native + raw_snapshots + result['host_collections']
         usage = [_mapping(_mapping(c.get('response')).get('usage')) for c in selected]
         count = lambda value: value if type(value) is int and value >= 0 else 0
         result['input_tokens'] = sum(count(u.get('input_tokens')) for u in usage)

@@ -40,6 +40,8 @@ class SessionRunner:
                   'response_texts': [],
                   'format_valid': None, 'annotation': {'status': 'empty', 'reason': 'No response'},
                   'file_result': {'status': 'not_requested', 'written': []}}
+        if self.plan.get('evidence_restoration'):
+            result.update(whole_answer_consistency_required=True, canonical_decision=None)
         progress_path = project.root / f'session-{project.session}-progress.json'
         def checkpoint():
             result['events'] = [e for e in project.events if e['session'] == project.session]
@@ -78,6 +80,8 @@ class SessionRunner:
                 result['raw_answer'] = text
                 parsed = formatter.parse(text)
                 result.update(status='submitted', **{k: parsed[k] for k in ('answer', 'format_valid', 'annotation')})
+                if self.plan.get('evidence_restoration'):
+                    result['canonical_decision'] = parsed.get('canonical_decision')
                 result['file_result'] = project.persist(parsed['files']) if mode != 'prose' else result['file_result']
                 result['handoff'] = project.remember_answer(text)
                 break

@@ -1,0 +1,32 @@
+% Required packages: pgfplots, lmodern
+% Required TikZ libraries: none
+% Target width: 160 mm maximum
+% Minimum text size: 9 pt
+% Colour/greyscale intent: colour_and_greyscale, direct labels and line styles
+\begin{tikzpicture}
+\definecolor{ealblue}{HTML}{165D81}
+\definecolor{ordinaryorange}{HTML}{C27021}
+\definecolor{neutralgrey}{HTML}{616970}
+\pgfplotsset{compat=1.18,
+  every axis/.append style={
+    width=148mm,height=66mm,
+    font=\fontsize{9}{11}\selectfont,
+    tick label style={font=\fontsize{9}{11}\selectfont},
+    label style={font=\fontsize{9}{11}\selectfont},
+    title style={font=\fontsize{10}{12}\selectfont},
+    legend style={font=\fontsize{9}{11}\selectfont,draw=none,fill=none},
+    axis lines=left,axis line style={line width=0.5pt},
+    tick style={line width=0.5pt},
+    grid style={line width=0.4pt,black!12},
+    scaled ticks=false,clip=false}}
+\begin{axis}[height=72mm,xmin=0,xmax=10,ymin=0,ymax=1800,xtick={0,2,4,6,8,10},ytick={0,400,800,1200,1600},xlabel={Recipient horizon after the donor},ylabel={Recorded events, summed trajectories},ymajorgrids=true,legend columns=2,legend style={at={(0.5,1.06)},anchor=south,column sep=4mm}]
+\addplot[ealblue,solid,line width=0.8pt,mark=square*,mark size=1.7pt] coordinates {(0,278) (1,328) (2,566) (3,617) (4,858) (5,908) (6,1149) (7,1200) (8,1436) (9,1484) (10,1724)};
+\addlegendentry{EAL acquisitions}
+\addplot[ordinaryorange,dashed,line width=0.8pt,mark=triangle*,mark size=1.7pt] coordinates {(0,180) (1,212) (2,260) (3,303) (4,351) (5,398) (6,444) (7,494) (8,546) (9,598) (10,646)};
+\addlegendentry{Ordinary acquisitions}
+\addplot[neutralgrey,dash dot,line width=0.8pt,mark=x,mark size=1.7pt] coordinates {(0,192) (1,192) (2,384) (3,384) (4,576) (5,576) (6,768) (7,768) (8,960) (9,960) (10,1152)};
+\addlegendentry{EAL host acquisitions}
+\addplot[neutralgrey,dotted,line width=0.8pt,mark=+,mark size=1.7pt] coordinates {(0,0) (1,192) (2,192) (3,384) (4,384) (5,576) (6,576) (7,768) (8,768) (9,960) (10,960)};
+\addlegendentry{Host reuses (excluded)}
+\end{axis}
+\end{tikzpicture}

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/design-evidence-visualisation/figure-review.schema.json",
+  "title": "Rendered figure review record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "figure_id", "spec_sha256", "artifacts", "reviewer", "candidates", "selected_candidate", "initial_reconstruction", "comparison", "decision", "limitations"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "figure_id": {"$ref": "#/$defs/id"},
+    "spec_sha256": {"$ref": "#/$defs/hash"},
+    "audit_sha256": {"$ref": "#/$defs/hash"},
+    "artifacts": {"type": "array", "minItems": 2, "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "path", "sha256"],
+      "properties": {
+        "role": {"enum": ["final_pdf", "prototype"]},
+        "path": {"$ref": "#/$defs/path"}, "sha256": {"$ref": "#/$defs/hash"}
+      }
+    }},
+    "reviewer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "independence_declared", "scope"],
+      "properties": {
+        "id": {"$ref": "#/$defs/text"}, "kind": {"enum": ["agent", "human"]},
+        "independence_declared": {"const": true},
+        "scope": {"enum": ["agent_screening", "reader_test"]},
+        "test_method": {"$ref": "#/$defs/text"},
+        "test_evidence": {
+          "type": "object", "additionalProperties": false,
+          "required": ["path", "sha256"],
+          "properties": {"path": {"$ref": "#/$defs/path"}, "sha256": {"$ref": "#/$defs/hash"}}
+        }
+      },
+      "allOf": [{
+        "if": {"properties": {"scope": {"const": "reader_test"}}},
+        "then": {"required": ["test_method", "test_evidence"]},
+        "else": {"properties": {"test_method": false, "test_evidence": false}}
+      }]
+    },
+    "candidates": {"type": "array", "minItems": 1, "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "prototype", "observations"],
+      "properties": {
+        "id": {"$ref": "#/$defs/id"}, "prototype": {"$ref": "#/$defs/path"},
+        "observations": {
+          "type": "object", "additionalProperties": false,
+          "required": ["reading", "annotation_burden", "reproduction"],
+          "properties": {
+            "reading": {"$ref": "#/$defs/text"},
+            "annotation_burden": {"$ref": "#/$defs/text"},
+            "reproduction": {"$ref": "#/$defs/text"}
+          }
+        }
+      }
+    }},
+    "selected_candidate": {"$ref": "#/$defs/id"},
+    "initial_reconstruction": {
+      "type": "object", "additionalProperties": false,
+      "required": ["claim", "quantities", "evidence_status", "scope", "unintended_inferences"],
+      "properties": {
+        "claim": {"$ref": "#/$defs/text"}, "quantities": {"$ref": "#/$defs/texts"},
+        "evidence_status": {"$ref": "#/$defs/text"}, "scope": {"$ref": "#/$defs/text"},
+        "unintended_inferences": {"$ref": "#/$defs/texts"}
+      }
+    },
+    "comparison": {
+      "type": "object", "additionalProperties": false,
+      "required": ["matches", "findings", "audit_warning_dispositions"],
+      "properties": {
+        "matches": {"$ref": "#/$defs/texts"},
+        "findings": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "severity", "description", "disposition", "reason"],
+          "properties": {
+            "id": {"$ref": "#/$defs/id"},
+            "severity": {"enum": ["blocking", "minor", "informational"]},
+            "description": {"$ref": "#/$defs/text"},
+            "disposition": {"enum": ["resolved", "accepted", "unresolved"]},
+            "reason": {"$ref": "#/$defs/text"}
+          }
+        }},
+        "audit_warning_dispositions": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["index", "disposition", "reason"],
+          "properties": {
+            "index": {"type": "integer", "minimum": 0},
+            "disposition": {"enum": ["fixed", "accepted"]},
+            "reason": {"$ref": "#/$defs/text"}
+          }
+        }}
+      }
+    },
+    "decision": {"enum": ["accept", "revise", "reject"]},
+    "limitations": {"$ref": "#/$defs/texts"}
+  },
+  "$defs": {
+    "text": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "texts": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "id": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"},
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "path": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?![A-Za-z]:)(?!.*\\\\)[^\\u0000-\\u001f]+$"}
+  }
+}

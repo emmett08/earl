@@ -11,7 +11,7 @@ import time
 from experiments.transfer_study.workspace import read_json, write_json
 from .task_manifest import cases_for_plan
 from .cases import CASES
-from .diagnostic_design import BASELINE, DiagnosticSchedule, load_diagnostic_plan
+from .diagnostic_design import BASELINE, DiagnosticSchedule, load_diagnostic_plan, recipient_positions
 from .diagnostic_measurement import ProjectSnapshot
 from .diagnostic_preparation import PreparationTimer
 from .diagnostic_reporting import DiagnosticReportBuilder
@@ -97,7 +97,7 @@ class DiagnosticPilot:
             donor.set_session(0)
             result = retained_session(donor, self.client, row['donor_session_id']) if self.resume else None
             if result is None:
-                result = self.sessions.run(donor, self.plan['models'][row['donor']], True,
+                result = self.sessions.run(donor, self.plan['models'][row['donor']], self.plan.get('donor_native_tools', True),
                                            row['donor_session_id'], **BASELINE)
                 stopped = result.get('stop_reason')
             else:
@@ -120,26 +120,35 @@ class DiagnosticPilot:
                     row['note_intervention'] = {'origin': 'predeclared diagnostic fixture',
                         'initial_reference': reference, 'content': content,
                         'file': 'diagnostic-prior-note.md'}
-                donor.set_session(1)
+                donor.set_session(recipient_positions(self.plan)[0])
             row['donor_snapshot'] = ProjectSnapshot.capture(donor)
+            if 'recipient_positions' in self.plan:
+                row['donor_snapshots'] = {}
+                for position in recipient_positions(self.plan):
+                    donor.set_session(position)
+                    row['donor_snapshots'][str(position)] = ProjectSnapshot.capture(donor)
+                donor.set_session(recipient_positions(self.plan)[0])
             write_json(root / 'initial-state.json', row['donor_snapshot'])
             write_json(root / 'current-evidence.json', read_json(donor.state))
-        donor.set_session(1)
         for variant in row['variants']:
             if variant.get('result') is not None:
                 continue
             self.control.remaining()
-            clone_root = root / f'{variant["factor"]}-{variant["level_index"]}'
+            position = variant.get('recipient_session', 1)
+            donor.set_session(position)
+            snapshot = row.get('donor_snapshots', {}).get(str(position), row['donor_snapshot'])
+            suffix = f'-session-{position}' if 'recipient_positions' in self.plan else ''
+            clone_root = root / f'{variant["factor"]}-{variant["level_index"]}{suffix}'
             if clone_root.exists():
                 project = Project.attach(clone_root, case, 'eal')
-                project.state, project.session = donor.state, 1
+                project.state, project.session = donor.state, position
             else:
                 with preparation.measure(variant['preparation']):
-                    project = donor.fork(clone_root, session=1)
+                    project = donor.fork(clone_root, session=position)
             variant['native_tools'] = row['native_tools']
             variant.setdefault('input_snapshot', ProjectSnapshot.capture(project))
             write_json(project.root / 'initial-state.json', variant['input_snapshot'])
-            if variant['input_snapshot'] != row['donor_snapshot']:
+            if variant['input_snapshot'] != snapshot:
                 variant['status'] = 'invalid_initial_state'
                 continue
             result = retained_session(project, self.client, variant['session_id']) if self.resume else None
@@ -149,9 +158,9 @@ class DiagnosticPilot:
                 stopped = result.get('stop_reason')
             else:
                 stopped = None
-            result['score'] = self.scorer.score(case, 1, result)
+            result['score'] = self.scorer.score(case, position, result)
             variant['result'], variant['status'] = result, 'observed'
-            variant['shared_state_unchanged'] = ProjectSnapshot.capture(donor) == row['donor_snapshot']
+            variant['shared_state_unchanged'] = ProjectSnapshot.capture(donor) == snapshot
             self.records.record(row)
             if not variant['shared_state_unchanged']:
                 raise ExecutionStopped('A recipient changed the shared diagnostic starting state')

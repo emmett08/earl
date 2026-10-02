@@ -1,0 +1,200 @@
+{
+  "schema": "EAL/blinded-semantic-adjudicator/1",
+  "sourceSHA": "71a514538c684b9e9edc116b20cf8b4d0573b7d66cdf2eaefd093b9652623e77",
+  "source_sha_algorithm": "SHA-256",
+  "source_file": "adjudication-items.json",
+  "provenance": {
+    "adjudicator": "AI",
+    "exact_model": "unknown",
+    "method": "Manual full-answer semantic adjudication of the communicated current whole-task criterion; no keyword classifier.",
+    "input_scope": "Only the supplied adjudication-items.json and the parent-provided adjudication rubric; no experiment records, previous reviews, or private mapping read.",
+    "labels_frozen": true,
+    "frozen_at_utc": "2026-10-02T13:31:25.361627+00:00",
+    "quote_verification": "All 26 supporting quotes verified as exact contiguous full-text source spans before label counting or downstream analysis.",
+    "original_records_edited": false
+  },
+  "items": [
+    {
+      "id": "85943245c5c5ca26797a5045",
+      "decision": "ambiguous",
+      "quote": "The task is currently undetermined. The primary database's reachability and leader lease are both valid, but the replica is not reachable at this moment. Since the overall condition requires either the primary to be reachable with a valid leader lease or the replica to be reachable with acceptable lag, and only one of these routes is satisfied, the service is considered not ready at this time.",
+      "note": "The opening assigns undetermined to the task, while the closing assigns not ready to the same overall service at the same moment. The route discussion supplies a reason for the latter criterion assessment, but does not qualify either status as provisional, historical, or merely a permission to proceed. The two current whole-task classifications remain unresolved.",
+      "conflict": true
+    },
+    {
+      "id": "a0c795c6c101cfff63ee01d4",
+      "decision": "ambiguous",
+      "quote": "The assessment at 2026-09-28T10:00:00Z indicates that the catalog-read service in the eu-test region is not ready. The primary route satisfies its requirements, with both the primary being reachable and holding a valid leader lease. However, the replica route fails because the replica is not reachable and its lag is 25 seconds, exceeding the acceptable maximum of 15 seconds. Given that at least one route (the primary) is fully operational and meets its conditions, the overall service status is considered \"undetermined.\"",
+      "note": "The assessment initially calls the service not ready and later explicitly calls its overall status undetermined. Both concern this snapshot and the complete service. Nothing identifies the first as a practical hold pending evidence or the second as a different scope; describing which routes work does not itself retract either verdict.",
+      "conflict": true
+    },
+    {
+      "id": "4c02f0ed5a1d9637486e70c3",
+      "decision": "ambiguous",
+      "quote": "At the current snapshot time of 2026-09-28T10:05:00Z, the assessment of the catalog-read service in eu-test indicates that it is **not_ready**. The primary route is active, reachable, and holds a valid leader lease, fulfilling the criteria for the primary route. However, the replica route is active and reachable but has a lag of 25 seconds, which exceeds the permitted maximum of 15 seconds, and its leader lease is invalid. Since the service specification requires only one fully supported route to consider the service ready, and the primary route is supported, the overall service is still considered **ready** at this time.",
+      "note": "The answer explicitly gives not_ready at the current snapshot and then ready for the overall service at that same time. The route-specific explanation is distinguished from the overall task, but both incompatible overall verdicts survive. The final rationale does not create an earlier-versus-current scope distinction.",
+      "conflict": true
+    },
+    {
+      "id": "2264899fc17579b3e77162c0",
+      "decision": "undetermined",
+      "quote": "Assessment: undetermined (not_ready)\n\nExplanation: As of 2026-09-28T10:07:00Z, the task reading remains inconclusive. The criteria allow either of two routes to certify readiness, but current evidence does not confirm either route definitively:\n\n- Primary route: no confirmed valid leader lease (primary_lease is false and primary_link is null).\n- Replica route: replica lag is not measured (replica_lag is null and replica_link is true), so we cannot verify that lag ≤ 15 seconds.\n\nBecause neither route is fully supported with solid evidence, the overall status stays undetermined. To move toward a decision, obtain fresh measurements for at least one route: confirm a valid primary leader lease, or measure replica lag and verify it is ≤ 15 seconds.",
+      "note": "The main assessment is undetermined; the body repeatedly defines the current reading as inconclusive, says neither route is definitively confirmed, and says the overall status stays undetermined. This full explanation clarifies the parenthetical not_ready as withholding certification of readiness. It does not communicate an established failed whole-task criterion.",
+      "conflict": false
+    },
+    {
+      "id": "5976279e4099bb9c8139c517",
+      "decision": "ambiguous",
+      "quote": "The current assessment at 10:05 indicates that the arm-beta is **not ready** for rollout. While the latest snapshot shows that safety tests, actuator calibration, and operator authorization are all successful for firmware fw1, there is a failure in the safety test status for firmware fw2 at minute 4. Since the requirements stipulate that all must pass within their respective age thresholds, this failure causes the overall readiness to be undetermined.",
+      "note": "The initial current assessment says not ready for rollout, and the final causal conclusion says the failure makes overall readiness undetermined. The body presents a failed required safety test as the reason for this assessment, without distinguishing an operational hold from a criterion classification or changing the assessment time. A unique whole-task category is not communicated.",
+      "conflict": true
+    },
+    {
+      "id": "e08aaf4a5407d8fe2d5fd276",
+      "decision": "ambiguous",
+      "quote": "The assessment is undetermined. Although the initial verification showed that all obligations were met at first, some of the more recent test results indicate that integration tests failed at minute 2 but then passed again at minute 4. As of now, the most recent status shows the integration tests are passing, along with the signature verification and rollback rehearsal, all within their respective maximum ages. Therefore, based on current evidence, the release may be considered ready, but the past failure of integration tests introduces a note of caution.",
+      "note": "The opening gives undetermined, but the current-evidence conclusion offers that the release may be considered ready, with caution about a past failure. The modal may does not make an unequivocal ready assertion, so this is not a categorical ready-versus-undetermined contradiction. Nevertheless, the answer never settles whether the current criterion assessment remains undetermined or is a qualified ready verdict; the historical failure is explicitly separate from current passing evidence.",
+      "conflict": false
+    },
+    {
+      "id": "a78e1d6a2e7dc006247edfe8",
+      "decision": "undetermined",
+      "quote": "Assessment: not_ready (undetermined due to safety outcome missing)\n\nExplanation: As of 2026-09-28T10:02:00Z, the readiness criteria require safety tests to pass, calibration to be OK, and operator authorization under the current policy. While authorization is true and calibration is true, the safety result is unknown (null). Without a known safety pass, the rollout cannot be considered ready. Until safety tests are performed and demonstrate a pass (or a valid exception is resolved), the current-version obligations cannot be deemed satisfied.",
+      "note": "The parenthetical immediately explains the headline as undetermined due to a missing safety outcome. The complete explanation says the result is unknown, no known safety pass permits readiness, and satisfaction cannot yet be established. In this qualified usage, not_ready withholds rollout readiness rather than declaring an established failed current criterion.",
+      "conflict": false
+    },
+    {
+      "id": "6aada5d0bd0ec246fdee05d1",
+      "decision": "ambiguous",
+      "quote": "The task readiness assessment is undetermined. Safety tests for the current firmware version (fw2) were initially not passed but later passed upon re-evaluation. Operator authorization is confirmed. However, the safety tests for firmware fw2, taken at 4 minutes past the hour, did not pass then but passed again at 6 minutes. Given the current time of 9 minutes past the hour, the latest relevant safety test results indicate that safety is now confirmed pass. Considering all required conditions are now met with recent evidence, the task is presently considered ready for execution.",
+      "note": "The opening uses the present tense to classify task readiness as undetermined, while the conclusion explicitly classifies the task as presently ready. The history of failed and later passed tests distinguishes historical observations, but does not state that the opening assessment was historical or interim. Both whole-task claims concern the current assessment, so using the final evidence to choose ready would repair rather than adjudicate the communication.",
+      "conflict": true
+    },
+    {
+      "id": "4067baa13c41fdfcbab1cfe7",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that the catalog-read service in eu-test is **not_ready**. Although the primary route remains active with the primary service reachable and holding a valid leader lease, the replica route shows that it is now reachable while its lag has decreased but is still above the 15-second threshold, at 9 seconds. Given that the primary route is functioning correctly, the overall service can still be considered operational and ready according to the rules, which require only one fully supported route. Therefore, the service remains **ready** at this time.",
+      "note": "The current assessment is explicitly not_ready and the closing explicitly says the service remains ready at this time. Both concern the complete service, not separate routes. The functioning-primary explanation supports the latter assertion but does not qualify or supersede the opening formal verdict.",
+      "conflict": true
+    },
+    {
+      "id": "c31d82fe641c2a50c3f3a800",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that the catalog-read service in eu-test is **not_ready**. Although the primary route remains active with the primary service reachable and holding a valid leader lease, the replica route shows that it is now reachable while its lag has decreased but is still above the 15-second threshold, at 9 seconds. Given that the primary route is functioning correctly, the overall service can still be considered operational and ready according to the rules, which require only one fully supported route. Therefore, the service remains **ready** at this time.",
+      "note": "The current assessment is explicitly not_ready and the closing explicitly says the service remains ready at this time. Both concern the complete service, not separate routes. The functioning-primary explanation supports the latter assertion but does not qualify or supersede the opening formal verdict.",
+      "conflict": true
+    },
+    {
+      "id": "7ad0fc81a4b5cb1d8c2aa8fe",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that the catalog-read service in the eu-test region is not ready. The primary route's conditions are not satisfied because the primary is currently unreachable and its lease is invalid. However, the replica route is operational, with the replica reachable and its lag within the acceptable limit of 15 seconds. Since only one fully supported route needs to be functional for the service to be considered ready, and the replica route meets the requirements, the service can be classified as ready at this time.",
+      "note": "The opening current assessment calls the service not ready; the final assessment classifies that service as ready at this time. The primary and replica claims are genuinely route-specific, but neither overall verdict is made route-specific. The later rule explanation does not otherwise distinguish or resolve the incompatible current service classifications.",
+      "conflict": true
+    },
+    {
+      "id": "72ad0e63a672bafb32ae1d9e",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that the service is not ready. The primary route's conditions are met, as the primary is reachable and has a valid leader lease within the required age limits. However, the replica route is not fulfilling its requirements: the replica is reachable but its lag is 25 seconds, exceeding the maximum allowable lag of 15 seconds. Therefore, since only the primary route is available and functioning correctly, the overall service is considered ready under the rules.",
+      "note": "The answer initially says the current service assessment is not ready and then says the overall service is ready under the rules. These are two whole-task verdicts for the same assessment. The primary/replica distinctions explain the second verdict but do not restrict the scope or timing of the first.",
+      "conflict": true
+    },
+    {
+      "id": "fbce3f50af6aaa91cbefac70",
+      "decision": "ambiguous",
+      "quote": "The current assessment at 2026-09-28T10:06:00Z is that dispatch is not ready. The primary condition for readiness requiring a valid direct DNS resolution and TLS validation is not met, as the DNS does not resolve and the TLS is invalidated. The tunnel condition is partially met with authentication being active, but since the number of free slots in the tunnel is only 1 (less than the required 2), this route also does not qualify. Therefore, the dispatch system is currently \"undetermined\" in readiness because neither route fully satisfies the necessary conditions.",
+      "note": "The answer presents dispatch as not ready at the current assessment and then explicitly concludes that its readiness is undetermined because neither route satisfies the necessary conditions. Both are overall classifications at the same time. The reason is stated as route conditions not qualifying, without clarifying a separate practical hold or an unresolved measurement; the competing verdicts remain.",
+      "conflict": true
+    },
+    {
+      "id": "1446363c6793923043b2713d",
+      "decision": "ambiguous",
+      "quote": "The assessment at 2026-09-28T10:02:00Z indicates that the telemetry-dispatch service in west-test is **not_ready**. The primary reason is that the tunnel route, which is a supported alternative, is currently not authenticated, and the direct DNS resolution has also failed. Although the tunnel has enough free slots and TLS validation succeeded, the lack of tunnel authentication prevents us from considering the dispatch service ready. Therefore, with both routes unsupported or ineligible, the service's dispatch capability is undetermined at this moment.",
+      "note": "The answer gives a formal not_ready assessment and a final undetermined dispatch-capability conclusion at the same moment. Both apply to the overall service; failed authentication/DNS and other route evidence explain the assessment but do not distinguish these labels by scope. The initial formal verdict is not qualified as merely an instruction to withhold dispatch.",
+      "conflict": true
+    },
+    {
+      "id": "d2e0bff03b6c6f2c24fc6ee1",
+      "decision": "undetermined",
+      "quote": "Assessment: undetermined\n\nExplanation:\nAs of 2026-09-28T10:08:00Z for service checkout-api in environment staging, release r17, the release status is not ready. The available evidence shows rollback is required and present (rollback = true), but there is no eligible evidence yet for artifact signature verification or integration tests. Since any eligible failed obligation would force not_ready, and missing eligible evidence leaves the overall status undetermined, we cannot declare the release ready at this time. You need to obtain eligible evidence for:\n- Artifact signature verification\n- Integration tests results\n\nAlso consider performing a rollback rehearsal if applicable and ensure all three obligations have aligned, eligible supporting evidence in the same service/environment/release context.",
+      "note": "The headline gives undetermined, and the explanation explicitly distinguishes a failed obligation yielding not_ready from missing eligible evidence leaving overall status undetermined. It identifies missing evidence and says readiness cannot be declared. That distinction clarifies the intervening plain-language not ready as lack of established readiness, not an asserted failed criterion.",
+      "conflict": false
+    },
+    {
+      "id": "36f52eba58a9739929c1689d",
+      "decision": "undetermined",
+      "quote": "Based on the current assessment at 2026-09-28T10:04:00Z, the read service is not ready. This is because, according to the evaluation rules, at least one route needs to be fully supported—meaning either the primary is reachable with a valid lease, or the replica is reachable with its lag at most 15 seconds. Since the observed state indicates that the primary lease and link are not confirmed as available, but the replica link is available, the service's readiness remains indeterminate rather than fully ready or not ready. Therefore, the overall assessment concludes that the service is not ready at this moment.",
+      "note": "The answer explicitly says readiness remains indeterminate rather than fully ready or not ready, and grounds this in unconfirmed availability. That qualification supplies the communicated criterion category. In the full text the opening and closing plain-language not ready express that readiness has not been established, despite the imprecise use of overall assessment in the last sentence; the explanation expressly excludes a determinate not-ready criterion verdict.",
+      "conflict": false
+    },
+    {
+      "id": "5b8507585e27b518d510012e",
+      "decision": "ambiguous",
+      "quote": "Based on the current snapshot at 2026-09-28T10:00:00Z, the assessment of task readiness indicates an undetermined status. The primary route is considered available since the primary is reachable and has a valid leader lease. However, the replica's reachability is false, and its lag exceeds the acceptable threshold (25 seconds vs. 15 seconds limit). Since the primary route is functional, the overall service can still be considered ready according to the rules, which stipulate that a single supported route suffices even if the other is refuted. Therefore, the overall status is **ready**.",
+      "note": "At the current snapshot the opening assigns an undetermined task-readiness status, while the concluding overall status is ready. The explanation gives a rationale for ready, but does not distinguish the opening status as an earlier assessment, a route-specific status, or a provisional statement. Selecting the last verdict solely because its rationale is more coherent would replace the unresolved communication.",
+      "conflict": true
+    },
+    {
+      "id": "2840d47bd4c12a88b116298d",
+      "decision": "undetermined",
+      "quote": "Assessment: not_ready (undetermined)\n\nReason: At 2026-09-28T10:08:00Z, the readiness criteria require evidence for backup, dry_run, and runbook aligned with the current migration and policy revision. The backup condition is marked true, but there is no provided evidence for a dry_run or for an approved runbook. Without confirmation for all required obligations (especially dry_run and runbook), and given that a missing current-version evidence makes the result undetermined, we cannot confirm readiness. Additionally, the environment/database match and observed scope are noted, but the missing dry_run/runbook evidence prevents a go-ahead.",
+      "note": "The parenthetical qualifies not_ready as undetermined, and the body explicitly says missing current-version evidence makes the result undetermined. Its practical conclusion is that missing confirmation prevents a go-ahead. The full answer therefore communicates an undetermined criterion and a withheld operational decision, not two conflicting determinate criterion verdicts.",
+      "conflict": false
+    },
+    {
+      "id": "3c807c724931535776b39d03",
+      "decision": "ambiguous",
+      "quote": "The assessment indicates that the checkout-api release r17 in the staging environment is not ready. While most obligations—such as verified artifact signature and rollback rehearsal—are satisfied within the required timeframes, the integration tests have failed more recently (at 2 minutes past the snapshot time), making the overall readiness undetermined. Since any failed obligation within the relevant age window prevents confirming readiness, the current status is that the release is not ready.",
+      "note": "The answer repeatedly calls the release not ready, including its current status, and says the recent failed tests make overall readiness undetermined. These claims use the same task and assessment scope. The explanation does not explicitly distinguish an operational hold from the criterion result and does not change time; it attributes the different current labels to the same failure.",
+      "conflict": true
+    },
+    {
+      "id": "f8d91bf8b1df45d79c6c9687",
+      "decision": "ambiguous",
+      "quote": "Assessment: not_ready (undetermined due to unverified safety status)\n\nExplanation: For rollout readiness, safety tests must pass for the current firmware, actuator calibration must pass for the current configuration, and the operator must be authorized. As of 2026-09-28T10:03:00Z, safety status is unverified (null), while calibration is confirmed true and authorization is true. Because safety verification is not confirmed, we cannot declare readiness; the result remains undetermined/not_ready until safety tests are completed and pass.",
+      "note": "Although the parenthetical explains uncertainty due to unverified safety, the answer begins with the formal not_ready label and ends by explicitly naming the result undetermined/not_ready. The final slash conflates two criterion categories instead of distinguishing an undetermined criterion from withholding permission. The missing-evidence explanation does not itself choose between the competing formal result labels.",
+      "conflict": true
+    },
+    {
+      "id": "54df15726ca132daa60717c5",
+      "decision": "ambiguous",
+      "quote": "The assessment indicates that the arm-beta project is **not ready** for rollout. This conclusion is based on the latest snapshot at 10:04, which shows that while the safety tests, actuator calibration, and operator authorization for firmware fw1 are successful, the safety test status for the firmware fw2 at minute 4 has failed. Since all requirements must be met within their respective age thresholds, the failure in the current firmware version check makes the overall readiness undetermined.",
+      "note": "The current project assessment says not ready for rollout, and the final sentence says the failed current-version check makes overall readiness undetermined. Both are presented as conclusions from the same snapshot and failure. Neither is identified as a merely practical hold or a different criterion scope, leaving the whole-task category unresolved.",
+      "conflict": true
+    },
+    {
+      "id": "a862404b75bc38ae0f548729",
+      "decision": "undetermined",
+      "quote": "Assessment: Not ready. Current evidence is insufficient to declare readiness for release r17 of checkout-api in staging.\n\nWhy: The task status remains undetermined because we lack eligible evidence for all three obligations (integration tests, artifact signature verification, and rollback rehearsal). The current state shows:\n- rollback: required but evidence not provided\n- signature: not provided\n- tests: not provided\n\nAdditionally, any eligible failed obligation would render the release not_ready, and missing eligible support leaves the status undetermined. Until complete, verifiable evidence for all three obligations is available (and all pass), we should not proceed.\n\nRecommendation:\n- Run or verify the integration tests for checkout-api (staging, release r17) and capture eligible test evidence.\n- Verify the artifact signature and obtain eligible signature evidence.\n- Perform a rollback rehearsal in staging and collect eligible rollback evidence.\n- Ensure all three obligations have eligible evidence. If any obligation fails, declare not_ready. If evidence is missing for any obligation, the status remains undetermined.",
+      "note": "The headline immediately defines Not ready as insufficient evidence to declare readiness. The body repeatedly assigns undetermined to the task, expressly distinguishes missing evidence from a failed obligation yielding not_ready, and separately recommends not proceeding. These qualifications establish an undetermined current criterion with a practical hold.",
+      "conflict": false
+    },
+    {
+      "id": "ff782dd177fd83654f5ebebd",
+      "decision": "ambiguous",
+      "quote": "Assessment: not_ready\n\nExplanation: For release r17 of service checkout-api in the staging environment, two obligations (rollback and signature) currently have eligible evidence, but the tests obligation does not. Since any eligible failed obligation renders the release not_ready, and missing eligible support for tests makes the overall readiness not determinate rather than ready, the release remains not_ready at 2026-09-28T10:03:00Z.",
+      "note": "The formal headline is not_ready and the final sentence says the release remains not_ready, while the intervening explanation explicitly says missing tests support makes overall readiness not determinate. This is not just an ordinary-language no-go phrase qualified by an undetermined headline: the formal not_ready verdict is repeated as the current result, without separating it from the indeterminate criterion description.",
+      "conflict": true
+    },
+    {
+      "id": "30b66792eb471c4c0c515c9e",
+      "decision": "undetermined",
+      "quote": "Assessment: Not ready (undetermined).\n\nExplanation: Based on the current task snapshot, at 2026-09-28T10:05:00Z the readiness decision remains \"undetermined.\" The dataset is orders in migration-lab (migration m42). The obligations show that RESTORE and SCHEMA are satisfied, but LAG evidence is missing (lag is null). Since one or more obligations lack eligible evidence, the overall cutover readiness cannot be confirmed as ready. The snapshot is within the 60-second age window, but without lag data, the decision cannot be finalized. To move to ready, provide verifiable replica lag ≤ 8 seconds (preferably with a current measurement).",
+      "note": "The parenthetical qualifies Not ready as undetermined. The explanation explicitly calls the current readiness decision undetermined, says missing evidence prevents confirming readiness, and says the decision cannot be finalized. The qualified headline thus withholds readiness while the criterion remains undetermined; it does not declare a failed criterion.",
+      "conflict": false
+    },
+    {
+      "id": "44ec6310be5fb9e7f8c3b329",
+      "decision": "ambiguous",
+      "quote": "The current assessment indicates that not all obligations for the release are met. While initial tests and verifications were successful earlier, a subsequent integration test failure was observed at minute 2, and the latest check at minute 4 was successful again. Since the most recent state shows a failed integration test less than 3 minutes ago, the release is not ready according to the established rules. Therefore, the overall readiness of the release is undetermined at this moment.",
+      "note": "The answer explicitly says the release is not ready according to the established rules and then concludes that overall readiness is undetermined at this moment. Both are current whole-release criterion conclusions. The earlier-versus-later test history distinguishes observations, not the scopes or times of these two verdicts, and no qualification resolves their relation.",
+      "conflict": true
+    },
+    {
+      "id": "b403fa5e6530491ec6509c2b",
+      "decision": "ambiguous",
+      "quote": "At 10:06 on September 28, 2026, the assessment indicates that arm-beta is **not ready** for rollout. Although recent evidence shows that safety tests, actuator calibration, and operator authorization are all successful under firmware fw1, there was a failure in a safety test for firmware fw2 at minute 4. Since this failure exceeds the \"max_age_minutes\" threshold and affects the current conditions, the overall readiness cannot be confirmed as fully compliant. Therefore, the current status remains undetermined.",
+      "note": "The current assessment says arm-beta is not ready for rollout, whereas the final current status remains undetermined. The explanation combines a safety failure affecting current conditions with an inability to confirm full compliance, but does not make the opening a merely practical hold or distinguish criterion scopes. Treating the cited age threshold as proving one correct category would derive a verdict from the facts rather than resolve the communicated classification.",
+      "conflict": true
+    }
+  ]
+}

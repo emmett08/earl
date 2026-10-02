@@ -13,7 +13,7 @@ def prepare_reasoning_context(project, question: str, *, reasoner: str, reuse: s
     start = time.monotonic()
     # All variants receive exactly the same current raw snapshot and rules.
     # Neither expected_decisions nor the scoring reference enters this path.
-    measurement = project.probe()
+    measurement = project.probe(host_snapshot=True)
     inputs = {'specification': project.case.specification(), 'measurement': measurement,
               'now': project.case.time(project.session)}
     packet = {'schema': 'EAL/reasoning-diagnostic-context/1', 'inputs': inputs}

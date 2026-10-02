@@ -1,0 +1,34 @@
+% Required packages: pgfplots, lmodern
+% Required TikZ libraries: none
+% Target width: 160 mm maximum
+% Minimum text size: 9 pt
+% Colour/greyscale intent: colour_and_greyscale, direct labels and line styles
+\begin{tikzpicture}
+\definecolor{ealblue}{HTML}{165D81}
+\definecolor{ordinaryorange}{HTML}{C27021}
+\definecolor{neutralgrey}{HTML}{616970}
+\pgfplotsset{compat=1.18,
+  every axis/.append style={
+    width=148mm,height=66mm,
+    font=\fontsize{9}{11}\selectfont,
+    tick label style={font=\fontsize{9}{11}\selectfont},
+    label style={font=\fontsize{9}{11}\selectfont},
+    title style={font=\fontsize{10}{12}\selectfont},
+    legend style={font=\fontsize{9}{11}\selectfont,draw=none,fill=none},
+    axis lines=left,axis line style={line width=0.5pt},
+    tick style={line width=0.5pt},
+    grid style={line width=0.4pt,black!12},
+    scaled ticks=false,clip=false}}
+\begin{axis}[width=134mm,height=68mm,xmin=0,xmax=4900,ymin=0.5,ymax=5.5,xtick={0,1000,2000,3000,4224},ytick={1,2,3,4,5},yticklabels={{Completed sessions},{Resource records},{AI-coded entries},{Resolved decisions},{Ambiguous decisions}},xlabel={Recorded session count},xmajorgrids=false]
+\addplot[neutralgrey,only marks,mark=square*,mark size=2.2pt,line width=0.5pt] coordinates {(4224,1)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:4304,1) {4,224};
+\addplot[neutralgrey,only marks,mark=square*,mark size=2.2pt,line width=0.5pt] coordinates {(4224,2)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:4304,2) {4,224};
+\addplot[neutralgrey,only marks,mark=square*,mark size=2.2pt,line width=0.5pt] coordinates {(4224,3)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:4304,3) {4,224};
+\addplot[neutralgrey,only marks,mark=square*,mark size=2.2pt,line width=0.5pt] coordinates {(4199,4)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:4279,4) {4,199};
+\addplot[neutralgrey,only marks,mark=square*,mark size=2.2pt,line width=0.5pt] coordinates {(25,5)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:105,5) {25};
+\end{axis}
+\end{tikzpicture}

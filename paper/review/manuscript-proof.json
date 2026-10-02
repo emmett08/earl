@@ -1,0 +1,38 @@
+{
+  "schema": "eal-jss-manuscript-proof/1",
+  "pdf_sha256": "f8d8da10767e01c4ef53c54a99226f52aa969bc2d7946e28e811f0199ff3e4a4",
+  "source_sha256": "d65124391d564e934431cff3554752f5b944b11024c2badaddc88d6db1a7eb6b",
+  "pages": 24,
+  "figure_ids": [
+    "08-measurement-status",
+    "12-recipient-decisions",
+    "13-recipient-match-bounds",
+    "01-token-distribution",
+    "02-token-subgroups",
+    "03-cumulative-tokens",
+    "04-token-composition",
+    "05-resource-ratios",
+    "10-phase-contrasts",
+    "11-time-partition",
+    "06-latency-distribution",
+    "09-paired-tradeoff",
+    "07-acquisition-horizon",
+    "14-frozen-endpoint-bounds",
+    "15-reference-undetermined-profiles"
+  ],
+  "import_manifest_sha256": "84fe4087148b6a4122860c745691099845ad09ebc5cfccc62b2175130c7880cf",
+  "checks": {
+    "no_overfull_boxes": true,
+    "no_undefined_references_or_citations": true,
+    "current_pilot_values_present": true,
+    "obsolete_pilot_values_absent": true,
+    "every_text_word_within_page": true,
+    "figure_inclusion_matches_import_manifest": true,
+    "retained_listing_present_on_one_page": true
+  },
+  "visual_review": "accepted after inspection of current page renders",
+  "visual_review_scope": "Journal page layout and placement only; standalone semantic reviews retain their exact imported file bindings, and scientific coding validity remains conditional.",
+  "rendered_page_count": 24,
+  "contact_sheet_count": 4,
+  "review_assets": "Transient page renders and contact sheets are not publication assets and are not required by the paper checks."
+}
