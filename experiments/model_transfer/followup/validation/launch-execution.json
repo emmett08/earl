@@ -1,0 +1,38 @@
+{
+  "schema": "EAL/followup-launch-execution/1",
+  "recorded_at": "2026-10-02T15:00:04.909721+00:00",
+  "workflow_run_id": 37023431850,
+  "workflow_url": "https://github.com/emmett08/earl/actions/runs/37023431850",
+  "workflow_head_sha": "054c27354e1d3ed15d9c1c20f4b2110169b84a4e",
+  "branch": "codex/followup-usage-stop",
+  "inputs": {
+    "operation": "start",
+    "plan": "custom",
+    "plan_path": "experiments/model_transfer/followup/plan.json",
+    "workers": 0,
+    "source_artifact_id": "",
+    "annotation_labels": "",
+    "information_config": ""
+  },
+  "plan_file_sha256": "8035f0fd15077047b20343f1d3b10005873bdbbee66ebb31b1dc4d93da21beb0",
+  "measured_implementation_sha256": "4ebf4871dee3c792da626482d2112be1cf5118198b94d129a5e105142451b2b9",
+  "budget_usd": 2.0,
+  "maximum_sessions": 128,
+  "dispatch_status": "started_and_verified_in_browser_and_GitHub_API",
+  "observed_phase": "Actions verify in progress; paid collection not yet verified",
+  "local_verification": {
+    "command": "make check",
+    "status": "passed",
+    "pytest_passed": 1411,
+    "pytest_skipped": 1,
+    "pytest_seconds": 355.32,
+    "parser_scientific_validation_maintained_example": "passed"
+  },
+  "affected_tests": {
+    "status": "passed",
+    "count": 56,
+    "seconds": 37.54
+  },
+  "coding_readiness": "Actual masked-coder calibration remains required before substantive coding; canonical endpoint may be reported separately.",
+  "limitations": "Dispatch is not experiment completion or a measured participant result. Actions verify and fresh scripted preflight still gate paid collection."
+}
