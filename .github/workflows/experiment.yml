@@ -53,7 +53,7 @@ jobs:
       plan: ${{ inputs.plan }}
       plan_path: ${{ inputs.plan_path }}
       source_artifact_id: ${{ inputs.source_artifact_id }}
-      workers: ${{ inputs.workers }}
+      workers: ${{ fromJSON(format('{0}', inputs.workers)) }}
   collect-1:
     needs: prepare
     if: ${{ needs.prepare.outputs.can_collect == 'true' }}

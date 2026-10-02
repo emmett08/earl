@@ -50,7 +50,7 @@ jobs:
       artifact_id: ${{ steps.retain.outputs.artifact-id }}
       can_collect: ${{ steps.execute.outputs.can_collect }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
           ref: ${{ github.sha }}
@@ -76,7 +76,7 @@ jobs:
       - name: Retain this cumulative stage even after a failure
         id: retain
         if: ${{ always() && steps.execute.outputs.artifact_path != '' }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: experiment-${{ inputs.stage_name }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ steps.execute.outputs.artifact_path }}
@@ -85,7 +85,7 @@ jobs:
           retention-days: 90
       - name: Retain calibration and scripted rehearsal records
         if: ${{ always() && inputs.phase == 'prepare' && inputs.operation != 'resume' }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: experiment-preflight-${{ github.run_id }}-${{ github.run_attempt }}
           path: experiments/model_transfer/runs/preflight
@@ -95,7 +95,7 @@ jobs:
       - name: Export only masked answer text for the independent assessor
         id: masked
         if: ${{ success() && inputs.phase == 'export' }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: experiment-annotations-${{ github.run_id }}-${{ github.run_attempt }}
           path: experiments/model_transfer/runs/live/annotation-bundle/items.json
