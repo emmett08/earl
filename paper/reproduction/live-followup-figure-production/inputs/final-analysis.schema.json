@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Sanitized final endpoint export for follow-up report figures",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "source",
+    "rows"
+  ],
+  "properties": {
+    "schema": {
+      "const": "EARL/followup-final-figure-data/1"
+    },
+    "source": {
+      "type": "object",
+      "description": "Final analysis provenance hashes/stage; no answer text, coder outputs or calibration keys.",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "integer",
+          "boolean"
+        ]
+      }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 120,
+      "maxItems": 120,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "task_id",
+          "family",
+          "cause",
+          "position",
+          "condition",
+          "context",
+          "reference_decision",
+          "canonical_match",
+          "whole_verdict_match",
+          "explanation_consistency",
+          "primary_state"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "family": {
+            "enum": [
+              "all_of",
+              "any_of"
+            ]
+          },
+          "cause": {
+            "enum": [
+              "missing",
+              "stale",
+              "invalidated",
+              "version_mismatch"
+            ]
+          },
+          "position": {
+            "enum": [
+              2,
+              4,
+              6,
+              8,
+              10
+            ]
+          },
+          "condition": {
+            "enum": [
+              "complete",
+              "critical_gap",
+              "restored_positive",
+              "restored_negative",
+              "noncritical_gap"
+            ]
+          },
+          "context": {
+            "enum": [
+              "facts",
+              "eal",
+              "conventional"
+            ]
+          },
+          "reference_decision": {
+            "enum": [
+              "ready",
+              "not_ready",
+              "undetermined"
+            ]
+          },
+          "canonical_match": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "whole_verdict_match": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "explanation_consistency": {
+            "enum": [
+              "consistent",
+              "contradictory",
+              "ambiguous",
+              "no_explanation",
+              "missing"
+            ]
+          },
+          "primary_state": {
+            "enum": [
+              "success",
+              "failure",
+              "unresolved"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

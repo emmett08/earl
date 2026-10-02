@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-02-endpoint-separation",
+  "spec_sha256": "1ee75db4fb3977393400ee766c0b8562ce2335eeaefc4481cf01a24ba46d2e65",
+  "audit_sha256": "891e43434151c8b5b7b72094ceeaaa3a038d89c14fa825b5943d41407687245a",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "02-endpoint-separation.pdf",
+      "sha256": "31cc0f4dff7a42472723c71c63e594be0d1ed530fd2224adc429f7bed34023c9"
+    },
+    {
+      "role": "prototype",
+      "path": "02-endpoint-separation.png",
+      "sha256": "f28b992e47531cbd985dd0a747f57775d8c0d860b8f9bbda949ddc9b93a0284c"
+    }
+  ],
+  "reviewer": {
+    "id": "independent-final-graphic-semantic-review-agent",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "separated-positional-counts",
+      "prototype": "02-endpoint-separation.png",
+      "observations": {
+        "reading": "The revised image asks how canonical match, known whole-verdict match and primary success counts compare among the same outputs. Confirmed whole-verdict matches are 20/30/33 with separate null judgments 3/3/0; canonical is 20/31/33 and primary is 20/30/33. These are finite endpoint counts rather than fully determinate agreement rates.",
+        "annotation_burden": "Direct endpoint names including Known verdict matches, exact integer labels and common 0–40 axes support separate confirmed-count comparison. Four explicit diagnostic rows and the caption define overlap, null judgments, and the contradiction subset.",
+        "reproduction": "One familiar positional-count form is justified by the separate endpoint comparison task; no unresolved encoding choice calls for multiplied prototypes. Inspected the actual final PNG/PDF, PDF native-size rasterization and final-size greyscale QA. Current source regeneration, numerical evidence and mechanical audit are bound below."
+      }
+    }
+  ],
+  "selected_candidate": "separated-positional-counts",
+  "initial_reconstruction": {
+    "claim": "Canonical field matching and whole-answer/primary endpoints are separate constructs. EAL has 31 canonical matches but 30 whole-verdict matches and 30 primary successes; Facts has 20 of each and Conventional has 33 of each. Equality of some totals does not make the endpoints conceptually interchangeable.",
+    "quantities": [
+      "unit: \"Counts of outputs, out of forty in every context.\"",
+      "panels: \"Facts, EAL, Conventional, all with count axes from 0 to 40.\"",
+      "rows: \"Canonical match (gray tick), Whole verdict match (orange tick), Primary success (blue tick); tick position on each panel axis encodes the count and an adjacent number reports it exactly.\"",
+      "observed_counts: {\"Conventional\": {\"canonical_match\": 33, \"contradictory\": 0, \"contradictory_with_enum_match\": 0, \"primary_success\": 33, \"primary_unresolved\": 0, \"verdict_unresolved\": 0, \"whole_verdict_match\": 33}, \"EAL\": {\"canonical_match\": 31, \"contradictory\": 3, \"contradictory_with_enum_match\": 0, \"primary_success\": 30, \"primary_unresolved\": 0, \"verdict_unresolved\": 3, \"whole_verdict_match\": 30}, \"Facts\": {\"canonical_match\": 20, \"contradictory\": 3, \"contradictory_with_enum_match\": 0, \"primary_success\": 20, \"primary_unresolved\": 0, \"verdict_unresolved\": 3, \"whole_verdict_match\": 20}}",
+      "overlap: \"Endpoint totals, contradiction counts, and unresolved counts overlap; they are neither partition pieces nor additive components.\""
+    ],
+    "evidence_status": "Parsed designated canonical fields and final AI coding of actual outputs are compared with authored synthetic references; explanation factual grounding and human benefit are not measured.",
+    "scope": "Descriptive endpoint separation among the same 40 outputs in each context. Eight common-donor task clusters and one repeat provide no population precision, repeatability, superiority, or human-benefit estimate. EAL/Conventional packets were identical at all matched positions.",
+    "unintended_inferences": [
+      "Without the caption, With enum match could be read as an unrelated count; the caption specifies that it is the contradictory subset.",
+      "A difference between matching field and whole verdict does not show factual grounding or measure human interpretability.",
+      "The three main endpoint counts must not be added; image footer and caption both state overlap."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "The frozen independently reconstructed question, finite claim, quantities, category/count encodings and clustered inference scope match the current intended specification.",
+      "Canonical/whole-verdict/primary counts are Facts 20/20/20, EAL 31/30/30, Conventional 33/33/33. Contradictory and verdict-unresolved counts are 3/3/0; all canonical-correct contradictory subsets and primary-unresolved counts are zero. Independent sanitized-row calculations agree with every displayed count.",
+      "An undetermined authored reference is distinct from unresolved coding; ambiguous whole verdicts can yield determinate primary failures through contradictory explanations. No cell is omitted or relabelled by this reviewer.",
+      "The caption states that EAL and Conventional packets are identical at all 40 matched positions, references are authored synthetic states, coding is by AI, collection is once, and superiority/grounding/human benefit/population or repeatability estimates are unsupported.",
+      "The revised Known verdict matches row means confirmed true whole-verdict matches only, while the Verdict unresolved diagnostic retains all null matching judgments separately within the full 40-cell denominators. The label/caption avoid interpreting 20/30/33 as a fully resolved agreement total."
+    ],
+    "findings": [
+      {
+        "id": "independent-first-reading-binding",
+        "severity": "informational",
+        "description": "Historical first reading was frozen before specification/input/audit exposure in validation/independent-first-reconstruction.json; sha256=cfdf5bca5046df619f24212dea22a4fd817450c25d4635787d05c955a20514ae. It binds the original inspected artifacts and remains unchanged after the known-match wording clarification. Current reinspection evidence: validation/known-verdict-clarification-reinspection.json; sha256=d9fa56f91f299541d99b6748e93f34333752b1f0c2c01e9a3b6cd5b206a94783. Stage 1 read only final renders/captions; Stage 2 and reinspection read only explicitly allowed production-root specifications, sanitized inputs, audits, validation records, reproduction code/schema/profile and own QA. No sibling, participant answer, coder/calibration, task/scorer/plan file was read.",
+        "disposition": "accepted",
+        "reason": "The frozen reconstruction supplies historical evidence rather than a false claim that changed files were initially inspected. Current semantics were verified after the controlled clarification and audit refresh."
+      },
+      {
+        "id": "caption-and-alt-bindings",
+        "severity": "informational",
+        "description": "Current caption evidence: captions/02-endpoint-separation.caption.txt; sha256=355bb2f2259e0504d6e12d549af71429945b93788592fbd5baa3a9f2ddd0cce3. Current alt text evidence: captions/02-endpoint-separation.alt.txt; sha256=e8b0e829e2920819de9571628669da6d89af0cf80bef4723ece5cc6096769769.",
+        "disposition": "accepted",
+        "reason": "Caption and alt definitions and counts agree with the rendered figure and permitted sanitized input; caption/alt are also current declared dependencies of the mechanical audit."
+      },
+      {
+        "id": "verification-evidence-bindings",
+        "severity": "informational",
+        "description": "Current verification evidence: inputs/final-analysis-for-figures.json sha256=821920676a0c06cfdb6baffc8dd4f0816163bb68d2adaac40c60aa09df92410b; inputs/collection-audit-excerpt.json sha256=2e602776888e18bcaf2ade9bd7d0e4223f014f9714a0dece05c634885cd4c451; validation/numerical-check.json sha256=f50606aace7809831610d79425da7cf49ef59aa2034a0ad27aecc60ee675f414; validation/calculation-checks.json sha256=25060ce0c1ce5ad07541b02dd86b3aa6d5af5e194469e4cd20fe02079f0a237d; validation/author-visual-inspection.json sha256=f72512bdc49133ee624049d3d35b328eac952b2ab41a997c89d2bfebc13850fd; validation/exact-source-regeneration.json sha256=cc94ac0c0b4b2d901d743489f4dba495527164c41185cf19ec6d02ffe32d80f2.",
+        "disposition": "accepted",
+        "reason": "Sanitized rows are the sole endpoint source; collection excerpt supplies live-output/clone/packet-equality provenance. Numerical review passes all listed checks. Exact-source-regeneration bound artifacts all match current bytes; mechanical audit binds the current source/spec/profile/PDF and all declared local dependencies."
+      },
+      {
+        "id": "physical-size-and-greyscale",
+        "severity": "informational",
+        "description": "Current final-size greyscale preview: qa/02-endpoint-separation/02-endpoint-separation.final-size-96dpi-greyscale.png; sha256=5a743e60531e0fa78e5f6bb1d3296c4e8498a8ae2fa58da540d928f597bed55e. Native PDF, high-resolution PNG and final-size greyscale QA are readable with no visible clipping or overlap; current PDF native-size raster was independently verified. Measured minimum text is 9.000024 pt and PDF width remains within 160 mm maximum.",
+        "disposition": "accepted",
+        "reason": "Agent visual inspection finds labels, exact counts and semantic glyph shapes readable at the native final size with no clipping or label overlap. Greyscale meaning survives through shapes/direct labels. Mechanical reading accuracy and human interpretation benefit are not measured."
+      },
+      {
+        "id": "no-current-audit-warnings",
+        "severity": "informational",
+        "description": "Current audit ok=true; errors, warnings and typesetting_warnings are empty. Audit warning dispositions is therefore an empty array.",
+        "disposition": "accepted",
+        "reason": "There is no current warning to waive or repair; semantic/reading/colour-accessibility checks remain explicitly outside the mechanical audit."
+      },
+      {
+        "id": "residual-caption-dependent-reading",
+        "severity": "minor",
+        "description": "With enum match is a compressed subset label; the specification describes that enum matching and contradiction can coexist in principle, while the observed contradictory-with-enum-match subset is zero in every context.",
+        "disposition": "accepted",
+        "reason": "The caption explicitly defines With enum match as the contradictory subset, and the graphic prints all three zeros. Distinct endpoint definitions do not imply an observed canonical-correct contradiction; the actual canonical-versus-whole count difference is shown only for EAL."
+      },
+      {
+        "id": "known-verdict-match-clarification",
+        "severity": "blocking",
+        "description": "A bounded-source review requested explicit known-match wording to prevent a fully determinate whole-agreement-rate reading despite null verdict judgments. The current actual graphic now says Known verdict matches; current caption/spec/alt explicitly count only confirmed true whole-verdict matching and retain null judgments separately.",
+        "disposition": "resolved",
+        "reason": "Reinspected the revised PNG/PDF/native-size and greyscale render plus the caption/spec/alt. Confirmed matches 20/30/33, null judgments 3/3/0, primary counts, diagnostics and numeric positions are unchanged. The known/null distinction is now explicit and readable."
+      }
+    ],
+    "audit_warning_dispositions": []
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "Agent screening is an independent reconstruction and fidelity check of these supplied renders and sanitized coded outputs, not a human reader test or fresh participant semantic coding.",
+    "Eight common-donor task clusters, purposive domain-confounded instances and one collection provide finite descriptive counts only; no context superiority, population reliability/precision or stochastic-repeatability claim is accepted.",
+    "Authored synthetic references and final AI coding are the evidence basis; explanation factual grounding, independent human coder validation and resolved-code error are unassessed."
+  ]
+}

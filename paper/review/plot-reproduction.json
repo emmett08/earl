@@ -15,7 +15,9 @@
     "09-paired-tradeoff",
     "07-acquisition-horizon",
     "14-frozen-endpoint-bounds",
-    "15-reference-undetermined-profiles"
+    "15-reference-undetermined-profiles",
+    "16-followup-primary-outcome-cells",
+    "17-followup-endpoint-separation"
   ],
   "files_reproduced_exactly": {
     "figures/08-measurement-status.tikz.tex": "6caf1ec80b77bce5151ed730ba70b1f07d65e3b1a8b6346dbb99f75580f11680",
@@ -62,7 +64,13 @@
     "14-frozen-endpoint-bounds.spec.json": "dbe0cb8e2618b9617b8e8c3499700a31a866b7cf5ed2e8c60dcbade78936a13b",
     "figures/15-reference-undetermined-profiles.tikz.tex": "899c642e55d086e1a2cc4e34569ab0a17a9da8d7c837df6b2215ea2266659aec",
     "captions/15-reference-undetermined-profiles.caption.txt": "02470f0a5745fb2bdfad6f41f06fd52863a187eff3cf5eda623879e310952342",
-    "15-reference-undetermined-profiles.spec.json": "5bdfc29c26ebcebe5879473bc82e36e76ced0a7cd52f233bd2b9e3492d347609"
+    "15-reference-undetermined-profiles.spec.json": "5bdfc29c26ebcebe5879473bc82e36e76ced0a7cd52f233bd2b9e3492d347609",
+    "figures/16-followup-primary-outcome-cells.tikz.tex": "e369e68586abb8223d1e0ddc117c71df0fd3254f6117731b65c40dc9fcf05aff",
+    "captions/16-followup-primary-outcome-cells.caption.txt": "84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545",
+    "figures/16-followup-primary-outcome-cells.spec.json": "00b00eadec0d0797547a6352317ebb353764813d3b316f5064e4a9db8bd3b180",
+    "figures/17-followup-endpoint-separation.tikz.tex": "aea3c2634a94656f0e60bff1322ed71f8ebd457c2bf02de4b7402cf47430ab0d",
+    "captions/17-followup-endpoint-separation.caption.txt": "355bb2f2259e0504d6e12d549af71429945b93788592fbd5baa3a9f2ddd0cce3",
+    "figures/17-followup-endpoint-separation.spec.json": "1ee75db4fb3977393400ee766c0b8562ce2335eeaefc4481cf01a24ba46d2e65"
   },
   "scope": "Exact deterministic source, caption and specification reproduction in a disposable directory. Accepted vector PDFs and their original exact reviews are unchanged."
 }

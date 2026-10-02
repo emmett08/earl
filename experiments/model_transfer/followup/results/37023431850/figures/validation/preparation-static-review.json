@@ -1,0 +1,15 @@
+{
+  "reviewer": "/root/followup_figures/pipeline_static_review",
+  "scope": "Independent read-only static code/schema/production review, without input data, answertext, calibration keys, coder outputs or rendered outcome inspection.",
+  "resolved_findings": [
+    "Validate one stable task ID for each family/cause across all positions and contexts.",
+    "Endpoint values require exact booleans or null; integer0/1 cannot silently alter counts.",
+    "Final primary success is equivalent to a matching whole verdict and consistent explanation.",
+    "Reproduction recipe explicitly records the sanctioned input path.",
+    "Optimization guard keeps calculation/source validation active.",
+    "Renderer/helpers/schema are declared dependencies and fixed labels have expected-label checks."
+  ],
+  "remaining_process_step": "Independent rendered semantic reconstruction is a separate manual stage after final data and exact render are available. No semantic acceptance is claimed by the builder.",
+  "source_sha256": "91f6cb6a507bf477214e7ff4c51c0b3cf854c372891584c3021a967e66398701",
+  "status": "prepared; final sanctioned analysis input awaited"
+}

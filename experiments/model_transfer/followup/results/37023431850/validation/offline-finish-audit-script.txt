@@ -1,0 +1,97 @@
+"""Archive byte and offline status audit. No semantic labels/answers/key parsing."""
+from datetime import datetime,timezone
+from pathlib import Path
+import hashlib,json,subprocess,zipfile
+
+ROOT=Path('/workspace/scratch/5524656c89cf/earl-followup')
+SOURCE=Path('/workspace/scratch/5524656c89cf/data/experiment-export-37023431850-1')
+FINISH=Path('/workspace/scratch/5524656c89cf/data/experiment-finish-37038229027-1')
+LOCAL=Path('/workspace/scratch/5524656c89cf/data/followup-annotated-local')
+RESULT=ROOT/'experiments/model_transfer/followup/results/37023431850'
+OUT=RESULT/'validation'
+SOURCE_ZIP=Path('/workspace/scratch/5524656c89cf/attachments/0b646d98-6e8c-4246-89e8-41418cb4dc0f/experiment-export-37023431850-1.zip')
+FINISH_ZIP=Path('/workspace/scratch/5524656c89cf/earl-followup-37038229027-original-finish.zip')
+EXPECTED_FINISH_SHA='c442a8579f3abc68b79908d66e5de19953aa5dc976ac1f5785c49f9157786811'
+EXPECTED_SOURCE_SHA='c6e409e56258bd888cf7dea538adc3517afc14cb44a63f3a20dda808d2a135ff'
+EXPECTED_LABELS_SHA='7718c5f4b0e78fa9ef35e6b89ceec525781d876bf0e44d7e15f38f72d45241d1'
+EXPECTED_ROWS_SHA='6d88aa0f7680ccd23759a447b33ba7d6fb29d30f4dc13e4e051a64835acca7b5'
+ALLOWED_CHANGED={'pipeline-status.json','restore-receipt.json'}
+ALLOWED_ADDED={'analysis-annotated.json','annotated-rows.json','completed-labels.json'}
+def read(path):return json.loads(Path(path).read_text())
+def bytes_sha(data):return hashlib.sha256(data).hexdigest()
+def sha(path):return bytes_sha(Path(path).read_bytes())
+def digest(x):return bytes_sha(json.dumps(x,sort_keys=True,separators=(',',':'),allow_nan=False).encode())
+checks=[];failures=[]
+def check(name,passed,detail=None):
+ x={'check':name,'passed':bool(passed)}
+ if detail is not None:x['detail']=detail
+ checks.append(x)
+ if not passed:failures.append(x)
+
+check('original_private_finish_zip_exact',FINISH_ZIP.stat().st_size==4135583 and sha(FINISH_ZIP)==EXPECTED_FINISH_SHA,{'bytes':FINISH_ZIP.stat().st_size,'sha256':sha(FINISH_ZIP)})
+check('original_source_zip_exact',sha(SOURCE_ZIP)==EXPECTED_SOURCE_SHA)
+source_hashes={};finish_hashes={};extract_failures=[]
+with zipfile.ZipFile(SOURCE_ZIP) as source,zipfile.ZipFile(FINISH_ZIP) as finish:
+ sn=source.namelist();fn=finish.namelist()
+ check('archive_member_counts_and_uniqueness',len(sn)==len(set(sn))==1933 and len(fn)==len(set(fn))==1936)
+ check('archive_payload_integrity',source.testzip() is None and finish.testzip() is None)
+ added=set(fn)-set(sn);removed=set(sn)-set(fn)
+ check('exactly_three_authorized_derived_additions',added==ALLOWED_ADDED and not removed,{'added':sorted(added),'removed':sorted(removed)})
+ # Hash every payload, including opaque keys/calibration files, without parsing or displaying contents.
+ for n in sn:
+  source_hashes[n]=bytes_sha(source.read(n))
+  check('source_extract_identity:'+n,(SOURCE/n).is_file() and sha(SOURCE/n)==source_hashes[n])
+ for n in fn:
+  finish_hashes[n]=bytes_sha(finish.read(n))
+  check('finish_extract_identity:'+n,(FINISH/n).is_file() and sha(FINISH/n)==finish_hashes[n])
+ changed=[n for n in sn if source_hashes[n]!=finish_hashes.get(n)]
+ check('only_two_authorized_metadata_updates',set(changed)==ALLOWED_CHANGED,{'changed':sorted(changed),'unchanged_original_members':len(sn)-len(changed)})
+ for n in sn:
+  if n not in ALLOWED_CHANGED:check('source_payload_preserved:'+n,source_hashes[n]==finish_hashes[n])
+
+pipeline=read(FINISH/'pipeline-status.json');receipt=read(FINISH/'restore-receipt.json');analysis=read(FINISH/'analysis-annotated.json');local_analysis=read(LOCAL/'analysis.json');collection=read(FINISH/'report.json');provenance=read(FINISH/'provenance.json');prior=read(OUT/'independent-live-collection-audit.json');derived_audit=read(OUT/'final-derived-audit.json')
+check('exact_finished_pipeline_status',pipeline['phase']=='finish' and pipeline['state']=='processing_complete' and pipeline['can_collect'] is False and pipeline['analysis']=='analysis-annotated.json' and pipeline['analysis_status']=='pending_annotation' and pipeline['execution_status']=='complete' and pipeline['planning']=='not_applicable_to_diagnostics' and pipeline['evaluation_available'] is False,pipeline)
+check('complete_original_collection_preserved',collection['execution_status']=='complete' and provenance['execution_kind']=='live' and provenance['run_id']=='adc97f7b-113d-4404-811d-16c5857e9d20' and provenance['revision']=='054c27354e1d3ed15d9c1c20f4b2110169b84a4e')
+check('restore_receipt_binds_exact_source_export',receipt['artifact_id']=='11234337488' and receipt['digest']=='sha256:'+EXPECTED_SOURCE_SHA and receipt['source_run']['id']==37023431850 and receipt['source_run']['head_sha']==provenance['revision'],receipt)
+check('completed_labels_exact_byte_identity',sha(FINISH/'completed-labels.json')==sha(RESULT/'final-labels.json')==EXPECTED_LABELS_SHA)
+check('annotated_rows_exact_byte_identity',sha(FINISH/'annotated-rows.json')==sha(LOCAL/'annotated-rows.json')==EXPECTED_ROWS_SHA and derived_audit['input_sha256'][str(LOCAL/'annotated-rows.json')]==EXPECTED_ROWS_SHA)
+
+def differences(a,b,path=''):
+ if isinstance(a,dict) and isinstance(b,dict):
+  for k in sorted(a.keys()|b.keys()):
+   if k not in a or k not in b:yield path+'/'+k
+   else:yield from differences(a[k],b[k],path+'/'+k)
+ elif isinstance(a,list) and isinstance(b,list):
+  if len(a)!=len(b):yield path+'/LENGTH'
+  else:
+   for i,(x,y) in enumerate(zip(a,b)):yield from differences(x,y,path+'/'+str(i))
+ elif a!=b:yield path
+analysis_differences=list(differences(analysis,local_analysis))
+allowed_analysis_differences={'/rows_source','/processing_provenance/revision','/processing_provenance/python','/processing_provenance/implementation_sha256'}
+check('analysis_only_processing_metadata_differences',set(analysis_differences)==allowed_analysis_differences,{'different_paths':analysis_differences})
+normalise=lambda a:{k:( {kk:vv for kk,vv in v.items() if kk not in {'revision','python','implementation_sha256'}} if k=='processing_provenance' else v) for k,v in a.items() if k!='rows_source'}
+check('finished_analysis_semantically_identical_to_audited_local_analysis',normalise(analysis)==normalise(local_analysis) and sha(LOCAL/'analysis.json')==derived_audit['input_sha256'][str(LOCAL/'analysis.json')],{'normalised_analysis_sha256':digest(normalise(analysis)),'normalisation':'Only rows_source and processing revision/Python/implementation digest metadata excluded.'})
+check('finished_analysis_status_and_scope_exact',analysis['status']=='pending_annotation' and analysis['pending_annotation_sessions']==6 and analysis['execution_status']=='complete' and analysis['planned_sessions']==128 and analysis['planned_blocks']==8 and analysis['contrast_intervals']==[] and 'not independent cases' in analysis['evidence_restoration']['interpretation'],{'analysis_status':analysis['status'],'pending_annotation_sessions':analysis['pending_annotation_sessions'],'execution_status':analysis['execution_status'],'planned_sessions':analysis['planned_sessions'],'planned_blocks':analysis['planned_blocks']})
+check('original_collection_resource_totals_not_changed',analysis['resources']==collection['resources'] and analysis['resources']['api_attempts']==128 and analysis['resources']['native_tool_calls']==0 and analysis['resources']['known_cost_usd']==analysis['known_cost_usd']==analysis['charged_or_reserved_usd']==0.0204097 and analysis['resources']['input_tokens']==152581 and analysis['resources']['output_tokens']==12879 and analysis['resources']['cached_input_tokens']==1152 and analysis['resources']['reasoning_tokens']==0)
+check('calls_journal_usage_and_events_unchanged',all(finish_hashes[n]==source_hashes[n] for n in ['calls.json','calls.jsonl','rows.json','provenance.json','execution-contract.json','progress.json','segments.json','report.json','analysis-collection.json']) and all(finish_hashes[n]==source_hashes[n] for n in source_hashes if n.startswith('blocks/') or n.startswith('sequence-records/')))
+check('no_extra_collection_or_evaluation_files',set(finish_hashes)-set(source_hashes)==ALLOWED_ADDED and pipeline['can_collect'] is False and pipeline['evaluation_available'] is False)
+processing=analysis['processing_provenance'];processing_revision=processing['revision'];expected_modules=prior['collection_source_module_sha256'];processing_module_hashes={n:bytes_sha(subprocess.check_output(['git','show',processing_revision+':experiments/model_transfer/'+n],cwd=ROOT)) for n in expected_modules}
+check('offline_processing_preserves_frozen_collection_module_source',processing_module_hashes==expected_modules,{'processing_revision':processing_revision,'modules_verified':len(expected_modules),'module_mismatches':[n for n in expected_modules if expected_modules[n]!=processing_module_hashes[n]]})
+check('prior_integrity_and_arithmetic_audits_passed',prior['status']=='passed' and derived_audit['status']=='passed' and not prior['issues'] and not derived_audit['failures'])
+
+archive_receipt={'finish_workflow_run_id':37038229027,'finish_artifact_id':'11241339312','finish_archive_filename':FINISH_ZIP.name,'finish_archive_bytes':FINISH_ZIP.stat().st_size,'finish_archive_sha256':sha(FINISH_ZIP),'source_collection_workflow_run_id':37023431850,'source_collection_artifact_id':receipt['artifact_id'],'source_export_sha256':EXPECTED_SOURCE_SHA,'original_live_experiment_run_id':provenance['run_id'],'collection_revision':provenance['revision'],'processing_revision':processing_revision,'processing_implementation_sha256':processing['implementation_sha256'],'completed_labels_sha256':sha(FINISH/'completed-labels.json'),'annotated_rows_sha256':sha(FINISH/'annotated-rows.json'),'analysis_annotated_sha256':sha(FINISH/'analysis-annotated.json'),'pipeline_state':pipeline['state'],'execution_status':pipeline['execution_status'],'analysis_status':pipeline['analysis_status'],'pending_annotation_sessions':analysis['pending_annotation_sessions'],'planning':pipeline['planning'],'evaluation_available':pipeline['evaluation_available'],'api_attempts':analysis['api_attempts'],'configured_cost_usd':analysis['known_cost_usd'],'workflow_validation_reported_by_parent':{'verify_passed':1411,'verify_skipped':1,'build':'passed','finish_stage':'success','scope':'Parent-supplied workflow result; this archive audit does not independently retrieve remote workflow logs.'}}
+limits=[
+ 'All original and finished archive payloads were hashed and compared without semantic answer recoding, label-file parsing or calibration/key interpretation. Opaque key/calibration payloads were included in byte equality only.',
+ 'The exact private finished ZIP was read without modification. Archive identity, extraction identity and retained payload identity are local cryptographic checks, not a newly performed provider or billing audit.',
+ 'The workflow run/artifact association and test/build result were supplied by the parent. The archive audit verifies the provided filename, exact 4,135,583-byte size, SHA-256, contents and processing metadata; it does not independently fetch GitHub Actions logs.',
+ 'Processing provenance correctly differs from the live collection provenance. The analysis path and processing revision/Python/implementation fingerprint are expected environment metadata differences; every other analysis value matches the previously audited local analysis.',
+ 'processing_complete describes completion of offline importing/reporting. Scientific analysis remains pending_annotation for six ambiguous communicated-verdict assessments; all six are coded contradictory, so all recipient primary outcomes are nevertheless determined under the frozen conjunction rule.',
+ 'The inherited outcome counts remain conditional on supplied AI semantic labels. This audit does not establish calibration validity, semantic coding accuracy, factual explanation accuracy, human validation, superiority, population inference or a newly supported evaluation.',
+ 'Configured API cost remains USD 0.0204097 for the original 128 attempts. It ignores cached-input discounts and excludes coder/research/adoption costs; the finish run added no model participant requests.'
+]
+result={'schema':'EAL/followup-offline-finish-audit/1','reviewer':'/root/followup_live_audit: separate AI artifact integrity and arithmetic reviewer in the same orchestration','audited_at':datetime.now(timezone.utc).isoformat(),'status':'passed' if not failures else 'failed','summary':{'checks':len(checks),'failed_checks':len(failures),'original_members':1933,'finished_members':1936,'unchanged_original_members':1931,'authorized_updated_metadata_members':sorted(ALLOWED_CHANGED),'authorized_new_derived_members':sorted(ALLOWED_ADDED),'analysis_different_paths':analysis_differences},'archive_receipt':archive_receipt,'checks':checks,'failures':failures,'changed_metadata_sha256':{n:{'source':source_hashes[n],'finished':finish_hashes[n]} for n in sorted(ALLOWED_CHANGED)},'new_derived_sha256':{n:finish_hashes[n] for n in sorted(ALLOWED_ADDED)},'immutable_collection_sha256':{n:finish_hashes[n] for n in ['calls.json','calls.jsonl','rows.json','provenance.json','execution-contract.json','report.json','analysis-collection.json','progress.json','segments.json']},'prior_audit_sha256':{'independent_live_collection':sha(OUT/'independent-live-collection-audit.json'),'final_derived':sha(OUT/'final-derived-audit.json')},'verified_processing_module_sha256':processing_module_hashes,'audit_script_sha256':sha(__file__),'limits':limits}
+(OUT/'offline-finish-audit.json').write_text(json.dumps(result,indent=2)+'\n')
+lines=['# Offline finish archive audit','',f"Status: **{result['status']}**. {len(checks)} byte-identity, provenance and status checks; {len(failures)} failures.",'',f"Finished workflow run **37038229027**, artifact **11241339312**. Exact original private ZIP: `{FINISH_ZIP.name}`, **4,135,583 bytes**, SHA-256 `{EXPECTED_FINISH_SHA}`.",'','All 1,933 original export members remain in the finished archive. Exactly 1,931 are byte-identical; only `pipeline-status.json` and `restore-receipt.json` changed as authorized. Exactly three derived members were added: `completed-labels.json`, `annotated-rows.json` and `analysis-annotated.json`. All 1,936 finished payloads match their extracted files; both archives have unique member names and pass CRC integrity checks.','', '| Verified status | Value |','|---|---|','| Pipeline state | `processing_complete` |','| Original collection | `complete` |','| Scientific analysis | `pending_annotation` |','| Pending annotation sessions | 6 |','| Planning | `not_applicable_to_diagnostics` |','| Evaluation available | false |','| Original API attempts | 128 |','| Original configured API cost | USD 0.0204097 |','',f"Completed labels match the sanctioned final labels byte-for-byte, SHA-256 `{EXPECTED_LABELS_SHA}`. Annotated rows match the audited local import byte-for-byte, SHA-256 `{EXPECTED_ROWS_SHA}`.",'','The finished analysis equals the audited local analysis except four metadata paths: `rows_source`, processing revision, Python version and implementation digest. No outcome, annotation, count, score, resource, comparison, inference scope or scientific status changed. The finish processing commit also retains all 63 frozen collection module fingerprints.','',f"Collection revision: `{provenance['revision']}`. Offline processing revision: `{processing_revision}`. The restore receipt binds the exact source export SHA-256 `{EXPECTED_SOURCE_SHA}`.",'','Limits:','']+[f'- {x}' for x in limits]
+if failures:lines+=['','Failures:','']+[f'- {x["check"]}: {x.get("detail", "")}' for x in failures]
+(OUT/'offline-finish-audit.md').write_text('\n'.join(lines)+'\n')
+print(json.dumps({'status':result['status'],'summary':result['summary'],'archive_receipt':archive_receipt,'failures':failures},indent=2))

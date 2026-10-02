@@ -1,0 +1,40 @@
+{
+  "schema": "independent-figure-reinspection/1",
+  "reviewer": "/root/followup_figures/final_graphic_semantic_review",
+  "inspected_at_utc": "2026-10-02T17:14:15.903187+00:00",
+  "historical_first_reconstruction": {
+    "path": "validation/independent-first-reconstruction.json",
+    "sha256": "cfdf5bca5046df619f24212dea22a4fd817450c25d4635787d05c955a20514ae"
+  },
+  "fig01_semantic_byte_checks": {
+    "source": true,
+    "spec": true,
+    "png": true,
+    "caption": true,
+    "alt": true,
+    "pdf_native_size_raster_sha256_old_and_new": "f93c5697e6c9f750e0f02cda9773f58861240f55fe23c0f70cb5f897a210fac7"
+  },
+  "fig02_current_reconstruction": "The revised middle row Known verdict matches counts confirmed true whole-verdict matching only: Facts 20, EAL 30, Conventional 33, each out of the full 40 cells. Null whole-verdict matching judgments remain separately visible as Verdict unresolved 3, 3, 0 and are not treated as known matches. Primary unresolved remains 0 in all contexts because those six null verdict cases have contradictory explanations, a false conjunct determining primary failure. Canonical counts 20/31/33 and primary successes 20/30/33 are unchanged. The caption explicitly gives this known/null distinction. This supports separate finite descriptive counts without a fully determinate agreement-rate inference.",
+  "fig02_actual_inspection": "Viewed current high-resolution PNG, rasterization of current PDF at approximately 120 pixels per physical inch, and current final-size 96dpi greyscale QA. Revised label is legible and fits the row; no clipping, overlap or data-position change visible. Known verdict counts and null-judgment diagnostic lines remain separately readable.",
+  "current_artifact_sha256": {
+    "01-primary-outcome-cells.pdf": "ada334cad7d26385baec7edb469f7e1cbeae608a30ec9a4de8ff2d8409a6cea2",
+    "01-primary-outcome-cells.png": "de630b90cfc7b7872a94197c74d165e3e196db87325bdf7f2e0c781c36246303",
+    "01-primary-outcome-cells.spec.json": "00b00eadec0d0797547a6352317ebb353764813d3b316f5064e4a9db8bd3b180",
+    "01-primary-outcome-cells.audit.json": "69e6e614fe0d1d4df2a412d9a81ca93c9677ef2b4028a3007044cbb4f390cdb8",
+    "01-primary-outcome-cells.tikz.tex": "e369e68586abb8223d1e0ddc117c71df0fd3254f6117731b65c40dc9fcf05aff",
+    "captions/01-primary-outcome-cells.caption.txt": "84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545",
+    "captions/01-primary-outcome-cells.alt.txt": "6bb04e004a30e36e707aa75d4e6f5e6c9f09ea7bd09354ae63c89bc22fa4ef67",
+    "qa/01-primary-outcome-cells/01-primary-outcome-cells.final-size-96dpi-greyscale.png": "e0172c786359f1c85fc82db4da7096d9953556e4dc0d4a9a6fa773a2365d0a3d",
+    "02-endpoint-separation.pdf": "31cc0f4dff7a42472723c71c63e594be0d1ed530fd2224adc429f7bed34023c9",
+    "02-endpoint-separation.png": "f28b992e47531cbd985dd0a747f57775d8c0d860b8f9bbda949ddc9b93a0284c",
+    "02-endpoint-separation.spec.json": "1ee75db4fb3977393400ee766c0b8562ce2335eeaefc4481cf01a24ba46d2e65",
+    "02-endpoint-separation.audit.json": "891e43434151c8b5b7b72094ceeaaa3a038d89c14fa825b5943d41407687245a",
+    "02-endpoint-separation.tikz.tex": "aea3c2634a94656f0e60bff1322ed71f8ebd457c2bf02de4b7402cf47430ab0d",
+    "captions/02-endpoint-separation.caption.txt": "355bb2f2259e0504d6e12d549af71429945b93788592fbd5baa3a9f2ddd0cce3",
+    "captions/02-endpoint-separation.alt.txt": "e8b0e829e2920819de9571628669da6d89af0cf80bef4723ece5cc6096769769",
+    "qa/02-endpoint-separation/02-endpoint-separation.final-size-96dpi-greyscale.png": "5a743e60531e0fa78e5f6bb1d3296c4e8498a8ae2fa58da540d928f597bed55e"
+  },
+  "both_audits": "Current ok=true, no errors, warnings or typesetting warnings. All declared dependencies match recorded hashes after the generator refresh.",
+  "human_benefit_limitation": "Human interpretation benefit remains unmeasured by agent screening.",
+  "decision": "accept both current bindings"
+}

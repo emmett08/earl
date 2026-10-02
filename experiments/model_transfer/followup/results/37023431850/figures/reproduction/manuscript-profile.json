@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "followup-report-latin-modern",
+  "document_class": "article",
+  "class_options": [
+    "11pt"
+  ],
+  "packages": [
+    {
+      "name": "fontenc",
+      "options": [
+        "T1"
+      ]
+    },
+    {
+      "name": "lmodern",
+      "options": []
+    },
+    {
+      "name": "geometry",
+      "options": [
+        "a4paper",
+        "margin=25mm"
+      ]
+    }
+  ],
+  "dependencies": [],
+  "engine": "pdflatex"
+}

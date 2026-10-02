@@ -1,0 +1,33 @@
+{
+  "status": "pass",
+  "command": [
+    "python3",
+    "reproduction/build_report_figures.py",
+    "--input",
+    "inputs/final-analysis-for-figures.json"
+  ],
+  "checked_artifact_hashes": {
+    "01-primary-outcome-cells.spec.json": "00b00eadec0d0797547a6352317ebb353764813d3b316f5064e4a9db8bd3b180",
+    "02-endpoint-separation.png": "f28b992e47531cbd985dd0a747f57775d8c0d860b8f9bbda949ddc9b93a0284c",
+    "02-endpoint-separation.tikz.tex": "aea3c2634a94656f0e60bff1322ed71f8ebd457c2bf02de4b7402cf47430ab0d",
+    "02-endpoint-separation.spec.json": "1ee75db4fb3977393400ee766c0b8562ce2335eeaefc4481cf01a24ba46d2e65",
+    "02-endpoint-separation.audit.json": "891e43434151c8b5b7b72094ceeaaa3a038d89c14fa825b5943d41407687245a",
+    "01-primary-outcome-cells.png": "de630b90cfc7b7872a94197c74d165e3e196db87325bdf7f2e0c781c36246303",
+    "01-primary-outcome-cells.audit.json": "69e6e614fe0d1d4df2a412d9a81ca93c9677ef2b4028a3007044cbb4f390cdb8",
+    "01-primary-outcome-cells.pdf": "ada334cad7d26385baec7edb469f7e1cbeae608a30ec9a4de8ff2d8409a6cea2",
+    "02-endpoint-separation.pdf": "31cc0f4dff7a42472723c71c63e594be0d1ed530fd2224adc429f7bed34023c9",
+    "01-primary-outcome-cells.tikz.tex": "e369e68586abb8223d1e0ddc117c71df0fd3254f6117731b65c40dc9fcf05aff",
+    "captions/01-primary-outcome-cells.caption.txt": "84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545",
+    "captions/02-endpoint-separation.caption.txt": "355bb2f2259e0504d6e12d549af71429945b93788592fbd5baa3a9f2ddd0cce3",
+    "captions/01-primary-outcome-cells.alt.txt": "6bb04e004a30e36e707aa75d4e6f5e6c9f09ea7bd09354ae63c89bc22fa4ef67",
+    "captions/02-endpoint-separation.alt.txt": "e8b0e829e2920819de9571628669da6d89af0cf80bef4723ece5cc6096769769"
+  },
+  "scope": "Exact source/spec/caption/alt regeneration; current PDF/audit bytes retained. Fig02 known-true wording is current.",
+  "fig01_semantic_bytes_unchanged_from_prior_phase": [
+    "01-primary-outcome-cells.tikz.tex",
+    "01-primary-outcome-cells.spec.json",
+    "01-primary-outcome-cells.png",
+    "captions/01-primary-outcome-cells.caption.txt",
+    "captions/01-primary-outcome-cells.alt.txt"
+  ]
+}

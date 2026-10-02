@@ -1,0 +1,26 @@
+{
+  "status": "pass",
+  "command": [
+    "python3",
+    "reproduction/build_report_figures.py",
+    "--input",
+    "inputs/final-analysis-for-figures.json"
+  ],
+  "checked_artifact_hashes": {
+    "01-primary-outcome-cells.spec.json": "00b00eadec0d0797547a6352317ebb353764813d3b316f5064e4a9db8bd3b180",
+    "02-endpoint-separation.png": "dff1807bd065b704533cb8877077a8e577a9324a749e218d3d4cbe2ca401e841",
+    "02-endpoint-separation.tikz.tex": "5e2551b7957957fb881b35e252fd6ded7e4d366a582a847ef71a6ad362ce6ece",
+    "02-endpoint-separation.spec.json": "24ce4bb434841111755b8b86f448b212eb25930486dfdbf7e0ea2b3abdc91391",
+    "02-endpoint-separation.audit.json": "3603de1195aa276b8c75aca26d1924db49a99d8decb1e8a7a7151d6764ea202e",
+    "01-primary-outcome-cells.png": "de630b90cfc7b7872a94197c74d165e3e196db87325bdf7f2e0c781c36246303",
+    "01-primary-outcome-cells.audit.json": "462fb34a24125cffc3d7ee0cf5611af5aec894a0b9a69cc549ecc346febbab2e",
+    "01-primary-outcome-cells.pdf": "d223b1fba55c9a41645b309f6afee769586cae602b9279b7cebead8ab5fff913",
+    "02-endpoint-separation.pdf": "e5ff329a536809615c4309e868aa93cbaa406b0dbbebc5a7142e8e1880f2aafe",
+    "01-primary-outcome-cells.tikz.tex": "e369e68586abb8223d1e0ddc117c71df0fd3254f6117731b65c40dc9fcf05aff",
+    "captions/01-primary-outcome-cells.caption.txt": "84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545",
+    "captions/02-endpoint-separation.caption.txt": "5fe5327a34605b046c3d42742bf29fc2a6a83acecc60787f4a978f13bef142be",
+    "captions/01-primary-outcome-cells.alt.txt": "6bb04e004a30e36e707aa75d4e6f5e6c9f09ea7bd09354ae63c89bc22fa4ef67",
+    "captions/02-endpoint-separation.alt.txt": "5e49a6e92cd2ad8a6b39340fc4e7ae2e4f77b19482e5553c73e127b7b7e5e554"
+  },
+  "scope": "Source/specification/caption/alt exact regeneration; current PDFs/audits unchanged. No rerender or review rebind is claimed by this check."
+}

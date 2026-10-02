@@ -1,0 +1,1411 @@
+{
+  "schema": "EARL/followup-figure-numerical-check/1",
+  "checked_at_utc": "2026-10-02T17:02:20.605782+00:00",
+  "scope": "Independent arithmetic and structural checks using only sanitized figure input and figure-derived numeric output. No response interpretation, response relabeling, or semantic acceptance of figures.",
+  "sources": {
+    "sanitized_figure_input": {
+      "path": "inputs/final-analysis-for-figures.json",
+      "sha256": "821920676a0c06cfdb6baffc8dd4f0816163bb68d2adaac40c60aa09df92410b",
+      "byte_count": 47991
+    },
+    "derived_endpoint_counts": {
+      "path": "validation/endpoint-counts.json",
+      "sha256": "358684408e5ba6bfe036be46c1a1539f8332e91c71c28c8f3d4934095e090450",
+      "byte_count": 656
+    },
+    "derived_plotted_cells": {
+      "path": "validation/plotted-cells.csv",
+      "sha256": "49b16f5a20941255f4132a29df3924543b63c423a06998936ee9857fca8300d8",
+      "byte_count": 14095
+    }
+  },
+  "status": "pass",
+  "checks": {
+    "120_cells": true,
+    "3_contexts": true,
+    "40_cells_per_context": true,
+    "8_common_task_clusters": true,
+    "5_positions": true,
+    "complete_context_task_position_product": true,
+    "20_ready_12_not_ready_8_undetermined_per_context": true,
+    "primary_success_iff_verdict_match_and_consistent": true,
+    "all_6_ambiguous_whole_verdict_contradictory_cases_have_determinate_primary_failure": true,
+    "6_contradictory_total": true,
+    "0_canonical_correct_contradictory_intersection": true,
+    "derived_endpoint_counts_match_independent_calculation": true,
+    "plotted_csv_120_rows": true,
+    "plotted_csv_cell_keys_unique": true,
+    "plotted_csv_typed_multiset_matches_input": true,
+    "plotted_csv_order_matches_input": true,
+    "sanitized_input_unchanged_since_full_independent_calculation": true
+  },
+  "independent_calculations": {
+    "all_cells": {
+      "n_cells": 120,
+      "reference_decision_counts": {
+        "not_ready": 36,
+        "ready": 60,
+        "undetermined": 24
+      },
+      "primary_state_counts": {
+        "failure": 37,
+        "success": 83
+      },
+      "canonical_match_counts": {
+        "true": 84,
+        "false": 36,
+        "null": 0
+      },
+      "whole_verdict_match_counts": {
+        "true": 83,
+        "false": 31,
+        "null": 6
+      },
+      "explanation_consistency_counts": {
+        "consistent": 114,
+        "contradictory": 6
+      },
+      "canonical_correct_and_contradictory": 0,
+      "whole_verdict_null_and_contradictory_and_primary_failure": 6
+    },
+    "per_context": {
+      "conventional": {
+        "n_cells": 40,
+        "reference_decision_counts": {
+          "not_ready": 12,
+          "ready": 20,
+          "undetermined": 8
+        },
+        "primary_state_counts": {
+          "failure": 7,
+          "success": 33
+        },
+        "canonical_match_counts": {
+          "true": 33,
+          "false": 7,
+          "null": 0
+        },
+        "whole_verdict_match_counts": {
+          "true": 33,
+          "false": 7,
+          "null": 0
+        },
+        "explanation_consistency_counts": {
+          "consistent": 40
+        },
+        "canonical_correct_and_contradictory": 0,
+        "whole_verdict_null_and_contradictory_and_primary_failure": 0
+      },
+      "eal": {
+        "n_cells": 40,
+        "reference_decision_counts": {
+          "not_ready": 12,
+          "ready": 20,
+          "undetermined": 8
+        },
+        "primary_state_counts": {
+          "failure": 10,
+          "success": 30
+        },
+        "canonical_match_counts": {
+          "true": 31,
+          "false": 9,
+          "null": 0
+        },
+        "whole_verdict_match_counts": {
+          "true": 30,
+          "false": 7,
+          "null": 3
+        },
+        "explanation_consistency_counts": {
+          "consistent": 37,
+          "contradictory": 3
+        },
+        "canonical_correct_and_contradictory": 0,
+        "whole_verdict_null_and_contradictory_and_primary_failure": 3
+      },
+      "facts": {
+        "n_cells": 40,
+        "reference_decision_counts": {
+          "not_ready": 12,
+          "ready": 20,
+          "undetermined": 8
+        },
+        "primary_state_counts": {
+          "failure": 20,
+          "success": 20
+        },
+        "canonical_match_counts": {
+          "true": 20,
+          "false": 20,
+          "null": 0
+        },
+        "whole_verdict_match_counts": {
+          "true": 20,
+          "false": 17,
+          "null": 3
+        },
+        "explanation_consistency_counts": {
+          "consistent": 37,
+          "contradictory": 3
+        },
+        "canonical_correct_and_contradictory": 0,
+        "whole_verdict_null_and_contradictory_and_primary_failure": 3
+      }
+    },
+    "contexts": [
+      "conventional",
+      "eal",
+      "facts"
+    ],
+    "common_task_clusters": [
+      "followup-all_of-assembly-invalidated",
+      "followup-all_of-backup-stale",
+      "followup-all_of-export-version_mismatch",
+      "followup-all_of-release-missing",
+      "followup-any_of-cooling-invalidated",
+      "followup-any_of-readpath-version_mismatch",
+      "followup-any_of-restore-stale",
+      "followup-any_of-routing-missing"
+    ],
+    "positions": [
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "task_cells": {
+      "followup-all_of-assembly-invalidated": 15,
+      "followup-all_of-backup-stale": 15,
+      "followup-all_of-export-version_mismatch": 15,
+      "followup-all_of-release-missing": 15,
+      "followup-any_of-cooling-invalidated": 15,
+      "followup-any_of-readpath-version_mismatch": 15,
+      "followup-any_of-restore-stale": 15,
+      "followup-any_of-routing-missing": 15
+    },
+    "position_cells": {
+      "2": 24,
+      "4": 24,
+      "6": 24,
+      "8": 24,
+      "10": 24
+    },
+    "condition_cells": {
+      "complete": 24,
+      "critical_gap": 24,
+      "noncritical_gap": 24,
+      "restored_negative": 24,
+      "restored_positive": 24
+    },
+    "family_cells": {
+      "all_of": 60,
+      "any_of": 60
+    },
+    "cause_cells": {
+      "invalidated": 30,
+      "missing": 30,
+      "stale": 30,
+      "version_mismatch": 30
+    },
+    "per_context_position": {
+      "conventional": {
+        "2": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "ready": 8
+          },
+          "primary_state_counts": {
+            "success": 8
+          },
+          "canonical_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "4": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "undetermined": 8
+          },
+          "primary_state_counts": {
+            "failure": 7,
+            "success": 1
+          },
+          "canonical_match_counts": {
+            "true": 1,
+            "false": 7,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 1,
+            "false": 7,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "6": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "ready": 8
+          },
+          "primary_state_counts": {
+            "success": 8
+          },
+          "canonical_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "8": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "not_ready": 8
+          },
+          "primary_state_counts": {
+            "success": 8
+          },
+          "canonical_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "10": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "not_ready": 4,
+            "ready": 4
+          },
+          "primary_state_counts": {
+            "success": 8
+          },
+          "canonical_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        }
+      },
+      "eal": {
+        "2": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "ready": 8
+          },
+          "primary_state_counts": {
+            "success": 8
+          },
+          "canonical_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "4": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "undetermined": 8
+          },
+          "primary_state_counts": {
+            "failure": 8
+          },
+          "canonical_match_counts": {
+            "true": 0,
+            "false": 8,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 0,
+            "false": 5,
+            "null": 3
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5,
+            "contradictory": 3
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 3
+        },
+        "6": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "ready": 8
+          },
+          "primary_state_counts": {
+            "success": 8
+          },
+          "canonical_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "8": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "not_ready": 8
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 7
+          },
+          "canonical_match_counts": {
+            "true": 8,
+            "false": 0,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 7,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "10": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "not_ready": 4,
+            "ready": 4
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 7
+          },
+          "canonical_match_counts": {
+            "true": 7,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 7,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        }
+      },
+      "facts": {
+        "2": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "ready": 8
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 7
+          },
+          "canonical_match_counts": {
+            "true": 7,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 7,
+            "false": 0,
+            "null": 1
+          },
+          "explanation_consistency_counts": {
+            "consistent": 7,
+            "contradictory": 1
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 1
+        },
+        "4": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "undetermined": 8
+          },
+          "primary_state_counts": {
+            "failure": 8
+          },
+          "canonical_match_counts": {
+            "true": 0,
+            "false": 8,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 0,
+            "false": 8,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "6": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "ready": 8
+          },
+          "primary_state_counts": {
+            "failure": 2,
+            "success": 6
+          },
+          "canonical_match_counts": {
+            "true": 6,
+            "false": 2,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 6,
+            "false": 1,
+            "null": 1
+          },
+          "explanation_consistency_counts": {
+            "consistent": 7,
+            "contradictory": 1
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 1
+        },
+        "8": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "not_ready": 8
+          },
+          "primary_state_counts": {
+            "failure": 7,
+            "success": 1
+          },
+          "canonical_match_counts": {
+            "true": 1,
+            "false": 7,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 1,
+            "false": 6,
+            "null": 1
+          },
+          "explanation_consistency_counts": {
+            "consistent": 7,
+            "contradictory": 1
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 1
+        },
+        "10": {
+          "n_cells": 8,
+          "reference_decision_counts": {
+            "not_ready": 4,
+            "ready": 4
+          },
+          "primary_state_counts": {
+            "failure": 2,
+            "success": 6
+          },
+          "canonical_match_counts": {
+            "true": 6,
+            "false": 2,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 6,
+            "false": 2,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 8
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        }
+      }
+    },
+    "per_context_task": {
+      "conventional": {
+        "followup-all_of-assembly-invalidated": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-all_of-backup-stale": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-all_of-export-version_mismatch": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-all_of-release-missing": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "success": 5
+          },
+          "canonical_match_counts": {
+            "true": 5,
+            "false": 0,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 5,
+            "false": 0,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-cooling-invalidated": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-readpath-version_mismatch": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-restore-stale": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-routing-missing": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        }
+      },
+      "eal": {
+        "followup-all_of-assembly-invalidated": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 0,
+            "null": 1
+          },
+          "explanation_consistency_counts": {
+            "consistent": 4,
+            "contradictory": 1
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 1
+        },
+        "followup-all_of-backup-stale": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-all_of-export-version_mismatch": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 0,
+            "null": 1
+          },
+          "explanation_consistency_counts": {
+            "consistent": 4,
+            "contradictory": 1
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 1
+        },
+        "followup-all_of-release-missing": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 0,
+            "null": 1
+          },
+          "explanation_consistency_counts": {
+            "consistent": 4,
+            "contradictory": 1
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 1
+        },
+        "followup-any_of-cooling-invalidated": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 2,
+            "success": 3
+          },
+          "canonical_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-readpath-version_mismatch": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-restore-stale": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-routing-missing": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 2,
+            "success": 3
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        }
+      },
+      "facts": {
+        "followup-all_of-assembly-invalidated": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 2,
+            "success": 3
+          },
+          "canonical_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-all_of-backup-stale": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 3,
+            "success": 2
+          },
+          "canonical_match_counts": {
+            "true": 2,
+            "false": 3,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 2,
+            "false": 2,
+            "null": 1
+          },
+          "explanation_consistency_counts": {
+            "consistent": 4,
+            "contradictory": 1
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 1
+        },
+        "followup-all_of-export-version_mismatch": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 3,
+            "success": 2
+          },
+          "canonical_match_counts": {
+            "true": 2,
+            "false": 3,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 2,
+            "false": 3,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-all_of-release-missing": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 2,
+            "ready": 2,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 4,
+            "success": 1
+          },
+          "canonical_match_counts": {
+            "true": 1,
+            "false": 4,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 1,
+            "false": 2,
+            "null": 2
+          },
+          "explanation_consistency_counts": {
+            "consistent": 3,
+            "contradictory": 2
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 2
+        },
+        "followup-any_of-cooling-invalidated": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 1,
+            "success": 4
+          },
+          "canonical_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 4,
+            "false": 1,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-readpath-version_mismatch": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 2,
+            "success": 3
+          },
+          "canonical_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-restore-stale": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 2,
+            "success": 3
+          },
+          "canonical_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 3,
+            "false": 2,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        },
+        "followup-any_of-routing-missing": {
+          "n_cells": 5,
+          "reference_decision_counts": {
+            "not_ready": 1,
+            "ready": 3,
+            "undetermined": 1
+          },
+          "primary_state_counts": {
+            "failure": 3,
+            "success": 2
+          },
+          "canonical_match_counts": {
+            "true": 2,
+            "false": 3,
+            "null": 0
+          },
+          "whole_verdict_match_counts": {
+            "true": 2,
+            "false": 3,
+            "null": 0
+          },
+          "explanation_consistency_counts": {
+            "consistent": 5
+          },
+          "canonical_correct_and_contradictory": 0,
+          "whole_verdict_null_and_contradictory_and_primary_failure": 0
+        }
+      }
+    },
+    "endpoint_counts": {
+      "conventional": {
+        "canonical": 33,
+        "whole_verdict": 33,
+        "primary": 33,
+        "contradictory": 0,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 0,
+        "unresolved_primary": 0
+      },
+      "eal": {
+        "canonical": 31,
+        "whole_verdict": 30,
+        "primary": 30,
+        "contradictory": 3,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 3,
+        "unresolved_primary": 0
+      },
+      "facts": {
+        "canonical": 20,
+        "whole_verdict": 20,
+        "primary": 20,
+        "contradictory": 3,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 3,
+        "unresolved_primary": 0
+      }
+    },
+    "primary_state_whole_verdict_consistency_contingency": [
+      {
+        "primary_state": "failure",
+        "whole_verdict_match": "False",
+        "explanation_consistency": "consistent",
+        "count": 31
+      },
+      {
+        "primary_state": "failure",
+        "whole_verdict_match": "None",
+        "explanation_consistency": "contradictory",
+        "count": 6
+      },
+      {
+        "primary_state": "success",
+        "whole_verdict_match": "True",
+        "explanation_consistency": "consistent",
+        "count": 83
+      }
+    ],
+    "ambiguous_whole_verdict_with_false_conjunct": [
+      {
+        "task_id": "followup-all_of-assembly-invalidated",
+        "context": "eal",
+        "position": 4,
+        "primary_state": "failure"
+      },
+      {
+        "task_id": "followup-all_of-release-missing",
+        "context": "eal",
+        "position": 4,
+        "primary_state": "failure"
+      },
+      {
+        "task_id": "followup-all_of-release-missing",
+        "context": "facts",
+        "position": 2,
+        "primary_state": "failure"
+      },
+      {
+        "task_id": "followup-all_of-release-missing",
+        "context": "facts",
+        "position": 6,
+        "primary_state": "failure"
+      },
+      {
+        "task_id": "followup-all_of-backup-stale",
+        "context": "facts",
+        "position": 8,
+        "primary_state": "failure"
+      },
+      {
+        "task_id": "followup-all_of-export-version_mismatch",
+        "context": "eal",
+        "position": 4,
+        "primary_state": "failure"
+      }
+    ]
+  },
+  "primary_rule_check": {
+    "success_rule": "whole_verdict_match is true AND explanation_consistency is consistent",
+    "failure_rule": "whole_verdict_match is false OR explanation_consistency is contradictory; a null whole-verdict match plus a contradictory explanation is a determinate failed conjunction",
+    "mismatches": []
+  },
+  "derived_output_comparisons": {
+    "endpoint_counts_reported": {
+      "facts": {
+        "canonical": 20,
+        "whole_verdict": 20,
+        "primary": 20,
+        "contradictory": 3,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 3,
+        "unresolved_primary": 0
+      },
+      "eal": {
+        "canonical": 31,
+        "whole_verdict": 30,
+        "primary": 30,
+        "contradictory": 3,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 3,
+        "unresolved_primary": 0
+      },
+      "conventional": {
+        "canonical": 33,
+        "whole_verdict": 33,
+        "primary": 33,
+        "contradictory": 0,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 0,
+        "unresolved_primary": 0
+      }
+    },
+    "endpoint_counts_independent": {
+      "conventional": {
+        "canonical": 33,
+        "whole_verdict": 33,
+        "primary": 33,
+        "contradictory": 0,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 0,
+        "unresolved_primary": 0
+      },
+      "eal": {
+        "canonical": 31,
+        "whole_verdict": 30,
+        "primary": 30,
+        "contradictory": 3,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 3,
+        "unresolved_primary": 0
+      },
+      "facts": {
+        "canonical": 20,
+        "whole_verdict": 20,
+        "primary": 20,
+        "contradictory": 3,
+        "correct_canonical_and_contradictory": 0,
+        "whole_verdict_unresolved": 3,
+        "unresolved_primary": 0
+      }
+    },
+    "plotted_csv_missing_rows": [],
+    "plotted_csv_extra_rows": []
+  },
+  "acceptance_authority": "Numerical and structural checks only; figure visual and semantic acceptance remains with the author.",
+  "finalization": "Re-read and re-hashed all three permitted source artifacts after author confirmed regeneration complete; arithmetic was independently computed from sanitized input."
+}

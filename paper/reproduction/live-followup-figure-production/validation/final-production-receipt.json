@@ -1,0 +1,170 @@
+{
+  "status": "final canonical assets frozen; two independent agent acceptances validated against current files",
+  "canonical_production_root": "/workspace/scratch/5524656c89cf/earl-followup/experiments/model_transfer/followup/results/37023431850/figures",
+  "rebuild_from_production_root": [
+    "python3 reproduction/build_report_figures.py --input inputs/final-analysis-for-figures.json --render",
+    "python3 reproduction/make_final_size_previews.py"
+  ],
+  "counts": {
+    "facts": {
+      "canonical": 20,
+      "whole_verdict": 20,
+      "primary": 20,
+      "contradictory": 3,
+      "correct_canonical_and_contradictory": 0,
+      "whole_verdict_unresolved": 3,
+      "unresolved_primary": 0
+    },
+    "eal": {
+      "canonical": 31,
+      "whole_verdict": 30,
+      "primary": 30,
+      "contradictory": 3,
+      "correct_canonical_and_contradictory": 0,
+      "whole_verdict_unresolved": 3,
+      "unresolved_primary": 0
+    },
+    "conventional": {
+      "canonical": 33,
+      "whole_verdict": 33,
+      "primary": 33,
+      "contradictory": 0,
+      "correct_canonical_and_contradictory": 0,
+      "whole_verdict_unresolved": 0,
+      "unresolved_primary": 0
+    }
+  },
+  "denominator_scope": {
+    "recipient_cells": 120,
+    "matched_positions_per_context": 40,
+    "common_donor_task_clusters": 8,
+    "collection_repeats": 1,
+    "identical_eal_conventional_model_visible_packet_pairs": 40
+  },
+  "provenance_and_proofs": [
+    {
+      "path": "inputs/final-analysis-for-figures.json",
+      "sha256": "821920676a0c06cfdb6baffc8dd4f0816163bb68d2adaac40c60aa09df92410b"
+    },
+    {
+      "path": "inputs/collection-audit-excerpt.json",
+      "sha256": "2e602776888e18bcaf2ade9bd7d0e4223f014f9714a0dece05c634885cd4c451"
+    },
+    {
+      "path": "validation/numerical-check.json",
+      "sha256": "f50606aace7809831610d79425da7cf49ef59aa2034a0ad27aecc60ee675f414"
+    },
+    {
+      "path": "validation/independent-first-reconstruction.json",
+      "sha256": "cfdf5bca5046df619f24212dea22a4fd817450c25d4635787d05c955a20514ae"
+    },
+    {
+      "path": "validation/known-verdict-clarification-reinspection.json",
+      "sha256": "d9fa56f91f299541d99b6748e93f34333752b1f0c2c01e9a3b6cd5b206a94783"
+    },
+    {
+      "path": "validation/author-visual-inspection.json",
+      "sha256": "f72512bdc49133ee624049d3d35b328eac952b2ab41a997c89d2bfebc13850fd"
+    },
+    {
+      "path": "validation/exact-source-regeneration.json",
+      "sha256": "cc94ac0c0b4b2d901d743489f4dba495527164c41185cf19ec6d02ffe32d80f2"
+    }
+  ],
+  "figures": [
+    {
+      "canonical_stem": "01-primary-outcome-cells",
+      "article_stem": "16-followup-primary-outcome-cells",
+      "dimensions": {
+        "width_mm": 144.25753835042318,
+        "height_mm": 100.65173746744792,
+        "minimum_text_pt": 9
+      },
+      "artifacts": [
+        {
+          "path": "01-primary-outcome-cells.tikz.tex",
+          "sha256": "e369e68586abb8223d1e0ddc117c71df0fd3254f6117731b65c40dc9fcf05aff"
+        },
+        {
+          "path": "01-primary-outcome-cells.spec.json",
+          "sha256": "00b00eadec0d0797547a6352317ebb353764813d3b316f5064e4a9db8bd3b180"
+        },
+        {
+          "path": "01-primary-outcome-cells.pdf",
+          "sha256": "ada334cad7d26385baec7edb469f7e1cbeae608a30ec9a4de8ff2d8409a6cea2"
+        },
+        {
+          "path": "01-primary-outcome-cells.png",
+          "sha256": "de630b90cfc7b7872a94197c74d165e3e196db87325bdf7f2e0c781c36246303"
+        },
+        {
+          "path": "01-primary-outcome-cells.audit.json",
+          "sha256": "69e6e614fe0d1d4df2a412d9a81ca93c9677ef2b4028a3007044cbb4f390cdb8"
+        },
+        {
+          "path": "01-primary-outcome-cells.review.json",
+          "sha256": "25ef1bb479eed707b1cfee675a5b544f905b5d1de1eff2b0c881658e58229db9"
+        },
+        {
+          "path": "captions/01-primary-outcome-cells.caption.txt",
+          "sha256": "84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545"
+        },
+        {
+          "path": "captions/01-primary-outcome-cells.alt.txt",
+          "sha256": "6bb04e004a30e36e707aa75d4e6f5e6c9f09ea7bd09354ae63c89bc22fa4ef67"
+        }
+      ]
+    },
+    {
+      "canonical_stem": "02-endpoint-separation",
+      "article_stem": "17-followup-endpoint-separation",
+      "dimensions": {
+        "width_mm": 142.52434310913085,
+        "height_mm": 89.65176828172471,
+        "minimum_text_pt": 9
+      },
+      "artifacts": [
+        {
+          "path": "02-endpoint-separation.tikz.tex",
+          "sha256": "aea3c2634a94656f0e60bff1322ed71f8ebd457c2bf02de4b7402cf47430ab0d"
+        },
+        {
+          "path": "02-endpoint-separation.spec.json",
+          "sha256": "1ee75db4fb3977393400ee766c0b8562ce2335eeaefc4481cf01a24ba46d2e65"
+        },
+        {
+          "path": "02-endpoint-separation.pdf",
+          "sha256": "31cc0f4dff7a42472723c71c63e594be0d1ed530fd2224adc429f7bed34023c9"
+        },
+        {
+          "path": "02-endpoint-separation.png",
+          "sha256": "f28b992e47531cbd985dd0a747f57775d8c0d860b8f9bbda949ddc9b93a0284c"
+        },
+        {
+          "path": "02-endpoint-separation.audit.json",
+          "sha256": "891e43434151c8b5b7b72094ceeaaa3a038d89c14fa825b5943d41407687245a"
+        },
+        {
+          "path": "02-endpoint-separation.review.json",
+          "sha256": "f6def123e5ef156b38e81715471e47b109b880454a20110967387b25176d0c44"
+        },
+        {
+          "path": "captions/02-endpoint-separation.caption.txt",
+          "sha256": "355bb2f2259e0504d6e12d549af71429945b93788592fbd5baa3a9f2ddd0cce3"
+        },
+        {
+          "path": "captions/02-endpoint-separation.alt.txt",
+          "sha256": "e8b0e829e2920819de9571628669da6d89af0cf80bef4723ece5cc6096769769"
+        }
+      ]
+    }
+  ],
+  "review_validation": "Both figure_review.py --spec --audit --check-files pass, decision accept. Mechanical errors/warnings/typesetting warnings all zero.",
+  "portability": "Self-contained source/data/helpers/profile. Audit absolute paths bind this canonical root. Byte-identical relocated copies retain historical canonical build records; fresh relocated renders require new audits and review hash revalidation.",
+  "semantics": "Canonical, known whole-verdict matches, and determinate primary successes are distinct. Six null whole-verdict judgments plus contradiction determinately fail primary; primary unresolved zero. Counts overlap. References authored synthetic; responses observed live; final endpoint codes derived AI judgments; factual grounding unassessed.",
+  "limitations": [
+    "No superiority or population reliability inference.",
+    "No factual explanation grounding, human validation or stochastic repeatability estimate.",
+    "Human interpretation benefit remains unmeasured by agent screening."
+  ]
+}
