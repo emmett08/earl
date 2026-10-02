@@ -1,0 +1,92 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration-protocol/2",
+  "calibration_id": "coding-calibration-20261002-v2",
+  "created_at": "2026-10-02T16:00:46.972018+00:00",
+  "governing_controls": [
+    "ASM-003",
+    "CTRL-005"
+  ],
+  "purpose": "Fresh prospective qualification of masked whole-answer coders on separate decision and explanation-consistency axes; factual correctness unassessed.",
+  "prospective_clarification": {
+    "recorded_before_participant_coding": true,
+    "measurement_change_type": "prospective operational clarification/deviation of permissive present-modal decision boundary",
+    "retains_v1_files_and_failures": true,
+    "future_only_no_answer_boundary_unchanged": true,
+    "canonical_endpoint_unchanged": true,
+    "changes_original_source_rubric": false
+  },
+  "item_count": 24,
+  "allowed_decisions": [
+    "ready",
+    "not_ready",
+    "undetermined",
+    "no_answer",
+    "ambiguous"
+  ],
+  "allowed_explanation_consistency": [
+    "consistent",
+    "contradictory",
+    "ambiguous",
+    "no_explanation"
+  ],
+  "independent_key_review": {
+    "required_before_coder_qualification": true,
+    "required_unique_label_pairs": 24,
+    "required_reviewed_decision_labels": 24,
+    "required_reviewed_consistency_labels": 24,
+    "allowed_source_files": [
+      "public-items.json",
+      "sealed-key.json",
+      "calibration-protocol.json",
+      "method-quality-note.md",
+      "original RUBRIC and CONSISTENCY_RUBRIC",
+      "ASM-003 and CTRL-005 records"
+    ],
+    "reviewer_must_not_author_v2_items": true,
+    "reviewer_must_not_observe_participant_or_coder_outputs": true,
+    "status": "pending",
+    "failure_response": "Retain all frozen files and suspend qualification. Any repair requires prospective documentation and genuinely fresh held-out items; never revise gold to match observed coding."
+  },
+  "coder_blinding": {
+    "public_items_only": true,
+    "sealed_key_access": false,
+    "participant_or_coder_outputs_access": false,
+    "condition_reference_or_private_fictional_fact_access": false,
+    "independent_attempts_required": true
+  },
+  "pass_criteria": {
+    "decision_correct_required": 24,
+    "decision_total": 24,
+    "explanation_consistency_correct_required": 24,
+    "explanation_consistency_total": 24,
+    "joint_correct_required": 24,
+    "joint_total": 24,
+    "decision_quotes_valid_required": 24,
+    "consistency_quotes_valid_required": 24,
+    "all_quotes_nonempty_exact_substrings_required": true,
+    "unique_gold_independent_review_required": true,
+    "no_partial_credit_or_threshold_relaxation": true
+  },
+  "quote_rule": "Every quote must be a nonempty exact substring of its item text. The entire nonempty raw answer may support an absence judgment. Blank or approximate quotes are invalid.",
+  "grader_requirements": "Freeze public/key hashes before coding. Verify exactly 24 unique matching IDs, permitted labels, all 48 exact nonempty quotes, separate per-axis match counts, and independent key-review endorsement. Retain every disagreement and failure. Canonical endpoints remain separately reportable; missing or failed calibration suspends substantive quality conclusions.",
+  "source_sha256": {
+    "public-items.json": "07ee2a75e760ff19c22ea0cdf1129d887767e68cb135452d0c36f2ec78decfce",
+    "sealed-key.json": "8baf3394b7cd1fd618a8198c22c6af89af697b0f54bf2b10ed2298374abb2639",
+    "method-quality-note.md": "86ffe2dc89e09fe6321bbdcdd9693f8a83e9c0d3f80cac2e45c88a5a36780d97"
+  },
+  "rubric_sha256": "cdc2be4f1c5aa2c0c923c6cebd56425a2d5816bb5f6bfb66c130635a9a408c4b",
+  "supplement_sha256": "879514a317a44fdfc060582d2e862dbc10f68eb83443d61309d3ab4ba66675ad",
+  "decision_distribution": {
+    "undetermined": 4,
+    "ready": 5,
+    "ambiguous": 7,
+    "not_ready": 4,
+    "no_answer": 4
+  },
+  "consistency_distribution": {
+    "consistent": 10,
+    "no_explanation": 7,
+    "contradictory": 3,
+    "ambiguous": 4
+  }
+}

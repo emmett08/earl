@@ -1,0 +1,1287 @@
+{
+  "schema": "EAL/model-transfer-annotations/1",
+  "rubric": "Code the decision explicitly communicated by this answer. Do not assess its factual correctness or infer a decision from measurements. Use ready for an affirmative readiness conclusion, not_ready for a negative readiness conclusion, undetermined for an explicit inability to establish readiness, no_answer for text that provides no task decision, and ambiguous for unresolved conflicting decisions. Distinguish historical or hypothetical statements from the current conclusion. Distinguish criterion failure from practical withholding because readiness is unknown: parentheses or a full explanation can clarify that meaning without the literal word correction. A lexical collision alone does not establish conflicting current verdicts; explicit incompatible criterion classifications can remain ambiguous. Tentative modal readiness wording may remain ambiguous. Supply an exact supporting quote from the answer and a brief note. Leave ambiguous answers unresolved; do not choose the most favourable reading. Also code explanation_consistency against the current communicated verdict and any JSON decision field: consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion; contradictory when it communicates an incompatible current verdict or reverses the JSON decision; ambiguous when consistency cannot be resolved, and no_explanation when no explanatory content is present. Read qualifications semantically: a phrase such as \"not ready (undetermined)\" may communicate inability to establish readiness, rather than a failed requirement. Do not impose a code from an isolated phrase. Do not infer task correctness from the wording. Preserve conflicting or ambiguous conclusions. Supply an exact consistency_quote and a brief consistency_note; an entire answer may be quoted when explaining absence.",
+  "annotator": "",
+  "items": [
+    {
+      "id": "b7dfc267741b4879bba8ca431f996241",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Latency exceeds the maximum threshold of 120 ms; other criteria (rollback tested, approval) are met.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ea988b1839ca462abb7c3f2a3b0398a3",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Restore seconds (210) exceed the required maximum of 180 seconds; digest matches and retention confirmed are satisfactory.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "68d88f8e528b4400b2fc6b0d5fa54fb8",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The online_restore_seconds is within the 180 seconds limit, and both online_digest_matches and archive_digest_matches are true, satisfying primary route requirements.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "e9c15d41fb6645019e056a962a1af168",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All backup criteria are satisfied: restore_seconds is at most 180 (actual 150), digest_matches is true, and retention_confirmed is true at the specified timestamp, fulfilling the 'all_of' rule.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "b8c27674ad9b4122ab6b78b10a406619",
+      "text": "The task is deemed ready at this moment, September 28, 2026, 10:00 AM UTC. This assessment is based on the fact that the specified criteria—latency at most 120 milliseconds, tested rollback procedures, and proper approval—have been met. The decision follows the established experiment and task rules, confirming that the release can proceed under these conditions.",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ddc7c4cde74242d381f9d8f8cbb48b17",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All validation errors are zero, signature verification is confirmed, and owner approval is active as of the current timestamp. The criteria for publication readiness are fully satisfied.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "7731f35eaaa7472d95b7b845ab856218",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 10,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The primary alternative requirements are satisfied: replica delay is 10 ms (<=15 ms), replica is authorized (true), cache is available (false but cache_authorized is true, which makes the second alternative true). The second (reserve) alternative's cache being unavailable, while potentially an issue, does not prevent the primary alternative from meeting the criteria. Therefore, the system is considered ready based on the active facts at the snapshot time.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "cfb4cb0f1c3541df9db3e867c9a4213a",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 1,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Validation errors are active (value 1), violating the criterion of zero errors. Signature verification and owner approval are confirmed, but the presence of validation errors prevents readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "367a2e95d7904f6f8fb768326f2f9be8",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 1,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"Validation errors are active (value: 1), indicating the export has issues; despite signature verified and owner approved flags being true, the presence of validation errors prevents readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "6aa1aee04ccf4e0e8a951177f1cd2335",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"All required facts—restore_seconds (150 <= 180), digest_matches (true), retention_confirmed (true)—are current and meet the specified criteria within the allowed age window. The measurement and facts are valid at the snapshot timestamp, fulfilling all conditions for readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ddae591fbf1e4e418587b57f4526f938",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"All validation requirements are satisfied: zero validation errors, signature verified, owner approved as per the latest measurement snapshot at 10:08 UTC.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "2e782a259930449299cace705e643b04",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All active facts meet the required criteria: restore_seconds <= 180, digest matches, and retention is confirmed as of the snapshot time. The restore_seconds value is 150, which is below the threshold; digest_matches and retention_confirmed are true. Therefore, the backup is considered ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "778a967112464ea7b788d27bcaa7ab4d",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"Validation errors are present (value: 0), indicating unresolved issues, thus the publication is not yet ready for release.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "f92168bee87841269f2492195eada787",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All required validation criteria are satisfied: validation errors are zero, signature verified, and owner approved. These conditions collectively indicate the task is ready for publication.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "e1d2cdd21b34437ab5af2dae930f9c5f",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Restore seconds exceed the maximum allowed threshold of 180 seconds.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "e0175e0e644c4a49be04e81445aeddb4",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"Main response time (35 ms) exceeds the required threshold; reserve system status (available: false) does not meet the required criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "7c67d10b71444e05a1dd7bd9e273dca5",
+      "text": "The task is assessed as ready at 2026-09-28T10:00:00Z. This assessment is based on the criterion that the export publication is prepared when validation has encountered zero errors, the signature has been verified, and it has been approved by the owner. Since all these conditions are met according to the current evidence, the task is deemed ready for completion.",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "0cb86cf2f59743fc9108014c55e08846",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The online_restore_seconds (210 seconds) exceeds the maximum allowed threshold of 180 seconds for the primary route, failing the 'r0' criterion. Other criteria for digest matching are met, but the failure of the restore time criterion prevents the task from being considered ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "0225a94838824377a6cf93aa08b7ce45",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The latency exceeds the threshold of 120 ms, but rollback tested and approval are confirmed. Since the primary condition fails, the overall decision remains 'ready' due to the specific criteria of the process, which primarily consider rollback tested and approval as sufficient for readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "67badaf1e44947ea842ffe1062177f4b",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All required inspection defects are zero, torque verified, and serial registered as of the snapshot time. The criteria are fully met, indicating assembly handoff is ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "fd1828fa3c104044b5701435fe05b7f8",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The main response time is within the 40 ms threshold, and both the main and reserve interlocks are passed, fulfilling the primary criteria for cooling activation. The reserve circuit is not available, but the primary condition is met, which suffices for readiness per the 'any_of' rule.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "f96fb58c81ec4175b8d3abd7c6a8d5cf",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"Inspection defects are invalidated (value: 0), which does not confirm zero defects. Torque verification and serial registration are active but insufficient alone; defective inspection precludes readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "e248e2f97e534eacb5b42e3b72d31c0f",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"measurement\": {\n    \"inspection_defects\": 1\n  },\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Inspection defects are active (value 1), which does not meet the requirement of zero defects (expected 0). Torque verified and serial registered facts are present and valid, but the defect criterion is not satisfied.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ca475ba197a54cd98ff2bfe0157c38be",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The main_response_ms (35 ms) exceeds the maximum threshold of 40 ms required for primary route eligibility, disqualifying the system for immediate cooling activation. All interlock conditions are met, but the response time criterion has not been satisfied.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "db27b67d25584552828440563e889ae3",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All validation criteria are satisfied: validation errors are zero, the signature is verified, and owner approval is confirmed as of the current timestamp.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "166087d91ef9405292afd51517bf4650",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"At observed time, online_restore_seconds is 150 seconds (<=180), online_digest_matches is true, archive_available is false, but archive_digest_matches is true. The primary route's requirements for restore time and digest match are satisfied, making the route ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "8102fa7568e745bfb49bac46061629b1",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The restore_seconds measurement exceeds the maximum acceptable value of 180 seconds as per the requirement.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "7f7b31342f394674a3b5a707db9d4a71",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"replica_delay_ms\": 10,\n    \"replica_authorised\": true,\n    \"cache_available\": false,\n    \"cache_authorised\": true\n  },\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The measurement shows replica_delay_ms is 10 ms, which is less than the threshold of 15 ms; replica and cache are both authorized, although cache is currently unavailable, it does not affect the overall readiness under the 'any_of' rule since the replica requirement is satisfied. Both primary route requirements are met; hence, service is ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "89e038cda5ca4600904cdfd00b404ec9",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"primary_delay_ms\": 90,\n    \"primary_authenticated\": true,\n    \"fallback_available\": false,\n    \"fallback_authenticated\": true\n  },\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The primary route has a delay of 90 ms (less than 120 ms) and is authenticated; fallback route is unavailable but fallback authenticated status is true, satisfying the routing criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "84fbdaa6a0f14b5093b363d433d4a929",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Validation errors are zero, the signature has been verified, and owner approval is confirmed as of the current snapshot. All criteria are met for publishing.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "f69ddc6470794b558d48674a41e4983c",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All inspection criteria are satisfied: inspection defects are zero, torque has been verified, and serial registration is confirmed at the current timestamp.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "f6148c2b4cf54797b516fb575f57c99f",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All inspection criteria are satisfied: no inspection defects, torque verified, and serial registered, within the last 5 minutes.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "deb646423de4479d9d740a006bd0e327",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 1,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"Validation errors are active (value: 1), indicating unresolved issues preventing publication readiness. Signature verification and owner approval are confirmed, but validation errors violate readiness criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "71f87b97e5bb4464ab7d1b59fe0a1bc9",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"inspection_defects\": 0,\n    \"torque_verified\": true,\n    \"serial_registered\": true\n  },\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All inspection criteria are satisfied: no defects detected, torque verified, and serial registered within the required time frame; the snapshot confirms compliance. The criteria met the conditions for assembly handoff at this timestamp.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "bd0929e836d04d8e8bd44494bda0f6dd",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The current snapshot indicates that the primary route has a delay of 90 ms (<= 120 ms) and is authenticated, satisfying the primary route requirements. Fallback route information is available but not needed to determine readiness under the 'any_of' logic, which is satisfied by the primary route conditions. Therefore, the routing is considered ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "1c8976138a5540b4a9be1b2bae015206",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The primary route has a delay of 90ms, which is within the 120ms threshold, and is authenticated. The fallback route's availability and authentication status are not required for this path. All relevant criteria for a ready state are satisfied based on the latest snapshot.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "9ca5deb57cac44d799cbc4ce59fe4068",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The primary route's delay of 150 milliseconds exceeds the threshold of 120 ms, but the fallback route is available and authenticated, fulfilling the alternative requirement set for routing readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "b5bd58dd0f3544289dd1c1d9290f80ab",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The conditions for the primary route are satisfied: online_restore_seconds (150s) is less than or equal to 180s, online_digest_matches is true, archive_available is false (acceptable since archive digest matches is true), but the essential criteria (online_restore_seconds and online_digest_matches) meet the required thresholds, making the primary route viable; the route therefore is considered ready based on current evidence.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "8ab9b492763a4fd38c25fa84566ccd74",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 10,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The active facts indicate the replica delay is 10 ms (<=15 ms) and replica is authorized; cache is unavailable but authorized. Given the rules are satisfied for at least one alternative (primary), the system is considered ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "776c087ddad74278aaf90f6b430dce92",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": {\n    \"replica_delay_ms\": 10\n  },\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The replica delay (10 ms) is below the maximum threshold of 15 ms, and replica is authorized; however, the cache is not available (false), which fails the cache availability requirement. As at least one requirement in the 'any_of' condition is unmet, the overall assessment is not ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "45ca35d3382c450d98190b5288e8bb91",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All backup criteria are satisfied: restore seconds <= 180, digest matches, and retention is confirmed, based on the latest facts within the required age.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "6deb62da7bff4531a4d560ac4875a145",
+      "text": "Based on the current assessment, the task is ready. This conclusion is drawn because the conditions specify that the restore process is considered ready if either the online route completes within 180 seconds with a matching digest, or if the archive route is accessible and has a matching digest. Since the assessment's basis indicates that these criteria are met, and no conflicting evidence has been provided, the task can be deemed ready.",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "29c1907eccf54cc9a54d0ff73ecad864",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"primary_delay_ms\": 90,\n    \"primary_authenticated\": true,\n    \"fallback_available\": true,\n    \"fallback_authenticated\": true\n  },\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Since the primary route delay is 90ms (below maximum of 120ms) and both primary authentication and fallback authentication are verified as true at the timestamp, at least one routing alternative meets all criteria, making the service task ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "0ecb2aeb3b6f417380539309a5eb01ea",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 10,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The facts indicate the replica delay is 10ms (<=15ms), and both replica and cache are authorized; all required conditions for the primary route are satisfied.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "d10fd54987fb437aa4b0476ebeb5f05f",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"Latency measurement (90 ms) is below the maximum threshold of 120 ms, and rollback tested and approval are confirmed. However, according to the rule requirements, the latency needed to be less than or equal to 120 ms within the last 5 minutes. Given that the measurement is recent and within the time frame, it seems to meet the criterion; thus, the overall assessment remains 'ready'. However, the criteria for readiness require all conditions to be met and confirmed simultaneously. The close examination indicates all criteria are satisfied, so the decision should be 'ready'.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "9f5e67e5655c4c9a80ae1b2ffa573ba4",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"One or more required conditions are not clearly satisfied; validation errors, signature verification, and owner approval are assumed met based on current info, but measurement data specific to validation errors is missing or inconclusive, preventing full confirmation of readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "1a9e9b1de75b48fcbabf6cc40dd4669c",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The 'torque_verified' fact is active and true, and 'serial_registered' is active and true; 'inspection_defects' is invalidated and marked as 0. Since inspection defects are invalidated, the criterion for zero defects cannot be confirmed as met, leading to a 'not_ready' status.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "871b27c8e1f34821965e1b551df22524",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"The latency measurement for asset 'followup-all_of-release-missing' with version 'current-3' is missing or not within the required parameters. The latest available fact shows a latency of 150 ms, which exceeds the threshold of 120 ms. Additionally, the assessment window for recent data (max 5 minutes) has passed, and no recent acceptable measurement is available.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "081d45db8d904b30b13eb695081266b4",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All required validation criteria are met: validation errors are zero, signature verified, and owner approved as of the latest snapshot at 10:06 UTC.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ff55a4526b754344a5d61edf79e6a433",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Online restore seconds are ≤180 and online digest matches, meeting primary route criteria. Archive available is false, but archive digest matches are true. Alternative route is satisfied by primary criteria, indicating restore readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "b050e8128a454812a8bd2beb173ee090",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"replica_delay_ms\": 10,\n    \"replica_authorised\": true,\n    \"cache_available\": false,\n    \"cache_authorised\": true\n  },\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The replica delay is below the maximum threshold (15 ms), and replica is authorised; cache is not available but is authorised, fulfilling one of the OR conditions per the requirement. The no-cache condition does not prevent readiness as the alternative path is satisfied.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "11a84c491ac74b9ba03e138b04911313",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The main response time is within the 40 ms threshold, and both the main and reserve interlocks are passing, satisfying the primary activation criteria. Reserve circuit availability and interlock are also confirmed. The conditions for cooling activation are therefore met.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "36315fe8ff3b4995921a4e777111e065",
+      "text": "The task is assessed as ready at the current time, 2026-09-28T10:00:00Z. This is because the routing conditions are satisfied: either the primary route has a delay of at most 120 milliseconds and is authenticated, or the fallback route is available and authenticated. Since these criteria are met, the routing configuration is considered properly prepared to proceed.",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "42f2e5181723457a9ee50d5c6afc76dc",
+      "text": "The task is ready as of 2026-09-28 at 10:00 UTC. The criteria indicate that the read path is considered operational when either the replica delay is at most 15 milliseconds and it is authorized, or the cache is available and authorized. Based on the current evidence, these conditions are met, allowing the read path to be deemed ready for use.",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "22d3a6ce55774a72aea3c391133206df",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The latest facts for the current version show latency of 90 ms (below 120 ms threshold), rollback tested true, and approval true, all within the last 5 minutes, fulfilling all evaluation criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "1eb87206de4d4354a553aaaf00a375bf",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 10,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Both primary route requirements are satisfied: replica delay is at most 15 ms (actual 10 ms) and replica is authorized; cache is unavailable but cache authorization is confirmed. The alternative route criteria are also met, fulfilling the 'any_of' condition. No evidence indicates any conditions failing, and the measurement is current, confirming readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "fea421883d30498780be7856b17c63a1",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The primary route delay (90ms) exceeds the maximum allowable delay of 120ms for readiness, despite primary being authenticated. All other criteria are met; the delay criterion failed.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ef3362d588a3437db7087256af3432d2",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Latency exceeds the maximum threshold of 120 ms (measured at 150 ms). All other requirements (rollback tested and approval granted) are satisfied but the latency criterion has not been met, so the task is not ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "2795203aa2cd4a20a17d9624a3f0c94c",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All inspection criteria are met: zero defects observed, torque verification confirmed, and serial registered within the required timeframe.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "d02d4217c417425e99155c583a437476",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The primary delay is 90 ms, which is less than the 120 ms threshold, and primary authentication is confirmed true. Fallback route is not available, but its authentication is true, satisfying alternative conditions. Hence, the routing is ready based on the 'any_of' rule.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "2fcb3c9d8dee4a5d86658bba8c961588",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The measured latency (90ms) is below the 120ms threshold, and rollback has been tested and approved as of the snapshot time. All criteria are met for task readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "b56453b9edb443d380eeac92c8959fdb",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"All required facts (restore_seconds <= 180, digest_matches, retention_confirmed) are available and meet criteria as of the snapshot timestamp. restore_seconds = 210 minutes, which exceeds the maximum threshold of 180 seconds, indicating backup is not yet ready based on this measurement; however, since the current measurement's confirmation supports backup readiness in broader context (assuming measurement updates soon), the overall assessment remains 'ready' due to the other criteria met. The snapshot provides the latest relevant data confirming criteria satisfaction for digest match and retention confirmation.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "51daa19dc7ed497f8a5ec9412c297a00",
+      "text": "The task is assessed as \"ready\" at 2026-09-28T10:00:00Z. This determination is based on the criteria that the backup is complete, the restore duration does not exceed 180 seconds, the digest matches, and retention has been confirmed. The conditions necessary for readiness have been met according to the latest experiment and rules, with no current limitations impacting the assessment.",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "cad32270156e419cbda840dc6492141f",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"Latency is below the 120 ms threshold; rollback tested and approval granted, all within the required time window.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "41608983c54f4f18a38ce1b40171fc10",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"Main response time is 35ms (within 40ms limit) and both interlocks are active. Reserve circuit is not available, but since primary criteria are met, the task is ready according to the 'any_of' rule.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "5754f080ca3745239cbaf4321df1b7af",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"All required facts meet the specified criteria: restore_seconds <= 180, digest_matches = true, and retention_confirmed = true, observed at 10:10, each within the last 5 minutes, confirming backup readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "4047e758513a4a7b966e7f6aafade4a5",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"Restore seconds (210) exceeds the maximum acceptable threshold of 180 seconds specified in the criterion, indicating the backup is not yet ready. The other two criteria (digest matches and retention confirmed) are met.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "58d5d35d12454751be82d2bbad7e3c36",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The restore_seconds measurement is 150 seconds, which is less than or equal to the maximum allowed 180 seconds. Digest matches and retention are confirmed, fulfilling all criteria for readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "f3ea55c4c65f4a558e617f08abc3fa7e",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 1,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"Inspection defects are non-zero (value: 1), which fails the requirement of zero defects. Torque verification and serial registration are both verified, but the defect count prevents readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "e5ab5fa2af6940bf8f600afc494a002f",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All active facts (restore_seconds=150, digest_matches=true, retention_confirmed=true) are within the required time window and meet the specified criteria for readiness. Since restore_seconds (150) is less than or equal to 180, and the other facts are true, the backup is ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "4ef198cbb9c341ef993bcdcdfa428739",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"Restore duration (150 seconds) exceeds the maximum expected of 180 seconds; while other criteria are met, this alone prevents readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "62a91706e9b94fbd9a28dd142849178a",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The online restore time is within 180 seconds, the online digest matches, archive is not available, but archive digest matches. Since the primary requirements for the restore route are met, the task is considered ready based on current evidence.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "7ca13c7210dd42019b229ccf70d540f3",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 10,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The measured replica_delay_ms (10 ms) is less than or equal to 15 ms and both replica_authorised and cache_authorised are true, satisfying the primary alternative requirements of the task rule.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ce49ff5dfa9c4fafb96e7d212d8544bf",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 100,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The primary route's delay exceeds the maximum allowable 120 milliseconds (measured at 100 ms, which is within limit), but the fallback is not available or authenticated according to the latest facts, so the routing is not fully ready under current criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "4f4f240a57014331bea7036be4c377db",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The primary route's delay of 90 ms is within the acceptable threshold of 120 ms, and both primary authentication and fallback authentication are confirmed active at the snapshot time. Therefore, routing is ready based on current facts.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "e0d84e5ef9fd4b9683e935c85ae85cd1",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 1,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"Inspection defects are active (value: 1), failing the requirement of zero defects; torque verify and serial registration are valid. The presence of defects prevents assembly handoff.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "c88e04c2b7b54af1ac44589f379af9ef",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 113,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"Primary route delay of 113 ms is below the 120 ms threshold, and primary authentication is confirmed. However, fallback route availability and fallback authentication are not confirmed, so the fallback alternative criteria are not met. Therefore, the routing cannot be considered fully ready based on configured criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "cd9b1776182b4a36ad38529b28ccb3bf",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 1,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The 'torque_verified' fact was observed as invalidated, indicating the torque verification criterion is not met. The inspection defects are present, not zero, which fails the readiness condition.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ab6e5db79edd4494827b70da95755865",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"primary_delay_ms\": 90\n  },\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The primary route delay is 90ms (less than 120ms) and both primary authentication and fallback authentication are confirmed true within the required recent timeframe, fulfilling the routing criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "f39a426f05c14d0a86219af76b441899",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"All required facts meet the specified criteria: inspection defects are zero, torque is verified, and serial number is registered within the allowable timeframe. The facts are all active and recent, fulfilling the 'all_of' rule.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "0cfea327a1304938af58104ada8d4178",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"Latency (90 ms) is below the required maximum of 120 ms, and rollback tested and approval are both true. However, the assessment relies on the most recent measurement; since latency is within limits, the primary criterion is met, but overall readiness requires all conditions to be conclusively satisfied. Given the snapshot, the evaluation indicates readiness but with a cautious interpretation. Nonetheless, as the measure and criteria are met, a more definitive readiness can be confidently assumed. Considering that the basis is criterion_met, the overall decision is 'not_ready' due to the conservative interpretation of contingent factors.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "9388df52b816472b8df9e934534b09af",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The measured online_restore_seconds is 150, which is less than or equal to the threshold of 180 seconds, and both archive available and archive digest match facts are true within the required age limits, satisfying primary route conditions.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "bf3a5375b0a64bffa8b208cfb9351735",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": {\n    \"replica_delay_ms\": 20\n  },\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The replica delay is 20ms, which exceeds the required maximum of 15ms for readiness; other criteria are met.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "5d972c23cc404286a01524a4bbba8971",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The main_response_ms measurement is below the required threshold of 40 ms, and all other required active facts are valid. Therefore, the primary route's criterion is not met.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "4a7b3f21a54b47d9949d4d2cee23a89e",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The online restore seconds fact indicates 150 seconds, which is less than the maximum threshold of 180 seconds, fulfilling the restore time criterion. Archive digest matches and online digest match are both true, meeting all required conditions for the primary route. Thus, the system is ready based on current measurements.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "c410166135b64ba8b55815d4e6b00ae0",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The online_restore_seconds fact is 210 seconds, which exceeds the 180 seconds threshold required for the primary route. However, the archive is unavailable, and the archive_digest_matches fact is true, meeting the alternative criteria. Since the archive route is available and its digest matches, the restore is considered ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "9cc32d0bdc7a49b9a8f759ab1b462184",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 1,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Validation errors are active (value 1), indicating the current version has not passed validation. Signature verification and owner approval are present, but failure in validation errors prevents readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "18d43617e9f741d8a1344651423a9cb8",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"replica_delay_ms\": 10\n  },\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All required conditions are satisfied: replica delay is at most 15 ms, and both replica and cache are authorized and available. The observed facts meet the primary alternative criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "dd7bf8ce932048a9864fac2e0b642404",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 115,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"All required facts are present and meet the specified criteria: latency is at most 120 ms, rollback has been tested, and approval is granted, all observed within the required time window.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "9948119b511141bc96e62ea20e01fac3",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The online restore seconds is within the required 180 seconds limit and the digest matches; archive availability and digest match are confirmed, meeting primary route criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "800a96862b454295b44f2269ffe6d22a",
+      "text": "The task is ready at this moment, as the inspection has confirmed zero defects, the torque has been verified, and the serial number has been registered. All necessary criteria for assembly handoff have been met, ensuring that the product is prepared for the next step without issues.",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "74249816a2d44dee832d362fa6ab039f",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The main response time is within the 40 ms threshold and the main interlock has passed. Although reserve availability is false, the primary criteria are satisfied for immediate cooling activation.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "e884230407574b7b9eff3cb678ca450a",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All required facts (restore_seconds = 150, digest_matches = true, retention_confirmed = true) are current, within the 5-minute window, and meet the specified criteria for backup readiness. The restore_seconds is less than or equal to 180, digest matches, and retention is confirmed, indicating the backup is ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "8876fb13517a4a09bafdc8329166b4a5",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The primary route has a delay of 90 ms (<= 120 ms) and is authenticated; fallback route availability and authentication are not relevant as primary route criteria are met.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "490ad9c17f354ffba6562ce67f275803",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All required conditions are satisfied: validation errors are zero, signature verified, and owner approved at the current snapshot.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "ac57116bb03e4494a9d79d365d3d481b",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The main circuit response time is 35 ms (<=40 ms) and both the main interlock and reserve interlock are passed (true). Although the reserve is currently unavailable (false), meeting the primary criteria suffices for a 'ready' decision as per the 'any_of' logic.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "9ed99ed0e51a4ff0a14c5c120d33636a",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"The main circuit response time is within 40 ms and its interlock passes; the reserve circuit is available and its interlock passes, satisfying the OR condition for cooling activation readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "f254602bde444301805bc822aea9a472",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"replica_delay_ms\": 10\n  },\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The measured replica delay is 10 ms, which is below the maximum threshold of 15 ms, and both replica authorization and cache availability are confirmed true within the required timeframe. Therefore, the task conditions are satisfied, making it ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "46be1b463c984d8f97d58bba3ebacc2f",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"All critical inspection criteria are satisfied: zero defects observed within the last 5 minutes, torque verified, and serial registered. The snapshot confirms compliance with the assembly handoff requirements.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "fb6a22ac368148f98375907870c27295",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The online restore seconds is within the maximum allowed 180 seconds, and both digest matches are confirmed, satisfying the primary route requirements. Archive available is false, so archive digest matching is not applicable for primary, but the primary criteria are met, making the route ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "67ed169be2db4e7a8c863ce609d32ee2",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:10:00Z\",\n  \"explanation\": \"Latency (150 ms) exceeds the maximum acceptable threshold of 120 ms as required. Approval and rollback tested statuses meet the criteria, but latency does not.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "d4507d48fc4d4c9e9ce7a008d57b4d67",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 90,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The latency measurement is below the 120 ms threshold, and rollback has been tested with approval granted, satisfying all criteria for release readiness. All facts are within the required age window.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "58cbfd165de049c3814f84ca8d73c55f",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"replica_delay_ms\": 10\n  },\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All necessary conditions are met: replica delay is below or equal to 15 ms, and both replica and cache are authorized and available. The latest facts confirm compliance within the required timeframe, indicating the read path is ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "c0c0d15a702b4907a8dcc8c909c0f2c4",
+      "text": "{\n  \"decision\": \"undetermined\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"No active measurement facts for latency, rollback tested, or approval within the required timeframe; unable to verify all criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "b2a67cadf90945fa9da0711fa697940c",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 20,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The replica_delay_ms exceeds the maximum allowed value of 15 milliseconds (measured at 20 ms). Additionally, cache is not available, failing one of the required conditions for readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "8ded4c5b79e24add8770e9996c6a03a4",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 120,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The primary route has a delay exactly at the threshold of 120 milliseconds and is authenticated; fallback route is available and authenticated. Both alternative requirements are satisfied, indicating the routing is ready based on the current evidence snapshot.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "40f72fed8e90487681e04876122de009",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"Primary route requirement: main_response_ms is 35 ms, which is less than or equal to 40 ms, and main_interlock_passed is true. All conditions for primary route are satisfied. Reserve route requirements are not met as reserve_available is false.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "94b100e3e50946e98507e52ac4b315c9",
+      "text": "The task is ready for execution at 2026-09-28T10:00:00Z. This conclusion is based on the criteria that the main circuit responds within 40 milliseconds and passes its interlock, or alternatively, the reserve circuit is available and also passes its interlock. Since the current assessment confirms these conditions are met, the task is deemed prepared to proceed.",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "974df340f8634d2e8f3251fdd2b0c29d",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 50,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The main_response_ms measurement exceeds the maximum acceptable value of 40 ms, which prevents the cooling system from being considered ready according to the criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "7f162b5742e34301ae51db96b3f67f51",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The primary delay exceeds the threshold of 120 ms (measured at 150 ms), despite primary authentication being true, while fallback is unavailable. This failure to meet the delay criterion means routing is not ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "5d6d3812462b4a23ab0c80d7d12dd440",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"All evaluation criteria are satisfied: zero validation errors, signature verified, owner approved, all within the required timeframe.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "5f6633e998384c95a0b49ae8c5524682",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"The online restore duration is within the maximum allowed of 180 seconds, and both online digest match and archive digest match are confirmed, satisfying primary route requirements.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "182c88f0f5884699be03921a7ffc4368",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All validation requirements are satisfied: no validation errors, signature verified, and owner approved as of the current measurement time. The snapshot confirms readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "83181b085b2949ca8dd6dfe3e9acbb3e",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All required facts meet the specified conditions: online_restore_seconds ≤ 180 (actual 150), online_digest_matches = true, archive_available = false (acceptable for primary), archive_digest_matches = true. The online_restore_seconds value is recent and within the max age of 5 minutes; all other facts are current and satisfy requirements. Despite archive being unavailable, the primary route's criteria are fulfilled, confirming readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "1d20c536aea94143a80ed6190c1ef18d",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"At 10:08 UTC, the required facts for primary delay and authentication are either missing or not within the specified age window; fallback route facts are unavailable, preventing confirmation of routing readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "264465b483d54e74b2b033a8f0799263",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"inspection_defects\": 0,\n    \"torque_verified\": true,\n    \"serial_registered\": true\n  },\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"All required criteria met within the specified time window; inspection defects are zero, torque verification and serial registration are confirmed.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "811803df255c49debbcb10494d87ad2c",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 50,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"Main response time exceeds the maximum acceptable threshold of 40ms, failing the primary requirement for cooling activation readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "55a595491c664953a456c9db3e7a0c39",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 0,\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The measurement for 'rollback_tested' and 'approval' are both active and true, which satisfies two of the three criteria. However, the latency_ms reading is missing, preventing confirmation that it is at most 120 ms. Thus, not all criteria are met simultaneously.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "28d2e291210c4a73b4ce7a8f89b005a5",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"All required facts—restore_seconds (150 <= 180), digest_matches (true), and retention_confirmed (true)—are present, active, and within the allowed age window (<=5 minutes). The snapshot confirms the backup is ready based on these criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "0b671b984b614f99968af0d2f024ff5b",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:06:00Z\",\n  \"explanation\": \"Main response time is below 40 ms and main interlock passed; reserve is unavailable but its interlock passed, satisfying 'any_of' condition.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "dbaa9710554f4b48b17fe8797217a774",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"Online restore seconds (150) exceeds the maximum allowed threshold of 180 seconds, preventing readiness under current criteria.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "5df5d6a0ae2749ae8610e48876181d1b",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": 35,\n  \"observed_at\": \"2026-09-28T10:02:00Z\",\n  \"explanation\": \"The main response time (35 ms) is less than or equal to 40 ms and the main interlock is passed; the reserve is not available but since the primary criteria are met, the system is considered ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "a255fe7baea546208d4a24b8f98e583e",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 210,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The online restore time exceeds the maximum allowable 180 seconds for the primary route, failing the requirement. All other criteria are met.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "95a223f958664652896821d78f4b5607",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 50,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"Main response time exceeds the required threshold of 40ms (measured at 50ms). All other criteria are satisfied, but failure of this measurement prevents readiness.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "b2dca37096cf48979cc7a049d6667e7a",
+      "text": "{\n  \"decision\": \"ready\",\n  \"basis\": \"criterion_met\",\n  \"reading\": {\n    \"replica_delay_ms\": 20,\n    \"replica_authorised\": true,\n    \"cache_available\": false,\n    \"cache_authorised\": true\n  },\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The read path is considered ready under the reserve alternative, because cache is not available, which prevents primary route checks. The replica delay exceeds the primary criterion of ≤15 ms, but since cache is authorised and available, and replica is authorised, the reserve condition is met. The overall task is assessed as ready based on the 'any_of' logic.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "12c0fd94bac04cd1ac13f70973a306bd",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"The inspection_defects fact indicates deficiencies (value 1), which fails the requirement for zero defects within the past 5 minutes. Furthermore, the torque_verified fact is invalidated (false), breaching the verification requirement. Although serial_registered is true, the unresolved defect and invalid torque verification mean assembly is not ready to handoff.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "c20c9265322541b98bf17a901d7d1829",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": 150,\n  \"observed_at\": \"2026-09-28T10:08:00Z\",\n  \"explanation\": \"The latency measurement exceeds the acceptable threshold of 120 ms (actual 150 ms).\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    },
+    {
+      "id": "80e7261350794713bc1db8308a3cfadc",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"criterion_failed\",\n  \"reading\": {\n    \"replica_delay_ms\": 10\n  },\n  \"observed_at\": \"2026-09-28T10:04:00Z\",\n  \"explanation\": \"The replica delay of 10ms is below the maximum threshold of 15ms, and replica is authorized; however, cache is not available, which fails the 'any_of' read path criteria requiring either the replica conditions or the cache conditions to be fully met. Since the cache is unavailable and not authorized, the read path is not ready.\",\n  \"files\": []\n}",
+      "decision": null,
+      "quote": "",
+      "note": "",
+      "explanation_consistency": null,
+      "consistency_quote": "",
+      "consistency_note": ""
+    }
+  ]
+}

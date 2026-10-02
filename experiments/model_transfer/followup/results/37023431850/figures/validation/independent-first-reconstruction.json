@@ -1,0 +1,108 @@
+{
+  "stage": "independent_first_reconstruction",
+  "reviewer": "/root/followup_figures/final_graphic_semantic_review",
+  "frozen_at_utc": "2026-10-02T17:05:26.848911+00:00",
+  "information_boundary": "Before freezing this record I inspected only the two final rendered PNGs, the PDFs (page-size metadata plus rasterizations at approximately 120 display pixels per physical inch), and their two caption text files. I did not read specifications, source, inputs, audits, README, answer text, coder/calibration keys/files, task/scorer/plan files, or sibling content.",
+  "inspected_sha256": {
+    "01-primary-outcome-cells.png": "de630b90cfc7b7872a94197c74d165e3e196db87325bdf7f2e0c781c36246303",
+    "01-primary-outcome-cells.pdf": "d223b1fba55c9a41645b309f6afee769586cae602b9279b7cebead8ab5fff913",
+    "02-endpoint-separation.png": "dff1807bd065b704533cb8877077a8e577a9324a749e218d3d4cbe2ca401e841",
+    "02-endpoint-separation.pdf": "e5ff329a536809615c4309e868aa93cbaa406b0dbbebc5a7142e8e1880f2aafe",
+    "captions/01-primary-outcome-cells.caption.txt": "84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545",
+    "captions/02-endpoint-separation.caption.txt": "5fe5327a34605b046c3d42742bf29fc2a6a83acecc60787f4a978f13bef142be"
+  },
+  "human_benefit_limitation": "Human interpretation benefit remains unmeasured by agent screening.",
+  "figures": [
+    {
+      "stem": "01-primary-outcome-cells",
+      "reconstructed_question": "At each of the forty scheduled matched positions, which recipient outputs satisfy the whole-verdict-plus-consistent-explanation primary endpoint in each of the three contexts?",
+      "reconstructed_claim": "The observed finite cell pattern differs among contexts, but supports neither context superiority nor population reliability. EAL and Conventional had identical model-visible packets, so their observed differences cannot by themselves establish a representation effect.",
+      "quantities_units_and_encodings": {
+        "unit": "One live recipient output per symbol; forty per context, 120 total.",
+        "rows": "Eight common-donor task blocks: All or Any logic family crossed with four purposive task instances, labelled missing, stale, invalidated, and version.",
+        "columns": "Five artificial snapshot positions 2, 4, 6, 8, and 10; the footer maps these to complete, critical gap, positive restoration, negative restoration, and noncritical gap.",
+        "panels": "Facts, EAL, Conventional.",
+        "symbol_encoding": "+ and blue = primary success; minus and orange = primary failure; question mark = unresolved primary coding.",
+        "observed_primary_counts": {
+          "Facts": {
+            "success": 20,
+            "failure": 20,
+            "unresolved": 0
+          },
+          "EAL": {
+            "success": 30,
+            "failure": 10,
+            "unresolved": 0
+          },
+          "Conventional": {
+            "success": 33,
+            "failure": 7,
+            "unresolved": 0
+          }
+        }
+      },
+      "evidence_status": "Observed live outputs, final AI coding, authored synthetic reference states; factual grounding, human validation, and stochastic repeatability unassessed.",
+      "inference_scope": "Eight clustered task blocks, forty matched positions per context, one collection only, purposive task wording confounded with availability cause. Fresh recipient clones share the common donor. The ordered snapshot labels do not depict a serial answer trajectory or independent repetitions.",
+      "unknown_and_ambiguity_distinctions": "The question-mark legend means unresolved endpoint coding. An undetermined authored reference can still yield a successful match. An ambiguous communicated verdict can be a determinate primary failure if the explanation is contradictory. No question-mark cells appear in the rendered matrix.",
+      "apparent_contradictions": "None between cell pattern and caption. The ordering could initially suggest progression or a longitudinal trajectory, but the caption explicitly prevents that reading. The footer phrase one repeat is slightly less immediate than collected once, but the caption resolves it as a single collection.",
+      "unintended_implications_and_residual_ambiguities": [
+        "The stronger-looking Conventional cell pattern must not be interpreted as reliable superiority; caption states this limitation.",
+        "All/Any and availability labels could be read as general factors, but caption states that they identify purposive instances and cause is confounded with domain wording.",
+        "EAL is an unexpanded context acronym in this isolated artifact; its expansion is not necessary to recover the plotted quantities."
+      ],
+      "readability_and_clipping": "At approximately 5.68 by 3.96 physical inches, symbols, labels and footer remain legible in a 120-pixels-per-inch page render. No visible clipping, overlapping labels or cropped symbols. Vertical and panel spacing make rows and positions recoverable; high-resolution PNG agrees with the PDF-size render.",
+      "provisional_semantic_judgment": "The image and caption support a finite descriptive reading without an apparent substantive contradiction; defer data/source-binding acceptance until Stage 2."
+    },
+    {
+      "stem": "02-endpoint-separation",
+      "reconstructed_question": "How do the parsed canonical field, whole communicated verdict, and conjunctive primary-success counts compare, and what contradiction/unresolved counts coexist with them?",
+      "reconstructed_claim": "Canonical field matching and whole-answer/primary endpoints are separate constructs. EAL has 31 canonical matches but 30 whole-verdict matches and 30 primary successes; Facts has 20 of each and Conventional has 33 of each. Equality of some totals does not make the endpoints conceptually interchangeable.",
+      "quantities_units_and_encodings": {
+        "unit": "Counts of outputs, out of forty in every context.",
+        "panels": "Facts, EAL, Conventional, all with count axes from 0 to 40.",
+        "rows": "Canonical match (gray tick), Whole verdict match (orange tick), Primary success (blue tick); tick position on each panel axis encodes the count and an adjacent number reports it exactly.",
+        "observed_counts": {
+          "Facts": {
+            "canonical_match": 20,
+            "whole_verdict_match": 20,
+            "primary_success": 20,
+            "contradictory": 3,
+            "contradictory_with_enum_match": 0,
+            "verdict_unresolved": 3,
+            "primary_unresolved": 0
+          },
+          "EAL": {
+            "canonical_match": 31,
+            "whole_verdict_match": 30,
+            "primary_success": 30,
+            "contradictory": 3,
+            "contradictory_with_enum_match": 0,
+            "verdict_unresolved": 3,
+            "primary_unresolved": 0
+          },
+          "Conventional": {
+            "canonical_match": 33,
+            "whole_verdict_match": 33,
+            "primary_success": 33,
+            "contradictory": 0,
+            "contradictory_with_enum_match": 0,
+            "verdict_unresolved": 0,
+            "primary_unresolved": 0
+          }
+        },
+        "overlap": "Endpoint totals, contradiction counts, and unresolved counts overlap; they are neither partition pieces nor additive components."
+      },
+      "evidence_status": "Parsed designated canonical fields and final AI coding of actual outputs are compared with authored synthetic references; explanation factual grounding and human benefit are not measured.",
+      "inference_scope": "Descriptive endpoint separation among the same 40 outputs in each context. Eight common-donor task clusters and one repeat provide no population precision, repeatability, superiority, or human-benefit estimate. EAL/Conventional packets were identical at all matched positions.",
+      "unknown_and_ambiguity_distinctions": "Verdict unresolved reports null whole-verdict matching fields, while Primary unresolved reports unresolved conjunctive endpoint codes. Facts and EAL therefore can show three unresolved verdicts and zero unresolved primary codes: contradictory explanations can already determine primary failure. This is not an inconsistency. The count of contradictory outputs with enum match is explicitly a subset of contradictory outputs.",
+      "apparent_contradictions": "No contradiction between the displayed totals and caption definitions. Canonical-versus-whole separation appears numerically only in EAL; the title remains defensible as a statement about distinct endpoint definitions. All displayed primary-success counts agree with the matrix figure.",
+      "unintended_implications_and_residual_ambiguities": [
+        "Without the caption, With enum match could be read as an unrelated count; the caption specifies that it is the contradictory subset.",
+        "A difference between matching field and whole verdict does not show factual grounding or measure human interpretability.",
+        "The three main endpoint counts must not be added; image footer and caption both state overlap."
+      ],
+      "readability_and_clipping": "At approximately 5.61 by 3.53 physical inches, all row names, exact counts, axes, and annotation rows remain readable in a 120-pixels-per-inch page render. No visible overlap or clipping; panel headings align with their axes. Numbers near ticks can be read without relying on color.",
+      "provisional_semantic_judgment": "The familiar aligned count-axis form communicates separate counts and denominators with direct labels; defer data/source-binding acceptance until Stage 2."
+    }
+  ]
+}

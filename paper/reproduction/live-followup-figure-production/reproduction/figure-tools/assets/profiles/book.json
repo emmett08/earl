@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "book-example",
+  "document_class": "book",
+  "class_options": ["10pt"],
+  "packages": [
+    {"name": "fontenc", "options": ["T1"]},
+    {"name": "amsmath", "options": []},
+    {"name": "amssymb", "options": []},
+    {"name": "mathtools", "options": []},
+    {"name": "bm", "options": []},
+    {"name": "xcolor", "options": []},
+    {"name": "tikz", "options": []}
+  ],
+  "preamble": "book-preamble.tex",
+  "dependencies": [],
+  "engine": "pdflatex"
+}

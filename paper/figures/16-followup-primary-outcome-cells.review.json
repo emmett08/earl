@@ -1,0 +1,121 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-01-primary-outcome-cells",
+  "spec_sha256": "00b00eadec0d0797547a6352317ebb353764813d3b316f5064e4a9db8bd3b180",
+  "audit_sha256": "69e6e614fe0d1d4df2a412d9a81ca93c9677ef2b4028a3007044cbb4f390cdb8",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "01-primary-outcome-cells.pdf",
+      "sha256": "ada334cad7d26385baec7edb469f7e1cbeae608a30ec9a4de8ff2d8409a6cea2"
+    },
+    {
+      "role": "prototype",
+      "path": "01-primary-outcome-cells.png",
+      "sha256": "de630b90cfc7b7872a94197c74d165e3e196db87325bdf7f2e0c781c36246303"
+    }
+  ],
+  "reviewer": {
+    "id": "independent-final-graphic-semantic-review-agent",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "complete-cell-matrix",
+      "prototype": "01-primary-outcome-cells.png",
+      "observations": {
+        "reading": "At each of the forty scheduled matched positions, which recipient outputs satisfy the whole-verdict-plus-consistent-explanation primary endpoint in each of the three contexts? The observed finite cell pattern differs among contexts, but supports neither context superiority nor population reliability. EAL and Conventional had identical model-visible packets, so their observed differences cannot by themselves establish a representation effect.",
+        "annotation_burden": "Direct task/position/context labels and a three-symbol legend support retrieval of all 120 fixed categorical cells. Caption carries endpoint definitions and sampling/provenance limitations.",
+        "reproduction": "One familiar form is justified by the exact fixed-cell retrieval task; no unresolved encoding choice calls for multiplied prototypes. Inspected the actual final PNG/PDF, PDF native-size rasterization and final-size greyscale QA. Current source regeneration, numerical evidence and mechanical audit are bound below."
+      }
+    }
+  ],
+  "selected_candidate": "complete-cell-matrix",
+  "initial_reconstruction": {
+    "claim": "The observed finite cell pattern differs among contexts, but supports neither context superiority nor population reliability. EAL and Conventional had identical model-visible packets, so their observed differences cannot by themselves establish a representation effect.",
+    "quantities": [
+      "unit: \"One live recipient output per symbol; forty per context, 120 total.\"",
+      "rows: \"Eight common-donor task blocks: All or Any logic family crossed with four purposive task instances, labelled missing, stale, invalidated, and version.\"",
+      "columns: \"Five artificial snapshot positions 2, 4, 6, 8, and 10; the footer maps these to complete, critical gap, positive restoration, negative restoration, and noncritical gap.\"",
+      "panels: \"Facts, EAL, Conventional.\"",
+      "symbol_encoding: \"+ and blue = primary success; minus and orange = primary failure; question mark = unresolved primary coding.\"",
+      "observed_primary_counts: {\"Conventional\": {\"failure\": 7, \"success\": 33, \"unresolved\": 0}, \"EAL\": {\"failure\": 10, \"success\": 30, \"unresolved\": 0}, \"Facts\": {\"failure\": 20, \"success\": 20, \"unresolved\": 0}}"
+    ],
+    "evidence_status": "Observed live outputs, final AI coding, authored synthetic reference states; factual grounding, human validation, and stochastic repeatability unassessed.",
+    "scope": "Eight clustered task blocks, forty matched positions per context, one collection only, purposive task wording confounded with availability cause. Fresh recipient clones share the common donor. The ordered snapshot labels do not depict a serial answer trajectory or independent repetitions.",
+    "unintended_inferences": [
+      "The stronger-looking Conventional cell pattern must not be interpreted as reliable superiority; caption states this limitation.",
+      "All/Any and availability labels could be read as general factors, but caption states that they identify purposive instances and cause is confounded with domain wording.",
+      "EAL is an unexpanded context acronym in this isolated artifact; its expansion is not necessary to recover the plotted quantities."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "The frozen independently reconstructed question, finite claim, quantities, category/count encodings and clustered inference scope match the current intended specification.",
+      "The independent render-based primary counts are Facts 20, EAL 30 and Conventional 33, out of 40 per context; primary unresolved is zero in each. All row/position state patterns agree with the sanctioned sanitized rows.",
+      "An undetermined authored reference is distinct from unresolved coding; ambiguous whole verdicts can yield determinate primary failures through contradictory explanations. No cell is omitted or relabelled by this reviewer.",
+      "The caption states that EAL and Conventional packets are identical at all 40 matched positions, references are authored synthetic states, coding is by AI, collection is once, and superiority/grounding/human benefit/population or repeatability estimates are unsupported."
+    ],
+    "findings": [
+      {
+        "id": "independent-first-reading-binding",
+        "severity": "informational",
+        "description": "Historical first reading was frozen before specification/input/audit exposure in validation/independent-first-reconstruction.json; sha256=cfdf5bca5046df619f24212dea22a4fd817450c25d4635787d05c955a20514ae. It binds the original inspected artifacts and remains unchanged after the known-match wording clarification. Current reinspection evidence: validation/known-verdict-clarification-reinspection.json; sha256=d9fa56f91f299541d99b6748e93f34333752b1f0c2c01e9a3b6cd5b206a94783. Stage 1 read only final renders/captions; Stage 2 and reinspection read only explicitly allowed production-root specifications, sanitized inputs, audits, validation records, reproduction code/schema/profile and own QA. No sibling, participant answer, coder/calibration, task/scorer/plan file was read.",
+        "disposition": "accepted",
+        "reason": "The frozen reconstruction supplies historical evidence rather than a false claim that changed files were initially inspected. Current semantics were verified after the controlled clarification and audit refresh."
+      },
+      {
+        "id": "caption-and-alt-bindings",
+        "severity": "informational",
+        "description": "Current caption evidence: captions/01-primary-outcome-cells.caption.txt; sha256=84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545. Current alt text evidence: captions/01-primary-outcome-cells.alt.txt; sha256=6bb04e004a30e36e707aa75d4e6f5e6c9f09ea7bd09354ae63c89bc22fa4ef67.",
+        "disposition": "accepted",
+        "reason": "Caption and alt definitions and counts agree with the rendered figure and permitted sanitized input; caption/alt are also current declared dependencies of the mechanical audit."
+      },
+      {
+        "id": "verification-evidence-bindings",
+        "severity": "informational",
+        "description": "Current verification evidence: inputs/final-analysis-for-figures.json sha256=821920676a0c06cfdb6baffc8dd4f0816163bb68d2adaac40c60aa09df92410b; inputs/collection-audit-excerpt.json sha256=2e602776888e18bcaf2ade9bd7d0e4223f014f9714a0dece05c634885cd4c451; validation/numerical-check.json sha256=f50606aace7809831610d79425da7cf49ef59aa2034a0ad27aecc60ee675f414; validation/calculation-checks.json sha256=25060ce0c1ce5ad07541b02dd86b3aa6d5af5e194469e4cd20fe02079f0a237d; validation/author-visual-inspection.json sha256=f72512bdc49133ee624049d3d35b328eac952b2ab41a997c89d2bfebc13850fd; validation/exact-source-regeneration.json sha256=cc94ac0c0b4b2d901d743489f4dba495527164c41185cf19ec6d02ffe32d80f2.",
+        "disposition": "accepted",
+        "reason": "Sanitized rows are the sole endpoint source; collection excerpt supplies live-output/clone/packet-equality provenance. Numerical review passes all listed checks. Exact-source-regeneration bound artifacts all match current bytes; mechanical audit binds the current source/spec/profile/PDF and all declared local dependencies."
+      },
+      {
+        "id": "physical-size-and-greyscale",
+        "severity": "informational",
+        "description": "Current final-size greyscale preview: qa/01-primary-outcome-cells/01-primary-outcome-cells.final-size-96dpi-greyscale.png; sha256=e0172c786359f1c85fc82db4da7096d9953556e4dc0d4a9a6fa773a2365d0a3d. Native PDF, high-resolution PNG and final-size greyscale QA are readable with no visible clipping or overlap; current PDF native-size raster was independently verified. Measured minimum text is 9.000024 pt and PDF width remains within 160 mm maximum.",
+        "disposition": "accepted",
+        "reason": "Agent visual inspection finds labels, exact counts and semantic glyph shapes readable at the native final size with no clipping or label overlap. Greyscale meaning survives through shapes/direct labels. Mechanical reading accuracy and human interpretation benefit are not measured."
+      },
+      {
+        "id": "no-current-audit-warnings",
+        "severity": "informational",
+        "description": "Current audit ok=true; errors, warnings and typesetting_warnings are empty. Audit warning dispositions is therefore an empty array.",
+        "disposition": "accepted",
+        "reason": "There is no current warning to waive or repair; semantic/reading/colour-accessibility checks remain explicitly outside the mechanical audit."
+      },
+      {
+        "id": "residual-caption-dependent-reading",
+        "severity": "minor",
+        "description": "The footer wording one repeat could initially suggest an additional collection; the acronym EAL is not expanded in this isolated artifact.",
+        "disposition": "accepted",
+        "reason": "The caption explicitly says collected once and specifies fresh clones/artificial snapshots; the EAL expansion is not needed to recover the plotted states. These are not contradictions or unsupported outcome claims."
+      },
+      {
+        "id": "generator-dependency-refresh",
+        "severity": "informational",
+        "description": "The generator wording edit required a refreshed audit/PDF for Figure 01. Current source/spec/caption/alt/PNG are byte-identical to the pre-edit semantic files; current native-size PDF raster is byte-identical to the originally inspected native-size raster. Current audit binds the refreshed generator and PDF.",
+        "disposition": "accepted",
+        "reason": "Only build/audit/PDF provenance bytes changed; independently checked visual semantics did not change."
+      }
+    ],
+    "audit_warning_dispositions": []
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "Agent screening is an independent reconstruction and fidelity check of these supplied renders and sanitized coded outputs, not a human reader test or fresh participant semantic coding.",
+    "Eight common-donor task clusters, purposive domain-confounded instances and one collection provide finite descriptive counts only; no context superiority, population reliability/precision or stochastic-repeatability claim is accepted.",
+    "Authored synthetic references and final AI coding are the evidence basis; explanation factual grounding, independent human coder validation and resolved-code error are unassessed."
+  ]
+}

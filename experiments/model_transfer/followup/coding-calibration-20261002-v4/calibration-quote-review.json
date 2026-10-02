@@ -1,0 +1,478 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration-semantic-quote-review/1",
+  "calibration_id": "coding-calibration-20261002-v4",
+  "review_state": "FINAL",
+  "reviewed_at": "2026-10-02T16:35:15.982Z",
+  "reviewer_task": "/root/calibration_v4_key_audit",
+  "status": "passed",
+  "quote_review_passed": true,
+  "all_144_quote_checks_relevant": true,
+  "assessor_count": 3,
+  "reviewed_item_pair_count": 72,
+  "reviewed_quote_field_count": 144,
+  "exact_nonempty_quote_field_count": 144,
+  "semantically_relevant_quote_field_count": 144,
+  "irrelevant_quote_count": 0,
+  "misleading_or_qualifier_clipping_count": 0,
+  "failure_count": 0,
+  "source_sha256": {
+    "public-items.json": "09bceb0866ef5caf7a2bdf94433682c902d60fbd6e455cf390ca0c2654b0dae2",
+    "sealed-key.json": "29edee3a476f9d57bea27e8b1694ab69fa693e9e0133fb287f45ac594b3b9b46",
+    "independent-key-review.json": "5ad93b51ce0afc3934af51ca98db37e4e88addb70edaa98bdcfe6daa14257649",
+    "calibration-reviewer-a.json": "ca287832254c1cec4fff3c376a6f54f39c473816641cb33f3a691ccfbf5c9f58",
+    "calibration-reviewer-b.json": "039ec13b67e5889f12aab64cbbc33f2679c8260bc1de33bb41f4bddda7468052",
+    "calibration-adjudicator.json": "8af1760ff454fe355d52fab202302ddb0bcf1902f8fb2b198635cb6bcc577488"
+  },
+  "attestation": "I reviewed all 144 actual calibration quote fields against only the frozen V4 public item texts, sealed key and independent material receipt. Every field is a nonempty exact substring, substantively relevant to its coded label, and preserves needed conflict, scope and qualifiers. Sources, gold and coder output files were not edited. No live participant data was read and no gold feedback was sent to coders.",
+  "independence_and_timing": [
+    "The unique-gold material review and its immutable receipt preceded coder administration.",
+    "The three completed calibration outputs were read only after root separately authorized this semantic quote audit.",
+    "The review assessed each actual field rather than accepting root's label scores or key quote examples as evidence of quote relevance.",
+    "Supplementary reviewers independently audited reviewer B and the adjudicator, read only their four authorized files, made no edits and contacted no coders.",
+    "The adjudicator supplementary review included a text-only challenge of items 4, 5, 6, 11 and 24; the challenge performed no file reads or edits."
+  ],
+  "semantic_notes": [
+    "Every conflict quote retains both the canonical decision field and incompatible current prose.",
+    "Present/future/hypothetical, modal, practical-hold, known-failure and alternative-rule qualifications are preserved in the fields that rely on them.",
+    "All no_explanation consistency quotes cover the whole source answer and substantiate absence.",
+    "Item24 consistency quotes preserve the explicitly unidentified observation/conclusion and unresolved relation to the fixed current ready verdict.",
+    "The adjudicator used whole-answer quotations for all 48 fields; relevance does not require quote minimization."
+  ],
+  "reference_gate_valid": true,
+  "gold_source_unchanged": true,
+  "actual_coder_output_files_unchanged": true,
+  "no_live_participant_data_read": true,
+  "no_gold_feedback_sent_to_coders": true,
+  "assessors": [
+    {
+      "output_file": "calibration-reviewer-a.json",
+      "assessor": {
+        "kind": "ai",
+        "model": "OpenAI Codex inherited session model; exact snapshot not exposed",
+        "method": "semantic-human-readlike-whole-answer-actual-AI/v4",
+        "protocol_code": "V4",
+        "source_items_sha256": "09bceb0866ef5caf7a2bdf94433682c902d60fbd6e455cf390ca0c2654b0dae2",
+        "started_at_utc": "2026-10-02T16:25:58.368Z",
+        "completed_at_utc": "2026-10-02T16:27:44.554163+00:00"
+      },
+      "source_output_sha256": "ca287832254c1cec4fff3c376a6f54f39c473816641cb33f3a691ccfbf5c9f58",
+      "status": "passed",
+      "item_pair_count": 24,
+      "quote_field_count": 48,
+      "exact_nonempty_quote_count": 48,
+      "decision_quote_relevant_count": 24,
+      "consistency_quote_relevant_count": 24,
+      "issue_count": 0,
+      "items": [
+        {
+          "id": "v4_36d82884e04944d2",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_a48f459264fa49f9",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_970d347b3fc542fb",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_045eedd52d464e19",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_daac1382aa0f4ff3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_e4c6a0e52fb14db3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_41eac9e7ea634ce3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_8377b095e6e747a1",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_4fe82f575f954bcc",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_774937e904ca446c",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_0744e9f0f87a4b56",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true,
+          "note": "Consistency quote omits the opening release phrase but retains practical hold, unknown result, exclusion of criterion failure and the current undetermined verdict."
+        },
+        {
+          "id": "v4_7209e10ac95545c8",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_7120066d2d8c4ca0",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true,
+          "note": "Consistency quote omits the earlier mandatory-check sentence but explicitly retains the known blocking failure, unknown latch result and unchanged negative verdict."
+        },
+        {
+          "id": "v4_f12310de87ac443f",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_b0efafbfb9334314",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_1f1d393b145846bc",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_1cb69f9756c6400b",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_e8d5a3d15d294b4a",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_9e09f61d718a4318",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_7b2c447919d0471b",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_d0807f850ed14dd4",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_b0eb7db4df8f461c",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_4f553a5a536a47d8",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_5e89a59a65d34d5a",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        }
+      ]
+    },
+    {
+      "output_file": "calibration-reviewer-b.json",
+      "assessor": {
+        "kind": "ai",
+        "model": "OpenAI Codex inherited session model; exact snapshot not exposed",
+        "method": "independent-masked-whole-answer-semantic-coding/4 (AI, human-read-like whole-answer review)"
+      },
+      "source_output_sha256": "039ec13b67e5889f12aab64cbbc33f2679c8260bc1de33bb41f4bddda7468052",
+      "status": "passed",
+      "item_pair_count": 24,
+      "quote_field_count": 48,
+      "exact_nonempty_quote_count": 48,
+      "decision_quote_relevant_count": 24,
+      "consistency_quote_relevant_count": 24,
+      "issue_count": 0,
+      "items": [
+        {
+          "id": "v4_36d82884e04944d2",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_a48f459264fa49f9",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_970d347b3fc542fb",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_045eedd52d464e19",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_daac1382aa0f4ff3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_e4c6a0e52fb14db3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_41eac9e7ea634ce3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_8377b095e6e747a1",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_4fe82f575f954bcc",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_774937e904ca446c",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_0744e9f0f87a4b56",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_7209e10ac95545c8",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_7120066d2d8c4ca0",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_f12310de87ac443f",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_b0efafbfb9334314",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_1f1d393b145846bc",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_1cb69f9756c6400b",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_e8d5a3d15d294b4a",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_9e09f61d718a4318",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_7b2c447919d0471b",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_d0807f850ed14dd4",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_b0eb7db4df8f461c",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_4f553a5a536a47d8",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true,
+          "note": "Decision quote retains the exact ready enum; omitted subject metadata is redundant."
+        },
+        {
+          "id": "v4_5e89a59a65d34d5a",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        }
+      ]
+    },
+    {
+      "output_file": "calibration-adjudicator.json",
+      "assessor": {
+        "kind": "ai",
+        "model": "OpenAI Codex",
+        "model_snapshot": null,
+        "model_snapshot_status": "Exact inherited-session snapshot is not exposed.",
+        "inherited_session_model": true
+      },
+      "source_output_sha256": "8af1760ff454fe355d52fab202302ddb0bcf1902f8fb2b198635cb6bcc577488",
+      "status": "passed",
+      "item_pair_count": 24,
+      "quote_field_count": 48,
+      "exact_nonempty_quote_count": 48,
+      "decision_quote_relevant_count": 24,
+      "consistency_quote_relevant_count": 24,
+      "issue_count": 0,
+      "items": [
+        {
+          "id": "v4_36d82884e04944d2",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_a48f459264fa49f9",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_970d347b3fc542fb",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_045eedd52d464e19",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_daac1382aa0f4ff3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_e4c6a0e52fb14db3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_41eac9e7ea634ce3",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_8377b095e6e747a1",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_4fe82f575f954bcc",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_774937e904ca446c",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_0744e9f0f87a4b56",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_7209e10ac95545c8",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_7120066d2d8c4ca0",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_f12310de87ac443f",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_b0efafbfb9334314",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_1f1d393b145846bc",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_1cb69f9756c6400b",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_e8d5a3d15d294b4a",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_9e09f61d718a4318",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_7b2c447919d0471b",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_d0807f850ed14dd4",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_b0eb7db4df8f461c",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_4f553a5a536a47d8",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        },
+        {
+          "id": "v4_5e89a59a65d34d5a",
+          "decision_quote_relevant": true,
+          "consistency_quote_relevant": true
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "limits": [
+    "This receipt audits quote relevance for the three completed calibration attempts; it does not read or authorize substantive participant coding.",
+    "The prior unique-gold endorsement is unchanged. This audit neither repairs gold nor attributes any prior material defect to coders.",
+    "A relevant quotation supports the specified coding axis; it does not establish factual correctness, model quality, transfer performance or a reliability estimate."
+  ]
+}
+

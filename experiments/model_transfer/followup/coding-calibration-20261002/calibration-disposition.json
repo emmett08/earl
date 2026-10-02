@@ -1,0 +1,21 @@
+{
+  "schema": "EAL/coder-calibration-disposition/1",
+  "recorded_at": "2026-10-02T15:58:27.455021+00:00",
+  "status": "suspended_invalid_gold",
+  "qualification": "neither coder qualified by this exercise",
+  "reason": "Independent pre-grading review identified two gold labels with defensible alternatives under the original permissive rubric. The perfect-match qualification gate is invalid for this exercise.",
+  "independent_review_sha256": "5762d67e04a61e0908fb253250218fa9de5c435a2a0c7cbe53cfb2d84d7a9bba",
+  "all_original_files_sha256": {
+    "public-items.json": "6d9cd2237fda9c59d89799e0724248b6166bb8d1b98777078a1bcbd81acd16b1",
+    "independent-key-review.md": "f17bdc4b58c2f8e59d07cb45666cc2754d7017a799fa225eb18da77804c1f264",
+    "independent-key-review.json": "5762d67e04a61e0908fb253250218fa9de5c435a2a0c7cbe53cfb2d84d7a9bba",
+    "calibration-reviewer-b.json": "db0b809b98d6220a72e98dc9e3b8a0e8fbf803f700ec158408a820f4eb81dfa1",
+    "calibration-protocol.json": "19de0898733652f721573311b06d1558f246e14285ceb111ffc0441c6c88f942",
+    "method-quality-note.md": "09d625b3bece53497e87b933e3aee3d66f9fdce9314edba0afb6edf954a7ed57",
+    "calibration-reviewer-a.json": "cab4d99fd9c90af04143191944a2caf54668ccf86a9d4f35477bc408e15fd3eb",
+    "sealed-key.json": "340703654d79615c988a39536b0183989d5a476c0c35a5b658f932050ecb1d17"
+  },
+  "grading": "Not used for qualification; original coder answers remain retained without feedback or replacement.",
+  "repair": "Fresh independent unseen exercise with prospective operational clarification; original key, answers and thresholds remain unchanged.",
+  "participant_semantic_coding_started": false
+}

@@ -1,0 +1,9 @@
+{
+  "state_retention": 0.75,
+  "initial_state": 0.5,
+  "baseline_input": 0.1,
+  "intervention_input": 0.3,
+  "intervention_time": 5,
+  "last_time": 10,
+  "definition": "y(t) = state_retention * y(t-1) + input(t); input changes at intervention_time"
+}

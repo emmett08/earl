@@ -24,9 +24,11 @@ def main():
     for rel, sha in manifest["files"].items():
         assert digest(ROOT / rel) == sha, f"Imported file changed: {rel}"
     for name in manifest["figure_ids"]:
-        spec_path = ROOT / (name + ".spec.json")
+        contract_root = ROOT / manifest.get("figure_contract_roots", {}).get(name, ".")
+        assert contract_root.resolve().is_relative_to(ROOT), name
+        spec_path = ROOT / manifest.get("figure_spec_paths", {}).get(name, name + ".spec.json")
         spec = json.loads(spec_path.read_text())
-        errors = validate_spec(spec, base_dir=ROOT, check_files=True)
+        errors = validate_spec(spec, base_dir=contract_root, check_files=True)
         assert not errors, errors
         review_path = ROOT / f"figures/{name}.review.json"
         audit_path = ROOT / f"figures/{name}.audit.json"
@@ -37,17 +39,18 @@ def main():
         assert review["spec_sha256"] == digest(spec_path)
         assert review["audit_sha256"] == digest(audit_path)
         for item in review["artifacts"]:
-            assert digest(ROOT / item["path"]) == item["sha256"], item["path"]
+            assert digest(contract_root / item["path"]) == item["sha256"], item["path"]
+        assert digest(ROOT / f"figures/{name}.pdf") == digest(contract_root / spec["build"]["outputs"]["pdf"]), name
         for role, path in {"specification": spec_path,
-                           "source": ROOT / spec["build"]["source"],
-                           "pdf": ROOT / spec["build"]["outputs"]["pdf"]}.items():
+                           "source": contract_root / spec["build"]["source"],
+                           "pdf": contract_root / spec["build"]["outputs"]["pdf"]}.items():
             assert audit["provenance"][role]["sha256"] == digest(path), role
         inputs = {item["declared_path"]: item["sha256"]
                   for item in audit["declared_local_files"]}
         required = {spec["build"]["source"], *spec["build"].get("dependencies", []),
                     *(item["path"] for item in spec["inputs"] if "path" in item)}
         for rel in required:
-            assert rel in inputs and digest(ROOT / rel) == inputs[rel], rel
+            assert rel in inputs and digest(contract_root / rel) == inputs[rel], rel
     print(f"{len(manifest['figure_ids'])} exact imported figure PDFs, specifications, source/input hashes and retained review bindings: passed.")
 
 

@@ -97,7 +97,8 @@ class SessionRunner:
                     result['response_texts'].append(text)
                 result.update(status=exc.attempt_status, provider_status=exc.response.get('status'))
                 self._retain_unfinished_text(result)
-            if isinstance(exc, ExecutionStopped):
+            if (isinstance(exc, ExecutionStopped) or
+                    isinstance(exc, ProviderResponseError) and exc.stop_collection):
                 result['stop_reason'] = str(exc)
         finally:
             if result['status'] != 'submitted' and result['response_texts']:

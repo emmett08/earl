@@ -1,0 +1,67 @@
+{
+  "schema": "EAL/masked-coding-validation/1",
+  "source_items_sha256": "bb61a50744982366023064d5ca220ba40d012b50f106987900312372548d79ff",
+  "calibration_key_sha256": null,
+  "independent_key_review_sha256": null,
+  "validator_sha256": "8e075b90d9594a5ecc1595660ac17b29c456bbf2dadb0739778170e5bb097986",
+  "status": "passed",
+  "reviews": [
+    {
+      "path": "experiments/model_transfer/followup/results/37023431850/coding/participant-reviewer-a.json",
+      "sha256": "22c4efa804141d40cbc489abd7f5855396021de58a3c34f7c08d5d94239e3437",
+      "items": 128,
+      "quotes_and_notes_valid": true,
+      "decision_counts": {
+        "not_ready": 37,
+        "ready": 82,
+        "ambiguous": 8,
+        "undetermined": 1
+      },
+      "consistency_counts": {
+        "consistent": 120,
+        "contradictory": 8
+      },
+      "calibration_errors": [],
+      "calibration_status": "not_applicable",
+      "correct_decision_codes": null,
+      "correct_consistency_codes": null
+    },
+    {
+      "path": "experiments/model_transfer/followup/results/37023431850/coding/participant-reviewer-b.json",
+      "sha256": "19cb3cb3e8e4b4eacf2350c97b31d618f29490f5577cf3b2449188735d7eed4b",
+      "items": 128,
+      "quotes_and_notes_valid": true,
+      "decision_counts": {
+        "not_ready": 37,
+        "ready": 82,
+        "ambiguous": 6,
+        "undetermined": 3
+      },
+      "consistency_counts": {
+        "consistent": 122,
+        "contradictory": 6
+      },
+      "calibration_errors": [],
+      "calibration_status": "not_applicable",
+      "correct_decision_codes": null,
+      "correct_consistency_codes": null
+    }
+  ],
+  "disagreements": [
+    {
+      "id": "871b27c8e1f34821965e1b551df22524",
+      "fields": [
+        "decision",
+        "explanation_consistency"
+      ]
+    },
+    {
+      "id": "1d20c536aea94143a80ed6190c1ef18d",
+      "fields": [
+        "decision",
+        "explanation_consistency"
+      ]
+    }
+  ],
+  "interpretation": "Exact synthetic-example agreement or masked reviewer agreement only; no population assessor-error rate or human validation."
+}

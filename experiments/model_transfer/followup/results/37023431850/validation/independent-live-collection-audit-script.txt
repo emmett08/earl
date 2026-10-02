@@ -1,0 +1,206 @@
+"""Independent collection audit; no runner/scorer imports or semantic answer coding."""
+from collections import Counter, defaultdict
+from datetime import datetime, timedelta, timezone
+from decimal import Decimal
+from pathlib import Path
+import hashlib
+import json
+import math
+import sqlite3
+import subprocess
+import zipfile
+
+ROOT=Path('/workspace/scratch/5524656c89cf/earl-followup')
+RUN=Path('/workspace/scratch/5524656c89cf/data/experiment-export-37023431850-1')
+ZIP=Path('/workspace/scratch/5524656c89cf/attachments/0b646d98-6e8c-4246-89e8-41418cb4dc0f/experiment-export-37023431850-1.zip')
+OUT=ROOT/'experiments/model_transfer/followup/results/37023431850/validation'
+SOURCE='054c27354e1d3ed15d9c1c20f4b2110169b84a4e'
+EXPECTED_ZIP='c6e409e56258bd888cf7dea538adc3517afc14cb44a63f3a20dda808d2a135ff'
+POSITIONS=(2,4,6,8,10)
+LEVELS=('facts','eal','conventional')
+
+def read(path): return json.loads(Path(path).read_text())
+def sha(value): return hashlib.sha256(value).hexdigest()
+def file_sha(path): return sha(Path(path).read_bytes())
+def digest(value): return sha(json.dumps(value,sort_keys=True,separators=(',',':'),allow_nan=False).encode())
+def same_scalar(a,b):
+    return (type(a) is type(b) or (type(a) in (int,float) and type(b) in (int,float))) and a==b
+
+def independent_reference(case, snap):
+    states={}
+    for req in case['rule']['requirements']:
+        available=[f for f in snap['facts'] if f['key']==req['fact_key'] and f['status']=='active'
+                   and all(k in f['scope'] and k in snap['scope'] and same_scalar(f['scope'][k],snap['scope'][k]) for k in req['scope_keys'])
+                   and 0 <= snap['now_minute']-f['observed_at_minute'] <= req['max_age_minutes']]
+        if not available: states[req['id']]=None; continue
+        latest=max(f['observed_at_minute'] for f in available)
+        chosen=[f for f in available if f['observed_at_minute']==latest]
+        assert len(chosen)==1, 'newest eligible fact must be unique'
+        value=chosen[0]['value'];bound=req['expected_value']
+        if req['operator']=='eq': val=same_scalar(value,bound)
+        else:
+            assert type(value) in (int,float) and type(bound) in (int,float)
+            val=value<=bound if req['operator']=='lte' else value>=bound
+        states[req['id']]=val
+    def both(xs): return False if any(v is False for v in xs) else None if any(v is None for v in xs) else True
+    if case['rule']['type']=='all_of': routes={'all':both(list(states.values()))}; verdict=routes['all']
+    else:
+        routes={r['id']:both([states[k] for k in r['requirement_ids']]) for r in case['rule']['alternatives']}
+        verdict=True if any(v is True for v in routes.values()) else None if any(v is None for v in routes.values()) else False
+    if not all(k in snap['scope'] and same_scalar(snap['scope'][k],case['specification']['scope'][k]) for k in case['specification']['identity_scope_keys']):verdict=None
+    return {'decision':'undetermined' if verdict is None else 'ready' if verdict else 'not_ready','requirement_states':states,'route_states':routes}
+
+def observation_payloads(project):
+    db=project/'.eal/runs.sqlite3'
+    conn=sqlite3.connect('file:'+str(db)+'?mode=ro',uri=True)
+    try:return [json.loads(p) for (p,) in conn.execute("SELECT payload FROM records WHERE kind='observation' ORDER BY id")]
+    finally: conn.close()
+
+def normalised_prompt(messages):
+    # The declared reasoner treatment adds only a computed decision to this packet.
+    result=[]
+    for message in messages:
+        item=dict(message);prefix='Current task facts and any supplied computed conclusion:\n'
+        if isinstance(item.get('content'),str) and item['content'].startswith(prefix):
+            packet=json.loads(item['content'][len(prefix):]);packet.pop('decision',None)
+            item['content']=prefix+json.dumps(packet,sort_keys=True,separators=(',',':'))
+        result.append(item)
+    return result
+
+def dict_keys(value):
+    if isinstance(value,dict):
+        for k,v in value.items():yield k;yield from dict_keys(v)
+    elif isinstance(value,list):
+        for child in value:yield from dict_keys(child)
+
+checks=[];issues=[]
+def check(name, passed, detail=None):
+    item={'check':name,'passed':bool(passed)}
+    if detail is not None:item['detail']=detail
+    checks.append(item)
+    if not passed:issues.append(item)
+
+plan=read(RUN/'plan.json');protocol=read(RUN/'protocol.json');rows=read(RUN/'rows.json');calls=read(RUN/'calls.json')
+prov=read(RUN/'provenance.json');contract=read(RUN/'execution-contract.json');mapping=read(RUN/'annotation-bundle/mapping.json');report=read(RUN/'report.json')
+manifest=read(ROOT/'experiments/model_transfer/followup/task-manifest.json');corpus={c['identifier']:c for c in manifest['cases']}
+check('run_is_retained_live_followup',prov['run_id']=='adc97f7b-113d-4404-811d-16c5857e9d20' and prov['execution_kind']=='live' and prov['revision']==SOURCE and prov['working_tree_dirty'] is False,{'run_id':prov['run_id'],'execution_kind':prov['execution_kind'],'revision':prov['revision']})
+check('frozen_plan_and_protocol_identity',plan==read(ROOT/'experiments/model_transfer/followup/plan.json') and protocol==read(ROOT/'experiments/model_transfer/followup/protocol.json') and plan['study_protocol']==protocol and digest(plan)==prov['plan_sha256']==contract['plan_sha256'] and file_sha(RUN/'plan.json')==prov['plan_file_sha256'])
+check('frozen_manifest_identity',plan['task_manifest']==manifest and digest(manifest)==plan['task_manifest_sha256'])
+check('completed_collection_pending_separate_measurement',report['execution_status']=='complete' and report['status']=='pending_annotation' and read(RUN/'pipeline-status.json')['state']=='awaiting_annotations',{'execution_status':report['execution_status'],'analysis_status':report['status']})
+check('allocation_has_eight_fixed_blocks',len(rows)==8 and len({r['block_id'] for r in rows})==8 and {r['case'] for r in rows}==set(corpus) and sum(len(r['variants']) for r in rows)==120)
+assignments=read(RUN/'assignments.json');assigned={r['block_id']:r for r in assignments}
+check('retained_assignments_match_cells',len(assigned)==8 and all((r['case'],r['donor_session_id'],r['donor'],r['receiver'],r['native_tools'],r['repeat'])==(assigned[r['block_id']]['case'],assigned[r['block_id']]['donor_session_id'],assigned[r['block_id']]['donor'],assigned[r['block_id']]['receiver'],assigned[r['block_id']]['native_tools'],assigned[r['block_id']]['repeat']) and [(v['session_id'],v['level'],v['recipient_session'],v['options']) for v in r['variants']]==[(v['session_id'],v['level'],v['recipient_session'],v['options']) for v in assigned[r['block_id']]['variants']] for r in rows))
+check('no_native_tools_declared_or_used',plan['native_tools']==[False] and plan['donor_native_tools'] is False and all(not c['request'].get('tools') and not c['response'].get('tools') and not any(o.get('type')=='function_call' for o in c['response']['output']) for c in calls))
+references=[];contexts=[];sessions=[];session_hashes={};donor_observation_counts=[]
+for row in rows:
+    block=row['block_id'];case=corpus[row['case']];snapshots=row['donor_snapshots'];blockdir=RUN/'blocks'/block
+    check(block+':exact_crossing',len(row['variants'])==15 and {(v['level'],v['recipient_session']) for v in row['variants']}=={(l,p) for l in LEVELS for p in POSITIONS})
+    histories=[{k:v for k,v in snapshots[str(p)].items() if k!='collector_state_sha256'} for p in POSITIONS]
+    check(block+':common_donor_recorded',all(h==histories[0] for h in histories))
+    donor_project=blockdir/'donor/project';donor_obs=observation_payloads(donor_project);donor_observation_counts.append(len(donor_obs))
+    donor_files={p.name:file_sha(p) for p in donor_project.iterdir() if p.is_file()}
+    check(block+':donor_files_and_observations_verified',donor_files==histories[0]['files_sha256'] and digest(donor_obs)==histories[0]['observations_sha256'] and len(donor_obs)==histories[0]['observation_count'])
+    donor=row['donor_result'];sessions.append(donor);donor_session_file=blockdir/'donor/session-0.json';session_hashes[str(donor_session_file.relative_to(RUN))]=file_sha(donor_session_file)
+    check(block+':donor_session_identity',read(donor_session_file)=={k:v for k,v in donor.items() if k!='score'} and donor['session_id']==row['donor_session_id'])
+    check(block+':checkpoint_identity',read(RUN/'sequence-records'/(sha(block.encode())+'.json'))==row)
+    for pos in POSITIONS:
+        snap=next(s for s in case['timeline'] if s['session']==pos);ref=independent_reference(case,snap)
+        references.append({'task_id':case['identifier'],'family':case['family'],'position':pos,'condition':snap['evidence_condition'],'availability_cause':case['availability_cause'],**ref})
+        check(block+f':reference-{pos}',ref['decision']==snap['expected'])
+        vs={v['level']:v for v in row['variants'] if v['recipient_session']==pos}
+        inputs=[v['result']['task_context']['inputs'] for v in vs.values()];prompts=[normalised_prompt(v['result']['initial_messages']) for v in vs.values()]
+        check(block+f':matched_inputs-{pos}',all(x==inputs[0] for x in inputs) and all(x==prompts[0] for x in prompts))
+        check(block+f':eal_conventional_packet_equality-{pos}',vs['eal']['result']['task_context']==vs['conventional']['result']['task_context'])
+        for level,v in vs.items():
+            s=v['result'];sid=v['session_id'];sessions.append(s);folder=blockdir/f'reasoner-{v["level_index"]}-session-{pos}';sessionfile=folder/f'session-{pos}.json';session_hashes[str(sessionfile.relative_to(RUN))]=file_sha(sessionfile)
+            measurement=inputs[0]['measurement'];value=measurement['value'];target={k:case['specification']['scope'][k] for k in case['specification']['identity_scope_keys']};now=(datetime(2026,9,28,10,tzinfo=timezone.utc)+timedelta(minutes=snap['now_minute'])).isoformat().replace('+00:00','Z')
+            expected_value={'task_id':case['identifier'],'rule':case['rule'],'rule_digest':digest(case['rule']),'target_identity':target,'target_identity_digest':digest(target),'now_minute':snap['now_minute'],'scope':snap['scope'],'facts':snap['facts']}
+            check(sid+':raw_material_delivery',value==expected_value and measurement['observed_at']==inputs[0]['now']==now and case['specification']['natural_language_rule'] in inputs[0]['specification'])
+            check(sid+':cloned_state_verified',v['input_snapshot']==snapshots[str(pos)]==read(folder/'initial-state.json') and v['shared_state_unchanged'] is True and all(o in observation_payloads(folder/'project') for o in donor_obs) and file_sha(folder/'collector-state.json')==snapshots[str(pos)]['collector_state_sha256'] and all(file_sha(folder/'project'/name)==h for name,h in snapshots[str(pos)]['files_sha256'].items() if name!='latest-answer.md'))
+            check(sid+':retained_session_identity',{k:v for k,v in s.items() if k!='score'}==read(sessionfile) and s['session_id']==sid and s['session']==pos)
+            check(sid+':declared_reasoner_only',s['reasoner']==level and s['include_notes'] is False and s['response_mode']=='json_prompted' and s['context_style']=='compact' and s['reuse']=='compatible' and s['native_tools'] is False and s['model']==plan['models']['plain']['version'])
+            packet=s['task_context'];check(sid+':computed_conclusion',('decision' not in packet) if level=='facts' else packet['decision']==ref['decision'])
+            forbidden={'expected_decisions','authored_decision','evidence_condition','availability_cause','manipulated_requirement_ids','manipulated_fact_keys','noncritical_comparator_session','restoration_requirement_id','comparison_condition','pairing_id'}
+            rendered=json.dumps(s['initial_messages']);check(sid+':oracle_metadata_and_donor_notes_absent',not set(dict_keys(packet))&forbidden and not any('"'+k+'"' in rendered for k in forbidden) and 'Project files:' not in rendered and read(folder/f'input-files-{pos}.json')=={})
+            contexts.append({'session_id':sid,'task_id':case['identifier'],'position':pos,'reasoner':level,'reference':ref['decision'],'inputs_sha256':digest(packet['inputs']),'prompt_sha256':digest(s['initial_messages']),'raw_answer_sha256':sha(s['raw_answer'].encode())})
+
+check('forty_reference_positions_distribution',len(references)==40 and dict(Counter(r['decision'] for r in references))=={'ready':20,'not_ready':12,'undetermined':8})
+by_sid={s['session_id']:s for s in sessions};by_call=defaultdict(list)
+for c in calls:by_call[c['session_id']].append(c)
+check('sessions_and_attempts_unique_and_reconciled',len(sessions)==len(by_sid)==len(calls)==len(by_call)==128 and set(by_sid)==set(by_call) and sorted(c['attempt'] for c in calls)==list(range(128)) and all(s['api_attempt_ids']==[by_call[sid][0]['attempt']] for sid,s in by_sid.items()))
+check('session_and_provider_completion',all(s['status']=='submitted' and s['provider_status']=='completed' for s in sessions) and all(c['status']==c['provider_status']==c['response']['status']=='completed' and c['response']['error'] is None for c in calls))
+check('wire_inputs_match_initial_messages',all(by_call[sid][0]['request']['input']==s['initial_messages'] for sid,s in by_sid.items()))
+check('raw_answers_match_provider_text',all(s['raw_answer']==''.join(p['text'] for o in by_call[sid][0]['response']['output'] if o['type']=='message' for p in o['content'] if p['type']=='output_text') and s['response_texts']==[s['raw_answer']] for sid,s in by_sid.items()))
+check('exact_model_matches_and_response_identity',all(c['request']['model']==c['response']['model']==plan['models']['plain']['version'] for c in calls) and len({c['response']['id'] for c in calls})==128)
+
+journal=[json.loads(x) for x in (RUN/'calls.jsonl').read_text().splitlines()];starts={x['attempt']:x for x in journal if x['event']=='started'};finishes=[x for x in journal if x['event']=='finished'];reconstructed=[dict({k:v for k,v in x.items() if k!='event'},request=starts[x['attempt']]['request']) for x in finishes]
+check('durable_attempt_journal_identity',len(journal)==256 and len(starts)==len(finishes)==128 and sorted(reconstructed,key=lambda x:x['attempt'])==sorted(calls,key=lambda x:x['attempt']))
+check('raw_row_mapping_hash_identity',mapping['rows_sha256']==file_sha(RUN/'rows.json') and len(mapping['items'])==128 and len({m['id'] for m in mapping['items']})==128 and {m['session_id'] for m in mapping['items']}==set(by_sid) and all(m['answer_sha256']==sha(by_sid[m['session_id']]['raw_answer'].encode()) for m in mapping['items']))
+
+def valid_count(x):return type(x) is int and x>=0
+usage=[c['response']['usage'] for c in calls]
+check('complete_valid_token_usage',all(valid_count(u[k]) for u in usage for k in ('input_tokens','output_tokens','total_tokens')) and all(u['total_tokens']==u['input_tokens']+u['output_tokens'] and valid_count(u['input_tokens_details']['cached_tokens']) and 0<=u['input_tokens_details']['cached_tokens']<=u['input_tokens'] and valid_count(u['output_tokens_details']['reasoning_tokens']) and 0<=u['output_tokens_details']['reasoning_tokens']<=u['output_tokens'] for u in usage))
+rate=plan['models']['plain'];costs=[(Decimal(u['input_tokens'])*Decimal(str(rate['input_per_million']))+Decimal(u['output_tokens'])*Decimal(str(rate['output_per_million'])))/Decimal(1000000) for u in usage];known_cost=sum(costs)
+check('configured_rate_cost_reconciles',known_cost==Decimal('0.0204097') and all(abs(Decimal(str(c['cost_estimate_usd']))-cost)<=Decimal('0.000000000000000001') and c['charged_or_reserved_usd']==c['cost_estimate_usd'] and c['cost_estimate_usd']<=c['reserved_usd'] for c,cost in zip(calls,costs)) and Decimal(str(report['resources']['known_cost_usd']))==known_cost,{'rate_input_usd_per_million':rate['input_per_million'],'rate_output_usd_per_million':rate['output_per_million'],'recomputed_known_cost_usd':str(known_cost),'cache_discount_applied':False})
+check('configured_reservations_recompute',all(abs(c['reserved_usd']-((len(json.dumps(c['request'],ensure_ascii=False).encode())+4096)*rate['input_per_million']+plan['max_output_tokens']*rate['output_per_million'])/1e6)<=1e-12 for c in calls))
+check('request_and_call_limits',all(len(json.dumps(c['request'],ensure_ascii=False).encode())<=plan['max_request_bytes'] and c['request']['max_output_tokens']==plan['max_output_tokens'] for c in calls) and all(len(v)<=plan['max_calls_per_session'] for v in by_call.values()) and float(known_cost)<=plan['budget_usd'])
+events=[e for s in sessions for e in s['events']];host=[e['assessment'] for e in events if e['kind']=='eal_assess' and e.get('assessment') is not None]
+preparation=[stage for r in rows for stage in r['preparation'].values()]+[v['preparation'] for r in rows for v in r['variants']]
+totals={'sessions':len(sessions),'donor_sessions':8,'recipient_sessions':120,'api_attempts':len(calls),'attempted_sessions':len(by_call),'input_tokens':sum(u['input_tokens'] for u in usage),'output_tokens':sum(u['output_tokens'] for u in usage),'cached_input_tokens':sum(u['input_tokens_details']['cached_tokens'] for u in usage),'reasoning_tokens':sum(u['output_tokens_details']['reasoning_tokens'] for u in usage),'known_cost_usd':float(known_cost),'unknown_cost_attempts':sum(c.get('cost_estimate_usd') is None for c in calls),'native_tool_calls':sum(e['kind']=='native_probe' for e in events),'host_raw_snapshot_reads':sum(e['kind']=='host_raw_snapshot_read' for e in events),'failed_host_raw_snapshot_reads':sum(e['kind']=='host_raw_snapshot_read' and e.get('status')=='failed' for e in events),'host_collections':sum(h['collected_count'] for h in host),'host_reuses':sum(h['reused_count'] for h in host),'elapsed_seconds':sum(s['elapsed_seconds'] for s in sessions),'context_seconds':sum(s['context_seconds'] for s in sessions),'preparation_seconds':sum(p['elapsed_seconds'] for p in preparation),'preparation_operations':len(preparation),'provider_elapsed_seconds':sum(c['elapsed_seconds'] for c in calls)}
+totals['total_collector_calls']=totals['native_tool_calls']+totals['host_raw_snapshot_reads']+totals['host_collections'];totals['elapsed_with_preparation_seconds']=totals['elapsed_seconds']+totals['preparation_seconds'];totals['collection_segment_elapsed_seconds']=sum(s['elapsed_seconds'] for s in read(RUN/'segments.json'))
+check('observed_resource_totals_reconcile',all(abs(float(v)-float(report['resources'][k]))<=1e-9 for k,v in totals.items() if k in report['resources']) and all(p['status']=='complete' and math.isfinite(p['elapsed_seconds']) and p['elapsed_seconds']>=0 for p in preparation) and report['resources']['accounting_complete'] is True,totals)
+
+canonical=defaultdict(lambda:{'planned':40,'correct':0,'incorrect':0,'missing_or_unparseable':0})
+for c in contexts:
+    s=by_sid[c['session_id']]
+    try:d=json.loads(s['raw_answer']).get('decision')
+    except (ValueError,AttributeError):d=None
+    if d not in ('ready','not_ready','undetermined'):canonical[c['reasoner']]['missing_or_unparseable']+=1
+    elif d==c['reference']:canonical[c['reasoner']]['correct']+=1
+    else:canonical[c['reasoner']]['incorrect']+=1
+    check(c['session_id']+':canonical_raw_field_identity',d==s['canonical_decision'])
+
+source_module_hashes=prov['implementation_sha256'];local_module_hashes={n:file_sha(ROOT/'experiments/model_transfer'/n) for n in source_module_hashes}
+check('recorded_module_fingerprints_match',source_module_hashes==local_module_hashes,{'modules_checked':len(source_module_hashes),'mismatches':[n for n in source_module_hashes if source_module_hashes[n]!=local_module_hashes[n]]})
+names=subprocess.check_output(['git','ls-tree','-r','--name-only',SOURCE],cwd=ROOT,text=True).splitlines();eligible=[n for n in names if (n.startswith('experiments/') and (n.endswith('.py') or (n.endswith('.json') and not set(Path(n).parts[1:])&{'runs','results','validation','verification'}))) or (n.startswith('src/eal/') and n.endswith('.py')) or (n.startswith('grammar/') and n.endswith('.g4')) or n=='experiments/model_transfer/requirements.lock']
+git_hashes={n:sha(subprocess.check_output(['git','show',SOURCE+':'+n],cwd=ROOT)) for n in eligible}
+check('source_commit_full_implementation_fingerprint',digest(git_hashes)==contract['implementation_sha256'],{'source_file_count':len(git_hashes),'implementation_sha256':digest(git_hashes)})
+check('source_files_currently_match_collection_commit',all(file_sha(ROOT/n)==h for n,h in git_hashes.items()))
+check('restore_source_run_identity',read(RUN/'restore-receipt.json')['source_run']['id']==37023431850 and read(RUN/'restore-receipt.json')['source_run']['head_sha']==SOURCE)
+check('export_zip_digest_identity',file_sha(ZIP)==EXPECTED_ZIP,{'sha256':file_sha(ZIP)})
+zip_files=0;zip_skipped=[];zip_mismatches=[]
+with zipfile.ZipFile(ZIP) as archive:
+    for n in archive.namelist():
+        if n.endswith('/') : continue
+        if n=='calibration.json' or n.endswith('.binding-key') or n=='.execution.lock':zip_skipped.append(n);continue
+        zip_files+=1;target=RUN/n
+        if not target.is_file() or sha(archive.read(n))!=file_sha(target):zip_mismatches.append(n)
+check('safe_export_members_equal_extracted_files',not zip_mismatches,{'members_compared':zip_files,'members_skipped_without_payload_reads':len(zip_skipped),'mismatches':zip_mismatches})
+
+secondary_path=OUT/'reference-check-secondary.json';secondary=read(secondary_path)
+secondary_decisions={(r['task_id'],r['session']):r['decision'] for r in secondary['positions']}
+check('secondary_reference_and_controls_agree',secondary['passed'] is True and secondary['all_control_checks_passed'] is True and not secondary['failures'] and secondary_decisions=={(r['task_id'],r['position']):r['decision'] for r in references}, {'secondary_report_sha256':file_sha(secondary_path),'agreements':len(secondary_decisions),'intervention_control_task_blocks':secondary['control_task_count']})
+safe_raw=['plan.json','protocol.json','provenance.json','execution-contract.json','rows.json','rows-complete.json','calls.json','calls.jsonl','assignments.json','segments.json','progress.json','pipeline-status.json','report.json','analysis-collection.json','restore-receipt.json','cases.json','annotation-bundle/mapping.json']
+raw_hashes={n:file_sha(RUN/n) for n in safe_raw}
+limits=[
+ 'This is a read-only retrospective AI audit of retained local provider records in the same orchestration. It is not direct provider billing reconciliation, independent external investigation, or human validation.',
+ 'Live designation and successful provider responses support actual API collection; the audit cannot cryptographically attest remote provider execution beyond the retained export and source provenance.',
+ 'Configured rates charge all input tokens at USD 0.10/million and output at USD 0.40/million. Cached input usage is retained; the configured calculation deliberately ignores any cache discount and is not an invoice.',
+ 'No participant whole-answer semantic coding, explanation consistency judgement, factual explanation accuracy, assessor calibration, coder output, or calibration gold is assessed here. Canonical JSON field counts are separate.',
+ 'Collection rows attach derived score fields to unchanged raw session records; row/session identity omits only that added score field. Source plan and retained plan are semantically identical but have different JSON serialization bytes. The retained plan byte hash, not the author source serialization hash, matches the recorded execution provenance.',
+ 'The frozen protocol contains prospective not-started execution fields. Actual completion is evidenced by provenance, attempts, session files, segments, progress, and pipeline collection status; the frozen protocol was not retrospectively rewritten.',
+ 'The export ZIP checksum and source-commit identity are verified locally. The restore receipt digest identifies an earlier retained artifact and is not the checksum of the export ZIP.',
+ 'Eight purposive AI-authored fictional task instances, one fixed model and one repeat permit finite collection and resource conclusions only. Shared donors and source structure make 120 recipients dependent; availability cause remains confounded with task-domain wording.',
+ 'Summed provider/session durations are accumulated time across concurrent calls and include different scopes. The one collection segment elapsed time is wall-clock collection time; annotation and analysis are excluded.'
+]
+result={'schema':'EAL/followup-independent-live-collection-audit/1','reviewer':'/root/followup_live_audit: separate AI collection reviewer in the same orchestration','reviewed_at':datetime.now(timezone.utc).isoformat(),'status':'passed' if not issues else 'failed','scope':'Collection integrity, frozen material delivery, independently computed apparatus references, model/usage/cost accounting and provenance. No participant semantic coding.','run_id':prov['run_id'],'source_revision':SOURCE,'export_run_id':37023431850,'export_zip_sha256':file_sha(ZIP),'raw_rows_sha256':raw_hashes['rows.json'],'task_manifest_sha256':digest(manifest),'observed_resources':totals,'canonical_only_counts':dict(canonical),'reference_distribution':dict(Counter(r['decision'] for r in references)),'counts':{'checks':len(checks),'failed_checks':len(issues),'retained_sessions':len(sessions),'recipient_contexts_checked':len(contexts),'matched_position_groups':40,'eal_conventional_full_packet_equalities':40,'common_donor_blocks':8,'clone_state_checks':120,'source_module_fingerprints':len(source_module_hashes),'full_source_fingerprint_files':len(git_hashes)},'raw_file_sha256':raw_hashes,'retained_session_file_sha256':session_hashes,'collection_source_module_sha256':source_module_hashes,'full_source_implementation_sha256':contract['implementation_sha256'],'checks':checks,'issues':issues,'references':references,'contexts':contexts,'limits':limits,'audit_script_sha256':file_sha(__file__),'secondary_reference_review_sha256':file_sha(secondary_path),'secondary_reference_review_file':'reference-check-secondary.json','identity_normalisation':{'session_files':'Exclude only the derived score field added to raw collection rows; retain every raw collection field.','frozen_plan':'Source and retained plan compare as parsed JSON; retained plan byte hash matches execution provenance.','reasoner_prompt':'Remove only the declared computed decision field and canonicalise JSON packet formatting for between-reasoner prompt comparison.'},'full_source_implementation_file_sha256':git_hashes}
+OUT.mkdir(parents=True,exist_ok=True);(OUT/'independent-live-collection-audit.json').write_text(json.dumps(result,indent=2)+'\n')
+lines=['# Independent live collection audit','',f"Status: **{result['status']}**. {len(checks)} checks, {len(issues)} failures.",'',f"Run `{prov['run_id']}` retained actual API responses for all 128 scheduled sessions: 8 donors and 120 recipients. Source revision `{SOURCE}`; export run `37023431850`.",'','The frozen plan/protocol and manifest match exactly. All 40 position groups deliver equal raw facts, criteria, scope and artificial snapshot time across reasoners. All 120 recipient clones retain the common donor observation and match their recorded initial state. EAL and conventional delivered packets are equal at all 40 positions, and both supply the independently recomputed apparatus conclusion; facts omit that field. Native tools were absent.','',f"Independent raw-fact arithmetic, corroborated by a second AI raw-fact recalculation, gives 40 authored scheduled references: 20 ready, 12 not_ready and 8 undetermined. All critical-gap, restoration-polarity and family-specific noncritical dominance controls pass. This is apparatus validity, not participant answer accuracy.",'','| Observed quantity | Total |','|---|---:|']
+for k in ['api_attempts','input_tokens','output_tokens','cached_input_tokens','reasoning_tokens','known_cost_usd','unknown_cost_attempts','native_tool_calls','host_raw_snapshot_reads','host_collections','host_reuses','total_collector_calls','context_seconds','elapsed_seconds','preparation_seconds','elapsed_with_preparation_seconds','provider_elapsed_seconds','collection_segment_elapsed_seconds']:lines.append(f'| {k} | {totals[k]} |')
+lines+=['',f"Every wire request and response reports `{plan['models']['plain']['version']}`. All usage counters are valid nonnegative integers; session attempt receipts, the 256-event durable journal and the 128 final attempt records agree. Recalculated configured-rate cost is **USD {known_cost}**, under the shared USD 2 ceiling. Cached-token discounts are not applied in this configured-rate estimate.",'','Canonical designated JSON fields were parsed without whole-answer semantic coding:','', '| Reasoner | Correct / planned | Incorrect | Missing or unparseable |','|---|---:|---:|---:|']
+for l in LEVELS:
+ c=canonical[l];lines.append(f"| {l} | {c['correct']} / {c['planned']} | {c['incorrect']} | {c['missing_or_unparseable']} |")
+lines+=['','These field counts do not establish a correct communicated verdict, explanatory consistency, explanation factual accuracy, or substantive feasibility. Assessor calibration and semantic coding require their separate record.','',f"Raw rows SHA-256: `{raw_hashes['rows.json']}`. The private mapping binds all 128 unique sessions to unchanged raw answers. Export ZIP SHA-256: `{file_sha(ZIP)}`. The 63 recorded collection-module fingerprints match the current source, and the independently reconstructed 170-file source-commit fingerprint equals `{contract['implementation_sha256']}`. The audit JSON includes top-level raw-file and all 128 retained session-file hashes.",'','Limits:','']+[f'- {x}' for x in limits]
+if issues:lines+=['','Failed checks:','']+[f'- {i["check"]}: {i.get("detail", "")}' for i in issues]
+(OUT/'independent-live-collection-audit.md').write_text('\n'.join(lines)+'\n')
+print(json.dumps({k:result[k] for k in ['status','counts','observed_resources','canonical_only_counts','issues']},indent=2))

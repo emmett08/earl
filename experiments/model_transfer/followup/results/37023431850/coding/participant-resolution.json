@@ -1,0 +1,37 @@
+{
+  "schema": "EAL/participant-coding-resolution/1",
+  "completed_at": "2026-10-02T16:58:30.892482+00:00",
+  "status": "completed",
+  "items": 128,
+  "pair_agreement": 126,
+  "field_agreement": 252,
+  "field_total": 256,
+  "disagreement_items": [
+    "1d20c536aea94143a80ed6190c1ef18d",
+    "871b27c8e1f34821965e1b551df22524"
+  ],
+  "blind_third_adjudications": 2,
+  "resolution_rule": "First two coders agreeing on both fields retain that pair; only disagreement pairs use the independently qualified blind third reviewer. Ambiguity is retained.",
+  "source_items_sha256": "bb61a50744982366023064d5ca220ba40d012b50f106987900312372548d79ff",
+  "qualification_sha256": "a46003fec860dc61f562fbba3c83b1f3cf3f3e062f5709217a9783ff76d03d1e",
+  "reviews": {
+    "participant-reviewer-a.json": "22c4efa804141d40cbc489abd7f5855396021de58a3c34f7c08d5d94239e3437",
+    "participant-reviewer-b.json": "19cb3cb3e8e4b4eacf2350c97b31d618f29490f5577cf3b2449188735d7eed4b",
+    "participant-adjudication.json": "6d9a75159f96f5230525e016f976ed8a3db1d25e6ef2e2da748973b5d542ef9e",
+    "adjudication-public-items.json": "5bc4ebd976d03acc75eeccddd49420045e7390c74be88740b729f82f14e85f2e"
+  },
+  "decision_counts": {
+    "not_ready": 38,
+    "ready": 82,
+    "ambiguous": 6,
+    "undetermined": 2
+  },
+  "consistency_counts": {
+    "consistent": 122,
+    "contradictory": 6
+  },
+  "human_validation_established": false,
+  "assessor_error_rate_established": false,
+  "paid_experiment_calls": 0,
+  "final_labels_sha256": "7718c5f4b0e78fa9ef35e6b89ceec525781d876bf0e44d7e15f38f72d45241d1"
+}

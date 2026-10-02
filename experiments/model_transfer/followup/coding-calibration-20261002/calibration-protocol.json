@@ -1,0 +1,139 @@
+{
+  "schema": "EAL/whole-answer-coder-calibration-protocol/1",
+  "version": "1.0.0",
+  "frozen_at": "2026-10-02T15:48:26.795928+00:00",
+  "author": "/root/coder_calibration_material",
+  "status": "prospectively-frozen-before-any-coder-output",
+  "governing_controls": [
+    "ASM-003",
+    "CTRL-005",
+    "DM-004",
+    "launch-scientific-review LA-S07"
+  ],
+  "materials": {
+    "public_file": "public-items.json",
+    "public_sha256": "6d9cd2237fda9c59d89799e0724248b6166bb8d1b98777078a1bcbd81acd16b1",
+    "sealed_key_file": "sealed-key.json",
+    "sealed_key_sha256": "340703654d79615c988a39536b0183989d5a476c0c35a5b658f932050ecb1d17",
+    "rubric_sha256": "fcffc6cf26a818ed6224970358d688518ea1913b618da373d3e34d45559665d1",
+    "item_count": 24,
+    "language": "English",
+    "export_schema": "EAL/model-transfer-annotations/1"
+  },
+  "author_access_statement": "The author read only the listed source/protocol documents for this task. No live participant artifacts, rows, masked participant items or outcomes were inspected. The 24 response texts and their private task facts were newly fictionalized for this calibration.",
+  "source_sha256": {
+    "AGENTS.md": "4459dfbfb7cd13e189c4d4078a6656f90a757fbdb57e177088595ee0b150d3d1",
+    "experiments/model_transfer/annotations.py": "f912c5fc2307e0a585e4019eeb7c275fb91c47fc1549cf5b7d9f673b3ded8786",
+    "experiments/model_transfer/followup/protocol.json": "dd3802582db38e847a44ee193b498d42182f231a996e0ac45cbf289e5b6a0e4e",
+    "experiments/model_transfer/followup/validation/launch-scientific-review.md": "d1373c2b4b123fe3a5e6efcf137ddc6b833f7df8331283d59314d0e1fc1700d4"
+  },
+  "masking": {
+    "coder_inputs": [
+      "public-items.json, including its exact embedded rubric"
+    ],
+    "withheld": [
+      "sealed-key.json",
+      "calibration-protocol.json",
+      "method-quality-note.md",
+      "authoring rationale",
+      "coverage/category metadata",
+      "private fictional task facts",
+      "all live participant artifacts/outcomes"
+    ],
+    "separation": "Use two fresh AI coders in separate contexts. Neither receives the other coder's output, the key, source-case metadata, or parent conversation containing gold labels. Coders must not search the repository.",
+    "no_tools_required": "Read the supplied public item file only and write the completed response bundle. Any file-access capability should be limited by instruction to that public file and the assigned output path."
+  },
+  "coder_output_contract": {
+    "schema": "EAL/model-transfer-annotations/1",
+    "annotator": "Nonempty stable assessor identifier.",
+    "assessor_metadata": [
+      "kind=ai",
+      "model (actual configured identity, or explicitly unknown if not observable)",
+      "method/version",
+      "protocol identifier",
+      "public source_items_sha256"
+    ],
+    "items": "Exactly all 24 unique public IDs. Preserve supplied text verbatim if text is repeated. Fill decision, quote, note, explanation_consistency, consistency_quote and consistency_note for every item.",
+    "allowed_decisions": [
+      "ready",
+      "not_ready",
+      "undetermined",
+      "no_answer",
+      "ambiguous"
+    ],
+    "allowed_consistency": [
+      "consistent",
+      "contradictory",
+      "ambiguous",
+      "no_explanation"
+    ],
+    "quote_rule": "Each quote and consistency_quote must be a nonempty exact substring of its own answer. Full-answer quotes are acceptable and particularly useful for conflicts, qualifiers, ambiguity or absence.",
+    "note_rule": "Both notes must be nonempty and briefly explain current meaning or the absence/ambiguity. Do not assess factual correctness or infer verdicts from numbers."
+  },
+  "acceptance": {
+    "unit": "Each actual coder separately, followed by the two-coder gate.",
+    "required_decision_matches": {
+      "numerator": 24,
+      "denominator": 24,
+      "criterion": "exact categorical agreement with the frozen sealed-key decision"
+    },
+    "required_consistency_matches": {
+      "numerator": 24,
+      "denominator": 24,
+      "criterion": "exact categorical agreement with the frozen sealed-key explanation_consistency"
+    },
+    "required_quote_validity": {
+      "quote_fields_per_coder": 48,
+      "criterion": "All 48 quote fields must be nonempty exact substrings of their own text and semantically relevant to the assigned label. A quoted isolated verdict cannot support ambiguity or contradiction when the contrary current claim is omitted. Qualifications/historical distinctions must remain evident in the quote or the exact full answer. Absence may be supported by quoting the entire answer."
+    },
+    "required_structure": "All 24 unique IDs, complete valid labels and nonempty notes; no text alteration, missing or extra item.",
+    "pass_rule": "Pass only if 24/24 decision labels AND 24/24 consistency labels AND every quote-validity and structure requirement pass. Both fresh actual coders must pass independently before either codes participant outputs. No averaging, rounding, majority vote or compensating canonical score.",
+    "ambiguous_items": "A frozen ambiguous gold is a valid required label; correctly preserving it counts as a match. A coder-key disagreement remains a calibration error and is not erased by adjudication."
+  },
+  "evaluation_and_retention": {
+    "evaluate_only_after": "Both coders have completed and deposited immutable output bundles without feedback.",
+    "checks": [
+      "Verify public/key hashes match this frozen protocol before scoring.",
+      "Compare every expected and observed decision/consistency label by opaque ID.",
+      "Check both exact-substring quotes and their relevance against each full answer and frozen rationale.",
+      "Retain original coder bundles and record all errors and disagreements, including correctly preserved ambiguity."
+    ],
+    "receipt_fields": [
+      "protocol path/version/hash",
+      "public and key hashes",
+      "assessor identity and available configuration",
+      "coder input and output hashes",
+      "started_at and completed_at",
+      "each expected and observed label",
+      "both quotes and notes",
+      "quote/structure failures",
+      "decision matches/24",
+      "consistency matches/24",
+      "status=pass/fail/missing",
+      "suspension disposition",
+      "unresolved disagreements",
+      "deviations or access breaches"
+    ],
+    "current_observed_coder_outputs": null,
+    "current_validation_status": "not-yet-administered"
+  },
+  "failure_and_repair": {
+    "on_any_error": "Record fail and suspend participant semantic coding and substantive-feasibility interpretation under ASM-003/CTRL-005/DM-004. Missing calibration has the same blocking effect. Canonical results may remain separately reportable.",
+    "retention": "Retain every failed attempt, the original frozen materials and the original observed coder output. Do not silently retry or discard errors.",
+    "gold_protection": "Do not edit or relabel this frozen key to favor a coder, choose favorable readings, reveal answers then score a retry on the same items, or retrospectively relax the 24/24 requirements.",
+    "repair": "Any rubric, coder instruction, configuration or measurement repair must be declared prospectively. A fresh independent author who has not seen live participant outcomes must create and freeze a NEW held-out set with new fictional texts/IDs and a separate sealed key/protocol. Calibrate the actual repaired assessor on that unseen set before participant coding.",
+    "questioned_gold": "Retain the failed attempt and suspend. Record a prospective defect review and rationale; do not turn the existing failure into a pass. Replace the exercise with a new independently held-out frozen set if the defect warrants repair."
+  },
+  "interpretation_limits": [
+    "Same-orchestration AI fixture authorship and calibration; no human validation or independent investigator replication.",
+    "Calibration passage is bounded evidence of handling these 24 authored semantic examples, not a reliability estimate or factual-grounding validation.",
+    "Shared AI systematic error and uncertainty on novel participant wording remain possible; disagreements and unresolved participant ambiguity must be retained.",
+    "The factual reference outcomes in three private fictional examples illustrate wrong-but-coherent answers only; they are never a scoring axis."
+  ],
+  "independent_design_consultation": {
+    "reviewer": "/root/coder_calibration_material/rubric_edge_review",
+    "scope": "Source-only review of rubric interpretation and coverage requirements; no public fixtures, sealed key, participant artifacts or code edits.",
+    "validation_claim": "A distinct same-orchestration AI design role only; not gold validation, human validation or external replication."
+  },
+  "pre_administration_schema_alignment": "Before any coder was given the public file, sealed-key label fields were named decision and explanation_consistency to match the coordinator validator. No answer text, expected label, rationale, threshold or quote rule changed."
+}

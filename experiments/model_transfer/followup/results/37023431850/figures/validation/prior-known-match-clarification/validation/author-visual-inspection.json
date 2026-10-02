@@ -1,0 +1,126 @@
+{
+  "status": "author inspection complete; independent semantic review pending",
+  "reader_forms": "Complete categorical matched-cell matrix; separately labelled endpoint positional counts with overlapping direct diagnostics.",
+  "sanitized_input_sha256": "821920676a0c06cfdb6baffc8dd4f0816163bb68d2adaac40c60aa09df92410b",
+  "sanitized_input_schema": "valid",
+  "numerical_review": "validation/numerical-check.json",
+  "source_semantics": "Observed live recipient outputs -> final AI codes; authored synthetic references; resource provenance from128call structural audit. Figure author has not coded participant answers.",
+  "primary_semantics": "Null whole-verdict matching can coexist with determinate primary failure when the explanation is contradictory. Primary unresolved is distinct.",
+  "limitation": "Human interpretation benefit remains unmeasured by agent screening.",
+  "figures": [
+    {
+      "stem": "01-primary-outcome-cells",
+      "dimensions": {
+        "width_mm": 144.25753835042318,
+        "height_mm": 100.65173746744792
+      },
+      "artifacts": [
+        {
+          "path": "01-primary-outcome-cells.tikz.tex",
+          "sha256": "e369e68586abb8223d1e0ddc117c71df0fd3254f6117731b65c40dc9fcf05aff"
+        },
+        {
+          "path": "01-primary-outcome-cells.spec.json",
+          "sha256": "00b00eadec0d0797547a6352317ebb353764813d3b316f5064e4a9db8bd3b180"
+        },
+        {
+          "path": "01-primary-outcome-cells.pdf",
+          "sha256": "d223b1fba55c9a41645b309f6afee769586cae602b9279b7cebead8ab5fff913"
+        },
+        {
+          "path": "01-primary-outcome-cells.png",
+          "sha256": "de630b90cfc7b7872a94197c74d165e3e196db87325bdf7f2e0c781c36246303"
+        },
+        {
+          "path": "01-primary-outcome-cells.audit.json",
+          "sha256": "462fb34a24125cffc3d7ee0cf5611af5aec894a0b9a69cc549ecc346febbab2e"
+        },
+        {
+          "path": "captions/01-primary-outcome-cells.caption.txt",
+          "sha256": "84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545"
+        },
+        {
+          "path": "captions/01-primary-outcome-cells.alt.txt",
+          "sha256": "6bb04e004a30e36e707aa75d4e6f5e6c9f09ea7bd09354ae63c89bc22fa4ef67"
+        },
+        {
+          "path": "qa/01-primary-outcome-cells/01-primary-outcome-cells.final-size-96dpi.png",
+          "sha256": "dc4f50ad6ae786374612dfba6aefe5fc50b0af3264fae67632f86f78dd80db2b"
+        },
+        {
+          "path": "qa/01-primary-outcome-cells/01-primary-outcome-cells.final-size-96dpi-greyscale.png",
+          "sha256": "e0172c786359f1c85fc82db4da7096d9953556e4dc0d4a9a6fa773a2365d0a3d"
+        }
+      ],
+      "inspection": {
+        "colour_preview": "pass",
+        "greyscale_preview": "pass",
+        "physical_size_96dpi_colour": "pass",
+        "physical_size_96dpi_greyscale": "pass",
+        "labels_and_data_glyphs": "legible",
+        "clipping": "none observed",
+        "cross_panel_overlap": "none after shortening direct diagnostic label",
+        "mechanical_errors": 0,
+        "mechanical_warnings": 0,
+        "typesetting_warnings": 0
+      }
+    },
+    {
+      "stem": "02-endpoint-separation",
+      "dimensions": {
+        "width_mm": 142.52434310913085,
+        "height_mm": 89.65176828172471
+      },
+      "artifacts": [
+        {
+          "path": "02-endpoint-separation.tikz.tex",
+          "sha256": "5e2551b7957957fb881b35e252fd6ded7e4d366a582a847ef71a6ad362ce6ece"
+        },
+        {
+          "path": "02-endpoint-separation.spec.json",
+          "sha256": "24ce4bb434841111755b8b86f448b212eb25930486dfdbf7e0ea2b3abdc91391"
+        },
+        {
+          "path": "02-endpoint-separation.pdf",
+          "sha256": "e5ff329a536809615c4309e868aa93cbaa406b0dbbebc5a7142e8e1880f2aafe"
+        },
+        {
+          "path": "02-endpoint-separation.png",
+          "sha256": "dff1807bd065b704533cb8877077a8e577a9324a749e218d3d4cbe2ca401e841"
+        },
+        {
+          "path": "02-endpoint-separation.audit.json",
+          "sha256": "3603de1195aa276b8c75aca26d1924db49a99d8decb1e8a7a7151d6764ea202e"
+        },
+        {
+          "path": "captions/02-endpoint-separation.caption.txt",
+          "sha256": "5fe5327a34605b046c3d42742bf29fc2a6a83acecc60787f4a978f13bef142be"
+        },
+        {
+          "path": "captions/02-endpoint-separation.alt.txt",
+          "sha256": "5e49a6e92cd2ad8a6b39340fc4e7ae2e4f77b19482e5553c73e127b7b7e5e554"
+        },
+        {
+          "path": "qa/02-endpoint-separation/02-endpoint-separation.final-size-96dpi.png",
+          "sha256": "34100fbd86aa2a4b07bdcac9bf6fda744ddb45d56942802ede7679774160c867"
+        },
+        {
+          "path": "qa/02-endpoint-separation/02-endpoint-separation.final-size-96dpi-greyscale.png",
+          "sha256": "b83b16c3eabb6edd1f12437ebe4dbedf7b4cd84b1ae00f63ed57bc1a80808a21"
+        }
+      ],
+      "inspection": {
+        "colour_preview": "pass",
+        "greyscale_preview": "pass",
+        "physical_size_96dpi_colour": "pass",
+        "physical_size_96dpi_greyscale": "pass",
+        "labels_and_data_glyphs": "legible",
+        "clipping": "none observed",
+        "cross_panel_overlap": "none after shortening direct diagnostic label",
+        "mechanical_errors": 0,
+        "mechanical_warnings": 0,
+        "typesetting_warnings": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "schema": "EAL/live-followup-bounded-review/1",
+  "stage": "live-followup-bounded-review",
+  "recorded_at_utc": "2026-10-02T17:30:08.724795+00:00",
+  "status": "passed",
+  "source_and_artifact_hashes": {
+    "article.md": "065b3ff4eacb1822489cf2d4b4e8546edee723dcf06c732eae2764d5edb449b2",
+    "article.tex": "819c0a47af08ec5de992e9284e4065ecdfabe4313f2fdcadce431fdf94f88faa",
+    "eal-handover-data-story.pdf": "8b8a58b120dd678e1169aebf6e4fd05fa093f29fbb3975f91f880fc72fa2af26"
+  },
+  "manuscript_units": [
+    {
+      "heading": "Abstract",
+      "status": "reviewed",
+      "source_change": "bounded revision"
+    },
+    {
+      "heading": "The question the data can answer",
+      "status": "reviewed",
+      "source_change": "bounded revision"
+    },
+    {
+      "heading": "From six artefacts to one annotated pilot",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "What was compared",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Coding the communicated decision",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Recipient decisions and their errors",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Token use across paired trajectories",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Resource savings depend on which resource is counted",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Time and reuse: where the work moved",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "The joint engineering decision",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Competing explanations and the next comparison",
+      "status": "reviewed",
+      "source_change": "bounded revision"
+    },
+    {
+      "heading": "Why the reference can remain undetermined",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Controlled evidence loss and restoration",
+      "status": "reviewed",
+      "source_change": "bounded revision"
+    },
+    {
+      "heading": "Supplemental answer-measurement review",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Allocation and the remaining validation work",
+      "status": "reviewed",
+      "source_change": "preserved byte-for-byte"
+    },
+    {
+      "heading": "Reproducibility and conclusion",
+      "status": "reviewed",
+      "source_change": "bounded revision"
+    },
+    {
+      "heading": "Sources",
+      "status": "reviewed",
+      "source_change": "bounded revision"
+    }
+  ],
+  "front_matter_reviewed": true,
+  "manuscript_unit_count_with_front_matter": 18,
+  "other_reviewed_files": [
+    "README.md",
+    "build_article.py"
+  ],
+  "protected_original_sections": [
+    "From six artefacts to one annotated pilot",
+    "What was compared",
+    "Coding the communicated decision",
+    "Recipient decisions and their errors",
+    "Token use across paired trajectories",
+    "Resource savings depend on which resource is counted",
+    "Time and reuse: where the work moved",
+    "The joint engineering decision",
+    "Why the reference can remain undetermined",
+    "Supplemental answer-measurement review",
+    "Allocation and the remaining validation work"
+  ],
+  "baseline_identity_receipt": "analysis/live-followup-baseline/identity.json",
+  "original_assets_preserved": 35,
+  "checks": {
+    "successful_pdf_compile": true,
+    "thirty_pages": true,
+    "seventeen_unique_figures": true,
+    "seventeen_body_figure_inclusions": true,
+    "all_text_inside_page": true,
+    "no_overfull_boxes": true,
+    "no_undefined_references_or_citations": true,
+    "all_35_original_figure_caption_alt_identities_unchanged": true,
+    "eleven_original_sections_byte_identical": true,
+    "accepted_new_figure_copies_byte_identical": true
+  },
+  "visual_review": {
+    "status": "accepted",
+    "reviewer": "/root/followup_paper_update",
+    "scope": "All 30 pages inspected in contact sheets; full-size pages 1 and 23–30 inspected. Final page 23 re-inspected after shortening the critical-gap row label for column spacing. Root independently inspected final pages 26/27 with no changes requested.",
+    "contact_sheets": [
+      "qa/live-followup/contact-1.png",
+      "qa/live-followup/contact-2.png",
+      "qa/live-followup/contact-3.png"
+    ],
+    "full_size_pages": [
+      1,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "new_figure_pages": [
+      26,
+      27
+    ],
+    "underfull_box_notices": 5,
+    "underfull_box_disposition": "Inspected table/source/resource paragraphs; no collisions, clipping or unreadable spacing.",
+    "scope_limit": "Bounded follow-up revision and whole/part consistency review; not a repetition of the historical full editorial pipeline or raw-answer recoding."
+  },
+  "semantic_dispositions": {
+    "pilot": "Original 4,224-session/192-pair conditional AI-code inference remains separate and unchanged; follow-up qualification does not retrospectively validate original coding.",
+    "followup": "128 sessions comprise 8 donors and 120 cloned recipients: 8 purposive task clusters × 5 conditions × 3 contexts × 1 repeat, tools disabled, fixed model snapshot.",
+    "qualification": "Actual AI coder/adjudicator qualification passed after collection and before participant coding; invalid-material exercises retained ungraded, unchanged V2 supplement/threshold, no human validation or assessor-error estimate.",
+    "primary": "Whole-verdict reference agreement AND internal consistency: facts 20/40, EAL 30/40, conventional 33/40; 83 successes, 37 failures, zero unresolved conjunctions.",
+    "verdict_uncertainty": "Known verdict matches 20/30/33; unresolved verdict judgments 3/3/0 retained. All six ambiguous verdicts are known primary failures owing to contradictory explanations.",
+    "canonical": "Canonical JSON matches 20/31/33 are separate; explanation grounding unassessed.",
+    "attribution": "All 40 EAL/conventional full model-visible packet pairs identical; observed accuracy contrast cannot identify EAL implementation effect. Availability cause confounded with task-domain wording.",
+    "processing": "Offline finish preserves raw source and usage with no extra API calls; processing/collection complete, analysis pending_annotation 6, no diagnostic principal allocation or evaluation.",
+    "cost": "Configured ledger USD 0.0204097 in four disjoint groups; not invoice or adoption costs."
+  },
+  "evidence_basis": "Safe aggregated endpoint/resource summaries, independent mechanical collection/derived/archive audits, root-provided qualification/workflow witnesses and independently accepted figures. No raw answers, calibration keys or coder-output content read."
+}

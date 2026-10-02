@@ -1,0 +1,50 @@
+{
+  "schema": "EAL/model-transfer-annotations/1",
+  "rubric": "Code the decision explicitly communicated by this answer. Do not assess its factual correctness or infer a decision from measurements. Use ready for an affirmative readiness conclusion, not_ready for a negative readiness conclusion, undetermined for an explicit inability to establish readiness, no_answer for text that provides no task decision, and ambiguous for unresolved conflicting decisions. Distinguish historical or hypothetical statements from the current conclusion. Distinguish criterion failure from practical withholding because readiness is unknown: parentheses or a full explanation can clarify that meaning without the literal word correction. A lexical collision alone does not establish conflicting current verdicts; explicit incompatible criterion classifications can remain ambiguous. Tentative modal readiness wording may remain ambiguous. Supply an exact supporting quote from the answer and a brief note. Leave ambiguous answers unresolved; do not choose the most favourable reading. Also code explanation_consistency against the current communicated verdict and any JSON decision field: consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion; contradictory when it communicates an incompatible current verdict or reverses the JSON decision; ambiguous when consistency cannot be resolved, and no_explanation when no explanatory content is present. Read qualifications semantically: a phrase such as \"not ready (undetermined)\" may communicate inability to establish readiness, rather than a failed requirement. Do not impose a code from an isolated phrase. Do not infer task correctness from the wording. Preserve conflicting or ambiguous conclusions. Supply an exact consistency_quote and a brief consistency_note; an entire answer may be quoted when explaining absence.",
+  "items": [
+    {
+      "id": "871b27c8e1f34821965e1b551df22524",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"The latency measurement for asset 'followup-all_of-release-missing' with version 'current-3' is missing or not within the required parameters. The latest available fact shows a latency of 150 ms, which exceeds the threshold of 120 ms. Additionally, the assessment window for recent data (max 5 minutes) has passed, and no recent acceptable measurement is available.\",\n  \"files\": []\n}",
+      "decision": "not_ready",
+      "quote": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"The latency measurement for asset 'followup-all_of-release-missing' with version 'current-3' is missing or not within the required parameters. The latest available fact shows a latency of 150 ms, which exceeds the threshold of 120 ms. Additionally, the assessment window for recent data (max 5 minutes) has passed, and no recent acceptable measurement is available.\",\n  \"files\": []\n}",
+      "note": "The retained JSON field communicates an unqualified negative decision. Its explanation reports a threshold exceedance and absence of a recent acceptable measurement as reasons for that decision; it does not explicitly communicate inability to establish current readiness as another verdict.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"The latency measurement for asset 'followup-all_of-release-missing' with version 'current-3' is missing or not within the required parameters. The latest available fact shows a latency of 150 ms, which exceeds the threshold of 120 ms. Additionally, the assessment window for recent data (max 5 minutes) has passed, and no recent acceptable measurement is available.\",\n  \"files\": []\n}",
+      "consistency_note": "The explanation presents the reported exceedance and lack of an acceptable current measurement as reasons for the same negative decision. The measurement_missing basis is an explanatory status, and no incompatible current readiness verdict or reversal is asserted."
+    },
+    {
+      "id": "1d20c536aea94143a80ed6190c1ef18d",
+      "text": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"At 10:08 UTC, the required facts for primary delay and authentication are either missing or not within the specified age window; fallback route facts are unavailable, preventing confirmation of routing readiness.\",\n  \"files\": []\n}",
+      "decision": "undetermined",
+      "quote": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"At 10:08 UTC, the required facts for primary delay and authentication are either missing or not within the specified age window; fallback route facts are unavailable, preventing confirmation of routing readiness.\",\n  \"files\": []\n}",
+      "note": "The full explanation explicitly says unavailable or out-of-window facts prevent confirmation of routing readiness. Together with the measurement_missing basis, this qualifies not_ready as withholding because readiness cannot be established; it supplies no known failed-criterion classification.",
+      "explanation_consistency": "consistent",
+      "consistency_quote": "{\n  \"decision\": \"not_ready\",\n  \"basis\": \"measurement_missing\",\n  \"reading\": null,\n  \"observed_at\": null,\n  \"explanation\": \"At 10:08 UTC, the required facts for primary delay and authentication are either missing or not within the specified age window; fallback route facts are unavailable, preventing confirmation of routing readiness.\",\n  \"files\": []\n}",
+      "consistency_note": "The missing-fact basis and explanation give inability to confirm readiness as the meaning of the negative field. This is a qualification for practical withholding due to unknown readiness, with no incompatible current failed-criterion verdict asserted."
+    }
+  ],
+  "annotator": "masked-adjudicator",
+  "assessor": {
+    "kind": "ai",
+    "model": "OpenAI Codex",
+    "model_snapshot": null,
+    "model_snapshot_status": "Exact inherited-session snapshot is not exposed.",
+    "inherited_session_model": true
+  },
+  "method": "masked-semantic-adjudication/4",
+  "protocol": "V4",
+  "source_items_sha256": "5bc4ebd976d03acc75eeccddd49420045e7390c74be88740b729f82f14e85f2e",
+  "validation": {
+    "calibration_status": "passed",
+    "decision_score": "24/24",
+    "explanation_consistency_score": "24/24",
+    "semantic_quote_audit_score": "48/48",
+    "qualification_receipt_sha256": "a46003fec860dc61f562fbba3c83b1f3cf3f3e062f5709217a9783ff76d03d1e",
+    "receipt_source": "Parent authorization after completed V4 calibration; receipt contents not accessed."
+  },
+  "started_at": "2026-10-02T16:50:03.900685+00:00",
+  "completed_at": "2026-10-02T16:51:30.683016+00:00",
+  "review_kind": "blinded-third-semantic-review",
+  "human_validation_established": false,
+  "assessor_error_rate_established": false
+}

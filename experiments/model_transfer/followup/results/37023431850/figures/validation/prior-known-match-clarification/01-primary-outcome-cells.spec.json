@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-01-primary-outcome-cells",
+  "purpose": {
+    "reader_question": "Which scheduled cells meet the communicated-verdict-and-consistency primary endpoint, and where are failure or unresolved coding retained?",
+    "expected_reading": "Each cell has one final primary state under the fixed rubric; the complete 120-cell crossing is visible without dropping ambiguities or pooling away task/condition structure.",
+    "claim": "The matrix is an exact finite display of final coded primary outcomes, not an inferred context advantage or population success rate.",
+    "scope": "120 live recipient outputs over 8 purposive AI-authored fictional tasks, 5 positions and 3 contexts; 40 matched positions/context, 8 common-donor clusters, 1 repeat. EAL/conventional packets equal at 40 positions.",
+    "permitted_inferences": [
+      "Recover the final primary state of every fixed task/position/context cell.",
+      "Compare matched finite cells while retaining common-donor clustering and identical EAL/conventional packet delivery."
+    ],
+    "prohibited_inferences": [
+      "Forty independent trials/context or 120 independent task cases.",
+      "A live model state of undetermined equals unresolved coding.",
+      "Superiority, population reliability, factual explanation grounding, human-task benefit or pure reasoning ability."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "final_endpoints",
+      "path": "inputs/final-analysis-for-figures.json",
+      "status": "derived",
+      "source_reference": "Final sanctioned sanitized analysis export. Endpoint labels derive from retained live model outputs and final whole-answer AI coding; references derive from the AI-authored fictional tasks. No response text or participant coding by the figure author.",
+      "sha256": "821920676a0c06cfdb6baffc8dd4f0816163bb68d2adaac40c60aa09df92410b"
+    },
+    {
+      "id": "collection_provenance",
+      "path": "inputs/collection-audit-excerpt.json",
+      "status": "derived",
+      "source_reference": "Independent live collection audit of 128 actual API attempts, 8 donors/120 recipients, 40 matched position groups and 40 identical EAL/conventional model-visible packets. Exact raw rows hash retained; preliminary canonical counts excluded from the excerpt.",
+      "sha256": "2e602776888e18bcaf2ade9bd7d0e4223f014f9714a0dece05c634885cd4c451"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "primary_state",
+      "label": "Final primary outcome",
+      "unit": "category",
+      "definition": "Success iff reference-matching whole communicated verdict and consistent explanation; final failure and unresolved states retained separately.",
+      "input_ids": [
+        "final_endpoints",
+        "collection_provenance"
+      ],
+      "transformation": "Use final sanctioned primary_state directly; no answer interpretation or relabelling by the figure builder.",
+      "statistical_role": "derived",
+      "status": "available",
+      "sample": {
+        "denominator": 40,
+        "unit": "matched recipient positions per context",
+        "inclusion": "All five scheduled positions for each of eight common-donor task blocks; one repeat. Donors excluded. The forty positions are clustered within eight tasks and are not forty independent cases."
+      },
+      "missingness": {
+        "state": "complete",
+        "treatment": "All 120 planned recipient cells retained. Unresolved primary coding has its own symbol; missing/unparseable endpoint fields remain missing and are not counted as confirmed matches."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Exact finite tabulation conditional on final AI coding. No population confidence interval, independent human coder validation, measured resolved-code error or stochastic repeatability estimate is available; factual grounding is unassessed."
+      }
+    },
+    {
+      "id": "cell_identity",
+      "label": "Matched cell",
+      "unit": "category",
+      "definition": "Context, task family/cause and scheduled evidence position.",
+      "input_ids": [
+        "final_endpoints",
+        "collection_provenance"
+      ],
+      "transformation": "Order rows by all_of then any_of and the four declared causes; retain scheduled positions 2, 4, 6, 8, 10 as categorical columns.",
+      "statistical_role": "derived",
+      "status": "available",
+      "sample": {
+        "denominator": 40,
+        "unit": "matched recipient positions per context",
+        "inclusion": "All five scheduled positions for each of eight common-donor task blocks; one repeat. Donors excluded. The forty positions are clustered within eight tasks and are not forty independent cases."
+      },
+      "missingness": {
+        "state": "complete",
+        "treatment": "All 120 planned recipient cells retained. Unresolved primary coding has its own symbol; missing/unparseable endpoint fields remain missing and are not counted as confirmed matches."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Exact finite tabulation conditional on final AI coding. No population confidence interval, independent human coder validation, measured resolved-code error or stochastic repeatability estimate is available; factual grounding is unassessed."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "states",
+      "marks": "plus, minus and question-mark data glyphs",
+      "mark_role": "data_mark",
+      "channel": "shape",
+      "represents": "Final primary success, failure or unresolved coding.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "primary_state"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Plus and blue denote success; minus and orange denote failure; question mark and grey denote unresolved coding. Meaning survives greyscale through the glyph.",
+        "domain": [
+          "success",
+          "failure",
+          "unresolved"
+        ]
+      }
+    },
+    {
+      "id": "cells",
+      "marks": "aligned categorical data glyphs",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Task identity, condition position and context; distances are not effects or elapsed times.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "cell_identity"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Eight task rows crossed with five scheduled position columns in each of three explicitly named context panels.",
+        "domain": [
+          "facts",
+          "eal",
+          "conventional",
+          "all_of",
+          "any_of",
+          "missing",
+          "stale",
+          "invalidated",
+          "version_mismatch",
+          "2",
+          "4",
+          "6",
+          "8",
+          "10"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [
+      "Facts",
+      "EAL",
+      "Conventional",
+      "Primary outcomes at all forty matched positions per context",
+      "Success",
+      "Failure",
+      "Unresolved coding",
+      "All / missing"
+    ],
+    "prohibit_block_circle_diagrams": true,
+    "manuscript_profile": "reproduction/manuscript-profile.json"
+  },
+  "build": {
+    "renderer": "tikz",
+    "engine": "pdflatex",
+    "profile": "reproduction/manuscript-profile.json",
+    "source": "01-primary-outcome-cells.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_report_figures.py",
+        "--input",
+        "inputs/final-analysis-for-figures.json"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "01-primary-outcome-cells.tikz.tex",
+        "--spec",
+        "01-primary-outcome-cells.spec.json",
+        "--output",
+        "01-primary-outcome-cells.pdf",
+        "--audit",
+        "01-primary-outcome-cells.audit.json",
+        "--preview",
+        "01-primary-outcome-cells.png",
+        "--qa-dir",
+        "qa/01-primary-outcome-cells"
+      ]
+    ],
+    "outputs": {
+      "pdf": "01-primary-outcome-cells.pdf",
+      "preview": "01-primary-outcome-cells.png",
+      "audit": "01-primary-outcome-cells.audit.json",
+      "review": "01-primary-outcome-cells.review.json"
+    },
+    "dependencies": [
+      "reproduction/build_report_figures.py",
+      "captions/01-primary-outcome-cells.caption.txt",
+      "captions/01-primary-outcome-cells.alt.txt",
+      "reproduction/figure-tools/scripts/render_tikz.py",
+      "reproduction/figure-tools/scripts/render_context.py",
+      "reproduction/figure-tools/scripts/figure_audit.py",
+      "reproduction/figure-tools/scripts/figure_spec.py",
+      "reproduction/figure-tools/scripts/build_profile.py",
+      "reproduction/figure-tools/scripts/figure_review.py",
+      "reproduction/figure-tools/assets/figure-spec.schema.json",
+      "reproduction/figure-tools/assets/figure-review.schema.json",
+      "inputs/final-analysis.schema.json"
+    ]
+  }
+}

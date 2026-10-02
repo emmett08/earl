@@ -112,6 +112,11 @@ Engineering evidence \sep executable arguments \sep language models \sep context
     figure_names = re.findall(r"\\includegraphics(?:\[[^\]]*\])?\{figures/([^}]+)\.pdf\}", body)
     assert len(figure_names) == len(set(figure_names)) and len(figure_names) >= 14
     imported = ["article.md", "article-source.tex"]
+    production_manifest_path = article / "reproduction/figure-production-manifest.json"
+    production = json.loads(production_manifest_path.read_text()) if production_manifest_path.is_file() else {}
+    contract_roots = production.get("figure_contract_roots", {})
+    spec_paths = {}
+    assert set(contract_roots) <= set(figure_names), "Production manifest names an unincluded figure"
     required = {"reproduction/build_figures.py", "reproduction/build_followup_figures.py", "figures/alternative-text.json",
                 "analysis/paired_resources.csv", "analysis/cumulative_resources.csv",
                 "analysis/session_resources.csv", "analysis/arm_phase_totals.csv",
@@ -119,28 +124,44 @@ Engineering evidence \sep executable arguments \sep language models \sep context
                 "analysis/completion-inference-audit.json",
                 "analysis/completion-figure-numerical-audit.json",
                 "analysis/completion-fresh-reader-review.json"}
+    if production:
+        required.add("reproduction/figure-production-manifest.json")
+        required.update(production["files"])
     required.update(str(p.relative_to(article)) for p in (article / "tables").glob("*.csv"))
     required.update(str(p.relative_to(article)) for p in (article / "analysis").glob("temporal-caption*")
                     if p.is_file())
     required.update(str(p.relative_to(article)) for p in (article / "reproduction/figure-tools").rglob("*")
                     if p.is_file() and "__pycache__" not in p.parts)
     for name in figure_names:
+        contract_root = Path(contract_roots.get(name, "."))
+        assert not contract_root.is_absolute() and ".." not in contract_root.parts, "Invalid figure contract root"
+        def contract_path(rel):
+            return str(contract_root / rel)
         for suffix in [".tikz.tex", ".pdf", ".png", ".audit.json", ".review.json"]:
             required.add("figures/" + name + suffix)
         required.add("captions/" + name + ".caption.txt")
-        required.add(name + ".spec.json")
-        spec = json.loads((article / (name + ".spec.json")).read_text())
-        required.update(item["path"] for item in spec["inputs"] if "path" in item)
-        required.update(spec["build"].get("dependencies", []))
+        alt = "captions/" + name + ".alt.txt"
+        if (article / alt).is_file():
+            required.add(alt)
+        spec_rel = name + ".spec.json"
+        if not (article / spec_rel).is_file():
+            spec_rel = "figures/" + spec_rel
+        spec_paths[name] = spec_rel
+        required.add(spec_rel)
+        spec = json.loads((article / spec_rel).read_text())
+        required.add(contract_path(spec["build"]["source"]))
+        required.update(contract_path(item["path"]) for item in spec["inputs"] if "path" in item)
+        required.update(contract_path(rel) for rel in spec["build"].get("dependencies", []))
         for profile in [spec["target"].get("manuscript_profile"), spec["build"].get("profile")]:
             if profile:
-                required.add(profile)
+                required.add(contract_path(profile))
         review = json.loads((article / ("figures/" + name + ".review.json")).read_text())
-        required.update(item["path"] for item in review["artifacts"])
+        required.update(contract_path(item["path"]) for item in review["artifacts"])
         if "test_evidence" in review["reviewer"]:
-            required.add(review["reviewer"]["test_evidence"]["path"])
+            required.add(contract_path(review["reviewer"]["test_evidence"]["path"]))
     for rel in sorted(required):
         source = article / rel
+        assert source.resolve().is_relative_to(article), source
         assert source.is_file(), source
         target = ROOT / rel
         target.parent.mkdir(parents=True, exist_ok=True)
@@ -150,7 +171,9 @@ Engineering evidence \sep executable arguments \sep language models \sep context
     for name in ["case-correctness", "session-profiles", "paired-token-ratios", "cumulative-tokens", "coding-sensitivity"]:
         for path in (ROOT / "figures").glob(name + ".*"):
             path.unlink()
-    manifest = {"schema": "eal-jss-article-import/1", "figure_ids": figure_names,
+    manifest = {"schema": "eal-jss-article-import/2", "figure_ids": figure_names,
+                "figure_contract_roots": contract_roots,
+                "figure_spec_paths": spec_paths,
                 "article_md_sha256": digest(article / "article.md"),
                 "article_tex_sha256": digest(article / "article.tex"),
                 "files": {name: digest(ROOT / name) for name in sorted(imported)},

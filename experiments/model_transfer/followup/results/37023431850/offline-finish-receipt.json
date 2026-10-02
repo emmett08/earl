@@ -1,0 +1,43 @@
+{
+  "schema": "EAL/offline-finish-receipt/1",
+  "workflow_run_id": 37038229027,
+  "workflow_url": "https://github.com/emmett08/earl/actions/runs/37038229027",
+  "workflow_commit": "777ab4c2f5b0ed2165d662992db0413d82dde14a",
+  "workflow_conclusion": "success",
+  "artifact_id": 11241339312,
+  "artifact_name": "experiment-finish-37038229027-1",
+  "artifact_size_bytes": 4135583,
+  "artifact_sha256": "c442a8579f3abc68b79908d66e5de19953aa5dc976ac1f5785c49f9157786811",
+  "verification": {
+    "job_id": 110941622960,
+    "test_passed": 1411,
+    "test_skipped": 1,
+    "build": "passed"
+  },
+  "finish_job_id": 110944672669,
+  "pipeline_status": {
+    "analysis": "analysis-annotated.json",
+    "analysis_status": "pending_annotation",
+    "can_collect": false,
+    "evaluation_available": false,
+    "execution_status": "complete",
+    "message": "Inspect scientific status and measurement completeness in the analysis. A supported evaluation is a separate prospective run, selected explicitly with evaluate.",
+    "phase": "finish",
+    "planning": "not_applicable_to_diagnostics",
+    "recorded_at": "2026-10-02T17:13:01.292636+00:00",
+    "schema": "EAL/experiment-pipeline/1",
+    "state": "processing_complete"
+  },
+  "annotation_status": {
+    "coded_answers": 128,
+    "ambiguous_verdicts": 6,
+    "determined_recipient_primary_endpoints": 120,
+    "local_derived_rows_byte_identical": true,
+    "completed_labels_byte_identical": true
+  },
+  "additional_model_calls": 0,
+  "collection_configured_cost_usd": 0.0204097,
+  "collection_raw_file_identities_unchanged": true,
+  "private_archive_path_in_reproduction_package": "followup-live/archives/earl-followup-37038229027-original-finish.zip",
+  "recorded_at": "2026-10-02T17:15:24.219196+00:00"
+}

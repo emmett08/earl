@@ -30,8 +30,16 @@ def main():
         subprocess.run([sys.executable, str(work / "reproduction/build_figures.py")], check=True)
         if "15-reference-undetermined-profiles" in manifest["figure_ids"]:
             subprocess.run([sys.executable, str(work / "reproduction/build_followup_figures.py")], check=True)
+        production_path = work / "reproduction/figure-production-manifest.json"
+        if production_path.is_file():
+            production = json.loads(production_path.read_text())
+            for command in production["commands"]:
+                assert command and all(isinstance(arg, str) for arg in command)
+                argv = [sys.executable if command[0] in {"python", "python3"} else command[0], *command[1:]]
+                subprocess.run(argv, cwd=work, check=True)
         for name in manifest["figure_ids"]:
-            for rel in [f"figures/{name}.tikz.tex", f"captions/{name}.caption.txt", f"{name}.spec.json"]:
+            spec_rel = manifest.get("figure_spec_paths", {}).get(name, f"{name}.spec.json")
+            for rel in [f"figures/{name}.tikz.tex", f"captions/{name}.caption.txt", spec_rel]:
                 assert (work / rel).read_bytes() == (ROOT / rel).read_bytes(), f"Non-reproducible plot source: {rel}"
                 compared[rel] = digest(ROOT / rel)
     proof = {"schema": "eal-jss-plot-reproduction/1", "figure_ids": manifest["figure_ids"],

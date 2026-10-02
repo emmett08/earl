@@ -1,0 +1,20 @@
+# Method quality note: fresh V3 calibration material
+
+Calibration: `coding-calibration-20261002-v3`. Frozen at `2026-10-02T16:09:44.217273+00:00` before any V3 coder outputs. Independent key review is pending. This material cannot qualify a coder until every gold label pair receives independent review and the unchanged exact pass criteria are met.
+
+V3 is a fresh held-out fixture repair under the identical V2 public decision rubric, consistency rubric, and operational supplement. It introduces no new rubric rule, method target, endpoint, threshold, or factual-accuracy measure. Existing vintages and their audits or failures remain retained; this authoring step does not adjudicate the independently owned earlier audits. Gold labels were authored prospectively without observing any coder or participant answer and were not edited to match outcomes.
+
+The author accessed only the two original rubric constants in `annotations.py`, ASM-003 and CTRL-005 in the follow-up protocol, the rubric/supplement fields of V2 `public-items.json`, and V2 `calibration-protocol.json`. No V1 or V2 fixture texts, sealed keys, coder outputs, or participant data were accessed. All 24 answer texts and all opaque item identifiers are newly authored. The sealed reference contains only fictional facts and author classifications.
+
+Coverage includes explicit current ready, not_ready, and undetermined conclusions; criterion failure versus practical withholding due to unknown readiness; stated all_of false-plus-unknown and any_of true-plus-unknown conclusions; three internally coherent but factually incorrect answers with private fictional references; simultaneous retained prose/JSON conflicts and simultaneous retained present prose conflicts; explicitly superseded historical conclusions; a future hypothetical contrasted with an explicit present verdict; bare future-only and counterfactual-only statements; each bare present may/might/should form covered by the unchanged supplement; a readiness-free description; and a genuinely unresolved explanatory referent. No fixture asks a coder to select an uncommitted present conditional branch or infer a verdict from measurements.
+
+Decision and explanation consistency are separate axes. The present-modal examples are ambiguous/no_explanation under the existing supplement. Simultaneous explicitly incompatible present verdicts are ambiguous/contradictory. The sole ambiguous-consistency fixture expressly identifies an omitted explanation whose supporting or opposing verdict is unresolved while asserting one current ready verdict. Its missing explanatory relationship, rather than decision ambiguity alone, establishes the consistency label.
+
+The author checked structural integrity, permitted labels, unique IDs, per-text SHA-256 values, and every one of the 48 nonempty exact quote examples. These mechanical checks do not substitute for independent substantive key review. The review must independently determine that all 24 items support their author label pair uniquely; any failed uniqueness review suspends qualification and requires a prospectively documented fresh held-out replacement rather than outcome-based gold edits.
+
+The gate remains exact: 24/24 decision labels, 24/24 explanation-consistency labels, 24/24 joint label pairs, and all 48 quote fields nonempty exact substrings, with independent key endorsement. There is no partial credit or threshold relaxation. Under ASM-003 and CTRL-005, missing or failed calibration leaves substantive answer-quality conclusions unresolved; the unchanged canonical enum endpoint remains separately reportable.
+
+Public file SHA-256: `5573e8b7e99a39811de4686dad9caad40ef1beee59d1659bcb0e12152f48bb30`.
+Sealed key SHA-256: `8df38d584fa871bfd60d82b6fe1ae4578da236c0498cb919078d42c05e45b155`.
+Rubric fingerprint (unchanged V2 metadata): `cdc2be4f1c5aa2c0c923c6cebd56425a2d5816bb5f6bfb66c130635a9a408c4b`.
+Supplement fingerprint (unchanged V2 metadata): `879514a317a44fdfc060582d2e862dbc10f68eb83443d61309d3ab4ba66675ad`.

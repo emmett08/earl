@@ -1,0 +1,162 @@
+"""Audit supplied coding import mechanically; do not recode or reinterpret text."""
+from collections import Counter,defaultdict
+from copy import deepcopy
+from datetime import datetime,timezone
+from decimal import Decimal
+from pathlib import Path
+import hashlib,json,math
+
+ROOT=Path('/workspace/scratch/5524656c89cf/earl-followup')
+SOURCE=Path('/workspace/scratch/5524656c89cf/data/experiment-export-37023431850-1')
+DERIVED=Path('/workspace/scratch/5524656c89cf/data/followup-annotated-local')
+RESULT=ROOT/'experiments/model_transfer/followup/results/37023431850'
+OUT=RESULT/'validation'
+def read(p):return json.loads(Path(p).read_text())
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def digest(x):return hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest()
+original=read(SOURCE/'rows.json');rows=read(DERIVED/'annotated-rows.json');analysis=read(DERIVED/'analysis.json');source_report=read(SOURCE/'report.json');calls=read(SOURCE/'calls.json');fig=read(RESULT/'figures/inputs/final-analysis-for-figures.json');resources=read(RESULT/'resource-summary.json');prior=read(OUT/'independent-live-collection-audit.json');mapping=read(SOURCE/'annotation-bundle/mapping.json');plan=read(SOURCE/'plan.json')
+refs={(x['task_id'],x['position']):x['decision'] for x in prior['references']}
+checks=[];failures=[]
+def check(name,yes,detail=None):
+ item={'check':name,'passed':bool(yes)}
+ if detail is not None:item['detail']=detail
+ checks.append(item)
+ if not yes:failures.append(item)
+def sessions(rs):
+ for r in rs:
+  yield r,r['donor_result'],None
+  for v in r['variants']:yield r,v['result'],v
+original_s={s['session_id']:s for r,s,v in sessions(original)}
+derived_s={s['session_id']:s for r,s,v in sessions(rows)}
+check('all_original_source_hashes_unchanged',all(sha(SOURCE/n)==h for n,h in prior['raw_file_sha256'].items()))
+check('retained_session_files_unchanged',all(sha(SOURCE/n)==h for n,h in prior['retained_session_file_sha256'].items()))
+check('source_rows_mapping_hash_unchanged',sha(SOURCE/'rows.json')==mapping['rows_sha256']==prior['raw_rows_sha256'])
+check('derived_row_allocation_identical',len(rows)==len(original)==8 and [r['block_id'] for r in rows]==[r['block_id'] for r in original] and set(original_s)==set(derived_s) and len(derived_s)==128)
+changes=Counter()
+def norm_session(s):
+ x=deepcopy(s)
+ for k in ('annotation','annotation_history','score'):x.pop(k,None)
+ if isinstance(x.get('answer'),dict):x['answer'].pop('decision',None)
+ else:x['answer']={}
+ return x
+
+def norm_rows(rs):
+ x=deepcopy(rs)
+ for r in x:
+  r['donor_result']=norm_session(r['donor_result'])
+  for v in r['variants']:v['result']=norm_session(v['result'])
+ return x
+check('only_sanctioned_import_fields_changed',norm_rows(original)==norm_rows(rows),{'approved_mutations':['session.annotation','session.annotation_history','session.answer.decision','session.score']})
+locations={m['session_id']:m for m in mapping['items']};source_items_sha=sha(SOURCE/'annotation-bundle/items.json');all_cells=[];all_pending=[]
+for r,s,v in sessions(rows):
+ sid=s['session_id'];old=original_s[sid];ann=s['annotation'];score=s['score']
+ changes.update(k for k in set(old)|set(s) if old.get(k)!=s.get(k))
+ check(sid+':collection_payload_exact',norm_session(old)==norm_session(s) and s['api_attempt_ids']==old['api_attempt_ids'] and s['events']==old['events'] and s['raw_answer']==old['raw_answer'] and s['response_texts']==old['response_texts'] and s['initial_messages']==old['initial_messages'] and s['task_context']==old['task_context'] and s['canonical_decision']==old['canonical_decision'])
+ check(sid+':annotation_history_retained',s['annotation_history']==old.get('annotation_history',[])+[old['annotation']])
+ code=ann['decision_code'];consistency=ann['explanation_consistency']
+ expected_decision=code if code in ('ready','not_ready','undetermined') else None
+ check(sid+':decision_import_exact',s['answer']['decision']==expected_decision and {k:x for k,x in s['answer'].items() if k!='decision'}=={k:x for k,x in (old['answer'] if isinstance(old['answer'],dict) else {}).items() if k!='decision'})
+ expected_status='ambiguous' if code=='ambiguous' else 'empty' if code=='no_answer' else 'ai'
+ check(sid+':annotation_structural_contract',ann['status']==expected_status and ann['assessor']['kind']=='ai' and ann['assessor']['source_items_sha256']==source_items_sha and ann['id']==locations[sid]['id'] and ann['quote'].strip() and ann['quote'] in s['raw_answer'] and ann['consistency_quote'].strip() and ann['consistency_quote'] in s['raw_answer'] and ann['note'].strip() and ann['consistency_note'].strip())
+ # Donor reference is retained source reference. Recipients use separately audited raw-fact references.
+ reference=refs[(r['case'],v['recipient_session'])] if v else old['score']['reference']['decision']
+ pending=ann['status'] in ('pending','ambiguous','unobserved')
+ match=None if pending else expected_decision==reference
+ explain={'consistent':True,'contradictory':False}.get(consistency)
+ primary=False if match is False or explain is False else True if match is True and explain is True else None
+ canonical=s['canonical_decision']==reference if s['canonical_decision'] in ('ready','not_ready','undetermined') else None
+ no_answer=False if pending else ann['status']=='empty' or expected_decision not in ('ready','not_ready','undetermined')
+ assessment='pending_annotation' if pending else 'no_answer' if no_answer else 'assessed'
+ check(sid+':independent_primary_and_secondary_arithmetic',score['reference']==old['score']['reference'] and score['reference']['decision']==reference and score['decision_match'] is match and score['task_match'] is match and score['canonical_decision_match'] is canonical and score['explanation_consistent'] is explain and score['substantive_match'] is primary and score['no_answer'] is no_answer and score['assessment_status']==assessment)
+ if assessment=='pending_annotation' or explain is None:all_pending.append(sid)
+ if v:
+  all_cells.append({'session_id':sid,'block_id':r['block_id'],'task_id':r['case'],'family':r['task_family'],'cause':v['evidence_condition']['availability_cause'],'condition':v['evidence_condition']['evidence_condition'],'position':v['recipient_session'],'context':v['level'],'reference':reference,'canonical_match':canonical,'whole_verdict_match':match,'explanation_consistency':consistency,'primary_match':primary,'decision_code':code})
+
+def states(xs,field):
+ vals=[x[field] for x in xs];n=len(vals);t=sum(v is True for v in vals);f=sum(v is False for v in vals);u=n-t-f
+ return {'planned':n,'known_correct':t,'known_incorrect':f,'unresolved':u,'correct_fraction_bounds':[t/n,(t+u)/n] if n else [None,None]}
+def tally(xs):
+ return {'cells':len(xs),'primary':states(xs,'primary_match'),'canonical':states(xs,'canonical_match'),'communicated_verdict':states(xs,'whole_verdict_match'),'contradictions':sum(x['explanation_consistency']=='contradictory' for x in xs),'consistency_codes':dict(Counter(x['explanation_consistency'] for x in xs)),'communicated_verdict_codes':dict(Counter(x['decision_code'] for x in xs))}
+contexts={l:tally([x for x in all_cells if x['context']==l]) for l in ('facts','eal','conventional')}
+by_condition=[{'context':l,'condition':c,**tally([x for x in all_cells if x['context']==l and x['condition']==c])} for l in ('facts','eal','conventional') for c in ('complete','critical_gap','restored_positive','restored_negative','noncritical_gap')]
+by_family_condition=[{'task_family':f,'reasoner':l,'condition':c,**states([x for x in all_cells if x['family']==f and x['context']==l and x['condition']==c],'primary_match')} for f in ('followup-all_of','followup-any_of') for l in ('facts','eal','conventional') for c in ('complete','critical_gap','restored_positive','restored_negative','noncritical_gap')]
+check('fixed_recipient_denominators',len(all_cells)==120 and len({x['session_id'] for x in all_cells})==120 and all(c['cells']==40 for c in contexts.values()) and all(c['cells']==8 for c in by_condition))
+er=analysis['evidence_restoration'];key=lambda x:(x['task_family'],x['reasoner'],x['condition'])
+check('family_condition_analysis_counts_exact',sorted(er['condition_outcomes'],key=key)==sorted(by_family_condition,key=key) and sorted(er['manipulation_qualified_condition_outcomes'],key=key)==sorted(by_family_condition,key=key))
+cell_by_sid={x['session_id']:x for x in all_cells};cell_by_key={(x['task_id'],x['position'],x['context']):x for x in all_cells}
+joint_cells=[]
+for profile in er['profiles']:
+ for o in profile['outcomes']:
+  x=cell_by_sid[o['session_id']];s=derived_s[o['session_id']]
+  check(o['session_id']+':profile_projection_exact',o['canonical_decision_match'] is x['canonical_match'] and o['communicated_decision_match'] is x['whole_verdict_match'] and o['substantive_match'] is x['primary_match'] and o['explanation_consistent'] is {'consistent':True,'contradictory':False}.get(x['explanation_consistency']) and o['annotation']==s['annotation'] and o['manipulation_passed'] is True and o['manipulation_qualified_match'] is x['primary_match'])
+ vals=[cell_by_sid[o['session_id']]['primary_match'] for o in profile['outcomes']];joint=False if any(v is False for v in vals) else True if all(v is True for v in vals) else None
+ joint_cells.append({'task_family':profile['task_family'],'reasoner':profile['reasoner'],'primary_match':joint})
+ check(profile['block_id']+':'+profile['reasoner']+':joint_task_exact',profile['all_conditions_substantive_match'] is joint and profile['all_conditions_manipulation_qualified_match'] is joint and profile['common_initial_state'] is True)
+
+expected_joint=[{'task_family':f,'reasoner':l,**states([x for x in joint_cells if x['task_family']==f and x['reasoner']==l],'primary_match')} for f in ('followup-all_of','followup-any_of') for l in ('facts','eal','conventional')]
+jkey=lambda x:(x['task_family'],x['reasoner'])
+check('family_joint_profile_totals_exact',sorted(er['joint_task_outcomes'],key=jkey)==sorted(expected_joint,key=jkey) and sorted(er['manipulation_qualified_joint_task_outcomes'],key=jkey)==sorted(expected_joint,key=jkey))
+pair_keys=[]
+for c in analysis['comparisons']:
+ xs=[cell_by_key[(c['case'],c['recipient_session'],l)] for l in c['levels']];pair_keys.append((c['case'],c['recipient_session'],tuple(c['levels'])))
+ prim=[x['primary_match'] for x in xs];expected_difference=int(prim[1])-int(prim[0]) if all(type(x) is bool for x in prim) else None
+ check(c['block_id']+':'+str(c['recipient_session'])+':'+':'.join(c['levels'])+':comparison_exact',c['decision_matches']==prim and c['communicated_decision_matches']==[x['whole_verdict_match'] for x in xs] and c['canonical_decision_matches']==[x['canonical_match'] for x in xs] and c['decision_difference_right_minus_left']==expected_difference and c['manipulation']['status']=='passed' and not c['manipulation']['failures'])
+check('pairwise_views_retained_without_denominator_inflation',len(pair_keys)==len(set(pair_keys))==120 and len(er['profiles'])==24 and analysis['planned_sessions']==128 and analysis['planned_blocks']==8 and analysis['contrast_intervals']==[])
+# All six ambiguous verdict codes also have contradiction codes. False therefore dominates unknown in the primary endpoint.
+execution='complete' if all(r['status']=='complete' for r in rows) else 'partial';invalid=sum(c['manipulation']['status']!='passed' for c in analysis['comparisons']);accounting=all(analysis['resources'][k] for k in ('session_coverage_complete','api_accounting_complete','cost_accounting_complete','token_usage_complete','preparation_timing_complete'));expected_analysis_status='partial' if execution=='partial' else 'invalid_manipulation' if invalid else 'incomplete_accounting' if not accounting else 'pending_annotation' if all_pending else 'complete'
+check('frozen_reporter_analysis_status_exact',analysis['execution_status']==execution and analysis['invalid_comparisons']==invalid and analysis['resource_accounting_complete']==accounting and analysis['pending_annotation_sessions']==len(all_pending) and analysis['status']==expected_analysis_status,{'status':expected_analysis_status,'pending_annotation_sessions':len(all_pending),'primary_unresolved_recipients':sum(x['primary_match'] is None for x in all_cells),'pending_session_ids':all_pending})
+check('analysis_resources_unaltered',analysis['resources']==source_report['resources'] and analysis['resource_groups']==source_report['resource_groups'] and analysis['blocks']==source_report['blocks'])
+source_comp={(c['case'],c['recipient_session'],tuple(c['levels'])):c for c in source_report['comparisons']}
+check('comparisons_resource_observations_unaltered',all(c['resources']==source_comp[(c['case'],c['recipient_session'],tuple(c['levels']))]['resources'] and c['resource_differences_right_minus_left']==source_comp[(c['case'],c['recipient_session'],tuple(c['levels']))]['resource_differences_right_minus_left'] for c in analysis['comparisons']))
+match_groups=0;packet_equal=0
+for r in rows:
+ for p in plan['recipient_positions']:
+  vs={v['level']:v['result'] for v in r['variants'] if v['recipient_session']==p}
+  inp=[s['task_context']['inputs'] for s in vs.values()];match_groups+=all(x==inp[0] for x in inp)
+  packet_equal+=vs['eal']['task_context']==vs['conventional']['task_context']
+check('matched_packet_identity_preserved',match_groups==packet_equal==40)
+fig_fields={'task_id','family','cause','position','condition','context','reference_decision','canonical_match','whole_verdict_match','explanation_consistency','primary_state'}
+expected_fig=[]
+for x in all_cells:
+ expected_fig.append({'task_id':x['task_id'],'family':x['family'].removeprefix('followup-'),'cause':x['cause'],'position':x['position'],'condition':x['condition'],'context':x['context'],'reference_decision':x['reference'],'canonical_match':x['canonical_match'],'whole_verdict_match':x['whole_verdict_match'],'explanation_consistency':x['explanation_consistency'],'primary_state':'success' if x['primary_match'] is True else 'failure' if x['primary_match'] is False else 'unresolved'})
+figkey=lambda x:(x['task_id'],x['position'],x['context'])
+check('sanctioned_figure_projection_exact_and_answer_free',len(fig['rows'])==120 and all(set(x)==fig_fields for x in fig['rows']) and len({figkey(x) for x in fig['rows']})==120 and sorted(fig['rows'],key=figkey)==sorted(expected_fig,key=figkey))
+check('figure_provenance_and_denominators_exact',fig['source']['annotated_rows_sha256']==sha(DERIVED/'annotated-rows.json') and fig['source']['final_labels_sha256']==sha(RESULT/'final-labels.json') and fig['source']['donors_excluded']==8 and fig['source']['recipient_cells']==120 and fig['source']['independent_task_units']==8 and fig['source']['repeats']==1)
+
+by_call=defaultdict(list)
+for c in calls:by_call[c['session_id']].append(c)
+res_expected={}
+for context in ('common_donor','facts','eal','conventional'):
+ sids=[s['session_id'] for r,s,v in sessions(rows) if ('common_donor' if v is None else v['level'])==context];selected=[c for sid in sids for c in by_call[sid]];ss=[derived_s[sid] for sid in sids];us=[c['response']['usage'] for c in selected]
+ res_expected[context]={'sessions':len(sids),'api_attempts':len(selected),'input_tokens':sum(u['input_tokens'] for u in us),'output_tokens':sum(u['output_tokens'] for u in us),'cached_input_tokens':sum(u['input_tokens_details']['cached_tokens'] for u in us),'reasoning_tokens':sum(u['output_tokens_details']['reasoning_tokens'] for u in us),'sum_api_attempt_seconds':sum(c['elapsed_seconds'] for c in selected),'sum_session_seconds':sum(s['elapsed_seconds'] for s in ss),'sum_context_seconds':sum(s['context_seconds'] for s in ss)}
+ z=res_expected[context];z['total_tokens']=z['input_tokens']+z['output_tokens'];z['configured_cost_usd']=str((Decimal(z['input_tokens'])*Decimal('0.10')+Decimal(z['output_tokens'])*Decimal('0.40'))/Decimal(1000000))
+for actual in resources['groups']:
+ expected=res_expected[actual['context']]
+ check('resource_group:'+actual['context'],all(Decimal(actual[k])==Decimal(v) if k=='configured_cost_usd' else abs(actual[k]-v)<=1e-9 for k,v in expected.items()))
+check('resource_summary_sources_and_total_exact',len(resources['groups'])==4 and resources['source_calls_sha256']==sha(SOURCE/'calls.json') and resources['source_rows_sha256']==sha(SOURCE/'rows.json') and resources['calculator_sha256']==sha(ROOT/'scripts/summarise_followup_resources.py') and Decimal(resources['total_configured_cost_usd'])==sum(Decimal(x['configured_cost_usd']) for x in res_expected.values())==Decimal('0.0204097') and resources['cost_complete'] is True and resources['native_tool_calls']==0 and resources['host_raw_snapshot_reads']==120 and resources['total_collector_calls']==168)
+check('descriptive_dependence_and_scope_retained',analysis['contrast_intervals']==[] and 'not independent cases' in er['interpretation'] and 'No principal-study power' in er['interpretation'] and 'Unassessed' in er['factual_explanation_accuracy'] and 'not invoices or net adoption costs' in resources['interpretation'])
+
+limits=[
+ 'This audit checks supplied labels and deterministic arithmetic; it does not reinterpret answer text or independently determine semantic codes.',
+ 'Calibration keys, exercise labels and coder output files were not read. Final-labels.json was hashed only. Assessor qualification, adjudication quality, factual explanation accuracy and human validation are outside this audit.',
+ 'The exact frozen reporter status is pending_annotation with six ambiguous communicated-verdict assessments. All six also have contradictory consistency codes; the primary conjunction is therefore known false for those six and no primary recipient cell is unresolved. Pending report status is not overwritten by the figure projection.',
+ 'Primary outcome: communicated-verdict match AND independently supplied consistency code. False dominates unknown; consistent code alone does not establish a correct verdict, and a correct canonical field alone does not establish primary success.',
+ '120 recipient cells, 24 task/context profiles and 120 pairwise comparisons are repeated views of eight fixed common-donor task units. Finite descriptive differences and logical fraction bounds are not sampling uncertainty, population effects, superiority, or independent observations.',
+ 'The importer preserves every existing non-decision answer field. Donor sessions originally have no parsed answer dictionary; the approved import materialises only the supplied decision for those sessions, without inventing basis, reading, citation or explanation fields.',
+ 'The derived directory contains only annotated rows and analysis. All original raw-file and retained-session hashes were verified unchanged; no calls, journals, usage or events were rewritten.',
+ 'Resource estimates preserve configured rates, charge all input tokens at the full rate, ignore cache discounts and exclude coder/research/adoption costs. Accumulated attempt/session/context durations are not wall-clock execution time.'
+]
+files={str((DERIVED/'annotated-rows.json')):sha(DERIVED/'annotated-rows.json'),str(DERIVED/'analysis.json'):sha(DERIVED/'analysis.json'),str(RESULT/'figures/inputs/final-analysis-for-figures.json'):sha(RESULT/'figures/inputs/final-analysis-for-figures.json'),str(RESULT/'resource-summary.json'):sha(RESULT/'resource-summary.json'),str(RESULT/'final-labels.json'):sha(RESULT/'final-labels.json')}
+source_code_hashes={n:sha(ROOT/'experiments/model_transfer'/n) for n in ('annotations.py','scoring.py','diagnostic_reporting.py','restoration.py')}
+check('import_and_primary_scoring_source_unchanged',all(source_code_hashes[n]==prior['collection_source_module_sha256'][n] for n in source_code_hashes))
+result={'schema':'EAL/followup-final-derived-audit/1','reviewer':'/root/followup_live_audit: separate AI audit of import integrity and arithmetic in the same orchestration','audited_at':datetime.now(timezone.utc).isoformat(),'status':'passed' if not failures else 'failed','scope':'Final supplied-code import integrity and independent deterministic arithmetic; no semantic coding or calibration assessment.','run_id':prior['run_id'],'export_run_id':37023431850,'checks':checks,'failures':failures,'summary':{'checks':len(checks),'failed_checks':len(failures),'retained_sessions':128,'recipient_cells':120,'matched_position_groups':match_groups,'eal_conventional_packet_equalities':packet_equal,'analysis_status':analysis['status'],'pending_annotation_sessions':len(all_pending),'primary_unresolved_recipients':sum(x['primary_match'] is None for x in all_cells),'contradiction_codes_recipients':sum(x['explanation_consistency']=='contradictory' for x in all_cells),'mutated_session_field_counts':dict(changes)},'context_counts':contexts,'context_condition_counts':by_condition,'family_context_condition_primary_counts':by_family_condition,'family_joint_profile_primary_counts':expected_joint,'independent_resource_groups':res_expected,'input_sha256':files,'reviewed_source_sha256':source_code_hashes,'audit_script_sha256':sha(__file__),'primary_truth_table':{'true,true':'true','false,any':'false','any,false':'false','otherwise':'unknown'},'limits':limits,'cell_arithmetic':all_cells}
+(OUT/'final-derived-audit.json').write_text(json.dumps(result,indent=2)+'\n')
+lines=['# Final derived import audit','',f"Status: **{result['status']}**. {len(checks)} mechanical checks, {len(failures)} failures.",'','All 128 original collection results are preserved outside the approved annotation, annotation history, communicated answer decision and derived score fields. Original raw rows, all retained session files, calls, the durable journal, model/usage records, timings, events and matched task packets are unchanged. The final-labels file was hashed without reading its contents.','', '| Context | Primary success / 40 | Canonical correct / 40 | Communicated verdict correct / 40 | Incorrect verdict | Unresolved verdict | Contradiction codes |','|---|---:|---:|---:|---:|---:|---:|']
+for label,z in contexts.items():lines.append(f"| {label} | {z['primary']['known_correct']} | {z['canonical']['known_correct']} | {z['communicated_verdict']['known_correct']} | {z['communicated_verdict']['known_incorrect']} | {z['communicated_verdict']['unresolved']} | {z['contradictions']} |")
+lines+=['','The imported primary rule is the conjunction of communicated-verdict correctness and supplied internal-consistency coding. A false value on either dimension makes the primary outcome false, even if the other dimension is unknown. All six ambiguous communicated-verdict codes also have contradictory consistency codes, so all 120 recipient primary outcomes are determined.','',f"The analysis correctly retains **`{analysis['status']}` with {len(all_pending)} pending annotation sessions** under the frozen reporter rule. This rule counts ambiguous communicated-verdict assessments independently of whether contradiction already determines primary failure. The answer-free figure projection retains that arithmetic and does not change report status.",'','| Context | Complete | Critical gap | Positive restoration | Negative restoration | Noncritical gap |','|---|---:|---:|---:|---:|---:|']
+for label in ('facts','eal','conventional'):
+ zs=[next(z for z in by_condition if z['context']==label and z['condition']==c) for c in ('complete','critical_gap','restored_positive','restored_negative','noncritical_gap')];lines.append('| '+label+' | '+' | '.join(f"{z['primary']['known_correct']}/8" for z in zs)+' |')
+lines+=['','All 30 family/context/condition summaries, 24 task/context profiles, 120 pairwise comparisons and the sanctioned 120-cell figure projection reproduce the independently recomputed arithmetic. All 40 reasoner-position groups retain matched raw inputs, including 40 identical EAL/conventional full packets. The analysis retains no inferential intervals and explicitly identifies the observations as repeated views of eight shared-donor task units.','',f"Resource groups recompute from unchanged provider records to USD **0.0204097** total: donor 0.0005060; facts 0.0067119; EAL 0.0066187; conventional 0.0065731. Group token and duration totals match exactly within floating-point timing tolerance.",'','Limits:','']+[f'- {x}' for x in limits]
+if failures:lines+=['','Failures:','']+[f'- {x["check"]}: {x.get("detail", "")}' for x in failures]
+(OUT/'final-derived-audit.md').write_text('\n'.join(lines)+'\n')
+print(json.dumps({k:result[k] for k in ('status','summary','context_counts','failures')},indent=2))

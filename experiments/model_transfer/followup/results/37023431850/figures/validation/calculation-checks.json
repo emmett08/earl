@@ -1,0 +1,27 @@
+{
+  "input_sha256": "821920676a0c06cfdb6baffc8dd4f0816163bb68d2adaac40c60aa09df92410b",
+  "rows": 120,
+  "matched_positions_per_context": 40,
+  "task_clusters": 8,
+  "repeats": 1,
+  "checks": [
+    "No duplicate context/task/position cells.",
+    "Exactly 8 logic/cause task instances and 5 scheduled positions in each context.",
+    "Reference keys coincide across contexts and sum to 20 ready / 12 not_ready / 8 undetermined per context.",
+    "Primary success requires whole-verdict match and consistent explanation.",
+    "Endpoint diagnostics retain overlapping counts and all planned recipients."
+  ],
+  "source": {
+    "collection_run_id": "37023431850",
+    "live_experiment_id": "adc97f7b-113d-4404-811d-16c5857e9d20",
+    "annotated_rows_sha256": "6d88aa0f7680ccd23759a447b33ba7d6fb29d30f4dc13e4e051a64835acca7b5",
+    "final_labels_sha256": "7718c5f4b0e78fa9ef35e6b89ceec525781d876bf0e44d7e15f38f72d45241d1",
+    "calibration_receipt_sha256": "a46003fec860dc61f562fbba3c83b1f3cf3f3e062f5709217a9783ff76d03d1e",
+    "stage": "offline-derived-after-calibrated-masked-coding",
+    "donors_excluded": 8,
+    "recipient_cells": 120,
+    "independent_task_units": 8,
+    "repeats": 1
+  },
+  "choice_rationale": "The complete fixed crossing calls for one categorical outcome matrix; the endpoint-separation question calls for directly labelled comparable positional counts. No unresolved encoding choice warrants invented prototypes; no measured human interpretation benefit is claimed."
+}

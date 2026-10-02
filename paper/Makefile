@@ -13,6 +13,7 @@ check:
 	$(PYTHON) analysis/reproduce.py --check
 	$(PYTHON) analysis/check_listing.py
 	$(PYTHON) analysis/check_figures.py
+	$(PYTHON) analysis/check_editorial.py
 	$(PYTHON) analysis/check_supplemental_measurement.py
 
 check-supplemental:

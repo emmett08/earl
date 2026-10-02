@@ -1,0 +1,162 @@
+{
+  "schema": "EAL/live-followup-caption-placement/1",
+  "stage": "live-followup-bounded-review",
+  "recorded_at_utc": "2026-10-02T17:30:08.724795+00:00",
+  "status": "passed",
+  "source_and_artifact_hashes": {
+    "article.md": "065b3ff4eacb1822489cf2d4b4e8546edee723dcf06c732eae2764d5edb449b2",
+    "article.tex": "819c0a47af08ec5de992e9284e4065ecdfabe4313f2fdcadce431fdf94f88faa",
+    "eal-handover-data-story.pdf": "8b8a58b120dd678e1169aebf6e4fd05fa093f29fbb3975f91f880fc72fa2af26"
+  },
+  "pages": 30,
+  "figure_count": 17,
+  "placements": [
+    {
+      "number": 1,
+      "page": 5,
+      "stem": "08-measurement-status",
+      "caption_sha256": "3f2a020cb5fc3ba0917f70ea86b91a72af2f9b8bc3cd7510631fa55be922d575",
+      "pdf_sha256": "e71c248e1c2f90221f9e8330fee93763bfed029013eb1d0e9fdc5e0ad414ce59"
+    },
+    {
+      "number": 2,
+      "page": 6,
+      "stem": "12-recipient-decisions",
+      "caption_sha256": "0f18a274195f7e5338e299fc76a1a915639cdc63fbad18ab2030b68c49e1063d",
+      "pdf_sha256": "ff2bf9e85c62f6d48f3e8471c98d793f72a06ac2011742e1994b67c184df140e"
+    },
+    {
+      "number": 3,
+      "page": 7,
+      "stem": "13-recipient-match-bounds",
+      "caption_sha256": "4bb5aeaf20184730168048cf5af8d6dd873ced9c12e143cfe9da16cd3c27d33e",
+      "pdf_sha256": "0f3c2887064ba0863b821a9a640de3bdd582a28c631063ec0111c2fd2d8121d0"
+    },
+    {
+      "number": 4,
+      "page": 8,
+      "stem": "01-token-distribution",
+      "caption_sha256": "80ace6c462a4239bbcffbd6e9bacb78af87a2ddd535346b0eb1ec16ede2100d2",
+      "pdf_sha256": "f74a48cfe5a82c20605562cb3db89f73f43d99b41f00739e20ddc2fcb8a9831b"
+    },
+    {
+      "number": 5,
+      "page": 9,
+      "stem": "02-token-subgroups",
+      "caption_sha256": "26bdd4361c4101bfaef4a808d128681d2287c0fe77b5531dbbe03e427df479b5",
+      "pdf_sha256": "6175601423ebfbf2bbac1b9583a4ce16bf7c7339e09f6b2890f0c0de717dffc9"
+    },
+    {
+      "number": 6,
+      "page": 10,
+      "stem": "03-cumulative-tokens",
+      "caption_sha256": "9f75ae623586b97ba9b9c63e1960fbb8cf531cf0284ec5e893aaadd3317afcdc",
+      "pdf_sha256": "672eb4faf89a9ce5c3a7d20a09a7297df8ea68cb242e633d71e36c01e2741ecf"
+    },
+    {
+      "number": 7,
+      "page": 11,
+      "stem": "04-token-composition",
+      "caption_sha256": "fdc2c583e493af95499acae604832e4cf2883a1b56140c8e2a78c8c7b5db7ec1",
+      "pdf_sha256": "097b75f6ab436b059a50c66c3265c9af2480156efedabefd2537c86357e5a5ea"
+    },
+    {
+      "number": 8,
+      "page": 13,
+      "stem": "05-resource-ratios",
+      "caption_sha256": "1f42ce6f029eeac092aac5f9b088c393610e8ad510ae23f9be3ed5abdae764ec",
+      "pdf_sha256": "ca1ef4c5e2c2cd4027738265a22fbfc2bb187d91b0845482fcb0a8fef01e68e5"
+    },
+    {
+      "number": 9,
+      "page": 14,
+      "stem": "10-phase-contrasts",
+      "caption_sha256": "ffa9fb50af6a0e943d80c33f70502c4f1eb9d9f06ddd12c721ca460760666881",
+      "pdf_sha256": "af9995f9945f204d1cf19a04c4b78c44c15212fe06228cafe6e5f87534d1a15f"
+    },
+    {
+      "number": 10,
+      "page": 15,
+      "stem": "11-time-partition",
+      "caption_sha256": "5d49b464bde9a3ca95e1c99332a80ed7f4b81293e651a63d6d65358e783664d0",
+      "pdf_sha256": "814579de1f832b763e303cdf07996534dacc902609d7c6246e474b041b1458b6"
+    },
+    {
+      "number": 11,
+      "page": 16,
+      "stem": "06-latency-distribution",
+      "caption_sha256": "512966cd0622f3d87c9e4fee43c9e985da9dec3460b79910fed58f1a37b3b258",
+      "pdf_sha256": "2bfd48d9d5e81f7a495ce1459cb2d2c66a50bee8d22e9d9df5444ce12cb50576"
+    },
+    {
+      "number": 12,
+      "page": 17,
+      "stem": "09-paired-tradeoff",
+      "caption_sha256": "821df45faef009481ab5aa5670386c58f3a445f926f7c7bb71a163e4b6b6f765",
+      "pdf_sha256": "7e0af8eb18e9685884a169e00793effdc587a258d073a453b5b352d837ce399c"
+    },
+    {
+      "number": 13,
+      "page": 18,
+      "stem": "07-acquisition-horizon",
+      "caption_sha256": "754b1d784f441a644e00aaa8f2b55eabb6ccca62477d799e4b5480bff415b8b3",
+      "pdf_sha256": "dbf6c6dcc1d71e007af3936501ba068d5ad3198f5699c7d063f18cc4ede0914d"
+    },
+    {
+      "number": 14,
+      "page": 20,
+      "stem": "14-frozen-endpoint-bounds",
+      "caption_sha256": "932a3b708674167f4d7924fa2cf6cca078d650a02e2e257c38f4d5a5d740e593",
+      "pdf_sha256": "8b159494621d7ace88d4f42ba850405fcb1c2c2e6b277bcb76673deb9f405e20"
+    },
+    {
+      "number": 15,
+      "page": 22,
+      "stem": "15-reference-undetermined-profiles",
+      "caption_sha256": "02470f0a5745fb2bdfad6f41f06fd52863a187eff3cf5eda623879e310952342",
+      "pdf_sha256": "d30ec4749b5dd3512e6a48c409a837019a35c78dac6bf9c4fd3eae2adddca28c"
+    },
+    {
+      "number": 16,
+      "page": 26,
+      "stem": "16-followup-primary-outcome-cells",
+      "caption_sha256": "84b3f77061918da598d3e31474eb62bdaddc4671e0e2babe243ab785272d6545",
+      "pdf_sha256": "ada334cad7d26385baec7edb469f7e1cbeae608a30ec9a4de8ff2d8409a6cea2"
+    },
+    {
+      "number": 17,
+      "page": 27,
+      "stem": "17-followup-endpoint-separation",
+      "caption_sha256": "355bb2f2259e0504d6e12d549af71429945b93788592fbd5baa3a9f2ddd0cce3",
+      "pdf_sha256": "31cc0f4dff7a42472723c71c63e594be0d1ed530fd2224adc429f7bed34023c9"
+    }
+  ],
+  "visual_review": {
+    "status": "accepted",
+    "reviewer": "/root/followup_paper_update",
+    "scope": "All 30 pages inspected in contact sheets; full-size pages 1 and 23–30 inspected. Final page 23 re-inspected after shortening the critical-gap row label for column spacing. Root independently inspected final pages 26/27 with no changes requested.",
+    "contact_sheets": [
+      "qa/live-followup/contact-1.png",
+      "qa/live-followup/contact-2.png",
+      "qa/live-followup/contact-3.png"
+    ],
+    "full_size_pages": [
+      1,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "new_figure_pages": [
+      26,
+      27
+    ],
+    "underfull_box_notices": 5,
+    "underfull_box_disposition": "Inspected table/source/resource paragraphs; no collisions, clipping or unreadable spacing.",
+    "scope_limit": "Bounded follow-up revision and whole/part consistency review; not a repetition of the historical full editorial pipeline or raw-answer recoding."
+  }
+}

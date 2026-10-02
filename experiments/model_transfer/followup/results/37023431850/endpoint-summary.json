@@ -1,0 +1,157 @@
+{
+  "schema": "EAL/followup-endpoint-summary/1",
+  "source": {
+    "collection_run_id": "37023431850",
+    "live_experiment_id": "adc97f7b-113d-4404-811d-16c5857e9d20",
+    "annotated_rows_sha256": "6d88aa0f7680ccd23759a447b33ba7d6fb29d30f4dc13e4e051a64835acca7b5",
+    "final_labels_sha256": "7718c5f4b0e78fa9ef35e6b89ceec525781d876bf0e44d7e15f38f72d45241d1",
+    "calibration_receipt_sha256": "a46003fec860dc61f562fbba3c83b1f3cf3f3e062f5709217a9783ff76d03d1e",
+    "stage": "offline-derived-after-calibrated-masked-coding",
+    "donors_excluded": 8,
+    "recipient_cells": 120,
+    "independent_task_units": 8,
+    "repeats": 1
+  },
+  "context": {
+    "conventional": {
+      "recipient_cells": 40,
+      "canonical_match": 33,
+      "whole_verdict_match": 33,
+      "whole_verdict_unresolved": 0,
+      "consistent": 40,
+      "contradictory": 0,
+      "primary_states": {
+        "success": 33,
+        "failure": 7
+      }
+    },
+    "eal": {
+      "recipient_cells": 40,
+      "canonical_match": 31,
+      "whole_verdict_match": 30,
+      "whole_verdict_unresolved": 3,
+      "consistent": 37,
+      "contradictory": 3,
+      "primary_states": {
+        "success": 30,
+        "failure": 10
+      }
+    },
+    "facts": {
+      "recipient_cells": 40,
+      "canonical_match": 20,
+      "whole_verdict_match": 20,
+      "whole_verdict_unresolved": 3,
+      "consistent": 37,
+      "contradictory": 3,
+      "primary_states": {
+        "success": 20,
+        "failure": 20
+      }
+    }
+  },
+  "condition": {
+    "complete": {
+      "recipient_cells": 24,
+      "canonical_match": 23,
+      "whole_verdict_match": 23,
+      "whole_verdict_unresolved": 1,
+      "consistent": 23,
+      "contradictory": 1,
+      "primary_states": {
+        "success": 23,
+        "failure": 1
+      }
+    },
+    "critical_gap": {
+      "recipient_cells": 24,
+      "canonical_match": 1,
+      "whole_verdict_match": 1,
+      "whole_verdict_unresolved": 3,
+      "consistent": 21,
+      "contradictory": 3,
+      "primary_states": {
+        "failure": 23,
+        "success": 1
+      }
+    },
+    "noncritical_gap": {
+      "recipient_cells": 24,
+      "canonical_match": 21,
+      "whole_verdict_match": 21,
+      "whole_verdict_unresolved": 0,
+      "consistent": 24,
+      "contradictory": 0,
+      "primary_states": {
+        "success": 21,
+        "failure": 3
+      }
+    },
+    "restored_negative": {
+      "recipient_cells": 24,
+      "canonical_match": 17,
+      "whole_verdict_match": 16,
+      "whole_verdict_unresolved": 1,
+      "consistent": 23,
+      "contradictory": 1,
+      "primary_states": {
+        "success": 16,
+        "failure": 8
+      }
+    },
+    "restored_positive": {
+      "recipient_cells": 24,
+      "canonical_match": 22,
+      "whole_verdict_match": 22,
+      "whole_verdict_unresolved": 1,
+      "consistent": 23,
+      "contradictory": 1,
+      "primary_states": {
+        "success": 22,
+        "failure": 2
+      }
+    }
+  },
+  "family": {
+    "all_of": {
+      "recipient_cells": 60,
+      "canonical_match": 41,
+      "whole_verdict_match": 41,
+      "whole_verdict_unresolved": 6,
+      "consistent": 54,
+      "contradictory": 6,
+      "primary_states": {
+        "success": 41,
+        "failure": 19
+      }
+    },
+    "any_of": {
+      "recipient_cells": 60,
+      "canonical_match": 43,
+      "whole_verdict_match": 42,
+      "whole_verdict_unresolved": 0,
+      "consistent": 60,
+      "contradictory": 0,
+      "primary_states": {
+        "success": 42,
+        "failure": 18
+      }
+    }
+  },
+  "analysis_sha256": "95cd1bb64e4d1310968b49ffc6d749cdc04554b2e503f44329cf6fa77f26efca",
+  "coding": {
+    "qualified_coders": 3,
+    "calibration_decision_correct_each": 24,
+    "calibration_consistency_correct_each": 24,
+    "calibration_items": 24,
+    "semantic_quote_checks": 144,
+    "quote_issues": 0,
+    "participant_answers": 128,
+    "first_pair_agreement": 126,
+    "first_field_agreement": 252,
+    "first_field_total": 256,
+    "blind_adjudications": 2,
+    "ambiguous_final_decisions": 6,
+    "human_validation": false
+  }
+}

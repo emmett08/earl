@@ -1,8 +1,8 @@
 {
-  "schema": "eal-jss-manuscript-proof/1",
-  "pdf_sha256": "f8d8da10767e01c4ef53c54a99226f52aa969bc2d7946e28e811f0199ff3e4a4",
-  "source_sha256": "d65124391d564e934431cff3554752f5b944b11024c2badaddc88d6db1a7eb6b",
-  "pages": 24,
+  "schema": "eal-jss-manuscript-proof/2",
+  "pdf_sha256": "a88ae8b5ab1f8727eb34a1ca7db1745df101e707bc5d9b1a1e51873cf91398db",
+  "source_sha256": "2cccb2b9747716372773200042aa7b1878da51bd653c5b69ee323a6ced3f9718",
+  "pages": 28,
   "figure_ids": [
     "08-measurement-status",
     "12-recipient-decisions",
@@ -18,9 +18,11 @@
     "09-paired-tradeoff",
     "07-acquisition-horizon",
     "14-frozen-endpoint-bounds",
-    "15-reference-undetermined-profiles"
+    "15-reference-undetermined-profiles",
+    "16-followup-primary-outcome-cells",
+    "17-followup-endpoint-separation"
   ],
-  "import_manifest_sha256": "84fe4087148b6a4122860c745691099845ad09ebc5cfccc62b2175130c7880cf",
+  "import_manifest_sha256": "755193bd5c5d3f1146ab763f5baa09ce4ca6f55956bce591186f5c7f46f1dab2",
   "checks": {
     "no_overfull_boxes": true,
     "no_undefined_references_or_citations": true,
@@ -28,11 +30,124 @@
     "obsolete_pilot_values_absent": true,
     "every_text_word_within_page": true,
     "figure_inclusion_matches_import_manifest": true,
+    "figure_caption_numbering_complete_and_unique": true,
+    "live_followup_identity_and_qualifications_present": true,
     "retained_listing_present_on_one_page": true
   },
+  "figure_placements": [
+    {
+      "id": "08-measurement-status",
+      "caption_number": 1,
+      "caption_page": 5
+    },
+    {
+      "id": "12-recipient-decisions",
+      "caption_number": 2,
+      "caption_page": 6
+    },
+    {
+      "id": "13-recipient-match-bounds",
+      "caption_number": 3,
+      "caption_page": 6
+    },
+    {
+      "id": "01-token-distribution",
+      "caption_number": 4,
+      "caption_page": 8
+    },
+    {
+      "id": "02-token-subgroups",
+      "caption_number": 5,
+      "caption_page": 8
+    },
+    {
+      "id": "03-cumulative-tokens",
+      "caption_number": 6,
+      "caption_page": 9
+    },
+    {
+      "id": "04-token-composition",
+      "caption_number": 7,
+      "caption_page": 10
+    },
+    {
+      "id": "05-resource-ratios",
+      "caption_number": 8,
+      "caption_page": 12
+    },
+    {
+      "id": "10-phase-contrasts",
+      "caption_number": 9,
+      "caption_page": 12
+    },
+    {
+      "id": "11-time-partition",
+      "caption_number": 10,
+      "caption_page": 14
+    },
+    {
+      "id": "06-latency-distribution",
+      "caption_number": 11,
+      "caption_page": 14
+    },
+    {
+      "id": "09-paired-tradeoff",
+      "caption_number": 12,
+      "caption_page": 15
+    },
+    {
+      "id": "07-acquisition-horizon",
+      "caption_number": 13,
+      "caption_page": 15
+    },
+    {
+      "id": "14-frozen-endpoint-bounds",
+      "caption_number": 14,
+      "caption_page": 17
+    },
+    {
+      "id": "15-reference-undetermined-profiles",
+      "caption_number": 15,
+      "caption_page": 19
+    },
+    {
+      "id": "16-followup-primary-outcome-cells",
+      "caption_number": 16,
+      "caption_page": 23
+    },
+    {
+      "id": "17-followup-endpoint-separation",
+      "caption_number": 17,
+      "caption_page": 24
+    }
+  ],
+  "out_of_page_word_count": 0,
+  "listing_pages": [
+    28
+  ],
+  "live_followup_size_checks": [
+    {
+      "id": "16-followup-primary-outcome-cells",
+      "natural_width_mm": 144.25753835042318,
+      "natural_height_mm": 100.65173746744792,
+      "journal_width_mm": 160,
+      "minimum_scale_under_wrapper_limits": 1.1091274801274926,
+      "natural_text_size_contract_preserved": true
+    },
+    {
+      "id": "17-followup-endpoint-separation",
+      "natural_width_mm": 142.52434310913085,
+      "natural_height_mm": 89.65176828172471,
+      "journal_width_mm": 160,
+      "minimum_scale_under_wrapper_limits": 1.1226152424887028,
+      "natural_text_size_contract_preserved": true
+    }
+  ],
   "visual_review": "accepted after inspection of current page renders",
   "visual_review_scope": "Journal page layout and placement only; standalone semantic reviews retain their exact imported file bindings, and scientific coding validity remains conditional.",
-  "rendered_page_count": 24,
-  "contact_sheet_count": 4,
+  "rendered_page_count": 28,
+  "contact_sheet_count": 5,
+  "underfull_hbox_count": 2,
+  "underfull_review": "accepted after rendered inspection",
   "review_assets": "Transient page renders and contact sheets are not publication assets and are not required by the paper checks."
 }

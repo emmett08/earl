@@ -1,0 +1,241 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-02-endpoint-separation",
+  "purpose": {
+    "reader_question": "How do canonical field matching, whole-verdict matching and the primary consistency requirement differ in the same finite outputs?",
+    "expected_reading": "The three separately named endpoints have common forty-output denominators; a correct enum can coexist with contradiction, so endpoint counts and diagnostics overlap.",
+    "claim": "Endpoint separation and contradictions are retained exactly; a canonical match alone does not establish the primary endpoint.",
+    "scope": "40 matched recipient positions per context in 8 common-donor task clusters and 1 repeat; all three contexts retained, equal EAL/conventional model-visible packets.",
+    "permitted_inferences": [
+      "Recover each finite endpoint count and contradictory canonical-correct subset.",
+      "Check primary successes are a subset of whole-verdict matches."
+    ],
+    "prohibited_inferences": [
+      "Add endpoint counts or contradiction diagnostics as disjoint classes.",
+      "Superiority, population precision, repeatability, human validation, factual explanation grounding or pure reasoning advantage."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "final_endpoints",
+      "path": "inputs/final-analysis-for-figures.json",
+      "status": "derived",
+      "source_reference": "Final sanctioned sanitized analysis export. Endpoint labels derive from retained live model outputs and final whole-answer AI coding; references derive from the AI-authored fictional tasks. No response text or participant coding by the figure author.",
+      "sha256": "821920676a0c06cfdb6baffc8dd4f0816163bb68d2adaac40c60aa09df92410b"
+    },
+    {
+      "id": "collection_provenance",
+      "path": "inputs/collection-audit-excerpt.json",
+      "status": "derived",
+      "source_reference": "Independent live collection audit of 128 actual API attempts, 8 donors/120 recipients, 40 matched position groups and 40 identical EAL/conventional model-visible packets. Exact raw rows hash retained; preliminary canonical counts excluded from the excerpt.",
+      "sha256": "2e602776888e18bcaf2ade9bd7d0e4223f014f9714a0dece05c634885cd4c451"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "matches",
+      "label": "Endpoint matching count",
+      "unit": "recipient outputs",
+      "definition": "Count of canonical field matches, known true final whole-verdict matches or primary successes among 40 outputs in a named context.",
+      "input_ids": [
+        "final_endpoints",
+        "collection_provenance"
+      ],
+      "transformation": "Sum only true endpoint booleans, and primary success states, separately; retain all planned recipients and do not equate the three definitions.",
+      "statistical_role": "derived",
+      "status": "available",
+      "sample": {
+        "denominator": 40,
+        "unit": "matched recipient positions per context",
+        "inclusion": "All five scheduled positions for each of eight common-donor task blocks; one repeat. Donors excluded. The forty positions are clustered within eight tasks and are not forty independent cases."
+      },
+      "missingness": {
+        "state": "complete",
+        "treatment": "All 120 planned recipient cells retained. Unresolved primary coding has its own symbol; missing/unparseable endpoint fields remain missing and are not counted as confirmed matches."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Exact finite tabulation conditional on final AI coding. No population confidence interval, independent human coder validation, measured resolved-code error or stochastic repeatability estimate is available; factual grounding is unassessed."
+      }
+    },
+    {
+      "id": "diagnostics",
+      "label": "Contradiction and unresolved-code diagnostics",
+      "unit": "recipient outputs",
+      "definition": "Contradictory explanation count, its canonical-correct subset, null whole-verdict matching count, and unresolved primary coding count.",
+      "input_ids": [
+        "final_endpoints",
+        "collection_provenance"
+      ],
+      "transformation": "Tabulate consistency=='contradictory'; intersect with canonical_match==true for the subset; count whole_verdict_match==null and primary_state=='unresolved' separately.",
+      "statistical_role": "derived",
+      "status": "available",
+      "sample": {
+        "denominator": 40,
+        "unit": "matched recipient positions per context",
+        "inclusion": "All five scheduled positions for each of eight common-donor task blocks; one repeat. Donors excluded. The forty positions are clustered within eight tasks and are not forty independent cases."
+      },
+      "missingness": {
+        "state": "complete",
+        "treatment": "All 120 planned recipient cells retained. Unresolved primary coding has its own symbol; missing/unparseable endpoint fields remain missing and are not counted as confirmed matches."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Exact finite tabulation conditional on final AI coding. No population confidence interval, independent human coder validation, measured resolved-code error or stochastic repeatability estimate is available; factual grounding is unassessed."
+      }
+    },
+    {
+      "id": "endpoint",
+      "label": "Endpoint/context identity",
+      "unit": "category",
+      "definition": "Three separately named endpoints and three context panels.",
+      "input_ids": [
+        "final_endpoints",
+        "collection_provenance"
+      ],
+      "transformation": "Retain fixed facts/EAL/conventional panel order; no outcome-based sorting.",
+      "statistical_role": "derived",
+      "status": "available",
+      "sample": {
+        "denominator": 40,
+        "unit": "matched recipient positions per context",
+        "inclusion": "All five scheduled positions for each of eight common-donor task blocks; one repeat. Donors excluded. The forty positions are clustered within eight tasks and are not forty independent cases."
+      },
+      "missingness": {
+        "state": "complete",
+        "treatment": "All 120 planned recipient cells retained. Unresolved primary coding has its own symbol; missing/unparseable endpoint fields remain missing and are not counted as confirmed matches."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Exact finite tabulation conditional on final AI coding. No population confidence interval, independent human coder validation, measured resolved-code error or stochastic repeatability estimate is available; factual grounding is unassessed."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "positions",
+      "marks": "short vertical tick data marks with exact count labels",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each endpoint count on a common 0–40 linear scale in each panel.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "matches"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Within each panel x=panel origin+0.55mm×count; zero, twenty, forty are labelled and every mark has its exact count.",
+        "domain": [
+          0,
+          40
+        ]
+      }
+    },
+    {
+      "id": "diagnostic_text",
+      "marks": "direct numeric text",
+      "mark_role": "annotation",
+      "channel": "text",
+      "represents": "Contradiction total, canonical-correct contradictory subset, unresolved whole-verdict count, and unresolved primary count; not an additional disjoint population.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "diagnostics"
+      ],
+      "scale_or_mapping": {
+        "type": "explicit",
+        "definition": "Print exact integers under each named panel without area/length encoding."
+      }
+    },
+    {
+      "id": "rows_panels",
+      "marks": "labelled metric rows and context panels",
+      "mark_role": "annotation",
+      "channel": "position",
+      "represents": "Categorical endpoint and context identities.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "endpoint"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Named rows canonical/known whole-verdict/primary and panels facts/EAL/conventional; spacing encodes no time or effect.",
+        "domain": [
+          "canonical",
+          "whole_verdict",
+          "primary",
+          "facts",
+          "eal",
+          "conventional"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [
+      "Facts",
+      "EAL",
+      "Conventional",
+      "Canonical fields and whole-answer endpoints remain distinct",
+      "Canonical match",
+      "Known verdict matches",
+      "Primary success"
+    ],
+    "prohibit_block_circle_diagrams": true,
+    "manuscript_profile": "reproduction/manuscript-profile.json"
+  },
+  "build": {
+    "renderer": "tikz",
+    "engine": "pdflatex",
+    "profile": "reproduction/manuscript-profile.json",
+    "source": "02-endpoint-separation.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_report_figures.py",
+        "--input",
+        "inputs/final-analysis-for-figures.json"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "02-endpoint-separation.tikz.tex",
+        "--spec",
+        "02-endpoint-separation.spec.json",
+        "--output",
+        "02-endpoint-separation.pdf",
+        "--audit",
+        "02-endpoint-separation.audit.json",
+        "--preview",
+        "02-endpoint-separation.png",
+        "--qa-dir",
+        "qa/02-endpoint-separation"
+      ]
+    ],
+    "outputs": {
+      "pdf": "02-endpoint-separation.pdf",
+      "preview": "02-endpoint-separation.png",
+      "audit": "02-endpoint-separation.audit.json",
+      "review": "02-endpoint-separation.review.json"
+    },
+    "dependencies": [
+      "reproduction/build_report_figures.py",
+      "captions/02-endpoint-separation.caption.txt",
+      "captions/02-endpoint-separation.alt.txt",
+      "reproduction/figure-tools/scripts/render_tikz.py",
+      "reproduction/figure-tools/scripts/render_context.py",
+      "reproduction/figure-tools/scripts/figure_audit.py",
+      "reproduction/figure-tools/scripts/figure_spec.py",
+      "reproduction/figure-tools/scripts/build_profile.py",
+      "reproduction/figure-tools/scripts/figure_review.py",
+      "reproduction/figure-tools/assets/figure-spec.schema.json",
+      "reproduction/figure-tools/assets/figure-review.schema.json",
+      "inputs/final-analysis.schema.json"
+    ]
+  }
+}

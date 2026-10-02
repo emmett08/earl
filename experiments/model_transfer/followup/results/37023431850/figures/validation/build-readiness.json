@@ -1,0 +1,27 @@
+{
+  "status": "pipeline preparation; final analysis input awaited",
+  "planned_figures": [
+    "01-primary-outcome-cells",
+    "02-endpoint-separation"
+  ],
+  "observed_collection": {
+    "sessions": 128,
+    "donors": 8,
+    "recipients": 120,
+    "api_attempts": 128,
+    "matched_positions_per_context": 40,
+    "common_donor_task_clusters": 8,
+    "repeats": 1,
+    "equal_eal_conventional_model_visible_packets": 40
+  },
+  "input_requirements": "Sanitized final analysis export with120recipient rows and no answertext/coder-output/calibration-key fields.",
+  "bound_collection_excerpt_sha256": "2e602776888e18bcaf2ade9bd7d0e4223f014f9714a0dece05c634885cd4c451",
+  "prohibited_inferences": [
+    "Superiority",
+    "Population reliability",
+    "40 independent observations per context",
+    "Pure model reasoning contrast for equal EAL/conventional packets",
+    "Explanation factual grounding"
+  ],
+  "scope": "No participant coding by figure author; only final endpoint labels will be plotted."
+}
