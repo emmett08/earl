@@ -1,0 +1,52 @@
+% Required packages: pgfplots, lmodern
+% Required TikZ libraries: none
+% Target width: 160 mm maximum
+% Minimum text size: 9 pt
+% Colour/greyscale intent: colour_and_greyscale, direct labels and line styles
+\begin{tikzpicture}
+\definecolor{ealblue}{HTML}{165D81}
+\definecolor{ordinaryorange}{HTML}{C27021}
+\definecolor{neutralgrey}{HTML}{616970}
+\pgfplotsset{compat=1.18,
+  every axis/.append style={
+    width=148mm,height=66mm,
+    font=\fontsize{9}{11}\selectfont,
+    tick label style={font=\fontsize{9}{11}\selectfont},
+    label style={font=\fontsize{9}{11}\selectfont},
+    title style={font=\fontsize{10}{12}\selectfont},
+    legend style={font=\fontsize{9}{11}\selectfont,draw=none,fill=none},
+    axis lines=left,axis line style={line width=0.5pt},
+    tick style={line width=0.5pt},
+    grid style={line width=0.4pt,black!12},
+    scaled ticks=false,clip=false}}
+\begin{axis}[width=132mm,height=86mm,xmin=-25,xmax=65,ymin=0.45,ymax=4.55,xtick={-20,0,20,40,60},ytick={1,2,3,4},yticklabels={Total tokens,API attempts,Native probe calls,Summed session time},xlabel={Pooled resource reduction: 100(1 - EAL / ordinary) (\%)},legend columns=3,legend style={at={(0.5,1.06)},anchor=south,column sep=2mm}]
+\addplot[forget plot,neutralgrey,dashed,line width=0.5pt,no marks] coordinates {(0,0.45) (0,4.55)};
+\addplot[forget plot,only marks,mark=square*,mark size=2pt,ealblue,line width=0.6pt] coordinates {(47.4561153,1.22)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:48.35611530424279,1.22) {+47.5\%};
+\addplot[forget plot,only marks,mark=square*,mark size=2pt,ealblue,line width=0.6pt] coordinates {(25.2688172,2.22)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:26.168817204301074,2.22) {+25.3\%};
+\addplot[forget plot,only marks,mark=square*,mark size=2pt,ealblue,line width=0.6pt] coordinates {(52.22222222,3.22)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:53.12222222222221,3.22) {+52.2\%};
+\addplot[forget plot,only marks,mark=square*,mark size=2pt,ealblue,line width=0.6pt] coordinates {(0.3596810633,4.22)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:1.259681063331385,4.22) {+0.4\%};
+\addlegendimage{only marks,mark=square*,mark size=2pt,ealblue,line width=0.6pt}\addlegendentry{Donor}
+\addplot[forget plot,only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.6pt] coordinates {(31.49064111,1)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:32.390641111685,1) {+31.5\%};
+\addplot[forget plot,only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.6pt] coordinates {(-0.8382229673,2)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:-1.73822296730931,2) {-0.8\%};
+\addplot[forget plot,only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.6pt] coordinates {(-4.291845494,3)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:-5.19184549356223,3) {-4.3\%};
+\addplot[forget plot,only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.6pt] coordinates {(-9.300997258,4)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:-10.200997258441912,4) {-9.3\%};
+\addlegendimage{only marks,mark=triangle*,mark size=2pt,ordinaryorange,line width=0.6pt}\addlegendentry{Ten recipients}
+\addplot[forget plot,only marks,mark=x,mark size=2pt,neutralgrey,line width=0.6pt] coordinates {(33.60920874,0.78)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:34.50920873730253,0.78) {+33.6\%};
+\addplot[forget plot,only marks,mark=x,mark size=2pt,neutralgrey,line width=0.6pt] coordinates {(2.683103698,1.78)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:3.583103698332123,1.78) {+2.7\%};
+\addplot[forget plot,only marks,mark=x,mark size=2pt,neutralgrey,line width=0.6pt] coordinates {(11.45510836,2.78)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:12.355108359133126,2.78) {+11.5\%};
+\addplot[forget plot,only marks,mark=x,mark size=2pt,neutralgrey,line width=0.6pt] coordinates {(-8.34951762,3.78)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:-9.249517619761106,3.78) {-8.3\%};
+\addlegendimage{only marks,mark=x,mark size=2pt,neutralgrey,line width=0.6pt}\addlegendentry{Whole (1 + 10)}
+\end{axis}
+\end{tikzpicture}

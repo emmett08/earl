@@ -1,0 +1,310 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-12-recipient-decisions",
+  "purpose": {
+    "reader_question": "Which communicated decisions account for the recipient reference mismatches?",
+    "expected_reading": "Exact cell counts, shared within-reference tone and retained ambiguity reveal specific reference/communication routes without dropping unresolved codes.",
+    "claim": "AI-coded ready communications against non-ready references number653 ordinary versus8 EAL recipients, while ambiguous coding remains visible.",
+    "scope": "Original resources from GitHub Actions run 36985062352, with AI-only decision coding added by finish run 36997861629 to the same 192 paired trajectories across six selected authored cases, two donor profiles, two recipient profiles and two tool modes; no additional experimental observations or independently validated assessor accuracy. This figure retains the original finish AI-coding snapshot, before the supplemental review; supplemental coding ambiguities do not enter its displayed values or frozen inference.",
+    "permitted_inferences": [
+      "Decision agreement with authored references conditional on retained AI communication codes.",
+      "Conditional ambiguity ranges and frozen statistical bounds under their explicitly audited assumptions.",
+      "Comparison of recorded quantities under the declared denominators and transformations."
+    ],
+    "prohibited_inferences": [
+      "Population-wide or causal superiority of EAL.",
+      "Independent answer correctness, explanation quality, assessor accuracy or reliability from these records.",
+      "Net lifecycle cost savings after unmeasured authoring, review, maintenance or acquisition costs."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "matrix",
+      "path": "tables/completion-confusion.csv",
+      "status": "derived",
+      "source_reference": "Frozen reconstructed recipient confusion counts; original code/reference join verified for every session.",
+      "sha256": "c5ab82ccc779e9111dba5ec7ec80bfc93aad65946b568b9e378c48bd7afdcf13"
+    },
+    {
+      "id": "coding",
+      "path": "analysis/completion-outcomes.json",
+      "status": "derived",
+      "source_reference": "Independent reconstruction of frozen AI communication codes joined to authored decision references in finish run 36997861629; all original session observations retained.",
+      "sha256": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "count",
+      "label": "Reference/communication cell count",
+      "unit": "recipient sessions",
+      "definition": "Count of each AI-coded communication category within each authored reference decision and arm.",
+      "input_ids": [
+        "matrix",
+        "coding"
+      ],
+      "transformation": "Select role=recipients; retain ambiguous as a separate communication category; omit only the verified all-zero no_answer column.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 1920,
+        "unit": "recipient sessions per arm",
+        "inclusion": "Ten recipient positions from each of192 paired trajectories, with768/512/640 sessions in the three reference rows."
+      }
+    },
+    {
+      "id": "share",
+      "label": "Reference-conditional communication share",
+      "unit": "%",
+      "definition": "100 times cell count divided by the count of the named reference row in its arm.",
+      "input_ids": [
+        "matrix"
+      ],
+      "transformation": "Normalise each reference row by its own 768, 512 or 640 observed sessions; use a shared 0--100% tone mapping.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 1920,
+        "unit": "recipient sessions per arm",
+        "inclusion": "All recipient sessions; every within-row percentage uses the explicitly printed reference-row denominator."
+      }
+    },
+    {
+      "id": "reference",
+      "label": "Authored reference decision",
+      "unit": "category",
+      "definition": "Ready, not_ready or undetermined, computed from the authored fixture rules.",
+      "input_ids": [
+        "matrix"
+      ],
+      "transformation": "Retain reference category from the independently verified coding join.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 1920,
+        "unit": "recipient sessions per arm",
+        "inclusion": "All recipients, excluding donor sessions."
+      }
+    },
+    {
+      "id": "communication",
+      "label": "AI-coded communicated decision",
+      "unit": "category",
+      "definition": "Ready, not_ready, undetermined, or an ambiguous communication code.",
+      "input_ids": [
+        "matrix"
+      ],
+      "transformation": "Retain all communication codes as distinct categories; ambiguity is not a fourth reference class.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 1920,
+        "unit": "recipient sessions per arm",
+        "inclusion": "All recipients, including unresolved AI communication codes."
+      }
+    },
+    {
+      "id": "arm",
+      "label": "Recorded workflow arm",
+      "unit": "category",
+      "definition": "Ordinary or EAL, containing the same assigned reference-position mixture.",
+      "input_ids": [
+        "matrix"
+      ],
+      "transformation": "Retain arm identity in two explicitly labelled panels.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 1920,
+        "unit": "recipient sessions per arm",
+        "inclusion": "All 1920recipients in each arm."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "cellcounts",
+      "marks": "printed counts in rectangular matrix data cells",
+      "mark_role": "data_mark",
+      "channel": "text",
+      "represents": "Printed integer in each matrix cell is the complete reference/communication count.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "count"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Printed integer in each matrix cell is the complete reference/communication count.",
+        "domain": [
+          0,
+          1920
+        ]
+      }
+    },
+    {
+      "id": "celltone",
+      "marks": "rectangular matrix data cells",
+      "mark_role": "data_mark",
+      "channel": "tone",
+      "represents": "Black percentage is 0.78 times within-reference percentage; white is 0% and black!78 is 100%, shared across arms.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "share"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Black percentage is 0.78 times within-reference percentage; white is 0% and black!78 is 100%, shared across arms.",
+        "domain": [
+          0,
+          100
+        ]
+      }
+    },
+    {
+      "id": "rows",
+      "marks": "rectangular matrix data cells in reference rows",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Rows align the same authored reference classes in both panels.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "reference"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Rows align the same authored reference classes in both panels.",
+        "domain": [
+          "ready",
+          "not_ready",
+          "undetermined"
+        ]
+      }
+    },
+    {
+      "id": "columns",
+      "marks": "rectangular matrix data cells in communication columns",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Columns identify AI-coded communication, including an explicit ambiguous column.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "communication"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Columns identify AI-coded communication, including an explicit ambiguous column.",
+        "domain": [
+          "ready",
+          "not_ready",
+          "undetermined",
+          "ambiguous"
+        ]
+      }
+    },
+    {
+      "id": "armpanels",
+      "marks": "two labelled matrix panels",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Separate labelled panels identify ordinary and EAL, without making panel distance quantitative.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "arm"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Separate labelled panels identify ordinary and EAL, without making panel distance quantitative.",
+        "domain": [
+          "ordinary",
+          "eal"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [],
+    "prohibit_block_circle_diagrams": true
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "source": "figures/12-recipient-decisions.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_figures.py"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "figures/12-recipient-decisions.tikz.tex",
+        "--spec",
+        "12-recipient-decisions.spec.json",
+        "--output",
+        "figures/12-recipient-decisions.pdf",
+        "--audit",
+        "figures/12-recipient-decisions.audit.json",
+        "--preview",
+        "figures/12-recipient-decisions.png",
+        "--qa-dir",
+        "qa/12-recipient-decisions"
+      ]
+    ],
+    "outputs": {
+      "pdf": "figures/12-recipient-decisions.pdf",
+      "preview": "figures/12-recipient-decisions.png",
+      "audit": "figures/12-recipient-decisions.audit.json",
+      "review": "figures/12-recipient-decisions.review.json"
+    },
+    "dependencies": [
+      "captions/12-recipient-decisions.caption.txt",
+      "captions/12-recipient-decisions.alt.txt"
+    ]
+  }
+}

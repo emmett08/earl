@@ -1,0 +1,99 @@
+{
+  "stage1_path": "analysis/temporal-caption-fresh-reader-stage1.json",
+  "stage1_sha256": "70eaac19cfa9c71a238fc0ad4111dc537769592a60305ddd92a0087833e15741",
+  "numerical_screening_path": "analysis/temporal-caption-numerical-screening.json",
+  "numerical_screening_sha256": "1f8cccb3b41444a06ee6c2e9db999e031bf0ea3c4f9d9ed383ddcb654e9c253c",
+  "reviews": {
+    "08-measurement-status": {
+      "decision": "accept",
+      "validation": {
+        "valid": true,
+        "figure_id": "fig-08-measurement-status",
+        "declared_decision": "accept",
+        "files_checked": true,
+        "semantic_correctness": "reviewer judgement; not automatically verified",
+        "independence": "declared; not proven"
+      },
+      "review_sha256": "1c9c074d530b1b421d91c55e9309ad74b39f4c4222478ba1391f732bfe3affe5",
+      "spec_sha256": "fdd51d328efd737d348a0ea0325cbc998b63308e926d49eeb2a5ce3dbd162931",
+      "audit_sha256": "869b7519c25aa59f1264af4cacf74d6ea4856ff6779a7f6eff17484e1e1a7a13",
+      "pdf_sha256": "e71c248e1c2f90221f9e8330fee93763bfed029013eb1d0e9fdc5e0ad414ce59"
+    },
+    "12-recipient-decisions": {
+      "decision": "accept",
+      "validation": {
+        "valid": true,
+        "figure_id": "fig-12-recipient-decisions",
+        "declared_decision": "accept",
+        "files_checked": true,
+        "semantic_correctness": "reviewer judgement; not automatically verified",
+        "independence": "declared; not proven"
+      },
+      "review_sha256": "b33fda61d4c65f9efed81edad0230c8d6c235e87257f1315420bcaaeed1de6d0",
+      "spec_sha256": "4e2b54b1c03cf0408fbe01956c0b8ebaccec4583df2dd0513ffd79d6558d5720",
+      "audit_sha256": "102ad6aa54a1276f68e146632780d2add2d739f94b14995131c9c6dccc161e66",
+      "pdf_sha256": "ff2bf9e85c62f6d48f3e8471c98d793f72a06ac2011742e1994b67c184df140e"
+    },
+    "13-recipient-match-bounds": {
+      "decision": "accept",
+      "validation": {
+        "valid": true,
+        "figure_id": "fig-13-recipient-match-bounds",
+        "declared_decision": "accept",
+        "files_checked": true,
+        "semantic_correctness": "reviewer judgement; not automatically verified",
+        "independence": "declared; not proven"
+      },
+      "review_sha256": "82d91da7943b735321cb4ed34ee24c2cb1f142800b8908cc732a6f0dec4c8b1b",
+      "spec_sha256": "637b6c8ed08ee7aee55c5f06171daaa798a3f96d42cc5bd8c2c2b50ddfbdfa88",
+      "audit_sha256": "3e02435743cae9efdadab1c0d939b0b8ca727d378d4cd9379fb1ed89854dcc1f",
+      "pdf_sha256": "0f3c2887064ba0863b821a9a640de3bdd582a28c631063ec0111c2fd2d8121d0"
+    },
+    "14-frozen-endpoint-bounds": {
+      "decision": "accept",
+      "validation": {
+        "valid": true,
+        "figure_id": "fig-14-frozen-endpoint-bounds",
+        "declared_decision": "accept",
+        "files_checked": true,
+        "semantic_correctness": "reviewer judgement; not automatically verified",
+        "independence": "declared; not proven"
+      },
+      "review_sha256": "057d0be60b53bfca53b1d6e9da0af74772843e0766b108b801aee3861911c788",
+      "spec_sha256": "dbe0cb8e2618b9617b8e8c3499700a31a866b7cf5ed2e8c60dcbade78936a13b",
+      "audit_sha256": "b2d3522ffd1e520d1e6962bdd3cc8dd852662120367c68ad20ee75e0a23a6f54",
+      "pdf_sha256": "8b159494621d7ace88d4f42ba850405fcb1c2c2e6b277bcb76673deb9f405e20"
+    }
+  },
+  "semantic_change_disposition": "Temporal captions distinguish original finish primary coding from the separate posthoc measurement amendment. Figure14 bounded-support ray wording was corrected in the specification and independently rechecked.",
+  "scope": "agent_screening",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This receipt validates record identity and reports reviewer judgement; it does not establish human adjudication or assessor accuracy."
+  ],
+  "integrated_manuscript": {
+    "pdf_path": "eal-handover-data-story.pdf",
+    "pdf_sha256": "ef6b44efa1e3953f84efd96d18352af824dd88249ade7fe6f905582b34a7628a",
+    "page_count": 26,
+    "inspection_path": "analysis/temporal-caption-integrated-inspection/inspection.json",
+    "inspection_sha256": "9f58121c3636aa95ecc36b2fdd65014d863aea9cd534fe8e77dcc47bf43154a0",
+    "pages": {
+      "08-measurement-status": {
+        "page_1based": 5,
+        "printed_figure_number": 1
+      },
+      "12-recipient-decisions": {
+        "page_1based": 6,
+        "printed_figure_number": 2
+      },
+      "13-recipient-match-bounds": {
+        "page_1based": 7,
+        "printed_figure_number": 3
+      },
+      "14-frozen-endpoint-bounds": {
+        "page_1based": 20,
+        "printed_figure_number": 14
+      }
+    }
+  }
+}

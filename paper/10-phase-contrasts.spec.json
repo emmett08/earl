@@ -1,0 +1,254 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-10-phase-contrasts",
+  "purpose": {
+    "reader_question": "Which resource contrasts change when the donor and recipient phases are separated?",
+    "expected_reading": "Three phase markers on a common signed reduction scale expose recipient count increases alongside whole-run count decreases; session setup is consistently excluded.",
+    "claim": "The recipient-only API-attempt and native-probe contrasts have opposite signs to the donor-inclusive whole-run contrasts.",
+    "scope": "Original resources from GitHub Actions run 36985062352, with AI-only decision coding added by finish run 36997861629 to the same 192 paired trajectories across six selected authored cases, two donor profiles, two recipient profiles and two tool modes; no additional experimental observations or independently validated assessor accuracy.",
+    "permitted_inferences": [
+      "Descriptive resource contrasts for the explicitly included recorded sessions.",
+      "Comparison of recorded quantities under the declared denominators and transformations."
+    ],
+    "prohibited_inferences": [
+      "Population-wide or causal superiority of EAL.",
+      "Independent answer correctness, explanation quality, assessor accuracy or reliability from these records.",
+      "Net lifecycle cost savings after unmeasured authoring, review, maintenance or acquisition costs."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "totals",
+      "path": "analysis/arm_phase_totals.csv",
+      "status": "derived",
+      "source_reference": "Finite arm and role totals derived from retained provider accounting and session event records.",
+      "sha256": "283857521325d7600580af4e13f0c11dcc70118ecb5d930873ea7b56b2fb199f"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "initial",
+      "label": "Donor pooled resource reductions",
+      "unit": "%",
+      "definition": "100(1 - EAL phase resource sum / ordinary phase resource sum), separately for tokens, API attempts, native probes and summed session time.",
+      "input_ids": [
+        "totals"
+      ],
+      "transformation": "Select phase=initial; form each ratio after aggregation. Exclude sequence setup from session-time contrasts.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "matched trajectories per phase",
+        "inclusion": "The same 192 matched trajectories contribute 192 sessions per arm to this phase-specific aggregate; sequence setup excluded."
+      }
+    },
+    {
+      "id": "recipient",
+      "label": "Ten recipients pooled resource reductions",
+      "unit": "%",
+      "definition": "100(1 - EAL phase resource sum / ordinary phase resource sum), separately for tokens, API attempts, native probes and summed session time.",
+      "input_ids": [
+        "totals"
+      ],
+      "transformation": "Select phase=recipient; form each ratio after aggregation. Exclude sequence setup from session-time contrasts.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "matched trajectories per phase",
+        "inclusion": "The same 192 matched trajectories contribute 1920 sessions per arm to this phase-specific aggregate; sequence setup excluded."
+      }
+    },
+    {
+      "id": "all",
+      "label": "Whole (1 + 10) pooled resource reductions",
+      "unit": "%",
+      "definition": "100(1 - EAL phase resource sum / ordinary phase resource sum), separately for tokens, API attempts, native probes and summed session time.",
+      "input_ids": [
+        "totals"
+      ],
+      "transformation": "Select phase=all; form each ratio after aggregation. Exclude sequence setup from session-time contrasts.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "matched trajectories per phase",
+        "inclusion": "The same 192 matched trajectories contribute 2112 sessions per arm to this phase-specific aggregate; sequence setup excluded."
+      }
+    },
+    {
+      "id": "metric",
+      "label": "Recorded resource identity",
+      "unit": "category",
+      "definition": "Four explicitly named metrics, each separately normalised rather than added across units.",
+      "input_ids": [
+        "totals"
+      ],
+      "transformation": "Retain metric names and explicit denominator for each phase ratio.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      }
+    },
+    {
+      "id": "phase",
+      "label": "Included session phase",
+      "unit": "category",
+      "definition": "Donor, ten recipients, or their donor-inclusive whole-trajectory sum.",
+      "input_ids": [
+        "totals"
+      ],
+      "transformation": "Retain phase inclusion identity after each resource is aggregated.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "horizontal",
+      "marks": "square, triangle and cross point data markers",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each x coordinate is a phase-specific ratio-of-sums reduction; positive means lower EAL use.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "initial",
+        "recipient",
+        "all"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Each x coordinate is a phase-specific ratio-of-sums reduction; positive means lower EAL use.",
+        "domain": [
+          -25,
+          65
+        ]
+      }
+    },
+    {
+      "id": "metricrow",
+      "marks": "square, triangle and cross point data markers in categorical rows",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Rows name distinct resource metrics; within-row offsets distinguish phase inclusion, not metric magnitude.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "metric"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Rows name distinct resource metrics; within-row offsets distinguish phase inclusion, not metric magnitude.",
+        "domain": [
+          "Total tokens",
+          "API attempts",
+          "Native probe calls",
+          "Summed session time"
+        ]
+      }
+    },
+    {
+      "id": "phasemarks",
+      "marks": "square, triangle and cross data markers",
+      "mark_role": "data_mark",
+      "channel": "shape",
+      "represents": "Blue squares denote donor, orange triangles ten recipients, and grey crosses their whole-trajectory sum; vertical offsets separate phase markers within each metric row.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "phase"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Blue squares denote donor, orange triangles ten recipients, and grey crosses their whole-trajectory sum; vertical offsets separate phase markers within each metric row.",
+        "domain": [
+          "Donor",
+          "Ten recipients",
+          "Whole (1 + 10)"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [],
+    "prohibit_block_circle_diagrams": true
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "source": "figures/10-phase-contrasts.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_figures.py"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "figures/10-phase-contrasts.tikz.tex",
+        "--spec",
+        "10-phase-contrasts.spec.json",
+        "--output",
+        "figures/10-phase-contrasts.pdf",
+        "--audit",
+        "figures/10-phase-contrasts.audit.json",
+        "--preview",
+        "figures/10-phase-contrasts.png",
+        "--qa-dir",
+        "qa/10-phase-contrasts"
+      ]
+    ],
+    "outputs": {
+      "pdf": "figures/10-phase-contrasts.pdf",
+      "preview": "figures/10-phase-contrasts.png",
+      "audit": "figures/10-phase-contrasts.audit.json",
+      "review": "figures/10-phase-contrasts.review.json"
+    },
+    "dependencies": [
+      "captions/10-phase-contrasts.caption.txt"
+    ]
+  }
+}

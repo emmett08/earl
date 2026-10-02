@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-08-measurement-status",
+  "spec_sha256": "fdd51d328efd737d348a0ea0325cbc998b63308e926d49eeb2a5ce3dbd162931",
+  "audit_sha256": "869b7519c25aa59f1264af4cacf74d6ea4856ff6779a7f6eff17484e1e1a7a13",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/08-measurement-status.pdf",
+      "sha256": "e71c248e1c2f90221f9e8330fee93763bfed029013eb1d0e9fdc5e0ad414ce59"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/08-measurement-status.pdf",
+      "sha256": "e71c248e1c2f90221f9e8330fee93763bfed029013eb1d0e9fdc5e0ad414ce59"
+    }
+  ],
+  "reviewer": {
+    "id": "temporal-caption-fresh-reader-agent",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "current-temporal-caption",
+      "prototype": "figures/08-measurement-status.pdf",
+      "observations": {
+        "reading": "The count positions and printed labels recover complete recording/coding coverage and the 4,199/25 resolved-versus-ambiguous partition. The current caption identifies the original finish snapshot before supplemental review; a direct linear count plot serves this unchanged historical figure, so comparing replacement encodings would add no useful evidence for this wording-only review.",
+        "annotation_burden": "Direct category and count labels require little legend lookup. The caption is necessary to prevent addition of overlapping rows and to identify historical finish scope and AI-coding limits.",
+        "reproduction": "Inspected exact current colour preview, greyscale preview and thumbnail; current successful mechanical audit binds current source, specification, PDF, caption and alt bytes. The current PDF remains below the 160mm maximum, all declared 9pt text and 0.4pt stroke floors pass, and no label clipping/collision was seen. Also inspected the complete stable integrated manuscript page5, printed Figure1, from eal-handover-data-story.pdf SHA256 ef6b44efa1e3953f84efd96d18352af824dd88249ade7fe6f905582b34a7628a. The page render and inspection record are retained in analysis/temporal-caption-integrated-inspection/. Printed Figure1 on page5: the status rows, count annotations, axis label and full caption fit without clipping or collision. The caption explicitly says before the supplemental review; adjacent primary-quality prose retains original finish codes. Overlapping count rows are clearly explained in the caption."
+      }
+    }
+  ],
+  "selected_candidate": "current-temporal-caption",
+  "initial_reconstruction": {
+    "claim": "In the original finish snapshot, all 4,224 completed sessions have resource records and AI coding entries, but only 4,199 decisions are resolved; 25 remain ambiguous. This historical snapshot precedes a separate supplemental review.",
+    "quantities": [
+      "Completed sessions 4,224",
+      "Resource records 4,224",
+      "AI-coded entries 4,224",
+      "Resolved decisions 4,199",
+      "Ambiguous decisions 25, comprising 12 ordinary and 13 EAL"
+    ],
+    "evidence_status": "Recorded completion/resource counts and AI-coded communication entries from the original finish snapshot. Resolved does not mean independently human-adjudicated; assessor-error rate remains unmeasured.",
+    "scope": "The same 4,224 historical finish sessions. The first three rows overlap; only resolved and ambiguous decisions form an additive partition. The figure contains no result of the later supplemental measurement.",
+    "unintended_inferences": [
+      "Adding all five row counts as disjoint observations would overcount.",
+      "Interpreting every coding entry as a resolved decision would ignore 25 ambiguities.",
+      "Interpreting a resolved AI code as a verified factual judgement would exceed the caption."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "The original finish scope and exclusion of supplemental measurement agree with the frozen figure-first reading.",
+      "All 4,224 sessions, 4,199 resolved codes and 25 ambiguities reproduce from retained session CSV; ordinary/EAL ambiguity split is 12/13.",
+      "Linear count positions and nominal status rows match the specification; overlap and the one disjoint partition remain explicit.",
+      "The stable integrated manuscript page5 (printed Figure1) preserves the reviewed graphic and temporal caption without clipping or collision."
+    ],
+    "findings": [
+      {
+        "id": "overlapping-rows",
+        "severity": "informational",
+        "description": "The graphic alone does not make all non-additive row overlap visible.",
+        "disposition": "accepted",
+        "reason": "The caption explicitly states that completed-session, resource-record and coded-entry rows overlap and only resolved plus ambiguous partition coding entries; printed labels and equal positions support that reading."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "The exact current figure compiled successfully using retained local inputs with shell escape disabled; visual inspection and numerical checks found no missing external material."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "The compatibility warning is a package configuration notice. The exact current values, scales and annotations were inspected in colour and greyscale and independently compared with retained historical CSV calculations; no resulting encoding defect was found."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This acceptance is independent agent screening of the graphic plus its current temporal caption and alt text; it is not independent human validation of codes, assessor accuracy or comprehension.",
+    "The original all-four figure-first reconstruction, including scale and limits, is retained unchanged in analysis/temporal-caption-fresh-reader-stage1.json before project specifications or numerical sources were opened.",
+    "The four figures retain original finish primary coding. The separate posthoc measurement amendment is not plotted, substituted into frozen inference, or adjudicated by this review."
+  ]
+}

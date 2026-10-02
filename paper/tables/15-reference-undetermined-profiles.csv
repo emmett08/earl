@@ -1,0 +1,7 @@
+profile,label,unique_positions,per_arm,both_arms
+stale,Stale,2,64,128
+missing_observation,Missing observation,4,128,256
+invalidated,Invalidated,2,64,128
+invalidated + stale,Invalidated + stale,4,128,256
+scope_mismatch,Scope/version mismatch,4,128,256
+scope_mismatch + stale,Scope/version mismatch + stale,4,128,256

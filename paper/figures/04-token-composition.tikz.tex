@@ -1,0 +1,55 @@
+% Required packages: pgfplots, lmodern
+% Required TikZ libraries: none
+% Target width: 160 mm maximum
+% Minimum text size: 9 pt
+% Colour/greyscale intent: colour_and_greyscale, direct labels and line styles
+\begin{tikzpicture}
+\definecolor{ealblue}{HTML}{165D81}
+\definecolor{ordinaryorange}{HTML}{C27021}
+\definecolor{neutralgrey}{HTML}{616970}
+\pgfplotsset{compat=1.18,
+  every axis/.append style={
+    width=148mm,height=66mm,
+    font=\fontsize{9}{11}\selectfont,
+    tick label style={font=\fontsize{9}{11}\selectfont},
+    label style={font=\fontsize{9}{11}\selectfont},
+    title style={font=\fontsize{10}{12}\selectfont},
+    legend style={font=\fontsize{9}{11}\selectfont,draw=none,fill=none},
+    axis lines=left,axis line style={line width=0.5pt},
+    tick style={line width=0.5pt},
+    grid style={line width=0.4pt,black!12},
+    scaled ticks=false,clip=false}}
+\begin{axis}[width=110mm,height=89mm,xmin=0,xmax=1.25,ymin=0.3,ymax=8.7,ytick={1,2,3,4,5,6,7,8},yticklabels={{Plain / no tools / O},{Plain / no tools / E},{Plain / tools / O},{Plain / tools / E},{Reasoning / no tools / O},{Reasoning / no tools / E},{Reasoning / tools / O},{Reasoning / tools / E}},title={Recipient sessions only},title style={at={(0.5,1.16)},anchor=south},xlabel={Recipient tokens (millions)},xtick={0,0.2,0.4,0.6,0.8,1,1.2},xmajorgrids=false,legend columns=3,legend style={at={(0.5,1.05)},anchor=south,column sep=3mm}]
+\path[fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt] (axis cs:0,0.73) rectangle (axis cs:0.328136,1.27);
+\path[fill=ealblue!65,draw=ealblue,line width=0.5pt] (axis cs:0.328136,0.73) rectangle (axis cs:0.381314,1.27);
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:0.391314,1) {0.38};
+\path[fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt] (axis cs:0,1.73) rectangle (axis cs:0.177728,2.27);
+\path[fill=ealblue!65,draw=ealblue,line width=0.5pt] (axis cs:0.177728,1.73) rectangle (axis cs:0.217165,2.27);
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:0.227165,2) {0.22};
+\path[fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt] (axis cs:0,2.73) rectangle (axis cs:0.946011,3.27);
+\path[fill=ealblue!65,draw=ealblue,line width=0.5pt] (axis cs:0.946011,2.73) rectangle (axis cs:0.996438,3.27);
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:1.006438,3) {1.00};
+\path[fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt] (axis cs:0,3.73) rectangle (axis cs:0.753788,4.27);
+\path[fill=ealblue!65,draw=ealblue,line width=0.5pt] (axis cs:0.753788,3.73) rectangle (axis cs:0.793617,4.27);
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:0.803617,4) {0.79};
+\path[fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt] (axis cs:0,4.73) rectangle (axis cs:0.345378,5.27);
+\path[fill=ealblue!65,draw=ealblue,line width=0.5pt] (axis cs:0.345378,4.73) rectangle (axis cs:0.43433,5.27);
+\path[fill=ordinaryorange!65,draw=ordinaryorange,line width=0.5pt] (axis cs:0.43433,4.73) rectangle (axis cs:0.517594,5.27);
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:0.527594,5) {0.52};
+\path[fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt] (axis cs:0,5.73) rectangle (axis cs:0.177248,6.27);
+\path[fill=ealblue!65,draw=ealblue,line width=0.5pt] (axis cs:0.177248,5.73) rectangle (axis cs:0.266158,6.27);
+\path[fill=ordinaryorange!65,draw=ordinaryorange,line width=0.5pt] (axis cs:0.266158,5.73) rectangle (axis cs:0.342766,6.27);
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:0.352766,6) {0.34};
+\path[fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt] (axis cs:0,6.73) rectangle (axis cs:0.494743,7.27);
+\path[fill=ealblue!65,draw=ealblue,line width=0.5pt] (axis cs:0.494743,6.73) rectangle (axis cs:0.584086,7.27);
+\path[fill=ordinaryorange!65,draw=ordinaryorange,line width=0.5pt] (axis cs:0.584086,6.73) rectangle (axis cs:0.691286,7.27);
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:0.701286,7) {0.69};
+\path[fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt] (axis cs:0,7.73) rectangle (axis cs:0.25338,8.27);
+\path[fill=ealblue!65,draw=ealblue,line width=0.5pt] (axis cs:0.25338,7.73) rectangle (axis cs:0.340329,8.27);
+\path[fill=ordinaryorange!65,draw=ordinaryorange,line width=0.5pt] (axis cs:0.340329,7.73) rectangle (axis cs:0.418537,8.27);
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:0.428537,8) {0.42};
+\addlegendimage{area legend,fill=neutralgrey!65,draw=neutralgrey,line width=0.5pt}\addlegendentry{Input}
+\addlegendimage{area legend,fill=ealblue!65,draw=ealblue,line width=0.5pt}\addlegendentry{Other output}
+\addlegendimage{area legend,fill=ordinaryorange!65,draw=ordinaryorange,line width=0.5pt}\addlegendentry{Reasoning output}
+\end{axis}
+\end{tikzpicture}

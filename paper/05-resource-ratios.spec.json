@@ -1,0 +1,168 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-05-resource-ratios",
+  "purpose": {
+    "reader_question": "Does the apparent saving persist across resource boundaries?",
+    "expected_reading": "Ratios on a common dimensionless scale reveal adverse as well as favourable resource contrasts.",
+    "claim": "The selected EAL trajectories have lower recorded total tokens and API price subtotal, with greater summed session/setup duration and more total evidence acquisitions.",
+    "scope": "Original resources from GitHub Actions run 36985062352, with AI-only decision coding added by finish run 36997861629 to the same 192 paired trajectories across six selected authored cases, two donor profiles, two recipient profiles and two tool modes; no additional experimental observations or independently validated assessor accuracy.",
+    "permitted_inferences": [
+      "Descriptive resource contrasts for the explicitly included recorded sessions.",
+      "Comparison of recorded quantities under the declared denominators and transformations."
+    ],
+    "prohibited_inferences": [
+      "Population-wide or causal superiority of EAL.",
+      "Independent answer correctness, explanation quality, assessor accuracy or reliability from these records.",
+      "Net lifecycle cost savings after unmeasured authoring, review, maintenance or acquisition costs."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "totals",
+      "path": "analysis/arm_phase_totals.csv",
+      "status": "derived",
+      "source_reference": "Finite arm and role totals derived from retained provider accounting and session event records.",
+      "sha256": "283857521325d7600580af4e13f0c11dcc70118ecb5d930873ea7b56b2fb199f"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "ratios",
+      "label": "Whole-run resource ratios",
+      "unit": "dimensionless",
+      "definition": "EAL all-session resource total divided by ordinary all-session total for each named metric.",
+      "input_ids": [
+        "totals"
+      ],
+      "transformation": "Form ratio separately for seven explicitly different recorded resources; never add their units.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 384,
+        "unit": "whole trajectory",
+        "inclusion": "Recorded pilot sessions in the explicitly stated arm, role and stratum; complete resource accounting."
+      }
+    },
+    {
+      "id": "metric",
+      "label": "Recorded resource identity",
+      "unit": "category",
+      "definition": "One of the seven named resource measures, with its own unit before normalisation.",
+      "input_ids": [
+        "totals"
+      ],
+      "transformation": "Retain explicit metric identity when each separately computed EAL/ordinary ratio is plotted.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "ratio",
+      "marks": "positions and connecting line",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each position is a ratio for the specifically named resource; one is equality.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "ratios"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Each position is a ratio for the specifically named resource; one is equality.",
+        "domain": [
+          0,
+          3.15
+        ]
+      }
+    },
+    {
+      "id": "metricrow",
+      "marks": "square data markers with horizontal comparison segments in categorical rows",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Vertical row labels name distinct resources rather than a shared dimensional quantity.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "metric"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Vertical row labels name distinct resources rather than a shared dimensional quantity.",
+        "domain": [
+          "Total tokens",
+          "API price subtotal",
+          "API attempts",
+          "API-call time",
+          "Session + setup time",
+          "Native acquisitions",
+          "All acquisitions"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [
+      "All acquisitions",
+      "API price subtotal"
+    ],
+    "prohibit_block_circle_diagrams": true
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "source": "figures/05-resource-ratios.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_figures.py"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "figures/05-resource-ratios.tikz.tex",
+        "--spec",
+        "05-resource-ratios.spec.json",
+        "--output",
+        "figures/05-resource-ratios.pdf",
+        "--audit",
+        "figures/05-resource-ratios.audit.json",
+        "--preview",
+        "figures/05-resource-ratios.png",
+        "--qa-dir",
+        "qa/05-resource-ratios"
+      ]
+    ],
+    "outputs": {
+      "pdf": "figures/05-resource-ratios.pdf",
+      "preview": "figures/05-resource-ratios.png",
+      "audit": "figures/05-resource-ratios.audit.json",
+      "review": "figures/05-resource-ratios.review.json"
+    },
+    "dependencies": [
+      "captions/05-resource-ratios.caption.txt"
+    ]
+  }
+}

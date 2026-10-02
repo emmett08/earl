@@ -1,0 +1,169 @@
+{
+  "schema_version": "1.0",
+  "review_round": "temporal-caption-fresh-reader-stage1",
+  "frozen_at_utc": "2026-10-02T13:57:31.267839+00:00",
+  "reviewer": "temporal-caption-review-agent",
+  "arrangement": "Figure-first agent screening: all four previews, proposed captions and alt text inspected before any project specification, audit, numerical source, manuscript or earlier review was opened.",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening."
+  ],
+  "figures": {
+    "08-measurement-status": {
+      "claim": "In the original finish snapshot, all 4,224 completed sessions have resource records and AI coding entries, but only 4,199 decisions are resolved; 25 remain ambiguous. This historical snapshot precedes a separate supplemental review.",
+      "quantities": [
+        "Completed sessions 4,224",
+        "Resource records 4,224",
+        "AI-coded entries 4,224",
+        "Resolved decisions 4,199",
+        "Ambiguous decisions 25, comprising 12 ordinary and 13 EAL"
+      ],
+      "scale": "Horizontal position is a linear recorded session count with tick labels 0, 1,000, 2,000, 3,000, 4,224; vertical rows are categories with no numerical y scale.",
+      "scope": "The same 4,224 historical finish sessions. The first three rows overlap; only resolved and ambiguous decisions form an additive partition. The figure contains no result of the later supplemental measurement.",
+      "evidence_status": "Recorded completion/resource counts and AI-coded communication entries from the original finish snapshot. Resolved does not mean independently human-adjudicated; assessor-error rate remains unmeasured.",
+      "limits": [
+        "No reference agreement or explanation correctness is plotted.",
+        "No independent human validation or assessor-error measurement is supplied.",
+        "The historical ambiguity count must not be treated as the state after supplemental review."
+      ],
+      "unintended_inferences": [
+        "Adding all five row counts as disjoint observations would overcount.",
+        "Interpreting every coding entry as a resolved decision would ignore 25 ambiguities.",
+        "Interpreting a resolved AI code as a verified factual judgement would exceed the caption."
+      ],
+      "materials": {
+        "preview": {
+          "path": "figures/08-measurement-status.png",
+          "sha256": "cfb3fc6f255a42d3210880c444a256e87ca2fb140a2505c0af52ee20da9fef94"
+        },
+        "caption": {
+          "path": "captions/08-measurement-status.caption.txt",
+          "sha256": "3f2a020cb5fc3ba0917f70ea86b91a72af2f9b8bc3cd7510631fa55be922d575",
+          "text": "Original finish recording and AI-coding snapshot for the same 4,224 sessions, before the supplemental review. Completed-session, resource-record and coded-entry rows overlap and must not be added. Resolved and ambiguous decisions partition the coded entries: 4,199 are resolved and 25 remain ambiguous, with 12 ordinary and 13 EAL ambiguities. Every answer has a coding entry; this does not establish a resolved decision for every answer or independent adjudication. AI-coded agreement with authored references is analysed separately, without independent human validation or a measured assessor-error rate.\n"
+        },
+        "alt": {
+          "path": "captions/08-measurement-status.alt.txt",
+          "sha256": "d84cfd8e85b73897257e3d7e13e6b6499286b2b2769436196c0a2513bca7d734",
+          "text": "Five rows count the same 4,224 sessions in the original finish recording and AI-coding snapshot, before the supplemental review. Completed sessions, resource records and AI-coded entries each number 4,224 and overlap. Resolved decisions number 4,199 and ambiguous decisions 25; only these last two rows form an additive partition. Ambiguities comprise 12 ordinary and 13 EAL sessions. Coding entries and resolved codes do not establish independent adjudication or measured assessor error.\n"
+        }
+      }
+    },
+    "12-recipient-decisions": {
+      "claim": "The original finish AI communication codes agree far more often with authored recipient references in EAL than in ordinary communications, while ambiguity remains explicitly retained.",
+      "quantities": [
+        "1,920 recipient sessions per arm, donors excluded",
+        "Reference row denominators ready 768, not ready 512, undetermined 640 per arm",
+        "Ordinary counts by row: 477/98/189/4; 291/84/131/6; 362/100/178/0",
+        "EAL counts by row: 758/10/0/0; 2/508/0/2; 6/23/600/11",
+        "Ambiguous recipients ordinary 10 and EAL 13; no-answer counts zero",
+        "Ready communication against non-ready references ordinary 653 and EAL 8"
+      ],
+      "scale": "Every cell prints its count. White-to-dark-grey tone encodes the percentage within its reference row on a shared 0\u2013100 percent scale; row/column positions are categorical, not metric.",
+      "scope": "Historical original finish recipient communication coding with authored ready/not_ready/undetermined references, 1,920 recipients in each arm and no donor sessions. The matrix does not show supplemental measurement results.",
+      "evidence_status": "Observed coded counts conditional on AI interpretation of communicated decisions and comparison with authored references; factual correctness and explanation correctness have no independent human validation here.",
+      "limits": [
+        "Authored reference agreement is distinct from factual/explanation correctness.",
+        "Ambiguous codes are a fourth communication category, not resolved mismatches.",
+        "Omitted no-answer column means all its values are zero, not missing."
+      ],
+      "unintended_inferences": [
+        "Darkness could be misread as raw cell count rather than within-reference percentage if the tone legend is skipped.",
+        "The large EAL diagonal could be misread as independently validated correctness.",
+        "Original finish wording must remain attached when this figure is cited after supplemental review."
+      ],
+      "materials": {
+        "preview": {
+          "path": "figures/12-recipient-decisions.png",
+          "sha256": "51d7fb50b77d3a9dbc9188c3aa0c06c708cb9ccefbd1f304b30270c7ba1c0662"
+        },
+        "caption": {
+          "path": "captions/12-recipient-decisions.caption.txt",
+          "sha256": "0f18a274195f7e5338e299fc76a1a915639cdc63fbad18ab2030b68c49e1063d",
+          "text": "Original finish recipient reference decisions versus AI-coded communicated decisions, excluding donors. Cells print counts; tone is the within-reference percentage on the same scale in both arms. Each arm has 1,920 recipients, with reference-row counts 768 ready, 512 not_ready and 640 undetermined. Undet. and Ambig. abbreviate undetermined and ambiguous communication. The ambiguous column retains all ten ordinary and thirteen EAL recipient ambiguities; no-answer counts are zero throughout and that column is omitted. Ready communications against not_ready or undetermined references total 653 ordinary and eight EAL. The matrix measures agreement and disagreement with authored references conditional on AI communication coding, not independently human-validated factual or explanation correctness.\n"
+        },
+        "alt": {
+          "path": "captions/12-recipient-decisions.alt.txt",
+          "sha256": "6595d939a385cf3b53e9ba2beaa8cd8780476b4dbfe4904dd5fede5f3e6d27d9",
+          "text": "Two count matrices compare authored reference decisions with AI-coded communicated decisions in the original finish coding snapshot, for 1,920 recipient sessions per arm. Rows ready, not ready and undetermined contain 768, 512 and 640 references. Columns ready, not ready, undetermined and ambiguous retain all 10 ordinary and 13 EAL recipient ambiguities. Ordinary row counts are 477/98/189/4, 291/84/131/6 and 362/100/178/0; EAL counts are 758/10/0/0, 2/508/0/2 and 6/23/600/11. Ready communications against non-ready references total 653 ordinary versus eight EAL. Shared tone encodes the percentage within each reference row. Agreement remains conditional on AI coding.\n"
+        }
+      }
+    },
+    "13-recipient-match-bounds": {
+      "claim": "In every historical recipient model/tool group, EAL reference agreement conditional on resolved AI codes is higher than ordinary even allowing every ambiguous code to match or mismatch.",
+      "quantities": [
+        "480 actual recipient sessions per arm/group from 48 matched trajectories",
+        "Ordinary plain/no tools 38.54 percent; plain/tools 37.50\u201339.58; reasoning/no tools 38.75; reasoning/tools 39.17",
+        "EAL plain/no tools 99.79\u2013100.00 percent; plain/tools 92.08\u201393.12; reasoning/no tools 98.96\u2013100.00; reasoning/tools 97.92\u201398.33"
+      ],
+      "scale": "Horizontal position is linear recipient reference-match percent from 0 to 100; vertical group positions are categorical. Orange triangles/blue squares identify ordinary/EAL and lie at lower known-match shares; short horizontal capped ranges span finite-record ambiguity envelopes.",
+      "scope": "Four actual recipient-model/native-tool groups in the original finish snapshot. Both donor model assignments and six cases are pooled; this is not a result of supplemental measurement.",
+      "evidence_status": "Finite-record derived ambiguity bounds conditional on resolved AI codes, not confidence intervals. A single point signals no ambiguous codes for the arm/group, not statistical certainty.",
+      "limits": [
+        "No sampling uncertainty, assessor-error bound or explanation-correctness result is plotted.",
+        "No independent human validation is available.",
+        "Pooling cases and donor assignments can conceal heterogeneity."
+      ],
+      "unintended_inferences": [
+        "Intervals could be mistaken for confidence intervals without the ambiguity-only title and caption.",
+        "Values close to 100 percent could be mistaken for independently verified correctness.",
+        "Single points could be mistaken for no uncertainty despite the caption distinction."
+      ],
+      "materials": {
+        "preview": {
+          "path": "figures/13-recipient-match-bounds.png",
+          "sha256": "6a02af0abe164a625d2f475a26bd4706cd8cc8859154b6fab3fbb9bb998e06a2"
+        },
+        "caption": {
+          "path": "captions/13-recipient-match-bounds.caption.txt",
+          "sha256": "4bb5aeaf20184730168048cf5af8d6dd873ced9c12e143cfe9da16cd3c27d33e",
+          "text": "Recipient agreement in the original finish coding snapshot with authored reference decisions in four actual recipient-model/native-tool groups, with 480 sessions per arm/group from 48 matched trajectories. A range runs from known matching AI codes divided by 480 to known matches plus all ambiguous codes divided by 480. Single values indicate no ambiguous codes in that arm/group; they do not imply statistical certainty. These are finite-record ambiguity envelopes conditional on all resolved AI codes, not confidence intervals or bounds on assessor error. Both donor model assignments and all six selected cases are pooled within each recipient group; independent human validation and explanation correctness remain unavailable.\n"
+        },
+        "alt": {
+          "path": "captions/13-recipient-match-bounds.alt.txt",
+          "sha256": "e78578ab0b70e6071e5ddfb5cdbdc626d8d877bd76c419037f7a98eb50608754",
+          "text": "Four recipient model/tool groups in the original finish coding snapshot compare ordinary and EAL reference-match ambiguity ranges, each from 480 actual recipient sessions per arm and 48 matched trajectories. Ordinary ranges in plain/off, plain/on, reasoning/off and reasoning/on groups are 38.54, 37.50\u201339.58, 38.75 and 39.17 percent. EAL ranges are 99.79\u2013100, 92.08\u201393.12, 98.96\u2013100 and 97.92\u201398.33 percent. Orange triangles denote ordinary and blue squares EAL at the lower known-match share. Ranges assign unresolved codes to mismatches or matches while holding resolved AI codes fixed; they are not sampling intervals or assessor-error bounds.\n"
+        }
+      }
+    },
+    "14-frozen-endpoint-bounds": {
+      "claim": "The original finish frozen endpoints pass all three separate one-sided component criteria under the stated inference assumptions, while the EAL two-sided family lower limit crosses 90 percent and the historical allocation report remains blocked.",
+      "quantities": [
+        "Recipient EAL-minus-ordinary match: observed 58.18\u201359.38 percentage points; family two-sided 41.50\u201376.05; one-sided lower 46.47; threshold minus 5 percentage points",
+        "EAL recipient match: observed 97.19\u201397.86 percent; family 88.71\u2013100.00; one-sided lower 91.22; threshold 90 percent",
+        "Donor-inclusive token reduction: observed exact 33.61 percent; family 32.33\u201334.89; one-sided lower 32.74; threshold 20 percent",
+        "Inference units: 192 matched whole trajectories in 48 fixed strata, four reruns per stratum; quality averages ten recipients, token accounting includes donor and ten recipients"
+      ],
+      "scale": "Three different horizontal positional scales are explicit: top percentage-point scale with ticks minus 5, 0, 20, 40, 60, 80, 100; middle restricted 80\u2013100 percent; bottom restricted 15\u201340 percent. Rows are observed black finite-record ranges/point, grey dashed two-sided family intervals, and blue lower-bound triangles with rightward rays. Orange dashed vertical lines indicate thresholds, not estimates.",
+      "scope": "Frozen pilot endpoints retain original finish coding; expected independent reruns concern the fixed task/model/tool mixture, not a general population. These are historical endpoint calculations and the historical allocation status before supplemental measurement, not an updated posthoc deployment decision.",
+      "evidence_status": "Black quality envelopes reflect unresolved AI codes in a finite record; token point is exact recorded reduction. Grey intervals have nominal 95 percent three-endpoint family meaning with 98.333 percent components and an approximate token component. Blue bounds concern separate one-sided alpha .05 component tests whose conjunction is an intersection-union decision, not simultaneous 95 percent coverage.",
+      "limits": [
+        "Independence of trajectories is unverified.",
+        "Errors in resolved AI codes are unbounded.",
+        "Original allocation report is blocked by unresolved labels and minimum two fully scored paired reruns per cell versus requirement four.",
+        "Passing one-sided criteria does not establish practical adoption.",
+        "No supplemental-measurement endpoint result is shown."
+      ],
+      "unintended_inferences": [
+        "Comparing visual interval lengths across panels would ignore distinct scales.",
+        "Calling blue bounds a simultaneous 95 percent family would confuse the intersection-union decision with simultaneous coverage.",
+        "Treating a historical blocked report as the current status after posthoc measurement would ignore temporal scope.",
+        "Treating the EAL family limit below 90 as contradicting the one-sided pass would conflate inferential targets."
+      ],
+      "materials": {
+        "preview": {
+          "path": "figures/14-frozen-endpoint-bounds.png",
+          "sha256": "9c755f83d81d5af56d801d5efa9bee6593879170a0f028c77223d52690a0a735"
+        },
+        "caption": {
+          "path": "captions/14-frozen-endpoint-bounds.caption.txt",
+          "sha256": "932a3b708674167f4d7924fa2cf6cca078d650a02e2e257c38f4d5a5d740e593",
+          "text": "Frozen pilot endpoints retain the original finish coding snapshot and distinguish three questions. Inference uses 192 matched whole trajectories in 48 fixed strata, with four reruns per stratum; quality averages ten recipients, while tokens include the donor and ten recipients. Observed black quality ranges enclose unresolved AI communication codes in this finite record; the black token point is the exact recorded reduction. Grey two-sided intervals concern expected independent reruns of the fixed task/model/tool mixture: a nominal 95% three-endpoint family with 98.333% marginal components and an approximate token component. Blue triangles/rays show lower bounds for separate one-sided component tests at alpha=0.05; their conjunction is an intersection-union decision, not simultaneous 95% coverage of the three bounds. Orange reference lines mark the frozen thresholds: minus 5 percentage points for the EAL-minus-ordinary recipient match difference, 90% for EAL match, and 20% token reduction. All one-sided criteria pass under those assumptions. The EAL family interval extends below 90%, illustrating the different inferential targets. Inference does not bound errors in resolved AI codes and trajectory independence is unverified. The original finish allocation report remains blocked by unresolved labels and a minimum of two fully scored paired reruns per cell against a requirement of four; these criteria do not establish practical adoption. Panels use explicitly different positional scales.\n"
+        },
+        "alt": {
+          "path": "captions/14-frozen-endpoint-bounds.alt.txt",
+          "sha256": "eb7e2a9e6407e79eef6bfcede2dd559603bdc072191604e7a29488bb213faa22",
+          "text": "Three separately scaled panels retain the original finish coding snapshot and distinguish black finite-record observed coding ranges or an exact token point, grey two-sided family intervals and blue one-sided component lower bounds with rightward rays. The recipient EAL-minus-ordinary match difference has observed 58.18\u201359.38 percentage points, family 41.50\u201376.05 and one-sided lower 46.47, against a minus-five-point criterion. EAL match has observed 97.19\u201397.86 percent, family 88.71\u2013100 and one-sided lower 91.22, against 90 percent. Donor-inclusive token reduction is 33.61 percent, family 32.33\u201334.89 and one-sided lower 32.74, against 20 percent. Inference uses 192 paired whole trajectories across 48 fixed strata with four raw reruns each. All one-sided criteria pass conditionally; the EAL family lower bound crossing 90 answers a different inferential question. The one-sided lower bounds are not simultaneously 95 percent covered, resolved-coder error is unbounded, and the original finish allocation report remains blocked by only two fully scored paired reruns in the least-complete cell.\n"
+        }
+      }
+    }
+  }
+}

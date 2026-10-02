@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-14-frozen-endpoint-bounds",
+  "spec_sha256": "dbe0cb8e2618b9617b8e8c3499700a31a866b7cf5ed2e8c60dcbade78936a13b",
+  "audit_sha256": "b2d3522ffd1e520d1e6962bdd3cc8dd852662120367c68ad20ee75e0a23a6f54",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/14-frozen-endpoint-bounds.pdf",
+      "sha256": "8b159494621d7ace88d4f42ba850405fcb1c2c2e6b277bcb76673deb9f405e20"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/14-frozen-endpoint-bounds.pdf",
+      "sha256": "8b159494621d7ace88d4f42ba850405fcb1c2c2e6b277bcb76673deb9f405e20"
+    }
+  ],
+  "reviewer": {
+    "id": "temporal-caption-fresh-reader-agent",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "current-temporal-caption",
+      "prototype": "figures/14-frozen-endpoint-bounds.pdf",
+      "observations": {
+        "reading": "Three separately scaled panels distinguish black finite-record quantities, grey two-sided family intervals and blue one-sided component lower bounds. The blue values exceed all orange criteria while the grey EAL lower endpoint falls below 90%; those statements concern different inferential targets. The existing separated-panel form is required to retain units and method distinctions; this temporal-only round did not compare new geometries.",
+        "annotation_burden": "This figure depends on a detailed caption for nominal coverage, the IUT conjunction, trajectory unit, coding assumptions and historical allocation status. Direct method rows, units, restricted-axis labels, endpoint annotations and redundant styles make the distinctions recoverable.",
+        "reproduction": "Inspected exact current colour preview, greyscale preview and thumbnail; current successful mechanical audit binds current source, specification, PDF, caption and alt bytes. The current PDF remains below the 160mm maximum, all declared 9pt text and 0.4pt stroke floors pass, and no label clipping/collision was seen. Also inspected the complete stable integrated manuscript page20, printed Figure14, from eal-handover-data-story.pdf SHA256 ef6b44efa1e3953f84efd96d18352af824dd88249ade7fe6f905582b34a7628a. The page render and inspection record are retained in analysis/temporal-caption-integrated-inspection/. Printed Figure14 on page20: all three panels and their different scales fit above the complete caption, which keeps the observed/family/IUT distinctions and explicitly qualifies the allocation report as original finish. No plot or caption collision with the following section was seen. The figure does not establish posthoc allocation status or practical adoption."
+      }
+    }
+  ],
+  "selected_candidate": "current-temporal-caption",
+  "initial_reconstruction": {
+    "claim": "The original finish frozen endpoints pass all three separate one-sided component criteria under the stated inference assumptions, while the EAL two-sided family lower limit crosses 90 percent and the historical allocation report remains blocked.",
+    "quantities": [
+      "Recipient EAL-minus-ordinary match: observed 58.18\u201359.38 percentage points; family two-sided 41.50\u201376.05; one-sided lower 46.47; threshold minus 5 percentage points",
+      "EAL recipient match: observed 97.19\u201397.86 percent; family 88.71\u2013100.00; one-sided lower 91.22; threshold 90 percent",
+      "Donor-inclusive token reduction: observed exact 33.61 percent; family 32.33\u201334.89; one-sided lower 32.74; threshold 20 percent",
+      "Inference units: 192 matched whole trajectories in 48 fixed strata, four reruns per stratum; quality averages ten recipients, token accounting includes donor and ten recipients"
+    ],
+    "evidence_status": "Black quality envelopes reflect unresolved AI codes in a finite record; token point is exact recorded reduction. Grey intervals have nominal 95 percent three-endpoint family meaning with 98.333 percent components and an approximate token component. Blue bounds concern separate one-sided alpha .05 component tests whose conjunction is an intersection-union decision, not simultaneous 95 percent coverage.",
+    "scope": "Frozen pilot endpoints retain original finish coding; expected independent reruns concern the fixed task/model/tool mixture, not a general population. These are historical endpoint calculations and the historical allocation status before supplemental measurement, not an updated posthoc deployment decision.",
+    "unintended_inferences": [
+      "Comparing visual interval lengths across panels would ignore distinct scales.",
+      "Calling blue bounds a simultaneous 95 percent family would confuse the intersection-union decision with simultaneous coverage.",
+      "Treating a historical blocked report as the current status after posthoc measurement would ignore temporal scope.",
+      "Treating the EAL family limit below 90 as contradicting the one-sided pass would conflate inferential targets."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "The caption and specification both retain the original finish frozen endpoints; supplemental ambiguities are explicitly excluded.",
+      "All finite-record quality bounds, exact token reduction, family endpoints, one-sided bounds and criteria reproduce from historical session CSV and frozen formulas within 1e-12.",
+      "The independent unit is 192 whole paired trajectories in 48 fixed strata, with ten recipient quality outcomes per arm/trajectory and donor-inclusive tokens.",
+      "Grey family nominal coverage and separate one-sided component tests are distinguished; the token component remains approximate and trajectory independence unverified.",
+      "The original finish allocation report has a minimum two fully scored paired reruns versus requirement four; this historical block is not represented as a new posthoc endpoint result.",
+      "The corrected ray specification now restricts continuation to greater admissible values within the endpoint support; no values above natural quality support are implied.",
+      "The stable integrated manuscript page20 (printed Figure14) preserves the reviewed graphic and temporal caption without clipping or collision."
+    ],
+    "findings": [
+      {
+        "id": "ray-support-wording",
+        "severity": "minor",
+        "description": "The specification says the one-sided ray continues beyond any displayed right limit; the quality panels already display their natural 100% or 100-percentage-point upper support.",
+        "disposition": "resolved",
+        "reason": "The owner revised each one-sided quantity transformation to say: A ray points towards greater admissible values within the endpoint support. The exact current specification and successful mechanical audit are bound here. Source, caption, alternative text and preview remained unchanged, so the frozen figure-first reconstruction is preserved and only the affected specification comparison was repeated."
+      },
+      {
+        "id": "caption-required-scope",
+        "severity": "informational",
+        "description": "The graphic alone does not identify the temporal source snapshot or whether the historical planning block survives the separate posthoc amendment.",
+        "disposition": "accepted",
+        "reason": "The current separately bound caption identifies frozen original finish coding and calls the allocation report original finish. The review accepts the graphic-plus-caption historical scope, without claiming to evaluate current posthoc allocation or practical adoption."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "The exact current figure compiled successfully using retained local inputs with shell escape disabled; visual inspection and numerical checks found no missing external material."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "The compatibility warning is a package configuration notice. The exact current values, scales and annotations were inspected in colour and greyscale and independently compared with retained historical CSV calculations; no resulting encoding defect was found."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This acceptance is independent agent screening of the graphic plus its current temporal caption and alt text; it is not independent human validation of codes, assessor accuracy or comprehension.",
+    "The original all-four figure-first reconstruction, including scale and limits, is retained unchanged in analysis/temporal-caption-fresh-reader-stage1.json before project specifications or numerical sources were opened.",
+    "The four figures retain original finish primary coding. The separate posthoc measurement amendment is not plotted, substituted into frozen inference, or adjudicated by this review.",
+    "One-sided rays mean greater admissible values within each endpoint support; they do not authorise values above natural 100% quality support.",
+    "All frozen inference remains conditional on correct resolved AI codes and independent trajectory reruns; the token component is approximate."
+  ]
+}

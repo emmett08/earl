@@ -1,0 +1,559 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-14-frozen-endpoint-bounds",
+  "purpose": {
+    "reader_question": "How do finite-record ambiguity, simultaneous family inference and one-sided engineering criteria differ?",
+    "expected_reading": "Three separately scaled panels retain distinct glyphs and thresholds; conditional support for the one-sided conjunction does not establish independently validated quality or planning eligibility.",
+    "claim": "All three one-sided frozen endpoint criteria pass conditionally, while family intervals answer a different question and the original finish allocation report remains blocked.",
+    "scope": "Original resources from GitHub Actions run 36985062352, with AI-only decision coding added by finish run 36997861629 to the same 192 paired trajectories across six selected authored cases, two donor profiles, two recipient profiles and two tool modes; no additional experimental observations or independently validated assessor accuracy. This figure retains the original finish AI-coding snapshot, before the supplemental review; supplemental coding ambiguities do not enter its displayed values or frozen inference.",
+    "permitted_inferences": [
+      "Decision agreement with authored references conditional on retained AI communication codes.",
+      "Conditional ambiguity ranges and frozen statistical bounds under their explicitly audited assumptions.",
+      "Comparison of recorded quantities under the declared denominators and transformations."
+    ],
+    "prohibited_inferences": [
+      "Population-wide or causal superiority of EAL.",
+      "Independent answer correctness, explanation quality, assessor accuracy or reliability from these records.",
+      "Net lifecycle cost savings after unmeasured authoring, review, maintenance or acquisition costs."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "endpoints",
+      "path": "tables/completion-endpoints.csv",
+      "status": "derived",
+      "source_reference": "Frozen independently reproduced report endpoints, preserving descriptive/family/one-sided distinctions.",
+      "sha256": "2f18b7601b12fb40b7bc951278f36c05296dd834178ba367e44a4d0c0867cb0d"
+    },
+    {
+      "id": "coding",
+      "path": "analysis/completion-outcomes.json",
+      "status": "derived",
+      "source_reference": "Independent reconstruction of frozen AI communication codes joined to authored decision references in finish run 36997861629; all original session observations retained.",
+      "sha256": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e"
+    },
+    {
+      "id": "inference",
+      "path": "analysis/completion-inference-audit.json",
+      "status": "derived",
+      "source_reference": "Independent audit of fixed-mixture inference, empirical-Bernstein theorem applicability and approximate resource component.",
+      "sha256": "765bd5f8fb5476eddceb034996adbe1c2fe991694cb0229b68352fbbd6ed81b0"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "quality_differenceobserved",
+      "label": "Recipient reference-match difference (EAL $-$ ordinary): finite-record range",
+      "unit": "percentage points",
+      "definition": "Frozen lower and upper endpoints of this pilot's conditional coding envelope; the observed token reduction is a single recorded ratio.",
+      "input_ids": [
+        "endpoints",
+        "coding"
+      ],
+      "transformation": "Read observation_lower and observation_upper; multiply proportions by 100 without changing their denominators.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "partial",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "interval",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "quality_differencefamily",
+      "label": "Recipient reference-match difference (EAL $-$ ordinary): family component interval",
+      "unit": "percentage points",
+      "definition": "Two-sided nominal 98.333% component interval contributing to the three-endpoint nominal 95% simultaneous family.",
+      "input_ids": [
+        "endpoints",
+        "inference"
+      ],
+      "transformation": "Read family_interval_lower and family_interval_upper from the frozen independently reconstructed report; scale by 100.",
+      "statistical_role": "estimate",
+      "status": "available",
+      "missingness": {
+        "state": "partial",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "interval",
+        "coverage": 0.9833333333333333,
+        "definition": "Nominal marginal component coverage within a three-endpoint 95% family. The token component is an approximation. These intervals concern expected independent reruns of the fixed configuration mixture; resolved AI communication codes are held fixed, and their error is not bounded.",
+        "method": "Frozen empirical-Bernstein quality envelopes for independent, potentially non-identical trajectory means; stratified delta/Welch approximation for the resource ratio. Independently audited, not re-estimated by the figure script."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "quality_differencedecision",
+      "label": "Recipient reference-match difference (EAL $-$ ordinary): one-sided decision lower bound",
+      "unit": "percentage points",
+      "definition": "Frozen component-alpha=0.05 one-sided lower bound used in the intersection-union conjunction, not a simultaneous family bound.",
+      "input_ids": [
+        "endpoints",
+        "inference"
+      ],
+      "transformation": "Read one_sided_decision_lower; scale by 100. A ray points towards greater admissible values within the endpoint support.",
+      "statistical_role": "estimate",
+      "status": "available",
+      "missingness": {
+        "state": "partial",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "interval",
+        "coverage": 0.95,
+        "definition": "One-sided component coverage conditional on valid trajectory-independence and frozen-coding assumptions, with an approximate token test. Conjoining three valid component tests controls the intersection-union false-support event; the three bounds do not have simultaneous 95% coverage.",
+        "method": "Frozen one-sided empirical-Bernstein quality bound or approximate resource delta/Welch bound at component alpha=0.05."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "quality_differencecriterion",
+      "label": "Recipient reference-match difference (EAL $-$ ordinary): engineering criterion",
+      "unit": "percentage points",
+      "definition": "The declared frozen engineering threshold for this endpoint, with no validated developer-utility mapping.",
+      "input_ids": [
+        "endpoints"
+      ],
+      "transformation": "Read threshold from the frozen report and scale by 100.",
+      "statistical_role": "parameter",
+      "status": "available",
+      "missingness": {
+        "state": "not_applicable",
+        "treatment": "A declared criterion, rather than a measured outcome."
+      },
+      "uncertainty": {
+        "kind": "not_applicable",
+        "definition": "Fixed report threshold, not a confidence bound."
+      }
+    },
+    {
+      "id": "eal_correctnessobserved",
+      "label": "EAL recipient reference-match rate: finite-record range",
+      "unit": "%",
+      "definition": "Frozen lower and upper endpoints of this pilot's conditional coding envelope; the observed token reduction is a single recorded ratio.",
+      "input_ids": [
+        "endpoints",
+        "coding"
+      ],
+      "transformation": "Read observation_lower and observation_upper; multiply proportions by 100 without changing their denominators.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "partial",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "interval",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "eal_correctnessfamily",
+      "label": "EAL recipient reference-match rate: family component interval",
+      "unit": "%",
+      "definition": "Two-sided nominal 98.333% component interval contributing to the three-endpoint nominal 95% simultaneous family.",
+      "input_ids": [
+        "endpoints",
+        "inference"
+      ],
+      "transformation": "Read family_interval_lower and family_interval_upper from the frozen independently reconstructed report; scale by 100.",
+      "statistical_role": "estimate",
+      "status": "available",
+      "missingness": {
+        "state": "partial",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "interval",
+        "coverage": 0.9833333333333333,
+        "definition": "Nominal marginal component coverage within a three-endpoint 95% family. The token component is an approximation. These intervals concern expected independent reruns of the fixed configuration mixture; resolved AI communication codes are held fixed, and their error is not bounded.",
+        "method": "Frozen empirical-Bernstein quality envelopes for independent, potentially non-identical trajectory means; stratified delta/Welch approximation for the resource ratio. Independently audited, not re-estimated by the figure script."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "eal_correctnessdecision",
+      "label": "EAL recipient reference-match rate: one-sided decision lower bound",
+      "unit": "%",
+      "definition": "Frozen component-alpha=0.05 one-sided lower bound used in the intersection-union conjunction, not a simultaneous family bound.",
+      "input_ids": [
+        "endpoints",
+        "inference"
+      ],
+      "transformation": "Read one_sided_decision_lower; scale by 100. A ray points towards greater admissible values within the endpoint support.",
+      "statistical_role": "estimate",
+      "status": "available",
+      "missingness": {
+        "state": "partial",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "interval",
+        "coverage": 0.95,
+        "definition": "One-sided component coverage conditional on valid trajectory-independence and frozen-coding assumptions, with an approximate token test. Conjoining three valid component tests controls the intersection-union false-support event; the three bounds do not have simultaneous 95% coverage.",
+        "method": "Frozen one-sided empirical-Bernstein quality bound or approximate resource delta/Welch bound at component alpha=0.05."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "eal_correctnesscriterion",
+      "label": "EAL recipient reference-match rate: engineering criterion",
+      "unit": "%",
+      "definition": "The declared frozen engineering threshold for this endpoint, with no validated developer-utility mapping.",
+      "input_ids": [
+        "endpoints"
+      ],
+      "transformation": "Read threshold from the frozen report and scale by 100.",
+      "statistical_role": "parameter",
+      "status": "available",
+      "missingness": {
+        "state": "not_applicable",
+        "treatment": "A declared criterion, rather than a measured outcome."
+      },
+      "uncertainty": {
+        "kind": "not_applicable",
+        "definition": "Fixed report threshold, not a confidence bound."
+      }
+    },
+    {
+      "id": "token_reductionobserved",
+      "label": "Donor-inclusive pooled total-token reduction: finite-record range",
+      "unit": "%",
+      "definition": "Frozen lower and upper endpoints of this pilot's conditional coding envelope; the observed token reduction is a single recorded ratio.",
+      "input_ids": [
+        "endpoints",
+        "coding"
+      ],
+      "transformation": "Read observation_lower and observation_upper; multiply proportions by 100 without changing their denominators.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "The recorded pooled token ratio has no communication-code ambiguity; provider accounting limitations are separate from its sampling interval."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "token_reductionfamily",
+      "label": "Donor-inclusive pooled total-token reduction: family component interval",
+      "unit": "%",
+      "definition": "Two-sided nominal 98.333% component interval contributing to the three-endpoint nominal 95% simultaneous family.",
+      "input_ids": [
+        "endpoints",
+        "inference"
+      ],
+      "transformation": "Read family_interval_lower and family_interval_upper from the frozen independently reconstructed report; scale by 100.",
+      "statistical_role": "estimate",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "interval",
+        "coverage": 0.9833333333333333,
+        "definition": "Nominal marginal component coverage within a three-endpoint 95% family. The token component is an approximation. These intervals concern expected independent reruns of the fixed configuration mixture; resolved AI communication codes are held fixed, and their error is not bounded.",
+        "method": "Frozen empirical-Bernstein quality envelopes for independent, potentially non-identical trajectory means; stratified delta/Welch approximation for the resource ratio. Independently audited, not re-estimated by the figure script."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "token_reductiondecision",
+      "label": "Donor-inclusive pooled total-token reduction: one-sided decision lower bound",
+      "unit": "%",
+      "definition": "Frozen component-alpha=0.05 one-sided lower bound used in the intersection-union conjunction, not a simultaneous family bound.",
+      "input_ids": [
+        "endpoints",
+        "inference"
+      ],
+      "transformation": "Read one_sided_decision_lower; scale by 100. A ray points towards greater admissible values within the endpoint support.",
+      "statistical_role": "estimate",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "interval",
+        "coverage": 0.95,
+        "definition": "One-sided component coverage conditional on valid trajectory-independence and frozen-coding assumptions, with an approximate token test. Conjoining three valid component tests controls the intersection-union false-support event; the three bounds do not have simultaneous 95% coverage.",
+        "method": "Frozen one-sided empirical-Bernstein quality bound or approximate resource delta/Welch bound at component alpha=0.05."
+      },
+      "sample": {
+        "denominator": 192,
+        "unit": "paired trajectories",
+        "inclusion": "All 192 planned paired trajectories across 48 fixed strata, with four reruns per stratum and every ambiguous recipient code retained. Quality averages ten recipients within each trajectory; the token endpoint retains donor plus ten recipients."
+      }
+    },
+    {
+      "id": "token_reductioncriterion",
+      "label": "Donor-inclusive pooled total-token reduction: engineering criterion",
+      "unit": "%",
+      "definition": "The declared frozen engineering threshold for this endpoint, with no validated developer-utility mapping.",
+      "input_ids": [
+        "endpoints"
+      ],
+      "transformation": "Read threshold from the frozen report and scale by 100.",
+      "statistical_role": "parameter",
+      "status": "available",
+      "missingness": {
+        "state": "not_applicable",
+        "treatment": "A declared criterion, rather than a measured outcome."
+      },
+      "uncertainty": {
+        "kind": "not_applicable",
+        "definition": "Fixed report threshold, not a confidence bound."
+      }
+    },
+    {
+      "id": "boundkind",
+      "label": "Inferential question",
+      "unit": "category",
+      "definition": "Finite-record observed range, two-sided family component interval, or one-sided component decision lower bound.",
+      "input_ids": [
+        "endpoints"
+      ],
+      "transformation": "Retain the frozen report's three distinct inferential roles in each separately scaled panel.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "not_applicable",
+        "treatment": "These are explicit method labels, not missing outcomes."
+      },
+      "uncertainty": {
+        "kind": "not_applicable",
+        "definition": "A method/category label does not itself encode a confidence level."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "quality_differenceposition",
+      "marks": "capped ranges and lower-bound triangle/ray data marks",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each separately labelled panel has its declared units/domain. Observed black capped ranges, grey dashed family ranges and blue triangular one-sided lower bounds/rays answer distinct questions.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "quality_differenceobserved",
+        "quality_differencefamily",
+        "quality_differencedecision"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Each separately labelled panel has its declared units/domain. Observed black capped ranges, grey dashed family ranges and blue triangular one-sided lower bounds/rays answer distinct questions.",
+        "domain": [
+          -10,
+          100
+        ]
+      }
+    },
+    {
+      "id": "quality_differencethreshold",
+      "marks": "vertical criterion reference boundary",
+      "mark_role": "boundary",
+      "channel": "position",
+      "represents": "The orange dashed vertical boundary is the fixed endpoint criterion; comparing the blue lower bound to it applies the declared one-sided test.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "quality_differencecriterion"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "The orange dashed vertical boundary is the fixed endpoint criterion; comparing the blue lower bound to it applies the declared one-sided test.",
+        "domain": [
+          -10,
+          100
+        ]
+      }
+    },
+    {
+      "id": "eal_correctnessposition",
+      "marks": "capped ranges and lower-bound triangle/ray data marks",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each separately labelled panel has its declared units/domain. Observed black capped ranges, grey dashed family ranges and blue triangular one-sided lower bounds/rays answer distinct questions.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "eal_correctnessobserved",
+        "eal_correctnessfamily",
+        "eal_correctnessdecision"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Each separately labelled panel has its declared units/domain. Observed black capped ranges, grey dashed family ranges and blue triangular one-sided lower bounds/rays answer distinct questions.",
+        "domain": [
+          80,
+          100
+        ]
+      }
+    },
+    {
+      "id": "eal_correctnessthreshold",
+      "marks": "vertical criterion reference boundary",
+      "mark_role": "boundary",
+      "channel": "position",
+      "represents": "The orange dashed vertical boundary is the fixed endpoint criterion; comparing the blue lower bound to it applies the declared one-sided test.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "eal_correctnesscriterion"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "The orange dashed vertical boundary is the fixed endpoint criterion; comparing the blue lower bound to it applies the declared one-sided test.",
+        "domain": [
+          80,
+          100
+        ]
+      }
+    },
+    {
+      "id": "token_reductionposition",
+      "marks": "capped ranges and lower-bound triangle/ray data marks",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each separately labelled panel has its declared units/domain. Observed black capped ranges, grey dashed family ranges and blue triangular one-sided lower bounds/rays answer distinct questions.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "token_reductionobserved",
+        "token_reductionfamily",
+        "token_reductiondecision"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Each separately labelled panel has its declared units/domain. Observed black capped ranges, grey dashed family ranges and blue triangular one-sided lower bounds/rays answer distinct questions.",
+        "domain": [
+          15,
+          40
+        ]
+      }
+    },
+    {
+      "id": "token_reductionthreshold",
+      "marks": "vertical criterion reference boundary",
+      "mark_role": "boundary",
+      "channel": "position",
+      "represents": "The orange dashed vertical boundary is the fixed endpoint criterion; comparing the blue lower bound to it applies the declared one-sided test.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "token_reductioncriterion"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "The orange dashed vertical boundary is the fixed endpoint criterion; comparing the blue lower bound to it applies the declared one-sided test.",
+        "domain": [
+          15,
+          40
+        ]
+      }
+    },
+    {
+      "id": "boundrows",
+      "marks": "capped ranges and triangular lower-bound rays in named method rows",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Rows identify distinct inferential questions; observed is top, family middle, and one-sided intersection-union component lower bound bottom.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "boundkind"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Rows identify distinct inferential questions; observed is top, family middle, and one-sided intersection-union component lower bound bottom.",
+        "domain": [
+          "Observed",
+          "Family 2-sided",
+          "IUT 1-sided"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [],
+    "prohibit_block_circle_diagrams": true
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "source": "figures/14-frozen-endpoint-bounds.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_figures.py"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "figures/14-frozen-endpoint-bounds.tikz.tex",
+        "--spec",
+        "14-frozen-endpoint-bounds.spec.json",
+        "--output",
+        "figures/14-frozen-endpoint-bounds.pdf",
+        "--audit",
+        "figures/14-frozen-endpoint-bounds.audit.json",
+        "--preview",
+        "figures/14-frozen-endpoint-bounds.png",
+        "--qa-dir",
+        "qa/14-frozen-endpoint-bounds"
+      ]
+    ],
+    "outputs": {
+      "pdf": "figures/14-frozen-endpoint-bounds.pdf",
+      "preview": "figures/14-frozen-endpoint-bounds.png",
+      "audit": "figures/14-frozen-endpoint-bounds.audit.json",
+      "review": "figures/14-frozen-endpoint-bounds.review.json"
+    },
+    "dependencies": [
+      "captions/14-frozen-endpoint-bounds.caption.txt",
+      "captions/14-frozen-endpoint-bounds.alt.txt"
+    ]
+  }
+}

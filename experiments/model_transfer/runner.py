@@ -153,7 +153,7 @@ def main() -> None:
     args.output.mkdir(parents=True)
     write_json(args.output / 'plan.json', plan)
     write_json(args.output / 'cases.json', [asdict(c) for c in cases_for_plan(plan) if c.identifier in plan['cases']])
-    protocol = read_json(Path(__file__).with_name('protocol.json'))
+    protocol = plan.get('study_protocol') or read_json(Path(__file__).with_name('protocol.json'))
     write_json(args.output / 'protocol.json', protocol)
     try:
         revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()

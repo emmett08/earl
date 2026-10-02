@@ -1,0 +1,55 @@
+{
+  "status": "bounded PASS",
+  "fresh_cycle": true,
+  "source_set_revision": "sha256:c12b89010ab37beb40ec4fcc01a8f8081a69598a94307f5f10daa674da6a0d4d",
+  "article_sha256": "dae2a565487beb0a40181c0982457fcfdfd1e89804bd7a43acf6642c91554bde",
+  "pdf_sha256": "ef6b44efa1e3953f84efd96d18352af824dd88249ade7fe6f905582b34a7628a",
+  "pdf_pages": 26,
+  "pdf_bytes": 420769,
+  "units": 48,
+  "unit_stage_records": 240,
+  "units_by_kind": {
+    "prose": 18,
+    "caption": 15,
+    "alt": 15
+  },
+  "validator": "PASS: 48 units cover all 5 required stages",
+  "targeted_prose_edits": 30,
+  "scientific_quantities_changed": false,
+  "primary_codes_or_raw_answers_changed": false,
+  "material_repairs": [
+    "Original finish 25 ambiguous answers and historical primary figures/tests explicitly separated from supplemental 19 remaining answers.",
+    "Original 19 incomplete paired repetitions and 173 complete pairs retained as archived allocation inputs rather than supplemental completeness.",
+    "Supplemental 169-answer/26-adjudication provenance and 1871/42/7 EAL endpoint stated conditionally; six changes include the unfavourable mismatch.",
+    "Follow-up is a specified 8-task/5-condition/3-reasoner design with 120 recipients plus 8 donors, one intended model, 128 fixed-answer scripted sessions and no live requests.",
+    "Operational whole-verdict/internal-consistency success remains distinct from unassessed factual grounding.",
+    "Captions/alt 08/12/13/14 now identify original finish coding and historical allocation."
+  ],
+  "proof": "All 26 final PDF pages independently viewed, with full-size checks of 1,5,6,7,20,22,23,24,26; unchanged canonical source and PDF identities rechecked.",
+  "protected_exceptions": [
+    "Frozen mathematical/numerical material, tabulated rows, code/enum values, source URLs and model versions.",
+    "YAML geometry 25mm retains executable production syntax.",
+    "Alternative descriptions are canonical package text; embedded PDF tagging was not claimed."
+  ],
+  "unresolved_scientific_questions": [
+    "Assessor error and independent human validation",
+    "Factual grounding and explanation accuracy",
+    "Broader task-population validity",
+    "Total adoption cost",
+    "Actual follow-up collection/performance and prospective allocation adequacy"
+  ],
+  "qualification": "Complete editorial coverage and structural validation for the exact current source/publication. Does not prove scientific coding correctness or absence of every possible defect.",
+  "receipts": {
+    "manifest": "followup-hermeneutic-manifest.json",
+    "coverage": "followup-hermeneutic-coverage.json",
+    "validator": "followup-hermeneutic-validator.txt",
+    "proof": "followup-hermeneutic-proof-identity.json",
+    "review": "followup-hermeneutic-review.md",
+    "plain_words": "followup-hermeneutic-plain-words.md",
+    "reinterpretation": "followup-hermeneutic-reinterpretation.md",
+    "harts": "followup-hermeneutic-style-sheet.md",
+    "candidate_adjudications": "followup-hermeneutic-candidate-adjudications.json",
+    "semantic_regression": "followup-hermeneutic-semantic-regression.json",
+    "paragraph_map": "followup-hermeneutic-paragraph-map.json"
+  }
+}

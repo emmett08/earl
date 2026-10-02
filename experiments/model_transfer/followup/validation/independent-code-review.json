@@ -1,0 +1,161 @@
+{
+  "schema": "EAL/followup-independent-code-review/1",
+  "reviewer": "/root/abstraction_reaudit: separate AI review role within the same orchestration session",
+  "reviewed_at": "2026-10-02",
+  "base_revision": "cea2b59e686d57e0c071924f184b497919ec91a7",
+  "status": "passed",
+  "material_findings": [],
+  "code_edits": [],
+  "scope": "Bounded independent inspection and read-only reconstruction of follow-up delivery, answer endpoints, budget/resume controls and preservation of historical/supplemental observations; no duplicate full suite and no live requests.",
+  "evidence": {
+    "default_schedule_exact": true,
+    "default_donor_blocks": 10,
+    "old_primary_resource_fields_identical": true,
+    "primary_resource_differences": {},
+    "new_primary_host_raw_snapshot_reads": 0,
+    "old_primary_scores_identical": true,
+    "primary_rawtext_api_attempts_events_unchanged": true,
+    "primary_decompressed_hash": "927d14d61ad67dceb1bf72e3e5c8dda0e73e6c29407dec660f9490fdf02460ef",
+    "supplemental_raw_preserved": true,
+    "supplemental_amendments": [
+      {
+        "session_id": "block-0025.eal.session-8",
+        "arm": "eal",
+        "from": "ambiguous",
+        "to": "undetermined",
+        "reference": "undetermined",
+        "match": true,
+        "history_preserved": true
+      },
+      {
+        "session_id": "block-0039.eal.session-2",
+        "arm": "eal",
+        "from": "ambiguous",
+        "to": "undetermined",
+        "reference": "undetermined",
+        "match": true,
+        "history_preserved": true
+      },
+      {
+        "session_id": "block-0058.eal.session-8",
+        "arm": "eal",
+        "from": "ambiguous",
+        "to": "undetermined",
+        "reference": "undetermined",
+        "match": true,
+        "history_preserved": true
+      },
+      {
+        "session_id": "block-0081.eal.session-9",
+        "arm": "eal",
+        "from": "ambiguous",
+        "to": "undetermined",
+        "reference": "undetermined",
+        "match": true,
+        "history_preserved": true
+      },
+      {
+        "session_id": "block-0084.eal.session-4",
+        "arm": "eal",
+        "from": "ambiguous",
+        "to": "undetermined",
+        "reference": "not_ready",
+        "match": false,
+        "history_preserved": true
+      },
+      {
+        "session_id": "block-0127.eal.session-7",
+        "arm": "eal",
+        "from": "ambiguous",
+        "to": "undetermined",
+        "reference": "undetermined",
+        "match": true,
+        "history_preserved": true
+      }
+    ],
+    "runtime_semantics_unchanged": {
+      "experiments/model_transfer/provider.py": true,
+      "experiments/model_transfer/run_state.py": true,
+      "experiments/model_transfer/session_recovery.py": true,
+      "experiments/model_transfer/execution.py": true
+    },
+    "scripted_delivery_checks": {
+      "rehearsal_files_match_recorded_hashes": true,
+      "retained_raw_archive_matches": true,
+      "executed_identity_preserved": true,
+      "frozen_plan_matches_execution": true,
+      "scripted_provenance": true,
+      "eight_common_donors": true,
+      "five_positions_three_reasoners_per_donor": true,
+      "all_clones_same_donor_workspace_and_observations": true,
+      "position_matched_snapshot_preserved": true,
+      "matched_current_raw_inputs": true,
+      "delivered_initial_wire_prompts": true,
+      "no_native_tools_on_wire": true,
+      "fresh_recipient_conversations": true,
+      "no_oracle_or_manipulation_metadata_in_current_inputs": true,
+      "facts_withhold_computed_decision": true,
+      "canonical_is_not_primary_success": true
+    },
+    "scripted_execution_identity": "d94455ac0cde4d5227c5fdba962536f0816fa9adc8961f1b94445753784418bf",
+    "current_processing_identity": "fb7406961ffef174dfcd3070cf586846de448d1d359118425dea009ba19e2fc2",
+    "rehearsal_archive_sha256": "44b0c21206df4df4a819d6a0842320cc34d1fb89b50b828de774ec67dc57be19",
+    "reviewed_source_sha256": {
+      "experiments/model_transfer/answers.py": "46aef4a796f54bead27ef21d5f12af5f8a1075a0dda64ab61b5895bd58b1a82d",
+      "experiments/model_transfer/annotations.py": "f912c5fc2307e0a585e4019eeb7c275fb91c47fc1549cf5b7d9f673b3ded8786",
+      "experiments/model_transfer/scoring.py": "9962f719b8a008bd9bf2f9e284fbca78f9ca39b93796093a011dcf1358efccc1",
+      "experiments/model_transfer/session.py": "b8286eddcf6916511c6e696f582f597e109700357678dc39a1e6361ad64dac58",
+      "experiments/model_transfer/diagnostic_design.py": "ec1cd032269d664f1f885defe07bd5897e9f03d4faf2275ca7ab586b3d963650",
+      "experiments/model_transfer/diagnostics.py": "849f8d27781ac8559c03c32b8206910f7c5ecbdb2fc8ee37d3ae80d5acd5ef6d",
+      "experiments/model_transfer/diagnostic_measurement.py": "d36cb236bc78798f5aa195dfa581adf2eaa1d4b89a4d44ed2f20b879e71fa557",
+      "experiments/model_transfer/diagnostic_reporting.py": "05c31c217b7236317bda4c8b06a3e61cd0de1e7dc0c8cc3d82442ac047bbace7",
+      "experiments/model_transfer/diagnostic_inference.py": "a94cd01c0496f1e6ec2685e9afdf3b2d52d0f78dfaf8e8aad99d182c4ed39a9c",
+      "experiments/model_transfer/restoration.py": "8c7107780f78b6efbc457805ac1d5d0fcfc2ee5a945fe29ef87198cdda4acf9b",
+      "experiments/model_transfer/project.py": "d0027f47bd36c7581797d9648d6ee3bcd0e42d8dcdfecd9df6587ea99f718388",
+      "experiments/model_transfer/reasoning_context.py": "570a421cf218da012184ac79184b922137bf0b6a596e33d2136dc4f46a83f3a6",
+      "experiments/model_transfer/resources.py": "65f507808b500d6eb5bc34bd018bc5049de9aae0cb1df01335bd1fb53a50b488",
+      "experiments/model_transfer/provider.py": "80a02f66347a030c2b088e7f4d0584f39423e09d6d027065bd1e42b43a77d2ce",
+      "experiments/model_transfer/run_state.py": "2b5116c19d04edf59530fde201cf5f1e55069b16fa2ba5dd799ebffc3d3ad1ec",
+      "experiments/model_transfer/session_recovery.py": "604963b05a87bdf90e3fa7446e5eba997ce1c8b1caae41b2d19e4739399681dc",
+      "experiments/model_transfer/execution.py": "11b2b3e09561b72238803622c57881f3a0f30deead6a62fcda02247789af0b17",
+      "experiments/model_transfer/rehearse.py": "a360a0905b97fccc9396f1957310ca194337373e8939fd189831972a5bd010d7",
+      "experiments/model_transfer/runner.py": "55f00b95b14a7fd491fd0dee5831644338a0eda87875e82aa0eeeee40cd73282",
+      "experiments/model_transfer/followup/plan.json": "8035f0fd15077047b20343f1d3b10005873bdbbee66ebb31b1dc4d93da21beb0",
+      "experiments/model_transfer/followup/protocol.json": "dd3802582db38e847a44ee193b498d42182f231a996e0ac45cbf289e5b6a0e4e",
+      "experiments/model_transfer/followup/validation/rehearsal.json": "d82f139bc987a1a2496e0a539ea703b11d3e8508de3a7e10d4384b7302b2d1f8",
+      "scripts/review_pilot_measurement.py": "d2e13db43510a3621ffd8928ceedc90baca1b3c75ddac7b28d04bf895322bbfd",
+      "paper/followup/measurement/supplemental-review.json": "87ba73090931541c5d5efc55bf9762847ca03b81d577b53cab29bb5af7894a4e",
+      "paper/followup/measurement/supplemental-annotated-rows.json.gz": "2e7387323dea179f809b20142ef959a1d47de437f433fac926cf86bba45c1f8b",
+      "paper/data/annotated-rows.json.gz": "57b0cb04092410a6c96098fd404840ae1454dca0a0fb9273a42b3031d6ade764"
+    }
+  },
+  "static_budget_review": {
+    "budget_usd": 2,
+    "loader_check": "0 < budget_usd <= 2",
+    "shared_client": "One BudgetedClient shared across DiagnosticPilot worker blocks, guarded by its re-entrant lock.",
+    "resume": "RunState validates unchanged plan/implementation/runtime/root; BudgetedClient reconstructs spent balance from all charged_or_reserved_usd journal rows. Existing recorded sessions are retained rather than retried.",
+    "uncompleted_attempts": "Uncompleted or failed requests retain reservation when known usage is absent.",
+    "worst_case_reservation_envelope_usd": 1.048576,
+    "qualification": "A configured-rate reservation envelope, not reconciled billing or a study-power result."
+  },
+  "endpoint_review": {
+    "primary": "Communicated whole-task verdict matches the reference and independently coded internal explanation/canonical-field consistency is established.",
+    "canonical": "Parsed JSON enum/reference agreement is recorded separately and cannot establish substantive success by itself.",
+    "missing": "Pending/ambiguous/no-explanation consistency remains unresolved; known contradictory or known absent task answers cannot establish success.",
+    "historical": "whole_answer_consistency_required is opt-in for this separate follow-up, leaving historical primary scoring unchanged.",
+    "limits": "Internal semantic consistency does not assess factual explanation accuracy."
+  },
+  "execution_identity": {
+    "executed_implementation_sha256": "d94455ac0cde4d5227c5fdba962536f0816fa9adc8961f1b94445753784418bf",
+    "current_processing_implementation_sha256": "fb7406961ffef174dfcd3070cf586846de448d1d359118425dea009ba19e2fc2",
+    "meaning": "The original scripted execution hash is retained unchanged. Later review/processing identity is distinct; this validation JSON/Markdown is excluded from JSON implementation hashing."
+  },
+  "limitations": [
+    "All delivery results inspected here use the retained scripted rehearsal; none are actual model-performance observations.",
+    "Eight purposively authored task instances, one repeat and three cloned contexts per position do not establish task-population reliability, superiority or principal-study power.",
+    "Availability cause and task-domain wording vary together; cause effects remain descriptive.",
+    "Source hashes and snapshot fingerprints establish inspected state preservation under the trusted runner/collector, not arbitrary adversarial filesystem equivalence.",
+    "Same-session AI material construction, reference review and masked coding may share specification or assessor error; they do not supply independent human validation.",
+    "Pinned model availability and provider behaviour require an actual successful request; no substitute model is authorised by this receipt."
+  ]
+}

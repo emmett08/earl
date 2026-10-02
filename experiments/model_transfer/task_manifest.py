@@ -7,11 +7,14 @@ import json
 import math
 from pathlib import Path
 
-from jsonschema import validate
+from jsonschema import Draft202012Validator
 
 from .corpus_cases import CorpusCase
 from .corpus_logic import RULE, FACT
 from .corpus_reference import CorpusReference
+
+RULE_VALIDATOR = Draft202012Validator(RULE)
+FACT_VALIDATOR = Draft202012Validator(FACT)
 
 
 def manifest_cases(payload: dict) -> tuple[CorpusCase, ...]:
@@ -30,7 +33,7 @@ def manifest_cases(payload: dict) -> tuple[CorpusCase, ...]:
         raise ValueError('Supply between one and 1000 task records')
     cases = []
     for record in records:
-        validate(record['rule'], RULE)
+        RULE_VALIDATOR.validate(record['rule'])
         spec = record['specification']
         if not isinstance(record.get('identifier'), str) or not record['identifier'].strip():
             raise ValueError('Task identity is required')
@@ -55,7 +58,7 @@ def manifest_cases(payload: dict) -> tuple[CorpusCase, ...]:
             if type(snapshot.get('evidence_revision')) is not int or snapshot['evidence_revision'] < 0:
                 raise ValueError('Explicit evidence revision events are required')
             for fact in snapshot['facts']:
-                validate(fact, FACT)
+                FACT_VALIDATOR.validate(fact)
             if previous:
                 if snapshot['now_minute'] <= previous['now_minute'] or snapshot['evidence_revision'] < previous['evidence_revision']:
                     raise ValueError('Times must increase and evidence revisions cannot decrease')

@@ -56,7 +56,9 @@ class ContractCalibration:
                 try:
                     project = Project(root / case.identifier, case, 'eal')
                     binding = TaskContextBuilder(TaskContract.from_case(case), case.source(), explain=project.explain)
-                    for session in range(1 + plan['recipient_sessions']):
+                    positions = plan.get('recipient_positions')
+                    sessions = [0, *positions] if positions is not None else range(1 + plan['recipient_sessions'])
+                    for session in sessions:
                         project.set_session(session)
                         assessment = assess_project(project, now=case.time(session))
                         context = binding.build(assessment)

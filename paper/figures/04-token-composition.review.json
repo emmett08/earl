@@ -1,0 +1,91 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-04-token-composition",
+  "spec_sha256": "9d79ca07f00d62557bb733bf49d4d0e2ff851beb7e9ad970fd97b188b4da2353",
+  "audit_sha256": "c5e1755e489ed80c5ded6afc10f81f08ff8b1fd5205f35a161c21aacbf209cfd",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/04-token-composition.pdf",
+      "sha256": "097b75f6ab436b059a50c66c3265c9af2480156efedabefd2537c86357e5a5ea"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/04-token-composition.pdf",
+      "sha256": "097b75f6ab436b059a50c66c3265c9af2480156efedabefd2537c86357e5a5ea"
+    }
+  ],
+  "reviewer": {
+    "id": "/root",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "selected",
+      "prototype": "figures/04-token-composition.pdf",
+      "observations": {
+        "reading": "Blind reading matches actual-recipient-only inclusion and disjoint input/other-output/reasoning decomposition. Caption and table both retain provider-reported zero reasoning for plain recipients. Bar totals and one-million scale match table accounting identities.",
+        "annotation_burden": "Stacked bars directly retain absolute totals and disjoint accounting composition; alternate normalised shares would answer a different question and lose the total-token reduction context.",
+        "reproduction": "Three component boundaries and consistent left-to-right order survive greyscale. Input and reasoning have similar tones but the fixed stack order and caption preserve identity. Ordinary-versus-EAL row labels remain explicit."
+      }
+    }
+  ],
+  "selected_candidate": "selected",
+  "initial_reconstruction": {
+    "claim": "Recipient-only total token use is lower under EAL in each actual recipient-model/tool group. Much of the reduction is in input tokens. The reasoning-model groups also contain provider-reported reasoning output; plain-model groups show a reported zero reasoning component.",
+    "quantities": [
+      "Horizontal stacked lengths are summed recipient tokens in millions, from zero. Gray is input including cached input; blue is other output; orange is provider-reported reasoning output. Other output is output minus reasoning, so stacked endpoints equal input plus output.",
+      "Gray, blue and orange legend boxes match visible stacked components. Plain rows have no orange component, as explained by a reported zero in the caption. The header and caption both scope the legend to recipient sessions only."
+    ],
+    "evidence_status": "Observed token-accounting aggregates with a derived disjoint decomposition. Zero plain reasoning is provider-reported accounting and does not itself demonstrate absence of internal reasoning. No uncertainty estimate is shown.",
+    "scope": "480 recipient sessions in each actual recipient-model/tool/arm group from 48 trajectories. Donors are excluded; eight rows separate EAL E and ordinary O within four groups. These are totals rather than per-session averages or shares.",
+    "unintended_inferences": [
+      "Composition and absolute totals may be compared across equal-sized recipient groups. The plot cannot show donor composition or convert tokens into monetary, energy or compute costs. It does not identify causal effects of native-tool permission."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "Blind reading matches actual-recipient-only inclusion and disjoint input/other-output/reasoning decomposition. Caption and table both retain provider-reported zero reasoning for plain recipients. Bar totals and one-million scale match table accounting identities.",
+      "Current specification, source, table, audit, caption, PDF and accessibility previews match the independently accepted exact binding hashes.",
+      "Completion-stage root semantic acceptance: analysis/completion-resource-semantic-acceptance.json SHA-256 82db48c92e3d127d31780c2afd6113d4ed17a2dffde7607ec9c6bdcb08e4be62. All ten current resource PNGs equal their independently accepted pre-completion versions; final captions and two-stage scope were freshly compared.",
+      "Completion-stage independent numerical audit of all fourteen canonical figures: analysis/completion-figure-numerical-audit.json SHA-256 7f19166c06865828a1de73ce1afc1b51738ff61fdaad40117ce2d58d52eeedce."
+    ],
+    "findings": [
+      {
+        "id": "accurate-mark-metadata",
+        "severity": "minor",
+        "description": "Several channel descriptions inherited generic connecting-line mark wording.",
+        "disposition": "resolved",
+        "reason": "Latest specifications now name actual unconnected point/bar/segment marks and matching categorical rows, rather than the inaccurate generic connecting-line wording."
+      },
+      {
+        "id": "two-stage-scope",
+        "severity": "informational",
+        "description": "The finish run adds AI communication codes to unchanged resource records. Earlier resource-only acceptance alone did not bind the updated scope.",
+        "disposition": "accepted",
+        "reason": "Root compared all current captions and updated scope, checked unchanged PNGs and exact model/role denominators, accounting/time boundaries, acquisitions/reuse and descriptive estimands. Resource plots make no independent quality or adoption claim."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "Shell escape is intentionally disabled; retained literal source coordinates render without external TeX execution."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "PGFPlots emits this package-initialisation compatibility notice before the include-ready source sets compat=1.18. Exact coordinates, labels and glyphs were independently inspected; no visible defect results."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This is figure semantic and mechanical screening, not independent human validation of communicated decisions, factual content or explanation correctness. Resolved AI-code error and trajectory independence remain unmeasured.",
+    "The six selected cases and fixed task/model/tool mixture do not establish a task-population effect, causal component attribution or practical adoption. Statistical endpoint bounds retain their stated conditional assumptions and approximate resource component.",
+    "Manuscript placement is covered by the separate final PDF proof; this contract binds the standalone figure source, specifications, audit and exact final/prototype PDFs."
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "schema": "EAL/article-completion-inference-audit/1",
+  "decision": "numerical_reproduction_passed_conditional_claims_required",
+  "input_sha256": {
+    "annotated-rows.json": "927d14d61ad67dceb1bf72e3e5c8dda0e73e6c29407dec660f9490fdf02460ef",
+    "calls.json": "fc3dd28a2058b0267102c2f4e66b630a0fc949f003d4c2092442678f5242d4ca",
+    "analysis-annotated.json": "e52468e90430dc0eab8466b44162c2d4c09d6b1aa010aff25eda6331d31e40e9",
+    "information-report.json": "3ddd5c8ecd12428f8be7c6eb08f10e908ae57b5c2a83da324272052606089a55",
+    "plan.json": "19f2c1e468c3a2b0ce5cc5a107469b2cef524c40a4344f1db4c3e120769a6ce9"
+  },
+  "unit_counts": {
+    "paired_trajectories": 192,
+    "fixed_strata": 48,
+    "reruns_per_stratum": 4,
+    "recipient_sessions_per_arm": 1920,
+    "all_sessions": 4224,
+    "api_attempts": 5442
+  },
+  "score_counts": {
+    "ordinary_donor": {
+      "correct": 171,
+      "incorrect": 19,
+      "unknown": 2
+    },
+    "ordinary_recipient": {
+      "correct": 739,
+      "incorrect": 1171,
+      "unknown": 10
+    },
+    "eal_donor": {
+      "correct": 192
+    },
+    "eal_recipient": {
+      "correct": 1866,
+      "incorrect": 41,
+      "unknown": 13
+    }
+  },
+  "reconstructed": {
+    "quality_difference_bounds": [
+      0.5817708333333333,
+      0.59375
+    ],
+    "eal_correctness_bounds": [
+      0.9718749999999999,
+      0.9786458333333333
+    ],
+    "quality_interval": [
+      0.41504020310161593,
+      0.7604806302317174
+    ],
+    "eal_correctness_interval": [
+      0.8870838264451801,
+      1
+    ],
+    "quality_sampling_half_width": 0.16673063023171744,
+    "absolute_quality_sampling_half_width": 0.08479117355481985,
+    "token_reduction": 0.3360920873730253,
+    "token_reduction_interval": [
+      0.32327773475042715,
+      0.3489064399956235
+    ],
+    "token_sampling_half_width": 0.012814352622598195,
+    "resource_degrees_of_freedom": 41.88111421546849
+  },
+  "decision_lower_bounds": {
+    "quality_difference": 0.46471260096080524,
+    "eal_correctness": 0.9121760934305095,
+    "token_reduction": 0.3274494073397548
+  },
+  "decision_thresholds": {
+    "quality_difference": -0.05,
+    "eal_correctness": 0.9,
+    "token_reduction": 0.2
+  },
+  "decision_numeric_margins": {
+    "quality_difference": 0.5147126009608053,
+    "eal_correctness": 0.012176093430509516,
+    "token_reduction": 0.1274494073397548
+  },
+  "quality_variance_upper_bounds": {
+    "paired_difference": 0.018871327955150213,
+    "eal_absolute": 0.005573224350655107
+  },
+  "quantile_implementation": "Independent scipy.stats.t.ppf",
+  "finite_record_envelopes_need_sampling_independence": false,
+  "confidence_interpretation": "Expectations over independent repeated whole trajectories at the fixed selected task/model/tool conditions; not uncertainty in the exact already-observed totals or sampled task populations.",
+  "one_sided_intersection_union": "Three one-sided components at alpha=.05. Joint success requires all three; false success is contained in rejection of any component whose threshold null is true. Endpoint independence is unnecessary. Resource inference remains approximate.",
+  "two_sided_simultaneous_estimation": {
+    "endpoint_nominal_coverage": 0.9833333333333333,
+    "tail_probability": 0.008333333333333333,
+    "family_nominal_coverage": 0.95,
+    "qualification": "Quality coverage requires independent bounded latent trajectories and correct known codes; token coverage is approximate. These intervals are distinct from the decision bounds."
+  },
+  "allocation": {
+    "fully_scored_paired_trajectories": 173,
+    "trajectories_with_unresolved_recipient_quality": 19,
+    "minimum_fully_scored_reruns_in_stratum": 2,
+    "resource_reruns_in_every_stratum": 4,
+    "blockers": [
+      "Pilot replication is below the declared minimum for nuisance estimation",
+      "Complete pilot recipient annotation is required before empirical allocation"
+    ],
+    "simulation_executed": false,
+    "proposal": null,
+    "interpretation": "All five candidates are withheld before simulation; no budget infeasibility or evaluated power result is established."
+  },
+  "status_semantics": {
+    "execution_status": "complete",
+    "report_status": "pending_annotation",
+    "pending_task_annotations": 25,
+    "practical_decision_measurement_status": "complete",
+    "practical_decision_status": "pilot_only",
+    "complete_measurement_status_scope": "Resource receipt accounting only, not answer-label resolution."
+  },
+  "envelope_variance_adversarial_checks": [
+    {
+      "lower": [
+        0,
+        0.4,
+        0.8
+      ],
+      "upper": [
+        0.2,
+        0.9,
+        1
+      ],
+      "endpoint_completions": 8,
+      "maximum_endpoint_variance": 0.30333333333333334,
+      "conservative_variance_bound": 0.37499530068546305
+    },
+    {
+      "lower": [
+        -1,
+        -0.4,
+        0,
+        0.3
+      ],
+      "upper": [
+        -0.8,
+        0.1,
+        0.7,
+        1
+      ],
+      "endpoint_completions": 16,
+      "maximum_endpoint_variance": 0.8758333333333334,
+      "conservative_variance_bound": 1.005577738487353
+    }
+  ],
+  "independence_counterexample": {
+    "kind": "synthetic_exact_calculation_not_pilot_data",
+    "n": 192,
+    "construction": "All observations equal a single Bernoulli(.9) draw.",
+    "true_mean": 0.9,
+    "one_sided_lower_if_all_one": 0.9549351550108245,
+    "probability_of_false_rejection_of_absolute_quality_boundary": 0.9,
+    "conclusion": "Grouping within trajectories does not establish independence between trajectories; confidence guarantees fail under this deliberate perfect dependence."
+  },
+  "unmeasured_properties": [
+    "Assessor error and differential coder bias",
+    "Between-trajectory shared-provider dependence",
+    "Quality of explanations, evidence citations and factual grounding",
+    "Developer utility thresholds",
+    "Efficacy on independently sampled tasks and pure notation/model-capability effects"
+  ],
+  "primary_theorem_source": {
+    "url": "https://arxiv.org/pdf/0907.3740",
+    "theorem": 11,
+    "verified_property": "Independent bounded variables are required; identical distributions are unnecessary.",
+    "verification_date": "2026-10-02"
+  }
+}

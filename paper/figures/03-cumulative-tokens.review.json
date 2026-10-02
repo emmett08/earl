@@ -1,0 +1,108 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-03-cumulative-tokens",
+  "spec_sha256": "56edbb5096a0074d4b3d62b7150180d83d3514d0100ddc69f0fb6e2047f59931",
+  "audit_sha256": "1ac9d1c851627ef55d226c3258e8d488d029815fdad9e0d84e404a5d26c0e04d",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/03-cumulative-tokens.pdf",
+      "sha256": "672eb4faf89a9ce5c3a7d20a09a7297df8ea68cb242e633d71e36c01e2741ecf"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/03-cumulative-tokens.pdf",
+      "sha256": "672eb4faf89a9ce5c3a7d20a09a7297df8ea68cb242e633d71e36c01e2741ecf"
+    }
+  ],
+  "reviewer": {
+    "id": "/root",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "selected",
+      "prototype": "figures/03-cumulative-tokens.pdf",
+      "observations": {
+        "reading": "Total tokens across 192 trajectories per arm accumulate from a nonzero donor through zero to ten recipients. Ordinary ends at 2.982 million and EAL at 1.980 million. Absolute separation grows while the relative reduction narrows from 47.46% to 33.61%. A second graphic form would add no useful relation: the selected familiar representation directly retains the specified ordering, disjoint accounting, nominal statuses or matched distribution.",
+        "annotation_burden": "Direct axis labels, category labels and explicit caption retain units, sign, denominator and evidence status. The independent reviewer recovered the stated quantities.",
+        "reproduction": "The exact current colour PNG and caption were independently accepted by root. Current mechanical audits meet the 160 mm maximum width, 9 pt lettering and 0.4 pt stroke floors; retained shape, line-pattern, order and direct-label mappings also support greyscale inspection."
+      }
+    }
+  ],
+  "selected_candidate": "selected",
+  "initial_reconstruction": {
+    "claim": "Total tokens across 192 trajectories per arm accumulate from a nonzero donor through zero to ten recipients. Ordinary ends at 2.982 million and EAL at 1.980 million. Absolute separation grows while the relative reduction narrows from 47.46% to 33.61%.",
+    "quantities": [
+      "Cumulative input plus output tokens, millions",
+      "Included recipient horizon, count",
+      "192 donor-inclusive trajectories per arm"
+    ],
+    "evidence_status": "Derived cumulative totals of observed provider token use; no extrapolation or correctness conclusion.",
+    "scope": "Donor session zero and recipient horizons through ten in the selected run.",
+    "unintended_inferences": [
+      "The initial donor is already included, so the curves do not begin with zero expenditure.",
+      "The horizontal coordinate is task-session position, not wall-clock time."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "Root independently inspected the exact current PNG and caption, and accepted their labels, glyphs, sign meanings, quantities, inclusion rules and fixed-run scope against the raw numerical reconstruction.",
+      "Current source, specification, retained data, caption and mechanical audit agree. Caption dependencies and exact source/specification/PDF hashes are retained by the audit.",
+      "Earlier independent colour and greyscale screening retained the same data-marker and line-pattern mappings; the current changes complete ECDF tails or clarify boundaries and sample metadata.",
+      "Completion-stage root semantic acceptance: analysis/completion-resource-semantic-acceptance.json SHA-256 82db48c92e3d127d31780c2afd6113d4ed17a2dffde7607ec9c6bdcb08e4be62. All ten current resource PNGs equal their independently accepted pre-completion versions; final captions and two-stage scope were freshly compared.",
+      "Completion-stage independent numerical audit of all fourteen canonical figures: analysis/completion-figure-numerical-audit.json SHA-256 7f19166c06865828a1de73ce1afc1b51738ff61fdaad40117ce2d58d52eeedce."
+    ],
+    "findings": [
+      {
+        "id": "horizon-quantity-reference",
+        "severity": "blocking",
+        "description": "The initial horizontal encoding incorrectly referenced cumulative token quantity rather than recipient horizon.",
+        "disposition": "resolved",
+        "reason": "A separate integer horizon quantity now defines donor-only position zero and recipient inclusion through ten."
+      },
+      {
+        "id": "final-grid-clearance",
+        "severity": "minor",
+        "description": "Mechanical font-bound diagnostics identified optional grid or reference-line contacts in an earlier render.",
+        "disposition": "resolved",
+        "reason": "Annotation placement or optional grids were revised; the current exact audit reports zero measurement warnings, and root inspected the current colour and greyscale render."
+      },
+      {
+        "id": "per-arm-sample",
+        "severity": "minor",
+        "description": "Earlier sample metadata confused the combined input universe with contributors to each arm curve.",
+        "disposition": "resolved",
+        "reason": "The current quantity declares 192 trajectories per arm, with the 384-trajectory input universe stated separately."
+      },
+      {
+        "id": "two-stage-scope",
+        "severity": "informational",
+        "description": "The finish run adds AI communication codes to unchanged resource records. Earlier resource-only acceptance alone did not bind the updated scope.",
+        "disposition": "accepted",
+        "reason": "Root compared all current captions and updated scope, checked unchanged PNGs and exact model/role denominators, accounting/time boundaries, acquisitions/reuse and descriptive estimands. Resource plots make no independent quality or adoption claim."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "Shell escape is intentionally disabled; retained literal source coordinates render without external TeX execution."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "PGFPlots emits this package-initialisation compatibility notice before the include-ready source sets compat=1.18. Exact coordinates, labels and glyphs were independently inspected; no visible defect results."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This is figure semantic and mechanical screening, not independent human validation of communicated decisions, factual content or explanation correctness. Resolved AI-code error and trajectory independence remain unmeasured.",
+    "The six selected cases and fixed task/model/tool mixture do not establish a task-population effect, causal component attribution or practical adoption. Statistical endpoint bounds retain their stated conditional assumptions and approximate resource component.",
+    "Manuscript placement is covered by the separate final PDF proof; this contract binds the standalone figure source, specifications, audit and exact final/prototype PDFs."
+  ]
+}

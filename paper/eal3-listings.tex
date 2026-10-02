@@ -1,0 +1,16 @@
+% EAL/3 highlighting follows grammar/EAL.g4. No EARL 6.1 keywords are used.
+\definecolor{ealkeyword}{RGB}{0,92,100}
+\definecolor{ealstring}{RGB}{80,80,80}
+\lstdefinelanguage{EALthree}{
+  sensitive=true,
+  morekeywords={and,apply,argument,as,assuming,assumption,assumptions,backing,binding,claim,context,contrary,decreases,else,environment,evidence,false,from,head,import,input,kind,language,max_age,method,module,not,null,objection,or,over,pattern,prefer,premises,proposition,quantity,query,rank,rationale,reasoning,require,result,reviewed,scope,statement,strict,subject,tail,to,tool,transfer,true,unit,valid_from,valid_until,validate,version,via,when},
+  morestring=[b]",
+  morecomment=[l]{//},morecomment=[s]{/*}{*/}}
+\lstdefinestyle{ealcode}{language=EALthree,
+  basicstyle=\ttfamily\fontsize{8.5}{11}\selectfont,
+  keywordstyle=\color{ealkeyword}\bfseries,
+  stringstyle=\color{ealstring},commentstyle=\color{black!55}\itshape,
+  showstringspaces=false,columns=fullflexible,keepspaces=true,
+  breaklines=true,breakatwhitespace=false,tabsize=2,
+  numbers=left,numberstyle=\fontsize{7}{9}\selectfont\color{black!55},
+  numbersep=7pt,xleftmargin=13pt,frame=none,captionpos=b}

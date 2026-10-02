@@ -20,6 +20,7 @@ from .records import SequenceRecords
 
 SCHEMA = 'EAL/model-transfer-annotations/1'
 LABELS = {'ready', 'not_ready', 'undetermined', 'no_answer', 'ambiguous'}
+CONSISTENCY_LABELS = {'consistent', 'contradictory', 'ambiguous', 'no_explanation'}
 RUBRIC = (
     'Code the decision explicitly communicated by this answer. Do not assess its '
     'factual correctness or infer a decision from measurements. Use ready for an '
@@ -27,8 +28,22 @@ RUBRIC = (
     'undetermined for an explicit inability to establish readiness, no_answer for '
     'text that provides no task decision, and ambiguous for unresolved conflicting '
     'decisions. Distinguish historical or hypothetical statements from the current '
-    'conclusion. Supply an exact supporting quote from the answer and a brief note. '
+    'conclusion. Distinguish criterion failure from practical withholding because readiness is unknown: '
+    'parentheses or a full explanation can clarify that meaning without the literal word correction. '
+    'A lexical collision alone does not establish conflicting current verdicts; explicit incompatible '
+    'criterion classifications can remain ambiguous. Tentative modal readiness wording may remain ambiguous. '
+    'Supply an exact supporting quote from the answer and a brief note. '
     'Leave ambiguous answers unresolved; do not choose the most favourable reading.'
+)
+CONSISTENCY_RUBRIC = (
+    'Also code explanation_consistency against the current communicated verdict and any JSON decision field: '
+    'consistent when the explanation supports or qualifies that same current verdict without a conflicting conclusion; '
+    'contradictory when it communicates an incompatible current verdict or reverses the JSON decision; '
+    'ambiguous when consistency cannot be resolved, and no_explanation when no explanatory content is present. '
+    'Read qualifications semantically: a phrase such as "not ready (undetermined)" may communicate inability '
+    'to establish readiness, rather than a failed requirement. Do not impose a code from an isolated phrase. '
+    'Do not infer task correctness from the wording. Preserve conflicting or ambiguous conclusions. '
+    'Supply an exact consistency_quote and a brief consistency_note; an entire answer may be quoted when explaining absence.'
 )
 
 
@@ -65,6 +80,7 @@ class AnnotationExchange:
         rows_text = SequenceRecords(run).text()
         rows = json.loads(rows_text)
         items, mapping, seen = [], [], set()
+        consistency_required = False
         for row in rows:
             for session in _sessions(row):
                 session_id = session['session_id']
@@ -80,10 +96,14 @@ class AnnotationExchange:
                 identifier = uuid.uuid4().hex
                 items.append({'id': identifier, 'text': text, 'decision': None,
                               'quote': '', 'note': ''})
+                if session.get('whole_answer_consistency_required'):
+                    consistency_required = True
+                    items[-1].update(explanation_consistency=None, consistency_quote='', consistency_note='')
                 mapping.append({'id': identifier, 'session_id': session_id,
                                 'answer_sha256': _digest(text)})
         random.SystemRandom().shuffle(items)
-        public = {'schema': SCHEMA, 'rubric': RUBRIC, 'annotator': '', 'items': items}
+        public = {'schema': SCHEMA, 'rubric': RUBRIC + (' ' + CONSISTENCY_RUBRIC if consistency_required else ''),
+                  'annotator': '', 'items': items}
         private = {'schema': SCHEMA, 'rows_sha256': _digest(rows_text), 'items': mapping}
         output.mkdir(parents=True, exist_ok=False)
         _write_new(output / 'items.json', public)
@@ -104,9 +124,13 @@ class AnnotationExchange:
         if not isinstance(annotator, str) or not annotator.strip():
             raise ValueError('Record an annotator identifier')
         assessor = supplied.get('assessor', {'kind': 'human'})
-        if not isinstance(assessor, dict) or assessor.get('kind') not in {'human', 'ai'}:
-            raise ValueError('Assessor kind must be human or ai')
+        if not isinstance(assessor, dict) or assessor.get('kind') not in {'human', 'ai', 'scripted'}:
+            raise ValueError('Assessor kind must be human, ai or an explicitly scripted rehearsal fixture')
         kind = assessor['kind']
+        if kind == 'scripted':
+            provenance = _read(run / 'provenance.json')
+            if provenance.get('execution_kind') != 'scripted' or assessor.get('method') != 'fixed-scripted-labels/1':
+                raise ValueError('Scripted labels are only valid for explicitly scripted rehearsal runs')
         if kind == 'ai':
             for field in ('model', 'method', 'validation', 'protocol'):
                 if not isinstance(assessor.get(field), str) or not assessor[field].strip():
@@ -141,13 +165,25 @@ class AnnotationExchange:
                 raise ValueError('Annotation needs an exact supporting quote from the answer')
             if not isinstance(note, str) or not note.strip():
                 raise ValueError('Annotation needs a coding note')
+            consistency = {}
+            if session.get('whole_answer_consistency_required'):
+                label, supporting, explanation_note = (item.get('explanation_consistency'),
+                    item.get('consistency_quote'), item.get('consistency_note'))
+                if label not in CONSISTENCY_LABELS:
+                    raise ValueError('Supply an explicit explanation-consistency code')
+                if not isinstance(supporting, str) or not supporting.strip() or supporting not in text:
+                    raise ValueError('Consistency coding needs an exact supporting quote')
+                if not isinstance(explanation_note, str) or not explanation_note.strip():
+                    raise ValueError('Consistency coding needs a note')
+                consistency = {'explanation_consistency': label, 'consistency_quote': supporting,
+                               'consistency_note': explanation_note}
             session.setdefault('annotation_history', []).append(copy.deepcopy(session.get('annotation')))
             status = {'ambiguous': 'ambiguous', 'no_answer': 'empty'}.get(decision, kind)
-            session['annotation'] = {'status': status, 'method': (assessor['method'] if kind == 'ai'
+            session['annotation'] = {'status': status, 'method': (assessor['method'] if kind in {'ai', 'scripted'}
                                                                                 else 'blind-human-decision/1'),
                                      'assessor': copy.deepcopy(assessor),
                                      'id': identifier, 'annotator': annotator.strip(),
-                                     'decision_code': decision, 'quote': quote, 'note': note}
+                                     'decision_code': decision, 'quote': quote, 'note': note, **consistency}
             # Human coding supplies only the decision. Other fields are copied
             # from the parsed answer when present; no basis or citation is inferred.
             answer = copy.deepcopy(session.get('answer'))

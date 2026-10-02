@@ -1,0 +1,588 @@
+{
+  "schema": "EAL/evidence-restoration-material-checks/1",
+  "kind": "synthetic_apparatus_calibration_not_live_model_accuracy",
+  "checked_timeline_snapshots": 88,
+  "matching_authored_oracle_and_method": 88,
+  "scheduled_positions": 40,
+  "scheduled_decisive_references": 32,
+  "scheduled_unknown_references": 8,
+  "unintended_unknown_references": 0,
+  "scheduled_requirement_state_checks": 40,
+  "scheduled_distribution": {
+    "ready": 20,
+    "undetermined": 8,
+    "not_ready": 12
+  },
+  "negative_restoration_reference_checks": 8,
+  "positive_restoration_reference_checks": 8,
+  "noncritical_gap_reference_checks": 8,
+  "always_undetermined_reference_accuracy": 0.2,
+  "always_ready_reference_accuracy": 0.5,
+  "always_not_ready_reference_accuracy": 0.3,
+  "budget_calculation": {
+    "model_rates_usd_per_million": {
+      "input": 0.1,
+      "output": 0.4
+    },
+    "input_wire_byte_cap": 32768,
+    "framing_token_reservation": 4096,
+    "output_token_cap": 1024,
+    "sessions": 128,
+    "calls_per_session_cap": 2,
+    "maximum_calls": 256,
+    "reservation_per_call_usd": 0.004096,
+    "maximum_reservation_envelope_usd": 1.048576,
+    "two_repeat_envelope_usd": 2.097152,
+    "shared_budget_usd": 2.0,
+    "qualification": "Conservative reservation at the configured rates; prices must be checked before execution. Actual costs include failed attempts, use provider usage, and may be lower."
+  },
+  "task_manifest_sha256": "cf02ce93ad16bdeadd1ae7f5ff7d1316df69a269e69d27ad7b1be2bcc0e552b6",
+  "rows": [
+    {
+      "case": "followup-all_of-release-missing",
+      "rule_type": "all_of",
+      "cause": "missing",
+      "position": 2,
+      "condition": "complete",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-all_of-release-missing",
+      "rule_type": "all_of",
+      "cause": "missing",
+      "position": 4,
+      "condition": "critical_gap",
+      "states": {
+        "r0": null,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "undetermined"
+    },
+    {
+      "case": "followup-all_of-release-missing",
+      "rule_type": "all_of",
+      "cause": "missing",
+      "position": 6,
+      "condition": "restored_positive",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-all_of-release-missing",
+      "rule_type": "all_of",
+      "cause": "missing",
+      "position": 8,
+      "condition": "restored_negative",
+      "states": {
+        "r0": false,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-all_of-release-missing",
+      "rule_type": "all_of",
+      "cause": "missing",
+      "position": 10,
+      "condition": "noncritical_gap",
+      "states": {
+        "r0": false,
+        "r1": null,
+        "r2": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-all_of-backup-stale",
+      "rule_type": "all_of",
+      "cause": "stale",
+      "position": 2,
+      "condition": "complete",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-all_of-backup-stale",
+      "rule_type": "all_of",
+      "cause": "stale",
+      "position": 4,
+      "condition": "critical_gap",
+      "states": {
+        "r0": null,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "undetermined"
+    },
+    {
+      "case": "followup-all_of-backup-stale",
+      "rule_type": "all_of",
+      "cause": "stale",
+      "position": 6,
+      "condition": "restored_positive",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-all_of-backup-stale",
+      "rule_type": "all_of",
+      "cause": "stale",
+      "position": 8,
+      "condition": "restored_negative",
+      "states": {
+        "r0": false,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-all_of-backup-stale",
+      "rule_type": "all_of",
+      "cause": "stale",
+      "position": 10,
+      "condition": "noncritical_gap",
+      "states": {
+        "r0": false,
+        "r1": null,
+        "r2": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-all_of-assembly-invalidated",
+      "rule_type": "all_of",
+      "cause": "invalidated",
+      "position": 2,
+      "condition": "complete",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-all_of-assembly-invalidated",
+      "rule_type": "all_of",
+      "cause": "invalidated",
+      "position": 4,
+      "condition": "critical_gap",
+      "states": {
+        "r0": null,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "undetermined"
+    },
+    {
+      "case": "followup-all_of-assembly-invalidated",
+      "rule_type": "all_of",
+      "cause": "invalidated",
+      "position": 6,
+      "condition": "restored_positive",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-all_of-assembly-invalidated",
+      "rule_type": "all_of",
+      "cause": "invalidated",
+      "position": 8,
+      "condition": "restored_negative",
+      "states": {
+        "r0": false,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-all_of-assembly-invalidated",
+      "rule_type": "all_of",
+      "cause": "invalidated",
+      "position": 10,
+      "condition": "noncritical_gap",
+      "states": {
+        "r0": false,
+        "r1": null,
+        "r2": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-all_of-export-version_mismatch",
+      "rule_type": "all_of",
+      "cause": "version_mismatch",
+      "position": 2,
+      "condition": "complete",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-all_of-export-version_mismatch",
+      "rule_type": "all_of",
+      "cause": "version_mismatch",
+      "position": 4,
+      "condition": "critical_gap",
+      "states": {
+        "r0": null,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "undetermined"
+    },
+    {
+      "case": "followup-all_of-export-version_mismatch",
+      "rule_type": "all_of",
+      "cause": "version_mismatch",
+      "position": 6,
+      "condition": "restored_positive",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-all_of-export-version_mismatch",
+      "rule_type": "all_of",
+      "cause": "version_mismatch",
+      "position": 8,
+      "condition": "restored_negative",
+      "states": {
+        "r0": false,
+        "r1": true,
+        "r2": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-all_of-export-version_mismatch",
+      "rule_type": "all_of",
+      "cause": "version_mismatch",
+      "position": 10,
+      "condition": "noncritical_gap",
+      "states": {
+        "r0": false,
+        "r1": null,
+        "r2": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-any_of-routing-missing",
+      "rule_type": "any_of",
+      "cause": "missing",
+      "position": 2,
+      "condition": "complete",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-routing-missing",
+      "rule_type": "any_of",
+      "cause": "missing",
+      "position": 4,
+      "condition": "critical_gap",
+      "states": {
+        "r0": null,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "undetermined"
+    },
+    {
+      "case": "followup-any_of-routing-missing",
+      "rule_type": "any_of",
+      "cause": "missing",
+      "position": 6,
+      "condition": "restored_positive",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-routing-missing",
+      "rule_type": "any_of",
+      "cause": "missing",
+      "position": 8,
+      "condition": "restored_negative",
+      "states": {
+        "r0": false,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-any_of-routing-missing",
+      "rule_type": "any_of",
+      "cause": "missing",
+      "position": 10,
+      "condition": "noncritical_gap",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": null,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-restore-stale",
+      "rule_type": "any_of",
+      "cause": "stale",
+      "position": 2,
+      "condition": "complete",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-restore-stale",
+      "rule_type": "any_of",
+      "cause": "stale",
+      "position": 4,
+      "condition": "critical_gap",
+      "states": {
+        "r0": null,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "undetermined"
+    },
+    {
+      "case": "followup-any_of-restore-stale",
+      "rule_type": "any_of",
+      "cause": "stale",
+      "position": 6,
+      "condition": "restored_positive",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-restore-stale",
+      "rule_type": "any_of",
+      "cause": "stale",
+      "position": 8,
+      "condition": "restored_negative",
+      "states": {
+        "r0": false,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-any_of-restore-stale",
+      "rule_type": "any_of",
+      "cause": "stale",
+      "position": 10,
+      "condition": "noncritical_gap",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": null,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-cooling-invalidated",
+      "rule_type": "any_of",
+      "cause": "invalidated",
+      "position": 2,
+      "condition": "complete",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-cooling-invalidated",
+      "rule_type": "any_of",
+      "cause": "invalidated",
+      "position": 4,
+      "condition": "critical_gap",
+      "states": {
+        "r0": null,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "undetermined"
+    },
+    {
+      "case": "followup-any_of-cooling-invalidated",
+      "rule_type": "any_of",
+      "cause": "invalidated",
+      "position": 6,
+      "condition": "restored_positive",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-cooling-invalidated",
+      "rule_type": "any_of",
+      "cause": "invalidated",
+      "position": 8,
+      "condition": "restored_negative",
+      "states": {
+        "r0": false,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-any_of-cooling-invalidated",
+      "rule_type": "any_of",
+      "cause": "invalidated",
+      "position": 10,
+      "condition": "noncritical_gap",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": null,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-readpath-version_mismatch",
+      "rule_type": "any_of",
+      "cause": "version_mismatch",
+      "position": 2,
+      "condition": "complete",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-readpath-version_mismatch",
+      "rule_type": "any_of",
+      "cause": "version_mismatch",
+      "position": 4,
+      "condition": "critical_gap",
+      "states": {
+        "r0": null,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "undetermined"
+    },
+    {
+      "case": "followup-any_of-readpath-version_mismatch",
+      "rule_type": "any_of",
+      "cause": "version_mismatch",
+      "position": 6,
+      "condition": "restored_positive",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    },
+    {
+      "case": "followup-any_of-readpath-version_mismatch",
+      "rule_type": "any_of",
+      "cause": "version_mismatch",
+      "position": 8,
+      "condition": "restored_negative",
+      "states": {
+        "r0": false,
+        "r1": true,
+        "r2": false,
+        "r3": true
+      },
+      "reference_decision": "not_ready"
+    },
+    {
+      "case": "followup-any_of-readpath-version_mismatch",
+      "rule_type": "any_of",
+      "cause": "version_mismatch",
+      "position": 10,
+      "condition": "noncritical_gap",
+      "states": {
+        "r0": true,
+        "r1": true,
+        "r2": null,
+        "r3": true
+      },
+      "reference_decision": "ready"
+    }
+  ],
+  "limits": [
+    "Two software implementations can share a specification error.",
+    "The explicit authored state expectations were written by the material author.",
+    "Separate AI material review remains a different check, not human external validation.",
+    "Neither reference agreement nor fixed-input cost accounting measures model reasoning or study power."
+  ]
+}

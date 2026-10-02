@@ -1,0 +1,84 @@
+{
+  "schema": "EAL/evidence-restoration-verification/1",
+  "execution_kind": "scripted",
+  "status": "passed",
+  "recorded_at": "2026-10-02T13:38:37.459875+00:00",
+  "run_id": "f374f10c-def0-4fb1-834f-5e799b2586d9",
+  "source_language": "EAL/3",
+  "protocol_version": "1.0.0",
+  "command": "python -m experiments.model_transfer.rehearse --plan experiments/model_transfer/followup/plan.json --output /tmp/earl-restoration-rehearsal-verified-20261002",
+  "plan_sha256": "2ef708aa38404bcfc8d750a91adf1c9a9d3ab92fb379fab8d2ae70eecf65e354",
+  "raw_run_path": "/tmp/earl-restoration-rehearsal-verified-20261002",
+  "files_sha256": {
+    "plan.json": "618d5effa176f86bd0f45926c911f8ec9e25d50bb40e484a9603f0a656762f06",
+    "protocol.json": "b938525dff5308cd326b17671e496f92d1ea87c366b37aa07430cd788988677b",
+    "rows.json": "096cf865018ad477411471e225e36a2458300320169db6cec0cd920202370a23",
+    "calls.json": "4823a029ac9b4af4dad57d5543d35329ac670b753a1361de98005f3cdcd32185",
+    "annotated-rows.json": "fc78bf8b0d2d1d746fcb3d81c353ba499969e42f15a9dfaad8a6bec7eb3c94ed",
+    "analysis.json": "719180cac8e3f2262e9439ef88111ece70ccf66de2a8008d29ab1c94bc33d3ca",
+    "calibration.json": "674da3de0921596d40cb7c59774fd453216abfcdbeb7921121b898b11eded16c",
+    "rehearsal.json": "df218f17a5a0a33f3d467c737f51b65a5fb3f9d0e11f603ae4ff85d8695ad367",
+    "execution-contract.json": "1014d351f188bdc26b0e1ca003fdce357a14b70a2d481cb8e32e1941602b2474"
+  },
+  "rehearsal": {
+    "annotated_answers": 128,
+    "api_attempts": 128,
+    "calibration_checks": 65,
+    "execution_kind": "scripted",
+    "interpretation": "Software rehearsal with fixed answers and synthetic provider usage; no empirical model performance or allocation evidence.",
+    "planned_blocks": 8,
+    "planned_sessions": 128,
+    "raw_rows_unchanged": true,
+    "resources_reproduced": true,
+    "status": "passed"
+  },
+  "treatment_delivery": {
+    "matched_fact_reasoner_comparisons": 120,
+    "failed_manipulations": 0,
+    "restoration_reference_checks": 8,
+    "common_donor_blocks": 8,
+    "native_model_tool_calls": 0,
+    "host_raw_snapshot_reads": 120,
+    "eal_collections": 48,
+    "total_collector_calls": 168
+  },
+  "annotation_provenance": {
+    "assessors": [
+      {
+        "annotator": "scripted-pipeline-check-not-human-data",
+        "kind": "scripted",
+        "method": "fixed-scripted-labels/1"
+      }
+    ],
+    "contains_ai_assessment": false,
+    "contains_scripted_assessment": true,
+    "qualification": "Deterministic fixture labels in a scripted rehearsal; no human or model assessment measurements.",
+    "schema": "EAL/annotation-provenance/1",
+    "session_counts": {
+      "scripted": 128
+    }
+  },
+  "tests": [
+    {
+      "command": "python -m pytest tests/test_model_transfer_restoration.py tests/test_model_transfer_diagnostics.py tests/test_model_transfer_answers.py tests/test_model_transfer_session.py tests/test_model_transfer_rehearsal.py tests/test_model_transfer.py -q --tb=short",
+      "passed": 134,
+      "scope": "Before final failed host-raw-read test; all then-current diagnostic/session/scoring regressions."
+    },
+    {
+      "command": "python -m pytest tests/test_model_transfer_restoration.py tests/test_model_transfer_session.py tests/test_model_transfer.py -q --tb=short",
+      "passed": 67,
+      "scope": "Final host-raw-read failure logging and directly affected runner/resource/scoring regressions."
+    }
+  ],
+  "interpretation": "Software and measurement-path verification with deterministic answers and synthetic usage. No live model requests, empirical capability result, allocation power, task-population inference or total adoption-cost saving is established.",
+  "processing_implementation_sha256": "a48126f55100b32ebd04c54b1a57469f5c7fb31de3a4ef27016d96043d8949d9",
+  "implementation_sha256": "d94455ac0cde4d5227c5fdba962536f0816fa9adc8961f1b94445753784418bf",
+  "implementation_identity_note": "Exact identity retained from executed contract. The broad implementation fingerprint includes later independent review scripts and receipts; subsequent processing identity is recorded separately and is not substituted for execution.",
+  "retained_raw_archive": {
+    "path": "experiments/model_transfer/followup/validation/scripted-rehearsal.tar.gz",
+    "sha256": "44b0c21206df4df4a819d6a0842320cc34d1fb89b50b828de774ec67dc57be19",
+    "bytes": 2778190,
+    "execution_kind": "scripted",
+    "contains_live_requests": false
+  }
+}

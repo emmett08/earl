@@ -1,0 +1,178 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-08-measurement-status",
+  "purpose": {
+    "reader_question": "Which recording and coding stages are complete, and which decisions remain unresolved?",
+    "expected_reading": "Complete entry coverage is distinct from resolved communication and independent adjudication.",
+    "claim": "All 4,224 recorded sessions have AI-coded entries, with 4,199 resolved communications and 25 ambiguities.",
+    "scope": "Original resources from GitHub Actions run 36985062352, with AI-only decision coding added by finish run 36997861629 to the same 192 paired trajectories across six selected authored cases, two donor profiles, two recipient profiles and two tool modes; no additional experimental observations or independently validated assessor accuracy. This figure retains the original finish AI-coding snapshot, before the supplemental review; supplemental coding ambiguities do not enter its displayed values or frozen inference.",
+    "permitted_inferences": [
+      "Decision agreement with authored references conditional on retained AI communication codes.",
+      "Conditional ambiguity ranges and frozen statistical bounds under their explicitly audited assumptions.",
+      "Comparison of recorded quantities under the declared denominators and transformations."
+    ],
+    "prohibited_inferences": [
+      "Population-wide or causal superiority of EAL.",
+      "Independent answer correctness, explanation quality, assessor accuracy or reliability from these records.",
+      "Net lifecycle cost savings after unmeasured authoring, review, maintenance or acquisition costs."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "status",
+      "path": "analysis/resource_summary.json",
+      "status": "derived",
+      "source_reference": "Independent resource audit of the original recorded sessions.",
+      "sha256": "dd9ac051bd122ad4599da82013b855c5890b7016101a51723947819de3009fe8"
+    },
+    {
+      "id": "coding",
+      "path": "analysis/completion-outcomes.json",
+      "status": "derived",
+      "source_reference": "Independently reproduced AI coding and joins from finish run 36997861629; the underlying recorded sessions are unchanged.",
+      "sha256": "402fc362a2ef7674c94cadbb7ee510a378e317f6aa5390c2a0de230ac2aad01e"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "counts",
+      "label": "Recording or AI-coding count",
+      "unit": "sessions",
+      "definition": "Number of sessions satisfying each named recording/coding status.",
+      "input_ids": [
+        "status",
+        "coding"
+      ],
+      "transformation": "Use the audited original session count and independently reconstructed resolved/ambiguous coding counts; retain overlapping rows and their one disjoint partition.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 4224,
+        "unit": "recorded sessions",
+        "inclusion": "All 4,224 original sessions with a coding entry in the finish run."
+      }
+    },
+    {
+      "id": "recordingstatus",
+      "label": "Recording or AI-coding status",
+      "unit": "category",
+      "definition": "Completion, resource record, AI coding entry, resolved communication or ambiguous communication.",
+      "input_ids": [
+        "coding"
+      ],
+      "transformation": "Retain explicit condition identity; only resolved plus ambiguous is an additive partition.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "Every retained coding entry is counted. Ambiguous communicated decisions remain a separate category or define sharp conditional bounds; resolved AI codes are held fixed, without measured assessor-error correction."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Conditional ambiguity range only, not a sampling confidence interval or a bound on errors in resolved AI codes. No independent human validation or measured assessor error is available."
+      },
+      "sample": {
+        "denominator": 4224,
+        "unit": "recorded sessions",
+        "inclusion": "All original sessions, including donor and recipients in both arms."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "horizontal",
+      "marks": "square point data markers",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each horizontal position counts the named condition, not correct answers.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "counts"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Each horizontal position counts the named condition, not correct answers.",
+        "domain": [
+          0,
+          4900
+        ]
+      }
+    },
+    {
+      "id": "statusrow",
+      "marks": "square point data markers in categorical rows",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Named recording/coding conditions overlap except for the resolved-versus-ambiguous partition.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "recordingstatus"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Named recording/coding conditions overlap except for the resolved-versus-ambiguous partition.",
+        "domain": [
+          "Completed sessions",
+          "Resource records",
+          "AI-coded entries",
+          "Resolved decisions",
+          "Ambiguous decisions"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [],
+    "prohibit_block_circle_diagrams": true
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "source": "figures/08-measurement-status.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_figures.py"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "figures/08-measurement-status.tikz.tex",
+        "--spec",
+        "08-measurement-status.spec.json",
+        "--output",
+        "figures/08-measurement-status.pdf",
+        "--audit",
+        "figures/08-measurement-status.audit.json",
+        "--preview",
+        "figures/08-measurement-status.png",
+        "--qa-dir",
+        "qa/08-measurement-status"
+      ]
+    ],
+    "outputs": {
+      "pdf": "figures/08-measurement-status.pdf",
+      "preview": "figures/08-measurement-status.png",
+      "audit": "figures/08-measurement-status.audit.json",
+      "review": "figures/08-measurement-status.review.json"
+    },
+    "dependencies": [
+      "captions/08-measurement-status.caption.txt",
+      "captions/08-measurement-status.alt.txt"
+    ]
+  }
+}

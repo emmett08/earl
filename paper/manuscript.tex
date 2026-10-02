@@ -1,284 +1,1413 @@
 \documentclass[preprint,11pt]{elsarticle}
 \usepackage[a4paper,margin=25mm]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{lmodern,microtype,amsmath,amssymb,booktabs,array,tabularx}
-\usepackage{xcolor,listings,graphicx,placeins,xurl}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,booktabs,array,longtable,calc}
+\usepackage{xcolor,listings,graphicx,placeins,xurl,float,etoolbox}
 \usepackage[hidelinks]{hyperref}
-\input{eal2-listings}
+\input{eal3-listings.tex}
+\definecolor{teal}{HTML}{176D74}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setlength{\emergencystretch}{3em}
+\setcounter{secnumdepth}{5}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
 \journal{Journal of Systems and Software}
-\newcommand{\EAL}{EAL/2}
-\newcommand{\code}[1]{\nolinkurl{#1}}
-\date{28 September 2026}
-\myfooter[L]{Review draft for Journal of Systems and Software\hfill 28 September 2026}
+\date{2 October 2026}
+\myfooter[L]{Review draft for Journal of Systems and Software\hfill 2 October 2026}
 \begin{document}
 \begin{frontmatter}
-\title{Preserving engineering assessments across fresh language-model sessions: a paired EAL/2 workflow pilot}
+\title{Resource use and decision correctness in a live EAL/3 handover pilot}
 \author{Anonymous review manuscript}
 \begin{abstract}
-Engineering decisions often depend on dated evidence whose applicability changes between work sessions. A language model inheriting a previous answer must distinguish a reusable observation from a conclusion that has become stale. We evaluate a workflow built around EAL/2, an executable engineering argument language, against an ordinary specification-and-notes workflow. A retained pilot comprises six synthetic tasks, two donor models, two recipient models, two recipient tool settings and four repetitions: 192 paired blocks, 384 sequences and 4,224 fresh sessions. Each sequence contains one donor and ten recipients. The EAL/2 host supplies a checked assessment and manages observation reuse; the ordinary workflow receives the latest answer and can request evidence when native tools are enabled. The comparison therefore concerns these complete workflows. Post-collection AI-assisted coding leaves 31 answers ambiguous. Among 1,920 recipient answers per arm, correctness relative to the task reference is bounded at 97.71--99.11\% for EAL/2 and 38.85--38.91\% for ordinary notes. Cumulative input plus output tokens, including donors, are 1,943,638 and 2,992,739 respectively, a 35.05\% reduction. These descriptive results are conditional on the selected tasks and unvalidated AI coding. They neither isolate a language-notation effect nor establish performance on real engineering projects. The replication package preserves prompts, answers, evidence events, accounting and uncertainty, and identifies the annotation and design work required before a confirmatory evaluation.
+
+Engineering handovers require a new session to recover the current task,
+evidence and decision rules. This article compares ordinary handovers
+with the Engineering Argument Language (EAL) workflow in six authored
+synthetic tasks, using two donor models, two recipient models, recipient
+native tools enabled or disabled, and four repetitions per
+configuration. The pilot retained all 4,224 planned sessions and 5,442
+API attempts. AI-assisted coding in the original finish snapshot
+supplied a coding entry for every answer and left 25 decision
+interpretations ambiguous. Conditional on those codes, recipient
+agreement with authored references is 97.19--97.86\% for EAL and
+38.49--39.01\% for ordinary. A separate supplemental AI review resolves
+six EAL interpretations, leaving 19 ambiguities across both workflows
+and giving EAL 97.45--97.81\% agreement; ordinary is unchanged. These
+ranges bound unresolved answers, rather than sampling uncertainty or
+assessor error. Including the donor and ten recipients, EAL used
+1,980,029 tokens against 2,982,385: a 33.61\% reduction. Estimated API
+expenditure fell by 23.29\%, while summed session time rose by 8.35\%
+and recorded acquisitions rose from 646 to 1,724. The frozen pilot
+calculations meet the three joint engineering thresholds under their
+stated assumptions. The original allocation report withholds evaluation
+allocation because 19 of its 192 fully collected pairs contain
+unresolved recipient decisions. The supplemental rows still have
+unresolved decisions and have not been used to support an allocation.
+The results establish a conditional workflow-level advantage in decision
+agreement and model-token demand within these selected tasks;
+independent coding validation and a prospective evaluation remain
+necessary for broader claims.
+
 \end{abstract}
+
 \begin{keyword}
-Executable arguments \sep engineering evidence \sep large language models \sep context transfer \sep empirical software engineering \sep reproducibility
+Engineering evidence \sep executable arguments \sep language models \sep context transfer \sep empirical software engineering \sep reproducibility
 \end{keyword}
 \end{frontmatter}
 
-\section{Introduction}
-An engineering assessment can be correct when written and misleading when reused. A test result may concern an earlier release; a calibration may cease to apply after a configuration change; an observation may exceed its permitted age. A successor working session needs both the decision rule and evidence that is eligible for its current target. Retaining a persuasive explanation does not by itself preserve those conditions.
-
-Language-model workflows make this problem concrete. A fresh session can inherit a specification and a predecessor's notes without inheriting the provider's conversation state. The notes may communicate a useful conclusion, but they also create a risk of repeating that conclusion after its evidential basis changes. A different design retains structured claims, methods, evidence requirements and observations in the host. The host can check applicability and compute a task result before asking the model to explain it. This design spends engineering effort on explicit rules and trusted integrations, and its benefit must be measured against that operational cost.
-
-This paper reports a completed pilot of the latter design using \EAL{}. The experiment tests a bounded practical question: on six authored engineering tasks, how do recipient decision correctness and cumulative model-token use differ between a host-assessed EAL/2 workflow and a specification-and-notes workflow across ten fresh recipient sessions? It also asks how those outcomes vary with task, session position, recipient model and native tool availability. The result is a comparison of complete workflow assignments. The EAL/2 arm receives an automatically prepared current assessment that the ordinary arm does not receive automatically. Equal information delivery is therefore not part of the treatment contrast.
-
-The contributions are a precisely specified repeated-session comparison, a retained record connecting answer measurements to acquisition and API accounting, and an analysis that keeps ambiguous answers in the denominator. The paper distinguishes three forms of incompleteness: the paid collection is complete; decision coding is partly unresolved and lacks independent human validation; the planned prospective allocation remains blocked. Treating these as separate statuses prevents a successful workflow run from being mistaken for a completed scientific evaluation.
-
-\section{Related work and the scope of the comparison}
-External execution is an established way to complement language generation. Program-aided language models generate programs and delegate computation to an interpreter~\cite{gao2023pal}; Logic-LM combines language models with symbolic solvers~\cite{pan2023logiclm}. ReAct interleaves reasoning and actions to obtain information and act on an environment~\cite{yao2023react}. These approaches motivate separating language production from executable operations. The present intervention instead supplies a pre-authored, source-bound engineering rule and persistent evidence management. It does not evaluate model-generated programs, solver selection or general planning ability.
-
-Structured assurance representations distinguish claims, evidence and supporting argument structure; SACM provides a metamodel for such representations~\cite{omg2023sacm}. EAL/2 is a particular executable design whose host binds acquisition and reasoning methods. This study makes no SACM-conformance claim and does not measure the quality of a complete safety or assurance case. Its outcome is a small, explicitly defined readiness judgement under synthetic evidence changes.
-
-Long-context studies show that the presence of information in a prompt does not ensure that a model will use it effectively~\cite{liu2024lost}. Here, however, every recipient starts with a fresh provider session. The study concerns what a host prepares and retains between sessions, rather than the position of evidence in one long conversation. Likewise, research on LLM-based judges documents useful agreement and systematic biases under particular benchmarks~\cite{zheng2023judge}. It supplies a reason to examine assessor error; it does not validate the AI-assisted coding used here. Our measurement procedure, unresolved cases and absence of independent assessor validation are reported explicitly.
-
-\section{Workflow and task semantics}
-\subsection{What persists between sessions}
-Both arms receive the same task specification and may retain project notes. The runner stores the latest answer verbatim as a handoff note, subject to an 8,192-byte limit. The next session is a new model invocation without provider conversation history or a previous-response link. Additional calls within a session can complete tool use, but they do not connect that session to its predecessor's provider state.
-
-In the ordinary arm, context preparation contributes no automatic evidence assessment. The recipient receives the specification, retained material and current task time. When native tools are enabled it can request a dated snapshot through the \code{probe} tool. Tool availability is an opportunity to acquire evidence, not a guarantee that acquisition occurs. When tools are disabled, the model relies on the supplied and retained text.
-
-In the EAL/2 arm, a trusted host assesses the retained EAL source before model invocation. It checks observation eligibility, collects evidence when necessary, reuses eligible observations and supplies the resulting task context. The model is not given the raw EAL source as its principal task input. Consequently, the experiment evaluates the behaviour of a host that interprets EAL/2 and prepares model context. It is not a test of whether either model understands EAL/2 syntax. Native model tools, when enabled, remain available in addition to this automatic host activity.
-
-The intervention combines explicit source, deterministic task evaluation, persistent observations, evidence acquisition policy and prepared model context. A difference in outcomes may arise from any combination of these components. In particular, automatic delivery of a current result can account for an advantage even if notation has no independent effect. The disabled-native-tools condition isolates neither the host nor external computation, because the EAL host still acquires and assesses evidence there.
-
-\subsection{Eligibility, three-valued readiness and source binding}
-Each task specifies requirements over dated facts. A fact is eligible when it is active, matches the requirement's scope keys and has an age between zero and the requirement's maximum, inclusively. The uniquely newest eligible fact is selected. An absent or ineligible fact gives an unknown requirement value. The selected corpus contains no unresolved ties between simultaneously newest facts.
-
-For conjunctive tasks, any false requirement makes the conjunction false; otherwise an unknown requirement makes it unknown. Alternative routes are evaluated as conjunctions: one true route suffices, all refuted routes give false, and the remaining cases are unknown. The task adapter maps true, false and unknown to \code{ready}, \code{not_ready} and \code{undetermined}. Scope may bind different requirements to different version keys, so a firmware change need not invalidate an unrelated calibration unless that requirement's declared scope requires it.
-
-The snapshot contract permits reuse for 60 seconds inclusively. Sessions advance the synthetic task clock by one minute. Evidence and scope changes occur at even-numbered positions; the following odd position retains the same snapshot under this policy. These are authored validity assumptions. They do not establish that a real engineering observation remains valid for one minute, nor that absence of a new observation means the physical system is unchanged.
-
-The retained source binds evidence to a task identifier, a rule digest and a target-identity digest. Its reasoning selector is \lstinline[style=ealcode]|method "experiment/task-rules/1"|. The example in Listing~\ref{lst:method} is an excerpt from the actual cutover source, formatted for publication. The complete source, including the evidence digests and claim statement, is supplied in the replication package and checked by the repository parser.
-
-\lstinputlisting[style=ealcode,caption={Reasoning and argument declarations from the retained cutover source. The complete, parser-validated source is included with the article.},label={lst:method}]{listings/method-excerpt.eal}
-
-The claim identifier \code{criterion_evaluated} refers to successful completion of the declared calculation. A supported calculation can yield negative or unknown readiness. The host's assessment status must therefore not be substituted for the task's readiness output. This distinction is material to the experiment: successful execution of a rule does not establish that the engineering action should proceed.
-
-\subsection{The reference computation}
-The task reference is implemented separately from the EAL interpreter and its installed method. It derives readiness from the recorded rule, scope and timeline, and checks the authored expected decisions. This provides an executable reference for this corpus. It is not externally validated engineering ground truth: the task authors supplied the rules and synthetic facts shared by both implementations. The article's reproduction script independently recomputes all reference decisions from those retained facts and reconciles them with every saved score. Agreement checks catch divergent implementations, but cannot establish that the common task specification represents an actual engineering decision adequately.
-
-\section{Experimental method}
-\subsection{Questions, units and selected cases}
-The primary endpoints are recipient decision correctness and cumulative input plus output tokens through recipient horizon ten. The questions are whether the EAL/2 workflow preserves a correct current decision, whether its cumulative model-token use is lower after including the donor, and what qualification the unresolved measurement and allocation status place on those findings. Task and configuration profiles are descriptive diagnostics rather than separate confirmatory hypotheses.
-
-The selected pool contains six separately AI-authored synthetic cases in three families (Table~\ref{tab:cases}). Eight threshold-calibration cases are excluded from the principal estimand. The selected tasks were not randomly sampled from projects, organisations or engineering domains. Each trajectory exercises changes in support, refutation, expiry or applicability. An authored sequence of expected decisions is a corpus property; repeated model sessions do not create new independent tasks.
-
-\begin{table}[t]
-\centering\small
-\caption{The six selected cases. Every case has eleven task-time positions and ten recipient assessments per sequence.}\label{tab:cases}
-\begin{tabularx}{\linewidth}{@{}l l X@{}}\toprule
-Case & Rule family & Engineering distinction exercised\\\midrule
-Release & Conjunction & Tests, signature and rollback obligations; refutation and expiry.\\
-Cutover & Conjunction & Schema compatibility, restored backup and bounded replica lag.\\
-Read routes & Alternatives & Alternative database read routes, including unknown and refuted routes.\\
-Dispatch & Alternatives & Direct or tunnel route; a valid alternative can preserve readiness.\\
-Firmware & Applicability & Selective binding to firmware, calibration and policy versions.\\
-Version bindings & Applicability & Multiple version bindings in a migration assessment.\\\bottomrule
-\end{tabularx}
-\end{table}
-
-The design crosses six cases, two donor models, two recipient models, two recipient native-tool settings and four repetitions. Each resulting block contains both workflows, giving 192 paired blocks and 384 sequences. Every sequence comprises one donor followed by ten recipients, for 4,224 sessions. The 48 case--donor--recipient--tool strata each contain four paired repetitions. All donor sessions have native tools enabled, including those in blocks whose recipients have tools disabled.
-
-The paired block is the unit for comparisons across repeated stochastic executions. A sequence is the unit for within-arm recipient averages; its ten recipient outcomes share inherited material and are dependent. The analysis does not treat 3,840 recipient answers as independent Bernoulli trials. The fixed pool and balanced allocation give equal weight to the six tasks and the model/tool configurations. That weighting defines this experiment's estimand, not a population distribution of engineering work.
-
-\subsection{Models, execution and the frozen contract}
-The model labelled \code{plain} is \code{gpt-4.1-nano-2025-04-14}. The model labelled \code{reasoning} is \code{gpt-5-nano-2025-08-07}, with reasoning effort set to \code{low}. The former has no explicit reasoning-effort setting. These labels distinguish two model configurations; changing between them also changes the model family and snapshot. They cannot identify a pure causal effect of reasoning effort.
-
-The frozen plan uses seed 20260928. The runner constructs the crossed blocks, shuffles their order and randomises arm order within each block. Five workers process independent blocks concurrently; the two arms within a block run sequentially in their assigned order. Sessions within an arm retain their task-time order. Random ordering reduces a systematic association between workflow and execution order, but a shared provider batch can still introduce dependencies and service variation.
-
-Responses are ordinary prose. Limits are three API calls per session, 4,096 output tokens per call, 32,768 request bytes and a 90-second request timeout. The retained plan has a USD~2 budget, a 21,600-second total runtime limit and five workers. The collection job's segment allowance is 6,000 seconds. The actual retained plan and execution contract govern this collection; an older 7,200-second value in the descriptive protocol is not used as its realised runtime limit. This discrepancy is preserved in the audit record rather than silently normalised.
-
-Collection ran on 28 September 2026 from 20:20:10 to 21:08:04 UTC, with a recorded segment duration of 2,874.54 seconds. The frozen run identity is \code{984bd05d-6366-41c3-b9ae-ee8766835b08}. The successful offline finishing workflow imported AI labels and produced analysis and planning reports without new collection calls. Table~\ref{tab:provenance} distinguishes collection from processing. A processing revision does not retroactively change the implementation that produced the observations.
-
-\begin{table}[t]
-\centering\small
-\caption{Execution and processing identities retained by the replication package.}\label{tab:provenance}
-\begin{tabularx}{\linewidth}{@{}l X@{}}\toprule
-Item & Retained identity or status\\\midrule
-Collection & GitHub Actions run 36477862213; revision \code{d52e2bd0898ed519253aedbbc8e002e493dd64d2}\\
-Frozen study & \code{eal-model-transfer-pilot-6}; pilot role; protocol 6.0.0\\
-Source language & EAL/2; distinct from package and protocol versions\\
-Annotation export & Corrected export run 36487342999; artefact 10998924773\\
-Offline finishing & Run 36492423435; revision \code{31a3cba769948e123a59ca35c54c5135ad005f54}\\
-Finished artefact & 11001997190; analysis available, prospective allocation blocked\\\bottomrule
-\end{tabularx}
-\end{table}
-
-\subsection{Post-collection decision coding}
-Prose answers require measurement before comparison with the task reference. The retained answers were exported with workflow metadata masked. Following collection, AI-assisted coding assigned a stated-decision category using explicit decision phrases and semantic adjudication. The recorded procedure covers all 4,224 answers through AI-authored rules and 222 adjudication entries. It is not 4,224 independent model judgements. The coding record identifies OpenAI ChatGPT/Codex; the exact serving model identifier was not exposed.
-
-Coding asks what decision the answer states, not whether the underlying decision is correct. The latter comparison is made against the reference computation. A plausible explanation does not repair an explicitly wrong final category, and a matching category does not demonstrate that the explanation is grounded or internally consistent. This paper therefore reports \emph{decision correctness relative to the task reference}; it does not report validated explanation quality.
-
-The exported text can reveal the workflow through its wording, and the AI assessor had prior task context. Metadata masking is consequently weaker than assessor independence or effective blinding. There is no independent human validation, inter-rater reliability estimate or measured assessor error rate. The AI coding is a disclosed post-collection measurement amendment, not a preregistered independently validated assay. Frozen collection settings provide reproducibility, but do not establish an externally registered protocol.
-
-The final categories comprise 2,345 \code{ready}, 850 \code{not_ready}, 998 \code{undetermined} and 31 \code{ambiguous} answers. Ambiguous cases retain unknown correctness. Of these, 28 are recipient answers and three are donors. No ambiguous answer is discarded or assigned a convenient reference-matching label. The package includes answer text, selected quotations, adjudication notes, assessor provenance and checksums sufficient to locate the measurements for independent review.
-
-\subsection{Estimands and uncertainty}
-Let $Y_{baj}$ indicate that the coded decision matches the reference in block $b$, arm $a$ and recipient position $j$. For $B=192$, $H=10$ and $a\in\{E,O\}$, define
-\begin{equation}
- \widehat Q_a=\frac{1}{B}\sum_{b=1}^{B}\frac{1}{H}\sum_{j=1}^{H}Y_{baj},
- \qquad \widehat\Delta=\widehat Q_E-\widehat Q_O.
-\end{equation}
-For unknown correctness, set $Y$ to zero for the lower endpoint and one for the upper endpoint. With $C_a$ correct answers, $U_a$ unknown answers and $N_a=BH$, the descriptive envelope is
-\begin{equation}
- Q_a\in\left[\frac{C_a}{N_a},\frac{C_a+U_a}{N_a}\right],\quad
- \Delta\in\left[\frac{C_E-C_O-U_O}{BH},\frac{C_E+U_E-C_O}{BH}\right].
- \label{eq:unknown}
-\end{equation}
-These bounds cover the unresolved categories conditional on the other codes being correct. They are not confidence intervals and do not cover assessor errors among apparently resolved answers.
-
-Let $T_{baj}$ be recorded input plus output tokens, with $j=0$ denoting the donor. The resource endpoint is the ratio of aggregate totals:
-\begin{equation}
- \widehat R_T=1-\frac{\sum_b\sum_{j=0}^{H}T_{bEj}}{\sum_b\sum_{j=0}^{H}T_{bOj}}.
- \label{eq:tokens}
-\end{equation}
-This is not the mean of per-pair reductions. Cached input is already included in input tokens; reasoning tokens are already included in output tokens. Neither is added again. API attempts, cost estimates, native probe calls, host acquisitions, observation reuses and elapsed times are separate quantities. A token saving does not imply fewer evidence acquisitions or lower total engineering cost.
-
-The frozen engineering criteria require $\Delta>-0.05$, $Q_E>0.90$ and $R_T>0.20$ at $H=10$. The margins are prospective design choices, not validated developer-utility thresholds. The saved analysis also supplies conditional sampling intervals. For correctness it uses an empirical Bernstein bound on whole paired trajectories, allowing independent non-identically distributed bounded observations~\cite{maurer2009empirical}. Unknown answers enter through a conservative variance envelope. For resources it uses an approximate stratified paired delta-method interval with a $t$ correction~\cite{deng2018delta}. Appendix~\ref{app:uncertainty} records the implementation and assumptions.
-
-The displayed two-sided intervals allocate a total nominal error probability of 0.05 across three endpoints. The joint engineering decision instead uses an intersection--union of three one-sided tests, each at 0.05. Their three lower bounds must not be presented as jointly 95\% simultaneous lower bounds. Both calculations depend on the measurement and execution assumptions; neither turns a pilot into a confirmatory evaluation.
-
-\section{Results}
-\subsection{Collection completeness and decision correctness}
-All 384 planned sequences and 4,224 sessions are recorded. The article reconstruction reconciles every session with its API attempt identifiers, recomputes the task reference from the retained corpus and checks all saved correctness scores. All 5,453 API attempts have recorded usage and cost estimates. Execution completeness therefore does not depend on imputing missing calls or treating absent usage as zero.
-
-For the 1,920 recipients in the EAL/2 arm, 1,876 coded decisions match the reference, 17 do not and 27 remain unknown. The corresponding ordinary-arm counts are 746, 1,173 and one. Equation~\ref{eq:unknown} gives correctness envelopes of 97.71--99.11\% and 38.85--38.91\%, respectively, and a difference of 58.80--60.26 percentage points. These are large descriptive differences for the selected workflow assignments, conditional on the resolved AI codes.
-
-\begin{table}[t]
-\centering\small
-\caption{Recipient outcomes by case; each arm has 320 answers per case. C/I/U means correct/incorrect/unknown. Ranges assign unknown correctness adversely and favourably; they are not confidence intervals.}\label{tab:correctness}
-\input{results/case-rows}
-\end{table}
-
-\begin{figure}[t]
-\centering\includegraphics{figures/case-correctness.pdf}
-\caption{Decision-correctness envelopes for the six selected cases, pooling donor and recipient configurations. Markers show the lower endpoint; short horizontal segments extend to the upper endpoint when answers are ambiguous. Each marker represents 320 recipient answers nested within 32 sequences. The ranges express unresolved coding, not sampling precision.}\label{fig:cases}
-\end{figure}
-
-The direction is consistent across all six tasks (Table~\ref{tab:correctness} and Figure~\ref{fig:cases}). The lowest EAL/2 lower endpoint is 95.6\% for Firmware; ordinary-arm endpoints range from 33.1\% for Release to 48.4\% for Read routes. The shape of the task-time profiles is more informative than an overall average alone (Figure~\ref{fig:positions}). Recipients encounter authored changes as well as intervals of permitted reuse. A correct predecessor answer can continue to match the reference for one position and then become stale. The plotted profiles describe this sequence dependence; they do not estimate an independent time effect.
-
-\begin{figure}[p]
-\centering\includegraphics{figures/session-profiles.pdf}
-\caption{Correctness by task and session position. Solid teal triangles denote EAL/2 and dashed grey diamonds ordinary notes; vertical segments cover ambiguous coding. Each position contains 32 answers per arm. Position zero is the donor and is excluded from recipient correctness; positions one to ten are fresh recipients. The task fixtures change at even positions, with the next odd position retaining an eligible snapshot. The horizontal connections show ordered profiles, not independent observations or interpolation of task state.}\label{fig:positions}
-\end{figure}
-
-\subsection{Recipient models and native tool availability}
-Table~\ref{tab:configurations} disaggregates recipients by model and native tool setting, pooling donors and tasks. Every cell contains 480 recipient answers. The highest observed EAL/2 correctness occurs for GPT-4.1 nano with native tools disabled: all 480 decisions match the reference. In this condition the EAL host still supplies its checked assessment. This observation therefore cannot support a claim that external evidence or computation is unnecessary.
-
-\begin{table}[t]
-\centering\small
-\caption{Recipient configuration profiles. Native tools refer to the recipient's optional probe, not the EAL host's automatic evidence activity. All donors have native tools enabled.}\label{tab:configurations}
-\input{results/configuration-rows}
-\end{table}
-
-Ordinary-workflow correctness is similar across these configurations, despite native tool availability in half of them. An available probe need not be invoked at every session, and an invocation need not produce a correctly stated final decision. The aggregate record contains 488 ordinary recipient native probe calls across all 1,920 recipients, including the disabled-tool cells, versus 470 for EAL/2. The data support inspection of acquisition behaviour, but do not identify a causal effect of actually using the probe: tool use is chosen during the assigned workflow and is a post-assignment variable. A comparison restricted to callers would select on model behaviour.
-
-\subsection{Cumulative model resources and host work}
-The EAL/2 workflow uses 1,943,638 input plus output tokens; ordinary notes use 2,992,739. The resulting aggregate reduction is 35.05\%. Table~\ref{tab:resources} includes the donor and separates model usage from collector activity. EAL/2 has lower aggregate input and output counts, although the reductions differ. Figure~\ref{fig:cumulative} shows how those differences accumulate through the recipient horizon.
-
-\begin{table}[t]
-\centering\fontsize{8.5}{11}\selectfont\setlength{\tabcolsep}{3.5pt}
-\caption{Recorded resources. Initial denotes 192 donors per arm; recipients denotes 1,920 subsequent sessions. Token totals include all linked API attempts. Cost is the retained plan's API estimate, not an invoice or total project cost.}\label{tab:resources}
-\input{results/resource-rows}
-\end{table}
-
-\begin{figure}[t]
-\centering\includegraphics{figures/paired-token-ratios.pdf}
-\caption{Empirical distributions of the paired cumulative token ratio, including donor and ten recipients. Each curve contains 96 paired blocks grouped by recipient model, pooling donor, task and tool settings. Ratios below one favour EAL/2. These are distributions of paired resource observations, not confidence distributions for the aggregate ratio.}\label{fig:ratios}
-\end{figure}
-
-EAL/2 uses fewer cumulative tokens in 191 of the 192 paired blocks. Figure~\ref{fig:ratios} retains the distribution rather than replacing it with the aggregate ratio. It also makes clear that a ratio of totals weights blocks by ordinary-arm token use, whereas an unweighted mean of pair ratios answers a different question. No pair is excluded for having an unfavourable ratio.
-
-\begin{figure}[t]
-\centering\includegraphics{figures/cumulative-tokens.pdf}
-\caption{Observed aggregate token reductions as recipients accumulate, always including donors. Zero denotes donors alone. Input and output curves are components; the total curve uses their summed counts. The horizontal 20\% reference is the frozen engineering criterion for the total at horizon ten. It is not a fitted effect, a cost threshold or a confidence limit.}\label{fig:cumulative}
-\end{figure}
-
-Lower model-token use accompanies additional host evidence work. EAL/2 records 1,152 automatic host acquisitions, 960 host reuses and 562 native probe calls, giving 1,714 collector calls in total. Ordinary notes record 667 native probe calls and no automatic host acquisitions. A host reuse is not a new collector call. This is a model-token saving under a workflow that performs more recorded acquisitions, not an across-the-board reduction in computational activity.
-
-The retained API cost estimates are USD~0.29840445 for EAL/2 and USD~0.39637595 for ordinary notes, totalling USD~0.69478040 within the frozen USD~2 ceiling. Pricing, caching and different model input rates mean that money and token counts are not interchangeable endpoints. The recorded collection segment lasts 47.91 minutes with five workers. Summed session elapsed times, about 5,290 and 5,406 seconds by arm, overlap in wall time and include more than model inference. They must not be added and interpreted as a serial workflow duration. Source authoring, method development, annotation, infrastructure and human review costs were not measured.
-
-\subsection{Conditional intervals and the blocked prospective allocation}
-The retained simultaneous-interval calculation yields 42.20--76.86 percentage points for the correctness difference, 89.63--100\% for EAL/2 correctness, and 33.64--36.47\% for cumulative token reduction. The first two are conservative bounded-outcome intervals; the third is an approximate resource interval. They condition on the fixed cases, independent paired execution assumptions and correct coding of resolved answers. They do not incorporate an estimated AI-assessor error distribution.
-
-The separate one-sided decision calculation gives lower bounds of 47.16 percentage points, 92.07\% and 34.10\%, respectively. The saved report marks its joint engineering criteria as met while retaining \code{pilot_only} status. The fact that the two-sided absolute-correctness interval reaches below 90\% is compatible with this result: the intervals and one-sided decision use different tail allocations. It should not be hidden by reporting only the more favourable calculation.
-
-The prospective planner returns \code{no_supported_allocation}. It requires complete pilot recipient annotation and at least four complete paired repetitions in each stratum for nuisance estimation. Although four pairs were collected in every stratum, ambiguous recipient answers reduce the minimum complete-pair count to one. All 48 strata have resource variance information, but this does not supply missing correctness information. No confirmatory plan was emitted and no evaluation collection was run. A successful offline pipeline therefore means that processing and reporting completed, not that the experiment satisfied every scientific prerequisite.
-
-\subsection{Sensitivity to unresolved assessor validity}
-An unknown-answer envelope does not protect against misclassification of a resolved answer. To make this distinction explicit, Figure~\ref{fig:sensitivity} presents an exploratory, post-collection sensitivity calculation. Let $\epsilon_E$ and $\epsilon_O$ denote adverse coding changes as fractions of all recipient answers in the respective arms. They are assumed error allowances, not measured error rates. A conservative descriptive lower gap is
-\begin{equation}
- L_\Delta(\epsilon_E,\epsilon_O)=0.5880208-\epsilon_E-\epsilon_O,
- \qquad L_E(\epsilon_E)=0.9770833-\epsilon_E.
-\end{equation}
-The positive-gap condition holds when the two allowances sum to less than 58.80 percentage points. The stronger absolute requirement $L_E>0.90$ allows less than 7.71 percentage points of adverse EAL/2 coding change. These statements concern robustness of the observed envelopes only; sampling uncertainty and possible common specification error remain separate. The plot cannot substitute for independent annotation validation.
-
-\begin{figure}[t]
-\centering\includegraphics{figures/coding-sensitivity.pdf}
-\caption{Assumption-based sensitivity of the descriptive correctness envelopes. The shaded region satisfies both a positive EAL/2--ordinary gap and an EAL/2 lower correctness bound above 90\%, after adverse changes to resolved codes. Boundary points do not satisfy the strict inequalities. No assessor error rates have been measured. This is an exploratory algebraic calculation, not additional experimental data or a confidence region.}\label{fig:sensitivity}
-\end{figure}
-
-\section{Discussion}
-\subsection{What the pilot establishes}
-For these six synthetic tasks, the completed EAL/2 workflow produces many more reference-matching recipient decisions and uses fewer cumulative model tokens than the implemented ordinary-notes workflow. The result survives assigning all unresolved EAL/2 recipient answers incorrectly and the single unresolved ordinary recipient answer correctly. Retained acquisition events also show that the EAL host implements the intended alternation between collecting and reusing dated snapshots. These are measured properties of this particular execution, subject to the declared coding limitation.
-
-The result is consistent with a practical design in which a host owns evidence eligibility and deterministic calculation, while a model communicates the result. It does not establish that the model has acquired a more reliable reasoning capability. A short checked context can reduce repeated prompt material, and automatic provision of the current answer can improve decision accuracy. Those are useful workflow properties if their upstream engineering and validation costs are acceptable. The experiment has not measured those costs or compared equally informative alternatives.
-
-\subsection{Alternative explanations and a discriminating follow-up}
-The largest identification gap is the bundled treatment. Ordinary recipients sometimes have only the previous answer, whereas EAL recipients automatically receive a current checked assessment. A direct follow-up should independently vary delivery of the same current facts, provision of a computed decision, observation retention and source representation. An ordinary structured-state baseline receiving the same facts and deterministic result would test whether EAL/2 contributes beyond information delivery and computation. A baseline receiving matched facts without the computed decision would test the added value of deterministic evaluation. Such comparisons require explicit, prospectively fixed inputs and endpoints.
-
-The current synthetic cases should also be separated from a broader target population. Replication on new independently authored tasks, with external review of task realism and the reference decisions, would address common specification error. Independent coding should first validate a prospectively selected sample of the retained prose, with oversampling or complete review of ambiguous and disagreement-prone answers accounted for in the validation design. Only after the measurement procedure and nuisance estimates are adequate should a confirmatory allocation be frozen. The blocked planner should not be bypassed by filling ambiguous labels from the desired reference or recycling the pilot as a fresh evaluation.
-
-\subsection{Threats to validity}
-\textit{Construct validity.} A three-way readiness category compresses the quality of an engineering assessment. The current outcome does not validate an explanation, action recommendation, source interpretation or assurance argument. Synthetic eligibility rules and one-minute snapshot validity are imposed contracts, and correct execution may preserve a poorly chosen rule. Token counts are a reproducible model resource measure, but omit development effort and much host cost.
-
-\textit{Internal validity.} Randomised paired ordering controls some order effects, but not every provider or concurrency effect. The EAL intervention differs in automatic evidence delivery as well as representation. The two model snapshots differ in more than reasoning effort. Tool use and answer length are outcomes of the assigned workflow and should not be adjusted for as if they were pretreatment covariates. AI coding was introduced after collection, can infer arm identity from answer wording and has no independent measured error rate.
-
-\textit{Statistical conclusion validity.} The primary comparison preserves whole trajectories and all planned pairs. Sampling intervals nevertheless require independent repetitions and stable execution conditions; a common service batch can violate these assumptions. Four repeats per stratum are thin support for variance estimation. The resource interval is approximate. The post-collection diagnostic plots and coding sensitivity are exploratory, and there is no multiplicity-adjusted confirmatory claim over task or configuration subgroups.
-
-\textit{External validity.} Six authored cases, two snapshots from one provider and one collected batch do not establish performance over engineering projects, organisations or future models. No human participant study was conducted and no developer productivity outcome was measured. EAL source and host integrations were already supplied. A new adopter may incur substantial modelling, validation and maintenance costs before achieving comparable operation.
-
-\section{Replication and research transparency}
-The replacement \code{paper/} directory contains the article source, compiled PDF, include-ready TikZ and vector PDF figures, the syntax-highlighting definition, full retained EAL example, generated tables and an offline evidence snapshot~\cite{earl2026artifact}. The snapshot preserves complete annotated session rows, including initial prompts, final answers and evidence events. API calls are projected to usage, timing, identifiers and configuration fields; duplicated request text and provider response payloads are omitted from this compact package. The original archive and every copied source file are identified by SHA-256 hashes in its manifest.
-
-Running \texttt{make reproduce} regenerates results and plot sources without network access or API credentials. Running \texttt{make check} verifies checksums, all reference decisions, all saved decision scores, pairing, allocation, attempt coverage and generated-output consistency, and parses the EAL example with the repository implementation. \texttt{make pdf} builds the figures and article; \texttt{make submission} produces a flat source bundle. The README specifies dependencies, command order, data provenance and what is and is not reproduced.
-
-The source collection is revision-bound, and the compact snapshot prevents numerical reproduction from depending solely on a temporary workflow artefact. The original finished GitHub artefact is scheduled to expire on 27 December 2026. Repository access and a durable public archive must be arranged before a submission claims unrestricted public availability. The package does not state that a journal has reviewed the work or that the current manuscript is accepted for publication.
-
-\section{Conclusion}
-The completed pilot supports a bounded descriptive finding: a host-assessed EAL/2 workflow preserves reference-matching decisions across fresh sessions more often than the implemented ordinary-notes workflow, while using 35.05\% fewer cumulative model tokens. It does so with more recorded evidence acquisitions and with automatic delivery of checked context. The comparison therefore supports further evaluation of the workflow package, rather than an isolated effect of notation or a general model-capability claim.
-
-The collection and offline processing are complete. Independent validation of the AI coding, resolution of the remaining ambiguous answers and a supported prospective allocation are not complete. Those limitations are retained in the data, plots and conclusion. The next scientific step is to validate the measurement and separate information delivery from representation and deterministic assessment in a prospectively specified comparison.
-
-\section*{Declaration of generative AI use}
-OpenAI ChatGPT/Codex was used to assist task and software development, code the retained prose under the disclosed procedure, prepare this manuscript and write the plotting and reproduction code. The exact serving model used for coding was not exposed. Figures are programmatic renderings of retained observations or explicitly stated algebraic assumptions; they are not generated experimental observations. AI coding provenance and its absence of independent human validation are part of the method and limitations. This declaration does not assert that the present draft has completed human author review.
-
-\appendix
-\section{Uncertainty calculation and audit boundaries}\label{app:uncertainty}
-For each paired block, the ten recipient outcomes give lower and upper sequence means, and their adverse cross-arm differences give $[l_b,u_b]\subseteq[-1,1]$. The retained implementation bounds the sample variance over every completion of these intervals. With $m_b=(l_b+u_b)/2$, half-width $d_b=(u_b-l_b)/2$, sample variance $s_m^2$ and support width $W$, it uses
-\begin{equation}
- v_+=\min\left\{\left(\sqrt{s_m^2}+\sqrt{\frac{\sum_b d_b^2}{B-1}}\right)^2,
- \frac{BW^2}{4(B-1)}\right\}.
-\end{equation}
-The first term follows by applying the triangle inequality to centred observation vectors; the second bounds variance on the declared support. An empirical Bernstein radius is then
-\begin{equation}
- r=\sqrt{\frac{2v_+\log(2/\alpha_t)}{B}}+
- \frac{7W\log(2/\alpha_t)}{3(B-1)}.
-\end{equation}
-The interval expands the mean lower and upper endpoints by $r$ and clips to the support. Theorem 11 of Maurer and Pontil supplies the independent bounded-observation result~\cite{maurer2009empirical}; the interval-completion envelope is an implementation choice. The two-sided three-endpoint display uses $\alpha_t=0.05/6$ per tail. The one-sided joint decision uses 0.05 for each component. For absolute EAL/2 correctness the support is $[0,1]$ and $W=1$, whereas paired differences have $W=2$.
-
-The resource calculation works with paired cumulative input-plus-output counts and estimates the ratio of stratum-weighted means. It retains covariance within pairs and estimates within-stratum variance from the four repetitions, using a Satterthwaite-style effective degrees of freedom of 44.73 for the reported $t$ correction. The article independently reconstructs its resource totals and ratio; the approximate interval is retained from the revision-bound analysis implementation. The package labels this distinction instead of claiming that two implementations independently establish the interval.
-
-The collection revision, offline-processing revision and paper analysis have different purposes. Collection determines which outputs were produced. Offline processing adds explicit AI annotation provenance and computes reports. Article processing verifies the compact evidence package and renders the manuscript's tables and plots. The paper does not rewrite the frozen collection, its budget, run identity or original answer text.
 
 \FloatBarrier
-\bibliographystyle{elsarticle-num}
-\bibliography{references}
+
+\hypertarget{the-question-the-data-can-answer}{%
+\section{The question the data can
+answer}\label{the-question-the-data-can-answer}}
+
+A handover can preserve evidence outside the model's conversation and
+supply a compact current assessment to the next session. The practical
+question is whether this reduces the resources needed to answer
+subsequent questions while preserving correctness. The EAL workflow in
+this experiment combines authored source, persisted observations,
+compatibility checks, evidence collection and host computation. The
+comparator receives the task specification file and retained answer
+notes.
+
+The five artefacts from
+\href{https://github.com/emmett08/earl/actions/runs/36985062352}{collection
+run 36985062352} record preparation, apparatus checks, collection and
+annotation export. The subsequent
+\href{https://github.com/emmett08/earl/actions/runs/36997861629}{finish
+run 36997861629} restores that export and adds answer coding, outcome
+analysis and allocation planning. Both describe the same 192 paired
+trajectories. Finish performs offline processing and makes no fresh
+collection calls.
+
+Tokens, API usage, elapsed time and acquisition counts are observed.
+Task facts and reference decisions are constructed inputs. Decision
+correctness is derived by comparing an AI-coded communicated conclusion
+with the corresponding authored reference. Explanation correctness and
+total adoption expenditure remain separate measurement questions. The
+primary results below retain the original finish codes. Later sections
+report the separate supplemental interpretation and an
+evidence-restoration follow-up that has only been rehearsed with
+scripted answers.
+
+\FloatBarrier
+
+\hypertarget{from-six-artefacts-to-one-annotated-pilot}{%
+\section{From six artefacts to one annotated
+pilot}\label{from-six-artefacts-to-one-annotated-pilot}}
+
+The archive manifest contains the artefact identities, creation times,
+byte counts and SHA-256 digests. Each downloaded archive was checked
+against its published digest. Table 1 identifies each artefact's role
+and evidential status. Collection, export and finish contain cumulative
+copies of the same live observations. Across the original export and
+finish, 15,187 of 15,189 shared files are byte-identical; only pipeline
+status and the restore receipt change. Five derived files add labels,
+annotated rows, outcome analysis and allocation inputs/results. Counting
+each snapshot as a separate experiment would duplicate the observations.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\caption{Roles and evidential status of the six retained
+artefacts.}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Artefact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role in this analysis
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Evidential status
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Artefact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role in this analysis
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Evidential status
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Prepared & Frozen plan and preparation state & Design input \\
+Preflight & Calibration and scripted rehearsal & Instrument checks using
+synthetic responses \\
+Segment 1 & Complete retained live collection & Earlier cumulative copy
+of the live observations \\
+Export & Raw rows, journal, resource report and annotation mapping &
+Canonical collection snapshot \\
+Annotations & Masked answer text and blank coding fields & Original
+assessor hand-off \\
+Finish & Imported AI codes, annotated rows, outcome analysis and
+allocation report & Derived processing of the original pilot \\
+\end{longtable}
+
+The journal contains 10,884 events: one request-start event and one
+request-finish event for each of 5,442 API attempts. All attempt
+identifiers are distinct and each belongs to one session. A start and
+finish pair describes one attempt. The masked bundle contains 4,224
+answers with matching identifiers. Raw answers and resource records
+remain unchanged throughout the analysis.
+
+Calibration checks whether the apparatus computes the expected result on
+authored examples. Scripted rehearsal checks whether collection, export
+and processing work with fixed synthetic responses. Neither supplies a
+live model-accuracy observation. Their records remain separate from the
+live comparison.
+
+All 83 calibration checks passed: 66 task-time outcomes, seven source
+mutations and ten boundary conditions. A separate implementation
+reproduced the 66 authored task-time reference decisions. These checks
+establish consistency with the stated fixture rules within the tested
+cases.
+
+\FloatBarrier
+
+\hypertarget{what-was-compared}{%
+\section{What was compared}\label{what-was-compared}}
+
+The design crosses six task cases, two donor models, two recipient
+models and two levels of recipient native-tool availability. Four
+repetitions in each of the 48 configurations produce 192 paired blocks.
+Each block contains an ordinary and an EAL sequence, with one initial
+donor followed by ten fresh recipient sessions. Thus each arm contains
+192 sequences and 2,112 sessions; the full run contains 384 sequences
+and 4,224 sessions.
+
+The plain model is \nolinkurl{gpt-4.1-nano-2025-04-14}; the reasoning model
+is \nolinkurl{gpt-5-nano-2025-08-07} at low reasoning effort. Both arms
+start each provider conversation with empty history. Persisted project
+material supplies the handover. The donor has native probe access in
+every condition. The tool-availability factor applies to the recipient
+sessions.
+
+The donor is the initial session at position zero. It assesses a
+prepared project and leaves retained project state for ten subsequent
+recipients. The host creates the specification and EAL source before
+that initial session; the term donor describes the session's handover
+role. Later ordinary recipients also replace the retained latest-answer
+note, so continuity includes successive answers. Donor and recipient
+model assignments can differ. Quality outcomes cover recipients, while
+cumulative resources include the initial session.
+
+The task corpus exercises release obligations, migration cutover,
+alternative database read routes, alternative dispatch routes,
+selectively applicable firmware conditions and migration version
+bindings. The facts, time progression, changes and decision rules are
+synthetic. The model calls and their resource usage are live. Case
+provenance records separately delegated AI construction within the same
+development session; this supplies a convenience corpus rather than an
+independently sampled engineering population.
+
+After the task rules were drafted, timeline scheduling was adapted to
+the host acquisition contract. Six acquisition opportunities occupy even
+session positions, each separated from the previous acquisition by an
+unchanged intervening snapshot. This construction deliberately permits
+the measured reuse pattern.
+
+All donor snapshots have a ready reference result. Across the 3,840
+recipients in both arms, the constructed references comprise 1,536
+ready, 1,024 not-ready and 1,280 undetermined outcomes. These class
+frequencies describe the task design; they are not frequencies of model
+decisions.
+
+An EAL recipient receives a host-computed current assessment even when
+recipient native tools are disabled (Table 2). An ordinary recipient
+receives the task specification, a retained answer note and the
+configured probe access. Consequently, the intervention changes
+information delivery and host computation together. Its effect can be
+interpreted as a comparison of the two implemented workflows. A claim
+about language notation alone would require an additional comparison.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\caption{Model-visible information and permitted native probing in
+recipient conditions.}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Recipient condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Host task assessment supplied
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Specification file and latest answer note supplied
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Native probing permitted
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Recipient condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Host task assessment supplied
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Specification file and latest answer note supplied
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Native probing permitted
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Ordinary, tools disabled & No & Yes & No \\
+Ordinary, tools enabled & No & Yes & Yes \\
+EAL, tools disabled & Yes & No & No \\
+EAL, tools enabled & Yes & No & Yes \\
+\end{longtable}
+
+The compact EAL message supplies the host's decision, requirement states
+and applicability, rather than the complete raw snapshot. A permitted
+native probe can retrieve that snapshot; use depends on the model's
+calls. Both workflows save answer notes on disk, but only ordinary
+presents those notes and the specification file to the model in this
+run. The comparison therefore also changes which retained material the
+model sees.
+
+For pair \(i\), arm \(a\) and recipient position \(h\), define
+cumulative token use as
+
+\[
+T_{ia}(h)=\sum_{s=0}^{h}\bigl(I_{ias}+O_{ias}\bigr),
+\]
+
+where session zero is the initial donor, \(I\) is provider-reported
+input tokens and \(O\) is provider-reported output tokens. The principal
+observed reduction at ten recipients is
+
+\[
+\widehat R_T=1-\frac{\sum_{i=1}^{192}T_{i,\mathrm{EAL}}(10)}{\sum_{i=1}^{192}T_{i,\mathrm{ordinary}}(10)}.
+\]
+
+All configurations have equal replication. This ratio of totals
+therefore estimates the declared equally weighted ratio of mean
+cumulative token use. It differs from averaging 192 individual
+percentage reductions, which would give small and large ordinary
+trajectories the same ratio weight.
+
+A paired trajectory is the comparison unit. Its eleven serial sessions
+share a task and retained state. The 4,224 session count measures
+coverage; it does not provide 4,224 independent comparisons. The
+repeated executions estimate variation within the fixed task and model
+settings. They do not add new task families.
+
+\FloatBarrier
+
+\hypertarget{coding-the-communicated-decision}{%
+\section{Coding the communicated
+decision}\label{coding-the-communicated-decision}}
+
+The original finish artefact contains 4,224 imported coding entries:
+4,199 resolved communicated decisions and 25 ambiguous interpretations.
+The resolved categories are ready, not-ready and undetermined. An
+explicit undetermined conclusion is a coded decision; ambiguity denotes
+an unresolved interpretation of the text. There are no no-answer
+entries. Of the 25 ambiguities, 12 belong to ordinary and 13 to EAL; two
+ordinary ambiguities occur in donors and the other 23 occur in
+recipients.
+
+The assessor coded the conclusion communicated by each answer before
+reference scoring. The record identifies AI-assisted rule scans for
+every answer and full semantic review of 392 flagged answers. The
+remaining 3,832 received rule scans. Frozen scripts and adjudications
+reproduce the imported label file byte-for-byte. Every masked identifier
+joins uniquely to a retained session, every answer hash matches, and
+every supporting quote is an exact substring of its answer. These checks
+establish record identity and reproducibility; they leave interpretation
+error unmeasured.
+
+Assignment, model, task and reference metadata were masked in the coding
+hand-off. The declared assessor provenance also records prior project
+context and possible disclosure through answer wording. The exact
+serving model identifier is unavailable. There is no independent human
+validation or measured assessor-error rate. Rechecking with shared rules
+and context supplies an error control, rather than an independent
+inter-rater reliability estimate.
+
+After the codes were frozen, scoring compared each communicated decision
+with the authored reference. Ambiguous codes retain unknown correctness.
+The pilot quality outcome measures decision agreement. Basis agreement,
+explanation correctness, grounding and internal consistency remain
+unassessed in the retained pilot answers. The deterministic EAL host
+assessment agrees with the reference in all 2,112 EAL sessions; the
+model's communicated conclusion still requires separate scoring.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/08-measurement-status.pdf}
+\caption{Original finish recording and AI-coding snapshot for the same
+4,224 sessions, before the supplemental review. Completed-session,
+resource-record and coded-entry rows overlap and must not be added.
+Resolved and ambiguous decisions partition the coded entries: 4,199 are
+resolved and 25 remain ambiguous, with 12 ordinary and 13 EAL
+ambiguities. Every answer has a coding entry; this does not establish a
+resolved decision for every answer or independent adjudication. AI-coded
+agreement with authored references is analysed separately, without
+independent human validation or a measured assessor-error rate.}
+\end{figure}
+
+\FloatBarrier
+
+\hypertarget{recipient-decisions-and-their-errors}{%
+\section{Recipient decisions and their
+errors}\label{recipient-decisions-and-their-errors}}
+
+The primary quality endpoint retains the original finish codes, covers
+ten recipients per trajectory and excludes donors. Ordinary has 739
+known reference matches, 1,171 known mismatches and ten ambiguous
+recipient decisions; EAL has 1,866 known matches, 41 known mismatches
+and 13 ambiguities. Both denominators remain 1,920, retaining every
+planned recipient. Coding decisions are conditional measurements: an
+erroneous resolved AI code is outside the ambiguity calculation.
+
+For trajectory \(i\) and arm \(a\), let \(c_{ia}\) count known matching
+recipient decisions and \(m_{ia}\) count unresolved ones. Define
+
+\[
+Q_{ia}^{-}=\frac{c_{ia}}{10},\qquad
+Q_{ia}^{+}=\frac{c_{ia}+m_{ia}}{10}.
+\]
+
+Averaging these limits over all 192 trajectories gives recipient
+correctness bounds of 38.49--39.01\% for ordinary and 97.19--97.86\% for
+EAL. The paired difference is bounded by the means of
+\(Q_{i,\mathrm{EAL}}^{-}-Q_{i,\mathrm{ordinary}}^{+}\) and
+\(Q_{i,\mathrm{EAL}}^{+}-Q_{i,\mathrm{ordinary}}^{-}\): 58.18--59.38
+percentage points. These finite-record envelopes allow unresolved
+decisions to be either correct or incorrect. They express ambiguity
+rather than repeated-execution uncertainty.
+
+The reference-versus-communicated comparison distinguishes types of
+error. Each arm has 768 ready, 512 not-ready and 640 undetermined
+recipient references. Ordinary communicates ready in 291 not-ready and
+362 undetermined reference cases; EAL does so in two and six cases
+respectively. Thus the observed affirmative readiness errors are 653 for
+ordinary and eight for EAL among 1,152 not-ready or undetermined
+reference cases per arm. These are disagreements with the authored
+decision criterion; the experiment records no deployment failures.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/12-recipient-decisions.pdf}
+\caption{Original finish recipient reference decisions versus AI-coded
+communicated decisions, excluding donors. Cells print counts; tone is
+the within-reference percentage on the same scale in both arms. Each arm
+has 1,920 recipients, with reference-row counts 768 ready, 512
+not\_ready and 640 undetermined. Undet. and Ambig. abbreviate
+undetermined and ambiguous communication. The ambiguous column retains
+all ten ordinary and thirteen EAL recipient ambiguities; no-answer
+counts are zero throughout and that column is omitted. Ready
+communications against not\_ready or undetermined references total 653
+ordinary and eight EAL. The matrix measures agreement and disagreement
+with authored references conditional on AI communication coding, not
+independently human-validated factual or explanation correctness.}
+\end{figure}
+
+Among 1,920 matched recipient positions, both arms match in 731, only
+EAL matches in 1,125, only ordinary matches in three, and both mismatch
+in 38; 23 positions remain unknown. Every whole trajectory has a
+positive conservative recipient-match difference. This is a finite
+paired description across the selected configurations, with the
+AI-coding qualification retained.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/13-recipient-match-bounds.pdf}
+\caption{Recipient agreement in the original finish coding snapshot with
+authored reference decisions in four actual recipient-model/native-tool
+groups, with 480 sessions per arm/group from 48 matched trajectories. A
+range runs from known matching AI codes divided by 480 to known matches
+plus all ambiguous codes divided by 480. Single values indicate no
+ambiguous codes in that arm/group; they do not imply statistical
+certainty. These are finite-record ambiguity envelopes conditional on
+all resolved AI codes, not confidence intervals or bounds on assessor
+error. Both donor model assignments and all six selected cases are
+pooled within each recipient group; independent human validation and
+explanation correctness remain unavailable.}
+\end{figure}
+
+The task comparison in Table 3 retains the same 320-recipient
+denominator in each arm and task. EAL decision agreement is higher
+across all six authored cases, with variation within each workflow.
+These are descriptive contrasts within the chosen fixtures.
+
+\begin{longtable}[]{@{}lrr@{}}
+\caption{Recipient decision-match ambiguity bounds by task in the
+original finish coding snapshot. Each task contributes 320 recipients
+per arm from 32 paired trajectories. Bounds retain every recipient and
+condition on the AI codes.}\tabularnewline
+\toprule\noalign{}
+Authored task & Ordinary match bounds (\%) & EAL match bounds (\%) \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Authored task & Ordinary match bounds (\%) & EAL match bounds (\%) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Alternative database read routes & 44.38--45.94 & 98.44--99.38 \\
+Direct or tunnel dispatch & 43.44--43.75 & 95.62--95.94 \\
+Selective firmware applicability & 38.75--39.69 & 96.25--97.19 \\
+Migration cutover obligations & 33.75--33.75 & 99.69--99.69 \\
+Migration version bindings & 34.06--34.06 & 98.75--99.06 \\
+Release obligations & 36.56--36.88 & 94.38--95.94 \\
+\end{longtable}
+
+All 41 known EAL recipient errors occur when native tools are enabled:
+33 with the plain recipient and eight with the reasoning recipient.
+Disabled-tool EAL conditions have no known errors but retain one
+plain-model and five reasoning-model ambiguities. The computed host
+assessment is supplied in both conditions. The contrast identifies a
+configuration pattern; its cause and the correctness of the accompanying
+explanations remain unmeasured.
+
+\FloatBarrier
+
+\hypertarget{token-use-across-paired-trajectories}{%
+\section{Token use across paired
+trajectories}\label{token-use-across-paired-trajectories}}
+
+At the ten-recipient horizon, ordinary sequences used 2,982,385 input
+and output tokens, while EAL sequences used 1,980,029. The difference is
+1,002,356 tokens, giving the 33.61\% reduction. The primary endpoint
+includes the initial donor and ten recipients in both arms. Donor tokens
+fell by 47.46\%; tokens in the ten recipients fell by 31.49\%. The
+whole-sequence reduction therefore combines a larger donor reduction
+with a smaller recipient reduction.
+
+Input tokens fell from 2,468,145 to 1,533,871, a reduction of 37.85\%.
+Output tokens fell from 514,240 to 446,158, a reduction of 13.24\%.
+Input accounts for 93.21\% of the total token difference. The observed
+result is therefore primarily a reduction in material sent to the
+models. The reduction in reported output tokens is smaller; that measure
+includes reasoning and tool-call output as well as answer text.
+
+Reasoning tokens are a reported subset of output tokens and are counted
+once in the primary endpoint. Cached input tokens are a reported subset
+of input tokens. Adding either subset again would inflate totals. The
+composition figure separates these categories only where their
+relationship is explicit.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/01-token-distribution.pdf}
+\caption{Empirical cumulative distribution of total-token reductions in
+192 matched whole trajectories, each containing one donor and ten
+recipient sessions. A positive reduction denotes fewer EAL tokens. 190
+trajectories use fewer tokens; two use more. The median paired reduction
+is 35.74\%; the pooled ratio-of-sums reduction is 33.61\%. These are
+distinct summaries of the selected cases. Token reductions alone do not
+establish decision quality; completed AI-coded decision matches are
+shown separately.}
+\end{figure}
+
+EAL used fewer total tokens in 190 of the 192 paired trajectories. The
+other two used more. Individual paired reductions ranged from a 5.38\%
+increase to a 56.35\% reduction, with a median reduction of 35.74\%.
+This observed spread describes the matched cases; the median and the
+ratio-of-totals endpoint answer different aggregation questions.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/02-token-subgroups.pdf}
+\caption{Pooled total-token reductions in four assigned
+recipient-model/tool groups. Squares include the donor and ten
+recipients; triangles include only ten recipients. Each group contains
+48 paired trajectories, corresponding to 528 donor-inclusive or 480
+recipient-only sessions per arm. Both estimators use
+\(100(1 - \mathrm{summed\ EAL\ tokens}/\mathrm{summed\ ordinary\ tokens})\),
+with role-specific denominators. Donors with native tools are pooled
+across both donor models in the inclusive result; the recipient-only
+result refers to the actual recipient model. Native tools are permitted
+in the enabled mode, alongside EAL host assessment.}
+\end{figure}
+
+Case-level reductions ranged from 29.50\% for migration version bindings
+to 37.56\% for alternative database read routes. Across trajectories
+that include the donor, configurations assigned plain recipients showed
+a 29.24\% reduction and those assigned reasoning recipients a 38.50\%
+reduction, pooling over the remaining factors. Configurations with
+recipient native tools enabled showed a 30.37\% reduction, compared with
+39.21\% when those tools were disabled. These descriptive marginal
+comparisons retain the workflow's unequal evidence-delivery paths, so
+their differences cannot be attributed solely to model reasoning or tool
+capability. Same-model and cross-model handovers had similar aggregate
+reductions, 33.73\% and 33.49\% respectively, within this selected
+corpus.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/03-cumulative-tokens.pdf}
+\caption{Cumulative total input plus output tokens across all 192
+trajectories per arm. The horizontal coordinate is recipient session
+position. Position zero includes the donor; each later point adds the
+indicated number of recipients. At horizon ten, ordinary uses 2,982,385
+tokens and EAL 1,980,029, a pooled reduction of 33.61\%. The 47.46\%
+donor reduction becomes 33.61\% after ten recipients; the lines describe
+observed finite trajectories, without extrapolation.}
+\end{figure}
+
+The cumulative relative saving was already 47.46\% at the donor session
+and declined to 33.61\% after ten recipients. Absolute token saving
+accumulated while relative saving narrowed. This pattern gives no
+evidence of a growing percentage benefit with each additional handover,
+and the observed horizon supplies no extrapolation beyond ten
+recipients.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/04-token-composition.pdf}
+\caption{Disjoint token-accounting components for recipient sessions
+only, grouped by actual recipient model and native-tool permission.
+Donor sessions are intentionally excluded from this decomposition; the
+primary endpoint retains donors. O denotes ordinary and E denotes EAL.
+Input includes cached input; other output is output minus
+provider-reported reasoning output. Reasoning is already contained in
+output and is shown once. Bar endpoints therefore equal input plus
+output, with no double counting. Each recipient-model/tool/arm group
+contains 480 recipient sessions from 48 trajectories. Provider-reported
+reasoning output is zero for plain recipients.}
+\end{figure}
+
+The composition plot isolates recipient sessions, so its model and tool
+labels identify the sessions that contribute the displayed tokens. The
+configuration estimates that include donors pool donor work from both
+models, and all donors have native tools. Figure 5 compares
+recipient-only and donor-inclusive summaries.
+
+Independent reconstruction reproduces the report's approximate
+stratified paired delta-method interval of 32.33\% to 34.89\% for the
+primary donor-plus-ten-recipient token reduction. It uses a Student
+correction and a nominal 98.33\% component interval, from a Bonferroni
+split intended to provide 95\% simultaneous two-sided estimation across
+three endpoints. This interval is conditional on independent reruns,
+adequate within-configuration variance estimation and a stable positive
+ordinary-token denominator. Four repetitions per configuration provide
+limited information about rare provider or output tails. The exact
+observed totals need none of those sampling assumptions; extrapolation
+to repeated executions does.
+
+\FloatBarrier
+
+\hypertarget{resource-savings-depend-on-which-resource-is-counted}{%
+\section{Resource savings depend on which resource is
+counted}\label{resource-savings-depend-on-which-resource-is-counted}}
+
+The frozen plan prices input tokens at USD 0.10 per million for the
+plain model and USD 0.05 per million for the reasoning model; output is
+USD 0.40 per million for both. Reconstructing each attempt's input and
+output charge at these rates gives USD 0.4015426 for ordinary and USD
+0.3080341 for EAL. The combined estimate is USD 0.7095767, within the
+run's USD 2 ceiling. These amounts reproduce the recorded cost
+calculation. They are estimates at declared rates rather than a
+reconciled provider invoice; the calculation applies full input rates to
+cached input.
+
+The lower reasoning-model input rate is the published tariff for GPT-5
+nano, whereas the plain model is GPT-4.1 nano. Reasoning capability does
+not define a universal price tier. The
+\href{https://developers.openai.com/api/docs/models/gpt-5-nano}{official
+GPT-5 nano} and
+\href{https://developers.openai.com/api/docs/models/gpt-4.1-nano}{GPT-4.1
+nano} pages verify those rates; they disclose no internal cost basis
+sufficient to explain the 50\% difference. Hidden reasoning tokens are
+billed within output usage, as specified in the
+\href{https://developers.openai.com/api/docs/guides/reasoning}{reasoning
+guide}. At one million inputs and 100,000 billed outputs the respective
+costs are USD 0.09 and USD 0.14. An additional 400,000 reasoning tokens
+raises the reasoning request to USD 0.25. The study's estimates depend
+on both the tariff and actual usage.
+
+The API estimate in Table 4 fell by 23.29\%, which is smaller than the
+token reduction because output and input have different rates, and the
+two model families have different input rates. A token count does not
+carry a common monetary value across these categories.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\caption{Whole-run resource totals, including each donor and ten
+recipients.}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Resource, including initial donor and ten recipients
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Ordinary
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+EAL
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+EAL relative to ordinary
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Resource, including initial donor and ten recipients
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+Ordinary
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+EAL
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+EAL relative to ordinary
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Input plus output tokens & 2,982,385 & 1,980,029 & 33.61\% lower \\
+Estimated API expenditure, USD & 0.4015426 & 0.3080341 & 23.29\%
+lower \\
+API attempts & 2,758 & 2,684 & 2.68\% fewer \\
+Summed session elapsed time, seconds & 5,166.34 & 5,597.71 & 8.35\%
+higher \\
+Native probe calls & 646 & 572 & 11.46\% fewer \\
+Host acquisitions & 0 & 1,152 & Added by the EAL workflow \\
+Native calls plus host acquisitions & 646 & 1,724 & 166.87\% higher \\
+\end{longtable}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/05-resource-ratios.pdf}
+\caption{Whole-run ratios include donors, recipients and measured
+sequence setup where stated. Unity denotes equal recorded use. EAL
+reduces total tokens, the recorded API price subtotal and
+client-observed API-call time, while increasing summed session/setup
+duration and total acquisitions. Client-observed API request duration is
+nested inside session duration; it is not provider-internal computation
+time and these durations are not added. The price subtotal applies
+recorded plan rates, excludes cache discounts and remains unreconciled
+with an invoice. Authoring, maintenance, review and infrastructure costs
+remain unmeasured. Decision-match evidence is reported separately from
+these unchanged resource ratios and is conditional on AI coding.}
+\end{figure}
+
+The acquisition counts expose an operational consequence hidden by the
+token endpoint. EAL made fewer native probe calls, but its host made
+1,152 additional acquisitions. Total recorded acquisitions were
+therefore 2.67 times the ordinary total. The two acquisition types have
+different execution paths, so their count sum is an activity measure
+rather than a calibrated cost measure. This run supports a claim about
+lower model-token demand alongside higher recorded acquisition activity.
+
+The lower aggregate native-call and API-attempt counts arise from the
+donor phase. Across the recipients, ordinary recorded 466 native calls
+and 2,386 API attempts, while EAL recorded 486 and 2,406. EAL recipients
+therefore made 4.29\% more native calls and 0.84\% more API attempts,
+despite using fewer tokens. A donor/recipient comparison preserves this
+change of direction. Each acquisition here obtains one complete authored
+fixture snapshot; it does not measure the cost of collecting individual
+real-world facts.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/10-phase-contrasts.pdf}
+\caption{Pooled resource reductions for the donor, ten recipients and
+their whole-trajectory sum, computed separately as
+\(100(1 - \mathrm{EAL}/\mathrm{ordinary})\). Positive means lower EAL
+use; negative means higher EAL use. The donor includes 192 sessions per
+arm, recipients 1,920 and whole 2,112, covering the same 192 matched
+trajectories. Sequence setup is excluded from every timing value so the
+donor and recipient timing phases add exactly to the whole session-time
+sum. Recipient API attempts increase from 2,386 to 2,406 and native
+probe calls from 466 to 486, although both whole-run counts decrease.
+Native probes are counts, not acquisition costs; the whole is the sum of
+the two disjoint phases rather than an additional phase.}
+\end{figure}
+
+\FloatBarrier
+
+\hypertarget{time-and-reuse-where-the-work-moved}{%
+\section{Time and reuse: where the work
+moved}\label{time-and-reuse-where-the-work-moved}}
+
+Summed session elapsed time rose from 5,166.34 to 5,597.71 seconds.
+Adding separately recorded sequence setup gives 5,166.74 and 5,607.64
+seconds respectively, an 8.53\% increase. The EAL arm recorded 875.15
+seconds of context preparation compared with 0.0053 seconds for
+ordinary. Context time is included in session elapsed time and must not
+be added again.
+
+These sums describe accumulated session durations. Four workers
+overlapped paired blocks, and the two arms inside a block ran serially.
+The recorded shuffled schedule put ordinary first in 101 pairs and EAL
+first in 91. The live collection segment lasted 3,521.13 seconds,
+including its broader segment work. Neither an arm's summed session time
+nor the full workflow duration is the wall-clock completion time of an
+independently deployed arm. Model/provider variation, concurrency and
+shared load qualify latency comparisons.
+
+Client-observed API-attempt durations summed to 5,158.84 seconds for
+ordinary and 4,715.71 seconds for EAL, an 8.59\% reduction. The timing
+boundary includes transport, response processing and accounting; it does
+not isolate provider computation. Context preparation finishes before
+the synchronous request loop begins. Subtracting these two
+non-overlapping measured components from session time leaves 7.49
+seconds for ordinary and 6.85 seconds for EAL. This remaining time is
+calculated, rather than separately instrumented overhead. The additional
+context preparation exceeds the API-time saving and produces the higher
+session-duration total.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/11-time-partition.pdf}
+\caption{Partition of all recorded donor and recipient session-time
+sums, with measured sequence setup shown separately on its own
+explicitly labelled scale. Client API attempts are observed from
+immediately before synchronous transport through response decoding and
+accounting; they are not provider-internal compute time. Context
+construction finishes before the synchronous API loop. Residual time is
+defined as session time minus the two recorded components and is
+positive in all 4,224 sessions. The three components add exactly to
+session time; setup is then added once. Across 2,112 sessions per arm,
+EAL has 875.147 seconds of context construction, while ordinary has
+0.005 seconds. Residuals are 6.846 and 7.492 seconds for EAL and
+ordinary respectively; the component names describe operational timing
+boundaries rather than infrastructure costs.}
+\end{figure}
+
+EAL had higher summed time in 138 of the 192 whole-sequence comparisons;
+the median paired excess was 2.96 seconds across the donor and ten
+recipients, or 3.01 seconds when sequence setup is included. The median
+setup-inclusive excess was 2.34 seconds in ordinary-first pairs and 3.31
+seconds in EAL-first pairs. The direction persists in both order groups,
+while shared-provider interference remains unmeasured.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/06-latency-distribution.pdf}
+\caption{Empirical distribution of the EAL-minus-ordinary difference in
+summed session times plus measured sequence setup in 192 matched pairs.
+Positive differences mean a higher EAL accumulated-time sum; 138 of 192
+pairs have a positive difference and the median difference is +3.01
+seconds. The measured range is \(-15.94\) to \(23.41\) seconds.
+Concurrent session sums describe accumulated activity, not workflow
+wall-clock time; context and client-observed API-attempt times are
+already nested within session duration.}
+\end{figure}
+
+The two empirical distributions describe token and time variation
+separately. The paired scatter shows their joint result: 136
+trajectories used fewer tokens with higher summed setup-inclusive time,
+54 used fewer tokens with lower summed time, and two increased both
+quantities. None used more tokens with lower summed time. The two
+token-increase cases both used a reasoning donor and a plain recipient
+with native tools; this shared setting is a description of two
+observations, rather than an isolated mechanism.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/09-paired-tradeoff.pdf}
+\caption{Joint resource contrasts in all 192 matched whole trajectories,
+including the donor, ten recipients and measured sequence setup in the
+time sum. The horizontal percentage is computed per matched trajectory
+as
+\(100(1 - \mathrm{EAL\ total\ tokens}/\mathrm{ordinary\ total\ tokens})\).
+Positive horizontal values mean fewer EAL tokens; positive vertical
+values mean higher EAL summed time. The quadrants contain 136
+fewer-token/higher-time pairs, 54 fewer-token/lower-time pairs, two
+more-token/higher-time pairs and zero more-token/lower-time pairs.
+Square and triangle data marks distinguish assigned recipient model,
+while the totals retain both donor and recipient phases. Repeated
+fixed-case observations support this descriptive joint comparison; no
+causal relation or fitted trend is asserted.}
+\end{figure}
+
+EAL recorded 960 host reuses and 1,152 host acquisitions across 2,112
+sessions. The donor acquired a current observation in each of the 192
+EAL sequences. The ten recipients contributed 960 acquisitions and 960
+reuses, yielding a 50\% recipient reuse fraction. This fraction follows
+the authored evidence changes and eligibility conditions in the fixture.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/07-acquisition-horizon.pdf}
+\caption{Cumulative recorded acquisitions and EAL snapshot reuses
+include donor session zero. At horizon ten, EAL has 1,724 acquisitions:
+1,152 host acquisitions and 572 native acquisitions. Ordinary has 646
+native acquisitions and zero host acquisitions. EAL's 960 host reuses
+are shown separately and excluded from the acquisition total. Reusing
+snapshots therefore coexists with more total acquisitions in this
+selected run; a reuse is neither an API cache hit nor a fresh
+acquisition. An acquisition counts one snapshot collector invocation.
+The fixture deliberately places recipient assessments at and beyond the
+inclusive 60-second snapshot-validity boundary, specifying opportunities
+for host reuse and refresh; native probes remain recorded model
+behaviour.}
+\end{figure}
+
+Reuse can reduce repeated host acquisition while a fresh computed
+assessment is prepared for the model. Its benefit depends on the
+evidence-validity rules and change schedule. The fixture deliberately
+keeps facts and scope unchanged at intervening odd positions, permitting
+reuse at the inclusive 60-second validity boundary. The next even
+position expires that snapshot and triggers reacquisition. This schedule
+supplies the changes; the experiment does not measure an autonomous
+ability to discover real-world changes. A separate cadence comparison is
+needed to establish how the resource balance changes under different
+evidence-update rates.
+
+\FloatBarrier
+
+\hypertarget{the-joint-engineering-decision}{%
+\section{The joint engineering
+decision}\label{the-joint-engineering-decision}}
+
+The primary inference retains the original finish codes. The frozen plan
+defines recipient correctness \(Q_a\) over repeated executions of the
+selected configurations, the paired difference
+\(\Delta_Q=E[Q_{\mathrm{EAL}}-Q_{\mathrm{ordinary}}]\), and cumulative
+token reduction \(R_T\). Its joint criterion requires
+\(\Delta_Q>-0.05\), \(E[Q_{\mathrm{EAL}}]>0.90\) and \(R_T>0.20\). The
+null is
+
+\[
+H_0:\quad \Delta_Q\leq-0.05\ \text{or}\ E[Q_{\mathrm{EAL}}]\leq0.90\ \text{or}\ R_T\leq0.20,
+\]
+
+and the alternative requires all three strict inequalities. These are
+prospective engineering choices in the frozen design; developer utility
+at these boundaries remains unvalidated.
+
+The analysis distinguishes simultaneous estimation from the decision
+test. Its two-sided intervals use a Bonferroni split across the three
+endpoints, giving nominal 98.33\% component intervals for an intended
+95\% family. The quality-difference interval is 41.50--76.05 percentage
+points, EAL absolute correctness is 88.71--100\%, and token reduction is
+32.33--34.89\%. The last uses an approximate stratified delta method, so
+the intended family coverage also inherits that approximation.
+
+The separate intersection-union decision requires all three one-sided
+component tests to pass at the 5\% significance level. Its lower bounds
+are 46.47 percentage points for the quality difference, 91.22\% for EAL
+correctness and 32.74\% for token reduction. All exceed their respective
+boundaries: \(-5\) percentage points, 90\% and 20\%. These lower bounds
+are component decision bounds, rather than a simultaneous confidence
+family. The wider two-sided EAL interval crossing 90\% is consistent
+with the one-sided decision passing: the two procedures answer different
+inferential questions.
+
+Quality uncertainty uses empirical Bernstein bounds on independent whole
+trajectories. The theorem permits different distributions across the
+fixed configurations; serial dependence among recipients remains inside
+each trajectory. The calculation uses a conservative variance envelope
+over possible completions of the ambiguous decisions. It therefore
+preserves unresolved outcomes without assuming that missingness is
+independent of correctness. Independence between trajectories and valid
+resolved coding remain assumptions. Shared provider conditions could
+make trajectories dependent; common assessor rules could introduce
+systematic coding error.
+
+A distribution-free Hoeffding sensitivity calculation gives an EAL
+one-sided lower bound of 88.35\%, which does not pass the 90\%
+criterion. The frozen empirical Bernstein procedure uses the smaller
+observed variance and passes. This comparison exposes the consequence of
+the uncertainty method; the primary decision retains the method
+specified before these coded outcomes were analysed. Neither bound
+estimates assessor error or extends the six authored tasks into an
+independently sampled task population.
+
+The pilot result is consequently conditional support for the joint
+workflow criterion. It remains labelled \texttt{pilot\_only}. A
+prospective evaluation would test the joint criterion with new outcomes
+and independently validated codes.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/14-frozen-endpoint-bounds.pdf}
+\caption{Frozen pilot endpoints retain the original finish coding
+snapshot and distinguish three questions. Inference uses 192 matched
+whole trajectories in 48 fixed strata, with four reruns per stratum;
+quality averages ten recipients, while tokens include the donor and ten
+recipients. Observed black quality ranges enclose unresolved AI
+communication codes in this finite record; the black token point is the
+exact recorded reduction. Grey two-sided intervals concern expected
+independent reruns of the fixed task/model/tool mixture: a nominal 95\%
+three-endpoint family with 98.333\% marginal components and an
+approximate token component. Blue triangles/rays show lower bounds for
+separate one-sided component tests at alpha=0.05; their conjunction is
+an intersection-union decision, not simultaneous 95\% coverage of the
+three bounds. Orange reference lines mark the frozen thresholds: minus 5
+percentage points for the EAL-minus-ordinary recipient match difference,
+90\% for EAL match, and 20\% token reduction. All one-sided criteria
+pass under those assumptions. The EAL family interval extends below
+90\%, illustrating the different inferential targets. Inference does not
+bound errors in resolved AI codes and trajectory independence is
+unverified. The original finish allocation report remains blocked by
+unresolved labels and a minimum of two fully scored paired reruns per
+cell against a requirement of four; these criteria do not establish
+practical adoption. Panels use explicitly different positional scales.}
+\end{figure}
+
+\FloatBarrier
+
+\hypertarget{competing-explanations-and-the-next-comparison}{%
+\section{Competing explanations and the next
+comparison}\label{competing-explanations-and-the-next-comparison}}
+
+The joint pattern of lower token demand and higher reference agreement
+is consistent with smaller model-facing context and computation
+transferred to the host. EAL supplies a current computed conclusion,
+requirement states and applicability, while the ordinary workflow asks
+the model to use its specification, latest answer note and available
+tools. This interpretation accounts for lower input-token demand and the
+additional host preparation and acquisition activity. The bundled
+comparison does not identify which component produced each difference.
+
+A conventional evaluator supplying the same decision, requirement
+states, applicability and packet format would test whether the measured
+benefit depends on EAL's implementation or on external deterministic
+evaluation more generally. A comparison giving both models the same
+current raw facts, then varying whether a computed decision is supplied,
+would test that decision's contribution. Holding other packet contents
+fixed while adding or removing the latest answer note would test that
+note's contribution. These comparisons can retain the same target, time
+rules and reference snapshots so that only the intended component
+changes.
+
+An EAL recipient without native tools still receives the current host
+assessment. An ordinary recipient without tools may depend on its
+retained note. The observed advantage in that condition can arise from
+the supplied assessment as well as model reasoning. A comparison with
+equal current facts in both arms would test that alternative directly.
+
+Total adoption expenditure requires observed authoring, correction,
+maintenance, host and reviewer effort in both arms. The source is
+pre-authored here, and the cost ledger is absent. Unmeasured work has no
+defensible monetary value of zero. The estimated API difference of USD
+0.0935085 therefore places a narrow limit on any total-cost inference
+from this run. The monetary cost of those activities could exceed that
+API difference even where the token reduction persists.
+
+External validity requires independently supplied engineering tasks,
+evidence sources whose update cadence, acquisition latency and failure
+modes match the intended setting, and human-authored or independently
+reviewed rules. The workflows' change rates and handover practices must
+also match that setting. More repetitions of the existing six tasks
+refine within-task execution estimates. Additional task families are
+needed to support claims about a broader engineering population. Model
+versions, tool configuration and provider conditions should remain
+recorded so that a later evaluation has a defined intervention.
+
+\FloatBarrier
+
+\hypertarget{why-the-reference-can-remain-undetermined}{%
+\section{Why the reference can remain
+undetermined}\label{why-the-reference-can-remain-undetermined}}
+
+The 1,280 reference-undetermined recipient outcomes are completed
+three-valued assessments of the available task evidence. They arise from
+20 authored task/time positions repeated in 32 trajectories per workflow
+across two workflows. These repetitions expand the same constructed
+states; their frequency describes the selected corpus. Every EAL
+reference-undetermined assessment has an available snapshot and a
+completed host evaluation. The uncertainty concerns the readiness
+criterion.
+
+Figure 15 partitions those positions by the rejection reasons for
+decision-relevant evidence. Missing observations contribute 256
+references; stale-only support contributes 128; profiles involving
+invalidation contribute 384; profiles involving version or configuration
+mismatch contribute 512. The finer profiles retain combinations with
+staleness, including rejected older fallback records. These are
+descriptions of constructed evidence patterns, rather than isolated
+causal-effect estimates.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth,height=.84\textheight,keepaspectratio]{figures/15-reference-undetermined-profiles.pdf}
+\caption{The constructed mixture behind 1,280 reference-undetermined
+recipient references. The six disjoint profiles classify twenty
+task/time positions in the authored synthetic cases; each position is
+repeated across 32 trajectories per arm and two arms, yielding 640
+references per arm and one third of all 3,840 recipient references.
+Direct labels give expanded references and unique positions. Profiles
+collect rejection reasons for decision-relevant unknown requirements on
+unrefuted routes, including historical fallback records; mixed profiles
+are not independent failures or causal-effect estimates. These counts
+describe the constructed reference mixture, not model outputs,
+communication-code ambiguities or deployment prevalence.}
+\end{figure}
+
+For example, the release case's rollback observation exceeds its
+three-minute freshness limit. The cutover case contains no
+replication-lag observation. Dispatch TLS evidence has been invalidated
+while its alternative tunnel fails capacity. Firmware safety evidence
+for \texttt{fw1} cannot establish the current \texttt{fw2} condition. A
+mismatch establishes inapplicability; the current condition remains
+unknown. Missing JSON fields, unknown current-version identifiers and
+expiry of the outer snapshot do not explain the retained 1,280 outcomes.
+
+Resolution requires an observation eligible under the task rules. Stale
+support calls for a repeated measurement; absent support requires
+instrumentation and acquisition; invalidated support requires justified
+replacement; a changed version requires applicable testing or a
+validated transfer rule. The pilot collector reads frozen fixture
+snapshots, so a repeated probe retrieves the same supplied facts. A new
+acquisition timestamp cannot refresh an old underlying test result.
+Freshness and applicability rules can be revised through validation
+against the engineering objective; a more permissive rule changes that
+objective unless its continued adequacy is established.
+
+An unknown requirement affects readiness only when it can change the
+whole-task result. A false mandatory conjunct establishes
+\texttt{not\_ready} despite another unknown requirement. A true
+alternative route establishes \texttt{ready} despite uncertainty
+elsewhere. The follow-up therefore tests decision-critical gaps and
+noncritical gaps separately.
+
+\FloatBarrier
+
+\hypertarget{controlled-evidence-loss-and-restoration}{%
+\section{Controlled evidence loss and
+restoration}\label{controlled-evidence-loss-and-restoration}}
+
+The new follow-up is specified as a bounded feasibility investigation
+with a fresh identity and new task material. Eight fictional task
+instances cross two logic families with missing, stale, invalidated and
+version-mismatched evidence. A separate AI author constructs the
+material and another AI reviewer recomputes all 88 timeline references
+directly from raw facts. The 40 scheduled recipient positions comprise
+20 ready, 12 not-ready and eight undetermined references. This agreement
+checks implementation consistency with the authored rules. The material
+remains purposively selected and lacks independent human authorship or
+field validation.
+
+Each task contributes one initial donor and five recipient evidence
+conditions. The actual donor state is cloned for every condition and
+evaluator variant. Only the raw snapshot changes between evidence
+conditions; rules and admission criteria remain fixed. Within a
+condition, recipients receive identical raw facts, scope, time and
+rules. The reasoner contrast supplies either those facts alone, those
+facts plus an EAL-computed verdict, or those facts plus a conventional
+evaluator's verdict. The two evaluated variants supply identical
+model-visible packets when their verdicts agree. Their comparison can
+check implementation and resource differences; a model-visible accuracy
+advantage cannot be attributed to the evaluator's name.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\caption{Constructed reference patterns for the follow-up. Each pattern
+occurs in four task instances per logic family. These are calibration
+targets, rather than observed model decisions.}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Evidence condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Conjunctive reference
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Alternative-route reference
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Diagnostic purpose
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Evidence condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Conjunctive reference
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Alternative-route reference
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Diagnostic purpose
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Complete eligible evidence & Ready & Ready & Establish the intact
+criterion \\
+Decision-critical gap & Undetermined & Undetermined & Preserve warranted
+uncertainty \\
+Positive replacement evidence & Ready & Ready & Resolve the gap with
+satisfaction \\
+Negative replacement evidence & Not ready & Not ready & Resolve the gap
+with failure \\
+Noncritical gap & Not ready & Ready & Preserve a decisive result despite
+local uncertainty \\
+\end{longtable}
+
+One fixed plain model, \nolinkurl{gpt-4.1-nano-2025-04-14}, and disabled
+native tools keep the initial diagnostic narrow. Randomised variant
+order and cloned state control exposure to the other recipient answers.
+The eight tasks, five evidence conditions and three reasoner variants
+define 120 recipients plus eight donors, or 128 planned sessions;
+observations remain grouped within eight task instances and two logic
+families. The follow-up uses a canonical JSON decision field and retains
+its explanation. Whole-answer verdict agreement and internal explanatory
+consistency determine substantive success; field agreement and format
+validity are separate diagnostic outcomes. Contradictory, absent or
+unresolved explanations cannot establish substantive success. Factual
+grounding and the correctness of every explanatory assertion remain
+unassessed by answer-only consistency coding.
+
+The API ceiling is USD 2 across the run. With at most two calls per
+session, a 32,768-byte request cap, a 4,096-token framing allowance and
+a 1,024-output-token cap, the conservative reservation envelope is USD
+1.048576. The runner is configured to retain actual requests, failed
+attempts, token use, acquisition activity and timings. The planned
+single execution could supply feasibility and failure examples; it would
+establish no principal-study power or representative task effect. So
+far, the 128-session rehearsal uses fixed scripted answers and synthetic
+provider usage, with no live model requests. Separate checks recompute
+88 timeline references, verify the 40 scheduled positions and inspect
+all 120 recipient contexts. These checks establish apparatus and
+treatment-delivery consistency. Fresh live responses require separate
+collection and subsequent masked coding.
+
+The design follows
+\href{https://www.itl.nist.gov/div898/handbook/pri/section3/pri332.htm}{NIST's
+blocking guidance} by holding nuisance conditions fixed within
+comparisons and randomising remaining execution order.
+\href{https://imai.fas.harvard.edu/research/Design.html}{Imai, Tingley
+and Yamamoto's mechanism-design analysis} motivates the distinction
+between a whole-workflow effect and a separately manipulated component.
+An improvement after evidence replacement establishes response to that
+supplied evidence within the task; it does not measure the success of a
+real acquisition service. An unsuccessful real acquisition retains an
+undetermined reference.
+
+\FloatBarrier
+
+\hypertarget{supplemental-answer-measurement-review}{%
+\section{Supplemental answer-measurement
+review}\label{supplemental-answer-measurement-review}}
+
+The supplemental review preserves the completed pilot's original codes
+and primary calculations. It includes all 25 original ambiguities and
+one randomly selected resolved recipient from each
+workflow/model/tool/task/reference stratum, giving 144 resolved answers
+and 169 answers in total. Opaque identifiers and full answer text are
+supplied to two fresh AI reviewer contexts, with original codes and
+references withheld. The reviewers share model-family and rubric risks;
+their agreement shows reproducible interpretations in this selected
+packet under that procedure. It supplies no independent human accuracy
+standard or population assessor-error rate.
+
+Both first reviewers retain the original 25 ambiguities and flag one
+additional answer because of its parenthetical heading. A third masked
+semantic adjudication reviews all 26 flagged answers and distinguishes
+practical withholding of readiness from a formal negative criterion
+result. Parentheses and an explicit explanation can clarify the former
+without announcing a correction. This adjudication resolves six original
+ambiguities as \texttt{undetermined} and restores the additional flagged
+answer's original \texttt{undetermined} reading. Five of the six amended
+codes match their references; one is a mismatch. The remaining 19
+answers stay ambiguous. Every supporting quotation is checked against
+the unmodified answer before the coding is joined to references.
+
+The derived supplemental rows therefore give EAL 1,871 matching
+recipients, 42 mismatches and seven unresolved recipients:
+97.45--97.81\% agreement. Ordinary retains 739 matches, 1,171 mismatches
+and ten unresolved recipients: 38.49--39.01\%. The full dataset retains
+19 ambiguities, including two ordinary donors. These finite-record
+envelopes use the supplemental interpretation and condition on all
+retained resolved AI codes. The primary figures and frozen inference
+retain the finish snapshot's coding; supplemental rows and recomputed
+reports remain separately identified. Shared AI-assessor errors and the
+representativeness of the resolved-answer sample remain unmeasured.
+
+The refinement exposes a measurement requirement: the rubric must
+distinguish a criterion-failed decision from a statement that the action
+should be withheld because the criterion is unknown. Modal wording such
+as `may be considered ready' can remain ambiguous even without explicit
+contradictory categories. Prospective coding uses the whole answer,
+preserves a declared canonical field separately, and records internal
+contradictions instead of treating every lexical collision as a
+conflicting conclusion.
+
+\FloatBarrier
+
+\hypertarget{allocation-and-the-remaining-validation-work}{%
+\section{Allocation and the remaining validation
+work}\label{allocation-and-the-remaining-validation-work}}
+
+The original finish report records successful execution and complete
+resource accounting. It records \texttt{pending\_annotation} with 25
+ambiguous communicated decisions and a \texttt{pilot\_only} practical
+result. The separately recomputed supplemental analysis also records
+\texttt{pending\_annotation}, now with 19 ambiguities, and retains
+\texttt{pilot\_only}. The report's
+\texttt{measurement\_status:\ complete} field refers to resource
+accounting, rather than complete answer adjudication. Processing
+success, bounded quality estimates and unresolved interpretation
+therefore describe different properties of the same retained pilot.
+
+All 48 configurations have four fully collected paired repetitions. In
+the original finish coding snapshot, only 173 of the 192 pairs have
+every recipient decision resolved in both arms. Of the 48
+configurations, 33 retain 4 fully scored repetitions, 11 retain 3 and 4
+retain 2. The planner requires at least four complete repetitions per
+configuration and complete recipient annotation. The original report's
+input gates block all five candidate allocations, with 4, 8, 16, 32 or
+64 repetitions, before simulation. \texttt{no\_supported\_allocation}
+therefore establishes refusal to allocate with these inputs; it supplies
+no measured power, budget infeasibility or precision failure for the
+untested candidates.
+
+The supplemental AI review leaves a need for independently validated
+adjudication of the 19 retained ambiguities and independent coding of a
+stratified sample of resolved answers. The sample should cover both
+workflows, model/tool conditions, tasks and decision categories. Record
+disagreement, exact supporting passages and every revised code before
+recomputing the outcomes. A conclusion with unresolved internal
+conflicts can remain ambiguous. A prospective allocation method that
+explicitly retains bounded outcomes offers an alternative to requiring
+complete labels, provided its assumptions and calibration are frozen and
+checked before new evaluation data.
+
+Using the original finish codes, normalising the recorded whole-sequence
+API estimate by reference-matching recipients gives USD 0.536--0.543 per
+thousand matching ordinary decisions and USD 0.164--0.165 for EAL. These
+finite-snapshot ratios include donor API usage and allow unresolved
+recipients to be correct or incorrect. They condition on the AI codes
+and exclude host computation, task authoring, maintenance and assessment
+work. They describe one resource per measured decision outcome, while
+the joint endpoint retains the separate token and quality criteria.
+
+Any evaluation needs a fresh study identity and newly collected
+outcomes. Freeze its task eligibility, information supplied to each arm,
+models, worker count, coding protocol and success rule before inspecting
+those outcomes. Equal-information comparisons can distinguish the
+supplied host decision from EAL implementation; a full activity ledger
+can assess adoption expenditure. A latency-sensitive deployment requires
+an arm wall-clock or deadline endpoint, while a collector-limited
+deployment requires acquisition cost and rate-limit measurements.
+
+\FloatBarrier
+
+\hypertarget{reproducibility-and-conclusion}{%
+\section{Reproducibility and
+conclusion}\label{reproducibility-and-conclusion}}
+
+The accompanying research package retains all six source archives, their digests,
+the frozen plan, task definitions, coding protocol, scripts and
+adjudications, annotation mapping, raw and derived records, resource and
+outcome calculations, editable article source and reviewed vector
+figures. Independent reconstruction verifies the collection-to-finish
+lineage, all answer joins and quotes, ambiguity preservation, 5,442
+unique API attempts and the frozen endpoint calculations. Whole
+trajectories remain the units for repeated-execution uncertainty. No
+answer text or model response is repaired during scoring. The package
+separately retains the reference-profile analysis, supplemental review
+and amended rows, plus the follow-up task material, protocol and
+scripted rehearsal.
+
+This fixed pilot combines 33.61\% fewer cumulative model tokens with
+substantially higher AI-coded agreement of recipient decisions with
+authored references. With the original finish codes, the conservative
+recipient-match difference is 58.18 percentage points and the joint
+one-sided engineering criterion passes under the specified stochastic
+and coding assumptions. The original figures and frozen tests retain
+that coding snapshot, with 25 ambiguous answers overall. The
+supplemental interpretation resolves six EAL codes and leaves 19 answers
+ambiguous; it does not independently validate assessor accuracy or
+support an evaluation allocation. Higher summed session time and total
+acquisition activity remain part of the resource result. The strongest
+defensible conclusion concerns the implemented workflows, selected tasks
+and conditional decision measurements; independent coding validation,
+controlled information delivery and a prospective evaluation would
+extend the evidence.
+
+\FloatBarrier
+
+\hypertarget{sources}{%
+\section{Sources}\label{sources}}
+
+The original collection is
+\href{https://github.com/emmett08/earl/actions/runs/36985062352}{EAL
+Actions run 36985062352}, attempt 1, at
+\href{https://github.com/emmett08/earl/commit/c0974bc6bb6a2df30d1423b6248bfc51b4d2a9d7}{revision
+c0974bc6bb6a}, live run identity
+\texttt{45488cb5-624e-4267-b12c-97fe503ff4d1}.
+\href{https://github.com/emmett08/earl/actions/runs/36997861629}{Finish
+run 36997861629}, attempt 1, processes the same live run at
+\href{https://github.com/emmett08/earl/commit/cea2b59e686d57e0c071924f184b497919ec91a7}{revision
+cea2b59e686d}. The archive manifest retains both full revisions and six
+immutable artefact digests.
+
+The design and processing definitions are the repository's
+\href{https://github.com/emmett08/earl/blob/c0974bc6bb6a2df30d1423b6248bfc51b4d2a9d7/docs/eal3-experiment-methodology.md}{EAL/3
+experiment methodology},
+\href{https://github.com/emmett08/earl/blob/c0974bc6bb6a2df30d1423b6248bfc51b4d2a9d7/experiments/model_transfer/WORKFLOW.md}{model-transfer
+workflow}, and pinned resource and statistical implementation retained
+with the analysis. The historical methodology is the design contract.
+The post-collection
+\href{https://github.com/emmett08/earl/blob/cea2b59e686d57e0c071924f184b497919ec91a7/annotations/pilot-36985062352-AI-CODING.md}{AI
+coding record} describes the measurement amendment and its limitations;
+its scripts, frozen adjudications and hashes are retained in the
+package.
+
+The additional package records are
+\texttt{reference-\allowbreak{}unknown-\allowbreak{}causes.json},
+\texttt{supplemental-\allowbreak{}review.json}, \texttt{supplemental-\allowbreak{}analysis.json},
+and the follow-up \texttt{protocol.json}, \texttt{plan.json} and
+independent review/rehearsal records. These are post-collection analyses
+and a separate specified study, rather than additional live pilot
+observations.
+
+Alex Deng, Ulf Knoblich and Jiannan Lu (2018),
+\href{https://arxiv.org/abs/1803.06336}{Applying the Delta method in
+metric analytics: A practical guide with novel ideas}, provides the
+methodological context for approximate ratio uncertainty. The run's
+exact estimator and configuration assumptions are stated above.
+
+Andreas Maurer and Massimiliano Pontil (2009),
+\href{https://arxiv.org/abs/0907.3740}{Empirical Bernstein Bounds and
+Sample Variance Penalization}, is the declared source of the protocol's
+bounded quality-uncertainty method. Theorem 11 permits independent
+bounded variables with differing distributions. Its application here
+uses whole trajectories and a conservative variance envelope for the
+unresolved decisions; validity of the resolved AI codes remains a
+separate assumption.
+\FloatBarrier
+\appendix
+\section{Retained executable source}
+The following excerpt is derived from the actual EAL/3 cutover source retained
+in the finished archive. The repository parser validates the source with the
+registered \texttt{experiment/task-rules/1} method; formatting preserves its
+semantic representation. The complete source and its archive hash are retained
+in the compact replication snapshot. This syntax check establishes consistency
+with the implemented language contract, rather than model comprehension or
+independently validated engineering correctness.
+
+\noindent\begin{minipage}{\linewidth}
+\lstinputlisting[style=ealcode,caption={Reasoning declaration and argument from the retained EAL/3 cutover source.},label={lst:retained}]{listings/method-excerpt.eal}
+\end{minipage}
+
+\section{Research materials and declarations for author review}
+The repository's \texttt{paper/data} snapshot retains byte-preserved annotated
+rows, cases, frozen design contracts and reports. API calls are projected to
+their accounting and configuration fields; duplicated provider payloads are
+omitted. The original finish ZIP has SHA-256
+\nolinkurl{491df25b38bd22554143c0e146a7ac547d0686ea1022b1c9bf87b6093482b69a}.
+The separate full research package retains the six original archives. The
+flat journal source ZIP contains manuscript sources and figures, rather than
+all research data. Repository and artefact links identify the project even
+though this review copy omits author names.
+
+OpenAI ChatGPT/Codex assisted with corpus construction, answer coding,
+analysis, figure preparation and manuscript preparation. The retained
+assessor provenance describes that assistance and its measurement limitations.
+Author responsibility, oversight actually performed, authorship, affiliations,
+funding, competing interests and a durable public data-availability statement
+must be supplied by the authors before submission. This draft does not assert
+that those declarations or human review have been completed.
+
 \end{document}

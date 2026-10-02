@@ -1,0 +1,66 @@
+% Required packages: pgfplots, lmodern
+% Required TikZ libraries: none
+% Target width: 160 mm maximum
+% Minimum text size: 9 pt
+% Colour/greyscale intent: colour_and_greyscale, direct labels and line styles
+\begin{tikzpicture}
+\definecolor{ealblue}{HTML}{165D81}
+\definecolor{ordinaryorange}{HTML}{C27021}
+\definecolor{neutralgrey}{HTML}{616970}
+\pgfplotsset{compat=1.18,
+  every axis/.append style={
+    width=148mm,height=66mm,
+    font=\fontsize{9}{11}\selectfont,
+    tick label style={font=\fontsize{9}{11}\selectfont},
+    label style={font=\fontsize{9}{11}\selectfont},
+    title style={font=\fontsize{10}{12}\selectfont},
+    legend style={font=\fontsize{9}{11}\selectfont,draw=none,fill=none},
+    axis lines=left,axis line style={line width=0.5pt},
+    tick style={line width=0.5pt},
+    grid style={line width=0.4pt,black!12},
+    scaled ticks=false,clip=false}}
+\begin{axis}[width=136mm,height=76mm,xmin=0,xmax=101,ymin=0.5,ymax=4.5,xtick={0,20,40,60,80,100},ytick={1,2,3,4},yticklabels={{Plain / no tools},{Plain / tools},{Reasoning / no tools},{Reasoning / tools}},xlabel={Recipient reference-match bounds (\%)},title={AI-coded decisions; ambiguity only},title style={at={(0.5,1.19)},anchor=south},legend columns=2,legend style={at={(0.5,1.06)},anchor=south,column sep=4mm}]
+\addplot[forget plot,ordinaryorange,line width=0.8pt,no marks] coordinates {(38.54166667,0.82) (38.54166667,0.82)};
+\addplot[forget plot,ordinaryorange,line width=0.6pt,no marks] coordinates {(38.54166667,0.775) (38.54166667,0.865)};
+\addplot[forget plot,ordinaryorange,line width=0.6pt,no marks] coordinates {(38.54166667,0.775) (38.54166667,0.865)};
+\addplot[forget plot,only marks,mark=triangle*,mark size=1.5pt,ordinaryorange,line width=0.5pt] coordinates {(38.54166667,0.82)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:39.54166666666667,0.8200000000000001) {38.54\%};
+\addplot[forget plot,ordinaryorange,line width=0.8pt,no marks] coordinates {(37.5,1.82) (39.58333333,1.82)};
+\addplot[forget plot,ordinaryorange,line width=0.6pt,no marks] coordinates {(37.5,1.775) (37.5,1.865)};
+\addplot[forget plot,ordinaryorange,line width=0.6pt,no marks] coordinates {(39.58333333,1.775) (39.58333333,1.865)};
+\addplot[forget plot,only marks,mark=triangle*,mark size=1.5pt,ordinaryorange,line width=0.5pt] coordinates {(37.5,1.82)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:40.58333333333333,1.82) {37.50--39.58\%};
+\addplot[forget plot,ordinaryorange,line width=0.8pt,no marks] coordinates {(38.75,2.82) (38.75,2.82)};
+\addplot[forget plot,ordinaryorange,line width=0.6pt,no marks] coordinates {(38.75,2.775) (38.75,2.865)};
+\addplot[forget plot,ordinaryorange,line width=0.6pt,no marks] coordinates {(38.75,2.775) (38.75,2.865)};
+\addplot[forget plot,only marks,mark=triangle*,mark size=1.5pt,ordinaryorange,line width=0.5pt] coordinates {(38.75,2.82)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:39.75,2.82) {38.75\%};
+\addplot[forget plot,ordinaryorange,line width=0.8pt,no marks] coordinates {(39.16666667,3.82) (39.16666667,3.82)};
+\addplot[forget plot,ordinaryorange,line width=0.6pt,no marks] coordinates {(39.16666667,3.775) (39.16666667,3.865)};
+\addplot[forget plot,ordinaryorange,line width=0.6pt,no marks] coordinates {(39.16666667,3.775) (39.16666667,3.865)};
+\addplot[forget plot,only marks,mark=triangle*,mark size=1.5pt,ordinaryorange,line width=0.5pt] coordinates {(39.16666667,3.82)};
+\node[anchor=west,font=\fontsize{9}{11}\selectfont] at (axis cs:40.16666666666666,3.82) {39.17\%};
+\addlegendimage{only marks,mark=triangle*,mark size=1.7pt,ordinaryorange,line width=0.5pt}\addlegendentry{Ordinary}
+\addplot[forget plot,ealblue,line width=0.8pt,no marks] coordinates {(99.79166667,1.18) (100,1.18)};
+\addplot[forget plot,ealblue,line width=0.6pt,no marks] coordinates {(99.79166667,1.135) (99.79166667,1.225)};
+\addplot[forget plot,ealblue,line width=0.6pt,no marks] coordinates {(100,1.135) (100,1.225)};
+\addplot[forget plot,only marks,mark=square*,mark size=1.5pt,ealblue,line width=0.5pt] coordinates {(99.79166667,1.18)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:98.79166666666669,1.18) {99.79--100.00\%};
+\addplot[forget plot,ealblue,line width=0.8pt,no marks] coordinates {(92.08333333,2.18) (93.125,2.18)};
+\addplot[forget plot,ealblue,line width=0.6pt,no marks] coordinates {(92.08333333,2.135) (92.08333333,2.225)};
+\addplot[forget plot,ealblue,line width=0.6pt,no marks] coordinates {(93.125,2.135) (93.125,2.225)};
+\addplot[forget plot,only marks,mark=square*,mark size=1.5pt,ealblue,line width=0.5pt] coordinates {(92.08333333,2.18)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:91.08333333333331,2.18) {92.08--93.12\%};
+\addplot[forget plot,ealblue,line width=0.8pt,no marks] coordinates {(98.95833333,3.18) (100,3.18)};
+\addplot[forget plot,ealblue,line width=0.6pt,no marks] coordinates {(98.95833333,3.135) (98.95833333,3.225)};
+\addplot[forget plot,ealblue,line width=0.6pt,no marks] coordinates {(100,3.135) (100,3.225)};
+\addplot[forget plot,only marks,mark=square*,mark size=1.5pt,ealblue,line width=0.5pt] coordinates {(98.95833333,3.18)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:97.95833333333334,3.18) {98.96--100.00\%};
+\addplot[forget plot,ealblue,line width=0.8pt,no marks] coordinates {(97.91666667,4.18) (98.33333333,4.18)};
+\addplot[forget plot,ealblue,line width=0.6pt,no marks] coordinates {(97.91666667,4.135) (97.91666667,4.225)};
+\addplot[forget plot,ealblue,line width=0.6pt,no marks] coordinates {(98.33333333,4.135) (98.33333333,4.225)};
+\addplot[forget plot,only marks,mark=square*,mark size=1.5pt,ealblue,line width=0.5pt] coordinates {(97.91666667,4.18)};
+\node[anchor=east,font=\fontsize{9}{11}\selectfont] at (axis cs:96.91666666666666,4.18) {97.92--98.33\%};
+\addlegendimage{only marks,mark=square*,mark size=1.7pt,ealblue,line width=0.5pt}\addlegendentry{EAL}
+\end{axis}
+\end{tikzpicture}

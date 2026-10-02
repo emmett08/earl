@@ -14,11 +14,14 @@ import json
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-ARCHIVE_SHA = "0c1b8f5af0990f04c20564ffffee9c103ac47cbcab7ca940639225d80bb32d23"
+ARCHIVE_SHA = "491df25b38bd22554143c0e146a7ac547d0686ea1022b1c9bf87b6093482b69a"
+RUN_ID = "45488cb5-624e-4267-b12c-97fe503ff4d1"
+COLLECTION_REVISION = "c0974bc6bb6a2df30d1423b6248bfc51b4d2a9d7"
+PROCESSING_REVISION = "cea2b59e686d57e0c071924f184b497919ec91a7"
 COPY = ["annotated-rows.json", "cases.json", "plan.json", "protocol.json",
         "provenance.json", "execution-contract.json", "segments.json",
         "analysis-annotated.json", "information-report.json", "pipeline-status.json",
-        "calibration.json", "restore-receipt.json"]
+        "calibration.json", "restore-receipt.json", "completed-labels.json"]
 
 
 def digest(value):
@@ -32,13 +35,23 @@ def main():
     assert digest(args.archive.read_bytes()) == ARCHIVE_SHA, "Wrong retained ZIP"
     directory = ROOT / "data"
     directory.mkdir(exist_ok=True)
-    manifest = {"schema": "earl-jss-evidence/1", "run_id": "984bd05d-6366-41c3-b9ae-ee8766835b08",
-                "collection_run": 36477862213, "processing_run": 36492423435,
-                "artifact_id": 11001997190, "archive_sha256": ARCHIVE_SHA,
-                "collection_revision": "d52e2bd0898ed519253aedbbc8e002e493dd64d2",
-                "processing_revision": "31a3cba769948e123a59ca35c54c5135ad005f54",
+    manifest = {"schema": "earl-jss-evidence/1", "run_id": RUN_ID,
+                "source_language": "EAL/3", "protocol_version": "7.0.0",
+                "collection_run": 36985062352, "processing_run": 36997861629,
+                "artifact_id": 11222114140, "archive_sha256": ARCHIVE_SHA,
+                "collection_revision": COLLECTION_REVISION,
+                "processing_revision": PROCESSING_REVISION,
                 "source_files": {}, "files": {}}
     with zipfile.ZipFile(args.archive) as archive:
+        provenance = json.loads(archive.read("provenance.json"))
+        analysis = json.loads(archive.read("analysis-annotated.json"))
+        assert provenance["run_id"] == analysis["practical_decision"]["run_id"] == RUN_ID
+        assert provenance["revision"] == COLLECTION_REVISION
+        assert provenance["source_language"] == "EAL/3"
+        assert provenance["protocol_version"] == "7.0.0"
+        assert analysis["processing_provenance"]["revision"] == PROCESSING_REVISION
+        assert analysis["processing_provenance"]["package_version"] == "3.2.4"
+        manifest["package_version"] = analysis["processing_provenance"]["package_version"]
         for name in COPY:
             raw = archive.read(name)
             manifest["source_files"][name] = digest(raw)
@@ -46,6 +59,15 @@ def main():
             output = name + ".gz"
             (directory / output).write_bytes(compressed)
             manifest["files"][output] = digest(compressed)
+        # The masked item-to-session mapping permits an independent check that
+        # every frozen decision still codes the exact retained answer.
+        name = "annotation-bundle/mapping.json"
+        raw = archive.read(name)
+        manifest["source_files"][name] = digest(raw)
+        compressed = gzip.compress(raw, mtime=0)
+        output = "annotation-mapping.json.gz"
+        (directory / output).write_bytes(compressed)
+        manifest["files"][output] = digest(compressed)
         raw = archive.read("calls.json")
         manifest["source_files"]["calls.json"] = digest(raw)
         calls = []
@@ -64,8 +86,9 @@ def main():
             "source": "calls.json", "output": "call-accounting.json.gz",
             "retained": "All top-level fields except request/response; response.usage; request.model; request fields except input/tools",
             "omitted": "Duplicated request messages, tool definitions and provider response payloads; full initial prompts, final answers and session tool events remain in annotated rows"}
-        for name in ["rows.json", "completed-labels.json"]:
+        for name in ["rows.json", "annotation-bundle/items.json"]:
             manifest["source_files"][name] = digest(archive.read(name))
+        manifest["annotation_qualification"] = analysis["annotation_provenance"]["qualification"]
         source_name = "sequences/block-0000.eal/project/argument.eal"
         source = archive.read(source_name)
         (ROOT / "listings" / "retained-argument.eal").write_bytes(source)

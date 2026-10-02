@@ -1,0 +1,240 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-04-token-composition",
+  "purpose": {
+    "reader_question": "Which accounting components contribute to the recipient-only token contrast?",
+    "expected_reading": "Aligned stacked bars retain mutually exclusive token categories and explicit arm/profile labels.",
+    "claim": "Input-token use supplies most of the recorded recipient-only token difference; the disjoint output partition refers to actual recipient models.",
+    "scope": "Original resources from GitHub Actions run 36985062352, with AI-only decision coding added by finish run 36997861629 to the same 192 paired trajectories across six selected authored cases, two donor profiles, two recipient profiles and two tool modes; no additional experimental observations or independently validated assessor accuracy.",
+    "permitted_inferences": [
+      "Descriptive resource contrasts for the explicitly included recorded sessions.",
+      "Comparison of recorded quantities under the declared denominators and transformations."
+    ],
+    "prohibited_inferences": [
+      "Population-wide or causal superiority of EAL.",
+      "Independent answer correctness, explanation quality, assessor accuracy or reliability from these records.",
+      "Net lifecycle cost savings after unmeasured authoring, review, maintenance or acquisition costs."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "sessions",
+      "path": "analysis/session_resources.csv",
+      "status": "derived",
+      "source_reference": "Resource records for all 4,224 selected live sessions, derived from provider usage and local measured times.",
+      "sha256": "515c454a1509833a33a7cca1a82b1ae70a9a10a853fb692ed77c39cb9334f51f"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "input",
+      "label": "Provider input tokens",
+      "unit": "million tokens",
+      "definition": "Recipient input usage, including cached input, from provider records.",
+      "input_ids": [
+        "sessions"
+      ],
+      "transformation": "Select phase=recipient; sum in recipient-model/tool/arm group and divide by one million.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 480,
+        "unit": "recipient sessions per bar",
+        "inclusion": "Ten recipient sessions from each of 48 trajectories in the named model/tool/arm group; all donor sessions excluded."
+      }
+    },
+    {
+      "id": "otheroutput",
+      "label": "Other provider output tokens",
+      "unit": "million tokens",
+      "definition": "Provider output minus provider-reported reasoning output.",
+      "input_ids": [
+        "sessions"
+      ],
+      "transformation": "Select phase=recipient; subtract reasoning once within recipient session, aggregate within group, then divide by one million.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 480,
+        "unit": "recipient sessions per bar",
+        "inclusion": "Ten recipient sessions from each of 48 trajectories in the named model/tool/arm group; all donor sessions excluded."
+      }
+    },
+    {
+      "id": "reasoning",
+      "label": "Reasoning output tokens",
+      "unit": "million tokens",
+      "definition": "Provider-reported reasoning subset of output usage.",
+      "input_ids": [
+        "sessions"
+      ],
+      "transformation": "Select phase=recipient; sum in recipient-model/tool/arm group divided by one million; not added again to total output.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      },
+      "sample": {
+        "denominator": 480,
+        "unit": "recipient sessions per bar",
+        "inclusion": "Ten recipient sessions from each of 48 trajectories in the named model/tool/arm group; all donor sessions excluded."
+      }
+    },
+    {
+      "id": "rowgroup",
+      "label": "Receiver, tool and arm identity",
+      "unit": "category",
+      "definition": "Receiver profile, permission for native tools and arm jointly identify each labelled row; O is ordinary and E is EAL.",
+      "input_ids": [
+        "sessions"
+      ],
+      "transformation": "Select phase=recipient before grouping on actual recipient model/native_tools/arm, pooling over donor assignment, selected cases and repeats.",
+      "statistical_role": "derived",
+      "status": "available",
+      "missingness": {
+        "state": "complete",
+        "treatment": "All selected recorded resource observations retained; correctness labels excluded from resource calculations."
+      },
+      "uncertainty": {
+        "kind": "unquantified",
+        "definition": "Descriptive values for the retained finite selection. No sampling interval or population effect is asserted; provider accounting and clock measurement limitations remain."
+      }
+    }
+  ],
+  "encodings": [
+    {
+      "id": "stack",
+      "marks": "stacked rectangular data bars",
+      "mark_role": "data_mark",
+      "channel": "length",
+      "represents": "Disjoint accounting components add from zero to provider input plus output.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "input",
+        "otheroutput",
+        "reasoning"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "Disjoint accounting components add from zero to provider input plus output.",
+        "domain": [
+          0,
+          1.25
+        ]
+      }
+    },
+    {
+      "id": "category",
+      "marks": "stacked rectangular data bars",
+      "mark_role": "data_mark",
+      "channel": "colour",
+      "represents": "Tone and explicit legend identify the three accounting components.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "input",
+        "otheroutput",
+        "reasoning"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Tone and explicit legend identify the three accounting components.",
+        "domain": [
+          "Input",
+          "Other output",
+          "Reasoning output"
+        ]
+      }
+    },
+    {
+      "id": "rows",
+      "marks": "stacked rectangular data bars in categorical rows",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each row is the named actual recipient-model/tool/arm group, with 480 recipient sessions from 48 trajectories; donor sessions excluded.",
+      "interpretation": "categorical",
+      "quantity_ids": [
+        "rowgroup"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Each row is the named actual recipient-model/tool/arm group, with 480 recipient sessions from 48 trajectories; donor sessions excluded.",
+        "domain": [
+          "Plain / no tools / O",
+          "Plain / no tools / E",
+          "Plain / tools / O",
+          "Plain / tools / E",
+          "Reasoning / no tools / O",
+          "Reasoning / no tools / E",
+          "Reasoning / tools / O",
+          "Reasoning / tools / E"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 160,
+    "width_mode": "maximum",
+    "min_text_pt": 9,
+    "min_math_script_pt": 9,
+    "min_stroke_pt": 0.4,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [],
+    "prohibit_block_circle_diagrams": true
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "source": "figures/04-token-composition.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "reproduction/build_figures.py"
+      ],
+      [
+        "python3",
+        "reproduction/figure-tools/scripts/render_tikz.py",
+        "figures/04-token-composition.tikz.tex",
+        "--spec",
+        "04-token-composition.spec.json",
+        "--output",
+        "figures/04-token-composition.pdf",
+        "--audit",
+        "figures/04-token-composition.audit.json",
+        "--preview",
+        "figures/04-token-composition.png",
+        "--qa-dir",
+        "qa/04-token-composition"
+      ]
+    ],
+    "outputs": {
+      "pdf": "figures/04-token-composition.pdf",
+      "preview": "figures/04-token-composition.png",
+      "audit": "figures/04-token-composition.audit.json",
+      "review": "figures/04-token-composition.review.json"
+    },
+    "dependencies": [
+      "captions/04-token-composition.caption.txt"
+    ]
+  }
+}

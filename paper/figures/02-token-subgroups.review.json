@@ -1,0 +1,112 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "fig-02-token-subgroups",
+  "spec_sha256": "d24f981fc87af937662769d33761ba06bfd41bc6dcbc16240bf180350daa0f95",
+  "audit_sha256": "bef0e01b12b1ae179a0cbadd4c8c8a1878bbf2ceefada77dfe7097817b6e9e1d",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "figures/02-token-subgroups.pdf",
+      "sha256": "6175601423ebfbf2bbac1b9583a4ce16bf7c7339e09f6b2890f0c0de717dffc9"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/02-token-subgroups.pdf",
+      "sha256": "6175601423ebfbf2bbac1b9583a4ce16bf7c7339e09f6b2890f0c0de717dffc9"
+    },
+    {
+      "role": "prototype",
+      "path": "figures/02-token-subgroups-overlaid.pdf",
+      "sha256": "0a8b9f7c7d0218f4192046f078bbc0d405c3411a7ce1712a6c5677203895d2c5"
+    }
+  ],
+  "reviewer": {
+    "id": "/root",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "selected",
+      "prototype": "figures/02-token-subgroups.pdf",
+      "observations": {
+        "reading": "Blind reading matches declared two role-specific estimators, all four assigned recipient groups, mixed donors in inclusive groups, denominators and observed scope. All displayed one-decimal values match the corresponding retained table ratios. The current labelled, offset prototype is preferred to the inspected same-row alternative.",
+        "annotation_burden": "Current labels provide exact magnitudes and separate the close roles; overlaid alternative requires estimates from the axis and closer mark inspection.",
+        "reproduction": "Square and triangle shapes retain role identity without colour; all direct value labels and categorical row memberships remain readable."
+      }
+    },
+    {
+      "id": "overlaid",
+      "prototype": "figures/02-token-subgroups-overlaid.pdf",
+      "observations": {
+        "reading": "Both role markers share each categorical row; x positions retain the same displayed reductions, and shape/color identifies role. The order and relative donor-inclusive excess remain recoverable. Close plain/no-tools marks require legend lookup and visual resolution of a small horizontal difference. Unlike the current labelled offset design, this prototype provides no exact value labels, so the amount of each role difference must be estimated from the axis.",
+        "annotation_burden": "Prefer the current vertically offset, directly labelled design. Offsets do not imply a numeric y quantity because y is categorical, and exact labels make all role differences recoverable. The overlaid design is not semantically false but sacrifices useful magnitude reading for modest visual compactness.",
+        "reproduction": "The independent reviewer accepted the exact current alternative PDF, specification and audit after metadata-only recompilation; its source, PNG and caption retain the original blind observation. Data values are identical to the selected design, with both role markers at each category row centre."
+      }
+    }
+  ],
+  "selected_candidate": "selected",
+  "initial_reconstruction": {
+    "claim": "All four assigned recipient-model/tool groups use fewer pooled total tokens under EAL. Inclusive donor-plus-recipient reductions are slightly larger than recipient-only reductions. Plain/no-tools shows the largest displayed reduction; plain/tools the smallest.",
+    "quantities": [
+      "Horizontal position is pooled total-token reduction in percent, with the explicit formula 100(1 - sum EAL / sum ordinary) in the caption. Vertical positions identify four categorical groups; within-group vertical offsets separate roles and carry no numeric meaning.",
+      "Blue square means donor plus ten recipients; orange triangle means ten recipients only. All eight displayed marks visibly match the two legend glyphs. Legend scope includes all four assigned groups."
+    ],
+    "evidence_status": "Derived descriptive reductions from paired observed session token accounting. No uncertainty interval is displayed; repeated trajectories do not establish independent sampled cases.",
+    "scope": "Each assigned recipient-model/tool group has 48 paired trajectories, 528 donor-inclusive sessions per arm and 480 recipient-only sessions per arm. Ordinary token sums are role-specific denominators. Donor-inclusive enabled-tool groups pool both donor models; recipients-only groups use actual recipient model. The scope is not an individual recipient model total when donors are retained.",
+    "unintended_inferences": [
+      "Within these paired observations, pooled token use declines in every shown group. The difference between the two estimators is descriptive and reflects different role-specific denominators. The figure does not establish causal model/tool effects, statistical significance or generalisation to tasks beyond the observed cases."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "Blind reading matches declared two role-specific estimators, all four assigned recipient groups, mixed donors in inclusive groups, denominators and observed scope. All displayed one-decimal values match the corresponding retained table ratios. The current labelled, offset prototype is preferred to the inspected same-row alternative.",
+      "Current specification, source, table, audit, caption, final and alternative PDFs and accessibility previews match independently accepted exact bindings.",
+      "Completion-stage root semantic acceptance: analysis/completion-resource-semantic-acceptance.json SHA-256 82db48c92e3d127d31780c2afd6113d4ed17a2dffde7607ec9c6bdcb08e4be62. All ten current resource PNGs equal their independently accepted pre-completion versions; final captions and two-stage scope were freshly compared.",
+      "Completion-stage independent numerical audit of all fourteen canonical figures: analysis/completion-figure-numerical-audit.json SHA-256 7f19166c06865828a1de73ce1afc1b51738ff61fdaad40117ce2d58d52eeedce."
+    ],
+    "findings": [
+      {
+        "id": "legend-plot-queue",
+        "severity": "blocking",
+        "description": "Root initial render screening rejected legend glyphs because unlabelled data plots consumed the legend image queue.",
+        "disposition": "resolved",
+        "reason": "Individual data plots now use forget plot and manual legend images identify blue squares as donor-inclusive and orange triangles as recipients-only. The fresh blind reviewer correctly recovered both scopes."
+      },
+      {
+        "id": "accurate-mark-metadata",
+        "severity": "minor",
+        "description": "Point and categorical encodings inherited generic connecting-line wording; the alternative also inherited a role-offset description.",
+        "disposition": "resolved",
+        "reason": "Current metadata declares unconnected square/triangle marks; final category rows explicitly use offsets and alternative category rows explicitly share a centre."
+      },
+      {
+        "id": "two-stage-scope",
+        "severity": "informational",
+        "description": "The finish run adds AI communication codes to unchanged resource records. Earlier resource-only acceptance alone did not bind the updated scope.",
+        "disposition": "accepted",
+        "reason": "Root compared all current captions and updated scope, checked unchanged PNGs and exact model/role denominators, accounting/time boundaries, acquisitions/reuse and descriptive estimands. Resource plots make no independent quality or adoption claim."
+      }
+    ],
+    "audit_warning_dispositions": [
+      {
+        "index": 0,
+        "disposition": "accepted",
+        "reason": "Shell escape is intentionally disabled; retained literal source coordinates render without external TeX execution."
+      },
+      {
+        "index": 1,
+        "disposition": "accepted",
+        "reason": "PGFPlots emits this package-initialisation compatibility notice before the include-ready source sets compat=1.18. Exact coordinates, labels and glyphs were independently inspected; no visible defect results."
+      }
+    ]
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "This is figure semantic and mechanical screening, not independent human validation of communicated decisions, factual content or explanation correctness. Resolved AI-code error and trajectory independence remain unmeasured.",
+    "The six selected cases and fixed task/model/tool mixture do not establish a task-population effect, causal component attribution or practical adoption. Statistical endpoint bounds retain their stated conditional assumptions and approximate resource component.",
+    "Manuscript placement is covered by the separate final PDF proof; this contract binds the standalone figure source, specifications, audit and exact final/prototype PDFs."
+  ]
+}

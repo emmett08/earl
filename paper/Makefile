@@ -1,17 +1,25 @@
 PYTHON ?= python3
-.PHONY: all reproduce check figures pdf submission clean
+.PHONY: all reproduce reproduce-plots check check-supplemental figures pdf submission clean
 all: pdf
 
 reproduce:
 	$(PYTHON) analysis/reproduce.py
 	$(PYTHON) analysis/check_listing.py --write
 
+reproduce-plots:
+	$(PYTHON) analysis/check_plot_reproduction.py
+
 check:
 	$(PYTHON) analysis/reproduce.py --check
 	$(PYTHON) analysis/check_listing.py
+	$(PYTHON) analysis/check_figures.py
+	$(PYTHON) analysis/check_supplemental_measurement.py
+
+check-supplemental:
+	$(PYTHON) analysis/check_supplemental_measurement.py
 
 figures: check
-	$(PYTHON) analysis/render_figures.py
+	@true
 
 pdf: figures
 	latexmk -pdf -interaction=nonstopmode -halt-on-error manuscript.tex

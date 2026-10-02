@@ -45,7 +45,8 @@ class ManipulationCheck:
     """Check treatment delivery without conditioning on a favourable answer."""
 
     def check(self, factor: str, variants: list[dict], donor_snapshot: dict, *,
-              levels: tuple | None = None, calls: list[dict] | None = None) -> dict:
+              levels: tuple | None = None, calls: list[dict] | None = None,
+              baseline: dict | None = None) -> dict:
         failures = []
         specification = FACTORS[factor]
         levels = specification.levels if levels is None else levels
@@ -53,7 +54,7 @@ class ManipulationCheck:
             failures.append('planned_levels_missing')
         for variant in variants:
             level = variant['level']
-            expected = {**BASELINE, specification.parameter: level}
+            expected = {**(BASELINE if baseline is None else baseline), specification.parameter: level}
             if variant['options'] != expected:
                 failures.append('more_than_one_configured_factor_changed')
             if variant.get('input_snapshot') != donor_snapshot:
@@ -74,6 +75,8 @@ class ManipulationCheck:
                 requests = [call['request'] for call in calls if call['session_id'] == variant['session_id']]
                 if not requests:
                     failures.append('recipient_request_not_delivered')
+                if requests and requests[0].get('input') != result.get('initial_messages'):
+                    failures.append('recorded_prompt_not_delivered')
                 for request in requests:
                     schema = request.get('text', {}).get('format', {}).get('type') == 'json_schema'
                     if schema != (expected['response_mode'] == 'json_schema'):
@@ -81,7 +84,7 @@ class ManipulationCheck:
                     if bool(request.get('tools')) != variant['native_tools']:
                         failures.append('native_tool_mask_changed')
         results = [variant['result'] for variant in variants if variant.get('result')]
-        facts = [_task_facts(result.get('task_context', {}).get('inputs') if factor == 'reasoner'
+        facts = [_task_facts((result.get('task_context') or {}).get('inputs') if factor == 'reasoner'
                              else result.get('task_context')) for result in results]
         if factor == 'reasoner':
             for result in results:
@@ -132,4 +135,3 @@ class ManipulationCheck:
                 'acquisition': acquisition,
                 'acquisition_time_may_differ': factor == 'reuse',
                 'normalised_record_fields': ['assessment_id', 'observation_id', 'observation_ids']}
-
