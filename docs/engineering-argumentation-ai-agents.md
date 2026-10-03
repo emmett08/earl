@@ -1,5 +1,9 @@
 # Engineering argumentation with AI agents
 
+<!-- article-navigation:start -->
+[Typeset article (PDF)](engineering-argumentation/engineering-argumentation.pdf) · [LaTeX source and reproduction](engineering-argumentation/README.md)
+<!-- article-navigation:end -->
+
 **Consequential delegation to AI agents requires explicit, challengeable justification. Engineers should construct that justification by thinking through the decision and obtaining the minimum sufficient evidence for the resulting action.** Increasing the volume of assurance work or the number of approvals does not by itself improve either judgement or outcomes. The proposed change in practice is to make the reasons for consequential delegation inspectable, proportionate and revisable throughout use.
 
 An engineering argument explains why particular grounds support a particular conclusion, under stated conditions, and how contrary evidence could alter it. Its purpose here is to justify a decision or reliance on a claim. Argumentation includes constructing, challenging and revising that account. It can be expressed in a short review comment, a calculation with explicit assumptions, a decision record or an executable representation. Length and notation are secondary to the adequacy of the reasoning.
@@ -38,6 +42,16 @@ Here, *minimum sufficient evidence* means an adequate evidence set from which no
 Minimality cannot mean searching until a preferred answer appears. Engineers must consider credible alternatives and seek evidence that could defeat their intended choice. They must retain known adverse findings even when those findings are absent from the preferred support route. Bloomfield, Netkachova and Rushby explain how explicit defeaters can record doubts and their resolution in assurance arguments.[^defeaters] Their account supplies a method for challenge, not a guarantee that all possible objections have been discovered. The practical stopping question is whether an unresolved uncertainty could materially alter the selected action, its admissibility or its required controls.
 
 Once the evidence meets the stated criterion, material challenges have a defensible disposition, and plausible remaining uncertainty leaves the action acceptable, further inquiry needs its own reason. NASA's decision-analysis guidance expressly connects further investigation to whether reduced uncertainty could change the choice and whether collection is worth its cost and delay.[^nasa] Where supported probabilities and comparable consequences exist, compare the expected improvement in the decision from further information with the cost and delay of obtaining it. Where such estimates would be speculative, use sensitivity analysis and explicit scenarios: could a plausible unresolved condition change the choice? An affirmative answer calls for targeted inquiry or a narrower action. A negative answer can justify stopping within that assessed scope. Consider interacting uncertainties and cumulative exposure when judging acceptability. Urgency can change which action is feasible, including waiting, containment or rollback; it cannot turn absent evidence into a favourable finding.
+
+A simple illustrative calculation makes this stopping condition visible. Suppose two feasible actions, $A$ and $B$, have losses
+
+$$
+L(A,\theta)=2+6\theta,\qquad L(B,\theta)=5,\qquad 0\leq\theta\leq 1,
+$$
+
+in arbitrary loss units, where $\theta$ is an uncertain condition rather than a probability. The lower-loss action changes at $\theta=0.5$. A compatible range $[0.2,0.8]$ spans that threshold and leaves the preferred action dependent on the unknown value. Alternative findings restricting the range to $[0.2,0.4]$ or $[0.6,0.8]$ make $A$ or $B$, respectively, preferable throughout. These are three hypothetical evidence outcomes, not a sequence or confidence intervals. The [figure](engineering-argumentation/figures/decision-sufficiency.pdf) shows why further precision about this condition can become unnecessary for choosing between the two actions. It establishes neither the adequacy of the loss model nor permission to ignore other material uncertainties or obligations.
+
+<!-- figure:decision-sufficiency -->
 
 Proportionate argumentation also has a longer engineering history. HSE's 2006 offshore guidance calls for reasoned, supported arguments and assessment proportionate to the risk. It explains that even very high risks can call for qualitative assessment when the need for reduction is already obvious.[^hse] This illustrates why evidence effort should depend on what remains uncertain about the decision. Establishing a reason to stop an evidently unacceptable operation can require less analysis than establishing a reason to continue it.
 

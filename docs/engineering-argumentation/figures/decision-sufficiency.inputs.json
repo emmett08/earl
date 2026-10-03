@@ -1,0 +1,15 @@
+{
+  "status": "illustrative",
+  "condition": {"symbol": "theta", "domain": [0, 1], "unit": "dimensionless"},
+  "loss_unit": "arbitrary loss unit",
+  "actions": {
+    "A": {"intercept": 2, "slope": 6},
+    "B": {"intercept": 5, "slope": 0}
+  },
+  "compatible_sets": [
+    {"id": "spanning", "interval": [0.2, 0.8], "row": 3, "label": "Preference varies"},
+    {"id": "lower", "interval": [0.2, 0.4], "row": 2, "label": "A throughout"},
+    {"id": "upper", "interval": [0.6, 0.8], "row": 1, "label": "B throughout"}
+  ],
+  "interval_meaning": "Distinct hypothetical sets of conditions compatible with available evidence; not a sequence, probability intervals or observed outcomes."
+}

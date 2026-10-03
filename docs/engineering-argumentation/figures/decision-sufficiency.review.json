@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "decision-sufficiency",
+  "spec_sha256": "160fe90c1c1fa1ae9f02873d162748f1f1ff5c61ecde5152a86dd3325ff3f3b0",
+  "audit_sha256": "2af5ff907a5395854404b4fa27e0bf36032bfb5bcc3ff4dcd7aa96c4e25df6fa",
+  "artifacts": [
+    {
+      "role": "final_pdf",
+      "path": "decision-sufficiency.pdf",
+      "sha256": "69f4034504aaf3b9b175b99b5525b076edad18db3caa37667c67dab287ba2639"
+    },
+    {
+      "role": "prototype",
+      "path": "decision-sufficiency.pdf",
+      "sha256": "69f4034504aaf3b9b175b99b5525b076edad18db3caa37667c67dab287ba2639"
+    }
+  ],
+  "reviewer": {
+    "id": "independent_figure_review",
+    "kind": "agent",
+    "independence_declared": true,
+    "scope": "agent_screening"
+  },
+  "candidates": [
+    {
+      "id": "paired-loss-and-compatible-set",
+      "prototype": "decision-sufficiency.pdf",
+      "observations": {
+        "reading": "The independent initial reconstruction correctly identified the preference reversal and uniform versus variable rankings. A paired loss plot and interval plot are the canonical forms for comparing this threshold with compatible sets. No alternative geometry offered an additional decision-relevant relation, so only this form was rendered.",
+        "annotation_burden": "Direct labels avoid a legend. The caption excludes confidence-interval, chronology, universal-stopping and global-minimum interpretations. Exact interval endpoints appear in the adjacent manuscript paragraph, leaving the plot labels uncluttered.",
+        "reproduction": "The reviewer independently recalculated the threshold 1/2, crossing loss 5 and endpoint differences (-9/5,9/5), (-9/5,-3/5), (3/5,9/5). These match the exact rational calculation and generated coordinates. Colour, greyscale and colour-vision previews retain direct-label and line-style distinctions. At 149.358 mm width, 9 pt text and 0.45 pt minimum strokes are legible; no clipping or collisions were observed."
+      }
+    }
+  ],
+  "selected_candidate": "paired-loss-and-compatible-set",
+  "initial_reconstruction": {
+    "claim": "Under two hypothetical loss functions, A is preferred below theta=0.5, B above it, and both have loss 5 at equality. A compatible interval entirely on one side supports stable preference and conditional stopping of inquiry about theta.",
+    "quantities": [
+      "Dimensionless theta from 0 to 1.",
+      "Loss in arbitrary units.",
+      "A rises linearly from loss 2 to 8; B remains at loss 5.",
+      "Three alternative compatible theta ranges; vertical positions categorical."
+    ],
+    "evidence_status": "The ranges and losses are stipulated hypothetical values, not empirical measurements. The caption explicitly excludes confidence intervals and successive updates.",
+    "scope": "A two-action bounded illustration. Stable preference supports stopping only under the assumed model and remaining decision requirements. Variable preference does not establish decision impossibility, and no globally minimal evidence set is proved.",
+    "unintended_inferences": [
+      "Capped range bars could initially suggest confidence intervals if the caption is ignored; the caption explicitly excludes that interpretation.",
+      "Exact range endpoints are not labelled in the plot, so the initial reviewer treated them as illustrative placements rather than numerical estimates."
+    ]
+  },
+  "comparison": {
+    "matches": [
+      "Quantities, units, affine losses and threshold agree with the specification.",
+      "Interval positions and direct preference labels agree with independent endpoint calculations.",
+      "Categorical row placement does not encode chronology, evidence cost or confidence.",
+      "Illustrative status and conditional scope agree with the caption and retained inputs.",
+      "Author inspected the integrated manuscript page at final size; equation, explanatory paragraph, figure and caption are legible together."
+    ],
+    "findings": [
+      {
+        "id": "interval-convention",
+        "severity": "informational",
+        "description": "Capped interval marks conventionally resemble confidence intervals.",
+        "disposition": "accepted",
+        "reason": "The caption explicitly calls them hypothetical compatible ranges and excludes confidence intervals; the independent reviewer reconstructed that meaning correctly."
+      },
+      {
+        "id": "unlabelled-endpoints",
+        "severity": "informational",
+        "description": "Exact interval endpoints are given in adjacent prose rather than directly on every mark.",
+        "disposition": "accepted",
+        "reason": "The visual task is comparison with the labelled 0.5 threshold. Numerical ranges are explicitly stated in the adjacent manuscript paragraph, inspected by the figure author."
+      }
+    ],
+    "audit_warning_dispositions": []
+  },
+  "decision": "accept",
+  "limitations": [
+    "Human interpretation benefit remains unmeasured by agent screening.",
+    "The example supplies no empirical estimate of argumentation effectiveness or evidence-acquisition cost.",
+    "Preference stability alone establishes neither admissibility, authorisation, model adequacy nor a globally minimum evidence set.",
+    "The independent reviewer checked source, calculations, recorded artifact identities and rendered previews, but did not execute a separate build.",
+    "The integrated manuscript page was inspected by the figure author; the independent initial reconstruction used the figure and caption only."
+  ]
+}
