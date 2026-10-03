@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "profile_id": "engineering-argumentation-article",
+  "document_class": "article",
+  "class_options": ["11pt", "a4paper"],
+  "packages": [
+    {"name": "fontenc", "options": ["T1"]},
+    {"name": "lmodern", "options": []},
+    {"name": "geometry", "options": ["textwidth=155mm"]},
+    {"name": "amsmath", "options": []},
+    {"name": "pgfplots", "options": []}
+  ],
+  "preamble": "manuscript-preamble.tex",
+  "dependencies": [],
+  "engine": "pdflatex"
+}

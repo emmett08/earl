@@ -136,6 +136,7 @@ The [developer and model handover experiment](https://github.com/emmett08/earl/b
 | [Argument service](https://github.com/emmett08/earl/blob/main/docs/argument-service.md) | Registered workflow, tools, reuse and model packets |
 | [Language](https://github.com/emmett08/earl/blob/main/docs/language.md) | EAL/3 syntax and evidence versus observation |
 | [Argument model](https://github.com/emmett08/earl/blob/main/docs/argument-model.md) | Support, objections and propagation |
+| [Engineering argumentation with AI agents](https://github.com/emmett08/earl/blob/main/docs/engineering-argumentation-ai-agents.md) · [PDF](https://github.com/emmett08/earl/blob/main/docs/engineering-argumentation/engineering-argumentation.pdf) | Extended Toulmin argument, established practices and minimum sufficient evidence for decisions, with LaTeX source and a reproducible figure |
 | [Reasoning modes](https://github.com/emmett08/earl/blob/main/docs/reasoning-modes.md) | Built-in method contracts and extensions |
 | [MCP and tools](https://github.com/emmett08/earl/blob/main/docs/mcp-and-tools.md) | Host adapters, persistence and operation schemas |
 | [MCP architecture](https://github.com/emmett08/earl/blob/main/docs/mcp-architecture.md) | Shared operations, configuration, transports and acquisition coordination |

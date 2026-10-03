@@ -1,0 +1,32 @@
+{
+  "input_sha256": "68069acfb6a652eb3ee7612b67199f2f2555928ce9f309d4b021ec73ad5fce50",
+  "crossing": 0.5,
+  "loss_at_crossing": 5.0,
+  "cases": [
+    {
+      "id": "spanning",
+      "difference_at_endpoints": [
+        -1.8,
+        1.8
+      ],
+      "preference": "unresolved"
+    },
+    {
+      "id": "lower",
+      "difference_at_endpoints": [
+        -1.8,
+        -0.6
+      ],
+      "preference": "A"
+    },
+    {
+      "id": "upper",
+      "difference_at_endpoints": [
+        0.6,
+        1.8
+      ],
+      "preference": "B"
+    }
+  ],
+  "checks": "Exact rational arithmetic; crossing equality; endpoint comparison suffices because the loss difference is affine; every interval lies within the declared domain."
+}

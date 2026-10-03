@@ -1,0 +1,257 @@
+{
+  "schema_version": "1.0",
+  "figure_id": "decision-sufficiency",
+  "purpose": {
+    "reader_question": "When can remaining uncertainty leave the preferred action unchanged?",
+    "expected_reading": "The crossing at theta=0.5 separates conditions preferring A and B. An interval spanning the crossing lacks a uniformly preferred action; either displayed one-sided interval has one.",
+    "claim": "Under the two stipulated affine losses, ranking is stable over the one-sided compatible sets. This can support stopping inquiry about this uncertainty under the assumed model and other requirements.",
+    "scope": "An illustrative two-action, single-condition calculation with both actions assumed feasible and lower loss preferred.",
+    "permitted_inferences": [
+      "Threshold and ranking for the specified functions and intervals.",
+      "Conditional sufficiency for resolving this uncertainty about a uniform loss ranking."
+    ],
+    "prohibited_inferences": [
+      "Empirical effectiveness of argumentation or of evidence acquisition.",
+      "A global minimum evidence set, evidence cost optimum, or a universal stopping rule.",
+      "Intervals are confidence intervals or a chronological acquisition sequence.",
+      "Absence of uniform preference prevents decisions under minimax or another decision rule.",
+      "Loss preference proves admissibility or supplies authority to act."
+    ]
+  },
+  "inputs": [
+    {
+      "id": "parameters",
+      "path": "decision-sufficiency.inputs.json",
+      "status": "illustrative",
+      "source_reference": "Authored example supporting the accompanying engineering argumentation essay; values are stipulated, not measured.",
+      "sha256": "68069acfb6a652eb3ee7612b67199f2f2555928ce9f309d4b021ec73ad5fce50"
+    },
+    {
+      "id": "calculation",
+      "path": "decision-sufficiency.values.json",
+      "status": "derived",
+      "source_reference": "Exact rational calculations from calculate_sufficiency.py.",
+      "sha256": "35134911edab0eb436e7928755aa414b9bf7337e99d9b850bb74a0cd6badbb16"
+    }
+  ],
+  "quantities": [
+    {
+      "id": "condition",
+      "label": "theta",
+      "unit": "dimensionless",
+      "definition": "Stipulated condition in [0,1]; compatible sets limit which values remain under consideration.",
+      "input_ids": [
+        "parameters"
+      ],
+      "transformation": "Identity coordinate.",
+      "statistical_role": "parameter",
+      "missingness": {
+        "state": "not_applicable",
+        "treatment": "No empirical observations."
+      },
+      "uncertainty": {
+        "kind": "not_applicable",
+        "definition": "Stipulated deterministic example, no statistical estimate."
+      }
+    },
+    {
+      "id": "loss-a",
+      "label": "L(A,theta)",
+      "unit": "arbitrary loss unit",
+      "definition": "Stipulated loss for feasible action A.",
+      "input_ids": [
+        "parameters"
+      ],
+      "transformation": "2 + 6*theta.",
+      "statistical_role": "derived",
+      "missingness": {
+        "state": "not_applicable",
+        "treatment": "No empirical observations."
+      },
+      "uncertainty": {
+        "kind": "not_applicable",
+        "definition": "Stipulated deterministic example, no statistical estimate."
+      }
+    },
+    {
+      "id": "loss-b",
+      "label": "L(B,theta)",
+      "unit": "arbitrary loss unit",
+      "definition": "Stipulated loss for feasible action B.",
+      "input_ids": [
+        "parameters"
+      ],
+      "transformation": "Constant 5.",
+      "statistical_role": "derived",
+      "missingness": {
+        "state": "not_applicable",
+        "treatment": "No empirical observations."
+      },
+      "uncertainty": {
+        "kind": "not_applicable",
+        "definition": "Stipulated deterministic example, no statistical estimate."
+      }
+    }
+  ],
+  "constructions": [
+    {
+      "id": "threshold",
+      "kind": "other",
+      "definition": "L(A,theta)=L(B,theta) iff theta=0.5 on [0,1]; both losses are 5 at the crossing. A has strictly lower loss for theta<0.5, B for theta>0.5; at equality the actions tie.",
+      "method": "Solve 2+6*theta=5 exactly, then compare the affine difference 6*theta-3.",
+      "input_ids": [
+        "parameters",
+        "calculation"
+      ]
+    },
+    {
+      "id": "compatible-sets",
+      "kind": "other",
+      "definition": "Three distinct closed sets [0.2,0.8], [0.2,0.4] and [0.6,0.8]. Horizontal position and length encode endpoints and range. Vertical row is categorical, with no time or evidence-cost meaning.",
+      "method": "Stipulate intervals and compare the affine loss difference at both endpoints; signs determine whether strict preference is uniform.",
+      "input_ids": [
+        "parameters",
+        "calculation"
+      ]
+    }
+  ],
+  "encodings": [
+    {
+      "id": "loss-lines",
+      "marks": "Solid accent line for A and dashed dark line for B, each directly labelled.",
+      "mark_role": "data_mark",
+      "channel": "position",
+      "represents": "Each action loss as a function of theta in panel a.",
+      "interpretation": "quantitative",
+      "quantity_ids": [
+        "condition",
+        "loss-a",
+        "loss-b"
+      ],
+      "scale_or_mapping": {
+        "type": "explicit",
+        "definition": "Panel a uses x=theta linearly on [0,1] and y=L(action,theta) linearly on [0,8.5] arbitrary loss units."
+      }
+    },
+    {
+      "id": "threshold-line",
+      "marks": "Fine grey dashed vertical line in both panels.",
+      "mark_role": "boundary",
+      "channel": "position",
+      "represents": "The unique equality threshold theta=0.5.",
+      "interpretation": "quantitative",
+      "construction_ids": [
+        "threshold"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "x=theta on a shared [0,1] domain; y length has no quantitative meaning for the threshold.",
+        "domain": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "compatible-bars",
+      "marks": "Dark horizontal lines with perpendicular endpoint caps.",
+      "mark_role": "data_mark",
+      "channel": "length",
+      "represents": "Hypothetical compatible condition intervals.",
+      "interpretation": "quantitative",
+      "construction_ids": [
+        "compatible-sets"
+      ],
+      "quantity_ids": [
+        "condition"
+      ],
+      "scale_or_mapping": {
+        "type": "linear",
+        "definition": "The endpoints are x=theta on [0,1]; interval length equals upper minus lower endpoint.",
+        "domain": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "id": "interval-rows",
+      "marks": "Three vertically separated, directly labelled interval rows.",
+      "mark_role": "annotation",
+      "channel": "position",
+      "represents": "Alternative hypothetical assessment outcomes.",
+      "interpretation": "categorical",
+      "construction_ids": [
+        "compatible-sets"
+      ],
+      "scale_or_mapping": {
+        "type": "nominal",
+        "definition": "Top: preference varies; middle: A throughout; bottom: B throughout. No chronology, evidence strength or cost is encoded.",
+        "domain": [
+          "Preference varies",
+          "A throughout",
+          "B throughout"
+        ]
+      }
+    }
+  ],
+  "target": {
+    "width_mm": 155,
+    "width_mode": "maximum",
+    "width_tolerance_mm": 0.5,
+    "min_text_pt": 9,
+    "min_math_script_pt": 6,
+    "min_stroke_pt": 0.35,
+    "colour_intent": "colour_and_greyscale",
+    "expected_labels": [
+      "Loss under each action",
+      "Compatible conditions",
+      "Preference varies",
+      "A throughout",
+      "B throughout",
+      "dimensionless",
+      "arbitrary units"
+    ],
+    "prohibit_block_circle_diagrams": true,
+    "manuscript_profile": "manuscript-profile.json"
+  },
+  "build": {
+    "renderer": "pgfplots",
+    "engine": "pdflatex",
+    "profile": "manuscript-profile.json",
+    "source": "decision-sufficiency.tikz.tex",
+    "recipe": [
+      [
+        "python3",
+        "calculate_sufficiency.py"
+      ],
+      [
+        "python3",
+        "../../../paper/reproduction/figure-tools/scripts/figure_spec.py",
+        "decision-sufficiency.spec.json",
+        "--check-files"
+      ],
+      [
+        "python3",
+        "../../../paper/reproduction/figure-tools/scripts/render_tikz.py",
+        "decision-sufficiency.tikz.tex",
+        "--spec",
+        "decision-sufficiency.spec.json",
+        "--output",
+        "decision-sufficiency.pdf",
+        "--audit",
+        "decision-sufficiency.audit.json"
+      ]
+    ],
+    "outputs": {
+      "pdf": "decision-sufficiency.pdf",
+      "audit": "decision-sufficiency.audit.json",
+      "review": "decision-sufficiency.review.json"
+    },
+    "dependencies": [
+      "calculate_sufficiency.py",
+      "decision-sufficiency.caption.tex",
+      "decision-sufficiency.alt.txt"
+    ]
+  }
+}
