@@ -1,0 +1,46 @@
+{
+  "ack_attempts": 1,
+  "arm": "durable_json",
+  "automatic_reexecution_after_unknown": false,
+  "budgets": {
+    "maximum_ack_attempts": 8,
+    "maximum_effect_invocations": 3,
+    "maximum_handler_deliveries": 3,
+    "maximum_message_bytes": 65536,
+    "maximum_send_attempts": 8,
+    "maximum_unique_messages": 8,
+    "wall_seconds": 3600
+  },
+  "collected_count": 0,
+  "collection_receipts_complete": true,
+  "eal_assessment_calls": 0,
+  "effect_mode": "synthetic_counted_effect",
+  "episode_id": "no_fault",
+  "errors": [],
+  "event_trace": "events.json",
+  "execution_mode": "software_fault_injection",
+  "final_worker_answers": null,
+  "handler_deliveries": 1,
+  "input_acknowledged": true,
+  "local_completion_confirmed": true,
+  "logical_effect_invocations": 1,
+  "mailbox_usage": {
+    "bytes": 1001,
+    "messages": 2
+  },
+  "outcome": "delivered",
+  "qualified_reply_summaries": [
+    {
+      "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+      "synthetic": true,
+      "value": "counted deterministic software effect"
+    }
+  ],
+  "recorded_collected_count": 0,
+  "recorded_reused_count": 0,
+  "recovered_delivery": null,
+  "reused_count": 0,
+  "safe_unknown": false,
+  "send_attempts": 1,
+  "unique_replies": 1
+}

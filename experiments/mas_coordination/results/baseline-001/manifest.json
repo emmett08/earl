@@ -1,0 +1,14 @@
+{
+  "schema": "EAL/mas-coordination-run/1",
+  "plan_sha256": "8b42f3f2550f8759235b17c11cc6131f8797b85f3ec4da3d35d7d1d274554686",
+  "prepared_runs": [
+    "task001-mcp_json",
+    "task002-mcp_json",
+    "task003-mcp_json",
+    "task004-mcp_json"
+  ],
+  "unrun_arms": [
+    "eal_protocol"
+  ],
+  "no_improvement_claim": true
+}

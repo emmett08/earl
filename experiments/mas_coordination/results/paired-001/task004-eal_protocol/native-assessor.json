@@ -1,0 +1,54 @@
+{
+  "proposals": [
+    {
+      "schema": "EAL/MAS-coordination/1",
+      "kind": "proposal",
+      "message_id": "proposal-0",
+      "task_id": "task004",
+      "sender": "assessor",
+      "recipient": "reviewer",
+      "reply_to": "request-0",
+      "scope": {
+        "entry_id": "load_test",
+        "claim": "performance_criteria_met",
+        "source_digest": "09c84bf151c7875f93c37da1d5921e5eb2d15d9bffb03a5d0c18334f9725b4b9",
+        "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "assessed_at": "2026-09-25T10:00:00Z"
+      },
+      "assessment_id": "c5ec506f-b579-4e68-a11c-1ec525a177a2",
+      "collection_id": "bd8dbf11-ff4e-491a-bd19-1b480f7083e2",
+      "status": "unsupported",
+      "evidence_refs": {
+        "load_test": "9610accb-e7ab-46dc-8f82-5572a75c0f2d"
+      }
+    },
+    {
+      "schema": "EAL/MAS-coordination/1",
+      "kind": "proposal",
+      "message_id": "proposal-1",
+      "task_id": "task004",
+      "sender": "assessor",
+      "recipient": "reviewer",
+      "reply_to": "request-1",
+      "scope": {
+        "entry_id": "load_test",
+        "claim": "performance_criteria_failed",
+        "source_digest": "09c84bf151c7875f93c37da1d5921e5eb2d15d9bffb03a5d0c18334f9725b4b9",
+        "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "assessed_at": "2026-09-25T10:00:00Z"
+      },
+      "assessment_id": "220eda04-d756-4c23-b6ef-6cba3860e038",
+      "collection_id": "72d21b17-fc0c-4afa-9bf1-95143ff94915",
+      "status": "supported",
+      "evidence_refs": {
+        "load_test": "e1d13d1b-f073-46f5-8a1f-1b7c04dd676c"
+      }
+    }
+  ],
+  "consumed_message_ids": [
+    "request-0",
+    "request-1"
+  ]
+}

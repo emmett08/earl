@@ -1,0 +1,64 @@
+{
+  "units": [
+    {
+      "name": "api-json",
+      "profile": "api_load/1",
+      "arm": "json",
+      "task_id": "synthetic_api_sample",
+      "run_id": "coord-0190b1285b654adfa503a4678910a9c3"
+    },
+    {
+      "name": "api-lab",
+      "profile": "api_load/1",
+      "arm": "lab",
+      "task_id": "synthetic_api_sample",
+      "run_id": "coord-08c1d2bb8010438aa70d98c7dcd31fed"
+    },
+    {
+      "name": "generic-lab",
+      "profile": "registered_claims/1",
+      "arm": "lab",
+      "task_id": "synthetic_availability_sample",
+      "run_id": "coord-4dd5731fd9784397923b4290196f9bfe"
+    },
+    {
+      "name": "generic-json",
+      "profile": "registered_claims/1",
+      "arm": "json",
+      "task_id": "synthetic_availability_sample",
+      "run_id": "coord-77eedfe222f94f45b948ddabc5e83c05"
+    }
+  ],
+  "execution_mode": "actual_host_agent",
+  "maximum_contexts": 8,
+  "zero_repairs": true,
+  "independent_workspace_per_arm": true,
+  "implementation_sha256": {
+    "src/eal/coordination/contracts.py": "a13db8925f119e717822c737288ed82b4c78b18a1de7fc7263ed3e054e1d29b8",
+    "src/eal/coordination/ledger.py": "ce128fe6feb4a296c7764161c5ef8e9ab5e65b492cc1010e934404fbc473eb14",
+    "src/eal/coordination/__init__.py": "1911def3a8ae24dd5f78c12b6f93d6322624d3eeb4f517f95430f5479ea61e98",
+    "src/eal/coordination/lab.py": "c5707a1900870b706d41c6e4ec35c5a6051ea07ec6a7bf04fcb7440d08f53f98",
+    "src/eal/coordination/service.py": "e0d118e4d50b171aaecde54fc4db791ee0a9f6e2469b9721b07def49289903fa",
+    "src/eal/coordination/profiles.py": "78a020bce869210e9c6b327da93a79411a1c954d72c5ccf36b174bc5c3a39afb",
+    "src/eal/coordination/bus.py": "9224d4eba56d71cc664f9c4cb5b4cc483abedace08ad5dae76790534c21c828d",
+    "src/eal/coordination/gateway.py": "e848d59a230d2712faa5030850e0df2edca5802cae999322c437d38b6aa5c7e0",
+    "src/eal/coordination/lab_mcp.py": "84fb30943d35c7d2f2f4d33f8e95f8a694c42c1ef2d3b03362f6696b01c3cf2f",
+    "src/eal/coordination/workers.py": "9f120490ecea8d56f39442eb8f6014dd235f9ffc8967682dbf3364e576501565",
+    "src/eal/coordination/state.py": "84deb67b3eb7aafde9f9d23eee4a431a47bec214230e058bd3ba3d1e5a9c37be",
+    "src/eal/coordination/cli.py": "69c81f21e3d09150bffaad245340816834ded7d08f330b7224847ebd857c8e70",
+    "src/eal/coordination/response-schema.json": "6ec5d1f4b9661c93e96d37b8690583b8f9be799a1631e139e6dd0039ba56898c",
+    "pyproject.toml": "7b78297ccf1b5d60cd28e5621495d1918b500be4ec9bcc3ed6ad75ae7f589fb8",
+    "experiments/mas_coordination/coordinator_demo.py": "d851650d3493d2e323eb6596f2f308652d6bfa7a4190ac78c015b5f578defe76",
+    "experiments/mas_coordination/coordinator_worker.py": "33d90703d484fd772b094edc4ec60c3224bd586286beed733ad76480ed14b546",
+    "experiments/mas_coordination/coordinator-plan.json": "40775c533630bc24049e04700fe0d8e6bf4463bd804e787f9c3894ae394f8510"
+  },
+  "roles": [
+    "assessor",
+    "reviewer"
+  ],
+  "first_arm_order": [
+    "api-json",
+    "generic-lab"
+  ],
+  "provider_model_tokens_and_billing": null
+}

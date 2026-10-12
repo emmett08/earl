@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:eal:mas-coordination:2",
+  "title": "EAL/MAS-coordination/2",
+  "description": "Optional task correspondence and bounded recovery payload. Python EAL owns reasoning and referenced findings. MAS Protocol Lab envelope version 1, EAL/3 and EAL observation schemas remain separate. No inline packets or worker-supplied host statuses.",
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[A-Za-z0-9_.:-]+$"},
+    "digest": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "code": {"enum": ["context_mismatch", "workload_mismatch", "criteria_mismatch", "source_changed", "evidence_unavailable", "effect_outcome_unknown"]},
+    "common": {
+      "type": "object",
+      "properties": {
+        "schema": {"const": "EAL/MAS-coordination/2"},
+        "message_id": {"$ref": "#/$defs/id"},
+        "task_id": {"$ref": "#/$defs/id"},
+        "task_digest": {"$ref": "#/$defs/digest"},
+        "sender": {"$ref": "#/$defs/id"},
+        "recipient": {"$ref": "#/$defs/id"},
+        "reply_to": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+        "attempt": {"type": "integer", "enum": [0, 1]}
+      },
+      "required": ["schema", "message_id", "task_id", "task_digest", "sender", "recipient", "reply_to", "attempt"]
+    },
+    "answer": {
+      "type": "object",
+      "description": "Worker-authored final answer, checked separately from coordination transport. Host findings determine unassessed dispositions; trusted EAL references determine actual statuses.",
+      "properties": {
+        "statuses": {
+          "type": "object",
+          "properties": {
+            "performance_criteria_met": {"enum": ["supported", "contested", "unsupported", "out_of_scope", null]},
+            "performance_criteria_failed": {"enum": ["supported", "contested", "unsupported", "out_of_scope", null]}
+          },
+          "required": ["performance_criteria_met", "performance_criteria_failed"],
+          "additionalProperties": false
+        },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "service": {"type": "string", "minLength": 1, "maxLength": 128},
+            "build_id": {"type": "string", "minLength": 1, "maxLength": 128},
+            "run_id": {"type": "string", "minLength": 1, "maxLength": 128},
+            "concurrent_clients": {"type": "integer", "minimum": 1},
+            "dataset": {"type": "string", "minLength": 1, "maxLength": 128}
+          },
+          "required": ["service", "build_id", "run_id", "concurrent_clients", "dataset"],
+          "additionalProperties": false
+        },
+        "assessed_at": {"type": "string", "format": "date-time", "maxLength": 64},
+        "conclusion": {
+          "enum": ["sample_pass", "sample_fail", "unresolved", "out_of_scope"],
+          "description": "sample_pass: corresponding checked passing claim supported and failing claim unsupported; sample_fail: corresponding checked measured-failure claim supported and passing claim unsupported; unresolved: no decisive checked result; out_of_scope: candidate fails context/workload/criterion or pinned-source correspondence. Missing or stale evidence never establishes measured failure."
+        },
+        "production_supported": {"const": false}
+      },
+      "required": ["statuses", "scope", "assessed_at", "conclusion", "production_supported"],
+      "additionalProperties": false
+    }
+  },
+  "oneOf": [
+    {
+      "allOf": [
+        {"$ref": "#/$defs/common"},
+        {
+          "properties": {
+            "kind": {"const": "request"},
+            "candidate_entry_id": {"$ref": "#/$defs/id"},
+            "reply_to": {"type": "null"},
+            "attempt": {"const": 0}
+          },
+          "required": ["kind", "candidate_entry_id"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    {
+      "allOf": [
+        {"$ref": "#/$defs/common"},
+        {
+          "properties": {
+            "kind": {"const": "outcome"},
+            "reply_to": {"$ref": "#/$defs/id"},
+            "finding_id": {"$ref": "#/$defs/id"},
+            "assessment_refs": {
+              "type": "object",
+              "properties": {
+                "performance_criteria_met": {"$ref": "#/$defs/id"},
+                "performance_criteria_failed": {"$ref": "#/$defs/id"}
+              },
+              "required": ["performance_criteria_met", "performance_criteria_failed"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["kind", "finding_id", "assessment_refs"]
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    {
+      "allOf": [
+        {"$ref": "#/$defs/common"},
+        {
+          "properties": {
+            "kind": {"const": "disposition"},
+            "reply_to": {"$ref": "#/$defs/id"},
+            "finding_id": {"$ref": "#/$defs/id"},
+            "outcome": {"enum": ["rejected", "incomplete"]},
+            "code": {"$ref": "#/$defs/code"}
+          },
+          "required": ["kind", "finding_id", "outcome", "code"]
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  ]
+}

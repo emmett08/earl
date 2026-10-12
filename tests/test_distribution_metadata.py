@@ -27,6 +27,7 @@ ENTRY_POINTS = b"""[console_scripts]
 eal = eal.cli:main
 eal-mcp = eal.server:main
 eal-host = eal.host:main
+eal-coordinate = eal.coordination.cli:main
 """
 MODULES = (
     "eal/knowledge.py", "eal/runtime.py", "eal/command_supervisor.py",

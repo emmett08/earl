@@ -1,0 +1,71 @@
+[
+  {
+    "arm": "durable_json",
+    "input_digest": "263bfb1ea8650b6d76ce2c125f669dc7a42dde40c77084c6665f902fa60857ae",
+    "operation": "episode_started",
+    "sequence": 1
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": false,
+    "sequence": 2
+  },
+  {
+    "attempt": 0,
+    "operation": "handler_delivery",
+    "sequence": 3
+  },
+  {
+    "diagnosis": null,
+    "operation": "effect_reservation",
+    "sequence": 4,
+    "status": "new"
+  },
+  {
+    "effect_mode": "synthetic_counted_effect",
+    "operation": "effect_started",
+    "sequence": 5
+  },
+  {
+    "effect_result_file": "effect-001.json",
+    "operation": "effect_returned",
+    "sequence": 6
+  },
+  {
+    "fault_mode": "Python interruption",
+    "operation": "fault_injected",
+    "point": "after_effect_before_commit",
+    "sequence": 7
+  },
+  {
+    "operation": "interruption_retained",
+    "point": "after_effect_before_commit",
+    "sequence": 8
+  },
+  {
+    "method": "New transport and ledger objects",
+    "operation": "recovery_started",
+    "sequence": 9
+  },
+  {
+    "operation": "recovery_inbox_polled",
+    "pending_count": 1,
+    "sequence": 10
+  },
+  {
+    "attempt": 1,
+    "operation": "handler_delivery",
+    "sequence": 11
+  },
+  {
+    "diagnosis": "effect_outcome_unknown",
+    "operation": "effect_reservation",
+    "sequence": 12,
+    "status": "unknown"
+  },
+  {
+    "automatic_reexecution": false,
+    "operation": "effect_outcome_unknown",
+    "sequence": 13
+  }
+]

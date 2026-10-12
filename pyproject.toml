@@ -41,6 +41,10 @@ aspic-reference = ["python-argumentation==2.0.2"]
 eal = "eal.cli:main"
 eal-mcp = "eal.server:main"
 eal-host = "eal.host:main"
+eal-coordinate = "eal.coordination.cli:main"
+
+[tool.setuptools.package-data]
+"eal.coordination" = ["*.json"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

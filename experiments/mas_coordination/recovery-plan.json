@@ -1,0 +1,37 @@
+{
+  "schema": "EAL/mas-coordination-recovery-plan/2",
+  "study_id": "eal3-coordination-recovery-002",
+  "status": "frozen_before_new_live_outcomes",
+  "hypothesis": "Typed whole-task correspondence and durable effect/outbox recovery improve reliability and repeated-call counts when task handoffs fail; changing invisible wire syntax alone cannot change a model's information.",
+  "primary_contrast": "Original plain handoff behavior versus checked durable coordination. Improvements are attributed to validation/recovery mechanisms, not Rust syntax.",
+  "mechanism_control": "The same checked effect ledger over JSON must match the protocol's semantic outcome. This control identifies whether the benefit needs the custom wire representation.",
+  "development": ["nominal", "known_scope_label_ambiguity", "duplicate_request", "lost_acknowledgement"],
+  "held_out_software_cases": ["changed_workload_run", "changed_client_count", "crash_after_effect_commit_before_send", "crash_after_send_before_ack", "interrupted_effect_with_unknown_outcome"],
+  "native_cases": [
+    {"id": "new_sample_failure", "fixture": "measured_failure", "arms": ["plain_mcp", "checked_protocol"]},
+    {"id": "new_workload_scope", "fixture": "workload_mismatch", "arms": ["checked_protocol", "plain_mcp"]}
+  ],
+  "native_execution": {
+    "roles": ["assessor", "reviewer"],
+    "fresh_context_per_case_arm_role": true,
+    "maximum_contexts": 8,
+    "maximum_repairs": 0,
+    "maximum_gateway_calls_per_role": 4,
+    "max_protocol_calls_per_unit": 2,
+    "max_protocol_messages_per_unit": 8,
+    "max_protocol_bytes_per_unit": 65536,
+    "requested_seconds_per_role": 180,
+    "requested_output_tokens_per_role": 4000,
+    "unknown_native_model_tokens_and_billing": true,
+    "policy": "Workers receive task semantics and tool instructions, not computed assessments or completed message templates. Assessor requests findings through the actual host/MCP gateway; reviewer must inspect its received handoff and retrieve the referenced finding. No answer is supplied by the coordinator. No live-result-dependent repair or rescore."
+  },
+  "fixed_semantics": {
+    "sample_pass": "Both target correspondence and decision time match; the positive EAL claim is supported and the negative claim is unsupported.",
+    "sample_fail": "Both target correspondence and decision time match; the negative EAL claim is supported and the positive claim is unsupported.",
+    "unresolved": "Target correspondence matches but admissible evidence does not decide pass or measured fail, or an external effect outcome is unknown.",
+    "out_of_scope": "The available registered candidate does not correspond to the requested service, build, dataset, run, client workload, criteria, freshness contract, source revision or method. No requested-target assessment is asserted; claim statuses are null."
+  },
+  "outcomes": ["Exact answer with justified scope and qualification", "No false admission of different run/client workload", "Logical external effect invocations under duplicate delivery", "Safe unknown after interrupted effect", "Committed delivery recovery without another external effect", "All attempts, unknown outcomes and failures retained"],
+  "cost": "Count measured logical gateway invocations, actual EAL acquisition/reuse, transport bytes, ledger operations and native contexts. Native tokens/USD and implementation/onboarding cost remain unmeasured. No total-cost improvement claim.",
+  "analysis": "Report software fault-injection and actual communicating-agent results separately. These are internal synthetic fixtures, not a representative benchmark. One paired native trial per case supports only those runs. Preserve the original /1 report and its scores."
+}

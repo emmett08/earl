@@ -1,0 +1,19 @@
+{
+  "answer": {
+    "statuses": {
+      "performance_criteria_met": "unsupported",
+      "performance_criteria_failed": "supported"
+    },
+    "scope": {
+      "service": "orders-api",
+      "build_id": "demo-build-42",
+      "run_id": "demo-load-001",
+      "concurrent_clients": 10,
+      "dataset": "synthetic"
+    },
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "conclusion": "sample_fail",
+    "production_supported": false
+  },
+  "consumed_message_ids": ["assessor-outcome"]
+}

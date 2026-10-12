@@ -1,0 +1,21 @@
+{
+  "message": {
+    "schema": "EAL/MAS-coordination/2",
+    "kind": "outcome",
+    "message_id": "task501-assessor-outcome",
+    "task_id": "task501",
+    "task_digest": "bb1fb0faa21f61e290675df0407bbbad49016130d4c21a0e5d638451a2a558bf",
+    "sender": "assessor",
+    "recipient": "reviewer",
+    "reply_to": "request",
+    "attempt": 0,
+    "finding_id": "finding_5b4001aca36bd0f7431149aa0ac57b42b361aa257e01a34712a94ed04d21581c",
+    "assessment_refs": {
+      "performance_criteria_met": "435f7b22-2201-4c64-9f36-8379f518e813",
+      "performance_criteria_failed": "0d8e0439-2fb5-4860-906d-fafdb8d3e617"
+    }
+  },
+  "consumed_message_ids": [
+    "request"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "finding_id": "finding_8b16fdf992b104d5b3c3a87876198b0f3217fd4299b53780b02b9f836f86993a",
+  "task_digest": "eafbbae3dfb15868c1cfaa971b9d353a790b9d6b1664a2e0e7c6bd59c9373106",
+  "check": {
+    "ok": false,
+    "code": "workload_mismatch",
+    "detail": "Source evidence input differs from the complete requested workload",
+    "task_digest": "eafbbae3dfb15868c1cfaa971b9d353a790b9d6b1664a2e0e7c6bd59c9373106",
+    "entry_id": "load_test",
+    "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+    "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+    "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+    "finding_id": "finding_ec4b5c2e73d4fead0a2282c9510f3d51786241ce71cc74bd059a20bc915be1fa"
+  },
+  "assessment_refs": {},
+  "assessments": {},
+  "packets": {},
+  "mcp": {
+    "calls": [],
+    "reason": "workload_mismatch"
+  },
+  "collected_count": 0,
+  "reused_count": 0
+}

@@ -1,0 +1,400 @@
+{
+  "finding_id": "finding_dbac88aef8b073dcd0b51fb5ee12371df55cc0cece810f8b9764be548818ee1f",
+  "task_digest": "bb1fb0faa21f61e290675df0407bbbad49016130d4c21a0e5d638451a2a558bf",
+  "check": {
+    "ok": true,
+    "code": null,
+    "detail": "Registered source, workload, freshness and method correspond to the pinned task",
+    "task_digest": "bb1fb0faa21f61e290675df0407bbbad49016130d4c21a0e5d638451a2a558bf",
+    "entry_id": "load_test",
+    "source_digest": "d33ec273c6fa3a1724ec2cd88a0db34ddd383a7189393625962dffca2d6ec39c",
+    "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+    "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+    "finding_id": "finding_e3fb641f695996e39ca7e8ddb867dcde4b7fe8ea0def2247b5706ba9644a365d"
+  },
+  "assessment_refs": {
+    "performance_criteria_met": "3cdd4f69-05f6-4f98-a992-fdb071c3be19",
+    "performance_criteria_failed": "a31f3263-f674-44cd-868b-27d13c985172"
+  },
+  "assessments": {
+    "performance_criteria_met": {
+      "schema": "EAL/registered-assessment/1",
+      "entry_id": "load_test",
+      "claim": "performance_criteria_met",
+      "source_digest": "d33ec273c6fa3a1724ec2cd88a0db34ddd383a7189393625962dffca2d6ec39c",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "collection_id": "c68a30b0-9a02-455f-991e-fca385f554fe",
+      "assessment_id": "3cdd4f69-05f6-4f98-a992-fdb071c3be19",
+      "assessed_at": "2026-09-25T10:00:00Z",
+      "status": "unsupported",
+      "reused_count": 0,
+      "collected_count": 1,
+      "packet": {
+        "schema": "EAL/assessment-packet/2",
+        "assessment_id": "3cdd4f69-05f6-4f98-a992-fdb071c3be19",
+        "collection_id": "c68a30b0-9a02-455f-991e-fca385f554fe",
+        "source_digest": "d33ec273c6fa3a1724ec2cd88a0db34ddd383a7189393625962dffca2d6ec39c",
+        "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "claims": {
+          "performance_criteria_met": {
+            "status": "unsupported",
+            "statement": "The synthetic report demo-load-001 for orders-api build demo-build-42, labelled with 10 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent.",
+            "prose_verified": false,
+            "grounded_label": "rejected",
+            "supporting_arguments": [],
+            "contested_arguments": [],
+            "related_arguments": [
+              "passing_performance"
+            ],
+            "active_objections": [],
+            "undecided_objections": [],
+            "observation_ids": [
+              {
+                "evidence_id": "load_test",
+                "observation_id": "c67b59a0-3359-4e19-886e-d880db87f907"
+              }
+            ]
+          }
+        },
+        "premise_claims": {},
+        "arguments": {
+          "passing_performance": {
+            "status": "unsupported",
+            "conclusion": "performance_criteria_met",
+            "method_result": {
+              "status": "supported",
+              "method": "engineering/api-load-criteria/1",
+              "evidence_id": "load_test",
+              "input_digest": "4b8d6f19006e987e045b1f689b61f2e3f76395bcbe4be74051f4678dcd9fb91e",
+              "outputs": {
+                "fails": true,
+                "passes": false,
+                "sample_size_met": true
+              },
+              "require_holds": [
+                false
+              ]
+            },
+            "premises": []
+          }
+        },
+        "assumptions": {},
+        "objections": {},
+        "evidence": {
+          "load_test": {
+            "status": "available",
+            "availability_issues": [],
+            "observation_id": "c67b59a0-3359-4e19-886e-d880db87f907",
+            "age_status": "within_max_age",
+            "observed_at": "2026-09-25T10:00:00Z",
+            "age_seconds": 0.0
+          }
+        },
+        "omitted": {},
+        "summary_complete": true,
+        "full_explanation": {
+          "operation": "explain",
+          "assessment_id": "3cdd4f69-05f6-4f98-a992-fdb071c3be19",
+          "detail": "full"
+        }
+      },
+      "full_explanation": {
+        "operation": "explain",
+        "assessment_id": "3cdd4f69-05f6-4f98-a992-fdb071c3be19",
+        "detail": "full"
+      }
+    },
+    "performance_criteria_failed": {
+      "schema": "EAL/registered-assessment/1",
+      "entry_id": "load_test",
+      "claim": "performance_criteria_failed",
+      "source_digest": "d33ec273c6fa3a1724ec2cd88a0db34ddd383a7189393625962dffca2d6ec39c",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "collection_id": "da785cba-1d88-4ee3-a178-96b42e046e79",
+      "assessment_id": "a31f3263-f674-44cd-868b-27d13c985172",
+      "assessed_at": "2026-09-25T10:00:00Z",
+      "status": "supported",
+      "reused_count": 1,
+      "collected_count": 0,
+      "packet": {
+        "schema": "EAL/assessment-packet/2",
+        "assessment_id": "a31f3263-f674-44cd-868b-27d13c985172",
+        "collection_id": "da785cba-1d88-4ee3-a178-96b42e046e79",
+        "source_digest": "d33ec273c6fa3a1724ec2cd88a0db34ddd383a7189393625962dffca2d6ec39c",
+        "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "claims": {
+          "performance_criteria_failed": {
+            "status": "supported",
+            "statement": "The identified synthetic report demo-load-001 fails at least one of the sample-size, latency or error-rate criteria.",
+            "prose_verified": false,
+            "grounded_label": "accepted",
+            "supporting_arguments": [
+              "failing_performance"
+            ],
+            "contested_arguments": [],
+            "related_arguments": [
+              "failing_performance"
+            ],
+            "active_objections": [],
+            "undecided_objections": [],
+            "observation_ids": [
+              {
+                "evidence_id": "load_test",
+                "observation_id": "9c10fefc-1f74-41cc-bf7a-e175d472868f"
+              }
+            ]
+          }
+        },
+        "premise_claims": {},
+        "arguments": {
+          "failing_performance": {
+            "status": "supported",
+            "conclusion": "performance_criteria_failed",
+            "method_result": {
+              "status": "supported",
+              "method": "engineering/api-load-criteria/1",
+              "evidence_id": "load_test",
+              "input_digest": "4b8d6f19006e987e045b1f689b61f2e3f76395bcbe4be74051f4678dcd9fb91e",
+              "outputs": {
+                "fails": true,
+                "passes": false,
+                "sample_size_met": true
+              },
+              "require_holds": [
+                true
+              ]
+            },
+            "premises": []
+          }
+        },
+        "assumptions": {},
+        "objections": {},
+        "evidence": {
+          "load_test": {
+            "status": "available",
+            "availability_issues": [],
+            "observation_id": "9c10fefc-1f74-41cc-bf7a-e175d472868f",
+            "age_status": "within_max_age",
+            "observed_at": "2026-09-25T10:00:00Z",
+            "age_seconds": 0.0
+          }
+        },
+        "omitted": {},
+        "summary_complete": true,
+        "full_explanation": {
+          "operation": "explain",
+          "assessment_id": "a31f3263-f674-44cd-868b-27d13c985172",
+          "detail": "full"
+        }
+      },
+      "full_explanation": {
+        "operation": "explain",
+        "assessment_id": "a31f3263-f674-44cd-868b-27d13c985172",
+        "detail": "full"
+      }
+    }
+  },
+  "packets": {
+    "performance_criteria_met": {
+      "schema": "EAL/assessment-packet/2",
+      "assessment_id": "3cdd4f69-05f6-4f98-a992-fdb071c3be19",
+      "collection_id": "c68a30b0-9a02-455f-991e-fca385f554fe",
+      "source_digest": "d33ec273c6fa3a1724ec2cd88a0db34ddd383a7189393625962dffca2d6ec39c",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "claims": {
+        "performance_criteria_met": {
+          "status": "unsupported",
+          "statement": "The synthetic report demo-load-001 for orders-api build demo-build-42, labelled with 10 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent.",
+          "prose_verified": false,
+          "grounded_label": "rejected",
+          "supporting_arguments": [],
+          "contested_arguments": [],
+          "related_arguments": [
+            "passing_performance"
+          ],
+          "active_objections": [],
+          "undecided_objections": [],
+          "observation_ids": [
+            {
+              "evidence_id": "load_test",
+              "observation_id": "c67b59a0-3359-4e19-886e-d880db87f907"
+            }
+          ]
+        }
+      },
+      "premise_claims": {},
+      "arguments": {
+        "passing_performance": {
+          "status": "unsupported",
+          "conclusion": "performance_criteria_met",
+          "method_result": {
+            "status": "supported",
+            "method": "engineering/api-load-criteria/1",
+            "evidence_id": "load_test",
+            "input_digest": "4b8d6f19006e987e045b1f689b61f2e3f76395bcbe4be74051f4678dcd9fb91e",
+            "outputs": {
+              "fails": true,
+              "passes": false,
+              "sample_size_met": true
+            },
+            "require_holds": [
+              false
+            ]
+          },
+          "premises": []
+        }
+      },
+      "assumptions": {},
+      "objections": {},
+      "evidence": {
+        "load_test": {
+          "status": "available",
+          "availability_issues": [],
+          "observation_id": "c67b59a0-3359-4e19-886e-d880db87f907",
+          "age_status": "within_max_age",
+          "observed_at": "2026-09-25T10:00:00Z",
+          "age_seconds": 0.0
+        }
+      },
+      "omitted": {},
+      "summary_complete": true,
+      "full_explanation": {
+        "operation": "explain",
+        "assessment_id": "3cdd4f69-05f6-4f98-a992-fdb071c3be19",
+        "detail": "full"
+      }
+    },
+    "performance_criteria_failed": {
+      "schema": "EAL/assessment-packet/2",
+      "assessment_id": "a31f3263-f674-44cd-868b-27d13c985172",
+      "collection_id": "da785cba-1d88-4ee3-a178-96b42e046e79",
+      "source_digest": "d33ec273c6fa3a1724ec2cd88a0db34ddd383a7189393625962dffca2d6ec39c",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "claims": {
+        "performance_criteria_failed": {
+          "status": "supported",
+          "statement": "The identified synthetic report demo-load-001 fails at least one of the sample-size, latency or error-rate criteria.",
+          "prose_verified": false,
+          "grounded_label": "accepted",
+          "supporting_arguments": [
+            "failing_performance"
+          ],
+          "contested_arguments": [],
+          "related_arguments": [
+            "failing_performance"
+          ],
+          "active_objections": [],
+          "undecided_objections": [],
+          "observation_ids": [
+            {
+              "evidence_id": "load_test",
+              "observation_id": "9c10fefc-1f74-41cc-bf7a-e175d472868f"
+            }
+          ]
+        }
+      },
+      "premise_claims": {},
+      "arguments": {
+        "failing_performance": {
+          "status": "supported",
+          "conclusion": "performance_criteria_failed",
+          "method_result": {
+            "status": "supported",
+            "method": "engineering/api-load-criteria/1",
+            "evidence_id": "load_test",
+            "input_digest": "4b8d6f19006e987e045b1f689b61f2e3f76395bcbe4be74051f4678dcd9fb91e",
+            "outputs": {
+              "fails": true,
+              "passes": false,
+              "sample_size_met": true
+            },
+            "require_holds": [
+              true
+            ]
+          },
+          "premises": []
+        }
+      },
+      "assumptions": {},
+      "objections": {},
+      "evidence": {
+        "load_test": {
+          "status": "available",
+          "availability_issues": [],
+          "observation_id": "9c10fefc-1f74-41cc-bf7a-e175d472868f",
+          "age_status": "within_max_age",
+          "observed_at": "2026-09-25T10:00:00Z",
+          "age_seconds": 0.0
+        }
+      },
+      "omitted": {},
+      "summary_complete": true,
+      "full_explanation": {
+        "operation": "explain",
+        "assessment_id": "a31f3263-f674-44cd-868b-27d13c985172",
+        "detail": "full"
+      }
+    }
+  },
+  "mcp": {
+    "transport": "actual_mcp_stdio",
+    "initialized": true,
+    "calls": [
+      {
+        "name": "eal_describe",
+        "arguments": {}
+      },
+      {
+        "name": "eal_packet",
+        "arguments": {
+          "assessment_id": "3cdd4f69-05f6-4f98-a992-fdb071c3be19",
+          "claim": "performance_criteria_met"
+        }
+      },
+      {
+        "name": "eal_packet",
+        "arguments": {
+          "assessment_id": "a31f3263-f674-44cd-868b-27d13c985172",
+          "claim": "performance_criteria_failed"
+        }
+      },
+      {
+        "name": "eal_sources",
+        "arguments": {},
+        "exposure": "registered"
+      }
+    ],
+    "registered_sources": {
+      "sources": [
+        {
+          "entry_id": "load_test",
+          "path": "source.eal",
+          "label": "synthetic coordination pilot",
+          "source_digest": "d33ec273c6fa3a1724ec2cd88a0db34ddd383a7189393625962dffca2d6ec39c",
+          "claims": [
+            "performance_criteria_met",
+            "performance_criteria_failed"
+          ],
+          "claim_metadata": {
+            "performance_criteria_failed": {
+              "environment": "test_run",
+              "statement": "The identified synthetic report demo-load-001 fails at least one of the sample-size, latency or error-rate criteria."
+            },
+            "performance_criteria_met": {
+              "environment": "test_run",
+              "statement": "The synthetic report demo-load-001 for orders-api build demo-build-42, labelled with 10 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent."
+            }
+          }
+        }
+      ],
+      "limit": 50,
+      "offset": 0
+    }
+  },
+  "collected_count": 1,
+  "reused_count": 1
+}

@@ -19,6 +19,7 @@ from eal.knowledge import EALKnowledgeBase, ModelContextAdapter
 from eal.parser import parse
 from eal.runtime import ReasoningService
 from eal.semantics import validate
+from eal.coordination import Coordinator, ServerSpec, TaskSpec
 
 
 SOURCE = '''language "EAL/3"
@@ -158,7 +159,7 @@ def main() -> None:
                    and key.lower() not in {"http_proxy", "https_proxy", "all_proxy"}}
     environment["NO_PROXY"] = "127.0.0.1,localhost,::1"
     environment["EAL_DISTRIBUTION_TOKEN"] = "distribution-check-token"
-    for name in ("eal", "eal-mcp", "eal-host"):
+    for name in ("eal", "eal-mcp", "eal-host", "eal-coordinate"):
         subprocess.run([str(executable_directory / name), "--help"], cwd=workspace,
                        env=environment, check=True, capture_output=True, timeout=15)
     cli = run_json([str(executable_directory / "eal"), "--workspace", str(workspace),
@@ -175,8 +176,32 @@ def main() -> None:
     assert response["result"]["reused_count"] == 1
     check_http(executable_directory / "eal-host", executable_directory / "eal-mcp",
                workspace=workspace, registry=registry, environment=environment, request=request)
+    coordinator = Coordinator.start(
+        workspace / "coordination", ServerSpec(workspace, registry),
+        TaskSpec("distribution-check", "Does the synthetic registered check have support?",
+                 "smoke", ("works",), "registered_claims/1", {"context": {"site": "bench"}}),
+    )
+    assert Path(__import__("eal.coordination.service", fromlist=["__file__"]).__file__).with_name("response-schema.json").is_file()
+    assessor = coordinator.reserve_worker("assessor", execution_mode="software_test")
+    finding = coordinator.query(assessor["call_id"])
+    assert any(call["name"] == "eal_assess_known" for call in finding["mcp"]["calls"])
+    message = {"schema": "EAL/MAS-coordination/3", "kind": "outcome", "message_id": "finding",
+               "task_id": "distribution-check", "task_digest": coordinator.anchor["task_digest"],
+               "sender": "assessor", "recipient": "reviewer", "reply_to": "request", "attempt": 0,
+               "finding_id": finding["finding_id"], "assessment_refs": {"works": finding["assessments"]["works"]["assessment_id"]}}
+    assert coordinator.record(assessor["call_id"], json.dumps({"message": message, "consumed_message_ids": ["request"]}).encode(),
+                              "distribution-software-assessor", execution_mode="software_test")["accepted"]
+    reviewer = coordinator.reserve_worker("reviewer", execution_mode="software_test")
+    checked = coordinator.lookup(reviewer["call_id"], finding["finding_id"])
+    answer = {"task_digest": coordinator.anchor["task_digest"], "finding_id": finding["finding_id"],
+              "claims": {"works": {key: checked["assessments"]["works"][key] for key in ("assessment_id", "status", "assessed_at")}},
+              "scope": {"context": {"site": "bench"}, "requirements": {"context": {"site": "bench"}}},
+              "conclusion": "assessed", "qualification": "conditional_on_registered_argument"}
+    assert coordinator.record(reviewer["call_id"], json.dumps({"answer": answer, "consumed_message_ids": ["finding"]}).encode(),
+                              "distribution-software-reviewer", execution_mode="software_test")["accepted"]
+    assert Coordinator(coordinator.directory).resume()["status"] == "completed"
     assert (workspace / "calls.txt").read_text() == "x", "A compatible observation was collected twice"
-    print(f"Installed {arguments.expected_version}: Python/CLI/stdio/HTTP and cross-session reuse passed")
+    print(f"Installed {arguments.expected_version}: Python/CLI/stdio/HTTP, coordination and cross-session reuse passed")
 
 
 if __name__ == "__main__":

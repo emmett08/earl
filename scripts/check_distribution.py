@@ -17,7 +17,8 @@ import zipfile
 
 
 PROJECT = "engineering-argument-language"
-ENTRY_POINTS = {"eal": "eal.cli:main", "eal-mcp": "eal.server:main", "eal-host": "eal.host:main"}
+ENTRY_POINTS = {"eal": "eal.cli:main", "eal-mcp": "eal.server:main", "eal-host": "eal.host:main",
+                "eal-coordinate": "eal.coordination.cli:main"}
 EXCLUDED = {"paper", "annotations", "runs", "__pycache__"}
 LICENSE = Path(__file__).resolve().parents[1] / "LICENSE"
 

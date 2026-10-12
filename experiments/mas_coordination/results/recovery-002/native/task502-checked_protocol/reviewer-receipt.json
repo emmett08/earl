@@ -1,0 +1,28 @@
+[
+  {
+    "message": {
+      "kind": "disposition",
+      "message_id": "assessor_disposition_0",
+      "payload": {
+        "attempt": 0,
+        "code": "workload_mismatch",
+        "finding_id": "finding_8b16fdf992b104d5b3c3a87876198b0f3217fd4299b53780b02b9f836f86993a",
+        "kind": "disposition",
+        "message_id": "assessor_disposition_0",
+        "outcome": "rejected",
+        "recipient": "reviewer",
+        "reply_to": "request",
+        "schema": "EAL/MAS-coordination/2",
+        "sender": "assessor",
+        "task_digest": "eafbbae3dfb15868c1cfaa971b9d353a790b9d6b1664a2e0e7c6bd59c9373106",
+        "task_id": "task502"
+      },
+      "recipient": "reviewer",
+      "run_id": "task502-checked_protocol",
+      "sender": "assessor",
+      "version": "1"
+    },
+    "sequence": 2,
+    "redelivered": false
+  }
+]

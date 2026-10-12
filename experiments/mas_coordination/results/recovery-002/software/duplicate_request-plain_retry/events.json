@@ -1,0 +1,221 @@
+[
+  {
+    "arm": "plain_retry",
+    "input_digest": "c93e288c29dbf933577234a3a52e1e9068b4cfdb4856e170dc11759245c22eb5",
+    "operation": "episode_started",
+    "sequence": 1
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": false,
+    "sequence": 2
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": true,
+    "sequence": 3
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": true,
+    "sequence": 4
+  },
+  {
+    "attempt": 0,
+    "operation": "handler_delivery",
+    "sequence": 5
+  },
+  {
+    "effect_mode": "actual_eal_python_host",
+    "operation": "effect_started",
+    "sequence": 6
+  },
+  {
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "claim": "performance_criteria_met",
+    "entry_id": "load_test",
+    "operation": "eal_assessment_called",
+    "sequence": 7
+  },
+  {
+    "assessment_id": "82481692-e1cb-468c-a719-4f703c38f202",
+    "collected_count": 1,
+    "complete": true,
+    "operation": "eal_assessment_returned",
+    "reused_count": 0,
+    "sequence": 8
+  },
+  {
+    "effect_result_file": "effect-001.json",
+    "operation": "effect_returned",
+    "sequence": 9
+  },
+  {
+    "operation": "result_checkpointed_without_outbox",
+    "result_is_recoverable": false,
+    "sequence": 10
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_attempted",
+    "sequence": 11
+  },
+  {
+    "duplicate": false,
+    "message_id": "reply",
+    "operation": "remote_send_returned",
+    "sequence": 12
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_confirmed",
+    "sequence": 13
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_attempted",
+    "sequence": 14
+  },
+  {
+    "message_id": "request",
+    "operation": "remote_ack_returned",
+    "sequence": 15
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_confirmed",
+    "sequence": 16
+  },
+  {
+    "attempt": 1,
+    "operation": "handler_delivery",
+    "sequence": 17
+  },
+  {
+    "effect_mode": "actual_eal_python_host",
+    "operation": "effect_started",
+    "sequence": 18
+  },
+  {
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "claim": "performance_criteria_met",
+    "entry_id": "load_test",
+    "operation": "eal_assessment_called",
+    "sequence": 19
+  },
+  {
+    "assessment_id": "84d18d4a-08b2-4486-87c2-18c10679da27",
+    "collected_count": 0,
+    "complete": true,
+    "operation": "eal_assessment_returned",
+    "reused_count": 1,
+    "sequence": 20
+  },
+  {
+    "effect_result_file": "effect-002.json",
+    "operation": "effect_returned",
+    "sequence": 21
+  },
+  {
+    "operation": "result_checkpointed_without_outbox",
+    "result_is_recoverable": false,
+    "sequence": 22
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_attempted",
+    "sequence": 23
+  },
+  {
+    "duplicate": true,
+    "message_id": "reply",
+    "operation": "remote_send_returned",
+    "sequence": 24
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_confirmed",
+    "sequence": 25
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_attempted",
+    "sequence": 26
+  },
+  {
+    "message_id": "request",
+    "operation": "remote_ack_returned",
+    "sequence": 27
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_confirmed",
+    "sequence": 28
+  },
+  {
+    "attempt": 2,
+    "operation": "handler_delivery",
+    "sequence": 29
+  },
+  {
+    "effect_mode": "actual_eal_python_host",
+    "operation": "effect_started",
+    "sequence": 30
+  },
+  {
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "claim": "performance_criteria_met",
+    "entry_id": "load_test",
+    "operation": "eal_assessment_called",
+    "sequence": 31
+  },
+  {
+    "assessment_id": "9e3d45e0-cf31-4469-9034-886367d0bbfd",
+    "collected_count": 0,
+    "complete": true,
+    "operation": "eal_assessment_returned",
+    "reused_count": 1,
+    "sequence": 32
+  },
+  {
+    "effect_result_file": "effect-003.json",
+    "operation": "effect_returned",
+    "sequence": 33
+  },
+  {
+    "operation": "result_checkpointed_without_outbox",
+    "result_is_recoverable": false,
+    "sequence": 34
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_attempted",
+    "sequence": 35
+  },
+  {
+    "duplicate": true,
+    "message_id": "reply",
+    "operation": "remote_send_returned",
+    "sequence": 36
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_confirmed",
+    "sequence": 37
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_attempted",
+    "sequence": 38
+  },
+  {
+    "message_id": "request",
+    "operation": "remote_ack_returned",
+    "sequence": 39
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_confirmed",
+    "sequence": 40
+  }
+]

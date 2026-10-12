@@ -1,0 +1,1537 @@
+{
+  "schema": "EAL/coordination-export/1",
+  "config": {
+    "anchor": {
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "pinned_at": "2026-10-12T21:38:44.224878Z",
+      "registered_context": {
+        "dataset": "synthetic",
+        "deployment": "coordinator-demo",
+        "service": "catalogue-api"
+      },
+      "schema": "EAL/MAS-coordination-task/3",
+      "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+      "task": {
+        "claims": [
+          "sample_endpoint_available",
+          "sample_quorum_present"
+        ],
+        "entry_id": "availability_sample",
+        "profile": "registered_claims/1",
+        "question": "Assess both registered synthetic-snapshot claims, accounting for the explicit outage objection. Keep the registered scope and avoid conclusions about a deployed service.",
+        "requirements": {
+          "context": {
+            "dataset": "synthetic",
+            "deployment": "coordinator-demo",
+            "service": "catalogue-api"
+          }
+        },
+        "task_id": "synthetic_availability_sample"
+      },
+      "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+    },
+    "budgets": {
+      "max_bytes": 65536,
+      "max_gateway_calls_per_role": 4,
+      "max_mcp_calls_per_role": 64,
+      "max_messages": 8,
+      "max_worker_calls": 2,
+      "max_worker_output_bytes": 65536,
+      "wall_seconds": 900,
+      "worker_seconds": 180
+    },
+    "created_at": "2026-10-12T21:38:44.232484Z",
+    "deadline": 1791842024,
+    "run_id": "coord-4dd5731fd9784397923b4290196f9bfe",
+    "schema": "EAL/coordination-run/1",
+    "server": {
+      "database": "/workspace/earl/.cache/mas-coordination/coordinator-native-001/generic-lab/workspace/knowledge.sqlite",
+      "limits": null,
+      "methods": "eal.api_load_methods:registry",
+      "registry": "/workspace/earl/.cache/mas-coordination/coordinator-native-001/generic-lab/workspace/tools.toml",
+      "workspace": "/workspace/earl/.cache/mas-coordination/coordinator-native-001/generic-lab/workspace"
+    },
+    "transport": {
+      "kind": "lab",
+      "runtime": "/workspace/mas-protocol-lab"
+    }
+  },
+  "status": {
+    "schema": "EAL/coordination-status/1",
+    "run_id": "coord-4dd5731fd9784397923b4290196f9bfe",
+    "status": "completed",
+    "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+    "deadline": 1791842024,
+    "workers": {
+      "assessor": {
+        "state": "committed",
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:assessor",
+        "execution_mode": "actual_host_agent",
+        "execution_id": "/root/coord003_assessor_generic_lab/turn1",
+        "outcome": "accepted"
+      },
+      "reviewer": {
+        "state": "committed",
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:reviewer",
+        "execution_mode": "actual_host_agent",
+        "execution_id": "/root/coord003_reviewer_generic_lab/turn1",
+        "outcome": "accepted"
+      }
+    },
+    "answer": {
+      "claims": {
+        "sample_endpoint_available": {
+          "assessed_at": "2026-10-12T21:40:17.577107Z",
+          "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+          "status": "contested"
+        },
+        "sample_quorum_present": {
+          "assessed_at": "2026-10-12T21:40:17.873449Z",
+          "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+          "status": "supported"
+        }
+      },
+      "conclusion": "assessed",
+      "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+      "qualification": "conditional_on_registered_argument",
+      "scope": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        },
+        "requirements": {
+          "context": {
+            "dataset": "synthetic",
+            "deployment": "coordinator-demo",
+            "service": "catalogue-api"
+          }
+        }
+      },
+      "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+    },
+    "calls": [
+      {
+        "seq": 1,
+        "actor": "assessor",
+        "category": "gateway",
+        "operation": "query",
+        "at": "2026-10-12T21:40:15.504486Z"
+      },
+      {
+        "seq": 2,
+        "actor": "assessor",
+        "category": "mcp",
+        "operation": "eal_sources",
+        "at": "2026-10-12T21:40:16.849526Z"
+      },
+      {
+        "seq": 3,
+        "actor": "assessor",
+        "category": "mcp",
+        "operation": "eal_assess_known",
+        "at": "2026-10-12T21:40:17.108846Z"
+      },
+      {
+        "seq": 4,
+        "actor": "assessor",
+        "category": "mcp",
+        "operation": "eal_assess_known",
+        "at": "2026-10-12T21:40:17.625738Z"
+      },
+      {
+        "seq": 5,
+        "actor": "assessor",
+        "category": "mcp",
+        "operation": "eal_packet",
+        "at": "2026-10-12T21:40:19.423085Z"
+      },
+      {
+        "seq": 6,
+        "actor": "assessor",
+        "category": "mcp",
+        "operation": "eal_explain",
+        "at": "2026-10-12T21:40:19.635378Z"
+      },
+      {
+        "seq": 7,
+        "actor": "assessor",
+        "category": "mcp",
+        "operation": "eal_packet",
+        "at": "2026-10-12T21:40:19.643450Z"
+      },
+      {
+        "seq": 8,
+        "actor": "assessor",
+        "category": "mcp",
+        "operation": "eal_explain",
+        "at": "2026-10-12T21:40:19.651232Z"
+      },
+      {
+        "seq": 9,
+        "actor": "reviewer",
+        "category": "gateway",
+        "operation": "lookup",
+        "at": "2026-10-12T21:41:55.021999Z"
+      },
+      {
+        "seq": 10,
+        "actor": "reviewer",
+        "category": "mcp",
+        "operation": "eal_packet",
+        "at": "2026-10-12T21:41:56.279381Z"
+      },
+      {
+        "seq": 11,
+        "actor": "reviewer",
+        "category": "mcp",
+        "operation": "eal_explain",
+        "at": "2026-10-12T21:41:56.515852Z"
+      },
+      {
+        "seq": 12,
+        "actor": "reviewer",
+        "category": "mcp",
+        "operation": "eal_packet",
+        "at": "2026-10-12T21:41:56.538008Z"
+      },
+      {
+        "seq": 13,
+        "actor": "reviewer",
+        "category": "mcp",
+        "operation": "eal_explain",
+        "at": "2026-10-12T21:41:56.546172Z"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "status": "committed",
+      "key": "initial",
+      "payload_digest": "4979bf804d4a9b0b24fc9473915b0e807d830d12cd5fbd7fa343da737c4541eb",
+      "result": {
+        "message": {
+          "attempt": 0,
+          "kind": "request",
+          "message_id": "request",
+          "recipient": "assessor",
+          "reply_to": null,
+          "schema": "EAL/MAS-coordination/3",
+          "sender": "reviewer",
+          "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+          "task_id": "synthetic_availability_sample"
+        }
+      },
+      "outbox": [
+        {
+          "attempt": 0,
+          "kind": "request",
+          "message_id": "request",
+          "recipient": "assessor",
+          "reply_to": null,
+          "schema": "EAL/MAS-coordination/3",
+          "sender": "reviewer",
+          "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+          "task_id": "synthetic_availability_sample"
+        }
+      ],
+      "acknowledged": true,
+      "diagnosis": null,
+      "payload": {
+        "attempt": 0,
+        "kind": "request",
+        "message_id": "request",
+        "recipient": "assessor",
+        "reply_to": null,
+        "schema": "EAL/MAS-coordination/3",
+        "sender": "reviewer",
+        "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+        "task_id": "synthetic_availability_sample"
+      }
+    },
+    {
+      "status": "committed",
+      "key": "worker:assessor",
+      "payload_digest": "20d7050d95f4be920823bc32598e8ecdb4a3632d8d6efa2bcb261b3e12b65f6d",
+      "result": {
+        "accepted": true,
+        "diagnostics": [],
+        "evidence": {},
+        "execution_id": "/root/coord003_assessor_generic_lab/turn1",
+        "execution_mode": "actual_host_agent",
+        "outcome": "accepted",
+        "raw_base64": "ewogICJtZXNzYWdlIjogewogICAgInNjaGVtYSI6ICJFQUwvTUFTLWNvb3JkaW5hdGlvbi8zIiwKICAgICJraW5kIjogIm91dGNvbWUiLAogICAgIm1lc3NhZ2VfaWQiOiAiYXNzZXNzb3Itb3V0Y29tZS1nZW5lcmljLWxhYi0wMDEiLAogICAgInRhc2tfaWQiOiAic3ludGhldGljX2F2YWlsYWJpbGl0eV9zYW1wbGUiLAogICAgInRhc2tfZGlnZXN0IjogIjdhZDg5MDY5ZjBlYjRmNmM0M2U2Y2Y1Yzc3MDVhYThkNzU1NWY5N2VhZTI0NDlmNDA1MTE1Y2UwZmYwMDRkNGYiLAogICAgInNlbmRlciI6ICJhc3Nlc3NvciIsCiAgICAicmVjaXBpZW50IjogInJldmlld2VyIiwKICAgICJyZXBseV90byI6ICJyZXF1ZXN0IiwKICAgICJhdHRlbXB0IjogMCwKICAgICJmaW5kaW5nX2lkIjogImZpbmRpbmdfYzMxOWE0NDJkMmQxOGQyY2YzNDNmZWI4ODUyNWY5MWU5MDcyNDBlOTMyNmNjZGJjZDlkMTE4YmNkMWI1YjEwYSIsCiAgICAiYXNzZXNzbWVudF9yZWZzIjogewogICAgICAic2FtcGxlX2VuZHBvaW50X2F2YWlsYWJsZSI6ICI4YzBiMmNhOS1hODBjLTQ3YTUtYmNjOC1mNzk4MmY5N2M1MzUiLAogICAgICAic2FtcGxlX3F1b3J1bV9wcmVzZW50IjogIjUwOTg3OTA4LWJiZTYtNDE2Ny1hOTY2LTU2ZjhiMjcyMzNkYiIKICAgIH0KICB9LAogICJjb25zdW1lZF9tZXNzYWdlX2lkcyI6IFsKICAgICJyZXF1ZXN0IgogIF0KfQo=",
+        "raw_digest": "e7d9936b11ce5019f3e285c370d5ad2b37e2412ddec3600419327d4716695af5",
+        "response": {
+          "consumed_message_ids": [
+            "request"
+          ],
+          "message": {
+            "assessment_refs": {
+              "sample_endpoint_available": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+              "sample_quorum_present": "50987908-bbe6-4167-a966-56f8b27233db"
+            },
+            "attempt": 0,
+            "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+            "kind": "outcome",
+            "message_id": "assessor-outcome-generic-lab-001",
+            "recipient": "reviewer",
+            "reply_to": "request",
+            "schema": "EAL/MAS-coordination/3",
+            "sender": "assessor",
+            "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+            "task_id": "synthetic_availability_sample"
+          }
+        }
+      },
+      "outbox": [
+        {
+          "assessment_refs": {
+            "sample_endpoint_available": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+            "sample_quorum_present": "50987908-bbe6-4167-a966-56f8b27233db"
+          },
+          "attempt": 0,
+          "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+          "kind": "outcome",
+          "message_id": "assessor-outcome-generic-lab-001",
+          "recipient": "reviewer",
+          "reply_to": "request",
+          "schema": "EAL/MAS-coordination/3",
+          "sender": "assessor",
+          "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+          "task_id": "synthetic_availability_sample"
+        }
+      ],
+      "acknowledged": true,
+      "diagnosis": null,
+      "payload": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:assessor",
+        "context": {
+          "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:assessor",
+          "gateway": {
+            "argv": [
+              "/workspace/earl/.venv/bin/python",
+              "-m",
+              "eal.coordination.cli",
+              "query",
+              "--run",
+              "/workspace/earl/.cache/mas-coordination/coordinator-native-001/generic-lab/run",
+              "--call-id",
+              "coord-4dd5731fd9784397923b4290196f9bfe:assessor"
+            ]
+          },
+          "instructions": "Inspect your addressed messages. Request a finding using the gateway argv and author an outcome or disposition with its exact trusted references. Return message and consumed_message_ids.",
+          "qualifications": "EAL status is conditional on the registered argument. Unsupported is not proof of the opposite. Authored prose and measurements are not independently certified by registration.",
+          "received_messages": [
+            {
+              "attempt": 0,
+              "kind": "request",
+              "message_id": "request",
+              "recipient": "assessor",
+              "reply_to": null,
+              "schema": "EAL/MAS-coordination/3",
+              "sender": "reviewer",
+              "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+              "task_id": "synthetic_availability_sample"
+            }
+          ],
+          "response_schema": "/workspace/earl/src/eal/coordination/response-schema.json",
+          "role": "assessor",
+          "schema": "EAL/coordination-worker-context/1",
+          "task": {
+            "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+            "pinned_at": "2026-10-12T21:38:44.224878Z",
+            "registered_context": {
+              "dataset": "synthetic",
+              "deployment": "coordinator-demo",
+              "service": "catalogue-api"
+            },
+            "schema": "EAL/MAS-coordination-task/3",
+            "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+            "task": {
+              "claims": [
+                "sample_endpoint_available",
+                "sample_quorum_present"
+              ],
+              "entry_id": "availability_sample",
+              "profile": "registered_claims/1",
+              "question": "Assess both registered synthetic-snapshot claims, accounting for the explicit outage objection. Keep the registered scope and avoid conclusions about a deployed service.",
+              "requirements": {
+                "context": {
+                  "dataset": "synthetic",
+                  "deployment": "coordinator-demo",
+                  "service": "catalogue-api"
+                }
+              },
+              "task_id": "synthetic_availability_sample"
+            },
+            "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+          }
+        },
+        "execution_mode": "actual_host_agent",
+        "role": "assessor"
+      }
+    },
+    {
+      "status": "committed",
+      "key": "assessment",
+      "payload_digest": "4ea83ed8d0501dcb9b42dc3d9863cfe1956c440bc6cd61e3a2e28f6b48e91f6a",
+      "result": {
+        "assessments": {
+          "sample_endpoint_available": {
+            "assessed_at": "2026-10-12T21:40:17.577107Z",
+            "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+            "claim": "sample_endpoint_available",
+            "collected_count": 2,
+            "collection_id": "cde5e385-7e0d-4b07-803a-1bf1363f3d11",
+            "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+            "entry_id": "availability_sample",
+            "full_explanation": {
+              "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+              "detail": "full",
+              "operation": "explain"
+            },
+            "packet": {
+              "arguments": {
+                "heartbeat_route": {
+                  "conclusion": "sample_endpoint_available",
+                  "method_result": {
+                    "method": "structured/1",
+                    "outputs": {
+                      "authored": true,
+                      "mechanically_proved": false
+                    },
+                    "require_holds": [],
+                    "status": "supported"
+                  },
+                  "premises": [],
+                  "status": "contested"
+                }
+              },
+              "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+              "assumptions": {},
+              "claims": {
+                "sample_endpoint_available": {
+                  "active_objections": [],
+                  "contested_arguments": [
+                    "heartbeat_route"
+                  ],
+                  "grounded_label": "rejected",
+                  "observation_ids": [
+                    {
+                      "evidence_id": "heartbeats",
+                      "observation_id": "63beb552-cfe1-4c97-a284-928c7a4ffa72"
+                    },
+                    {
+                      "evidence_id": "outage",
+                      "observation_id": "0aa6e322-5385-4893-ae40-64c3bc137dd3"
+                    }
+                  ],
+                  "prose_verified": false,
+                  "related_arguments": [
+                    "heartbeat_route"
+                  ],
+                  "statement": "The identified synthetic snapshot supports endpoint availability; recorded outages challenge that heartbeat-based route.",
+                  "status": "contested",
+                  "supporting_arguments": [],
+                  "undecided_objections": []
+                }
+              },
+              "collection_id": "cde5e385-7e0d-4b07-803a-1bf1363f3d11",
+              "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+              "evidence": {
+                "heartbeats": {
+                  "age_seconds": 93.577107,
+                  "age_status": "within_max_age",
+                  "availability_issues": [],
+                  "observation_id": "63beb552-cfe1-4c97-a284-928c7a4ffa72",
+                  "observed_at": "2026-10-12T21:38:44Z",
+                  "status": "available"
+                },
+                "outage": {
+                  "age_seconds": 93.577107,
+                  "age_status": "within_max_age",
+                  "availability_issues": [],
+                  "observation_id": "0aa6e322-5385-4893-ae40-64c3bc137dd3",
+                  "observed_at": "2026-10-12T21:38:44Z",
+                  "status": "available"
+                }
+              },
+              "full_explanation": {
+                "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+                "detail": "full",
+                "operation": "explain"
+              },
+              "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+              "objections": {
+                "recorded_outage": {
+                  "attackers": [],
+                  "premises": [],
+                  "status": "active",
+                  "target": "heartbeat_route",
+                  "target_kind": "argument"
+                }
+              },
+              "omitted": {},
+              "premise_claims": {},
+              "schema": "EAL/assessment-packet/2",
+              "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+              "summary_complete": true
+            },
+            "reused_count": 0,
+            "schema": "EAL/registered-assessment/1",
+            "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+            "status": "contested"
+          },
+          "sample_quorum_present": {
+            "assessed_at": "2026-10-12T21:40:17.873449Z",
+            "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+            "claim": "sample_quorum_present",
+            "collected_count": 1,
+            "collection_id": "e3ee6bb8-2c2a-44a3-8a14-ecd1c0b34cf6",
+            "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+            "entry_id": "availability_sample",
+            "full_explanation": {
+              "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+              "detail": "full",
+              "operation": "explain"
+            },
+            "packet": {
+              "arguments": {
+                "quorum_route": {
+                  "conclusion": "sample_quorum_present",
+                  "method_result": {
+                    "method": "structured/1",
+                    "outputs": {
+                      "authored": true,
+                      "mechanically_proved": false
+                    },
+                    "require_holds": [],
+                    "status": "supported"
+                  },
+                  "premises": [],
+                  "status": "supported"
+                }
+              },
+              "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+              "assumptions": {},
+              "claims": {
+                "sample_quorum_present": {
+                  "active_objections": [],
+                  "contested_arguments": [],
+                  "grounded_label": "accepted",
+                  "observation_ids": [
+                    {
+                      "evidence_id": "quorum",
+                      "observation_id": "0b3c30f9-4c12-4277-a688-c309289d50a0"
+                    }
+                  ],
+                  "prose_verified": false,
+                  "related_arguments": [
+                    "quorum_route"
+                  ],
+                  "statement": "The identified synthetic snapshot records at least two responsive nodes; no claim about a deployed system is made.",
+                  "status": "supported",
+                  "supporting_arguments": [
+                    "quorum_route"
+                  ],
+                  "undecided_objections": []
+                }
+              },
+              "collection_id": "e3ee6bb8-2c2a-44a3-8a14-ecd1c0b34cf6",
+              "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+              "evidence": {
+                "quorum": {
+                  "age_seconds": 93.873449,
+                  "age_status": "within_max_age",
+                  "availability_issues": [],
+                  "observation_id": "0b3c30f9-4c12-4277-a688-c309289d50a0",
+                  "observed_at": "2026-10-12T21:38:44Z",
+                  "status": "available"
+                }
+              },
+              "full_explanation": {
+                "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+                "detail": "full",
+                "operation": "explain"
+              },
+              "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+              "objections": {},
+              "omitted": {},
+              "premise_claims": {},
+              "schema": "EAL/assessment-packet/2",
+              "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+              "summary_complete": true
+            },
+            "reused_count": 0,
+            "schema": "EAL/registered-assessment/1",
+            "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+            "status": "supported"
+          }
+        },
+        "check": {
+          "code": null,
+          "detail": "Pinned registered source and profile correspond to the task",
+          "ok": true
+        },
+        "collected_count": 3,
+        "explanations": {
+          "sample_endpoint_available": {
+            "arguments": {
+              "heartbeat_route": {
+                "attackers": [
+                  "objection:recorded_outage"
+                ],
+                "conclusion": "sample_endpoint_available",
+                "dependencies": {
+                  "assumptions": [],
+                  "evidence": [
+                    "heartbeats"
+                  ],
+                  "premises": [],
+                  "reasoning": "snapshot_relation"
+                },
+                "grounded_label": "rejected",
+                "locally_usable": true,
+                "origin": null,
+                "premise_labels": {},
+                "reasoning_result": {
+                  "details": {
+                    "authored": true,
+                    "mechanically_proved": false
+                  },
+                  "method": "structured/1",
+                  "predicates": [],
+                  "premise_acceptance": "deferred_to_composed_solver",
+                  "reasons": [
+                    "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+                  ],
+                  "status": "supported"
+                },
+                "reasons": [
+                  "Evidence 'heartbeats' is available",
+                  "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+                  "Least-information acceptability label: rejected"
+                ],
+                "source_usable": true,
+                "status": "contested"
+              },
+              "quorum_route": {
+                "attackers": [],
+                "conclusion": "sample_quorum_present",
+                "dependencies": {
+                  "assumptions": [],
+                  "evidence": [
+                    "quorum"
+                  ],
+                  "premises": [],
+                  "reasoning": "snapshot_relation"
+                },
+                "grounded_label": "rejected",
+                "locally_usable": false,
+                "origin": null,
+                "premise_labels": {},
+                "reasoning_result": {
+                  "details": {},
+                  "method": "structured/1",
+                  "reasons": [
+                    "Required sources are unavailable or out of scope"
+                  ],
+                  "status": "not_run"
+                },
+                "reasons": [
+                  "Evidence 'quorum' is unavailable",
+                  "Least-information acceptability label: rejected"
+                ],
+                "source_usable": false,
+                "status": "unsupported"
+              }
+            },
+            "assessed_at": "2026-10-12T21:40:17.577107Z",
+            "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+            "assumptions": {},
+            "claim": "sample_endpoint_available",
+            "evidence": {
+              "heartbeats": {
+                "availability_issues": [],
+                "reasons": [
+                  "Field 'heartbeats' >= 3 holds (observed 3)"
+                ],
+                "run_id": "63beb552-cfe1-4c97-a284-928c7a4ffa72",
+                "status": "available",
+                "tool": "synthetic_availability",
+                "tool_binding_digest": "0f1ae739e70667c7cfb22b4726d7a0d1baeff64569cd5dfce46c28cf2f23c5c5",
+                "tool_version": "1"
+              },
+              "outage": {
+                "availability_issues": [],
+                "reasons": [
+                  "Field 'outage_count' >= 1 holds (observed 1)"
+                ],
+                "run_id": "0aa6e322-5385-4893-ae40-64c3bc137dd3",
+                "status": "available",
+                "tool": "synthetic_availability",
+                "tool_binding_digest": "0f1ae739e70667c7cfb22b4726d7a0d1baeff64569cd5dfce46c28cf2f23c5c5",
+                "tool_version": "1"
+              },
+              "quorum": {
+                "availability_issues": [
+                  "missing_observation"
+                ],
+                "reasons": [
+                  "No evidence record is available"
+                ],
+                "status": "unavailable"
+              }
+            },
+            "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+            "objections": {
+              "recorded_outage": {
+                "attackers": [],
+                "environment": "demo",
+                "evidence": [
+                  "outage"
+                ],
+                "grounded_label": "accepted",
+                "premise_labels": {},
+                "premises": [],
+                "reasons": [
+                  "Objection evidence 'outage' is available",
+                  "Least-information acceptability label: accepted"
+                ],
+                "source_usable": true,
+                "status": "active",
+                "target": "heartbeat_route",
+                "target_kind": "argument"
+              }
+            },
+            "reasoning": {
+              "snapshot_relation": {
+                "backing": [],
+                "method": "structured/1",
+                "objection_statuses": {},
+                "rationale": "The authored acceptance predicates supply these bounded snapshot claims. This is an explicit argument relation, not a universal availability proof.",
+                "reasons": [
+                  "Method structured/1 and backing are locally available; acceptance is assessed per application"
+                ],
+                "status": "supported"
+              }
+            },
+            "result": {
+              "contested_arguments": [
+                "heartbeat_route"
+              ],
+              "environment": "demo",
+              "grounded_label": "rejected",
+              "objection_statuses": {},
+              "objections": [],
+              "proposition": null,
+              "prose_verified": false,
+              "reasons": [
+                "Source-usable derivations are rejected or undecided: heartbeat_route",
+                "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+              ],
+              "source_usable": true,
+              "statement": "The identified synthetic snapshot supports endpoint availability; recorded outages challenge that heartbeat-based route.",
+              "status": "contested",
+              "supporting_arguments": [],
+              "undecided_objections": []
+            },
+            "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d"
+          },
+          "sample_quorum_present": {
+            "arguments": {
+              "heartbeat_route": {
+                "attackers": [
+                  "objection:recorded_outage"
+                ],
+                "conclusion": "sample_endpoint_available",
+                "dependencies": {
+                  "assumptions": [],
+                  "evidence": [
+                    "heartbeats"
+                  ],
+                  "premises": [],
+                  "reasoning": "snapshot_relation"
+                },
+                "grounded_label": "rejected",
+                "locally_usable": false,
+                "origin": null,
+                "premise_labels": {},
+                "reasoning_result": {
+                  "details": {},
+                  "method": "structured/1",
+                  "reasons": [
+                    "Required sources are unavailable or out of scope"
+                  ],
+                  "status": "not_run"
+                },
+                "reasons": [
+                  "Evidence 'heartbeats' is unavailable",
+                  "Least-information acceptability label: rejected"
+                ],
+                "source_usable": false,
+                "status": "unsupported"
+              },
+              "quorum_route": {
+                "attackers": [],
+                "conclusion": "sample_quorum_present",
+                "dependencies": {
+                  "assumptions": [],
+                  "evidence": [
+                    "quorum"
+                  ],
+                  "premises": [],
+                  "reasoning": "snapshot_relation"
+                },
+                "grounded_label": "accepted",
+                "locally_usable": true,
+                "origin": null,
+                "premise_labels": {},
+                "reasoning_result": {
+                  "details": {
+                    "authored": true,
+                    "mechanically_proved": false
+                  },
+                  "method": "structured/1",
+                  "predicates": [],
+                  "premise_acceptance": "deferred_to_composed_solver",
+                  "reasons": [
+                    "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+                  ],
+                  "status": "supported"
+                },
+                "reasons": [
+                  "Evidence 'quorum' is available",
+                  "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+                  "Least-information acceptability label: accepted"
+                ],
+                "source_usable": true,
+                "status": "supported"
+              }
+            },
+            "assessed_at": "2026-10-12T21:40:17.873449Z",
+            "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+            "assumptions": {},
+            "claim": "sample_quorum_present",
+            "evidence": {
+              "heartbeats": {
+                "availability_issues": [
+                  "missing_observation"
+                ],
+                "reasons": [
+                  "No evidence record is available"
+                ],
+                "status": "unavailable"
+              },
+              "outage": {
+                "availability_issues": [
+                  "missing_observation"
+                ],
+                "reasons": [
+                  "No evidence record is available"
+                ],
+                "status": "unavailable"
+              },
+              "quorum": {
+                "availability_issues": [],
+                "reasons": [
+                  "Field 'responsive_nodes' >= 2 holds (observed 2)"
+                ],
+                "run_id": "0b3c30f9-4c12-4277-a688-c309289d50a0",
+                "status": "available",
+                "tool": "synthetic_availability",
+                "tool_binding_digest": "0f1ae739e70667c7cfb22b4726d7a0d1baeff64569cd5dfce46c28cf2f23c5c5",
+                "tool_version": "1"
+              }
+            },
+            "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+            "objections": {
+              "recorded_outage": {
+                "attackers": [],
+                "environment": "demo",
+                "evidence": [
+                  "outage"
+                ],
+                "grounded_label": "rejected",
+                "premise_labels": {},
+                "premises": [],
+                "reasons": [
+                  "Objection evidence 'outage' is unavailable",
+                  "Least-information acceptability label: rejected"
+                ],
+                "source_usable": false,
+                "status": "inactive",
+                "target": "heartbeat_route",
+                "target_kind": "argument"
+              }
+            },
+            "reasoning": {
+              "snapshot_relation": {
+                "backing": [],
+                "method": "structured/1",
+                "objection_statuses": {},
+                "rationale": "The authored acceptance predicates supply these bounded snapshot claims. This is an explicit argument relation, not a universal availability proof.",
+                "reasons": [
+                  "Method structured/1 and backing are locally available; acceptance is assessed per application"
+                ],
+                "status": "supported"
+              }
+            },
+            "result": {
+              "contested_arguments": [],
+              "environment": "demo",
+              "grounded_label": "accepted",
+              "objection_statuses": {},
+              "objections": [],
+              "proposition": null,
+              "prose_verified": false,
+              "reasons": [
+                "Accepted derivations: quorum_route",
+                "Least-information acceptability label: accepted; rejection does not establish claim falsity"
+              ],
+              "source_usable": true,
+              "statement": "The identified synthetic snapshot records at least two responsive nodes; no claim about a deployed system is made.",
+              "status": "supported",
+              "supporting_arguments": [
+                "quorum_route"
+              ],
+              "undecided_objections": []
+            },
+            "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d"
+          }
+        },
+        "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+        "mcp": {
+          "calls": [
+            {
+              "arguments": {},
+              "exposure": "registered",
+              "name": "eal_sources",
+              "outcome": "success"
+            },
+            {
+              "arguments": {
+                "claim": "sample_endpoint_available",
+                "entry_id": "availability_sample"
+              },
+              "exposure": "registered",
+              "name": "eal_assess_known",
+              "outcome": "success"
+            },
+            {
+              "arguments": {
+                "claim": "sample_quorum_present",
+                "entry_id": "availability_sample"
+              },
+              "exposure": "registered",
+              "name": "eal_assess_known",
+              "outcome": "success"
+            },
+            {
+              "arguments": {
+                "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+                "claim": "sample_endpoint_available"
+              },
+              "exposure": "operator",
+              "name": "eal_packet",
+              "outcome": "success"
+            },
+            {
+              "arguments": {
+                "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+                "claim": "sample_endpoint_available"
+              },
+              "exposure": "operator",
+              "name": "eal_explain",
+              "outcome": "success"
+            },
+            {
+              "arguments": {
+                "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+                "claim": "sample_quorum_present"
+              },
+              "exposure": "operator",
+              "name": "eal_packet",
+              "outcome": "success"
+            },
+            {
+              "arguments": {
+                "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+                "claim": "sample_quorum_present"
+              },
+              "exposure": "operator",
+              "name": "eal_explain",
+              "outcome": "success"
+            }
+          ],
+          "transport": "actual_mcp_stdio"
+        },
+        "packets": {
+          "sample_endpoint_available": {
+            "arguments": {
+              "heartbeat_route": {
+                "conclusion": "sample_endpoint_available",
+                "method_result": {
+                  "method": "structured/1",
+                  "outputs": {
+                    "authored": true,
+                    "mechanically_proved": false
+                  },
+                  "require_holds": [],
+                  "status": "supported"
+                },
+                "premises": [],
+                "status": "contested"
+              }
+            },
+            "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+            "assumptions": {},
+            "claims": {
+              "sample_endpoint_available": {
+                "active_objections": [],
+                "contested_arguments": [
+                  "heartbeat_route"
+                ],
+                "grounded_label": "rejected",
+                "observation_ids": [
+                  {
+                    "evidence_id": "heartbeats",
+                    "observation_id": "63beb552-cfe1-4c97-a284-928c7a4ffa72"
+                  },
+                  {
+                    "evidence_id": "outage",
+                    "observation_id": "0aa6e322-5385-4893-ae40-64c3bc137dd3"
+                  }
+                ],
+                "prose_verified": false,
+                "related_arguments": [
+                  "heartbeat_route"
+                ],
+                "statement": "The identified synthetic snapshot supports endpoint availability; recorded outages challenge that heartbeat-based route.",
+                "status": "contested",
+                "supporting_arguments": [],
+                "undecided_objections": []
+              }
+            },
+            "collection_id": "cde5e385-7e0d-4b07-803a-1bf1363f3d11",
+            "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+            "evidence": {
+              "heartbeats": {
+                "age_seconds": 93.577107,
+                "age_status": "within_max_age",
+                "availability_issues": [],
+                "observation_id": "63beb552-cfe1-4c97-a284-928c7a4ffa72",
+                "observed_at": "2026-10-12T21:38:44Z",
+                "status": "available"
+              },
+              "outage": {
+                "age_seconds": 93.577107,
+                "age_status": "within_max_age",
+                "availability_issues": [],
+                "observation_id": "0aa6e322-5385-4893-ae40-64c3bc137dd3",
+                "observed_at": "2026-10-12T21:38:44Z",
+                "status": "available"
+              }
+            },
+            "full_explanation": {
+              "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+              "detail": "full",
+              "operation": "explain"
+            },
+            "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+            "objections": {
+              "recorded_outage": {
+                "attackers": [],
+                "premises": [],
+                "status": "active",
+                "target": "heartbeat_route",
+                "target_kind": "argument"
+              }
+            },
+            "omitted": {},
+            "premise_claims": {},
+            "schema": "EAL/assessment-packet/2",
+            "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+            "summary_complete": true
+          },
+          "sample_quorum_present": {
+            "arguments": {
+              "quorum_route": {
+                "conclusion": "sample_quorum_present",
+                "method_result": {
+                  "method": "structured/1",
+                  "outputs": {
+                    "authored": true,
+                    "mechanically_proved": false
+                  },
+                  "require_holds": [],
+                  "status": "supported"
+                },
+                "premises": [],
+                "status": "supported"
+              }
+            },
+            "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+            "assumptions": {},
+            "claims": {
+              "sample_quorum_present": {
+                "active_objections": [],
+                "contested_arguments": [],
+                "grounded_label": "accepted",
+                "observation_ids": [
+                  {
+                    "evidence_id": "quorum",
+                    "observation_id": "0b3c30f9-4c12-4277-a688-c309289d50a0"
+                  }
+                ],
+                "prose_verified": false,
+                "related_arguments": [
+                  "quorum_route"
+                ],
+                "statement": "The identified synthetic snapshot records at least two responsive nodes; no claim about a deployed system is made.",
+                "status": "supported",
+                "supporting_arguments": [
+                  "quorum_route"
+                ],
+                "undecided_objections": []
+              }
+            },
+            "collection_id": "e3ee6bb8-2c2a-44a3-8a14-ecd1c0b34cf6",
+            "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+            "evidence": {
+              "quorum": {
+                "age_seconds": 93.873449,
+                "age_status": "within_max_age",
+                "availability_issues": [],
+                "observation_id": "0b3c30f9-4c12-4277-a688-c309289d50a0",
+                "observed_at": "2026-10-12T21:38:44Z",
+                "status": "available"
+              }
+            },
+            "full_explanation": {
+              "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+              "detail": "full",
+              "operation": "explain"
+            },
+            "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+            "objections": {},
+            "omitted": {},
+            "premise_claims": {},
+            "schema": "EAL/assessment-packet/2",
+            "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+            "summary_complete": true
+          }
+        },
+        "reused_count": 0,
+        "schema": "EAL/MAS-coordination-finding/3",
+        "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+      },
+      "outbox": [],
+      "acknowledged": true,
+      "diagnosis": null,
+      "payload": {
+        "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+      }
+    },
+    {
+      "status": "committed",
+      "key": "worker:reviewer",
+      "payload_digest": "7a559ed2bb16dd4ad84efed8d0aaecd24ef93b4704acf76fbca84f26041fb397",
+      "result": {
+        "accepted": true,
+        "diagnostics": [],
+        "evidence": {},
+        "execution_id": "/root/coord003_reviewer_generic_lab/turn1",
+        "execution_mode": "actual_host_agent",
+        "outcome": "accepted",
+        "raw_base64": "ewogICJhbnN3ZXIiOiB7CiAgICAidGFza19kaWdlc3QiOiAiN2FkODkwNjlmMGViNGY2YzQzZTZjZjVjNzcwNWFhOGQ3NTU1Zjk3ZWFlMjQ0OWY0MDUxMTVjZTBmZjAwNGQ0ZiIsCiAgICAiZmluZGluZ19pZCI6ICJmaW5kaW5nX2MzMTlhNDQyZDJkMThkMmNmMzQzZmViODg1MjVmOTFlOTA3MjQwZTkzMjZjY2RiY2Q5ZDExOGJjZDFiNWIxMGEiLAogICAgImNsYWltcyI6IHsKICAgICAgInNhbXBsZV9lbmRwb2ludF9hdmFpbGFibGUiOiB7CiAgICAgICAgImFzc2Vzc21lbnRfaWQiOiAiOGMwYjJjYTktYTgwYy00N2E1LWJjYzgtZjc5ODJmOTdjNTM1IiwKICAgICAgICAic3RhdHVzIjogImNvbnRlc3RlZCIsCiAgICAgICAgImFzc2Vzc2VkX2F0IjogIjIwMjYtMTAtMTJUMjE6NDA6MTcuNTc3MTA3WiIKICAgICAgfSwKICAgICAgInNhbXBsZV9xdW9ydW1fcHJlc2VudCI6IHsKICAgICAgICAiYXNzZXNzbWVudF9pZCI6ICI1MDk4NzkwOC1iYmU2LTQxNjctYTk2Ni01NmY4YjI3MjMzZGIiLAogICAgICAgICJzdGF0dXMiOiAic3VwcG9ydGVkIiwKICAgICAgICAiYXNzZXNzZWRfYXQiOiAiMjAyNi0xMC0xMlQyMTo0MDoxNy44NzM0NDlaIgogICAgICB9CiAgICB9LAogICAgInNjb3BlIjogewogICAgICAiY29udGV4dCI6IHsKICAgICAgICAiZGF0YXNldCI6ICJzeW50aGV0aWMiLAogICAgICAgICJkZXBsb3ltZW50IjogImNvb3JkaW5hdG9yLWRlbW8iLAogICAgICAgICJzZXJ2aWNlIjogImNhdGFsb2d1ZS1hcGkiCiAgICAgIH0sCiAgICAgICJyZXF1aXJlbWVudHMiOiB7CiAgICAgICAgImNvbnRleHQiOiB7CiAgICAgICAgICAiZGF0YXNldCI6ICJzeW50aGV0aWMiLAogICAgICAgICAgImRlcGxveW1lbnQiOiAiY29vcmRpbmF0b3ItZGVtbyIsCiAgICAgICAgICAic2VydmljZSI6ICJjYXRhbG9ndWUtYXBpIgogICAgICAgIH0KICAgICAgfQogICAgfSwKICAgICJjb25jbHVzaW9uIjogImFzc2Vzc2VkIiwKICAgICJxdWFsaWZpY2F0aW9uIjogImNvbmRpdGlvbmFsX29uX3JlZ2lzdGVyZWRfYXJndW1lbnQiCiAgfSwKICAiY29uc3VtZWRfbWVzc2FnZV9pZHMiOiBbCiAgICAiYXNzZXNzb3Itb3V0Y29tZS1nZW5lcmljLWxhYi0wMDEiCiAgXQp9Cg==",
+        "raw_digest": "d6f24d9c07d4ce1dcde82c2d95a42584fca0eaa36ba138972654de20f18c0336",
+        "response": {
+          "answer": {
+            "claims": {
+              "sample_endpoint_available": {
+                "assessed_at": "2026-10-12T21:40:17.577107Z",
+                "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+                "status": "contested"
+              },
+              "sample_quorum_present": {
+                "assessed_at": "2026-10-12T21:40:17.873449Z",
+                "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+                "status": "supported"
+              }
+            },
+            "conclusion": "assessed",
+            "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+            "qualification": "conditional_on_registered_argument",
+            "scope": {
+              "context": {
+                "dataset": "synthetic",
+                "deployment": "coordinator-demo",
+                "service": "catalogue-api"
+              },
+              "requirements": {
+                "context": {
+                  "dataset": "synthetic",
+                  "deployment": "coordinator-demo",
+                  "service": "catalogue-api"
+                }
+              }
+            },
+            "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+          },
+          "consumed_message_ids": [
+            "assessor-outcome-generic-lab-001"
+          ]
+        }
+      },
+      "outbox": [],
+      "acknowledged": true,
+      "diagnosis": null,
+      "payload": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:reviewer",
+        "context": {
+          "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:reviewer",
+          "gateway": {
+            "argv": [
+              "/workspace/earl/.venv/bin/python",
+              "-m",
+              "eal.coordination.cli",
+              "lookup",
+              "--run",
+              "/workspace/earl/.cache/mas-coordination/coordinator-native-001/generic-lab/run",
+              "--call-id",
+              "coord-4dd5731fd9784397923b4290196f9bfe:reviewer"
+            ]
+          },
+          "instructions": "Inspect your addressed handoff. Retrieve its finding by adding --finding-id to the gateway argv. Independently author the scoped answer, preserving every claim status, assessment ID and assessment time. Return answer and consumed_message_ids.",
+          "qualifications": "EAL status is conditional on the registered argument. Unsupported is not proof of the opposite. Authored prose and measurements are not independently certified by registration.",
+          "received_messages": [
+            {
+              "assessment_refs": {
+                "sample_endpoint_available": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+                "sample_quorum_present": "50987908-bbe6-4167-a966-56f8b27233db"
+              },
+              "attempt": 0,
+              "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+              "kind": "outcome",
+              "message_id": "assessor-outcome-generic-lab-001",
+              "recipient": "reviewer",
+              "reply_to": "request",
+              "schema": "EAL/MAS-coordination/3",
+              "sender": "assessor",
+              "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+              "task_id": "synthetic_availability_sample"
+            }
+          ],
+          "response_schema": "/workspace/earl/src/eal/coordination/response-schema.json",
+          "role": "reviewer",
+          "schema": "EAL/coordination-worker-context/1",
+          "task": {
+            "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+            "pinned_at": "2026-10-12T21:38:44.224878Z",
+            "registered_context": {
+              "dataset": "synthetic",
+              "deployment": "coordinator-demo",
+              "service": "catalogue-api"
+            },
+            "schema": "EAL/MAS-coordination-task/3",
+            "source_digest": "6bd9350f50dcead37bd07d78f47e9ea27a6533c6090b7d370a16cdd551453a8d",
+            "task": {
+              "claims": [
+                "sample_endpoint_available",
+                "sample_quorum_present"
+              ],
+              "entry_id": "availability_sample",
+              "profile": "registered_claims/1",
+              "question": "Assess both registered synthetic-snapshot claims, accounting for the explicit outage objection. Keep the registered scope and avoid conclusions about a deployed service.",
+              "requirements": {
+                "context": {
+                  "dataset": "synthetic",
+                  "deployment": "coordinator-demo",
+                  "service": "catalogue-api"
+                }
+              },
+              "task_id": "synthetic_availability_sample"
+            },
+            "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+          }
+        },
+        "execution_mode": "actual_host_agent",
+        "role": "reviewer"
+      }
+    }
+  ],
+  "events": [
+    {
+      "sequence": 1,
+      "at": "2026-10-12T21:38:44.238192Z",
+      "kind": "started",
+      "data": {
+        "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+      }
+    },
+    {
+      "sequence": 2,
+      "at": "2026-10-12T21:38:44.839712Z",
+      "kind": "bus_initialized",
+      "data": {}
+    },
+    {
+      "sequence": 3,
+      "at": "2026-10-12T21:39:26.301366Z",
+      "kind": "received",
+      "data": {
+        "receipts": [
+          {
+            "message": {
+              "kind": "request",
+              "message_id": "request",
+              "payload": {
+                "attempt": 0,
+                "kind": "request",
+                "message_id": "request",
+                "recipient": "assessor",
+                "reply_to": null,
+                "schema": "EAL/MAS-coordination/3",
+                "sender": "reviewer",
+                "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+                "task_id": "synthetic_availability_sample"
+              },
+              "recipient": "assessor",
+              "run_id": "coord-4dd5731fd9784397923b4290196f9bfe",
+              "sender": "reviewer",
+              "version": "1"
+            },
+            "redelivered": false,
+            "sequence": 1
+          }
+        ],
+        "role": "assessor"
+      }
+    },
+    {
+      "sequence": 4,
+      "at": "2026-10-12T21:39:26.379716Z",
+      "kind": "worker_reserved",
+      "data": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:assessor",
+        "execution_mode": "actual_host_agent",
+        "role": "assessor"
+      }
+    },
+    {
+      "sequence": 5,
+      "at": "2026-10-12T21:40:19.930194Z",
+      "kind": "query",
+      "data": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:assessor",
+        "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a"
+      }
+    },
+    {
+      "sequence": 6,
+      "at": "2026-10-12T21:40:58.179778Z",
+      "kind": "worker_recorded",
+      "data": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:assessor",
+        "execution_id": "/root/coord003_assessor_generic_lab/turn1",
+        "outcome": "accepted"
+      }
+    },
+    {
+      "sequence": 7,
+      "at": "2026-10-12T21:41:00.478659Z",
+      "kind": "transport_finished",
+      "data": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:assessor"
+      }
+    },
+    {
+      "sequence": 8,
+      "at": "2026-10-12T21:41:01.674810Z",
+      "kind": "received",
+      "data": {
+        "receipts": [
+          {
+            "message": {
+              "kind": "outcome",
+              "message_id": "assessor-outcome-generic-lab-001",
+              "payload": {
+                "assessment_refs": {
+                  "sample_endpoint_available": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+                  "sample_quorum_present": "50987908-bbe6-4167-a966-56f8b27233db"
+                },
+                "attempt": 0,
+                "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+                "kind": "outcome",
+                "message_id": "assessor-outcome-generic-lab-001",
+                "recipient": "reviewer",
+                "reply_to": "request",
+                "schema": "EAL/MAS-coordination/3",
+                "sender": "assessor",
+                "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+                "task_id": "synthetic_availability_sample"
+              },
+              "recipient": "reviewer",
+              "run_id": "coord-4dd5731fd9784397923b4290196f9bfe",
+              "sender": "assessor",
+              "version": "1"
+            },
+            "redelivered": false,
+            "sequence": 2
+          }
+        ],
+        "role": "reviewer"
+      }
+    },
+    {
+      "sequence": 9,
+      "at": "2026-10-12T21:41:01.754584Z",
+      "kind": "worker_reserved",
+      "data": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:reviewer",
+        "execution_mode": "actual_host_agent",
+        "role": "reviewer"
+      }
+    },
+    {
+      "sequence": 10,
+      "at": "2026-10-12T21:41:56.801441Z",
+      "kind": "lookup",
+      "data": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:reviewer",
+        "calls": [
+          {
+            "arguments": {
+              "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+              "claim": "sample_endpoint_available"
+            },
+            "exposure": "operator",
+            "name": "eal_packet",
+            "outcome": "success"
+          },
+          {
+            "arguments": {
+              "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+              "claim": "sample_endpoint_available"
+            },
+            "exposure": "operator",
+            "name": "eal_explain",
+            "outcome": "success"
+          },
+          {
+            "arguments": {
+              "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+              "claim": "sample_quorum_present"
+            },
+            "exposure": "operator",
+            "name": "eal_packet",
+            "outcome": "success"
+          },
+          {
+            "arguments": {
+              "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+              "claim": "sample_quorum_present"
+            },
+            "exposure": "operator",
+            "name": "eal_explain",
+            "outcome": "success"
+          }
+        ],
+        "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a"
+      }
+    },
+    {
+      "sequence": 11,
+      "at": "2026-10-12T21:42:43.546773Z",
+      "kind": "worker_recorded",
+      "data": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:reviewer",
+        "execution_id": "/root/coord003_reviewer_generic_lab/turn1",
+        "outcome": "accepted"
+      }
+    },
+    {
+      "sequence": 12,
+      "at": "2026-10-12T21:42:44.755912Z",
+      "kind": "transport_finished",
+      "data": {
+        "call_id": "coord-4dd5731fd9784397923b4290196f9bfe:reviewer"
+      }
+    }
+  ],
+  "transport": {
+    "run_id": "coord-4dd5731fd9784397923b4290196f9bfe",
+    "config": {
+      "agents": [
+        "assessor",
+        "reviewer"
+      ],
+      "max_bytes": 65536,
+      "max_calls": 2,
+      "max_messages": 8,
+      "wall_seconds": 3600
+    },
+    "active_protocol": "1",
+    "deadline": 1791844724.7329378,
+    "usage": {
+      "messages": 2,
+      "bytes": 1149,
+      "calls": 2
+    },
+    "messages": [
+      {
+        "id": "request",
+        "sender": "reviewer",
+        "recipient": "assessor",
+        "received": 1,
+        "acked": 1,
+        "hash": "ebafb4b1508ae6ea37849a79d40141822ed41e715bb37328770528a1510efb6a"
+      },
+      {
+        "id": "assessor-outcome-generic-lab-001",
+        "sender": "assessor",
+        "recipient": "reviewer",
+        "received": 1,
+        "acked": 1,
+        "hash": "c3e5ae0901dbd2523ab1e8aabecd30fd62f67829ebe068e52b173cfb4b192319"
+      }
+    ],
+    "protocols": [],
+    "calls": [
+      {
+        "id": "coord-4dd5731fd9784397923b4290196f9bfe:assessor",
+        "actor": "assessor",
+        "state": "recorded",
+        "evidence": {
+          "cost_usd": null,
+          "execution_id": "/root/coord003_assessor_generic_lab/turn1",
+          "execution_mode": "actual_host_agent",
+          "outcome": "accepted",
+          "response_digest": "e7d9936b11ce5019f3e285c370d5ad2b37e2412ddec3600419327d4716695af5",
+          "tokens": null
+        }
+      },
+      {
+        "id": "coord-4dd5731fd9784397923b4290196f9bfe:reviewer",
+        "actor": "reviewer",
+        "state": "recorded",
+        "evidence": {
+          "cost_usd": null,
+          "execution_id": "/root/coord003_reviewer_generic_lab/turn1",
+          "execution_mode": "actual_host_agent",
+          "outcome": "accepted",
+          "response_digest": "d6f24d9c07d4ce1dcde82c2d95a42584fca0eaa36ba138972654de20f18c0336",
+          "tokens": null
+        }
+      }
+    ],
+    "execution_claim": "Host execution must be substantiated by external agent records; receive and ack alone do not prove cognition."
+  },
+  "limits": [
+    "Trusted local host; shared filesystem permissions are not role isolation",
+    "Worker external execution receipts are host assertions, not authenticated provider receipts",
+    "Assessment times belong to individual MCP results; replay does not establish a current decision"
+  ]
+}

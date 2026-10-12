@@ -1,0 +1,81 @@
+{
+  "execution_mode": "host_assisted",
+  "maximum_actual_turns": 8,
+  "maximum_repairs": 0,
+  "reserved_turns": [
+    {
+      "call_id": "protocol_assessor_task001",
+      "actor": "assessor",
+      "run": "task001-eal_protocol",
+      "reservation": {
+        "reserved": true,
+        "call_id": "protocol_assessor_task001"
+      }
+    },
+    {
+      "call_id": "protocol_reviewer_task001",
+      "actor": "reviewer",
+      "run": "task001-eal_protocol",
+      "reservation": {
+        "reserved": true,
+        "call_id": "protocol_reviewer_task001"
+      }
+    },
+    {
+      "call_id": "protocol_assessor_task002",
+      "actor": "assessor",
+      "run": "task002-eal_protocol",
+      "reservation": {
+        "reserved": true,
+        "call_id": "protocol_assessor_task002"
+      }
+    },
+    {
+      "call_id": "protocol_reviewer_task002",
+      "actor": "reviewer",
+      "run": "task002-eal_protocol",
+      "reservation": {
+        "reserved": true,
+        "call_id": "protocol_reviewer_task002"
+      }
+    },
+    {
+      "call_id": "protocol_assessor_task003",
+      "actor": "assessor",
+      "run": "task003-eal_protocol",
+      "reservation": {
+        "reserved": true,
+        "call_id": "protocol_assessor_task003"
+      }
+    },
+    {
+      "call_id": "protocol_reviewer_task003",
+      "actor": "reviewer",
+      "run": "task003-eal_protocol",
+      "reservation": {
+        "reserved": true,
+        "call_id": "protocol_reviewer_task003"
+      }
+    },
+    {
+      "call_id": "protocol_assessor_task004",
+      "actor": "assessor",
+      "run": "task004-eal_protocol",
+      "reservation": {
+        "reserved": true,
+        "call_id": "protocol_assessor_task004"
+      }
+    },
+    {
+      "call_id": "protocol_reviewer_task004",
+      "actor": "reviewer",
+      "run": "task004-eal_protocol",
+      "reservation": {
+        "reserved": true,
+        "call_id": "protocol_reviewer_task004"
+      }
+    }
+  ],
+  "registered_at": "2026-10-12T19:43:05.149507+00:00",
+  "ordering_deviation": "All baseline units ran before protocol units because network access became available later; descriptive paired results only"
+}

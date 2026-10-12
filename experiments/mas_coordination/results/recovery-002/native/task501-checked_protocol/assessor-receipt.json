@@ -1,0 +1,26 @@
+[
+  {
+    "message": {
+      "kind": "request",
+      "message_id": "request",
+      "payload": {
+        "attempt": 0,
+        "candidate_entry_id": "load_test",
+        "kind": "request",
+        "message_id": "request",
+        "recipient": "assessor",
+        "reply_to": null,
+        "schema": "EAL/MAS-coordination/2",
+        "sender": "reviewer",
+        "task_digest": "bb1fb0faa21f61e290675df0407bbbad49016130d4c21a0e5d638451a2a558bf",
+        "task_id": "task501"
+      },
+      "recipient": "assessor",
+      "run_id": "task501-checked_protocol",
+      "sender": "reviewer",
+      "version": "1"
+    },
+    "sequence": 1,
+    "redelivered": false
+  }
+]

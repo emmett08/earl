@@ -1,0 +1,66 @@
+{
+  "schema": "EAL/mas-coordination-pilot-plan/1",
+  "study_id": "eal3-mas-coordination-pilot-001",
+  "status": "frozen_before_live_trials",
+  "source_language": "EAL/3",
+  "population": "Four internally authored synthetic variants of the maintained API-load teaching example; no representative engineering population claim.",
+  "development_cases": ["nominal", "stale"],
+  "held_out_cases": ["scope_mismatch", "measured_failure"],
+  "held_out_policy": "Implementations may inspect fixture mechanics and trusted answer keys for software validation. Live worker outcomes from held-out cases must not be used to tune or rerun this pilot; retain first attempts and failures.",
+  "arms": ["mcp_json", "eal_protocol"],
+  "contrast": "Identical structured semantic handoffs and authoritative EAL validation; only the negotiated protocol envelope, parser and durable delivery machinery differ.",
+  "same_in_both_arms": [
+    "Model selection and host inference settings",
+    "Original task, exact requested scope, assessment time, claims and synthetic report information",
+    "Python EAL interpretation, installed methods and trusted fixture snapshots",
+    "Validator for entry, claim, source, context, assessment, observation references and time",
+    "Rejection diagnoses and a frozen first-attempt policy without repair turns",
+    "Reviewer receives a checked packet only following an accepted handoff",
+    "Tools, budgets and isolated per-case/arm workspace state"
+  ],
+  "case_order": [
+    {"case_id": "nominal", "arms": ["mcp_json", "eal_protocol"]},
+    {"case_id": "stale", "arms": ["eal_protocol", "mcp_json"]},
+    {"case_id": "scope_mismatch", "arms": ["mcp_json", "eal_protocol"]},
+    {"case_id": "measured_failure", "arms": ["eal_protocol", "mcp_json"]}
+  ],
+  "role_execution": {
+    "roles": ["assessor", "reviewer"],
+    "fresh_context_per_case_arm_role": true,
+    "scheduled_case_arm_pairs": 8,
+    "scheduled_role_contexts": 16,
+    "maximum_repair_turns_total": 0,
+    "maximum_role_turns_total": 16,
+    "maximum_mcp_calls_per_role": 8,
+    "maximum_repair_turns_per_pair": 0,
+    "requested_output_token_ceiling_per_role": 4000,
+    "requested_seconds_ceiling_per_role": 180,
+    "budget_reporting": "Record actual enforced ceilings, observed calls and elapsed time. Requested token or time ceilings that the host cannot enforce remain explicitly unenforced. No fabricated token receipts or USD costs."
+  },
+  "trusted_fixture_policy": {
+    "fixture_setup": "Copy source, report and pinned collector into an empty isolated run workspace, preserving maintained example bytes.",
+    "historical_time": "Only trusted preparation uses explicit historical time. Registered model-facing MCP calls do not gain context or time override fields.",
+    "scope_mismatch": "Available persisted assessments identify demo-build-42; the task asks for demo-build-43. Reject the cross-build handoff. A correct reviewer answer keeps build-43 scope with null unassessed claim statuses and conclusion out_of_scope.",
+    "stale": "Assess 2026-09-25T10:00:00Z measurements at 2026-09-26T10:00:01Z; recollection cannot refresh observed_at.",
+    "measured_failure": "Keep all 100 attempted requests and latencies, increase failed requests from one to two, repin only the isolated fixture source digest."
+  },
+  "answer_contract": {
+    "statuses": {"performance_criteria_met": "EAL status or null when unassessed", "performance_criteria_failed": "EAL status or null when unassessed"},
+    "scope": "Exact requested service, build_id, run_id, concurrent_clients and dataset",
+    "assessed_at": "Exact task decision time",
+    "conclusion": "sample_pass | sample_fail | unresolved | out_of_scope",
+    "production_supported": false
+  },
+  "primary_outcome": "Exact canonical scoped answer, including positive/failure/unavailable distinctions and production qualification",
+  "metrics": [
+    "Answer correctness and justified unresolved outcome, distinct from handoff acceptance or rejection",
+    "Source/context/claim/assessment/observation reference integrity and admission diagnoses",
+    "Repairs and rejected or unresolved delivery attempts",
+    "Actual EAL collected_count and reused_count",
+    "End-to-end elapsed time, protocol/delivery bytes and coordination overhead",
+    "Measured model tokens and API cost only where actual usage receipts exist"
+  ],
+  "analysis": "Retain all eight scheduled pairs including failed, rejected, unannotated and unknown outcomes. Report paired descriptive counts and observed resource measures. These four task families are internally synthetic; no superiority, significance, capability gain or adoption claim is permitted from this pilot.",
+  "annotation": "Canonical task fields are checked automatically. Additional prose is unscored unless a separate masked assessor and its human or AI provenance are retained.",
+  "failures": "No silent repair, dropped unit, zero-cost imputation, answer-key substitution or live-result-dependent budget expansion."
+}

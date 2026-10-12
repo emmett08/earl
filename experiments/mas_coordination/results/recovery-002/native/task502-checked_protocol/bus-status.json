@@ -1,0 +1,66 @@
+{
+  "run_id": "task502-checked_protocol",
+  "config": {
+    "agents": [
+      "assessor",
+      "reviewer"
+    ],
+    "max_bytes": 65536,
+    "max_calls": 2,
+    "max_messages": 8,
+    "wall_seconds": 3600
+  },
+  "active_protocol": "1",
+  "deadline": 1791841437.7979727,
+  "usage": {
+    "messages": 2,
+    "bytes": 996,
+    "calls": 2
+  },
+  "messages": [
+    {
+      "id": "request",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "received": 1,
+      "acked": 1,
+      "hash": "07f9ceb79447920cac1125476c899985d56196e16b9fcd06430dd5647f242bad"
+    },
+    {
+      "id": "assessor_disposition_0",
+      "sender": "assessor",
+      "recipient": "reviewer",
+      "received": 1,
+      "acked": 1,
+      "hash": "2b932ef4701250a9fe4110fdc46f2c8603080ebafd4d58976c7bf173ee437f7d"
+    }
+  ],
+  "protocols": [],
+  "calls": [
+    {
+      "id": "task502-checked_protocol-assessor",
+      "actor": "assessor",
+      "state": "recorded",
+      "evidence": {
+        "cost_usd": null,
+        "execution_id": "/root/recovery_assessor_502_checked/turn1",
+        "execution_mode": "actual_host_agent",
+        "response_digest": "3c2dd14195d76c16f848008416a4808e9428cb0d627361ac71d7398409bbfac7",
+        "tokens": null
+      }
+    },
+    {
+      "id": "task502-checked_protocol-reviewer",
+      "actor": "reviewer",
+      "state": "recorded",
+      "evidence": {
+        "cost_usd": null,
+        "execution_id": "/root/recovery_reviewer_502_checked/turn1",
+        "execution_mode": "actual_host_agent",
+        "response_digest": "824a911c8c1808a9ce69a32e49c643d1911cb2f27b1549f328298ff350baa1af",
+        "tokens": null
+      }
+    }
+  ],
+  "execution_claim": "Host execution must be substantiated by external agent records; receive and ack alone do not prove cognition."
+}

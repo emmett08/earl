@@ -1,0 +1,21 @@
+{
+  "message": {
+    "schema": "EAL/MAS-coordination/3",
+    "kind": "outcome",
+    "message_id": "assessor-synthetic-availability-0",
+    "task_id": "synthetic_availability_sample",
+    "task_digest": "2ea882a57c237e06b0418164c19990abcb95e3490c7325b34d0379ec42a4ba68",
+    "sender": "assessor",
+    "recipient": "reviewer",
+    "reply_to": "request",
+    "attempt": 0,
+    "finding_id": "finding_c1cf8b70c7f69b7f8be104238034ada0d2d6e3b375e693c203ee76225c8bc2a2",
+    "assessment_refs": {
+      "sample_endpoint_available": "b47431ec-1649-42a5-b8e1-bed9933ba0bc",
+      "sample_quorum_present": "2437e17f-0c0b-46b1-9f12-aee9d4b23eaf"
+    }
+  },
+  "consumed_message_ids": [
+    "request"
+  ]
+}

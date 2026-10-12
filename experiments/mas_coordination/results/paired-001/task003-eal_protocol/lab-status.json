@@ -1,0 +1,77 @@
+{
+  "run_id": "task003-eal_protocol",
+  "config": {
+    "agents": [
+      "assessor",
+      "reviewer"
+    ],
+    "max_bytes": 65536,
+    "max_calls": 2,
+    "max_messages": 8,
+    "wall_seconds": 3600
+  },
+  "active_protocol": "1",
+  "deadline": 1791837728.2020566,
+  "usage": {
+    "messages": 2,
+    "bytes": 1393,
+    "calls": 2
+  },
+  "messages": [
+    {
+      "id": "request-0",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "received": 1,
+      "acked": 1,
+      "hash": "5191bf0be356df8ce0ba4eb3bc4639ce87dac51f5f3932d9dee85d1dc5460f11"
+    },
+    {
+      "id": "request-1",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "received": 1,
+      "acked": 1,
+      "hash": "928967ea164727f3be738c5bb7d894d3d401a5ded8d8ff10a24bc33ceb888ee3"
+    }
+  ],
+  "protocols": [],
+  "calls": [
+    {
+      "id": "protocol_assessor_task003",
+      "actor": "assessor",
+      "state": "recorded",
+      "evidence": {
+        "actor": "assessor",
+        "admission": "rejected",
+        "execution_id": "/root/protocol_assessor_task003/turn1",
+        "execution_mode": "actual_host_agent",
+        "model_tokens": null,
+        "model_usd_cost": null,
+        "observed_batch_elapsed_ms": 120492,
+        "received_message_ids": [
+          "request-0",
+          "request-1"
+        ],
+        "response_sha256": "c331ac87b5259743d70875a6197e612e1c87a5462bec0bb3915b331e355007bc"
+      }
+    },
+    {
+      "id": "protocol_reviewer_task003",
+      "actor": "reviewer",
+      "state": "recorded",
+      "evidence": {
+        "actor": "reviewer",
+        "admission": "accepted",
+        "execution_id": "/root/protocol_reviewer_task003/turn1",
+        "execution_mode": "actual_host_agent",
+        "model_tokens": null,
+        "model_usd_cost": null,
+        "observed_batch_elapsed_ms": 170736,
+        "received_message_ids": [],
+        "response_sha256": "9ff911c4311a8ea6f78cc462180aafa23033a00c8b466b9c81d042c2e79fc00b"
+      }
+    }
+  ],
+  "execution_claim": "Host execution must be substantiated by external agent records; receive and ack alone do not prove cognition."
+}

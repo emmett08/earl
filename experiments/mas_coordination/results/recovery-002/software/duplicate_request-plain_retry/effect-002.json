@@ -1,0 +1,107 @@
+{
+  "admission": "accepted",
+  "raw_assessment": {
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "assessment_id": "84d18d4a-08b2-4486-87c2-18c10679da27",
+    "claim": "performance_criteria_met",
+    "collected_count": 0,
+    "collection_id": "ed3b8577-546a-4de1-ab2d-dfc421613742",
+    "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+    "entry_id": "load_test",
+    "full_explanation": {
+      "assessment_id": "84d18d4a-08b2-4486-87c2-18c10679da27",
+      "detail": "full",
+      "operation": "explain"
+    },
+    "packet": {
+      "arguments": {
+        "passing_performance": {
+          "conclusion": "performance_criteria_met",
+          "method_result": {
+            "evidence_id": "load_test",
+            "input_digest": "ffc16be9293a76bedc053c058958efb3c48423a5c0ab70904614cbc4ca16c3cf",
+            "method": "engineering/api-load-criteria/1",
+            "outputs": {
+              "fails": false,
+              "passes": true,
+              "sample_size_met": true
+            },
+            "require_holds": [
+              true
+            ],
+            "status": "supported"
+          },
+          "premises": [],
+          "status": "supported"
+        }
+      },
+      "assessment_id": "84d18d4a-08b2-4486-87c2-18c10679da27",
+      "assumptions": {},
+      "claims": {
+        "performance_criteria_met": {
+          "active_objections": [],
+          "contested_arguments": [],
+          "grounded_label": "accepted",
+          "observation_ids": [
+            {
+              "evidence_id": "load_test",
+              "observation_id": "f2449576-ec76-40a3-a574-e45e2608c783"
+            }
+          ],
+          "prose_verified": false,
+          "related_arguments": [
+            "passing_performance"
+          ],
+          "statement": "The synthetic report demo-load-001 for orders-api build demo-build-42, labelled with 10 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent.",
+          "status": "supported",
+          "supporting_arguments": [
+            "passing_performance"
+          ],
+          "undecided_objections": []
+        }
+      },
+      "collection_id": "ed3b8577-546a-4de1-ab2d-dfc421613742",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "evidence": {
+        "load_test": {
+          "age_seconds": 0.0,
+          "age_status": "within_max_age",
+          "availability_issues": [],
+          "observation_id": "f2449576-ec76-40a3-a574-e45e2608c783",
+          "observed_at": "2026-09-25T10:00:00Z",
+          "status": "available"
+        }
+      },
+      "full_explanation": {
+        "assessment_id": "84d18d4a-08b2-4486-87c2-18c10679da27",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {},
+      "omitted": {},
+      "premise_claims": {},
+      "schema": "EAL/assessment-packet/2",
+      "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+      "summary_complete": true
+    },
+    "reused_count": 1,
+    "schema": "EAL/registered-assessment/1",
+    "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+    "status": "supported"
+  },
+  "summary": {
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "claim": "performance_criteria_met",
+    "production_supported": false,
+    "scope": {
+      "build_id": "demo-build-42",
+      "concurrent_clients": 10,
+      "dataset": "synthetic",
+      "run_id": "demo-load-001",
+      "service": "orders-api"
+    },
+    "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+    "status": "supported"
+  }
+}

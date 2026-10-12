@@ -1,0 +1,100 @@
+[
+  {
+    "arm": "plain_retry",
+    "input_digest": "263bfb1ea8650b6d76ce2c125f669dc7a42dde40c77084c6665f902fa60857ae",
+    "operation": "episode_started",
+    "sequence": 1
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": false,
+    "sequence": 2
+  },
+  {
+    "attempt": 0,
+    "operation": "handler_delivery",
+    "sequence": 3
+  },
+  {
+    "effect_mode": "synthetic_counted_effect",
+    "operation": "effect_started",
+    "sequence": 4
+  },
+  {
+    "effect_result_file": "effect-001.json",
+    "operation": "effect_returned",
+    "sequence": 5
+  },
+  {
+    "fault_mode": "Python interruption",
+    "operation": "fault_injected",
+    "point": "after_effect_before_commit",
+    "sequence": 6
+  },
+  {
+    "operation": "interruption_retained",
+    "point": "after_effect_before_commit",
+    "sequence": 7
+  },
+  {
+    "method": "New transport and ledger objects",
+    "operation": "recovery_started",
+    "sequence": 8
+  },
+  {
+    "operation": "recovery_inbox_polled",
+    "pending_count": 1,
+    "sequence": 9
+  },
+  {
+    "attempt": 1,
+    "operation": "handler_delivery",
+    "sequence": 10
+  },
+  {
+    "effect_mode": "synthetic_counted_effect",
+    "operation": "effect_started",
+    "sequence": 11
+  },
+  {
+    "effect_result_file": "effect-002.json",
+    "operation": "effect_returned",
+    "sequence": 12
+  },
+  {
+    "operation": "result_checkpointed_without_outbox",
+    "result_is_recoverable": false,
+    "sequence": 13
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_attempted",
+    "sequence": 14
+  },
+  {
+    "duplicate": false,
+    "message_id": "reply",
+    "operation": "remote_send_returned",
+    "sequence": 15
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_confirmed",
+    "sequence": 16
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_attempted",
+    "sequence": 17
+  },
+  {
+    "message_id": "request",
+    "operation": "remote_ack_returned",
+    "sequence": 18
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_confirmed",
+    "sequence": 19
+  }
+]

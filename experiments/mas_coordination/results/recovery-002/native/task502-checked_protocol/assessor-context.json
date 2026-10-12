@@ -1,0 +1,54 @@
+{
+  "role": "assessor",
+  "contract": {
+    "schema": "EAL/MAS-coordination-task/2",
+    "task_id": "task502",
+    "entry_id": "load_test",
+    "requested_scope": {
+      "service": "orders-api",
+      "build_id": "demo-build-42",
+      "run_id": "demo-load-002",
+      "concurrent_clients": 20,
+      "dataset": "synthetic"
+    },
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "criteria": {
+      "minimum_requests": 100,
+      "maximum_sample_p95_ms": 200,
+      "maximum_error_rate_percent": 1,
+      "evidence_max_age_seconds": 86400
+    },
+    "method": "engineering/api-load-criteria/1",
+    "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+    "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+    "claims": [
+      "performance_criteria_met",
+      "performance_criteria_failed"
+    ],
+    "task_digest": "eafbbae3dfb15868c1cfaa971b9d353a790b9d6b1664a2e0e7c6bd59c9373106",
+    "semantic_definitions": {
+      "sample_pass": "A corresponding checked assessment gives the passing claim status supported and the failing claim status unsupported. The identified synthetic sample meets the pinned criteria; no production guarantee follows.",
+      "sample_fail": "A corresponding checked assessment gives the failing claim status supported and the passing claim status unsupported. An identified usable measurement fails at least one pinned criterion; missing or stale evidence is not a measured failure.",
+      "unresolved": "The requested task has no decisive checked result, including missing, stale, contested, unavailable or uncertain-execution evidence. Preserve actual checked statuses; use null when the requested claim was not assessed.",
+      "out_of_scope": "The available registered candidate does not correspond to the requested context, workload, criterion contract or pinned source revision. Report the requested scope and null unassessed statuses; do not relabel the candidate's result.",
+      "host_authority": "Only trusted Python EAL findings and stored assessments establish references and claim statuses. Formal support does not verify authored claim prose. A handoff disposition does not change an EAL assessment."
+    }
+  },
+  "received_messages": [
+    {
+      "schema": "EAL/MAS-coordination/2",
+      "kind": "request",
+      "message_id": "request",
+      "task_id": "task502",
+      "task_digest": "eafbbae3dfb15868c1cfaa971b9d353a790b9d6b1664a2e0e7c6bd59c9373106",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "reply_to": null,
+      "attempt": 0,
+      "candidate_entry_id": "load_test"
+    }
+  ],
+  "gateway": "/workspace/earl/.venv/bin/python -m experiments.mas_coordination.recovery query --run /workspace/earl/.cache/mas-coordination/recovery-native-004/task502-checked_protocol",
+  "payload_schema": "/workspace/earl/experiments/mas_coordination/recovery-schema.json",
+  "instructions": "Request a finding through the gateway. Author one outcome or disposition message to the reviewer, referring to its finding_id and trusted assessment_refs. Inspect the initial request and preserve every task identity. No proposal template or assessment is supplied here."
+}

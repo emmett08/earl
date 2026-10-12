@@ -1,0 +1,827 @@
+{
+  "schema": "EAL/mas-coordination-paired-report/1",
+  "created_at": "2026-10-12T19:50:08.466170+00:00",
+  "execution_mode": "actual_host_assisted",
+  "summary": {
+    "mcp_json": {
+      "exact_answers": 3,
+      "case_count": 4,
+      "admitted_handoffs": 3,
+      "native_turns": 8
+    },
+    "eal_protocol": {
+      "exact_answers": 3,
+      "case_count": 4,
+      "admitted_handoffs": 3,
+      "native_turns": 8
+    }
+  },
+  "runs": [
+    {
+      "run_id": "task001-mcp_json",
+      "case_id": "nominal",
+      "arm": "mcp_json",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "nominal",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": true,
+        "justified_unresolved": false,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task001/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 74.481639,
+          "response_sha256": "3c00227ec623e67ed3c5c1cbba006ccd52abeb38c419ab4eaacefd401938f2ef",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/baseline_reviewer_task001/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 82.141909,
+          "response_sha256": "0307e261cfd589f74bd4e4fbcca0b010ebc48e59c4e129f068d13bb4dc96555a",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_sha256": {
+        "assessor-context.json": "8753f55fec83ad6c7be04c3380315d3051044b96480a74d0823b04d2197ee31a",
+        "reviewer-context.json": "33a49909197427923f6bfa3be7f0201bb3c179c039837bcafd1751fddedc4ad8",
+        "native-assessor.json": "3c00227ec623e67ed3c5c1cbba006ccd52abeb38c419ab4eaacefd401938f2ef",
+        "native-reviewer.json": "0307e261cfd589f74bd4e4fbcca0b010ebc48e59c4e129f068d13bb4dc96555a",
+        "state.json": "83dd0655421dfbd22a4ae7c6ffcfd9ec9e258829475013c473fb6bc9237b2fc1"
+      },
+      "context_utf8_bytes": 21135,
+      "native_response_utf8_bytes": 4022
+    },
+    {
+      "run_id": "task002-mcp_json",
+      "case_id": "stale",
+      "arm": "mcp_json",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "stale",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": false,
+        "justified_unresolved": true,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task002/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 74.796839,
+          "response_sha256": "76798188edc8d00b36143f6cba6a6dcec032475048fba97f7d459be12f88664f",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/baseline_reviewer_task002/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 112.946186,
+          "response_sha256": "b76aeeb4916911c6f565b3b08f93669045f64770c8c866b628f4c7ca46ba2c79",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 2,
+      "reused_count": 0,
+      "evidence_sha256": {
+        "assessor-context.json": "a7e7f11fdd2672ff054d4cf4d37bcf6ba52f8df3bea97eec6ff96040c02459f5",
+        "reviewer-context.json": "9284422f687caf8dc02cbe788815f03ba51fe02a1fc7808568790a2f6799d356",
+        "native-assessor.json": "76798188edc8d00b36143f6cba6a6dcec032475048fba97f7d459be12f88664f",
+        "native-reviewer.json": "b76aeeb4916911c6f565b3b08f93669045f64770c8c866b628f4c7ca46ba2c79",
+        "state.json": "54d1892ed912c9ea5eaded117bbb3c13408d5948bb20f93b3698bcf2de834a99"
+      },
+      "context_utf8_bytes": 19851,
+      "native_response_utf8_bytes": 4025
+    },
+    {
+      "run_id": "task003-mcp_json",
+      "case_id": "scope_mismatch",
+      "arm": "mcp_json",
+      "admission": "rejected",
+      "delivery": "rejected",
+      "score": {
+        "case_id": "scope_mismatch",
+        "delivery": "rejected",
+        "answer_present": true,
+        "answer_correct": false,
+        "resolved": false,
+        "justified_unresolved": false,
+        "errors": [
+          "wrong_scoped_conclusion"
+        ],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task003/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 84.505627,
+          "response_sha256": "df165a14ff779bf5d37d281e4992de200e360121755c9c85145552a974e54e97",
+          "first_attempt_outcome": "rejected",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [
+            "Task target context differs from the registered assessment context; cross-build handoff rejected"
+          ],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/baseline_reviewer_task003/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 82.670156,
+          "response_sha256": "9ff911c4311a8ea6f78cc462180aafa23033a00c8b466b9c81d042c2e79fc00b",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task003/turn1",
+          "diagnosis": "Task target context differs from the registered assessment context; cross-build handoff rejected",
+          "outcome": "rejected"
+        }
+      ],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_sha256": {
+        "assessor-context.json": "51d510ae500949642c7a1ef6810ac0938983d2a11b196f8274b4f50ebeba6157",
+        "reviewer-context.json": "625b19c6c6777da9457be96f122e4e839d7f76670ee020e040e0d46ef84fde3b",
+        "native-assessor.json": "df165a14ff779bf5d37d281e4992de200e360121755c9c85145552a974e54e97",
+        "native-reviewer.json": "9ff911c4311a8ea6f78cc462180aafa23033a00c8b466b9c81d042c2e79fc00b",
+        "state.json": "7085dc180e7c9962a4c02df1431795ea611b1e64dbdb351f12f8a88df0d9fae0"
+      },
+      "context_utf8_bytes": 12663,
+      "native_response_utf8_bytes": 2422
+    },
+    {
+      "run_id": "task004-mcp_json",
+      "case_id": "measured_failure",
+      "arm": "mcp_json",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "measured_failure",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": true,
+        "justified_unresolved": false,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task004/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 75.06716,
+          "response_sha256": "186cb36b27ccbd4469b8862fe202ccbe35103771a21a6e8291ac022f44502f8e",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/baseline_reviewer_task004/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 113.510765,
+          "response_sha256": "09ba61f9e8278754fa1f4d610ef316451dd49a270d07357b528611b974031f86",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_sha256": {
+        "assessor-context.json": "f4653ab802a2a904e98563bbaf250946312f546980f73df938f4c1a44bb5ab3c",
+        "reviewer-context.json": "5c0bc8c6d874c6a8068757e18fd1ba2187860d77cd154eb89059d1fd94da93f8",
+        "native-assessor.json": "186cb36b27ccbd4469b8862fe202ccbe35103771a21a6e8291ac022f44502f8e",
+        "native-reviewer.json": "09ba61f9e8278754fa1f4d610ef316451dd49a270d07357b528611b974031f86",
+        "state.json": "8cf48313fb180865328ddb499f15a38d32b6c4af685893e66c6880761b983e43"
+      },
+      "context_utf8_bytes": 21135,
+      "native_response_utf8_bytes": 4022
+    },
+    {
+      "run_id": "task001-eal_protocol",
+      "case_id": "nominal",
+      "arm": "eal_protocol",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "nominal",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": true,
+        "justified_unresolved": false,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/protocol_assessor_task001/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 116.586557,
+          "response_sha256": "541774c4859aad8069f8e1bd78479ae7a126215b1c4e75d56a73de43c74ffcf4",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "complete",
+            "sent_message_ids": [
+              "proposal-0",
+              "proposal-1"
+            ],
+            "acknowledged_message_ids": [
+              "request-0",
+              "request-1"
+            ],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/protocol_reviewer_task001/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 165.434378,
+          "response_sha256": "6e8fd0f72d7486ce143e1d6466b89909567cdcb77eff8f80a06324660e54cf9a",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "complete",
+            "sent_message_ids": [
+              "review-0",
+              "review-1"
+            ],
+            "acknowledged_message_ids": [
+              "proposal-0",
+              "proposal-1"
+            ],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_sha256": {
+        "assessor-context.json": "49ee638f6ec49be621b2d2dde3a1d9d4454843edc470c446795b2046289e69f8",
+        "reviewer-context.json": "c5512585877cacd2d23cf46e72202048bcaeb315d3ce3284ab30ec6f4d8b1a2b",
+        "native-assessor.json": "541774c4859aad8069f8e1bd78479ae7a126215b1c4e75d56a73de43c74ffcf4",
+        "native-reviewer.json": "6e8fd0f72d7486ce143e1d6466b89909567cdcb77eff8f80a06324660e54cf9a",
+        "state.json": "f342f2c4225fabd9f0ff36dfb4f6a0658315e9528b086fe270736656ae58e2b2",
+        "assessor-receipt.json": "a1d4ab2aa886cdbb27b0fbf185ecd0553a9cdde75b3c307e36ffddcd32b324b9",
+        "lab-status.json": "39cc13cd07d8dc34e61bab8e6bee71b8c482f3fcd30d37bc829a06efee642b9e",
+        "reviewer-receipt.json": "79284038b7b31cc5ca676dc28e6fd86a08dfff36e04eea86e7107ccb3c458bf1"
+      },
+      "context_utf8_bytes": 21135,
+      "native_response_utf8_bytes": 4022,
+      "lab_usage": {
+        "messages": 6,
+        "bytes": 4675,
+        "calls": 2
+      },
+      "lab_config": {
+        "agents": [
+          "assessor",
+          "reviewer"
+        ],
+        "max_bytes": 65536,
+        "max_calls": 2,
+        "max_messages": 8,
+        "wall_seconds": 3600
+      },
+      "pending_terminal_reviews": [
+        "review-0",
+        "review-1"
+      ]
+    },
+    {
+      "run_id": "task002-eal_protocol",
+      "case_id": "stale",
+      "arm": "eal_protocol",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "stale",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": false,
+        "justified_unresolved": true,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/protocol_assessor_task002/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 118.488921,
+          "response_sha256": "8f68bcff3b1f1ef02936bacc5428f9044787e5517255ba72aaa3d33700bc21d7",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "complete",
+            "sent_message_ids": [
+              "proposal-0",
+              "proposal-1"
+            ],
+            "acknowledged_message_ids": [
+              "request-0",
+              "request-1"
+            ],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/protocol_reviewer_task002/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 167.264144,
+          "response_sha256": "8f0c9c53b784c198dee05196e287fd58509d01490bddb965b3585e7c2c2291cd",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "complete",
+            "sent_message_ids": [
+              "review-0",
+              "review-1"
+            ],
+            "acknowledged_message_ids": [
+              "proposal-0",
+              "proposal-1"
+            ],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 2,
+      "reused_count": 0,
+      "evidence_sha256": {
+        "assessor-context.json": "b271cc1376301261be4bfb661be670b84505f7c89e0e709b34b9b25ea434f3cf",
+        "reviewer-context.json": "520a581647e9f51c68504ac7916eca7bec8e3fcd2fcb33b971b129bc52d34a1c",
+        "native-assessor.json": "8f68bcff3b1f1ef02936bacc5428f9044787e5517255ba72aaa3d33700bc21d7",
+        "native-reviewer.json": "8f0c9c53b784c198dee05196e287fd58509d01490bddb965b3585e7c2c2291cd",
+        "state.json": "5d1ff501c557be5983597c661d7746859d2cb6ba58b0a25fac7b06441b5bbfb9",
+        "assessor-receipt.json": "96d35a216baa8f202332e213f3340e448b88404842b03549f1fbbc535f69261f",
+        "lab-status.json": "6f320dcc329130c5bdf8250d6f74fb4aa1451344319a6ff871de1dce283ffe94",
+        "reviewer-receipt.json": "3faa85b7408257f9a5dafcc2268e9e6cf7322d471049e8273d613edd19066cc4"
+      },
+      "context_utf8_bytes": 19851,
+      "native_response_utf8_bytes": 4025,
+      "lab_usage": {
+        "messages": 6,
+        "bytes": 4677,
+        "calls": 2
+      },
+      "lab_config": {
+        "agents": [
+          "assessor",
+          "reviewer"
+        ],
+        "max_bytes": 65536,
+        "max_calls": 2,
+        "max_messages": 8,
+        "wall_seconds": 3600
+      },
+      "pending_terminal_reviews": [
+        "review-0",
+        "review-1"
+      ]
+    },
+    {
+      "run_id": "task003-eal_protocol",
+      "case_id": "scope_mismatch",
+      "arm": "eal_protocol",
+      "admission": "rejected",
+      "delivery": "rejected",
+      "score": {
+        "case_id": "scope_mismatch",
+        "delivery": "rejected",
+        "answer_present": true,
+        "answer_correct": false,
+        "resolved": false,
+        "justified_unresolved": false,
+        "errors": [
+          "wrong_scoped_conclusion"
+        ],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/protocol_assessor_task003/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 120.492154,
+          "response_sha256": "c331ac87b5259743d70875a6197e612e1c87a5462bec0bb3915b331e355007bc",
+          "first_attempt_outcome": "rejected",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [
+            "Task target context differs from the registered assessment context; cross-build handoff rejected"
+          ],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "complete",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [
+              "request-0",
+              "request-1"
+            ],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/protocol_reviewer_task003/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 170.736364,
+          "response_sha256": "9ff911c4311a8ea6f78cc462180aafa23033a00c8b466b9c81d042c2e79fc00b",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "complete",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/protocol_assessor_task003/turn1",
+          "diagnosis": "Task target context differs from the registered assessment context; cross-build handoff rejected",
+          "outcome": "rejected"
+        }
+      ],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_sha256": {
+        "assessor-context.json": "a9b0f6e388944c9b085f8fb9ae9ce68745a321808abc3ae8369b137f1df7d77c",
+        "reviewer-context.json": "625b19c6c6777da9457be96f122e4e839d7f76670ee020e040e0d46ef84fde3b",
+        "native-assessor.json": "c331ac87b5259743d70875a6197e612e1c87a5462bec0bb3915b331e355007bc",
+        "native-reviewer.json": "9ff911c4311a8ea6f78cc462180aafa23033a00c8b466b9c81d042c2e79fc00b",
+        "state.json": "afaff384759e99c8c16ca6af3f9587476c544eca1ab3b475e4eb1a2451402d88",
+        "assessor-receipt.json": "4c333dea92506a73c38665885b6a3ea01d4b167cb35e104987cc833b8740e8bc",
+        "lab-status.json": "c23b8ecc875389119cdeb6b755d9e5d74d29069d288d2747e04df79664dc6e13"
+      },
+      "context_utf8_bytes": 12663,
+      "native_response_utf8_bytes": 2422,
+      "lab_usage": {
+        "messages": 2,
+        "bytes": 1393,
+        "calls": 2
+      },
+      "lab_config": {
+        "agents": [
+          "assessor",
+          "reviewer"
+        ],
+        "max_bytes": 65536,
+        "max_calls": 2,
+        "max_messages": 8,
+        "wall_seconds": 3600
+      },
+      "pending_terminal_reviews": []
+    },
+    {
+      "run_id": "task004-eal_protocol",
+      "case_id": "measured_failure",
+      "arm": "eal_protocol",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "measured_failure",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": true,
+        "justified_unresolved": false,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/protocol_assessor_task004/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 121.401393,
+          "response_sha256": "3fd99acdb45abc07aeb103aa91dcb81ff89eedab9d97df419d980318291cf5f5",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "complete",
+            "sent_message_ids": [
+              "proposal-0",
+              "proposal-1"
+            ],
+            "acknowledged_message_ids": [
+              "request-0",
+              "request-1"
+            ],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/protocol_reviewer_task004/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 171.714548,
+          "response_sha256": "82c5462833843001cf8e5efc14f16a3de7d5f85c4001a3a8cca34ee2a41f7a51",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "complete",
+            "sent_message_ids": [
+              "review-0",
+              "review-1"
+            ],
+            "acknowledged_message_ids": [
+              "proposal-0",
+              "proposal-1"
+            ],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_sha256": {
+        "assessor-context.json": "6dcf9cc837edcfd7db8797bf5ad881d392109c87bc8bf094f3c05ef2a4c696a3",
+        "reviewer-context.json": "49f0a71c2d19ed213733609bdfb548f884f27dad3d0b03f1f1dd1ff632c04312",
+        "native-assessor.json": "3fd99acdb45abc07aeb103aa91dcb81ff89eedab9d97df419d980318291cf5f5",
+        "native-reviewer.json": "82c5462833843001cf8e5efc14f16a3de7d5f85c4001a3a8cca34ee2a41f7a51",
+        "state.json": "c34a472e44fb3f7457f6dea162840f79819e29c4e74765c40dc6d5e05bf1dbcf",
+        "assessor-receipt.json": "03b8523e88cd260084c3f066470e158126308bd588ca50ca9316bc505ed439ef",
+        "lab-status.json": "1155370d74134c3871b63cf5418d7cf9c4b5ad648f783f4bce37de90ee61edc9",
+        "reviewer-receipt.json": "c9fdbe76b9309c7f64258cb43f6e10726597e66a66a8aa9402c726d3a709ae01"
+      },
+      "context_utf8_bytes": 21135,
+      "native_response_utf8_bytes": 4022,
+      "lab_usage": {
+        "messages": 6,
+        "bytes": 4675,
+        "calls": 2
+      },
+      "lab_config": {
+        "agents": [
+          "assessor",
+          "reviewer"
+        ],
+        "max_bytes": 65536,
+        "max_calls": 2,
+        "max_messages": 8,
+        "wall_seconds": 3600
+      },
+      "pending_terminal_reviews": [
+        "review-0",
+        "review-1"
+      ]
+    }
+  ],
+  "strongest_verified_claim": "The optional EAL-aware payload and supplied Rust/nom mailbox delivered checked assessment references between actual separately executed native contexts; the paired synthetic pilot showed no exact-answer improvement over structured JSON.",
+  "conclusion": "Keep the baseline as the default. The added protocol is an optional coordination experiment with durable delivery and reference checks, not an evidenced output or cost improvement.",
+  "validation": {
+    "repository_protocol_case_pilot_transport_tests": 67,
+    "lab_python_tests": 25,
+    "lab_rust_tests": 5,
+    "lab_build": "release --locked passed",
+    "eal_mcp": "Actual operator packet lookup plus registered entry discovery passed in eight isolated case-arm workspaces"
+  },
+  "provenance": {
+    "source_head": "a5df749f042ca0489831b2b51b214586fd2e2fcd",
+    "plan_sha256": "304ea53b22b0685076a1cbd28d5e589f5af661c4832d53f60e80cdd342dddd04",
+    "lab_bundle_sha256": "564dd50d4486fe61f3533f467ff25371bf68d812fec337613f8223d43fdfcb5d",
+    "lab_version": "0.1.0",
+    "rust_toolchain": "1.85.1",
+    "codec_protocol": "1",
+    "domain_payload": "EAL/MAS-coordination/1",
+    "protocol_origin": "Domain payload authored during implementation; supplied fixed Rust envelope reused. No agent-generated grammar or protocol-evolution trial."
+  },
+  "accounting": {
+    "native_model_identifier": null,
+    "native_model_tokens": null,
+    "native_model_usd_cost": null,
+    "development_and_onboarding_cost": null,
+    "elapsed_definition": "Per-role batch reservation through host recording, including coordination/queueing; not isolated inference latency",
+    "model_selection": "Native agents inherited the same parent model/settings; exact metadata unavailable",
+    "lab_limits_per_unit": {
+      "max_calls": 2,
+      "max_messages": 8,
+      "max_bytes": 65536,
+      "wall_seconds": 3600
+    }
+  },
+  "deviations": [
+    {
+      "kind": "arm_order",
+      "planned": "Alternating arms within each case",
+      "actual": "All baseline units ran first; all protocol units ran later after network access changed",
+      "impact": "Descriptive paired comparison only; no causal protocol effect or latency attribution"
+    },
+    {
+      "kind": "preparation_failure",
+      "record": "../preparation-001.json",
+      "reason": "One pre-live method-worker startup exceeded the unchanged five-second limit during concurrent setup; incomplete assessment retained and preparation retried serially",
+      "live_model_trials_repeated": 0
+    }
+  ],
+  "limitations": [
+    "Four internally authored synthetic task variants with one first attempt per arm",
+    "No single-agent comparison; no MAS superiority claim",
+    "Workers used host-prepared MCP snapshots and proposal/review templates; autonomous MCP discovery or new reasoning was not evaluated",
+    "Two scope-mismatch answers retained correct target and null statuses but failed the frozen out_of_scope conclusion label; failures were not repaired or rescored",
+    "Actual fork_turns=none contexts share an instruction-restricted filesystem; no OS isolation",
+    "Tokens, billing and development cost are unknown, not zero",
+    "Six terminal protocol review messages remain pending for their completed assessor recipients; only proposal deliveries to subsequently executed reviewers are claimed consumed",
+    "Required held-out superiority and total-cost evidence is absent"
+  ],
+  "implementation_sha256": {
+    "experiments/mas_coordination/__init__.py": "ea6457c55ebf814a275095b864517657b61ebc547af814f5e5d6e0c5df197321",
+    "experiments/mas_coordination/cases.py": "926b9825d10b6b6bc4dfdec332eb18a82e44389a28daf6e948839c686138f336",
+    "experiments/mas_coordination/mcp_snapshots.py": "d4e8b7dddece8ba2ab55d7246658f816ceeadb501a0d91d0c614b6a496cb22d8",
+    "experiments/mas_coordination/pilot.py": "2b62b85c56eb82b43341fdf6fcc4f4d261c1f1dfc6431dc508764a1f1a6cd498",
+    "experiments/mas_coordination/plan.json": "8b42f3f2550f8759235b17c11cc6131f8797b85f3ec4da3d35d7d1d274554686",
+    "experiments/mas_coordination/protocol.py": "7f415a0b56cce8b23c3b567f439058b0f87a4289b9a666847179918e9e18554d",
+    "experiments/mas_coordination/schema.json": "ae45406df8498fd07405a1c45281d2875139d00426f3f87f58d2d0dfc6071686",
+    "experiments/mas_coordination/transport.py": "c5707a1900870b706d41c6e4ec35c5a6051ea07ec6a7bf04fcb7440d08f53f98"
+  }
+}

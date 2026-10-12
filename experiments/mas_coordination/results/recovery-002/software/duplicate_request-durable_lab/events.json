@@ -1,0 +1,126 @@
+[
+  {
+    "arm": "durable_lab",
+    "input_digest": "c93e288c29dbf933577234a3a52e1e9068b4cfdb4856e170dc11759245c22eb5",
+    "operation": "episode_started",
+    "sequence": 1
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": false,
+    "sequence": 2
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": true,
+    "sequence": 3
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": true,
+    "sequence": 4
+  },
+  {
+    "attempt": 0,
+    "operation": "handler_delivery",
+    "sequence": 5
+  },
+  {
+    "diagnosis": null,
+    "operation": "effect_reservation",
+    "sequence": 6,
+    "status": "new"
+  },
+  {
+    "effect_mode": "actual_eal_python_host",
+    "operation": "effect_started",
+    "sequence": 7
+  },
+  {
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "claim": "performance_criteria_met",
+    "entry_id": "load_test",
+    "operation": "eal_assessment_called",
+    "sequence": 8
+  },
+  {
+    "assessment_id": "4b16dc91-8d5c-44e2-84e5-5b8083259eba",
+    "collected_count": 1,
+    "complete": true,
+    "operation": "eal_assessment_returned",
+    "reused_count": 0,
+    "sequence": 9
+  },
+  {
+    "effect_result_file": "effect-001.json",
+    "operation": "effect_returned",
+    "sequence": 10
+  },
+  {
+    "operation": "effect_committed",
+    "sequence": 11
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_attempted",
+    "sequence": 12
+  },
+  {
+    "duplicate": false,
+    "message_id": "reply",
+    "operation": "remote_send_returned",
+    "sequence": 13
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_confirmed",
+    "sequence": 14
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_attempted",
+    "sequence": 15
+  },
+  {
+    "message_id": "request",
+    "operation": "remote_ack_returned",
+    "sequence": 16
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_confirmed",
+    "sequence": 17
+  },
+  {
+    "attempt": 1,
+    "operation": "handler_delivery",
+    "sequence": 18
+  },
+  {
+    "diagnosis": null,
+    "operation": "effect_reservation",
+    "sequence": 19,
+    "status": "committed"
+  },
+  {
+    "external_effect_reexecuted": false,
+    "operation": "committed_effect_replayed",
+    "sequence": 20
+  },
+  {
+    "attempt": 2,
+    "operation": "handler_delivery",
+    "sequence": 21
+  },
+  {
+    "diagnosis": null,
+    "operation": "effect_reservation",
+    "sequence": 22,
+    "status": "committed"
+  },
+  {
+    "external_effect_reexecuted": false,
+    "operation": "committed_effect_replayed",
+    "sequence": 23
+  }
+]

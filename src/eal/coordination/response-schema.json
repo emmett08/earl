@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "EAL/coordination-worker-response/1",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/assessor"
+    },
+    {
+      "$ref": "#/$defs/reviewer"
+    }
+  ],
+  "$defs": {
+    "message": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "kind",
+            "message_id",
+            "task_id",
+            "task_digest",
+            "sender",
+            "recipient",
+            "reply_to",
+            "attempt",
+            "finding_id",
+            "assessment_refs"
+          ],
+          "properties": {
+            "schema": {
+              "const": "EAL/MAS-coordination/3"
+            },
+            "kind": {
+              "const": "outcome"
+            },
+            "message_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+            },
+            "task_id": {
+              "type": "string"
+            },
+            "task_digest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "sender": {
+              "const": "assessor"
+            },
+            "recipient": {
+              "const": "reviewer"
+            },
+            "reply_to": {
+              "const": "request"
+            },
+            "attempt": {
+              "const": 0,
+              "type": "integer"
+            },
+            "finding_id": {
+              "type": "string",
+              "pattern": "^finding_[0-9a-f]{64}$"
+            },
+            "assessment_refs": {
+              "type": "object",
+              "minProperties": 1,
+              "maxProperties": 16,
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema",
+            "kind",
+            "message_id",
+            "task_id",
+            "task_digest",
+            "sender",
+            "recipient",
+            "reply_to",
+            "attempt",
+            "finding_id",
+            "code",
+            "outcome"
+          ],
+          "properties": {
+            "schema": {
+              "const": "EAL/MAS-coordination/3"
+            },
+            "kind": {
+              "const": "disposition"
+            },
+            "message_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9_.:/-]{0,127}$"
+            },
+            "task_id": {
+              "type": "string"
+            },
+            "task_digest": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "sender": {
+              "const": "assessor"
+            },
+            "recipient": {
+              "const": "reviewer"
+            },
+            "reply_to": {
+              "const": "request"
+            },
+            "attempt": {
+              "const": 0,
+              "type": "integer"
+            },
+            "finding_id": {
+              "type": "string",
+              "pattern": "^finding_[0-9a-f]{64}$"
+            },
+            "code": {
+              "enum": [
+                "context_mismatch",
+                "workload_mismatch",
+                "criteria_mismatch",
+                "source_changed",
+                "evidence_unavailable",
+                "effect_outcome_unknown"
+              ]
+            },
+            "outcome": {
+              "enum": [
+                "rejected",
+                "incomplete"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_digest",
+        "finding_id",
+        "claims",
+        "scope",
+        "conclusion",
+        "qualification"
+      ],
+      "properties": {
+        "task_digest": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "finding_id": {
+          "type": "string",
+          "pattern": "^finding_[0-9a-f]{64}$"
+        },
+        "claims": {
+          "type": "object",
+          "minProperties": 1,
+          "maxProperties": 16,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "assessment_id",
+              "status",
+              "assessed_at"
+            ],
+            "properties": {
+              "assessment_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "assessed_at": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "enum": [
+                  "supported",
+                  "unsupported",
+                  "contested",
+                  "out_of_scope",
+                  null
+                ]
+              }
+            }
+          }
+        },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "context",
+            "requirements"
+          ],
+          "properties": {
+            "context": {
+              "type": "object"
+            },
+            "requirements": {
+              "type": "object"
+            }
+          }
+        },
+        "conclusion": {
+          "enum": [
+            "assessed",
+            "out_of_scope",
+            "unresolved"
+          ]
+        },
+        "qualification": {
+          "const": "conditional_on_registered_argument"
+        }
+      }
+    },
+    "assessor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "message",
+        "consumed_message_ids"
+      ],
+      "properties": {
+        "message": {
+          "$ref": "#/$defs/message"
+        },
+        "consumed_message_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "reviewer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "answer",
+        "consumed_message_ids"
+      ],
+      "properties": {
+        "answer": {
+          "$ref": "#/$defs/answer"
+        },
+        "consumed_message_ids": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

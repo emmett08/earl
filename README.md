@@ -127,6 +127,8 @@ The [API load-test example](https://github.com/emmett08/earl/blob/main/examples/
 
 The [multi-environment example](https://github.com/emmett08/earl/blob/main/examples/multi-environment/README.md) applies one argument pattern to staging and production, preserving separate observations and reusing compatible records across sessions. The [ASPIC+ keyword example](https://github.com/emmett08/earl/blob/main/examples/aspic-keywords/README.md) exercises every reviewed argumentation directive and the implemented formal theory vocabulary, with reproducible browser snapshots and checks for all three attack types.
 
+The optional [registered-task coordinator](docs/coordination.md) provides a reusable `eal-coordinate` lifecycle for separate assessor/reviewer contexts, up to sixteen selected claims, two correspondence profiles and current-time EAL MCP discovery, acquisition, assessment and explanation. Exact responses, admission and outboxes persist before delivery; durable JSON and MAS Protocol Lab provide transport controls. The [coordination studies](experiments/mas_coordination/README.md) retain software and native evidence separately. Broader accuracy and cost gains require comparative trials; Python remains the sole EAL/3 interpreter.
+
 The [developer and model handover experiment](https://github.com/emmett08/earl/blob/main/experiments/transfer_study/README.md) supplies paired allocation, fresh-session model commands, project handover, independent answer scoring, time budgets and analysis that retains failed and missing sessions. Its synthetic fixture verifies the harness; comparative claims require independent cases and live developer and model runs. The [automated nano-model pilot](https://github.com/emmett08/earl/blob/main/experiments/model_transfer/README.md) provides a separate bounded run across reasoning and native-tool configurations.
 
 ## Documentation
@@ -140,6 +142,7 @@ The [developer and model handover experiment](https://github.com/emmett08/earl/b
 | [Reasoning modes](https://github.com/emmett08/earl/blob/main/docs/reasoning-modes.md) | Built-in method contracts and extensions |
 | [MCP and tools](https://github.com/emmett08/earl/blob/main/docs/mcp-and-tools.md) | Host adapters, persistence and operation schemas |
 | [MCP architecture](https://github.com/emmett08/earl/blob/main/docs/mcp-architecture.md) | Shared operations, configuration, transports and acquisition coordination |
+| [Registered-task coordination](docs/coordination.md) | Durable two-worker lifecycle, task profiles, MCP acquisition and bounded execution |
 | [ASPIC+ method](https://github.com/emmett08/earl/blob/main/docs/aspic-method.md) | Optional formal method and compiler |
 | [Integration contract](https://github.com/emmett08/earl/blob/main/CONTRACT.md) | Python, CLI, MCP and record interfaces |
 | [Packaging and releases](https://github.com/emmett08/earl/blob/main/docs/packaging.md) | Installation, public Python imports, licensing and manual publication |
