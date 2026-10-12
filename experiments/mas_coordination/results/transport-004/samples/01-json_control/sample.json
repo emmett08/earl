@@ -1,0 +1,180 @@
+{
+  "arm": "json_control",
+  "canonical_envelopes_sha256": "b1e876a48f207e6bdf359e89d6f185106ade9de7d15a62e6c4a5eb2ce4fa6e93",
+  "cold_first_operation_ns": 1205031,
+  "constructor_ns": 7685386,
+  "invariant_checks": "passed",
+  "operations": [
+    {
+      "operation": "create",
+      "padding_bytes": null,
+      "subprocesses": 0,
+      "wall_ns": 1205031
+    },
+    {
+      "operation": "reserve",
+      "padding_bytes": null,
+      "subprocesses": 0,
+      "wall_ns": 1445731
+    },
+    {
+      "operation": "finish",
+      "padding_bytes": null,
+      "subprocesses": 0,
+      "wall_ns": 1018627
+    },
+    {
+      "operation": "send",
+      "padding_bytes": 256,
+      "subprocesses": 0,
+      "wall_ns": 1029211
+    },
+    {
+      "operation": "duplicate_send",
+      "padding_bytes": 256,
+      "subprocesses": 0,
+      "wall_ns": 170900
+    },
+    {
+      "operation": "changed_content_rejection",
+      "padding_bytes": 256,
+      "subprocesses": 0,
+      "wall_ns": 128728
+    },
+    {
+      "operation": "receive",
+      "padding_bytes": 256,
+      "subprocesses": 0,
+      "wall_ns": 1173840
+    },
+    {
+      "operation": "redelivery",
+      "padding_bytes": 256,
+      "subprocesses": 0,
+      "wall_ns": 158651
+    },
+    {
+      "operation": "ack",
+      "padding_bytes": 256,
+      "subprocesses": 0,
+      "wall_ns": 1060232
+    },
+    {
+      "operation": "send",
+      "padding_bytes": 4096,
+      "subprocesses": 0,
+      "wall_ns": 1709070
+    },
+    {
+      "operation": "duplicate_send",
+      "padding_bytes": 4096,
+      "subprocesses": 0,
+      "wall_ns": 191878
+    },
+    {
+      "operation": "changed_content_rejection",
+      "padding_bytes": 4096,
+      "subprocesses": 0,
+      "wall_ns": 138336
+    },
+    {
+      "operation": "receive",
+      "padding_bytes": 4096,
+      "subprocesses": 0,
+      "wall_ns": 1226523
+    },
+    {
+      "operation": "redelivery",
+      "padding_bytes": 4096,
+      "subprocesses": 0,
+      "wall_ns": 168631
+    },
+    {
+      "operation": "ack",
+      "padding_bytes": 4096,
+      "subprocesses": 0,
+      "wall_ns": 1307932
+    },
+    {
+      "operation": "send",
+      "padding_bytes": 61440,
+      "subprocesses": 0,
+      "wall_ns": 2043826
+    },
+    {
+      "operation": "duplicate_send",
+      "padding_bytes": 61440,
+      "subprocesses": 0,
+      "wall_ns": 356609
+    },
+    {
+      "operation": "changed_content_rejection",
+      "padding_bytes": 61440,
+      "subprocesses": 0,
+      "wall_ns": 257194
+    },
+    {
+      "operation": "receive",
+      "padding_bytes": 61440,
+      "subprocesses": 0,
+      "wall_ns": 1309210
+    },
+    {
+      "operation": "redelivery",
+      "padding_bytes": 61440,
+      "subprocesses": 0,
+      "wall_ns": 326487
+    },
+    {
+      "operation": "ack",
+      "padding_bytes": 61440,
+      "subprocesses": 0,
+      "wall_ns": 1390335
+    },
+    {
+      "operation": "empty_receive",
+      "padding_bytes": null,
+      "subprocesses": 0,
+      "wall_ns": 156458
+    },
+    {
+      "operation": "status",
+      "padding_bytes": null,
+      "subprocesses": 0,
+      "wall_ns": 161550
+    }
+  ],
+  "parent_and_reaped_children_cpu_seconds": 0.010380999999998863,
+  "repetition": 1,
+  "runtime_metrics": null,
+  "shutdown_ns": 725,
+  "subprocess_counts": {},
+  "useful_cycle_ns": 18470900,
+  "useful_state": {
+    "all_acknowledged": true,
+    "all_received": true,
+    "calls": [
+      {
+        "actor": "assessor",
+        "evidence": {
+          "execution_id": "deterministic-software-fixture",
+          "outcome": "completed",
+          "synthetic": true
+        },
+        "id": "call-001",
+        "state": "recorded"
+      }
+    ],
+    "message_ids": [
+      "msg-001",
+      "msg-002",
+      "msg-003"
+    ],
+    "pending": 0,
+    "usage": {
+      "bytes": 67013,
+      "calls": 1,
+      "messages": 3
+    }
+  }
+}

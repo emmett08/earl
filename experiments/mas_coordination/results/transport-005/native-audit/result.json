@@ -1,0 +1,17 @@
+{
+  "schema": "EAL/transport-audit-result/1",
+  "mode": "actual_host_agent",
+  "separate_contexts": [
+    "/root/native_transport_reporter/turn1",
+    "/root/native_transport_checker/turn1"
+  ],
+  "messages_authored": 1,
+  "messages_consumed": 1,
+  "messages_acknowledged": 1,
+  "execution_calls_recorded": 2,
+  "exact_payload_preserved": true,
+  "independent_verdict": "accepted",
+  "tokens": null,
+  "cost_usd": null,
+  "scope": "Real host-agent exchange auditing already-measured software results, not inference speed, model accuracy or protocol invention. Shared artifact reads declared in plan."
+}

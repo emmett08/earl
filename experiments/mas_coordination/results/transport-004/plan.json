@@ -1,0 +1,70 @@
+{
+  "acceptance": "No speed claim unless all frozen correctness invariants pass. Report raw samples, paired ratios and all failures. JSON is a semantic control and does not use the nom wire parser.",
+  "arms": [
+    "legacy_one_shot",
+    "persistent_mcp",
+    "persistent_mcp_codec",
+    "json_control"
+  ],
+  "baseline_commit": "984e30726279177ce106c932fb0209d90428a6cd",
+  "default_repetitions": 4,
+  "frozen_invariants": [
+    "Identical canonical envelope and payload for every accepted message in every arm.",
+    "New send accepted once; identical duplicate returns same sequence without spending message or byte budget.",
+    "Changed content under the same identity rejected without spending message or byte budget.",
+    "First receive has redelivered=false; next receive has redelivered=true; both contain exact accepted envelope.",
+    "ACK requires received addressed content; after ACK no pending delivery remains.",
+    "Final useful state: three received+ACKed messages, one completed worker reservation, same immutable evidence.",
+    "Final byte usage equals sum of canonical compact JSON envelope UTF-8 sizes, across all arms."
+  ],
+  "limits": {
+    "max_bytes": 100000,
+    "max_calls": 1,
+    "max_messages": 3
+  },
+  "measurements": [
+    "perf_counter_ns for each operation; constructor, cold first operation and shutdown reported separately.",
+    "Total useful-cycle wall time includes create, reservation/completion and all delivery checks, excludes shutdown.",
+    "Warm operation times exclude create; no startup samples silently mixed into warm metrics.",
+    "Actual subprocess launches recorded in parent and isolated Python descendants via explicit sitecustomize instrumentation.",
+    "Parent plus reaped-child CPU sampled via resource.getrusage; persistent child CPU is accounted after shutdown.",
+    "Codec-only encode and parse cold/warm timings and representation round trips measured separately.",
+    "cProfile diagnostic runs kept separate from headline timings."
+  ],
+  "message_padding_bytes": [
+    256,
+    4096,
+    61440
+  ],
+  "operations": [
+    "create",
+    "reserve",
+    "finish",
+    "send",
+    "duplicate_send",
+    "changed_content_rejection",
+    "receive",
+    "redelivery",
+    "ack",
+    "empty_receive",
+    "status"
+  ],
+  "participants": [
+    "assessor",
+    "reviewer"
+  ],
+  "purpose": "Measure equivalent deterministic durable delivery; no inference, accuracy, token or billing claim.",
+  "run_id": "transport-benchmark",
+  "schedule": "Rotate the four arms by repetition (counterbalanced Latin-square). Same payloads and identifiers; fresh database per arm/repetition.",
+  "schema": "EAL/MAS-transport-benchmark/1",
+  "scope_limits": [
+    "One local host and deterministic software workload.",
+    "No live agents or model output accuracy measured.",
+    "Small finite paired sample; descriptive ratios are not population inference."
+  ],
+  "worker_evidence": {
+    "execution_id": "deterministic-software-fixture",
+    "outcome": "completed",
+    "synthetic": true
+  }
+}

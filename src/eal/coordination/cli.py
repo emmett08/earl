@@ -43,6 +43,7 @@ def main():
             command.add_argument("--worker-argv", required=True, help="JSON argv of a trusted worker executable; no shell")
             command.add_argument("--worker-environment", type=Path, help="Private JSON environment file; values are never exported")
     args = parser.parse_args()
+    coordinator = None
     try:
         if args.operation == "start":
             if args.spec:
@@ -88,9 +89,12 @@ def main():
                 result = coordinator.run(worker)
         print(json.dumps(result, indent=2, ensure_ascii=False, allow_nan=False))
         return 1 if (result.get("accepted") is False or result.get("status") in {"failed", "cancelled", "expired"}) else 0
-    except (ValueError, OSError, KeyError) as error:
+    except (ValueError, OSError, KeyError, RuntimeError, TimeoutError) as error:
         print(json.dumps({"error": {"type": type(error).__name__, "message": str(error)}}), file=sys.stderr)
         return 1
+    finally:
+        if coordinator is not None:
+            coordinator.close()
 
 
 if __name__ == "__main__":

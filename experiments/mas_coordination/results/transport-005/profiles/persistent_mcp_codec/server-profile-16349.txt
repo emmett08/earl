@@ -1,0 +1,174 @@
+         910512 function calls (890228 primitive calls) in 0.845 seconds
+
+   Ordered by: cumulative time
+   List reduced from 4390 to 100 due to restriction <100>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+       70    0.006    0.000    1.486    0.021 __init__.py:1(<module>)
+        1    0.000    0.000    0.848    0.848 lab_server.py:1(<module>)
+   584/12    0.003    0.000    0.595    0.050 <frozen importlib._bootstrap>:1349(_find_and_load)
+    531/7    0.002    0.000    0.595    0.085 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+    500/7    0.001    0.000    0.594    0.085 <frozen importlib._bootstrap>:911(_load_unlocked)
+    470/7    0.001    0.000    0.594    0.085 <frozen importlib._bootstrap_external>:993(exec_module)
+  1120/14    0.001    0.000    0.593    0.042 <frozen importlib._bootstrap>:480(_call_with_frames_removed)
+    871/7    0.026    0.000    0.593    0.085 {built-in method builtins.exec}
+     97/3    0.000    0.000    0.573    0.191 {built-in method builtins.__import__}
+        1    0.000    0.000    0.572    0.572 mcp_server.py:1(<module>)
+        3    0.000    0.000    0.409    0.136 session.py:1(<module>)
+1668/1650    0.016    0.000    0.267    0.000 {built-in method builtins.__build_class__}
+        1    0.000    0.000    0.262    0.262 lab_server.py:22(main)
+        3    0.000    0.000    0.254    0.085 server.py:1(<module>)
+      688    0.003    0.000    0.232    0.000 base_events.py:1922(_run_once)
+        2    0.000    0.000    0.230    0.115 codec_process.py:32(close)
+        2    0.000    0.000    0.230    0.115 subprocess.py:1259(wait)
+      261    0.006    0.000    0.225    0.001 _model_construction.py:89(__new__)
+        2    0.000    0.000    0.221    0.110 subprocess.py:2021(_wait)
+        1    0.001    0.001    0.220    0.220 {built-in method time.sleep}
+      2/1    0.000    0.000    0.219    0.219 threading.py:1018(_bootstrap)
+      2/1    0.000    0.000    0.219    0.219 threading.py:1058(_bootstrap_inner)
+     1002    0.001    0.000    0.217    0.000 events.py:86(_run)
+        1    0.000    0.000    0.214    0.214 server.py:279(run)
+        1    0.000    0.000    0.214    0.214 _eventloop.py:38(run)
+        1    0.000    0.000    0.214    0.214 _asyncio.py:2516(run)
+        1    0.000    0.000    0.214    0.214 runners.py:61(__exit__)
+        1    0.000    0.000    0.212    0.212 runners.py:64(close)
+        1    0.000    0.000    0.212    0.212 unix_events.py:67(close)
+        1    0.000    0.000    0.212    0.212 selector_events.py:99(close)
+        1    0.000    0.000    0.212    0.212 selector_events.py:110(_close_self_pipe)
+        2    0.000    0.000    0.212    0.106 socket.py:501(close)
+        1    0.001    0.001    0.212    0.212 runners.py:86(run)
+        7    0.001    0.000    0.206    0.029 types.py:1(<module>)
+      646    0.000    0.000    0.144    0.000 _tasks.py:322(_run_coro)
+      261    0.005    0.000    0.137    0.001 _model_construction.py:561(complete_model_class)
+  687/541    0.001    0.000    0.132    0.000 <frozen importlib._bootstrap>:1390(_handle_fromlist)
+       73    0.000    0.000    0.116    0.002 server.py:685(_handle_message)
+       72    0.000    0.000    0.115    0.002 server.py:712(_handle_request)
+       35    0.001    0.000    0.112    0.003 server.py:521(handler)
+ 1182/266    0.003    0.000    0.109    0.000 _generate_schema.py:794(generate_schema)
+ 1968/266    0.006    0.000    0.105    0.000 _generate_schema.py:1098(_generate_schema_inner)
+  667/263    0.019    0.000    0.102    0.000 _generate_schema.py:839(_model_schema)
+    67/41    0.000    0.000    0.101    0.002 __init__.py:73(import_module)
+    68/41    0.000    0.000    0.101    0.002 <frozen importlib._bootstrap>:1375(_gcd_import)
+9708/8515    0.004    0.000    0.099    0.000 {built-in method builtins.hasattr}
+    16/13    0.000    0.000    0.086    0.007 __init__.py:430(__getattr__)
+       35    0.000    0.000    0.077    0.002 server.py:343(call_tool)
+       35    0.000    0.000    0.073    0.002 tool_manager.py:81(call_tool)
+       35    0.000    0.000    0.073    0.002 base.py:93(run)
+       35    0.000    0.000    0.070    0.002 func_metadata.py:74(call_fn_with_arg_validation)
+       34    0.000    0.000    0.069    0.002 cli.py:33(response)
+ 1228/454    0.046    0.000    0.069    0.000 {method 'run' of '_contextvars.Context' objects}
+  821/806    0.004    0.000    0.067    0.000 _generate_schema.py:1292(_common_field_schema)
+      470    0.002    0.000    0.065    0.000 <frozen importlib._bootstrap_external>:1066(get_code)
+  798/783    0.001    0.000    0.063    0.000 _generate_schema.py:1252(_generate_md_field_schema)
+        1    0.000    0.000    0.060    0.060 task_handlers.py:1(<module>)
+        1    0.000    0.000    0.059    0.059 networks.py:1(<module>)
+        3    0.000    0.000    0.059    0.020 context.py:1(<module>)
+        4    0.000    0.000    0.058    0.015 main.py:1(<module>)
+       23    0.000    0.000    0.056    0.002 mcp_server.py:26(call)
+       23    0.000    0.000    0.055    0.002 mcp_server.py:27(execute)
+      260    0.001    0.000    0.055    0.000 _model_construction.py:528(set_model_fields)
+  835/806    0.003    0.000    0.053    0.000 _generate_schema.py:2276(_apply_annotations)
+      260    0.007    0.000    0.053    0.000 _fields.py:276(collect_model_fields)
+  902/806    0.001    0.000    0.048    0.000 _schema_generation_shared.py:83(__call__)
+        3    0.000    0.000    0.047    0.016 sse.py:1(<module>)
+  835/806    0.002    0.000    0.046    0.000 _generate_schema.py:2293(inner_handler)
+       97    0.000    0.000    0.044    0.000 dataclasses.py:1264(wrap)
+       97    0.003    0.000    0.044    0.000 dataclasses.py:921(_process_class)
+      470    0.008    0.000    0.042    0.000 <frozen importlib._bootstrap_external>:755(_compile_bytecode)
+       49    0.001    0.000    0.040    0.001 main.py:967(__class_getitem__)
+       12    0.000    0.000    0.035    0.003 exceptions.py:1(<module>)
+      470    0.034    0.000    0.034    0.000 {built-in method marshal.loads}
+        2    0.000    0.000    0.034    0.017 _api.py:1(<module>)
+      521    0.003    0.000    0.033    0.000 <frozen importlib._bootstrap>:1240(_find_spec)
+       23    0.000    0.000    0.033    0.001 validators.py:1265(validate)
+       42    0.000    0.000    0.032    0.001 _generics.py:104(create_generic_submodel)
+        1    0.000    0.000    0.032    0.032 _client.py:1(<module>)
+  445/434    0.002    0.000    0.032    0.000 _generate_schema.py:1354(_union_schema)
+      423    0.001    0.000    0.032    0.000 __init__.py:280(_compile)
+       23    0.000    0.000    0.032    0.001 validators.py:306(check_schema)
+     6635    0.003    0.000    0.031    0.000 {built-in method builtins.next}
+      124    0.000    0.000    0.030    0.000 __init__.py:226(compile)
+       46    0.000    0.000    0.030    0.001 validators.py:349(iter_errors)
+        1    0.000    0.000    0.030    0.030 _format.py:1(<module>)
+    46/23    0.000    0.000    0.030    0.001 _keywords.py:332(allOf)
+  782/161    0.002    0.000    0.030    0.000 validators.py:396(descend)
+      128    0.001    0.000    0.029    0.000 _compiler.py:745(compile)
+        1    0.000    0.000    0.029    0.029 _auth.py:1(<module>)
+        5    0.000    0.000    0.029    0.006 base.py:1(<module>)
+      493    0.000    0.000    0.028    0.000 <frozen importlib._bootstrap_external>:1524(find_spec)
+        9    0.000    0.000    0.028    0.003 mcp_server.py:44(mas_send)
+      493    0.001    0.000    0.027    0.000 <frozen importlib._bootstrap_external>:1495(_get_spec)
+      370    0.002    0.000    0.027    0.000 dataclasses.py:449(_create_fn)
+  345/161    0.000    0.000    0.027    0.000 _keywords.py:274(ref)
+       12    0.000    0.000    0.027    0.002 server.py:493(decorator)
+       12    0.000    0.000    0.027    0.002 server.py:397(add_tool)
+       12    0.000    0.000    0.027    0.002 tool_manager.py:45(add_tool)
+       12    0.000    0.000    0.027    0.002 base.py:45(from_function)
+
+
+         910512 function calls (890228 primitive calls) in 0.845 seconds
+
+   Ordered by: internal time
+   List reduced from 4390 to 60 due to restriction <60>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+ 1228/454    0.046    0.000    0.069    0.000 {method 'run' of '_contextvars.Context' objects}
+      470    0.034    0.000    0.034    0.000 {built-in method marshal.loads}
+    871/7    0.026    0.000    0.593    0.085 {built-in method builtins.exec}
+  667/263    0.019    0.000    0.102    0.000 _generate_schema.py:839(_model_schema)
+     1123    0.018    0.000    0.018    0.000 {built-in method builtins.compile}
+       19    0.017    0.001    0.017    0.001 {method 'commit' of 'sqlite3.Connection' objects}
+121533/121496    0.017    0.000    0.019    0.000 {built-in method builtins.isinstance}
+1668/1650    0.016    0.000    0.267    0.000 {built-in method builtins.__build_class__}
+5561/5379    0.012    0.000    0.017    0.000 {built-in method __new__ of type object at 0x144d380}
+    47399    0.010    0.000    0.011    0.000 {built-in method builtins.getattr}
+       25    0.009    0.000    0.009    0.000 {method 'executescript' of 'sqlite3.Connection' objects}
+      772    0.009    0.000    0.009    0.000 {method 'poll' of 'select.epoll' objects}
+      470    0.008    0.000    0.042    0.000 <frozen importlib._bootstrap_external>:755(_compile_bytecode)
+     2264    0.007    0.000    0.008    0.000 {built-in method posix.stat}
+      260    0.007    0.000    0.053    0.000 _fields.py:276(collect_model_fields)
+      873    0.006    0.000    0.023    0.000 <frozen importlib._bootstrap_external>:1597(find_spec)
+       70    0.006    0.000    1.486    0.021 __init__.py:1(<module>)
+  489/169    0.006    0.000    0.016    0.000 _parser.py:512(_parse)
+     7415    0.006    0.000    0.009    0.000 typing.py:2344(get_origin)
+ 1968/266    0.006    0.000    0.105    0.000 _generate_schema.py:1098(_generate_schema_inner)
+      261    0.006    0.000    0.225    0.001 _model_construction.py:89(__new__)
+      261    0.005    0.000    0.137    0.001 _model_construction.py:561(complete_model_class)
+      265    0.005    0.000    0.012    0.000 _schema_validator.py:22(create_schema_validator)
+      152    0.005    0.000    0.005    0.000 {method 'execute' of 'sqlite3.Connection' objects}
+    26834    0.005    0.000    0.005    0.000 {method 'get' of 'dict' objects}
+      471    0.005    0.000    0.005    0.000 {built-in method _io.open_code}
+  821/806    0.004    0.000    0.067    0.000 _generate_schema.py:1292(_common_field_schema)
+    29959    0.004    0.000    0.004    0.000 {method 'append' of 'list' objects}
+    16844    0.004    0.000    0.004    0.000 {method 'startswith' of 'str' objects}
+      373    0.004    0.000    0.005    0.000 {method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects}
+     4903    0.004    0.000    0.007    0.000 <frozen importlib._bootstrap_external>:126(_path_join)
+9708/8515    0.004    0.000    0.099    0.000 {built-in method builtins.hasattr}
+      265    0.004    0.000    0.004    0.000 {built-in method _pydantic_core._schema_gather.gather_schemas_for_cleaning}
+      472    0.004    0.000    0.004    0.000 {method 'read' of '_io.BufferedReader' objects}
+      260    0.004    0.000    0.009    0.000 _decorators.py:429(build)
+     1591    0.004    0.000    0.016    0.000 typing.py:175(_type_check)
+       75    0.004    0.000    0.004    0.000 encoder.py:205(iterencode)
+      260    0.003    0.000    0.005    0.000 _model_construction.py:397(inspect_namespace)
+ 1182/266    0.003    0.000    0.109    0.000 _generate_schema.py:794(generate_schema)
+  797/128    0.003    0.000    0.008    0.000 _compiler.py:37(_compile)
+   584/12    0.003    0.000    0.595    0.050 <frozen importlib._bootstrap>:1349(_find_and_load)
+      345    0.003    0.000    0.006    0.000 fields.py:993(_copy)
+24163/23213    0.003    0.000    0.003    0.000 {built-in method builtins.len}
+8719/8712    0.003    0.000    0.005    0.000 {method 'join' of 'str' objects}
+      828    0.003    0.000    0.004    0.000 validators.py:282(__attrs_post_init__)
+      940    0.003    0.000    0.009    0.000 <frozen importlib._bootstrap_external>:486(cache_from_source)
+     3908    0.003    0.000    0.004    0.000 core_schema.py:5012(_dict_not_none)
+  835/806    0.003    0.000    0.053    0.000 _generate_schema.py:2276(_apply_annotations)
+       97    0.003    0.000    0.044    0.000 dataclasses.py:921(_process_class)
+      521    0.003    0.000    0.033    0.000 <frozen importlib._bootstrap>:1240(_find_spec)
+     3180    0.003    0.000    0.003    0.000 contextlib.py:104(__init__)
+ 1966/684    0.003    0.000    0.007    0.000 typing.py:407(_eval_type)
+       27    0.003    0.000    0.003    0.000 {built-in method _imp.exec_builtin}
+      688    0.003    0.000    0.232    0.000 base_events.py:1922(_run_once)
+      720    0.003    0.000    0.009    0.000 <frozen importlib._bootstrap>:304(acquire)
+     6635    0.003    0.000    0.031    0.000 {built-in method builtins.next}
+      470    0.002    0.000    0.065    0.000 <frozen importlib._bootstrap_external>:1066(get_code)
+    14734    0.002    0.000    0.002    0.000 {method 'items' of 'dict' objects}
+       51    0.002    0.000    0.003    0.000 {built-in method _sqlite3.connect}
+      782    0.002    0.000    0.009    0.000 validators.py:339(evolve)

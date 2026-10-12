@@ -1,0 +1,155 @@
+{
+  "binary_sha256": "98f576011f146101047b7137c8c86b309383961c308134843b120befe037ee1d",
+  "codec_mode": "oneshot",
+  "iterations": 12,
+  "launches": 24,
+  "padding_bytes": 61440,
+  "process_cpu_seconds": 0.05110100000000273,
+  "representation_roundtrips": "passed",
+  "timings": [
+    {
+      "iteration": 0,
+      "operation": "encode",
+      "phase": "cold_first",
+      "wall_ns": 2092107
+    },
+    {
+      "iteration": 0,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1998099
+    },
+    {
+      "iteration": 1,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 2125734
+    },
+    {
+      "iteration": 1,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 2017053
+    },
+    {
+      "iteration": 2,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 2060626
+    },
+    {
+      "iteration": 2,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1773728
+    },
+    {
+      "iteration": 3,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 1838996
+    },
+    {
+      "iteration": 3,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1989696
+    },
+    {
+      "iteration": 4,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 2047227
+    },
+    {
+      "iteration": 4,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 2082014
+    },
+    {
+      "iteration": 5,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 1896184
+    },
+    {
+      "iteration": 5,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1718625
+    },
+    {
+      "iteration": 6,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 1996430
+    },
+    {
+      "iteration": 6,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 2048290
+    },
+    {
+      "iteration": 7,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 1946135
+    },
+    {
+      "iteration": 7,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1891358
+    },
+    {
+      "iteration": 8,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 1896103
+    },
+    {
+      "iteration": 8,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1815423
+    },
+    {
+      "iteration": 9,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 1793630
+    },
+    {
+      "iteration": 9,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1669782
+    },
+    {
+      "iteration": 10,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 2110481
+    },
+    {
+      "iteration": 10,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1770232
+    },
+    {
+      "iteration": 11,
+      "operation": "encode",
+      "phase": "warm",
+      "wall_ns": 2152980
+    },
+    {
+      "iteration": 11,
+      "operation": "parse",
+      "phase": "warm",
+      "wall_ns": 1916749
+    }
+  ]
+}

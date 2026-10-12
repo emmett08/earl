@@ -1,0 +1,16 @@
+[package]
+name = "mas-protocol-codec"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+license = "MIT"
+description = "Strict nom protocol parser and canonical codec for communicating agents"
+
+[dependencies]
+nom = "=8.0.0"
+serde = "=1.0.229"
+serde_json = { version = "=1.0.145", features = ["arbitrary_precision"] }
+
+[[bin]]
+name = "mas-protocol-codec"
+path = "src/main.rs"

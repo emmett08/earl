@@ -72,6 +72,17 @@ class Coordinator:
         self.bus = open_bus(self.directory, self.config)
         self._lifecycle = FileLock(self.directory / "lifecycle.lock", timeout=30)
 
+    def close(self):
+        close = getattr(self.bus, "close", None)
+        if close is not None:
+            close()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exception):
+        self.close()
+
     @classmethod
     def start(cls, directory, server, task, *, budgets=None, transport=None):
         directory = Path(directory).resolve()
@@ -108,8 +119,12 @@ class Coordinator:
                           "transport": selected_transport, "created_at": utc_now(),
                           "deadline": int(time.time()) + selected["wall_seconds"]})
         value = cls(directory)
-        value.state.event("started", {"task_digest": anchor["task_digest"]})
-        value.resume()
+        try:
+            value.state.event("started", {"task_digest": anchor["task_digest"]})
+            value.resume()
+        except BaseException:
+            value.close()
+            raise
         return value
 
     def _active(self):

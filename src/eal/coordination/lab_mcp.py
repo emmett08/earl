@@ -1,42 +1,82 @@
-"""The supplied MAS Protocol Lab's local MCP transport, with its Rust codec.
-
-EAL's MCP client and Lab's pinned MCP server run in different interpreters.
-The supplied server has no reservation/completion tools: ``reserve`` and
-``finish`` deliberately retain the supplied CLI implementation. Each supported
-MCP operation owns and closes a bounded stdio session; there is no JSON-bus
-fallback, alternate wire parser, hosted service or persistent daemon.
-"""
+"""One bounded local MCP session and Rust codec process per Lab transport."""
 from __future__ import annotations
 
-import asyncio
 import json
 import os
 from pathlib import Path
-import subprocess
+import threading
 from typing import Any
+import weakref
 
-from mcp import ClientSession, StdioServerParameters
-from mcp.client.stdio import stdio_client
+from mcp import StdioServerParameters
 
 from .lab import LabTransport
+from .persistent_mcp import PersistentMCP
+
+
+def _close_resources(resources):
+    for resource in resources:
+        resource.close()
 
 
 class LabMCPTransport(LabTransport):
-    """Use actual Lab MCP tools where supplied, CLI call accounting otherwise.
+    """Reuse the isolated Lab SDK and Store with persistent Rust encoding.
 
     Actor identity is a trusted local host assertion, as in the supplied Lab
     adapter. Worker isolation and external authentication are not provided by
-    stdio or this bridge. All operation deadlines include server startup.
+    stdio or this bridge. First-operation deadlines include server startup.
+    Close explicitly or use a context manager. Failed sessions never retry.
     """
 
     operation_timeout = 30
-    codec_timeout = 10
-    mcp_operations = frozenset({"mas_create_run", "mas_send", "mas_receive", "mas_ack", "mas_status"})
+    mcp_operations = frozenset({"mas_create_run", "mas_send", "mas_receive", "mas_ack", "mas_status",
+                                "mas_encode", "mas_validate", "mas_reserve_call", "mas_finish_call",
+                                "mas_runtime_info", "mas_send_envelope"})
 
-    def __init__(self, runtime: str | Path, database: str | Path, *, python: str | Path | None = None):
-        super().__init__(runtime, database, python=python)
+    def __init__(self, runtime: str | Path, database: str | Path, *, python: str | Path | None = None,
+                 codec_mode: str = "persistent", binary: str | Path | None = None,
+                 admission_mode: str | None = None):
+        if codec_mode not in {"persistent", "oneshot"}:
+            raise ValueError("Codec mode must be persistent or oneshot")
+        selected_binary = binary
+        if selected_binary is None and codec_mode == "persistent":
+            selected_binary = os.environ.get("EAL_MAS_CODEC_BIN", str(
+                Path(__file__).parent / "rust_codec/target/release/mas-protocol-codec"))
+        if selected_binary is not None and not Path(selected_binary).is_file():
+            raise FileNotFoundError("Build the persistent Rust codec with cargo build --release --locked "
+                                    "--manifest-path src/eal/coordination/rust_codec/Cargo.toml, "
+                                    "or set EAL_MAS_CODEC_BIN to that executable")
+        super().__init__(runtime, database, python=python, binary=selected_binary)
         if not (self.runtime / "runtime/mas_protocol/mcp_server.py").is_file():
             raise FileNotFoundError("MAS Protocol Lab runtime/mas_protocol/mcp_server.py is unavailable")
+        self.codec_mode = codec_mode
+        self.admission_mode = admission_mode or ("rust" if codec_mode == "persistent" else "roundtrip")
+        if self.admission_mode not in {"rust", "roundtrip"} or (self.admission_mode == "rust" and codec_mode != "persistent"):
+            raise ValueError("Admission mode must be roundtrip or rust with a persistent codec")
+        self._session = None
+        self._resources = []
+        self._lock = threading.RLock()
+        self._closed = False
+        self._finalizer = weakref.finalize(self, _close_resources, self._resources)
+
+    def close(self):
+        with self._lock:
+            self._closed = True
+            self._finalizer()
+
+    def __enter__(self):
+        if self._closed:
+            raise RuntimeError("Lab transport is closed")
+        return self
+
+    def __exit__(self, *exception):
+        self.close()
+
+    def diagnostics(self):
+        return {"server_starts": 0 if self._session is None else self._session.starts,
+                "codec_mode": self.codec_mode,
+                "admission_mode": self.admission_mode,
+                "closed": self._closed or (self._session is not None and self._session.closed)}
 
     def _environment(self) -> dict[str, str]:
         # The local server needs no provider credentials. Keep the SDK1 server
@@ -45,20 +85,9 @@ class LabMCPTransport(LabTransport):
                        if not any(marker in key.upper() for marker in
                                   ("API_KEY", "TOKEN", "SECRET", "PASSWORD", "CREDENTIAL"))}
         environment.update(PYTHONPATH=str(self.runtime / "runtime"),
-                           MAS_PROTOCOL_BIN=str(self.binary), MAS_STATE_DB=str(self.database))
+                           MAS_PROTOCOL_BIN=str(self.binary), MAS_STATE_DB=str(self.database),
+                           EAL_MAS_CODEC_MODE=self.codec_mode)
         return environment
-
-    async def _call(self, name: str, arguments: dict[str, Any]):
-        parameters = StdioServerParameters(command=self.python, args=["-m", "mas_protocol.mcp_server"],
-                                           cwd=str(self.runtime), env=self._environment())
-        async with asyncio.timeout(self.operation_timeout):
-            async with stdio_client(parameters) as (reader, writer):
-                async with ClientSession(reader, writer, read_timeout_seconds=self.operation_timeout) as session:
-                    await session.initialize()
-                    result = await session.call_tool(name, arguments)
-        # Unwrap expected operation rejections after the SDK's task groups close,
-        # preserving ordinary ValueError rather than wrapping it in a task group.
-        return result
 
     @staticmethod
     def _result(result) -> Any:
@@ -83,12 +112,27 @@ class LabMCPTransport(LabTransport):
         error = value["error"]
         if type(error.get("code")) is not str or type(error.get("message")) is not str:
             raise RuntimeError("MAS Protocol Lab MCP returned an invalid diagnostic")
+        if error["code"] == "CODEC_IO":
+            raise RuntimeError("Persistent Rust codec connection failed; no operation was retried")
         raise ValueError(f"{error['code']}: {error['message']}")
 
     def mcp_call(self, name: str, arguments: dict[str, Any]) -> Any:
         if name not in self.mcp_operations:
             raise ValueError("Operation is not exposed by this Lab MCP transport")
-        return self._result(asyncio.run(self._call(name, arguments)))
+        with self._lock:
+            if self._closed:
+                raise RuntimeError("Lab transport is closed; reopen explicitly")
+            if self._session is None:
+                parameters = StdioServerParameters(command=self.python,
+                    args=[str(Path(__file__).with_name("lab_server.py"))],
+                    cwd=str(self.runtime), env=self._environment())
+                self._session = PersistentMCP(parameters, self.operation_timeout)
+                self._resources.append(self._session)
+            try:
+                return self._result(self._session.call(name, arguments))
+            except (RuntimeError, TimeoutError):
+                self.close()
+                raise
 
     @staticmethod
     def _string_keys(value: Any) -> None:
@@ -103,31 +147,19 @@ class LabMCPTransport(LabTransport):
             for item in value:
                 LabMCPTransport._string_keys(item)
 
-    def _encode(self, envelope: dict[str, Any]) -> str:
-        """Invoke the supplied Rust canonical encoder; never construct wire text."""
+    def _check_envelope(self, envelope):
         self._string_keys(envelope)
         source = json.dumps(envelope, ensure_ascii=False, allow_nan=False, separators=(",", ":"), sort_keys=True)
         if len(source.encode("utf-8")) > 65536 + 256:
             raise ValueError("Lab codec envelope exceeds its bounded input limit")
-        encoded = subprocess.run([str(self.binary), "encode", "--max-bytes", "65536", "--max-depth", "32"],
-                                 input=source, capture_output=True, text=True, env=self._environment(),
-                                 timeout=self.codec_timeout, check=False)
-        if len(encoded.stdout.encode("utf-8")) > 65536 * 4 + 4096:
-            raise RuntimeError("MAS Protocol Lab codec exceeded its bounded result size")
-        try:
-            value = json.loads(encoded.stdout)
-        except (json.JSONDecodeError, RecursionError) as exc:
-            raise RuntimeError("MAS Protocol Lab codec returned invalid JSON") from exc
-        if type(value) is not dict or type(value.get("ok")) is not bool:
-            raise RuntimeError("MAS Protocol Lab codec returned an invalid response envelope")
-        if not value["ok"]:
-            error = value.get("error")
-            if type(error) is not dict:
-                raise RuntimeError("MAS Protocol Lab codec returned an invalid diagnostic")
-            raise ValueError(f"{error.get('code', 'rejected')}: {error.get('message', 'Codec rejected the message')}")
-        if encoded.returncode or set(value) != {"ok", "text"} or type(value["text"]) is not str:
+
+    def _encode(self, envelope: dict[str, Any]) -> str:
+        """Invoke the supplied Rust canonical encoder; never construct wire text."""
+        self._check_envelope(envelope)
+        value = self.mcp_call("mas_encode", {"envelope": envelope})
+        if type(value) is not str or len(value.encode("utf-8")) > 65536:
             raise RuntimeError("MAS Protocol Lab codec returned an invalid encoded message")
-        return value["text"]
+        return value
 
     def create(self, run_id: str, *participants: str, max_messages: int = 8,
                max_bytes: int = 65536, max_calls: int = 2) -> Any:
@@ -139,6 +171,9 @@ class LabMCPTransport(LabTransport):
         envelope = {"message_id": payload["message_id"], "run_id": run_id,
                     "sender": payload["sender"], "recipient": payload["recipient"],
                     "version": "1", "kind": payload["kind"], "payload": payload}
+        if self.admission_mode == "rust":
+            self._check_envelope(envelope)
+            return self.mcp_call("mas_send_envelope", {"envelope": envelope, "actor": actor})
         return self.mcp_call("mas_send", {"text": self._encode(envelope), "actor": actor})
 
     def receive(self, run_id: str, recipient: str, *, limit: int = 8) -> Any:
@@ -149,3 +184,13 @@ class LabMCPTransport(LabTransport):
 
     def status(self, run_id: str) -> Any:
         return self.mcp_call("mas_status", {"run_id": run_id})
+
+    def reserve(self, run_id, actor, call_id):
+        return self.mcp_call("mas_reserve_call", {"run_id": run_id, "actor": actor, "call_id": call_id})
+
+    def finish(self, run_id, actor, call_id, evidence):
+        return self.mcp_call("mas_finish_call", {"run_id": run_id, "actor": actor,
+                                                "call_id": call_id, "evidence": evidence})
+
+    def validate_wire(self, text):
+        return self.mcp_call("mas_validate", {"text": text})

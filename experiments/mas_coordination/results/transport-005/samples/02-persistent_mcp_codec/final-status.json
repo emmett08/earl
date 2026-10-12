@@ -1,0 +1,60 @@
+{
+  "active_protocol": "1",
+  "calls": [
+    {
+      "actor": "assessor",
+      "evidence": {
+        "execution_id": "deterministic-software-fixture",
+        "outcome": "completed",
+        "synthetic": true
+      },
+      "id": "call-001",
+      "state": "recorded"
+    }
+  ],
+  "config": {
+    "agents": [
+      "assessor",
+      "reviewer"
+    ],
+    "max_bytes": 100000,
+    "max_calls": 1,
+    "max_messages": 3,
+    "wall_seconds": 3600
+  },
+  "deadline": 1791849110.5499072,
+  "execution_claim": "Host execution must be substantiated by external agent records; receive and ack alone do not prove cognition.",
+  "messages": [
+    {
+      "acked": 1,
+      "hash": "01ef9b08a2d5b9133bfa44e504d25b7156c02c111a9c80739fa00986af1e6a17",
+      "id": "msg-001",
+      "received": 1,
+      "recipient": "reviewer",
+      "sender": "assessor"
+    },
+    {
+      "acked": 1,
+      "hash": "16b09a09493b7e3405e4d1369bee1a2125da2438d573074c1103c0b1f87ac3c4",
+      "id": "msg-002",
+      "received": 1,
+      "recipient": "reviewer",
+      "sender": "assessor"
+    },
+    {
+      "acked": 1,
+      "hash": "9f1ca91c0f8404139d3b0a7865ed7de511ce94c18806b0b59576837857acd59d",
+      "id": "msg-003",
+      "received": 1,
+      "recipient": "reviewer",
+      "sender": "assessor"
+    }
+  ],
+  "protocols": [],
+  "run_id": "transport-benchmark",
+  "usage": {
+    "bytes": 67013,
+    "calls": 1,
+    "messages": 3
+  }
+}

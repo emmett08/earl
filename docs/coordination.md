@@ -257,16 +257,63 @@ The default `{"kind": "json"}` transport is a durable local SQLite mailbox with
 the same stable-ID delivery and effect ledger. To use an installed and built
 MAS Protocol Lab runtime, pass `--runtime /workspace/mas-protocol-lab` on `start`,
 or select `{"kind": "lab", "runtime": "/absolute/runtime"}` in the run spec.
-The current Lab bridge calls actual local MCP `mas_create_run`, `mas_send`,
-`mas_receive`, `mas_ack` and `mas_status`; the supplied Rust codec encodes and
-recognises its canonical wire envelope. Worker `reserve` and `finish` use the
-supplied CLI because its MCP server exposes no such operations. No replacement
-wire parser, remote account endpoint or persistent daemon is introduced.
+The Lab bridge owns one persistent local MCP session in the isolated Lab
+interpreter and one persistent Rust codec process. Its adapter exposes
+`mas_create_run`, `mas_send_envelope`, `mas_receive`, `mas_ack`, `mas_status`,
+`mas_reserve_call` and `mas_finish_call`. Reservation and completion call the
+supplied Store methods through the same session. `mas_encode`, `mas_validate`
+and `mas_runtime_info` support canonical-wire checking and process/timing
+inspection. These tools remain local host operations, not worker capabilities.
+
+Build the packaged native codec before selecting Lab:
+
+```sh
+cargo test --locked --manifest-path src/eal/coordination/rust_codec/Cargo.toml
+cargo build --release --locked --manifest-path src/eal/coordination/rust_codec/Cargo.toml
+```
+
+The pinned toolchain is Rust 1.85.1. The external Lab runtime needs its isolated
+Python environment; the current adapter uses the packaged codec, whose MIT
+licence and upstream source hashes are retained under `rust_codec/`. A wheel
+ships the crate sources and lockfile, not a platform binary. Set
+`EAL_MAS_CODEC_BIN` to a built executable when it lives outside the packaged
+crate's `target/release/` directory. The original external codec is only needed
+for the historical one-shot benchmark control.
+
+`mas_send_envelope` accepts a raw envelope. Rust's `admit` operation recognises
+the complete JSON source, validates exact types and limits, formats canonical
+wire text and parses that text completely. The canonical typed result enters
+the same mailbox transaction, actor/recipient checks, immutable identity and
+budget rules. No caller flag can assert prior validation. This combines work
+previously split over an encoding MCP call and several codec round trips; it
+does not change the version `1` wire grammar. EAL/3 reasoning and the `/3`
+domain contracts remain in Python.
+
+Sessions start lazily and serialize operations. Use `with LabMCPTransport(...)`
+or `with Coordinator(...)`, or call `close()`; the CLI closes its coordinator
+in `finally`. First use pays MCP startup and the first message starts the codec.
+Each codec request has a ten-second deadline and bounded input/output; an MCP
+operation has a thirty-second deadline. A broken or timed-out connection is
+terminal and never retries an uncertain operation. Reopen explicitly and
+reconcile durable state. Normal shutdown reaps owned children; Linux also
+terminates a stopped codec on abrupt server death. No persistent system daemon
+or remote endpoint is installed.
 
 Keep Lab's MCP 1.26.0 environment separate from EAL's MCP 2.2.0 environment.
-The Lab runtime, its original licence and provenance remain outside the EAL
-package. The JSON transport is also a mechanism control: equivalent validated
-answers and recovery do not demonstrate an advantage from wire syntax.
+The Lab Python runtime remains outside the EAL package. The JSON transport is
+also a mechanism control: equivalent validated answers and recovery do not
+demonstrate an advantage from wire syntax. Python-only default installation
+does not build or start the optional native transport.
+
+The reproducible transport benchmark is
+`python -m experiments.mas_coordination.transport_benchmark --help`; its frozen
+plan is `experiments/mas_coordination/transport-benchmark-plan.json`. It compares
+the retained one-shot implementation, persistent MCP with one-shot codecs,
+persistent MCP/codec with repeated round trips, combined Rust admission, and
+JSON using identical messages and useful mailbox outcomes. Cold startup,
+post-startup operations, actual process launches and diagnostic profiles are
+reported separately. This software workload measures local transport cost,
+not model accuracy, token cost or inference latency.
 
 | Frozen budget | Default |
 | --- | ---: |

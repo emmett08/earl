@@ -44,7 +44,10 @@ eal-host = "eal.host:main"
 eal-coordinate = "eal.coordination.cli:main"
 
 [tool.setuptools.package-data]
-"eal.coordination" = ["*.json"]
+"eal.coordination" = ["*.json", "rust_codec/Cargo.toml", "rust_codec/Cargo.lock",
+                       "rust_codec/rust-toolchain.toml", "rust_codec/LICENSE",
+                       "rust_codec/UPSTREAM.json", "rust_codec/README.md",
+                       "rust_codec/src/*.rs", "rust_codec/tests/*.rs"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,0 +1,50 @@
+{
+  "calls": [
+    {
+      "actor": "assessor",
+      "evidence": {
+        "execution_id": "deterministic-software-fixture",
+        "outcome": "completed",
+        "synthetic": true
+      },
+      "id": "call-001",
+      "state": "recorded"
+    }
+  ],
+  "config": {
+    "max_bytes": 100000,
+    "max_calls": 1,
+    "max_messages": 3,
+    "participants": [
+      "assessor",
+      "reviewer"
+    ],
+    "run_id": "transport-benchmark"
+  },
+  "messages": [
+    {
+      "acked": true,
+      "message_id": "msg-001",
+      "received": true,
+      "sequence": 1
+    },
+    {
+      "acked": true,
+      "message_id": "msg-002",
+      "received": true,
+      "sequence": 2
+    },
+    {
+      "acked": true,
+      "message_id": "msg-003",
+      "received": true,
+      "sequence": 3
+    }
+  ],
+  "run_id": "transport-benchmark",
+  "usage": {
+    "bytes": 67013,
+    "calls": 1,
+    "messages": 3
+  }
+}

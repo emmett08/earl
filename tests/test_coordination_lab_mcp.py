@@ -10,7 +10,6 @@ from pathlib import Path
 from mcp.types import CallToolResult, TextContent
 import pytest
 
-from eal.coordination.lab import LabTransport
 from eal.coordination.lab_mcp import LabMCPTransport
 
 
@@ -18,13 +17,14 @@ from eal.coordination.lab_mcp import LabMCPTransport
 def bus(tmp_path):
     configured = os.environ.get("MAS_PROTOCOL_LAB_RUNTIME")
     runtime = Path(configured or "/workspace/mas-protocol-lab")
-    required = (runtime / "runtime/mas_protocol/mcp_server.py", runtime / ".venv/bin/python",
-                runtime / "rust-protocol/target/release/mas-protocol-codec")
+    native = Path(__file__).resolve().parents[1] / "src/eal/coordination/rust_codec/target/release/mas-protocol-codec"
+    required = (runtime / "runtime/mas_protocol/mcp_server.py", runtime / ".venv/bin/python", native)
     if not all(path.is_file() for path in required):
         if configured:
             pytest.fail("Configured MAS Protocol Lab runtime is not installed and built")
         pytest.skip("Optional MAS Protocol Lab runtime is not installed and built")
-    return LabMCPTransport(runtime, tmp_path / "mailbox.sqlite")
+    with LabMCPTransport(runtime, tmp_path / "mailbox.sqlite") as transport:
+        yield transport
 
 
 def message(message_id="request"):
@@ -68,16 +68,16 @@ def test_actual_mcp_multi_message_delivery_redelivery_ack_and_stable_identity(bu
     assert retry.status("run")["usage"]["messages"] == 3
 
 
-def test_native_accounting_uses_supplied_cli_and_mcp_status_reads_same_store(bus, monkeypatch):
+def test_native_accounting_reuses_mcp_and_status_reads_same_store(bus, monkeypatch):
     bus.create("run", "reviewer", "assessor", max_calls=1)
     operations = []
-    command = LabTransport.command
+    call = bus.mcp_call
 
-    def recorded_command(self, *args):
-        operations.append(args[0])
-        return command(self, *args)
+    def recorded_call(name, args):
+        operations.append(name)
+        return call(name, args)
 
-    monkeypatch.setattr(LabMCPTransport, "command", recorded_command)
+    monkeypatch.setattr(bus, "mcp_call", recorded_call)
     assert bus.reserve("run", "assessor", "worker-call")["reserved"] is True
     evidence = {"execution_mode": "software_test", "execution_id": "test/turn1",
                 "actual_agent_execution": False, "elapsed_ms": 10, "tokens": None, "cost_usd": None}
@@ -88,7 +88,7 @@ def test_native_accounting_uses_supplied_cli_and_mcp_status_reads_same_store(bus
     assert status["usage"]["calls"] == 1
     assert status["calls"][0]["state"] == "recorded"
     assert status["calls"][0]["evidence"] == evidence
-    assert operations == ["reserve", "finish", "reserve"]
+    assert operations == ["mas_reserve_call", "mas_finish_call", "mas_reserve_call", "mas_status"]
 
 
 @pytest.mark.parametrize("bad", [1.5, {"fraction": 0.25}, {1: "changed key"}])
@@ -113,7 +113,6 @@ def test_adapter_fails_unknown_operations_without_cli_or_json_fallback(bus, monk
         pytest.fail("Unknown MCP operation attempted a fallback")
 
     monkeypatch.setattr(bus, "command", unexpected)
-    monkeypatch.setattr(bus, "_call", unexpected)
     with pytest.raises(ValueError, match="not exposed"):
         bus.mcp_call("mas_reserve", {})
     assert not bus.database.is_file()

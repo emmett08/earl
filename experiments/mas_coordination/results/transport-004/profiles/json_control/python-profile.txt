@@ -1,0 +1,56 @@
+         8260 function calls (6978 primitive calls) in 0.027 seconds
+
+   Ordered by: cumulative time
+   List reduced from 148 to 50 due to restriction <50>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.027    0.027 transport_benchmark.py:112(run_cycle)
+       23    0.000    0.000    0.020    0.001 transport_benchmark.py:123(operation)
+       47    0.000    0.000    0.016    0.000 {built-in method builtins.next}
+       48    0.000    0.000    0.015    0.000 bus.py:30(connect)
+       25    0.000    0.000    0.014    0.001 contextlib.py:141(__exit__)
+       21    0.014    0.001    0.014    0.001 {method 'commit' of 'sqlite3.Connection' objects}
+        9    0.000    0.000    0.007    0.001 bus.py:57(send)
+       84    0.006    0.000    0.006    0.000 {method 'execute' of 'sqlite3.Connection' objects}
+        3    0.000    0.000    0.005    0.002 transport_benchmark.py:149(<lambda>)
+        7    0.000    0.000    0.005    0.001 bus.py:75(receive)
+        1    0.000    0.000    0.004    0.004 transport_benchmark.py:95(make_bus)
+        1    0.000    0.000    0.004    0.004 bus.py:23(__init__)
+        3    0.000    0.000    0.004    0.001 transport_benchmark.py:156(<lambda>)
+        3    0.000    0.000    0.004    0.001 transport_benchmark.py:160(<lambda>)
+        3    0.000    0.000    0.004    0.001 bus.py:88(acknowledge)
+       18    0.000    0.000    0.002    0.000 __init__.py:183(dumps)
+       18    0.000    0.000    0.002    0.000 encoder.py:183(encode)
+        3    0.000    0.000    0.002    0.001 transport_benchmark.py:44(write_json)
+       25    0.000    0.000    0.001    0.000 contextlib.py:132(__enter__)
+        1    0.000    0.000    0.001    0.001 transport_benchmark.py:141(<lambda>)
+        1    0.000    0.000    0.001    0.001 bus.py:43(create)
+       24    0.001    0.000    0.001    0.000 {built-in method _sqlite3.connect}
+       22    0.000    0.000    0.001    0.000 bus.py:51(_config)
+       15    0.000    0.000    0.001    0.000 ledger.py:36(canonical_json)
+        1    0.000    0.000    0.001    0.001 transport_benchmark.py:142(<lambda>)
+        1    0.000    0.000    0.001    0.001 bus.py:97(reserve)
+     1004    0.000    0.000    0.001    0.000 encoder.py:414(_iterencode)
+        1    0.000    0.000    0.001    0.001 transport_benchmark.py:144(<lambda>)
+        1    0.000    0.000    0.001    0.001 bus.py:106(finish)
+1973/1001    0.001    0.000    0.001    0.000 encoder.py:334(_iterencode_dict)
+        3    0.000    0.000    0.001    0.000 transport_benchmark.py:151(<lambda>)
+       18    0.001    0.000    0.001    0.000 encoder.py:205(iterencode)
+  872/860    0.000    0.000    0.001    0.000 encoder.py:278(_iterencode_list)
+        3    0.000    0.000    0.001    0.000 transport_benchmark.py:158(<lambda>)
+        3    0.000    0.000    0.001    0.000 transport_benchmark.py:154(<lambda>)
+       32    0.000    0.000    0.001    0.000 __init__.py:299(loads)
+       32    0.000    0.000    0.001    0.000 decoder.py:333(decode)
+       24    0.000    0.000    0.000    0.000 {method 'close' of 'sqlite3.Connection' objects}
+       47    0.000    0.000    0.000    0.000 transport_benchmark.py:59(launches)
+       47    0.000    0.000    0.000    0.000 pathlib.py:852(exists)
+       32    0.000    0.000    0.000    0.000 decoder.py:344(raw_decode)
+       50    0.000    0.000    0.000    0.000 pathlib.py:835(stat)
+   313/15    0.000    0.000    0.000    0.000 ledger.py:38(check)
+       50    0.000    0.000    0.000    0.000 {built-in method posix.stat}
+        5    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+       24    0.000    0.000    0.000    0.000 functools.py:521(decorating_function)
+        4    0.000    0.000    0.000    0.000 transport_benchmark.py:166(<genexpr>)
+        1    0.000    0.000    0.000    0.000 transport_benchmark.py:163(<lambda>)
+        1    0.000    0.000    0.000    0.000 transport_benchmark.py:164(<lambda>)
+        1    0.000    0.000    0.000    0.000 bus.py:116(status)

@@ -38,10 +38,14 @@ directory and preserves the maintained API example.
 
 The default transport is durable JSON. Add
 `--runtime /workspace/mas-protocol-lab` on `start` to use the installed Lab
-runtime's actual local MCP create/send/receive/ACK/status operations and supplied
-Rust codec. Worker reservation/completion use its CLI because those operations
-are absent from the supplied MCP server. Keep Lab's MCP 1.26.0 interpreter
-isolated from EAL's MCP 2.2.0 environment.
+runtime's isolated local MCP interpreter and the packaged persistent Rust
+codec. Build `src/eal/coordination/rust_codec` with `cargo build --release --locked`
+using its manifest, as described in the service reference. The adapter reuses
+one MCP session and one codec process, combines canonical admission in Rust,
+and exposes reservation/completion through the same MCP session and supplied
+Store methods. Keep Lab's MCP 1.26.0 interpreter isolated from EAL's MCP 2.2.0
+environment. Close Python transport/coordinator instances explicitly or use
+their context managers; CLI subprocesses own their cleanup.
 
 ## Execute, recover and compare
 
@@ -76,6 +80,24 @@ workflow's evidence and limits. Scope checking and durable recovery are useful
 implemented mechanisms; broader accuracy, latency and total-cost gains require
 comparative measurements. Equivalent JSON and Lab results do not establish a
 benefit from wire syntax.
+
+## Local transport performance
+
+The [persistent transport benchmark](results/transport-005/README.md) retains
+25 equivalent software workloads across five execution stages, raw samples,
+actual launch logs, separate codec measurements and independent artifact
+checking. The median useful cycle changed from 10,758.7 ms in the frozen
+per-operation Lab bridge to 486.5 ms with persistent MCP and Rust admission;
+actual process starts changed from 61 to two. Combined admission improved
+post-create operations by a median paired 1.354× over persistent round trips;
+that scope includes the codec's first lazy startup. JSON remained faster at
+20.48 ms. These measurements establish local transport cost for the fixed
+workload, not model accuracy, inference latency or wire-syntax superiority.
+
+Use `python -m experiments.mas_coordination.transport_benchmark --help` and
+the frozen [benchmark plan](transport-benchmark-plan.json) to reproduce in a
+new output directory. The report distinguishes cold startup and measured
+software workloads from native agent execution.
 
 ## Retained study records
 

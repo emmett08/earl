@@ -21,14 +21,15 @@ class LabTransport:
     the trusted pilot validates envelope/payload correspondence before relaying.
     """
 
-    def __init__(self, runtime: str | Path, database: str | Path, *, python: str | Path | None = None):
+    def __init__(self, runtime: str | Path, database: str | Path, *, python: str | Path | None = None,
+                 binary: str | Path | None = None):
         self.runtime = Path(runtime).resolve()
         self.database = Path(database).resolve()
         # Preserve the venv interpreter symlink; resolving it would select the
         # base interpreter and discard the isolated SDK installation.
         self.python = str(Path(python).absolute() if python is not None
                           else self.runtime / ".venv/bin/python")
-        self.binary = self.runtime / "rust-protocol/target/release/mas-protocol-codec"
+        self.binary = Path(binary).resolve() if binary is not None else self.runtime / "rust-protocol/target/release/mas-protocol-codec"
         if not self.binary.is_file():
             raise FileNotFoundError(f"Build the MAS Protocol Lab codec first: {self.binary}")
         if not Path(self.python).is_file():

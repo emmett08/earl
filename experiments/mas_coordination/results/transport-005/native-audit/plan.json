@@ -1,0 +1,37 @@
+{
+  "schema": "EAL/transport-audit-plan/1",
+  "question": "Do retained transport-005 measurements support the scoped performance and semantic-equivalence claims?",
+  "mode": "actual_host_agent",
+  "agents": [
+    "reporter",
+    "checker"
+  ],
+  "separate_contexts": true,
+  "roles": {
+    "reporter": "Read frozen report/raw samples and author a concise message of scoped findings through the Rust admission transport.",
+    "checker": "Receive actual addressed message, independently check its findings against raw artifacts, persist verdict, then acknowledge."
+  },
+  "information_disclosures": [
+    "Both agents may read report.json, raw-samples.json, plan.json, source-stability.json.",
+    "Checker must receive the reporter message through the Lab bus before inspecting and checking it.",
+    "Both contexts share workspace permissions; this is not OS isolation."
+  ],
+  "coordinator_contributions": [
+    "Fixed audit question, tools, roles, run identity and finite budgets; no measurement values supplied in worker prompts."
+  ],
+  "budgets": {
+    "max_messages": 1,
+    "max_bytes": 8192,
+    "max_calls": 2,
+    "wall_seconds": 180
+  },
+  "acceptance": [
+    "Exactly one reporter-authored message admitted by Rust and consumed by checker.",
+    "Every claimed measurement matches retained samples; distinguish cold/startup-inclusive, post-create and model/inference scope.",
+    "Preserve uncertain billing; no accuracy or wire-syntax superiority claim."
+  ],
+  "tokens": null,
+  "billing": null,
+  "run_id": "transport005-audit",
+  "wall_time_enforcement": "180-second coordinator soft ceiling; supplied Lab Store retains its 3600-second default. Host tokens and cost are unavailable."
+}

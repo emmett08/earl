@@ -1,0 +1,51 @@
+{
+  "schema": "EAL/transport-validation/1",
+  "rustc": "rustc 1.85.1 (4eb161250 2025-03-15)",
+  "cargo": "cargo 1.85.1 (d73d2caf9 2024-12-31)",
+  "toolchain_locations": {
+    "RUSTUP_HOME": "/workspace/.rustup",
+    "CARGO_HOME": "/workspace/.cargo"
+  },
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_coordination_*.py tests/test_distribution_metadata.py",
+      "result": "209 passed; initial collection included 18 persistent acceptance cases"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_coordination_persistent_transport.py",
+      "result": "40 passed after extension; 22 additional cases beyond initial collection"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_mas_coordination_transport.py tests/test_mas_coordination_protocol.py",
+      "result": "41 passed"
+    },
+    {
+      "command": "cargo test --locked --manifest-path src/eal/coordination/rust_codec/Cargo.toml",
+      "result": "15 passed (8 library, 6 server, 1 process)"
+    },
+    {
+      "command": "make check-distribution PYTHON=.venv/bin/python",
+      "result": "passed wheel/source metadata, fresh installations, source-built runtime equality; final wheel subsequently rebuilt for last supervisor hardening"
+    },
+    {
+      "command": "cargo test --offline --locked --manifest-path <installed-wheel>/eal/coordination/rust_codec/Cargo.toml",
+      "result": "15 passed; complete packaged crate with retained MIT notice; no target output shipped"
+    },
+    {
+      "command": "cargo build --release --offline --locked --manifest-path <installed-wheel>/eal/coordination/rust_codec/Cargo.toml",
+      "result": "passed"
+    },
+    {
+      "command": "installed-wheel Python + packaged source-built native codec + isolated Lab MCP smoke",
+      "result": "passed admission, stable duplicate, exact payload delivery, ACK, reservation/completion, server/codec reuse and explicit cleanup"
+    },
+    {
+      "command": ".venv/bin/python -m pytest --collect-only -q tests/test_coordination_*.py tests/test_distribution_metadata.py",
+      "result": "231 current cases collected; all are covered by the focused initial and final acceptance runs"
+    }
+  ],
+  "unique_python_cases_passed": 272,
+  "rust_codec_tests_passed": 15,
+  "wheel_sha256": "3305315e5ee5a97c35b47f926f742ce55e58915006ec36af6c24e20cf34f3fd0",
+  "interpretation": "Software correctness/packaging and local process performance. No live provider, model accuracy, inference latency, billing or syntax-superiority claim."
+}
