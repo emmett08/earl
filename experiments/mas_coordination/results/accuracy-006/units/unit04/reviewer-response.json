@@ -1,0 +1,42 @@
+{
+  "answer": {
+    "task_digest": "24a2db80e849b24f3495db60dc6eff5636b6901218e599967a51463b5aeb08bc",
+    "finding_id": "finding_6fc0bc4578ee69987d32d6cbfe64f9300f6266348652228d88223c0309d3ae86",
+    "claims": {
+      "sample_quorum_present": {
+        "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+        "status": "unsupported",
+        "assessed_at": "2026-10-12T23:37:29.564714Z"
+      },
+      "sample_endpoint_available": {
+        "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+        "status": "contested",
+        "assessed_at": "2026-10-12T23:37:29.900320Z"
+      },
+      "sample_unobserved_route": {
+        "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+        "status": "unsupported",
+        "assessed_at": "2026-10-12T23:37:29.974319Z"
+      }
+    },
+    "scope": {
+      "context": {
+        "dataset": "synthetic",
+        "deployment": "coordinator-demo",
+        "service": "catalogue-api"
+      },
+      "requirements": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        }
+      }
+    },
+    "conclusion": "assessed",
+    "qualification": "conditional_on_registered_argument"
+  },
+  "consumed_message_ids": [
+    "outcome-unit04"
+  ]
+}

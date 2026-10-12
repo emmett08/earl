@@ -1,33 +1,38 @@
 """Durable addressed delivery over JSON and the actual optional Rust Lab bus."""
 from copy import deepcopy
+from contextlib import ExitStack
 import os
 from pathlib import Path
 
 import pytest
 
 from eal.coordination.bus import JsonBus, envelope
-from eal.coordination.lab import LabTransport
+from eal.coordination.lab_mcp import LabMCPTransport
 
 
 @pytest.fixture(params=("json", "lab"))
 def bus(request, tmp_path):
     if request.param == "json":
-        return JsonBus(tmp_path / "mailbox.sqlite")
-    configured = os.environ.get("MAS_PROTOCOL_LAB_RUNTIME")
-    runtime = Path(configured or "/workspace/mas-protocol-lab")
-    required = (runtime / "runtime/mas_protocol/cli.py", runtime / ".venv/bin/python",
-                runtime / "rust-protocol/target/release/mas-protocol-codec")
-    if not all(path.is_file() for path in required):
-        if configured:
-            pytest.fail("Configured MAS Protocol Lab runtime is not installed and built")
-        pytest.skip("Optional MAS Protocol Lab runtime is not installed and built")
-    return LabTransport(runtime, tmp_path / "mailbox.sqlite")
+        yield JsonBus(tmp_path / "mailbox.sqlite")
+    else:
+        configured = os.environ.get("MAS_PROTOCOL_LAB_RUNTIME")
+        runtime = Path(configured or "/workspace/mas-protocol-lab")
+        native = Path(__file__).resolve().parents[1] / "src/eal/coordination/rust_codec/target/release/mas-protocol-codec"
+        required = (runtime / "runtime/mas_protocol/cli.py", runtime / ".venv/bin/python", native)
+        if not all(path.is_file() for path in required):
+            if configured:
+                pytest.fail("Configured MAS Protocol Lab runtime is not installed and built")
+            pytest.skip("Optional MAS Protocol Lab runtime is not installed and built")
+        with ExitStack() as owners:
+            transport = owners.enter_context(LabMCPTransport(runtime, tmp_path / "mailbox.sqlite", binary=native))
+            transport._test_owners = owners
+            yield transport
 
 
 def reopened(bus):
     if isinstance(bus, JsonBus):
         return JsonBus(bus.database)
-    return LabTransport(bus.runtime, bus.database)
+    return bus._test_owners.enter_context(LabMCPTransport(bus.runtime, bus.database, binary=bus.binary))
 
 
 def message(message_id="request"):

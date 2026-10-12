@@ -1,0 +1,41 @@
+{
+  "files": {
+    "experiments/mas_coordination/transport_benchmark.py": {
+      "matches_transport_005": true,
+      "sha256": "a27b0ee95a9f7a617c86138edd8717d14ed57ed2ca8c659927ac75e9068040ea",
+      "snapshot": "experiments/mas_coordination/benchmark_controls/snapshot/transport_benchmark.py"
+    },
+    "src/eal/coordination/codec_process.py": {
+      "matches_transport_005": true,
+      "sha256": "9a2131b8858e98cd701a2152218f0676769b7c4077f1a6780a7c764f1cb83a2f",
+      "snapshot": "experiments/mas_coordination/benchmark_controls/snapshot/codec_process.py"
+    },
+    "src/eal/coordination/lab.py": {
+      "matches_transport_005": true,
+      "sha256": "9dc2393a7773f4e74bd8af7c2ba8c6b0e58fc9f4394dcae155c7923317e49444",
+      "snapshot": "experiments/mas_coordination/benchmark_controls/snapshot/lab.py"
+    },
+    "src/eal/coordination/lab_admission.py": {
+      "matches_transport_005": true,
+      "sha256": "385b4eb0ff084b59fc40651f297abc8c29cde7b00e2f37673e2b7e69941f2ed6",
+      "snapshot": "experiments/mas_coordination/benchmark_controls/snapshot/lab_admission.py"
+    },
+    "src/eal/coordination/lab_mcp.py": {
+      "matches_transport_005": true,
+      "sha256": "73e07afaffbe3cd6ee1ba27d66f3ee7c6ef72050fbc03ed336beb8a8db2b5050",
+      "snapshot": "experiments/mas_coordination/benchmark_controls/snapshot/lab_mcp.py"
+    },
+    "src/eal/coordination/lab_server.py": {
+      "matches_transport_005": true,
+      "sha256": "b908e9cece4264f0c8452d2857ac2c257d7839be57b6027a73e55cf6a41235ef",
+      "snapshot": "experiments/mas_coordination/benchmark_controls/snapshot/lab_server.py"
+    },
+    "src/eal/coordination/persistent_mcp.py": {
+      "matches_transport_005": true,
+      "sha256": "3e407e0f33ada1e4c09dcc79538675b8fb0095b613cebd6fb1a07b57a019a65e",
+      "snapshot": "experiments/mas_coordination/benchmark_controls/snapshot/persistent_mcp.py"
+    }
+  },
+  "historical_manifest": "experiments/mas_coordination/results/transport-005/manifest.json",
+  "source_commit": "2c76dcedfc19a59445c7b39478b812b3b09d7cda"
+}

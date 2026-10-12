@@ -1,0 +1,1393 @@
+{
+  "assessments": {
+    "performance_criteria_failed": {
+      "assessed_at": "2026-10-12T23:40:54.326355Z",
+      "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+      "claim": "performance_criteria_failed",
+      "collected_count": 1,
+      "collection_id": "3e4be278-21ae-4917-9978-1fa074479554",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "entry_id": "api_sample",
+      "full_explanation": {
+        "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "packet": {
+        "arguments": {
+          "failing_performance": {
+            "conclusion": "performance_criteria_failed",
+            "method_result": {
+              "evidence_id": "load_test",
+              "input_digest": "3a933f0aa28b711dbd2912bc20f6f197f60cbae7e5036fe18a3ae04cee67dbef",
+              "method": "engineering/api-load-criteria/1",
+              "outputs": {
+                "fails": false,
+                "passes": true,
+                "sample_size_met": true
+              },
+              "require_holds": [
+                false
+              ],
+              "status": "supported"
+            },
+            "premises": [],
+            "status": "unsupported"
+          }
+        },
+        "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+        "assumptions": {},
+        "claims": {
+          "performance_criteria_failed": {
+            "active_objections": [],
+            "contested_arguments": [],
+            "grounded_label": "rejected",
+            "observation_ids": [
+              {
+                "evidence_id": "load_test",
+                "observation_id": "9f391d19-7ee5-4c92-9cb4-198849301c01"
+              }
+            ],
+            "prose_verified": false,
+            "related_arguments": [
+              "failing_performance"
+            ],
+            "statement": "The identified synthetic report held-out-load-case03 fails at least one of the sample-size, latency or error-rate criteria.",
+            "status": "unsupported",
+            "supporting_arguments": [],
+            "undecided_objections": []
+          }
+        },
+        "collection_id": "3e4be278-21ae-4917-9978-1fa074479554",
+        "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+        "evidence": {
+          "load_test": {
+            "age_seconds": 485.326355,
+            "age_status": "within_max_age",
+            "availability_issues": [],
+            "observation_id": "9f391d19-7ee5-4c92-9cb4-198849301c01",
+            "observed_at": "2026-10-12T23:32:49Z",
+            "status": "available"
+          }
+        },
+        "full_explanation": {
+          "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+          "detail": "full",
+          "operation": "explain"
+        },
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "objections": {},
+        "omitted": {},
+        "premise_claims": {},
+        "schema": "EAL/assessment-packet/2",
+        "source_digest": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39",
+        "summary_complete": true
+      },
+      "reused_count": 0,
+      "schema": "EAL/registered-assessment/1",
+      "source_digest": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39",
+      "status": "unsupported"
+    },
+    "performance_criteria_met": {
+      "assessed_at": "2026-10-12T23:40:56.157955Z",
+      "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+      "claim": "performance_criteria_met",
+      "collected_count": 0,
+      "collection_id": "6de41c21-31dd-40de-968b-bb9d317ee154",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "entry_id": "api_sample",
+      "full_explanation": {
+        "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "packet": {
+        "arguments": {
+          "passing_performance": {
+            "conclusion": "performance_criteria_met",
+            "method_result": {
+              "evidence_id": "load_test",
+              "input_digest": "3a933f0aa28b711dbd2912bc20f6f197f60cbae7e5036fe18a3ae04cee67dbef",
+              "method": "engineering/api-load-criteria/1",
+              "outputs": {
+                "fails": false,
+                "passes": true,
+                "sample_size_met": true
+              },
+              "require_holds": [
+                true
+              ],
+              "status": "supported"
+            },
+            "premises": [],
+            "status": "supported"
+          }
+        },
+        "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+        "assumptions": {},
+        "claims": {
+          "performance_criteria_met": {
+            "active_objections": [],
+            "contested_arguments": [],
+            "grounded_label": "accepted",
+            "observation_ids": [
+              {
+                "evidence_id": "load_test",
+                "observation_id": "c3a2affd-21b0-40a8-aa82-c38ffda112aa"
+              }
+            ],
+            "prose_verified": false,
+            "related_arguments": [
+              "passing_performance"
+            ],
+            "statement": "The synthetic report held-out-load-case03 for orders-api build demo-build-42, labelled with 37 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent.",
+            "status": "supported",
+            "supporting_arguments": [
+              "passing_performance"
+            ],
+            "undecided_objections": []
+          }
+        },
+        "collection_id": "6de41c21-31dd-40de-968b-bb9d317ee154",
+        "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+        "evidence": {
+          "load_test": {
+            "age_seconds": 487.157955,
+            "age_status": "within_max_age",
+            "availability_issues": [],
+            "observation_id": "c3a2affd-21b0-40a8-aa82-c38ffda112aa",
+            "observed_at": "2026-10-12T23:32:49Z",
+            "status": "available"
+          }
+        },
+        "full_explanation": {
+          "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+          "detail": "full",
+          "operation": "explain"
+        },
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "objections": {},
+        "omitted": {},
+        "premise_claims": {},
+        "schema": "EAL/assessment-packet/2",
+        "source_digest": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39",
+        "summary_complete": true
+      },
+      "reused_count": 1,
+      "schema": "EAL/registered-assessment/1",
+      "source_digest": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39",
+      "status": "supported"
+    }
+  },
+  "check": {
+    "code": null,
+    "detail": "Pinned registered source and profile correspond to the task",
+    "ok": true
+  },
+  "collected_count": 1,
+  "explanations": {
+    "performance_criteria_failed": {
+      "arguments": {
+        "failing_performance": {
+          "attackers": [],
+          "conclusion": "performance_criteria_failed",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "load_test"
+            ],
+            "premises": [],
+            "reasoning": "failing_limits"
+          },
+          "grounded_label": "rejected",
+          "locally_usable": false,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {
+              "error_limit_met": true,
+              "fails": false,
+              "latency_met": true,
+              "passes": true,
+              "sample_size_met": true
+            },
+            "evidence_id": "load_test",
+            "input_digest": "3a933f0aa28b711dbd2912bc20f6f197f60cbae7e5036fe18a3ae04cee67dbef",
+            "method": "engineering/api-load-criteria/1",
+            "method_contract": {
+              "evidence_kind": "api_report",
+              "exact_unit": false,
+              "execution": "bounded_process",
+              "identifier": "engineering/api-load-criteria/1",
+              "implementation_code_digest": "a3df08dd5fd2ecf1650debe69732c0eda9e1f75e0843c77cf7d8278252aa9493",
+              "implementation_source_digest": "0bb8c43b6aa8732189ec7814c1efeb468452d7204fa0a836f64b74118f5d5530",
+              "implementation_version": "eal-api-load-criteria-1",
+              "input_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "age_seconds": {
+                    "anyOf": [
+                      {
+                        "maximum": 1e+100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "complete_records": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "consistent_records": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "error_rate_percent": {
+                    "anyOf": [
+                      {
+                        "maximum": 100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "failed_requests": {
+                    "maximum": 1000000000,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "identity_matches": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "p95_ms": {
+                    "anyOf": [
+                      {
+                        "maximum": 1e+100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "report_valid": {
+                    "type": "boolean"
+                  },
+                  "request_count": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "request_count",
+                  "p95_ms",
+                  "error_rate_percent"
+                ],
+                "type": "object"
+              },
+              "limits": {
+                "max_input_bytes": 1048576,
+                "max_memory_bytes": 268435456,
+                "max_output_bytes": 1048576,
+                "startup_timeout_seconds": 5.0,
+                "timeout_seconds": 1.0
+              },
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "error_limit_met": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "fails": {
+                    "type": "boolean"
+                  },
+                  "latency_met": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "passes": {
+                    "type": "boolean"
+                  },
+                  "sample_size_met": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "sample_size_met",
+                  "latency_met",
+                  "error_limit_met",
+                  "passes",
+                  "fails"
+                ],
+                "type": "object"
+              },
+              "outputs": {
+                "fails": "boolean",
+                "passes": "boolean",
+                "sample_size_met": "boolean"
+              },
+              "quantities": [],
+              "quantity_interpretation": "input measurement basis; each output separately declares its unit interpretation",
+              "query_schema": {
+                "additionalProperties": false,
+                "properties": {},
+                "required": [],
+                "type": "object"
+              }
+            },
+            "predicates": [
+              {
+                "holds": false,
+                "reason": "Field 'fails' == True does not hold (observed False)"
+              }
+            ],
+            "premise_acceptance": "deferred_to_composed_solver",
+            "reasons": [
+              "Method engineering/api-load-criteria/1: Computed registered method engineering/api-load-criteria/1"
+            ],
+            "status": "supported"
+          },
+          "reasons": [
+            "Evidence 'load_test' is available",
+            "Method engineering/api-load-criteria/1: Computed registered method engineering/api-load-criteria/1",
+            "Field 'fails' == True does not hold (observed False)",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "unsupported"
+        },
+        "passing_performance": {
+          "attackers": [],
+          "conclusion": "performance_criteria_met",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "load_test"
+            ],
+            "premises": [],
+            "reasoning": "passing_limits"
+          },
+          "grounded_label": "accepted",
+          "locally_usable": true,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {
+              "error_limit_met": true,
+              "fails": false,
+              "latency_met": true,
+              "passes": true,
+              "sample_size_met": true
+            },
+            "evidence_id": "load_test",
+            "input_digest": "3a933f0aa28b711dbd2912bc20f6f197f60cbae7e5036fe18a3ae04cee67dbef",
+            "method": "engineering/api-load-criteria/1",
+            "method_contract": {
+              "evidence_kind": "api_report",
+              "exact_unit": false,
+              "execution": "bounded_process",
+              "identifier": "engineering/api-load-criteria/1",
+              "implementation_code_digest": "a3df08dd5fd2ecf1650debe69732c0eda9e1f75e0843c77cf7d8278252aa9493",
+              "implementation_source_digest": "0bb8c43b6aa8732189ec7814c1efeb468452d7204fa0a836f64b74118f5d5530",
+              "implementation_version": "eal-api-load-criteria-1",
+              "input_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "age_seconds": {
+                    "anyOf": [
+                      {
+                        "maximum": 1e+100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "complete_records": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "consistent_records": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "error_rate_percent": {
+                    "anyOf": [
+                      {
+                        "maximum": 100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "failed_requests": {
+                    "maximum": 1000000000,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "identity_matches": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "p95_ms": {
+                    "anyOf": [
+                      {
+                        "maximum": 1e+100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "report_valid": {
+                    "type": "boolean"
+                  },
+                  "request_count": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "request_count",
+                  "p95_ms",
+                  "error_rate_percent"
+                ],
+                "type": "object"
+              },
+              "limits": {
+                "max_input_bytes": 1048576,
+                "max_memory_bytes": 268435456,
+                "max_output_bytes": 1048576,
+                "startup_timeout_seconds": 5.0,
+                "timeout_seconds": 1.0
+              },
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "error_limit_met": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "fails": {
+                    "type": "boolean"
+                  },
+                  "latency_met": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "passes": {
+                    "type": "boolean"
+                  },
+                  "sample_size_met": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "sample_size_met",
+                  "latency_met",
+                  "error_limit_met",
+                  "passes",
+                  "fails"
+                ],
+                "type": "object"
+              },
+              "outputs": {
+                "fails": "boolean",
+                "passes": "boolean",
+                "sample_size_met": "boolean"
+              },
+              "quantities": [],
+              "quantity_interpretation": "input measurement basis; each output separately declares its unit interpretation",
+              "query_schema": {
+                "additionalProperties": false,
+                "properties": {},
+                "required": [],
+                "type": "object"
+              }
+            },
+            "predicates": [
+              {
+                "holds": true,
+                "reason": "Field 'passes' == True holds (observed True)"
+              }
+            ],
+            "premise_acceptance": "deferred_to_composed_solver",
+            "reasons": [
+              "Method engineering/api-load-criteria/1: Computed registered method engineering/api-load-criteria/1"
+            ],
+            "status": "supported"
+          },
+          "reasons": [
+            "Evidence 'load_test' is available",
+            "Method engineering/api-load-criteria/1: Computed registered method engineering/api-load-criteria/1",
+            "Field 'passes' == True holds (observed True)",
+            "Least-information acceptability label: accepted"
+          ],
+          "source_usable": true,
+          "status": "supported"
+        }
+      },
+      "assessed_at": "2026-10-12T23:40:54.326355Z",
+      "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+      "assumptions": {},
+      "claim": "performance_criteria_failed",
+      "evidence": {
+        "load_test": {
+          "availability_issues": [],
+          "reasons": [
+            "Field 'request_count' >= 0 holds (observed 100)"
+          ],
+          "run_id": "9f391d19-7ee5-4c92-9cb4-198849301c01",
+          "status": "available",
+          "tool": "load_test_report",
+          "tool_binding_digest": "8acdf2bf3bd6dfe9ecb054399b5d66e51ec04977ae2cb61004218bb7355ed02c",
+          "tool_version": "1"
+        }
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {},
+      "reasoning": {
+        "failing_limits": {
+          "backing": [],
+          "method": "engineering/api-load-criteria/1",
+          "objection_statuses": {},
+          "rationale": "An identified, usable report with a failed sample-size, latency or error-rate result supports a measured failure of these criteria; collection failure supplies no such conclusion.",
+          "reasons": [
+            "Method engineering/api-load-criteria/1 and backing are locally available; acceptance is assessed per application"
+          ],
+          "status": "supported"
+        },
+        "passing_limits": {
+          "backing": [],
+          "method": "engineering/api-load-criteria/1",
+          "objection_statuses": {},
+          "rationale": "The collector checks this report's identity and calculates nearest-rank p95 over every attempt. The installed method checks the inclusive sample size, latency and error-rate limits for these synthetic records only.",
+          "reasons": [
+            "Method engineering/api-load-criteria/1 and backing are locally available; acceptance is assessed per application"
+          ],
+          "status": "supported"
+        }
+      },
+      "result": {
+        "contested_arguments": [],
+        "environment": "test_run",
+        "grounded_label": "rejected",
+        "objection_statuses": {},
+        "objections": [],
+        "proposition": null,
+        "prose_verified": false,
+        "reasons": [
+          "No source-usable derivation supplies support; this does not establish falsity",
+          "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+        ],
+        "source_usable": false,
+        "statement": "The identified synthetic report held-out-load-case03 fails at least one of the sample-size, latency or error-rate criteria.",
+        "status": "unsupported",
+        "supporting_arguments": [],
+        "undecided_objections": []
+      },
+      "source_digest": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39"
+    },
+    "performance_criteria_met": {
+      "arguments": {
+        "failing_performance": {
+          "attackers": [],
+          "conclusion": "performance_criteria_failed",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "load_test"
+            ],
+            "premises": [],
+            "reasoning": "failing_limits"
+          },
+          "grounded_label": "rejected",
+          "locally_usable": false,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {
+              "error_limit_met": true,
+              "fails": false,
+              "latency_met": true,
+              "passes": true,
+              "sample_size_met": true
+            },
+            "evidence_id": "load_test",
+            "input_digest": "3a933f0aa28b711dbd2912bc20f6f197f60cbae7e5036fe18a3ae04cee67dbef",
+            "method": "engineering/api-load-criteria/1",
+            "method_contract": {
+              "evidence_kind": "api_report",
+              "exact_unit": false,
+              "execution": "bounded_process",
+              "identifier": "engineering/api-load-criteria/1",
+              "implementation_code_digest": "a3df08dd5fd2ecf1650debe69732c0eda9e1f75e0843c77cf7d8278252aa9493",
+              "implementation_source_digest": "0bb8c43b6aa8732189ec7814c1efeb468452d7204fa0a836f64b74118f5d5530",
+              "implementation_version": "eal-api-load-criteria-1",
+              "input_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "age_seconds": {
+                    "anyOf": [
+                      {
+                        "maximum": 1e+100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "complete_records": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "consistent_records": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "error_rate_percent": {
+                    "anyOf": [
+                      {
+                        "maximum": 100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "failed_requests": {
+                    "maximum": 1000000000,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "identity_matches": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "p95_ms": {
+                    "anyOf": [
+                      {
+                        "maximum": 1e+100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "report_valid": {
+                    "type": "boolean"
+                  },
+                  "request_count": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "request_count",
+                  "p95_ms",
+                  "error_rate_percent"
+                ],
+                "type": "object"
+              },
+              "limits": {
+                "max_input_bytes": 1048576,
+                "max_memory_bytes": 268435456,
+                "max_output_bytes": 1048576,
+                "startup_timeout_seconds": 5.0,
+                "timeout_seconds": 1.0
+              },
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "error_limit_met": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "fails": {
+                    "type": "boolean"
+                  },
+                  "latency_met": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "passes": {
+                    "type": "boolean"
+                  },
+                  "sample_size_met": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "sample_size_met",
+                  "latency_met",
+                  "error_limit_met",
+                  "passes",
+                  "fails"
+                ],
+                "type": "object"
+              },
+              "outputs": {
+                "fails": "boolean",
+                "passes": "boolean",
+                "sample_size_met": "boolean"
+              },
+              "quantities": [],
+              "quantity_interpretation": "input measurement basis; each output separately declares its unit interpretation",
+              "query_schema": {
+                "additionalProperties": false,
+                "properties": {},
+                "required": [],
+                "type": "object"
+              }
+            },
+            "predicates": [
+              {
+                "holds": false,
+                "reason": "Field 'fails' == True does not hold (observed False)"
+              }
+            ],
+            "premise_acceptance": "deferred_to_composed_solver",
+            "reasons": [
+              "Method engineering/api-load-criteria/1: Computed registered method engineering/api-load-criteria/1"
+            ],
+            "status": "supported"
+          },
+          "reasons": [
+            "Evidence 'load_test' is available",
+            "Method engineering/api-load-criteria/1: Computed registered method engineering/api-load-criteria/1",
+            "Field 'fails' == True does not hold (observed False)",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "unsupported"
+        },
+        "passing_performance": {
+          "attackers": [],
+          "conclusion": "performance_criteria_met",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "load_test"
+            ],
+            "premises": [],
+            "reasoning": "passing_limits"
+          },
+          "grounded_label": "accepted",
+          "locally_usable": true,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {
+              "error_limit_met": true,
+              "fails": false,
+              "latency_met": true,
+              "passes": true,
+              "sample_size_met": true
+            },
+            "evidence_id": "load_test",
+            "input_digest": "3a933f0aa28b711dbd2912bc20f6f197f60cbae7e5036fe18a3ae04cee67dbef",
+            "method": "engineering/api-load-criteria/1",
+            "method_contract": {
+              "evidence_kind": "api_report",
+              "exact_unit": false,
+              "execution": "bounded_process",
+              "identifier": "engineering/api-load-criteria/1",
+              "implementation_code_digest": "a3df08dd5fd2ecf1650debe69732c0eda9e1f75e0843c77cf7d8278252aa9493",
+              "implementation_source_digest": "0bb8c43b6aa8732189ec7814c1efeb468452d7204fa0a836f64b74118f5d5530",
+              "implementation_version": "eal-api-load-criteria-1",
+              "input_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "age_seconds": {
+                    "anyOf": [
+                      {
+                        "maximum": 1e+100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "complete_records": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "consistent_records": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "error_rate_percent": {
+                    "anyOf": [
+                      {
+                        "maximum": 100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "failed_requests": {
+                    "maximum": 1000000000,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "identity_matches": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "p95_ms": {
+                    "anyOf": [
+                      {
+                        "maximum": 1e+100,
+                        "minimum": 0,
+                        "type": "number"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "report_valid": {
+                    "type": "boolean"
+                  },
+                  "request_count": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "request_count",
+                  "p95_ms",
+                  "error_rate_percent"
+                ],
+                "type": "object"
+              },
+              "limits": {
+                "max_input_bytes": 1048576,
+                "max_memory_bytes": 268435456,
+                "max_output_bytes": 1048576,
+                "startup_timeout_seconds": 5.0,
+                "timeout_seconds": 1.0
+              },
+              "output_schema": {
+                "additionalProperties": false,
+                "properties": {
+                  "error_limit_met": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "fails": {
+                    "type": "boolean"
+                  },
+                  "latency_met": {
+                    "anyOf": [
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "passes": {
+                    "type": "boolean"
+                  },
+                  "sample_size_met": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "sample_size_met",
+                  "latency_met",
+                  "error_limit_met",
+                  "passes",
+                  "fails"
+                ],
+                "type": "object"
+              },
+              "outputs": {
+                "fails": "boolean",
+                "passes": "boolean",
+                "sample_size_met": "boolean"
+              },
+              "quantities": [],
+              "quantity_interpretation": "input measurement basis; each output separately declares its unit interpretation",
+              "query_schema": {
+                "additionalProperties": false,
+                "properties": {},
+                "required": [],
+                "type": "object"
+              }
+            },
+            "predicates": [
+              {
+                "holds": true,
+                "reason": "Field 'passes' == True holds (observed True)"
+              }
+            ],
+            "premise_acceptance": "deferred_to_composed_solver",
+            "reasons": [
+              "Method engineering/api-load-criteria/1: Computed registered method engineering/api-load-criteria/1"
+            ],
+            "status": "supported"
+          },
+          "reasons": [
+            "Evidence 'load_test' is available",
+            "Method engineering/api-load-criteria/1: Computed registered method engineering/api-load-criteria/1",
+            "Field 'passes' == True holds (observed True)",
+            "Least-information acceptability label: accepted"
+          ],
+          "source_usable": true,
+          "status": "supported"
+        }
+      },
+      "assessed_at": "2026-10-12T23:40:56.157955Z",
+      "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+      "assumptions": {},
+      "claim": "performance_criteria_met",
+      "evidence": {
+        "load_test": {
+          "availability_issues": [],
+          "reasons": [
+            "Field 'request_count' >= 0 holds (observed 100)"
+          ],
+          "run_id": "c3a2affd-21b0-40a8-aa82-c38ffda112aa",
+          "status": "available",
+          "tool": "load_test_report",
+          "tool_binding_digest": "8acdf2bf3bd6dfe9ecb054399b5d66e51ec04977ae2cb61004218bb7355ed02c",
+          "tool_version": "1"
+        }
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {},
+      "reasoning": {
+        "failing_limits": {
+          "backing": [],
+          "method": "engineering/api-load-criteria/1",
+          "objection_statuses": {},
+          "rationale": "An identified, usable report with a failed sample-size, latency or error-rate result supports a measured failure of these criteria; collection failure supplies no such conclusion.",
+          "reasons": [
+            "Method engineering/api-load-criteria/1 and backing are locally available; acceptance is assessed per application"
+          ],
+          "status": "supported"
+        },
+        "passing_limits": {
+          "backing": [],
+          "method": "engineering/api-load-criteria/1",
+          "objection_statuses": {},
+          "rationale": "The collector checks this report's identity and calculates nearest-rank p95 over every attempt. The installed method checks the inclusive sample size, latency and error-rate limits for these synthetic records only.",
+          "reasons": [
+            "Method engineering/api-load-criteria/1 and backing are locally available; acceptance is assessed per application"
+          ],
+          "status": "supported"
+        }
+      },
+      "result": {
+        "contested_arguments": [],
+        "environment": "test_run",
+        "grounded_label": "accepted",
+        "objection_statuses": {},
+        "objections": [],
+        "proposition": null,
+        "prose_verified": false,
+        "reasons": [
+          "Accepted derivations: passing_performance",
+          "Least-information acceptability label: accepted; rejection does not establish claim falsity"
+        ],
+        "source_usable": true,
+        "statement": "The synthetic report held-out-load-case03 for orders-api build demo-build-42, labelled with 37 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent.",
+        "status": "supported",
+        "supporting_arguments": [
+          "passing_performance"
+        ],
+        "undecided_objections": []
+      },
+      "source_digest": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39"
+    }
+  },
+  "finding_id": "finding_3b6e65bb263ebdcd1b054164c8939d803d1a642264f166b6acabb755ebfcfa9b",
+  "mcp": {
+    "calls": [
+      {
+        "arguments": {},
+        "exposure": "registered",
+        "name": "eal_sources",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "claim": "performance_criteria_failed",
+          "entry_id": "api_sample"
+        },
+        "exposure": "registered",
+        "name": "eal_assess_known",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "claim": "performance_criteria_met",
+          "entry_id": "api_sample"
+        },
+        "exposure": "registered",
+        "name": "eal_assess_known",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+          "claim": "performance_criteria_failed"
+        },
+        "exposure": "operator",
+        "name": "eal_packet",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+          "claim": "performance_criteria_failed"
+        },
+        "exposure": "operator",
+        "name": "eal_explain",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+          "claim": "performance_criteria_met"
+        },
+        "exposure": "operator",
+        "name": "eal_packet",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+          "claim": "performance_criteria_met"
+        },
+        "exposure": "operator",
+        "name": "eal_explain",
+        "outcome": "success"
+      }
+    ],
+    "transport": "actual_mcp_stdio"
+  },
+  "packets": {
+    "performance_criteria_failed": {
+      "arguments": {
+        "failing_performance": {
+          "conclusion": "performance_criteria_failed",
+          "method_result": {
+            "evidence_id": "load_test",
+            "input_digest": "3a933f0aa28b711dbd2912bc20f6f197f60cbae7e5036fe18a3ae04cee67dbef",
+            "method": "engineering/api-load-criteria/1",
+            "outputs": {
+              "fails": false,
+              "passes": true,
+              "sample_size_met": true
+            },
+            "require_holds": [
+              false
+            ],
+            "status": "supported"
+          },
+          "premises": [],
+          "status": "unsupported"
+        }
+      },
+      "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+      "assumptions": {},
+      "claims": {
+        "performance_criteria_failed": {
+          "active_objections": [],
+          "contested_arguments": [],
+          "grounded_label": "rejected",
+          "observation_ids": [
+            {
+              "evidence_id": "load_test",
+              "observation_id": "9f391d19-7ee5-4c92-9cb4-198849301c01"
+            }
+          ],
+          "prose_verified": false,
+          "related_arguments": [
+            "failing_performance"
+          ],
+          "statement": "The identified synthetic report held-out-load-case03 fails at least one of the sample-size, latency or error-rate criteria.",
+          "status": "unsupported",
+          "supporting_arguments": [],
+          "undecided_objections": []
+        }
+      },
+      "collection_id": "3e4be278-21ae-4917-9978-1fa074479554",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "evidence": {
+        "load_test": {
+          "age_seconds": 485.326355,
+          "age_status": "within_max_age",
+          "availability_issues": [],
+          "observation_id": "9f391d19-7ee5-4c92-9cb4-198849301c01",
+          "observed_at": "2026-10-12T23:32:49Z",
+          "status": "available"
+        }
+      },
+      "full_explanation": {
+        "assessment_id": "3179a2c5-eabf-4c1c-8744-105159bf24a4",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {},
+      "omitted": {},
+      "premise_claims": {},
+      "schema": "EAL/assessment-packet/2",
+      "source_digest": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39",
+      "summary_complete": true
+    },
+    "performance_criteria_met": {
+      "arguments": {
+        "passing_performance": {
+          "conclusion": "performance_criteria_met",
+          "method_result": {
+            "evidence_id": "load_test",
+            "input_digest": "3a933f0aa28b711dbd2912bc20f6f197f60cbae7e5036fe18a3ae04cee67dbef",
+            "method": "engineering/api-load-criteria/1",
+            "outputs": {
+              "fails": false,
+              "passes": true,
+              "sample_size_met": true
+            },
+            "require_holds": [
+              true
+            ],
+            "status": "supported"
+          },
+          "premises": [],
+          "status": "supported"
+        }
+      },
+      "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+      "assumptions": {},
+      "claims": {
+        "performance_criteria_met": {
+          "active_objections": [],
+          "contested_arguments": [],
+          "grounded_label": "accepted",
+          "observation_ids": [
+            {
+              "evidence_id": "load_test",
+              "observation_id": "c3a2affd-21b0-40a8-aa82-c38ffda112aa"
+            }
+          ],
+          "prose_verified": false,
+          "related_arguments": [
+            "passing_performance"
+          ],
+          "statement": "The synthetic report held-out-load-case03 for orders-api build demo-build-42, labelled with 37 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent.",
+          "status": "supported",
+          "supporting_arguments": [
+            "passing_performance"
+          ],
+          "undecided_objections": []
+        }
+      },
+      "collection_id": "6de41c21-31dd-40de-968b-bb9d317ee154",
+      "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+      "evidence": {
+        "load_test": {
+          "age_seconds": 487.157955,
+          "age_status": "within_max_age",
+          "availability_issues": [],
+          "observation_id": "c3a2affd-21b0-40a8-aa82-c38ffda112aa",
+          "observed_at": "2026-10-12T23:32:49Z",
+          "status": "available"
+        }
+      },
+      "full_explanation": {
+        "assessment_id": "dd74dc0c-eefc-4e21-8825-eafa05e86dff",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {},
+      "omitted": {},
+      "premise_claims": {},
+      "schema": "EAL/assessment-packet/2",
+      "source_digest": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39",
+      "summary_complete": true
+    }
+  },
+  "reused_count": 1,
+  "schema": "EAL/MAS-coordination-finding/3",
+  "task_digest": "d3957e99dc8b276905b59413a8cf4d00bd6c384414ae6de4b2b8169835f4f28c"
+}

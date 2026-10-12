@@ -10,7 +10,6 @@ import weakref
 
 from mcp import StdioServerParameters
 
-from .lab import LabTransport
 from .persistent_mcp import PersistentMCP
 
 
@@ -19,7 +18,7 @@ def _close_resources(resources):
         resource.close()
 
 
-class LabMCPTransport(LabTransport):
+class LabMCPTransport:
     """Reuse the isolated Lab SDK and Store with persistent Rust encoding.
 
     Actor identity is a trusted local host assertion, as in the supplied Lab
@@ -29,30 +28,31 @@ class LabMCPTransport(LabTransport):
     """
 
     operation_timeout = 30
-    mcp_operations = frozenset({"mas_create_run", "mas_send", "mas_receive", "mas_ack", "mas_status",
+    mcp_operations = frozenset({"mas_create_run", "mas_receive", "mas_ack", "mas_status",
                                 "mas_encode", "mas_validate", "mas_reserve_call", "mas_finish_call",
                                 "mas_runtime_info", "mas_send_envelope"})
 
     def __init__(self, runtime: str | Path, database: str | Path, *, python: str | Path | None = None,
-                 codec_mode: str = "persistent", binary: str | Path | None = None,
-                 admission_mode: str | None = None):
-        if codec_mode not in {"persistent", "oneshot"}:
-            raise ValueError("Codec mode must be persistent or oneshot")
-        selected_binary = binary
-        if selected_binary is None and codec_mode == "persistent":
-            selected_binary = os.environ.get("EAL_MAS_CODEC_BIN", str(
+                 binary: str | Path | None = None):
+        self.runtime = Path(runtime).resolve()
+        self.database = Path(database).resolve()
+        # Preserve the venv symlink: resolving it discards Lab's SDK isolation.
+        self.python = str(Path(python).absolute() if python is not None
+                          else self.runtime / ".venv/bin/python")
+        selected_binary = binary if binary is not None else os.environ.get("EAL_MAS_CODEC_BIN", str(
                 Path(__file__).parent / "rust_codec/target/release/mas-protocol-codec"))
-        if selected_binary is not None and not Path(selected_binary).is_file():
+        self.binary = Path(selected_binary).resolve()
+        if not self.binary.is_file():
             raise FileNotFoundError("Build the persistent Rust codec with cargo build --release --locked "
                                     "--manifest-path src/eal/coordination/rust_codec/Cargo.toml, "
                                     "or set EAL_MAS_CODEC_BIN to that executable")
-        super().__init__(runtime, database, python=python, binary=selected_binary)
-        if not (self.runtime / "runtime/mas_protocol/mcp_server.py").is_file():
-            raise FileNotFoundError("MAS Protocol Lab runtime/mas_protocol/mcp_server.py is unavailable")
-        self.codec_mode = codec_mode
-        self.admission_mode = admission_mode or ("rust" if codec_mode == "persistent" else "roundtrip")
-        if self.admission_mode not in {"rust", "roundtrip"} or (self.admission_mode == "rust" and codec_mode != "persistent"):
-            raise ValueError("Admission mode must be roundtrip or rust with a persistent codec")
+        if not Path(self.python).is_file():
+            raise FileNotFoundError(f"Install MAS Protocol Lab in its isolated virtual environment: {self.python}")
+        # cli.py supplies response/state-path helpers; no CLI subprocess is used.
+        for module in ("cli.py", "mcp_server.py", "protocol.py", "store.py"):
+            if not (self.runtime / "runtime/mas_protocol" / module).is_file():
+                raise FileNotFoundError(f"MAS Protocol Lab runtime/mas_protocol/{module} is unavailable")
+        self.database.parent.mkdir(parents=True, exist_ok=True)
         self._session = None
         self._resources = []
         self._lock = threading.RLock()
@@ -74,8 +74,8 @@ class LabMCPTransport(LabTransport):
 
     def diagnostics(self):
         return {"server_starts": 0 if self._session is None else self._session.starts,
-                "codec_mode": self.codec_mode,
-                "admission_mode": self.admission_mode,
+                "codec_mode": "persistent",
+                "admission_mode": "rust",
                 "closed": self._closed or (self._session is not None and self._session.closed)}
 
     def _environment(self) -> dict[str, str]:
@@ -84,9 +84,9 @@ class LabMCPTransport(LabTransport):
         environment = {key: value for key, value in os.environ.items()
                        if not any(marker in key.upper() for marker in
                                   ("API_KEY", "TOKEN", "SECRET", "PASSWORD", "CREDENTIAL"))}
+        environment.pop("EAL_MAS_CODEC_MODE", None)
         environment.update(PYTHONPATH=str(self.runtime / "runtime"),
-                           MAS_PROTOCOL_BIN=str(self.binary), MAS_STATE_DB=str(self.database),
-                           EAL_MAS_CODEC_MODE=self.codec_mode)
+                           MAS_PROTOCOL_BIN=str(self.binary), MAS_STATE_DB=str(self.database))
         return environment
 
     @staticmethod
@@ -171,10 +171,8 @@ class LabMCPTransport(LabTransport):
         envelope = {"message_id": payload["message_id"], "run_id": run_id,
                     "sender": payload["sender"], "recipient": payload["recipient"],
                     "version": "1", "kind": payload["kind"], "payload": payload}
-        if self.admission_mode == "rust":
-            self._check_envelope(envelope)
-            return self.mcp_call("mas_send_envelope", {"envelope": envelope, "actor": actor})
-        return self.mcp_call("mas_send", {"text": self._encode(envelope), "actor": actor})
+        self._check_envelope(envelope)
+        return self.mcp_call("mas_send_envelope", {"envelope": envelope, "actor": actor})
 
     def receive(self, run_id: str, recipient: str, *, limit: int = 8) -> Any:
         return self.mcp_call("mas_receive", {"run_id": run_id, "recipient": recipient, "limit": limit})

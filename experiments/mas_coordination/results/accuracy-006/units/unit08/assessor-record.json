@@ -1,0 +1,34 @@
+{
+  "execution_id": "/root/accuracy006_u08_assessor/turn1",
+  "execution_mode": "actual_host_agent",
+  "raw_base64": "eyJtZXNzYWdlIjp7InNjaGVtYSI6IkVBTC9NQVMtY29vcmRpbmF0aW9uLzMiLCJraW5kIjoiZGlzcG9zaXRpb24iLCJtZXNzYWdlX2lkIjoiYXNzZXNzb3ItZGlzcG9zaXRpb24iLCJ0YXNrX2lkIjoiaGVsZF9vdXRfY2FzZTA0IiwidGFza19kaWdlc3QiOiI5ZmE4YjczM2NmZjk5ODA4MTFkNjQzZGU4M2I4M2EzNzRkMjY5NTA5ZDc3M2U4OTU0ZDExYjdlNTA4ZWFhODY4Iiwic2VuZGVyIjoiYXNzZXNzb3IiLCJyZWNpcGllbnQiOiJyZXZpZXdlciIsInJlcGx5X3RvIjoicmVxdWVzdCIsImF0dGVtcHQiOjAsImZpbmRpbmdfaWQiOiJmaW5kaW5nXzU0YTcwYmU2ZTZhYzI1NTRiZWJlYWQ2NDYyMDhjMzA2Mjk0MDgyMGRkZmYzZTYwMDk4YmUwOTAxNjZhNTE2ZDMiLCJjb2RlIjoiZXZpZGVuY2VfdW5hdmFpbGFibGUiLCJvdXRjb21lIjoiaW5jb21wbGV0ZSJ9LCJjb25zdW1lZF9tZXNzYWdlX2lkcyI6WyJyZXF1ZXN0Il19Cg==",
+  "raw_digest": "3bd785392e4ff24e9f3f67c8288f58e376095c5dc542234d65732bf31504fba1",
+  "evidence": {},
+  "accepted": false,
+  "outcome": "rejected",
+  "diagnostics": [
+    {
+      "code": "response_rejected",
+      "detail": "Outcome must retain every actual assessment reference"
+    }
+  ],
+  "response": {
+    "message": {
+      "schema": "EAL/MAS-coordination/3",
+      "kind": "disposition",
+      "message_id": "assessor-disposition",
+      "task_id": "held_out_case04",
+      "task_digest": "9fa8b733cff9980811d643de83b83a374d269509d773e8954d11b7e508eaa868",
+      "sender": "assessor",
+      "recipient": "reviewer",
+      "reply_to": "request",
+      "attempt": 0,
+      "finding_id": "finding_54a70be6e6ac2554bebead646208c3062940820ddff3e60098be090166a516d3",
+      "code": "evidence_unavailable",
+      "outcome": "incomplete"
+    },
+    "consumed_message_ids": [
+      "request"
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "execution_id": "/root/accuracy006_u03_reviewer/turn1",
+  "execution_mode": "actual_host_agent",
+  "raw_base64": "ewogICJhbnN3ZXIiOiB7CiAgICAidGFza19kaWdlc3QiOiAiYmY4MDQ4OWI1NjY5NGFjNjdjMjJmZjlkZTRiNzQ0OGViYWYxMmExNWZiZDRlODMxYTgxNGIyMjQ3Mjc0ZDAyMiIsCiAgICAiZmluZGluZ19pZCI6ICJmaW5kaW5nXzMzNGMxNTQyODdlMTM2YTFjNjg0ODNjMGZhYzM5OWEyZTk3YmFiNzhhODdmYzNkNmQyNGZiYmJjNTU5ZDMxMmQiLAogICAgImNsYWltcyI6IHsKICAgICAgInNhbXBsZV9xdW9ydW1fcHJlc2VudCI6IHsKICAgICAgICAiYXNzZXNzbWVudF9pZCI6ICJlZjcyNGFhOS1kMTFlLTQ0N2UtYjNjNy0xZjcxNmM1YmQzMDIiLAogICAgICAgICJzdGF0dXMiOiAidW5zdXBwb3J0ZWQiLAogICAgICAgICJhc3Nlc3NlZF9hdCI6ICIyMDI2LTEwLTEyVDIzOjM4OjEyLjEyNjc3NFoiCiAgICAgIH0sCiAgICAgICJzYW1wbGVfZW5kcG9pbnRfYXZhaWxhYmxlIjogewogICAgICAgICJhc3Nlc3NtZW50X2lkIjogIjAyNTExYmM2LWRhMjktNGYzOC1hNWIyLTVmYjVmMDU0MmQ1MyIsCiAgICAgICAgInN0YXR1cyI6ICJjb250ZXN0ZWQiLAogICAgICAgICJhc3Nlc3NlZF9hdCI6ICIyMDI2LTEwLTEyVDIzOjM4OjEyLjQ2NzM2OFoiCiAgICAgIH0sCiAgICAgICJzYW1wbGVfdW5vYnNlcnZlZF9yb3V0ZSI6IHsKICAgICAgICAiYXNzZXNzbWVudF9pZCI6ICI4MmJmMDViNS0yZDk1LTQyZTgtODRhOS1kNTZmOTJmYzU5M2IiLAogICAgICAgICJzdGF0dXMiOiAidW5zdXBwb3J0ZWQiLAogICAgICAgICJhc3Nlc3NlZF9hdCI6ICIyMDI2LTEwLTEyVDIzOjM4OjEyLjU0MzgyOVoiCiAgICAgIH0KICAgIH0sCiAgICAic2NvcGUiOiB7CiAgICAgICJjb250ZXh0IjogewogICAgICAgICJkYXRhc2V0IjogInN5bnRoZXRpYyIsCiAgICAgICAgImRlcGxveW1lbnQiOiAiY29vcmRpbmF0b3ItZGVtbyIsCiAgICAgICAgInNlcnZpY2UiOiAiY2F0YWxvZ3VlLWFwaSIKICAgICAgfSwKICAgICAgInJlcXVpcmVtZW50cyI6IHsKICAgICAgICAiY29udGV4dCI6IHsKICAgICAgICAgICJkYXRhc2V0IjogInN5bnRoZXRpYyIsCiAgICAgICAgICAiZGVwbG95bWVudCI6ICJjb29yZGluYXRvci1kZW1vIiwKICAgICAgICAgICJzZXJ2aWNlIjogImNhdGFsb2d1ZS1hcGkiCiAgICAgICAgfQogICAgICB9CiAgICB9LAogICAgImNvbmNsdXNpb24iOiAiYXNzZXNzZWQiLAogICAgInF1YWxpZmljYXRpb24iOiAiY29uZGl0aW9uYWxfb25fcmVnaXN0ZXJlZF9hcmd1bWVudCIKICB9LAogICJjb25zdW1lZF9tZXNzYWdlX2lkcyI6IFsKICAgICJhc3Nlc3Nvci1vdXRjb21lLXVuaXQwMyIKICBdCn0K",
+  "raw_digest": "66c85209feaee0f57a2588df277890d0a9376603158d01449b8bf4800fe3eae5",
+  "evidence": {},
+  "accepted": true,
+  "outcome": "accepted",
+  "diagnostics": [],
+  "response": {
+    "answer": {
+      "task_digest": "bf80489b56694ac67c22ff9de4b7448ebaf12a15fbd4e831a814b2247274d022",
+      "finding_id": "finding_334c154287e136a1c68483c0fac399a2e97bab78a87fc3d6d24fbbbc559d312d",
+      "claims": {
+        "sample_quorum_present": {
+          "assessment_id": "ef724aa9-d11e-447e-b3c7-1f716c5bd302",
+          "status": "unsupported",
+          "assessed_at": "2026-10-12T23:38:12.126774Z"
+        },
+        "sample_endpoint_available": {
+          "assessment_id": "02511bc6-da29-4f38-a5b2-5fb5f0542d53",
+          "status": "contested",
+          "assessed_at": "2026-10-12T23:38:12.467368Z"
+        },
+        "sample_unobserved_route": {
+          "assessment_id": "82bf05b5-2d95-42e8-84a9-d56f92fc593b",
+          "status": "unsupported",
+          "assessed_at": "2026-10-12T23:38:12.543829Z"
+        }
+      },
+      "scope": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        },
+        "requirements": {
+          "context": {
+            "dataset": "synthetic",
+            "deployment": "coordinator-demo",
+            "service": "catalogue-api"
+          }
+        }
+      },
+      "conclusion": "assessed",
+      "qualification": "conditional_on_registered_argument"
+    },
+    "consumed_message_ids": [
+      "assessor-outcome-unit03"
+    ]
+  }
+}

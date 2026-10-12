@@ -1,0 +1,29 @@
+{
+  "execution_id": "/root/accuracy006_u11_assessor/turn1",
+  "execution_mode": "actual_host_agent",
+  "raw_base64": "ewogICJtZXNzYWdlIjogewogICAgInNjaGVtYSI6ICJFQUwvTUFTLWNvb3JkaW5hdGlvbi8zIiwKICAgICJraW5kIjogImRpc3Bvc2l0aW9uIiwKICAgICJtZXNzYWdlX2lkIjogImFzc2Vzc29yLWRpc3Bvc2l0aW9uIiwKICAgICJ0YXNrX2lkIjogImhlbGRfb3V0X2Nhc2UwNiIsCiAgICAidGFza19kaWdlc3QiOiAiMTA1N2Y4MzExNTNlNTU2N2I4ZTM4ZWQ3ODY3YjE0M2U2ZjA4ODIwYjA5MjA0NjU2ZDVjYjBkNmU2MmU4ZWRiNiIsCiAgICAic2VuZGVyIjogImFzc2Vzc29yIiwKICAgICJyZWNpcGllbnQiOiAicmV2aWV3ZXIiLAogICAgInJlcGx5X3RvIjogInJlcXVlc3QiLAogICAgImF0dGVtcHQiOiAwLAogICAgImZpbmRpbmdfaWQiOiAiZmluZGluZ182MThlZTI1YzljY2MyMWJkNGZkMmI0ODgzNzNkOWQ4MTE5YWUzODBlMGI1ZWE3ODk2NGQ2OWZiNDYzZDMzYjc2IiwKICAgICJjb2RlIjogImV2aWRlbmNlX3VuYXZhaWxhYmxlIiwKICAgICJvdXRjb21lIjogImluY29tcGxldGUiCiAgfSwKICAiY29uc3VtZWRfbWVzc2FnZV9pZHMiOiBbInJlcXVlc3QiXQp9Cg==",
+  "raw_digest": "8bafe5a218ce35479721a907d647e257d44654a61c4fe46ec030c39ed6f4b05b",
+  "evidence": {},
+  "accepted": true,
+  "outcome": "accepted",
+  "diagnostics": [],
+  "response": {
+    "message": {
+      "schema": "EAL/MAS-coordination/3",
+      "kind": "disposition",
+      "message_id": "assessor-disposition",
+      "task_id": "held_out_case06",
+      "task_digest": "1057f831153e5567b8e38ed7867b143e6f08820b09204656d5cb0d6e62e8edb6",
+      "sender": "assessor",
+      "recipient": "reviewer",
+      "reply_to": "request",
+      "attempt": 0,
+      "finding_id": "finding_618ee25c9ccc21bd4fd2b488373d9d8119ae380e0b5ea78964d69fb463d33b76",
+      "code": "evidence_unavailable",
+      "outcome": "incomplete"
+    },
+    "consumed_message_ids": [
+      "request"
+    ]
+  }
+}

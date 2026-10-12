@@ -1,0 +1,64 @@
+{
+  "execution_id": "/root/accuracy006_u09_reviewer/turn1",
+  "execution_mode": "actual_host_agent",
+  "raw_base64": "ewogICJhbnN3ZXIiOiB7CiAgICAidGFza19kaWdlc3QiOiAiZjBhOGI0NGUyMjA4YWQ4MDkxNzYyMDVhODJjNjMzNGU5OTJmOTlkMjRhNDdhYmU1YzE0OWVhYTQ0MjdmZGE0ZCIsCiAgICAiZmluZGluZ19pZCI6ICJmaW5kaW5nXzhhYTllNmU0NWI1NTliOWE2Mjk2OWIwNWE1YWFmOTI5YjEwODdjZTliNTk0YzU1M2U1MjBiOGVhMDI2ODRlNTgiLAogICAgImNsYWltcyI6IHsKICAgICAgInBlcmZvcm1hbmNlX2NyaXRlcmlhX21ldCI6IHsKICAgICAgICAiYXNzZXNzbWVudF9pZCI6IG51bGwsCiAgICAgICAgInN0YXR1cyI6IG51bGwsCiAgICAgICAgImFzc2Vzc2VkX2F0IjogbnVsbAogICAgICB9LAogICAgICAicGVyZm9ybWFuY2VfY3JpdGVyaWFfZmFpbGVkIjogewogICAgICAgICJhc3Nlc3NtZW50X2lkIjogbnVsbCwKICAgICAgICAic3RhdHVzIjogbnVsbCwKICAgICAgICAiYXNzZXNzZWRfYXQiOiBudWxsCiAgICAgIH0KICAgIH0sCiAgICAic2NvcGUiOiB7CiAgICAgICJjb250ZXh0IjogewogICAgICAgICJidWlsZF9pZCI6ICJkZW1vLWJ1aWxkLTQyIiwKICAgICAgICAiZGF0YXNldCI6ICJzeW50aGV0aWMiLAogICAgICAgICJzZXJ2aWNlIjogIm9yZGVycy1hcGkiCiAgICAgIH0sCiAgICAgICJyZXF1aXJlbWVudHMiOiB7CiAgICAgICAgImNsYWltX291dHB1dHMiOiB7CiAgICAgICAgICAicGVyZm9ybWFuY2VfY3JpdGVyaWFfZmFpbGVkIjogImZhaWxzIiwKICAgICAgICAgICJwZXJmb3JtYW5jZV9jcml0ZXJpYV9tZXQiOiAicGFzc2VzIgogICAgICAgIH0sCiAgICAgICAgImNvbnRleHQiOiB7CiAgICAgICAgICAiYnVpbGRfaWQiOiAiZGVtby1idWlsZC00MiIsCiAgICAgICAgICAiZGF0YXNldCI6ICJzeW50aGV0aWMiLAogICAgICAgICAgInNlcnZpY2UiOiAib3JkZXJzLWFwaSIKICAgICAgICB9LAogICAgICAgICJjcml0ZXJpYSI6IHsKICAgICAgICAgICJldmlkZW5jZV9tYXhfYWdlX3NlY29uZHMiOiA4NjQwMCwKICAgICAgICAgICJtYXhpbXVtX2Vycm9yX3JhdGVfcGVyY2VudCI6IDEsCiAgICAgICAgICAibWF4aW11bV9zYW1wbGVfcDk1X21zIjogMjAwLAogICAgICAgICAgIm1pbmltdW1fcmVxdWVzdHMiOiAxMDAKICAgICAgICB9LAogICAgICAgICJ3b3JrbG9hZCI6IHsKICAgICAgICAgICJidWlsZF9pZCI6ICJkZW1vLWJ1aWxkLTQyIiwKICAgICAgICAgICJjb25jdXJyZW50X2NsaWVudHMiOiAzNywKICAgICAgICAgICJkYXRhc2V0IjogInN5bnRoZXRpYyIsCiAgICAgICAgICAicnVuX2lkIjogInJlcXVlc3RlZC1vdGhlci1oZWxkLW91dC1sb2FkIiwKICAgICAgICAgICJzZXJ2aWNlIjogIm9yZGVycy1hcGkiCiAgICAgICAgfQogICAgICB9CiAgICB9LAogICAgImNvbmNsdXNpb24iOiAib3V0X29mX3Njb3BlIiwKICAgICJxdWFsaWZpY2F0aW9uIjogImNvbmRpdGlvbmFsX29uX3JlZ2lzdGVyZWRfYXJndW1lbnQiCiAgfSwKICAiY29uc3VtZWRfbWVzc2FnZV9pZHMiOiBbCiAgICAiYXNzZXNzb3ItdW5pdDA5LWRpc3Bvc2l0aW9uIgogIF0KfQo=",
+  "raw_digest": "3258baa4ac23cfe0901d402ff7f192a346a1427d331af87b93a1b52c0c0af192",
+  "evidence": {},
+  "accepted": true,
+  "outcome": "accepted",
+  "diagnostics": [],
+  "response": {
+    "answer": {
+      "task_digest": "f0a8b44e2208ad809176205a82c6334e992f99d24a47abe5c149eaa4427fda4d",
+      "finding_id": "finding_8aa9e6e45b559b9a62969b05a5aaf929b1087ce9b594c553e520b8ea02684e58",
+      "claims": {
+        "performance_criteria_met": {
+          "assessment_id": null,
+          "status": null,
+          "assessed_at": null
+        },
+        "performance_criteria_failed": {
+          "assessment_id": null,
+          "status": null,
+          "assessed_at": null
+        }
+      },
+      "scope": {
+        "context": {
+          "build_id": "demo-build-42",
+          "dataset": "synthetic",
+          "service": "orders-api"
+        },
+        "requirements": {
+          "claim_outputs": {
+            "performance_criteria_failed": "fails",
+            "performance_criteria_met": "passes"
+          },
+          "context": {
+            "build_id": "demo-build-42",
+            "dataset": "synthetic",
+            "service": "orders-api"
+          },
+          "criteria": {
+            "evidence_max_age_seconds": 86400,
+            "maximum_error_rate_percent": 1,
+            "maximum_sample_p95_ms": 200,
+            "minimum_requests": 100
+          },
+          "workload": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 37,
+            "dataset": "synthetic",
+            "run_id": "requested-other-held-out-load",
+            "service": "orders-api"
+          }
+        }
+      },
+      "conclusion": "out_of_scope",
+      "qualification": "conditional_on_registered_argument"
+    },
+    "consumed_message_ids": [
+      "assessor-unit09-disposition"
+    ]
+  }
+}

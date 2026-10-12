@@ -1,0 +1,43 @@
+{
+  "server": {
+    "workspace": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/reference-inputs/case05",
+    "registry": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/reference-inputs/case05/tools.toml",
+    "database": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/reference-inputs/case05/knowledge.sqlite",
+    "methods": "eal.api_load_methods:registry",
+    "limits": null
+  },
+  "task": {
+    "task_id": "held_out_case05",
+    "question": "Assess every selected claim for this identified synthetic input. Preserve all registered scope and qualifications, distinguish scope mismatch from unavailable results, and make no conclusions about a deployed service.",
+    "entry_id": "api_sample",
+    "claims": [
+      "performance_criteria_met",
+      "performance_criteria_failed"
+    ],
+    "profile": "api_load/1",
+    "requirements": {
+      "context": {
+        "service": "orders-api",
+        "build_id": "demo-build-42",
+        "dataset": "synthetic"
+      },
+      "workload": {
+        "service": "orders-api",
+        "build_id": "demo-build-42",
+        "dataset": "synthetic",
+        "run_id": "requested-other-held-out-load",
+        "concurrent_clients": 37
+      },
+      "criteria": {
+        "minimum_requests": 100,
+        "maximum_sample_p95_ms": 200,
+        "maximum_error_rate_percent": 1,
+        "evidence_max_age_seconds": 86400
+      },
+      "claim_outputs": {
+        "performance_criteria_met": "passes",
+        "performance_criteria_failed": "fails"
+      }
+    }
+  }
+}

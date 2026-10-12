@@ -1,0 +1,17 @@
+{
+  "message": {
+    "schema": "EAL/MAS-coordination/3",
+    "kind": "disposition",
+    "message_id": "assessor-disposition",
+    "task_id": "held_out_case06",
+    "task_digest": "1057f831153e5567b8e38ed7867b143e6f08820b09204656d5cb0d6e62e8edb6",
+    "sender": "assessor",
+    "recipient": "reviewer",
+    "reply_to": "request",
+    "attempt": 0,
+    "finding_id": "finding_618ee25c9ccc21bd4fd2b488373d9d8119ae380e0b5ea78964d69fb463d33b76",
+    "code": "evidence_unavailable",
+    "outcome": "incomplete"
+  },
+  "consumed_message_ids": ["request"]
+}

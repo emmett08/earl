@@ -41,31 +41,31 @@ def test_actual_mcp_multi_message_delivery_redelivery_ack_and_stable_identity(bu
     original = [message("second"), message("first"), message("third")]
     for item in original:
         assert bus.send("run", item, actor="reviewer")["duplicate"] is False
-    retry = LabMCPTransport(bus.runtime, bus.database)
-    assert retry.send("run", original[0], actor="reviewer")["duplicate"] is True
-    with pytest.raises(ValueError, match="different content"):
-        retry.send("run", {**original[0], "task_digest": "b" * 64}, actor="reviewer")
-    with pytest.raises(ValueError, match="communication budget"):
-        retry.send("run", message("extra"), actor="reviewer")
-    with pytest.raises(ValueError, match="not been received"):
-        retry.acknowledge("run", "second", "assessor")
-    first = retry.receive("run", "assessor", limit=2)
-    assert [item["message"]["payload"] for item in first] == original[:2]
-    assert [item["redelivered"] for item in first] == [False, False]
-    rows = bus.receive("run", "assessor")
-    assert [item["message"]["payload"] for item in rows] == original
-    assert [item["redelivered"] for item in rows] == [True, True, False]
-    assert all(set(item) == {"message", "sequence", "redelivered"} for item in rows)
-    assert all(set(item["message"]) == {"message_id", "run_id", "sender", "recipient", "version", "kind", "payload"}
-               for item in rows)
-    assert [item["sequence"] for item in rows] == sorted(item["sequence"] for item in rows)
-    with pytest.raises(ValueError, match="not addressed"):
-        bus.acknowledge("run", "second", "reviewer")
-    for item in original:
-        assert bus.acknowledge("run", item["message_id"], "assessor")["acknowledged"] is True
-    assert retry.acknowledge("run", "second", "assessor")["acknowledged"] is True
-    assert retry.receive("run", "assessor") == []
-    assert retry.status("run")["usage"]["messages"] == 3
+    with LabMCPTransport(bus.runtime, bus.database, binary=bus.binary) as retry:
+        assert retry.send("run", original[0], actor="reviewer")["duplicate"] is True
+        with pytest.raises(ValueError, match="different content"):
+            retry.send("run", {**original[0], "task_digest": "b" * 64}, actor="reviewer")
+        with pytest.raises(ValueError, match="communication budget"):
+            retry.send("run", message("extra"), actor="reviewer")
+        with pytest.raises(ValueError, match="not been received"):
+            retry.acknowledge("run", "second", "assessor")
+        first = retry.receive("run", "assessor", limit=2)
+        assert [item["message"]["payload"] for item in first] == original[:2]
+        assert [item["redelivered"] for item in first] == [False, False]
+        rows = bus.receive("run", "assessor")
+        assert [item["message"]["payload"] for item in rows] == original
+        assert [item["redelivered"] for item in rows] == [True, True, False]
+        assert all(set(item) == {"message", "sequence", "redelivered"} for item in rows)
+        assert all(set(item["message"]) == {"message_id", "run_id", "sender", "recipient", "version", "kind", "payload"}
+                   for item in rows)
+        assert [item["sequence"] for item in rows] == sorted(item["sequence"] for item in rows)
+        with pytest.raises(ValueError, match="not addressed"):
+            bus.acknowledge("run", "second", "reviewer")
+        for item in original:
+            assert bus.acknowledge("run", item["message_id"], "assessor")["acknowledged"] is True
+        assert retry.acknowledge("run", "second", "assessor")["acknowledged"] is True
+        assert retry.receive("run", "assessor") == []
+        assert retry.status("run")["usage"]["messages"] == 3
 
 
 def test_native_accounting_reuses_mcp_and_status_reads_same_store(bus, monkeypatch):
@@ -108,13 +108,15 @@ def test_actual_rust_encoder_preserves_exact_payload_values(bus):
     assert bus.validate_wire(bus._encode(envelope)) == envelope
 
 
-def test_adapter_fails_unknown_operations_without_cli_or_json_fallback(bus, monkeypatch):
+@pytest.mark.parametrize("operation", ["mas_reserve", "mas_send"])
+def test_adapter_fails_unknown_operations_without_cli_or_json_fallback(bus, monkeypatch, operation):
     def unexpected(*args, **kwargs):
         pytest.fail("Unknown MCP operation attempted a fallback")
 
-    monkeypatch.setattr(bus, "command", unexpected)
+    assert not hasattr(bus, "command")
+    monkeypatch.setattr("eal.coordination.lab_mcp.PersistentMCP", unexpected)
     with pytest.raises(ValueError, match="not exposed"):
-        bus.mcp_call("mas_reserve", {})
+        bus.mcp_call(operation, {})
     assert not bus.database.is_file()
 
 
@@ -146,9 +148,11 @@ def test_operation_rejection_remains_an_ordinary_diagnostic():
 def test_inherited_environment_cannot_select_another_sdk_database_or_leak_credentials(bus, monkeypatch):
     monkeypatch.setenv("PYTHONPATH", "/unrelated/imports")
     monkeypatch.setenv("MAS_STATE_DB", "/unrelated/state.sqlite")
+    monkeypatch.setenv("EAL_MAS_CODEC_MODE", "oneshot")
     monkeypatch.setenv("EXAMPLE_API_KEY", "synthetic-private-value")
     env = bus._environment()
     assert env["PYTHONPATH"] == str(bus.runtime / "runtime")
     assert env["MAS_STATE_DB"] == str(bus.database)
     assert env["MAS_PROTOCOL_BIN"] == str(bus.binary)
+    assert "EAL_MAS_CODEC_MODE" not in env
     assert "EXAMPLE_API_KEY" not in env

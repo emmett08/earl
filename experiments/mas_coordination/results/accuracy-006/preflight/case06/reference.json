@@ -1,0 +1,45 @@
+{
+  "schema": "EAL/coordination-accuracy-reference/1",
+  "case_id": "case06",
+  "execution_mode": "software_reference",
+  "statuses": {
+    "sample_quorum_present": null,
+    "sample_endpoint_available": null
+  },
+  "check": "evidence_unavailable",
+  "conclusion": "unresolved",
+  "finding": {
+    "schema": "EAL/MAS-coordination-finding/3",
+    "task_digest": "4c8715075b38701f61edfecd3972c44a93d31b9415dcbef861bd792a5ceb576b",
+    "check": {
+      "ok": false,
+      "code": "evidence_unavailable",
+      "detail": "Registered entry is unavailable"
+    },
+    "assessments": {},
+    "packets": {},
+    "explanations": {},
+    "mcp": {
+      "transport": "actual_mcp_stdio",
+      "calls": []
+    },
+    "collected_count": 0,
+    "reused_count": 0,
+    "finding_id": "finding_acd951c86f6b6962dea023399a9ff49f847fff71e4fe589c37166068eef7a1c6"
+  },
+  "fixture_truth": {
+    "value": {
+      "heartbeats": 7,
+      "responsive_nodes": 1,
+      "outage_count": 2
+    },
+    "observed_at": "2026-10-12T23:32:49Z",
+    "max_age_seconds": 86400,
+    "deliberately_stale": false,
+    "heartbeat_predicate": true,
+    "quorum_predicate": false,
+    "outage_objection_predicate": true,
+    "unobserved_claim_has_support_route": false,
+    "registration_available": false
+  }
+}

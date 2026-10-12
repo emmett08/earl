@@ -1,0 +1,14 @@
+{
+  "schema": "EAL/synthetic-availability-snapshot/1",
+  "observed_at": "2026-10-12T23:32:49Z",
+  "context": {
+    "dataset": "synthetic",
+    "deployment": "coordinator-demo",
+    "service": "catalogue-api"
+  },
+  "value": {
+    "heartbeats": 7,
+    "responsive_nodes": 1,
+    "outage_count": 2
+  }
+}

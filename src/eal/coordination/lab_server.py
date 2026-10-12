@@ -21,16 +21,12 @@ from mas_protocol.store import Store
 
 def main():
     codec = CodecProcess(os.environ["MAS_PROTOCOL_BIN"])
-    persistent = os.environ["EAL_MAS_CODEC_MODE"] == "persistent"
-    original = protocol._rust_call
     metrics = {"encode_calls": 0, "parse_calls": 0, "admit_calls": 0, "codec_ns": 0}
 
     def rust_call(operation, source, max_bytes, max_depth):
         started = time.perf_counter_ns()
         metrics[operation + "_calls"] += 1
         try:
-            if not persistent:
-                return original(operation, source, max_bytes, max_depth)
             try:
                 value = codec.call(operation, source, max_bytes, max_depth)
             except CodecUnavailable as error:
@@ -64,8 +60,6 @@ def main():
     def mas_send_envelope(envelope: dict, actor: str) -> dict:
         """Rust admits the complete envelope before the unchanged durable send rules."""
         def send():
-            if not persistent:
-                raise ValueError("Rust admission requires the persistent codec")
             source = json.dumps(envelope, ensure_ascii=False, allow_nan=False, separators=(",", ":"), sort_keys=True)
             canonical = rust_call("admit", source, 65536, 32)["message"]
             if canonical["version"] != protocol.BASE_VERSION:
@@ -88,8 +82,7 @@ def main():
         """Inspect local process reuse and codec timings; no provider metadata."""
         return {"ok": True, "result": {"server_pid": os.getpid(),
                 "codec_pid": None if codec.process is None else codec.process.pid,
-                "codec_starts": codec.starts if persistent else metrics["encode_calls"] + metrics["parse_calls"],
-                "codec_mode": "persistent" if persistent else "oneshot", **metrics}}
+                "codec_starts": codec.starts, "codec_mode": "persistent", **metrics}}
 
     try:
         server.run(transport="stdio")

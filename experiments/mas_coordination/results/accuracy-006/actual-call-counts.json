@@ -1,0 +1,21 @@
+{
+  "scope": "Native units only; excludes preparation, preflight and reference calls; includes attempted calls.",
+  "arms": {
+    "json": {
+      "gateway:lookup": 5,
+      "gateway:query": 6,
+      "mcp:eal_assess_known": 9,
+      "mcp:eal_explain": 16,
+      "mcp:eal_packet": 16,
+      "mcp:eal_sources": 4
+    },
+    "lab": {
+      "gateway:lookup": 7,
+      "gateway:query": 6,
+      "mcp:eal_assess_known": 9,
+      "mcp:eal_explain": 21,
+      "mcp:eal_packet": 21,
+      "mcp:eal_sources": 4
+    }
+  }
+}

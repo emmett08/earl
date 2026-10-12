@@ -257,8 +257,10 @@ The default `{"kind": "json"}` transport is a durable local SQLite mailbox with
 the same stable-ID delivery and effect ledger. To use an installed and built
 MAS Protocol Lab runtime, pass `--runtime /workspace/mas-protocol-lab` on `start`,
 or select `{"kind": "lab", "runtime": "/absolute/runtime"}` in the run spec.
-The Lab bridge owns one persistent local MCP session in the isolated Lab
-interpreter and one persistent Rust codec process. Its adapter exposes
+The standalone `LabMCPTransport` owns one persistent local MCP session in the
+isolated Lab interpreter and one persistent Rust codec process. The EAL adapter
+uses one message-admission path: persistent MCP/codec with combined Rust admission. Its
+adapter exposes
 `mas_create_run`, `mas_send_envelope`, `mas_receive`, `mas_ack`, `mas_status`,
 `mas_reserve_call` and `mas_finish_call`. Reservation and completion call the
 supplied Store methods through the same session. `mas_encode`, `mas_validate`
@@ -277,16 +279,15 @@ Python environment; the current adapter uses the packaged codec, whose MIT
 licence and upstream source hashes are retained under `rust_codec/`. A wheel
 ships the crate sources and lockfile, not a platform binary. Set
 `EAL_MAS_CODEC_BIN` to a built executable when it lives outside the packaged
-crate's `target/release/` directory. The original external codec is only needed
-for the historical one-shot benchmark control.
+crate's `target/release/` directory.
 
 `mas_send_envelope` accepts a raw envelope. Rust's `admit` operation recognises
 the complete JSON source, validates exact types and limits, formats canonical
 wire text and parses that text completely. The canonical typed result enters
 the same mailbox transaction, actor/recipient checks, immutable identity and
-budget rules. No caller flag can assert prior validation. This combines work
-previously split over an encoding MCP call and several codec round trips; it
-does not change the version `1` wire grammar. EAL/3 reasoning and the `/3`
+budget rules. No caller flag can assert prior validation. Combined admission
+performs source validation, canonical encoding and complete parsing in one
+codec request using the version `1` wire grammar. EAL/3 reasoning and the `/3`
 domain contracts remain in Python.
 
 Sessions start lazily and serialize operations. Use `with LabMCPTransport(...)`
@@ -305,15 +306,15 @@ also a mechanism control: equivalent validated answers and recovery do not
 demonstrate an advantage from wire syntax. Python-only default installation
 does not build or start the optional native transport.
 
-The reproducible transport benchmark is
-`python -m experiments.mas_coordination.transport_benchmark --help`; its frozen
-plan is `experiments/mas_coordination/transport-benchmark-plan.json`. It compares
-the retained one-shot implementation, persistent MCP with one-shot codecs,
-persistent MCP/codec with repeated round trips, combined Rust admission, and
-JSON using identical messages and useful mailbox outcomes. Cold startup,
-post-startup operations, actual process launches and diagnostic profiles are
-reported separately. This software workload measures local transport cost,
-not model accuracy, token cost or inference latency.
+The [transport benchmark](../experiments/mas_coordination/README.md#local-transport-performance)
+compares current production with JSON and frozen experimental controls using
+identical messages and useful mailbox outcomes. The one-shot CLI transport and
+intermediate codec/admission variants belong only to
+[`benchmark_controls`](../experiments/mas_coordination/benchmark_controls/README.md)
+and the experiment's legacy baseline; they are excluded from the installed
+package. Cold startup, post-startup operations, actual process launches and
+diagnostic profiles are reported separately. This software workload measures
+local transport cost, not model accuracy, token cost or inference latency.
 
 | Frozen budget | Default |
 | --- | ---: |
@@ -342,12 +343,19 @@ multi-claim MCP acquisition, reuse, source substitution, quotas, cancellation,
 exact malformed-byte retention and abrupt process termination at declared
 boundaries. [Transport tests](../tests/test_coordination_bus.py) distinguish
 actual Lab checks from optional-runtime skips. Retained trials and their limits
-belong in the [coordinator report](../experiments/mas_coordination/results/coordinator-003/README.md).
+belong in the [coordinator report](../experiments/mas_coordination/results/coordinator-003/README.md)
+and the [paired native-worker study](../experiments/mas_coordination/results/accuracy-006/README.md).
 
 Reliable scope checking and recovery are implemented mechanisms. Broader model
 accuracy, latency and total-cost improvements require comparative trials with
 fresh separate contexts, equivalent durable-JSON controls and all failures
 retained. Passing interpreter or software checks cannot establish those gains.
+The [frozen accuracy plan](../experiments/mas_coordination/accuracy-plan.json)
+measures first-attempt fidelity to scoped EAL findings with separate fresh
+assessor/reviewer contexts and an equivalent JSON control. It retains rejected
+and missing responses without repair. Its six synthetic task pairs cannot
+establish general model accuracy or a causal transport advantage; host model
+identity, token usage and billing remain unknown without execution evidence.
 
 This is a trusted single-host workflow on a local filesystem. Workers use
 separate execution contexts while sharing host filesystem permissions; role

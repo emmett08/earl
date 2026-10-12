@@ -1,0 +1,63 @@
+{
+  "schema": "EAL/coordination-worker-context/1",
+  "role": "assessor",
+  "call_id": "coord-208c5e21cf1a4185beece7d08e4af7ff:assessor",
+  "task": {
+    "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+    "pinned_at": "2026-10-12T23:36:44.641582Z",
+    "registered_context": {
+      "dataset": "synthetic",
+      "deployment": "coordinator-demo",
+      "service": "catalogue-api"
+    },
+    "schema": "EAL/MAS-coordination-task/3",
+    "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+    "task": {
+      "claims": [
+        "sample_quorum_present",
+        "sample_endpoint_available",
+        "sample_unobserved_route"
+      ],
+      "entry_id": "availability_sample",
+      "profile": "registered_claims/1",
+      "question": "Assess every selected claim for this identified synthetic input. Preserve all registered scope and qualifications, distinguish scope mismatch from unavailable results, and make no conclusions about a deployed service.",
+      "requirements": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        }
+      },
+      "task_id": "held_out_case02"
+    },
+    "task_digest": "bf80489b56694ac67c22ff9de4b7448ebaf12a15fbd4e831a814b2247274d022"
+  },
+  "received_messages": [
+    {
+      "attempt": 0,
+      "kind": "request",
+      "message_id": "request",
+      "recipient": "assessor",
+      "reply_to": null,
+      "schema": "EAL/MAS-coordination/3",
+      "sender": "reviewer",
+      "task_digest": "bf80489b56694ac67c22ff9de4b7448ebaf12a15fbd4e831a814b2247274d022",
+      "task_id": "held_out_case02"
+    }
+  ],
+  "gateway": {
+    "argv": [
+      "/workspace/earl/.venv/bin/python",
+      "-m",
+      "eal.coordination.cli",
+      "query",
+      "--run",
+      "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit03/run",
+      "--call-id",
+      "coord-208c5e21cf1a4185beece7d08e4af7ff:assessor"
+    ]
+  },
+  "response_schema": "/workspace/earl/src/eal/coordination/response-schema.json",
+  "instructions": "Inspect your addressed messages. Request a finding using the gateway argv and author an outcome or disposition with its exact trusted references. Return message and consumed_message_ids.",
+  "qualifications": "EAL status is conditional on the registered argument. Unsupported is not proof of the opposite. Authored prose and measurements are not independently certified by registration."
+}

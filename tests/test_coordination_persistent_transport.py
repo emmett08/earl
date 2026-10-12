@@ -18,6 +18,7 @@ import pytest
 from eal.coordination.bus import envelope
 from eal.coordination.codec_process import CodecProcess, CodecUnavailable
 from eal.coordination.lab_mcp import LabMCPTransport
+from experiments.mas_coordination.benchmark_controls import make_control
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -47,10 +48,8 @@ def bus(runtime_and_binary, tmp_path):
 @pytest.fixture
 def admission_pair(runtime_and_binary, tmp_path):
     runtime, binary = runtime_and_binary
-    with LabMCPTransport(runtime, tmp_path / "roundtrip.sqlite", binary=binary,
-                         admission_mode="roundtrip") as roundtrip:
-        with LabMCPTransport(runtime, tmp_path / "rust.sqlite", binary=binary,
-                             admission_mode="rust") as native:
+    with make_control("persistent_mcp_codec", runtime, tmp_path / "roundtrip.sqlite", binary=binary) as roundtrip:
+        with LabMCPTransport(runtime, tmp_path / "rust.sqlite", binary=binary) as native:
             yield roundtrip, native
 
 
@@ -75,7 +74,7 @@ def equal_store_states(pair, run_id="run"):
 
 
 def send_envelope(client, value, actor="reviewer"):
-    if client.admission_mode == "rust":
+    if client.diagnostics()["admission_mode"] == "rust":
         return client.mcp_call("mas_send_envelope", {"envelope": value, "actor": actor})
     return client.mcp_call("mas_send", {"text": client._encode(value), "actor": actor})
 
@@ -193,7 +192,8 @@ def test_reservation_and_completion_share_mcp_session_without_cli(bus, monkeypat
     def unexpected_cli(*args, **kwargs):
         pytest.fail("Persistent transport used a per-operation CLI process")
 
-    monkeypatch.setattr(bus, "command", unexpected_cli)
+    assert not hasattr(bus, "command")
+    monkeypatch.setattr("subprocess.run", unexpected_cli)
     bus.create("run", "reviewer", "assessor", max_calls=1)
     assert bus.reserve("run", "assessor", "worker-call")["reserved"] is True
     evidence = {"execution_id": "software/turn1", "execution_mode": "software_test",

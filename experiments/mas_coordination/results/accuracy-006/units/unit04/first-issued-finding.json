@@ -1,0 +1,1017 @@
+{
+  "assessments": {
+    "sample_endpoint_available": {
+      "assessed_at": "2026-10-12T23:37:29.900320Z",
+      "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+      "claim": "sample_endpoint_available",
+      "collected_count": 2,
+      "collection_id": "bc813aa5-a8f9-46a0-9107-b53e32f3e0d5",
+      "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+      "entry_id": "availability_sample",
+      "full_explanation": {
+        "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "packet": {
+        "arguments": {
+          "heartbeat_route": {
+            "conclusion": "sample_endpoint_available",
+            "method_result": {
+              "method": "structured/1",
+              "outputs": {
+                "authored": true,
+                "mechanically_proved": false
+              },
+              "require_holds": [],
+              "status": "supported"
+            },
+            "premises": [],
+            "status": "contested"
+          }
+        },
+        "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+        "assumptions": {},
+        "claims": {
+          "sample_endpoint_available": {
+            "active_objections": [],
+            "contested_arguments": [
+              "heartbeat_route"
+            ],
+            "grounded_label": "rejected",
+            "observation_ids": [
+              {
+                "evidence_id": "heartbeats",
+                "observation_id": "25f2cbd2-75f0-4a28-bbcf-9b88b394e362"
+              },
+              {
+                "evidence_id": "outage",
+                "observation_id": "ce791016-7cde-45a9-9697-2905f2dc349a"
+              }
+            ],
+            "prose_verified": false,
+            "related_arguments": [
+              "heartbeat_route"
+            ],
+            "statement": "The identified synthetic snapshot supports endpoint availability; recorded outages challenge that heartbeat-based route.",
+            "status": "contested",
+            "supporting_arguments": [],
+            "undecided_objections": []
+          }
+        },
+        "collection_id": "bc813aa5-a8f9-46a0-9107-b53e32f3e0d5",
+        "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+        "evidence": {
+          "heartbeats": {
+            "age_seconds": 280.90032,
+            "age_status": "within_max_age",
+            "availability_issues": [],
+            "observation_id": "25f2cbd2-75f0-4a28-bbcf-9b88b394e362",
+            "observed_at": "2026-10-12T23:32:49Z",
+            "status": "available"
+          },
+          "outage": {
+            "age_seconds": 280.90032,
+            "age_status": "within_max_age",
+            "availability_issues": [],
+            "observation_id": "ce791016-7cde-45a9-9697-2905f2dc349a",
+            "observed_at": "2026-10-12T23:32:49Z",
+            "status": "available"
+          }
+        },
+        "full_explanation": {
+          "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+          "detail": "full",
+          "operation": "explain"
+        },
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "objections": {
+          "recorded_outage": {
+            "attackers": [],
+            "premises": [],
+            "status": "active",
+            "target": "heartbeat_route",
+            "target_kind": "argument"
+          }
+        },
+        "omitted": {},
+        "premise_claims": {},
+        "schema": "EAL/assessment-packet/2",
+        "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+        "summary_complete": true
+      },
+      "reused_count": 0,
+      "schema": "EAL/registered-assessment/1",
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+      "status": "contested"
+    },
+    "sample_quorum_present": {
+      "assessed_at": "2026-10-12T23:37:29.564714Z",
+      "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+      "claim": "sample_quorum_present",
+      "collected_count": 1,
+      "collection_id": "490b3308-1d22-470c-99c6-050b46479fb3",
+      "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+      "entry_id": "availability_sample",
+      "full_explanation": {
+        "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "packet": {
+        "arguments": {
+          "quorum_route": {
+            "conclusion": "sample_quorum_present",
+            "method_result": {
+              "method": "structured/1",
+              "status": "not_run"
+            },
+            "premises": [],
+            "status": "unsupported"
+          }
+        },
+        "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+        "assumptions": {},
+        "claims": {
+          "sample_quorum_present": {
+            "active_objections": [],
+            "contested_arguments": [],
+            "grounded_label": "rejected",
+            "observation_ids": [
+              {
+                "evidence_id": "quorum",
+                "observation_id": "079fb985-ad57-4722-bd83-35c607264672"
+              }
+            ],
+            "prose_verified": false,
+            "related_arguments": [
+              "quorum_route"
+            ],
+            "statement": "The identified synthetic snapshot records at least two responsive nodes; no claim about a deployed system is made.",
+            "status": "unsupported",
+            "supporting_arguments": [],
+            "undecided_objections": []
+          }
+        },
+        "collection_id": "490b3308-1d22-470c-99c6-050b46479fb3",
+        "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+        "evidence": {
+          "quorum": {
+            "age_seconds": 280.564714,
+            "age_status": "within_max_age",
+            "availability_issues": [
+              "predicate_not_met"
+            ],
+            "observation_id": "079fb985-ad57-4722-bd83-35c607264672",
+            "observed_at": "2026-10-12T23:32:49Z",
+            "predicate_failures": [
+              {
+                "issue": "not_met",
+                "path": "responsive_nodes"
+              }
+            ],
+            "status": "unavailable"
+          }
+        },
+        "full_explanation": {
+          "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+          "detail": "full",
+          "operation": "explain"
+        },
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "objections": {},
+        "omitted": {},
+        "premise_claims": {},
+        "schema": "EAL/assessment-packet/2",
+        "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+        "summary_complete": true
+      },
+      "reused_count": 0,
+      "schema": "EAL/registered-assessment/1",
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+      "status": "unsupported"
+    },
+    "sample_unobserved_route": {
+      "assessed_at": "2026-10-12T23:37:29.974319Z",
+      "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+      "claim": "sample_unobserved_route",
+      "collected_count": 0,
+      "collection_id": "7d275580-4326-49df-a220-bb3ae1d51464",
+      "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+      "entry_id": "availability_sample",
+      "full_explanation": {
+        "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "packet": {
+        "arguments": {},
+        "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+        "assumptions": {},
+        "claims": {
+          "sample_unobserved_route": {
+            "active_objections": [],
+            "contested_arguments": [],
+            "grounded_label": "rejected",
+            "observation_ids": [],
+            "prose_verified": false,
+            "related_arguments": [],
+            "statement": "No authored support route establishes this synthetic routing claim.",
+            "status": "unsupported",
+            "supporting_arguments": [],
+            "undecided_objections": []
+          }
+        },
+        "collection_id": "7d275580-4326-49df-a220-bb3ae1d51464",
+        "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+        "evidence": {},
+        "full_explanation": {
+          "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+          "detail": "full",
+          "operation": "explain"
+        },
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "objections": {},
+        "omitted": {},
+        "premise_claims": {},
+        "schema": "EAL/assessment-packet/2",
+        "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+        "summary_complete": true
+      },
+      "reused_count": 0,
+      "schema": "EAL/registered-assessment/1",
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+      "status": "unsupported"
+    }
+  },
+  "check": {
+    "code": null,
+    "detail": "Pinned registered source and profile correspond to the task",
+    "ok": true
+  },
+  "collected_count": 3,
+  "explanations": {
+    "sample_endpoint_available": {
+      "arguments": {
+        "heartbeat_route": {
+          "attackers": [
+            "objection:recorded_outage"
+          ],
+          "conclusion": "sample_endpoint_available",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "heartbeats"
+            ],
+            "premises": [],
+            "reasoning": "snapshot_relation"
+          },
+          "grounded_label": "rejected",
+          "locally_usable": true,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {
+              "authored": true,
+              "mechanically_proved": false
+            },
+            "method": "structured/1",
+            "predicates": [],
+            "premise_acceptance": "deferred_to_composed_solver",
+            "reasons": [
+              "Method structured/1: Authored support is available; prose sufficiency is not mechanically established"
+            ],
+            "status": "supported"
+          },
+          "reasons": [
+            "Evidence 'heartbeats' is available",
+            "Method structured/1: Authored support is available; prose sufficiency is not mechanically established",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": true,
+          "status": "contested"
+        },
+        "quorum_route": {
+          "attackers": [],
+          "conclusion": "sample_quorum_present",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "quorum"
+            ],
+            "premises": [],
+            "reasoning": "snapshot_relation"
+          },
+          "grounded_label": "rejected",
+          "locally_usable": false,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {},
+            "method": "structured/1",
+            "reasons": [
+              "Required sources are unavailable or out of scope"
+            ],
+            "status": "not_run"
+          },
+          "reasons": [
+            "Evidence 'quorum' is unavailable",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "unsupported"
+        }
+      },
+      "assessed_at": "2026-10-12T23:37:29.900320Z",
+      "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+      "assumptions": {},
+      "claim": "sample_endpoint_available",
+      "evidence": {
+        "heartbeats": {
+          "availability_issues": [],
+          "reasons": [
+            "Field 'heartbeats' >= 3 holds (observed 7)"
+          ],
+          "run_id": "25f2cbd2-75f0-4a28-bbcf-9b88b394e362",
+          "status": "available",
+          "tool": "synthetic_availability",
+          "tool_binding_digest": "aa23bc7f1731f5f5b125e20810b18a2d18bcc70e658c6beafca4e1310ca53ff5",
+          "tool_version": "1"
+        },
+        "outage": {
+          "availability_issues": [],
+          "reasons": [
+            "Field 'outage_count' >= 1 holds (observed 2)"
+          ],
+          "run_id": "ce791016-7cde-45a9-9697-2905f2dc349a",
+          "status": "available",
+          "tool": "synthetic_availability",
+          "tool_binding_digest": "aa23bc7f1731f5f5b125e20810b18a2d18bcc70e658c6beafca4e1310ca53ff5",
+          "tool_version": "1"
+        },
+        "quorum": {
+          "availability_issues": [
+            "missing_observation"
+          ],
+          "reasons": [
+            "No evidence record is available"
+          ],
+          "status": "unavailable"
+        }
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {
+        "recorded_outage": {
+          "attackers": [],
+          "environment": "demo",
+          "evidence": [
+            "outage"
+          ],
+          "grounded_label": "accepted",
+          "premise_labels": {},
+          "premises": [],
+          "reasons": [
+            "Objection evidence 'outage' is available",
+            "Least-information acceptability label: accepted"
+          ],
+          "source_usable": true,
+          "status": "active",
+          "target": "heartbeat_route",
+          "target_kind": "argument"
+        }
+      },
+      "reasoning": {
+        "snapshot_relation": {
+          "backing": [],
+          "method": "structured/1",
+          "objection_statuses": {},
+          "rationale": "The authored acceptance predicates supply these bounded snapshot claims. This is an explicit argument relation, not a universal availability proof.",
+          "reasons": [
+            "Method structured/1 and backing are locally available; acceptance is assessed per application"
+          ],
+          "status": "supported"
+        }
+      },
+      "result": {
+        "contested_arguments": [
+          "heartbeat_route"
+        ],
+        "environment": "demo",
+        "grounded_label": "rejected",
+        "objection_statuses": {},
+        "objections": [],
+        "proposition": null,
+        "prose_verified": false,
+        "reasons": [
+          "Source-usable derivations are rejected or undecided: heartbeat_route",
+          "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+        ],
+        "source_usable": true,
+        "statement": "The identified synthetic snapshot supports endpoint availability; recorded outages challenge that heartbeat-based route.",
+        "status": "contested",
+        "supporting_arguments": [],
+        "undecided_objections": []
+      },
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd"
+    },
+    "sample_quorum_present": {
+      "arguments": {
+        "heartbeat_route": {
+          "attackers": [
+            "objection:recorded_outage"
+          ],
+          "conclusion": "sample_endpoint_available",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "heartbeats"
+            ],
+            "premises": [],
+            "reasoning": "snapshot_relation"
+          },
+          "grounded_label": "rejected",
+          "locally_usable": false,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {},
+            "method": "structured/1",
+            "reasons": [
+              "Required sources are unavailable or out of scope"
+            ],
+            "status": "not_run"
+          },
+          "reasons": [
+            "Evidence 'heartbeats' is unavailable",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "unsupported"
+        },
+        "quorum_route": {
+          "attackers": [],
+          "conclusion": "sample_quorum_present",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "quorum"
+            ],
+            "premises": [],
+            "reasoning": "snapshot_relation"
+          },
+          "grounded_label": "rejected",
+          "locally_usable": false,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {},
+            "method": "structured/1",
+            "reasons": [
+              "Required sources are unavailable or out of scope"
+            ],
+            "status": "not_run"
+          },
+          "reasons": [
+            "Evidence 'quorum' is unavailable",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "unsupported"
+        }
+      },
+      "assessed_at": "2026-10-12T23:37:29.564714Z",
+      "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+      "assumptions": {},
+      "claim": "sample_quorum_present",
+      "evidence": {
+        "heartbeats": {
+          "availability_issues": [
+            "missing_observation"
+          ],
+          "reasons": [
+            "No evidence record is available"
+          ],
+          "status": "unavailable"
+        },
+        "outage": {
+          "availability_issues": [
+            "missing_observation"
+          ],
+          "reasons": [
+            "No evidence record is available"
+          ],
+          "status": "unavailable"
+        },
+        "quorum": {
+          "availability_issues": [
+            "predicate_not_met"
+          ],
+          "predicate_failures": [
+            {
+              "issue": "not_met",
+              "path": "responsive_nodes"
+            }
+          ],
+          "reasons": [
+            "Field 'responsive_nodes' >= 2 does not hold (observed 1)"
+          ],
+          "run_id": "079fb985-ad57-4722-bd83-35c607264672",
+          "status": "unavailable",
+          "tool": "synthetic_availability",
+          "tool_binding_digest": "aa23bc7f1731f5f5b125e20810b18a2d18bcc70e658c6beafca4e1310ca53ff5",
+          "tool_version": "1"
+        }
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {
+        "recorded_outage": {
+          "attackers": [],
+          "environment": "demo",
+          "evidence": [
+            "outage"
+          ],
+          "grounded_label": "rejected",
+          "premise_labels": {},
+          "premises": [],
+          "reasons": [
+            "Objection evidence 'outage' is unavailable",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "inactive",
+          "target": "heartbeat_route",
+          "target_kind": "argument"
+        }
+      },
+      "reasoning": {
+        "snapshot_relation": {
+          "backing": [],
+          "method": "structured/1",
+          "objection_statuses": {},
+          "rationale": "The authored acceptance predicates supply these bounded snapshot claims. This is an explicit argument relation, not a universal availability proof.",
+          "reasons": [
+            "Method structured/1 and backing are locally available; acceptance is assessed per application"
+          ],
+          "status": "supported"
+        }
+      },
+      "result": {
+        "contested_arguments": [],
+        "environment": "demo",
+        "grounded_label": "rejected",
+        "objection_statuses": {},
+        "objections": [],
+        "proposition": null,
+        "prose_verified": false,
+        "reasons": [
+          "No source-usable derivation supplies support; this does not establish falsity",
+          "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+        ],
+        "source_usable": false,
+        "statement": "The identified synthetic snapshot records at least two responsive nodes; no claim about a deployed system is made.",
+        "status": "unsupported",
+        "supporting_arguments": [],
+        "undecided_objections": []
+      },
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd"
+    },
+    "sample_unobserved_route": {
+      "arguments": {
+        "heartbeat_route": {
+          "attackers": [
+            "objection:recorded_outage"
+          ],
+          "conclusion": "sample_endpoint_available",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "heartbeats"
+            ],
+            "premises": [],
+            "reasoning": "snapshot_relation"
+          },
+          "grounded_label": "rejected",
+          "locally_usable": false,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {},
+            "method": "structured/1",
+            "reasons": [
+              "Required sources are unavailable or out of scope"
+            ],
+            "status": "not_run"
+          },
+          "reasons": [
+            "Evidence 'heartbeats' is unavailable",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "unsupported"
+        },
+        "quorum_route": {
+          "attackers": [],
+          "conclusion": "sample_quorum_present",
+          "dependencies": {
+            "assumptions": [],
+            "evidence": [
+              "quorum"
+            ],
+            "premises": [],
+            "reasoning": "snapshot_relation"
+          },
+          "grounded_label": "rejected",
+          "locally_usable": false,
+          "origin": null,
+          "premise_labels": {},
+          "reasoning_result": {
+            "details": {},
+            "method": "structured/1",
+            "reasons": [
+              "Required sources are unavailable or out of scope"
+            ],
+            "status": "not_run"
+          },
+          "reasons": [
+            "Evidence 'quorum' is unavailable",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "unsupported"
+        }
+      },
+      "assessed_at": "2026-10-12T23:37:29.974319Z",
+      "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+      "assumptions": {},
+      "claim": "sample_unobserved_route",
+      "evidence": {
+        "heartbeats": {
+          "availability_issues": [
+            "missing_observation"
+          ],
+          "reasons": [
+            "No evidence record is available"
+          ],
+          "status": "unavailable"
+        },
+        "outage": {
+          "availability_issues": [
+            "missing_observation"
+          ],
+          "reasons": [
+            "No evidence record is available"
+          ],
+          "status": "unavailable"
+        },
+        "quorum": {
+          "availability_issues": [
+            "missing_observation"
+          ],
+          "reasons": [
+            "No evidence record is available"
+          ],
+          "status": "unavailable"
+        }
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {
+        "recorded_outage": {
+          "attackers": [],
+          "environment": "demo",
+          "evidence": [
+            "outage"
+          ],
+          "grounded_label": "rejected",
+          "premise_labels": {},
+          "premises": [],
+          "reasons": [
+            "Objection evidence 'outage' is unavailable",
+            "Least-information acceptability label: rejected"
+          ],
+          "source_usable": false,
+          "status": "inactive",
+          "target": "heartbeat_route",
+          "target_kind": "argument"
+        }
+      },
+      "reasoning": {
+        "snapshot_relation": {
+          "backing": [],
+          "method": "structured/1",
+          "objection_statuses": {},
+          "rationale": "The authored acceptance predicates supply these bounded snapshot claims. This is an explicit argument relation, not a universal availability proof.",
+          "reasons": [
+            "Method structured/1 and backing are locally available; acceptance is assessed per application"
+          ],
+          "status": "supported"
+        }
+      },
+      "result": {
+        "contested_arguments": [],
+        "environment": "demo",
+        "grounded_label": "rejected",
+        "objection_statuses": {},
+        "objections": [],
+        "proposition": null,
+        "prose_verified": false,
+        "reasons": [
+          "No source-usable derivation supplies support; this does not establish falsity",
+          "Least-information acceptability label: rejected; rejection does not establish claim falsity"
+        ],
+        "source_usable": false,
+        "statement": "No authored support route establishes this synthetic routing claim.",
+        "status": "unsupported",
+        "supporting_arguments": [],
+        "undecided_objections": []
+      },
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd"
+    }
+  },
+  "finding_id": "finding_6fc0bc4578ee69987d32d6cbfe64f9300f6266348652228d88223c0309d3ae86",
+  "mcp": {
+    "calls": [
+      {
+        "arguments": {},
+        "exposure": "registered",
+        "name": "eal_sources",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "claim": "sample_quorum_present",
+          "entry_id": "availability_sample"
+        },
+        "exposure": "registered",
+        "name": "eal_assess_known",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "claim": "sample_endpoint_available",
+          "entry_id": "availability_sample"
+        },
+        "exposure": "registered",
+        "name": "eal_assess_known",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "claim": "sample_unobserved_route",
+          "entry_id": "availability_sample"
+        },
+        "exposure": "registered",
+        "name": "eal_assess_known",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+          "claim": "sample_quorum_present"
+        },
+        "exposure": "operator",
+        "name": "eal_packet",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+          "claim": "sample_quorum_present"
+        },
+        "exposure": "operator",
+        "name": "eal_explain",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+          "claim": "sample_endpoint_available"
+        },
+        "exposure": "operator",
+        "name": "eal_packet",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+          "claim": "sample_endpoint_available"
+        },
+        "exposure": "operator",
+        "name": "eal_explain",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+          "claim": "sample_unobserved_route"
+        },
+        "exposure": "operator",
+        "name": "eal_packet",
+        "outcome": "success"
+      },
+      {
+        "arguments": {
+          "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+          "claim": "sample_unobserved_route"
+        },
+        "exposure": "operator",
+        "name": "eal_explain",
+        "outcome": "success"
+      }
+    ],
+    "transport": "actual_mcp_stdio"
+  },
+  "packets": {
+    "sample_endpoint_available": {
+      "arguments": {
+        "heartbeat_route": {
+          "conclusion": "sample_endpoint_available",
+          "method_result": {
+            "method": "structured/1",
+            "outputs": {
+              "authored": true,
+              "mechanically_proved": false
+            },
+            "require_holds": [],
+            "status": "supported"
+          },
+          "premises": [],
+          "status": "contested"
+        }
+      },
+      "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+      "assumptions": {},
+      "claims": {
+        "sample_endpoint_available": {
+          "active_objections": [],
+          "contested_arguments": [
+            "heartbeat_route"
+          ],
+          "grounded_label": "rejected",
+          "observation_ids": [
+            {
+              "evidence_id": "heartbeats",
+              "observation_id": "25f2cbd2-75f0-4a28-bbcf-9b88b394e362"
+            },
+            {
+              "evidence_id": "outage",
+              "observation_id": "ce791016-7cde-45a9-9697-2905f2dc349a"
+            }
+          ],
+          "prose_verified": false,
+          "related_arguments": [
+            "heartbeat_route"
+          ],
+          "statement": "The identified synthetic snapshot supports endpoint availability; recorded outages challenge that heartbeat-based route.",
+          "status": "contested",
+          "supporting_arguments": [],
+          "undecided_objections": []
+        }
+      },
+      "collection_id": "bc813aa5-a8f9-46a0-9107-b53e32f3e0d5",
+      "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+      "evidence": {
+        "heartbeats": {
+          "age_seconds": 280.90032,
+          "age_status": "within_max_age",
+          "availability_issues": [],
+          "observation_id": "25f2cbd2-75f0-4a28-bbcf-9b88b394e362",
+          "observed_at": "2026-10-12T23:32:49Z",
+          "status": "available"
+        },
+        "outage": {
+          "age_seconds": 280.90032,
+          "age_status": "within_max_age",
+          "availability_issues": [],
+          "observation_id": "ce791016-7cde-45a9-9697-2905f2dc349a",
+          "observed_at": "2026-10-12T23:32:49Z",
+          "status": "available"
+        }
+      },
+      "full_explanation": {
+        "assessment_id": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {
+        "recorded_outage": {
+          "attackers": [],
+          "premises": [],
+          "status": "active",
+          "target": "heartbeat_route",
+          "target_kind": "argument"
+        }
+      },
+      "omitted": {},
+      "premise_claims": {},
+      "schema": "EAL/assessment-packet/2",
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+      "summary_complete": true
+    },
+    "sample_quorum_present": {
+      "arguments": {
+        "quorum_route": {
+          "conclusion": "sample_quorum_present",
+          "method_result": {
+            "method": "structured/1",
+            "status": "not_run"
+          },
+          "premises": [],
+          "status": "unsupported"
+        }
+      },
+      "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+      "assumptions": {},
+      "claims": {
+        "sample_quorum_present": {
+          "active_objections": [],
+          "contested_arguments": [],
+          "grounded_label": "rejected",
+          "observation_ids": [
+            {
+              "evidence_id": "quorum",
+              "observation_id": "079fb985-ad57-4722-bd83-35c607264672"
+            }
+          ],
+          "prose_verified": false,
+          "related_arguments": [
+            "quorum_route"
+          ],
+          "statement": "The identified synthetic snapshot records at least two responsive nodes; no claim about a deployed system is made.",
+          "status": "unsupported",
+          "supporting_arguments": [],
+          "undecided_objections": []
+        }
+      },
+      "collection_id": "490b3308-1d22-470c-99c6-050b46479fb3",
+      "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+      "evidence": {
+        "quorum": {
+          "age_seconds": 280.564714,
+          "age_status": "within_max_age",
+          "availability_issues": [
+            "predicate_not_met"
+          ],
+          "observation_id": "079fb985-ad57-4722-bd83-35c607264672",
+          "observed_at": "2026-10-12T23:32:49Z",
+          "predicate_failures": [
+            {
+              "issue": "not_met",
+              "path": "responsive_nodes"
+            }
+          ],
+          "status": "unavailable"
+        }
+      },
+      "full_explanation": {
+        "assessment_id": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {},
+      "omitted": {},
+      "premise_claims": {},
+      "schema": "EAL/assessment-packet/2",
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+      "summary_complete": true
+    },
+    "sample_unobserved_route": {
+      "arguments": {},
+      "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+      "assumptions": {},
+      "claims": {
+        "sample_unobserved_route": {
+          "active_objections": [],
+          "contested_arguments": [],
+          "grounded_label": "rejected",
+          "observation_ids": [],
+          "prose_verified": false,
+          "related_arguments": [],
+          "statement": "No authored support route establishes this synthetic routing claim.",
+          "status": "unsupported",
+          "supporting_arguments": [],
+          "undecided_objections": []
+        }
+      },
+      "collection_id": "7d275580-4326-49df-a220-bb3ae1d51464",
+      "context_fingerprint": "6e55c32076e0e9cb2b4575ecabebe2f33ba44c970f033efdcdd1b176028ba96d",
+      "evidence": {},
+      "full_explanation": {
+        "assessment_id": "0efa5040-8db0-4775-a2c5-cfca342b058f",
+        "detail": "full",
+        "operation": "explain"
+      },
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "objections": {},
+      "omitted": {},
+      "premise_claims": {},
+      "schema": "EAL/assessment-packet/2",
+      "source_digest": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+      "summary_complete": true
+    }
+  },
+  "reused_count": 0,
+  "schema": "EAL/MAS-coordination-finding/3",
+  "task_digest": "24a2db80e849b24f3495db60dc6eff5636b6901218e599967a51463b5aeb08bc"
+}

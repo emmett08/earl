@@ -1,0 +1,32 @@
+{
+  "schema": "EAL/coordination-cleanup-validation/1",
+  "checks": [
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_coordination_*.py tests/test_distribution_metadata.py",
+      "result": "232 passed",
+      "elapsed_seconds": 168.5,
+      "log_sha256": "f2e017313ddbfa1b1738f93d49bf77f21858af3dde1af76f531ee8d5013fb705"
+    },
+    {
+      "command": ".venv/bin/python -m pytest -q tests/test_mas_accuracy_study.py",
+      "result": "27 passed",
+      "scope": "Meaningful malformed-output, independent frame/answer scoring, null/status and frozen-input checks; run before native trials."
+    },
+    {
+      "command": "make check-distribution PYTHON=.venv/bin/python",
+      "result": "passed: wheel/source metadata, fresh installations and source-built runtime equality",
+      "log_sha256": "033ce8de99dab42bc26ca65c85710c1d37270a06271e4898e3534b09c8483ea4"
+    },
+    {
+      "command": "python -m experiments.mas_coordination.transport_benchmark (one repeat, five arms)",
+      "result": "canonical content and useful states equivalent; source-stability unchanged",
+      "artifact": "../transport-006-smoke/"
+    },
+    {
+      "command": "Fresh wheel content inspection",
+      "result": "eal/coordination/lab.py and experiment controls absent; packaged native crate retained"
+    }
+  ],
+  "rust": "No Rust source changed during cleanup; the preceding15lockedtests and wheel-nativebuild/admissionchecks remain retained in transport-005.",
+  "unrelated_suite_limit": "Previously observed transfer-study tests have a dated fixture outside this change; no clock bypass or full-suite success is claimed."
+}

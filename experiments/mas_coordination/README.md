@@ -40,9 +40,10 @@ The default transport is durable JSON. Add
 `--runtime /workspace/mas-protocol-lab` on `start` to use the installed Lab
 runtime's isolated local MCP interpreter and the packaged persistent Rust
 codec. Build `src/eal/coordination/rust_codec` with `cargo build --release --locked`
-using its manifest, as described in the service reference. The adapter reuses
-one MCP session and one codec process, combines canonical admission in Rust,
-and exposes reservation/completion through the same MCP session and supplied
+using its manifest, as described in the service reference. The standalone
+`LabMCPTransport` always reuses one MCP session and one codec process, combines
+canonical admission in Rust, and exposes reservation/completion through the same
+MCP session and supplied
 Store methods. Keep Lab's MCP 1.26.0 interpreter isolated from EAL's MCP 2.2.0
 environment. Close Python transport/coordinator instances explicitly or use
 their context managers; CLI subprocesses own their cleanup.
@@ -94,10 +95,68 @@ that scope includes the codec's first lazy startup. JSON remained faster at
 20.48 ms. These measurements establish local transport cost for the fixed
 workload, not model accuracy, inference latency or wire-syntax superiority.
 
+The original `transport-005` artifacts are immutable and identify the measured
+sources. Production excludes the obsolete `eal.coordination.lab` CLI transport
+and codec/admission mode switches. Exact frozen copies of the intermediate
+implementations live in
+[`benchmark_controls`](benchmark_controls/README.md); the legacy one-shot
+baseline is also experiment-only. The maintained runner selects these controls
+and current production explicitly, recording both source sets in each new
+manifest. [The cleanup smoke run](results/transport-006-smoke/README.md) checks
+functional equivalence and source stability across the five arms; it is not a
+replacement performance measurement.
+
 Use `python -m experiments.mas_coordination.transport_benchmark --help` and
 the frozen [benchmark plan](transport-benchmark-plan.json) to reproduce in a
 new output directory. The report distinguishes cold startup and measured
 software workloads from native agent execution.
+
+## Fresh native-worker accuracy
+
+The [paired native-worker report](results/accuracy-006/README.md) follows the
+[frozen plan](accuracy-plan.json): six synthetic tasks, each run once through
+durable JSON and once through the persistent Lab transport. Inputs, role prompt,
+selected claims, requirements and gateway budgets are frozen before native
+outcomes. Each assessor and reviewer runs in a separate fresh host context and
+authors its own first response after inspecting actual EAL MCP findings. The
+scorer checks both roles, exact claim references and statuses, scope and
+qualification; rejected, missing and incomplete responses stay in the fixed
+denominator. No repair or replacement trials are permitted.
+
+Prepare and preflight an empty study directory, then start each declared unit
+immediately before reserving its assessor:
+
+```sh
+python -m experiments.mas_coordination.accuracy_study prepare \
+  --output .cache/mas-coordination/new-accuracy-study \
+  --runtime /workspace/mas-protocol-lab --execution-mode actual_host_agent
+python -m experiments.mas_coordination.accuracy_study preflight \
+  --output .cache/mas-coordination/new-accuracy-study
+python -m experiments.mas_coordination.accuracy_study start \
+  --output .cache/mas-coordination/new-accuracy-study --unit case01-json
+```
+
+Use the declared unit order and the service's `reserve`/`record` workflow with
+the frozen prompt. Launch each role only for a new reservation, retain its
+actual host execution identity and exact first output, and export every unit.
+A rejected assessor has no downstream reviewer. After all unit exports exist,
+execute separate trusted references and score the retained outputs:
+
+```sh
+python -m experiments.mas_coordination.accuracy_study reference \
+  --output .cache/mas-coordination/new-accuracy-study
+python -m experiments.mas_coordination.accuracy_study score \
+  --output .cache/mas-coordination/new-accuracy-study
+```
+
+Preflights, reference executions and scorer tests are software checks outside
+the native denominator. This measurement concerns tool-assisted fidelity to
+scoped registered assessments. Both arms expose the same role contract; six
+pairs cannot establish general model accuracy or a causal Rust/transport
+advantage. Host model identity, token usage and billing are unknown when the
+host supplies no receipts. Native time and output-token limits are requested
+host budgets, while gateway quotas and first-response admission are enforced
+locally.
 
 ## Retained study records
 

@@ -1,0 +1,17 @@
+[tools.load_test_report]
+kind = "command"
+version = "1"
+argv = ["/workspace/earl/.venv/bin/python", "/workspace/earl/experiments/mas_coordination/results/accuracy-006/preflight/case01/workspace/collect_results.py", "--report", "/workspace/earl/experiments/mas_coordination/results/accuracy-006/preflight/case01/workspace/report.json"]
+env = {PYTHONPATH = "/workspace/earl/src"}
+timeout_seconds = 10
+max_output_bytes = 16384
+pinned_files = [{path = "collect_results.py", sha256 = "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2"}]
+
+[tools.synthetic_availability]
+kind = "command"
+version = "1"
+argv = ["/workspace/earl/.venv/bin/python", "/workspace/earl/experiments/mas_coordination/results/accuracy-006/preflight/case01/workspace/collect_availability.py"]
+env = {PYTHONPATH = "/workspace/earl/src"}
+timeout_seconds = 10
+max_output_bytes = 16384
+pinned_files = [{path = "collect_availability.py", sha256 = "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade"}]

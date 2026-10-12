@@ -33,6 +33,7 @@ from eal.coordination.ledger import canonical_json
 
 from .benchmark_instrumentation.sitecustomize import install
 from .benchmark_legacy.lab_mcp import LabMCPTransport as LegacyTransport
+from .benchmark_controls import make_control
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -99,11 +100,13 @@ def make_bus(arm: str, runtime: Path, database: Path):
         return JsonBus(database)
     if arm == "legacy_one_shot":
         return LegacyTransport(runtime, database)
+    if arm in {"persistent_mcp", "persistent_mcp_codec"}:
+        return make_control(arm, runtime, database)
+    if arm != "persistent_rust_admission":
+        raise ValueError("Unknown transport benchmark arm")
     from eal.coordination.lab_mcp import LabMCPTransport
-    binary = (runtime / "rust-protocol/target/release/mas-protocol-codec" if arm == "persistent_mcp"
-              else ROOT / "src/eal/coordination/rust_codec/target/release/mas-protocol-codec")
-    return LabMCPTransport(runtime, database, codec_mode="oneshot" if arm == "persistent_mcp" else "persistent",
-                           admission_mode="rust" if arm == "persistent_rust_admission" else "roundtrip", binary=binary)
+    binary = ROOT / "src/eal/coordination/rust_codec/target/release/mas-protocol-codec"
+    return LabMCPTransport(runtime, database, binary=binary)
 
 
 @contextmanager
@@ -326,8 +329,10 @@ def codec_microbench(output: Path, runtime: Path, plan: dict, iterations: int = 
 def manifest(runtime: Path, plan: dict, arguments) -> dict:
     sources = [PLAN_PATH, Path(__file__), HERE / "benchmark_instrumentation/sitecustomize.py",
                HERE / "benchmark_legacy/lab.py", HERE / "benchmark_legacy/lab_mcp.py",
-               ROOT / "src/eal/coordination/lab_mcp.py", ROOT / "src/eal/coordination/lab.py",
+               ROOT / "src/eal/coordination/lab_mcp.py",
                ROOT / "src/eal/coordination/bus.py", ROOT / "src/eal/coordination/ledger.py"]
+    sources.extend((HERE / "benchmark_controls").rglob("*.py"))
+    sources.append(HERE / "benchmark_controls/source-map.json")
     sources.extend((ROOT / "src/eal/coordination").glob("*codec*.py"))
     sources.extend((ROOT / "src/eal/coordination").glob("lab_server.py"))
     sources.extend((ROOT / "src/eal/coordination").glob("lab_admission.py"))

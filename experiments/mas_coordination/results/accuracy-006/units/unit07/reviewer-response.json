@@ -1,0 +1,35 @@
+{
+  "answer": {
+    "task_digest": "a6dea49fc978c9fc4c7f053104e9669feeca5a2c8269d6ad24475a499d3c26a0",
+    "finding_id": "finding_7342e2a8d39c077fc5e5c503a33a21ffe69f0f13a55d62124b8501329145c7fa",
+    "claims": {
+      "sample_endpoint_available": {
+        "assessment_id": "b261a232-62e4-4875-8303-533ad7589d3a",
+        "status": "unsupported",
+        "assessed_at": "2026-10-12T23:42:18.411719Z"
+      },
+      "sample_quorum_present": {
+        "assessment_id": "e30b6a06-2d92-4b26-8c91-089bcac8dc8c",
+        "status": "unsupported",
+        "assessed_at": "2026-10-12T23:42:18.622969Z"
+      }
+    },
+    "scope": {
+      "context": {
+        "dataset": "synthetic",
+        "deployment": "coordinator-demo",
+        "service": "catalogue-api"
+      },
+      "requirements": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        }
+      }
+    },
+    "conclusion": "assessed",
+    "qualification": "conditional_on_registered_argument"
+  },
+  "consumed_message_ids": ["assessor-outcome"]
+}
