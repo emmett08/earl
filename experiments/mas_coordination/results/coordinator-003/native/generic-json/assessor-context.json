@@ -1,0 +1,62 @@
+{
+  "schema": "EAL/coordination-worker-context/1",
+  "role": "assessor",
+  "call_id": "coord-77eedfe222f94f45b948ddabc5e83c05:assessor",
+  "task": {
+    "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+    "pinned_at": "2026-10-12T21:38:46.778488Z",
+    "registered_context": {
+      "dataset": "synthetic",
+      "deployment": "coordinator-demo",
+      "service": "catalogue-api"
+    },
+    "schema": "EAL/MAS-coordination-task/3",
+    "source_digest": "8cbaf22f1679319bf965d4100cc89608fdbbf4987f9edb9d4c86a5221990d0f6",
+    "task": {
+      "claims": [
+        "sample_endpoint_available",
+        "sample_quorum_present"
+      ],
+      "entry_id": "availability_sample",
+      "profile": "registered_claims/1",
+      "question": "Assess both registered synthetic-snapshot claims, accounting for the explicit outage objection. Keep the registered scope and avoid conclusions about a deployed service.",
+      "requirements": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        }
+      },
+      "task_id": "synthetic_availability_sample"
+    },
+    "task_digest": "2ea882a57c237e06b0418164c19990abcb95e3490c7325b34d0379ec42a4ba68"
+  },
+  "received_messages": [
+    {
+      "attempt": 0,
+      "kind": "request",
+      "message_id": "request",
+      "recipient": "assessor",
+      "reply_to": null,
+      "schema": "EAL/MAS-coordination/3",
+      "sender": "reviewer",
+      "task_digest": "2ea882a57c237e06b0418164c19990abcb95e3490c7325b34d0379ec42a4ba68",
+      "task_id": "synthetic_availability_sample"
+    }
+  ],
+  "gateway": {
+    "argv": [
+      "/workspace/earl/.venv/bin/python",
+      "-m",
+      "eal.coordination.cli",
+      "query",
+      "--run",
+      "/workspace/earl/.cache/mas-coordination/coordinator-native-001/generic-json/run",
+      "--call-id",
+      "coord-77eedfe222f94f45b948ddabc5e83c05:assessor"
+    ]
+  },
+  "response_schema": "/workspace/earl/src/eal/coordination/response-schema.json",
+  "instructions": "Inspect your addressed messages. Request a finding using the gateway argv and author an outcome or disposition with its exact trusted references. Return message and consumed_message_ids.",
+  "qualifications": "EAL status is conditional on the registered argument. Unsupported is not proof of the opposite. Authored prose and measurements are not independently certified by registration."
+}

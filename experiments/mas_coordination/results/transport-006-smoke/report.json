@@ -1,0 +1,747 @@
+{
+  "arms": {
+    "json_control": {
+      "median_cold_first_operation_ms": 1.363313,
+      "median_cpu_seconds": 0.011775000000000091,
+      "median_cycle_ms": 23.531378,
+      "median_post_create_operations_ms": 21.594912,
+      "operations": {
+        "ack": {
+          "excluding_first_use": {
+            "median_ms": 1.335374,
+            "samples": 3
+          },
+          "max_ms": 1.386441,
+          "median_ms": 1.335374,
+          "min_ms": 1.287715,
+          "samples": 3
+        },
+        "changed_content_rejection": {
+          "excluding_first_use": {
+            "median_ms": 0.165432,
+            "samples": 3
+          },
+          "max_ms": 0.360421,
+          "median_ms": 0.165432,
+          "min_ms": 0.13905,
+          "samples": 3
+        },
+        "create": {
+          "excluding_first_use": null,
+          "max_ms": 1.363313,
+          "median_ms": 1.363313,
+          "min_ms": 1.363313,
+          "samples": 1
+        },
+        "duplicate_send": {
+          "excluding_first_use": {
+            "median_ms": 0.244984,
+            "samples": 3
+          },
+          "max_ms": 0.349797,
+          "median_ms": 0.244984,
+          "min_ms": 0.144098,
+          "samples": 3
+        },
+        "empty_receive": {
+          "excluding_first_use": {
+            "median_ms": 0.168088,
+            "samples": 1
+          },
+          "max_ms": 0.168088,
+          "median_ms": 0.168088,
+          "min_ms": 0.168088,
+          "samples": 1
+        },
+        "finish": {
+          "excluding_first_use": {
+            "median_ms": 1.457653,
+            "samples": 1
+          },
+          "max_ms": 1.457653,
+          "median_ms": 1.457653,
+          "min_ms": 1.457653,
+          "samples": 1
+        },
+        "premature_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 0.215865,
+            "samples": 1
+          },
+          "max_ms": 0.215865,
+          "median_ms": 0.215865,
+          "min_ms": 0.215865,
+          "samples": 1
+        },
+        "receive": {
+          "excluding_first_use": {
+            "median_ms": 1.376636,
+            "samples": 3
+          },
+          "max_ms": 1.437245,
+          "median_ms": 1.376636,
+          "min_ms": 1.232217,
+          "samples": 3
+        },
+        "redelivery": {
+          "excluding_first_use": {
+            "median_ms": 0.202109,
+            "samples": 3
+          },
+          "max_ms": 0.330519,
+          "median_ms": 0.202109,
+          "min_ms": 0.194434,
+          "samples": 3
+        },
+        "reserve": {
+          "excluding_first_use": {
+            "median_ms": 2.5396,
+            "samples": 1
+          },
+          "max_ms": 2.5396,
+          "median_ms": 2.5396,
+          "min_ms": 2.5396,
+          "samples": 1
+        },
+        "send": {
+          "excluding_first_use": {
+            "median_ms": 2.096163,
+            "samples": 3
+          },
+          "max_ms": 2.897145,
+          "median_ms": 2.096163,
+          "min_ms": 1.754454,
+          "samples": 3
+        },
+        "status": {
+          "excluding_first_use": {
+            "median_ms": 0.158848,
+            "samples": 1
+          },
+          "max_ms": 0.158848,
+          "median_ms": 0.158848,
+          "min_ms": 0.158848,
+          "samples": 1
+        },
+        "wrong_recipient_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 0.120624,
+            "samples": 1
+          },
+          "max_ms": 0.120624,
+          "median_ms": 0.120624,
+          "min_ms": 0.120624,
+          "samples": 1
+        }
+      },
+      "samples": 1,
+      "subprocess_counts": [
+        {}
+      ]
+    },
+    "legacy_one_shot": {
+      "median_cold_first_operation_ms": 460.450514,
+      "median_cpu_seconds": 10.544913000000001,
+      "median_cycle_ms": 10707.466539,
+      "median_post_create_operations_ms": 10240.342643,
+      "operations": {
+        "ack": {
+          "excluding_first_use": {
+            "median_ms": 462.700106,
+            "samples": 3
+          },
+          "max_ms": 543.365751,
+          "median_ms": 462.700106,
+          "min_ms": 460.716972,
+          "samples": 3
+        },
+        "changed_content_rejection": {
+          "excluding_first_use": {
+            "median_ms": 460.918739,
+            "samples": 3
+          },
+          "max_ms": 466.772285,
+          "median_ms": 460.918739,
+          "min_ms": 458.386774,
+          "samples": 3
+        },
+        "create": {
+          "excluding_first_use": null,
+          "max_ms": 460.450514,
+          "median_ms": 460.450514,
+          "min_ms": 460.450514,
+          "samples": 1
+        },
+        "duplicate_send": {
+          "excluding_first_use": {
+            "median_ms": 466.405822,
+            "samples": 3
+          },
+          "max_ms": 469.827838,
+          "median_ms": 466.405822,
+          "min_ms": 453.563434,
+          "samples": 3
+        },
+        "empty_receive": {
+          "excluding_first_use": {
+            "median_ms": 454.063994,
+            "samples": 1
+          },
+          "max_ms": 454.063994,
+          "median_ms": 454.063994,
+          "min_ms": 454.063994,
+          "samples": 1
+        },
+        "finish": {
+          "excluding_first_use": {
+            "median_ms": 52.646336,
+            "samples": 1
+          },
+          "max_ms": 52.646336,
+          "median_ms": 52.646336,
+          "min_ms": 52.646336,
+          "samples": 1
+        },
+        "premature_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 450.35313,
+            "samples": 1
+          },
+          "max_ms": 450.35313,
+          "median_ms": 450.35313,
+          "min_ms": 450.35313,
+          "samples": 1
+        },
+        "receive": {
+          "excluding_first_use": {
+            "median_ms": 449.446775,
+            "samples": 3
+          },
+          "max_ms": 460.497175,
+          "median_ms": 449.446775,
+          "min_ms": 444.764376,
+          "samples": 3
+        },
+        "redelivery": {
+          "excluding_first_use": {
+            "median_ms": 449.811412,
+            "samples": 3
+          },
+          "max_ms": 454.60676,
+          "median_ms": 449.811412,
+          "min_ms": 447.274223,
+          "samples": 3
+        },
+        "reserve": {
+          "excluding_first_use": {
+            "median_ms": 52.949495,
+            "samples": 1
+          },
+          "max_ms": 52.949495,
+          "median_ms": 52.949495,
+          "min_ms": 52.949495,
+          "samples": 1
+        },
+        "send": {
+          "excluding_first_use": {
+            "median_ms": 463.44773,
+            "samples": 3
+          },
+          "max_ms": 469.917904,
+          "median_ms": 463.44773,
+          "min_ms": 457.327226,
+          "samples": 3
+        },
+        "status": {
+          "excluding_first_use": {
+            "median_ms": 451.233866,
+            "samples": 1
+          },
+          "max_ms": 451.233866,
+          "median_ms": 451.233866,
+          "min_ms": 451.233866,
+          "samples": 1
+        },
+        "wrong_recipient_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 439.34452,
+            "samples": 1
+          },
+          "max_ms": 439.34452,
+          "median_ms": 439.34452,
+          "min_ms": 439.34452,
+          "samples": 1
+        }
+      },
+      "samples": 1,
+      "subprocess_counts": [
+        {
+          "lab_cli": 2,
+          "mcp_server": 23,
+          "rust_codec": 36
+        }
+      ]
+    },
+    "persistent_mcp": {
+      "median_cold_first_operation_ms": 432.361107,
+      "median_cpu_seconds": 0.6828769999999995,
+      "median_cycle_ms": 653.07863,
+      "median_post_create_operations_ms": 216.731127,
+      "operations": {
+        "ack": {
+          "excluding_first_use": {
+            "median_ms": 4.145391,
+            "samples": 3
+          },
+          "max_ms": 4.32492,
+          "median_ms": 4.145391,
+          "min_ms": 4.068844,
+          "samples": 3
+        },
+        "changed_content_rejection": {
+          "excluding_first_use": {
+            "median_ms": 14.739372,
+            "samples": 3
+          },
+          "max_ms": 23.295398,
+          "median_ms": 14.739372,
+          "min_ms": 14.01218,
+          "samples": 3
+        },
+        "create": {
+          "excluding_first_use": null,
+          "max_ms": 432.361107,
+          "median_ms": 432.361107,
+          "min_ms": 432.361107,
+          "samples": 1
+        },
+        "duplicate_send": {
+          "excluding_first_use": {
+            "median_ms": 13.916139,
+            "samples": 3
+          },
+          "max_ms": 22.217646,
+          "median_ms": 13.916139,
+          "min_ms": 13.860984,
+          "samples": 3
+        },
+        "empty_receive": {
+          "excluding_first_use": {
+            "median_ms": 2.640725,
+            "samples": 1
+          },
+          "max_ms": 2.640725,
+          "median_ms": 2.640725,
+          "min_ms": 2.640725,
+          "samples": 1
+        },
+        "finish": {
+          "excluding_first_use": {
+            "median_ms": 3.351044,
+            "samples": 1
+          },
+          "max_ms": 3.351044,
+          "median_ms": 3.351044,
+          "min_ms": 3.351044,
+          "samples": 1
+        },
+        "premature_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 3.343896,
+            "samples": 1
+          },
+          "max_ms": 3.343896,
+          "median_ms": 3.343896,
+          "min_ms": 3.343896,
+          "samples": 1
+        },
+        "receive": {
+          "excluding_first_use": {
+            "median_ms": 5.197794,
+            "samples": 3
+          },
+          "max_ms": 6.758334,
+          "median_ms": 5.197794,
+          "min_ms": 4.554767,
+          "samples": 3
+        },
+        "redelivery": {
+          "excluding_first_use": {
+            "median_ms": 3.058768,
+            "samples": 3
+          },
+          "max_ms": 3.309648,
+          "median_ms": 3.058768,
+          "min_ms": 2.771625,
+          "samples": 3
+        },
+        "reserve": {
+          "excluding_first_use": {
+            "median_ms": 3.456999,
+            "samples": 1
+          },
+          "max_ms": 3.456999,
+          "median_ms": 3.456999,
+          "min_ms": 3.456999,
+          "samples": 1
+        },
+        "send": {
+          "excluding_first_use": {
+            "median_ms": 16.667471,
+            "samples": 3
+          },
+          "max_ms": 24.463762,
+          "median_ms": 16.667471,
+          "min_ms": 16.233159,
+          "samples": 3
+        },
+        "status": {
+          "excluding_first_use": {
+            "median_ms": 3.546876,
+            "samples": 1
+          },
+          "max_ms": 3.546876,
+          "median_ms": 3.546876,
+          "min_ms": 3.546876,
+          "samples": 1
+        },
+        "wrong_recipient_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 2.795385,
+            "samples": 1
+          },
+          "max_ms": 2.795385,
+          "median_ms": 2.795385,
+          "min_ms": 2.795385,
+          "samples": 1
+        }
+      },
+      "samples": 1,
+      "subprocess_counts": [
+        {
+          "mcp_server": 1,
+          "rust_codec": 36
+        }
+      ]
+    },
+    "persistent_mcp_codec": {
+      "median_cold_first_operation_ms": 386.434223,
+      "median_cpu_seconds": 0.5608179999999994,
+      "median_cycle_ms": 509.691062,
+      "median_post_create_operations_ms": 120.569632,
+      "operations": {
+        "ack": {
+          "excluding_first_use": {
+            "median_ms": 4.13297,
+            "samples": 3
+          },
+          "max_ms": 5.783799,
+          "median_ms": 4.13297,
+          "min_ms": 3.898789,
+          "samples": 3
+        },
+        "changed_content_rejection": {
+          "excluding_first_use": {
+            "median_ms": 5.690372,
+            "samples": 3
+          },
+          "max_ms": 9.258886,
+          "median_ms": 5.690372,
+          "min_ms": 4.83531,
+          "samples": 3
+        },
+        "create": {
+          "excluding_first_use": null,
+          "max_ms": 386.434223,
+          "median_ms": 386.434223,
+          "min_ms": 386.434223,
+          "samples": 1
+        },
+        "duplicate_send": {
+          "excluding_first_use": {
+            "median_ms": 5.087781,
+            "samples": 3
+          },
+          "max_ms": 8.15227,
+          "median_ms": 5.087781,
+          "min_ms": 4.832173,
+          "samples": 3
+        },
+        "empty_receive": {
+          "excluding_first_use": {
+            "median_ms": 2.25135,
+            "samples": 1
+          },
+          "max_ms": 2.25135,
+          "median_ms": 2.25135,
+          "min_ms": 2.25135,
+          "samples": 1
+        },
+        "finish": {
+          "excluding_first_use": {
+            "median_ms": 3.526958,
+            "samples": 1
+          },
+          "max_ms": 3.526958,
+          "median_ms": 3.526958,
+          "min_ms": 3.526958,
+          "samples": 1
+        },
+        "premature_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 3.156275,
+            "samples": 1
+          },
+          "max_ms": 3.156275,
+          "median_ms": 3.156275,
+          "min_ms": 3.156275,
+          "samples": 1
+        },
+        "receive": {
+          "excluding_first_use": {
+            "median_ms": 4.364826,
+            "samples": 3
+          },
+          "max_ms": 4.607901,
+          "median_ms": 4.364826,
+          "min_ms": 4.128897,
+          "samples": 3
+        },
+        "redelivery": {
+          "excluding_first_use": {
+            "median_ms": 2.703569,
+            "samples": 3
+          },
+          "max_ms": 2.923042,
+          "median_ms": 2.703569,
+          "min_ms": 2.375696,
+          "samples": 3
+        },
+        "reserve": {
+          "excluding_first_use": {
+            "median_ms": 3.590157,
+            "samples": 1
+          },
+          "max_ms": 3.590157,
+          "median_ms": 3.590157,
+          "min_ms": 3.590157,
+          "samples": 1
+        },
+        "send": {
+          "excluding_first_use": {
+            "median_ms": 10.5061705,
+            "samples": 2
+          },
+          "max_ms": 11.116224,
+          "median_ms": 9.896117,
+          "min_ms": 8.587553,
+          "samples": 3
+        },
+        "status": {
+          "excluding_first_use": {
+            "median_ms": 3.125362,
+            "samples": 1
+          },
+          "max_ms": 3.125362,
+          "median_ms": 3.125362,
+          "min_ms": 3.125362,
+          "samples": 1
+        },
+        "wrong_recipient_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 2.543355,
+            "samples": 1
+          },
+          "max_ms": 2.543355,
+          "median_ms": 2.543355,
+          "min_ms": 2.543355,
+          "samples": 1
+        }
+      },
+      "samples": 1,
+      "subprocess_counts": [
+        {
+          "mcp_server": 1,
+          "rust_codec": 1
+        }
+      ]
+    },
+    "persistent_rust_admission": {
+      "median_cold_first_operation_ms": 390.305538,
+      "median_cpu_seconds": 0.5333970000000008,
+      "median_cycle_ms": 484.768498,
+      "median_post_create_operations_ms": 91.683399,
+      "operations": {
+        "ack": {
+          "excluding_first_use": {
+            "median_ms": 4.175733,
+            "samples": 3
+          },
+          "max_ms": 4.209191,
+          "median_ms": 4.175733,
+          "min_ms": 3.854922,
+          "samples": 3
+        },
+        "changed_content_rejection": {
+          "excluding_first_use": {
+            "median_ms": 2.458727,
+            "samples": 3
+          },
+          "max_ms": 3.322348,
+          "median_ms": 2.458727,
+          "min_ms": 2.228085,
+          "samples": 3
+        },
+        "create": {
+          "excluding_first_use": null,
+          "max_ms": 390.305538,
+          "median_ms": 390.305538,
+          "min_ms": 390.305538,
+          "samples": 1
+        },
+        "duplicate_send": {
+          "excluding_first_use": {
+            "median_ms": 2.321477,
+            "samples": 3
+          },
+          "max_ms": 3.463898,
+          "median_ms": 2.321477,
+          "min_ms": 2.250337,
+          "samples": 3
+        },
+        "empty_receive": {
+          "excluding_first_use": {
+            "median_ms": 2.575848,
+            "samples": 1
+          },
+          "max_ms": 2.575848,
+          "median_ms": 2.575848,
+          "min_ms": 2.575848,
+          "samples": 1
+        },
+        "finish": {
+          "excluding_first_use": {
+            "median_ms": 3.38652,
+            "samples": 1
+          },
+          "max_ms": 3.38652,
+          "median_ms": 3.38652,
+          "min_ms": 3.38652,
+          "samples": 1
+        },
+        "premature_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 3.29491,
+            "samples": 1
+          },
+          "max_ms": 3.29491,
+          "median_ms": 3.29491,
+          "min_ms": 3.29491,
+          "samples": 1
+        },
+        "receive": {
+          "excluding_first_use": {
+            "median_ms": 5.138918,
+            "samples": 3
+          },
+          "max_ms": 10.955453,
+          "median_ms": 5.138918,
+          "min_ms": 4.327085,
+          "samples": 3
+        },
+        "redelivery": {
+          "excluding_first_use": {
+            "median_ms": 3.114431,
+            "samples": 3
+          },
+          "max_ms": 3.201454,
+          "median_ms": 3.114431,
+          "min_ms": 2.629079,
+          "samples": 3
+        },
+        "reserve": {
+          "excluding_first_use": {
+            "median_ms": 3.819393,
+            "samples": 1
+          },
+          "max_ms": 3.819393,
+          "median_ms": 3.819393,
+          "min_ms": 3.819393,
+          "samples": 1
+        },
+        "send": {
+          "excluding_first_use": {
+            "median_ms": 5.142632,
+            "samples": 2
+          },
+          "max_ms": 5.777816,
+          "median_ms": 5.033347,
+          "min_ms": 4.507448,
+          "samples": 3
+        },
+        "status": {
+          "excluding_first_use": {
+            "median_ms": 2.99666,
+            "samples": 1
+          },
+          "max_ms": 2.99666,
+          "median_ms": 2.99666,
+          "min_ms": 2.99666,
+          "samples": 1
+        },
+        "wrong_recipient_ack_rejection": {
+          "excluding_first_use": {
+            "median_ms": 2.640319,
+            "samples": 1
+          },
+          "max_ms": 2.640319,
+          "median_ms": 2.640319,
+          "min_ms": 2.640319,
+          "samples": 1
+        }
+      },
+      "samples": 1,
+      "subprocess_counts": [
+        {
+          "mcp_server": 1,
+          "rust_codec": 1
+        }
+      ]
+    }
+  },
+  "equivalent_useful_states": true,
+  "identical_canonical_content": true,
+  "paired_cycle_ratios": {
+    "legacy_one_shot_over_persistent_mcp": {
+      "median": 16.39537116533732,
+      "raw_ratios": [
+        16.39537116533732
+      ]
+    },
+    "legacy_one_shot_over_persistent_mcp_codec": {
+      "median": 21.007758105438388,
+      "raw_ratios": [
+        21.007758105438388
+      ]
+    },
+    "legacy_one_shot_over_persistent_rust_admission": {
+      "median": 22.087793623503977,
+      "raw_ratios": [
+        22.087793623503977
+      ]
+    },
+    "persistent_mcp_codec_over_persistent_rust_admission": {
+      "median": 1.0514112697149722,
+      "raw_ratios": [
+        1.0514112697149722
+      ]
+    },
+    "persistent_mcp_over_persistent_mcp_codec": {
+      "median": 1.2813225082608963,
+      "raw_ratios": [
+        1.2813225082608963
+      ]
+    }
+  },
+  "statistical_scope": "Descriptive finite paired samples; no population or inference-quality claim."
+}

@@ -1,0 +1,112 @@
+{
+  "run_id": "task002-eal_protocol",
+  "config": {
+    "agents": [
+      "assessor",
+      "reviewer"
+    ],
+    "max_bytes": 65536,
+    "max_calls": 2,
+    "max_messages": 8,
+    "wall_seconds": 3600
+  },
+  "active_protocol": "1",
+  "deadline": 1791837709.0681872,
+  "usage": {
+    "messages": 6,
+    "bytes": 4677,
+    "calls": 2
+  },
+  "messages": [
+    {
+      "id": "request-0",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "received": 1,
+      "acked": 1,
+      "hash": "16ddc7c2b3b60c83200fcc28bd55edce79c66ee7dcc1b6dceb702082f7baad76"
+    },
+    {
+      "id": "request-1",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "received": 1,
+      "acked": 1,
+      "hash": "2b72ea5217c8d311c73d23139330b84d0202ec2613d01e1c64faa911c1c95ec5"
+    },
+    {
+      "id": "proposal-0",
+      "sender": "assessor",
+      "recipient": "reviewer",
+      "received": 1,
+      "acked": 1,
+      "hash": "af03c8272d4a5755195c3e20fe708b6baf2b854024c34c28c1e9e4afcf704eaa"
+    },
+    {
+      "id": "proposal-1",
+      "sender": "assessor",
+      "recipient": "reviewer",
+      "received": 1,
+      "acked": 1,
+      "hash": "f4a59e7398d46cf9ff0509c4cbe245533c7174ede525994875a99b6ec9c3ed70"
+    },
+    {
+      "id": "review-0",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "received": 0,
+      "acked": 0,
+      "hash": "bce60df7b61ae3bdb70c36bed8cc32cdb7e65a724e6801912d6ae0fa8466a65a"
+    },
+    {
+      "id": "review-1",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "received": 0,
+      "acked": 0,
+      "hash": "2c52b2fc10cf891bfe419ae47c908ea2dc7756eadb7b0b0d811321670a9fc6af"
+    }
+  ],
+  "protocols": [],
+  "calls": [
+    {
+      "id": "protocol_assessor_task002",
+      "actor": "assessor",
+      "state": "recorded",
+      "evidence": {
+        "actor": "assessor",
+        "admission": "accepted",
+        "execution_id": "/root/protocol_assessor_task002/turn1",
+        "execution_mode": "actual_host_agent",
+        "model_tokens": null,
+        "model_usd_cost": null,
+        "observed_batch_elapsed_ms": 118489,
+        "received_message_ids": [
+          "request-0",
+          "request-1"
+        ],
+        "response_sha256": "8f68bcff3b1f1ef02936bacc5428f9044787e5517255ba72aaa3d33700bc21d7"
+      }
+    },
+    {
+      "id": "protocol_reviewer_task002",
+      "actor": "reviewer",
+      "state": "recorded",
+      "evidence": {
+        "actor": "reviewer",
+        "admission": "accepted",
+        "execution_id": "/root/protocol_reviewer_task002/turn1",
+        "execution_mode": "actual_host_agent",
+        "model_tokens": null,
+        "model_usd_cost": null,
+        "observed_batch_elapsed_ms": 167264,
+        "received_message_ids": [
+          "proposal-0",
+          "proposal-1"
+        ],
+        "response_sha256": "8f0c9c53b784c198dee05196e287fd58509d01490bddb965b3585e7c2c2291cd"
+      }
+    }
+  ],
+  "execution_claim": "Host execution must be substantiated by external agent records; receive and ack alone do not prove cognition."
+}

@@ -38,7 +38,7 @@ The tag command requires an existing `v3.2.4` tag. PyPI installation requires pu
 python -m pip install 'engineering-argument-language==3.2.4'
 ```
 
-The wheel is pure Python. Command collectors require POSIX process groups and file descriptors; bounded custom reasoning methods require POSIX resource limits. The release workflow is configured to check distribution installation on Linux with Python 3.11–3.14 and macOS with Python 3.12. Other Python/platform combinations require separate validation for the features used. Workspace coordination covers participating processes on one local filesystem; distributed replicas and network filesystems require another coordinator. See [MCP and tools](mcp-and-tools.md) for execution limits and [MCP architecture](mcp-architecture.md) for acquisition ownership.
+The wheel ships Python and source data without a platform binary. The optional [Lab coordination transport](coordination.md) includes a pinned Rust codec crate under `eal/coordination/rust_codec`; build it separately with Rust 1.85.1 or select a built executable with `EAL_MAS_CODEC_BIN`. Default JSON coordination needs no Rust toolchain. Command collectors require POSIX process groups and file descriptors; bounded custom reasoning methods require POSIX resource limits. The release workflow is configured to check distribution installation on Linux with Python 3.11–3.14 and macOS with Python 3.12. Other Python/platform combinations require separate validation for the features used. Workspace coordination covers participating processes on one local filesystem; distributed replicas and network filesystems require another coordinator. See [MCP and tools](mcp-and-tools.md) for execution limits and [MCP architecture](mcp-architecture.md) for acquisition ownership.
 
 ## Python integration
 
@@ -90,6 +90,14 @@ The [Unlicense](../LICENSE) dedicates original EARL software to the public domai
 Dependencies and any separately identified third-party or vendored material retain their own licences and notices. The root licence does not grant rights in cited publications, publisher templates, quotations, figures or other externally supplied materials. The wheel contains the runtime and licence materials; the source distribution also includes developer documentation, examples and experiment harnesses. The manuscript, annotations and separately stored experiment runs are excluded from both distributions. Check the relevant attribution and terms before redistributing third-party material from the repository or bundling runtime dependencies into another product.
 
 The repository's `paper/elsarticle.cls`, `paper/elsarticle-num.bst` and LPPL-licensed classes and styles under `paper/vendor/` retain their LaTeX Project Public License 1.3-or-later terms and embedded notices. Their exclusion from the Python distributions preserves the original package licence scope.
+
+The optional MAS codec and adapted mailbox admission transaction retain the
+MIT terms in [rust_codec/LICENSE](../src/eal/coordination/rust_codec/LICENSE),
+including the original copyright notice. Both Python distributions include
+that notice, the crate sources, lockfile, toolchain pin and
+[upstream provenance](../src/eal/coordination/rust_codec/UPSTREAM.json), and
+exclude compiled targets. Building the optional crate does not change the
+licence of original EAL code or replace Python's EAL/3 interpreter.
 
 ## Develop and verify artefacts
 

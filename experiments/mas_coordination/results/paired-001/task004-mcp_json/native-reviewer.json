@@ -1,0 +1,62 @@
+{
+  "answer": {
+    "statuses": {
+      "performance_criteria_met": "unsupported",
+      "performance_criteria_failed": "supported"
+    },
+    "scope": {
+      "service": "orders-api",
+      "build_id": "demo-build-42",
+      "run_id": "demo-load-001",
+      "concurrent_clients": 10,
+      "dataset": "synthetic"
+    },
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "conclusion": "sample_fail",
+    "production_supported": false
+  },
+  "reviews": [
+    {
+      "schema": "EAL/MAS-coordination/1",
+      "kind": "review",
+      "message_id": "review-0",
+      "task_id": "task004",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "reply_to": "proposal-0",
+      "scope": {
+        "entry_id": "load_test",
+        "claim": "performance_criteria_met",
+        "source_digest": "09c84bf151c7875f93c37da1d5921e5eb2d15d9bffb03a5d0c18334f9725b4b9",
+        "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "assessed_at": "2026-09-25T10:00:00Z"
+      },
+      "assessment_id": "be53a2ab-5c3b-4ad9-a99c-f39a034cb63d",
+      "verdict": "accepted"
+    },
+    {
+      "schema": "EAL/MAS-coordination/1",
+      "kind": "review",
+      "message_id": "review-1",
+      "task_id": "task004",
+      "sender": "reviewer",
+      "recipient": "assessor",
+      "reply_to": "proposal-1",
+      "scope": {
+        "entry_id": "load_test",
+        "claim": "performance_criteria_failed",
+        "source_digest": "09c84bf151c7875f93c37da1d5921e5eb2d15d9bffb03a5d0c18334f9725b4b9",
+        "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+        "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+        "assessed_at": "2026-09-25T10:00:00Z"
+      },
+      "assessment_id": "7c0b88de-ba05-4b12-b79f-b7dc7a2679ba",
+      "verdict": "accepted"
+    }
+  ],
+  "consumed_message_ids": [
+    "proposal-0",
+    "proposal-1"
+  ]
+}

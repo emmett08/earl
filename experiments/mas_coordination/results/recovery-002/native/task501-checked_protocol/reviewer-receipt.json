@@ -1,0 +1,30 @@
+[
+  {
+    "message": {
+      "kind": "outcome",
+      "message_id": "task501-assessor-outcome",
+      "payload": {
+        "assessment_refs": {
+          "performance_criteria_failed": "0d8e0439-2fb5-4860-906d-fafdb8d3e617",
+          "performance_criteria_met": "435f7b22-2201-4c64-9f36-8379f518e813"
+        },
+        "attempt": 0,
+        "finding_id": "finding_5b4001aca36bd0f7431149aa0ac57b42b361aa257e01a34712a94ed04d21581c",
+        "kind": "outcome",
+        "message_id": "task501-assessor-outcome",
+        "recipient": "reviewer",
+        "reply_to": "request",
+        "schema": "EAL/MAS-coordination/2",
+        "sender": "assessor",
+        "task_digest": "bb1fb0faa21f61e290675df0407bbbad49016130d4c21a0e5d638451a2a558bf",
+        "task_id": "task501"
+      },
+      "recipient": "reviewer",
+      "run_id": "task501-checked_protocol",
+      "sender": "assessor",
+      "version": "1"
+    },
+    "sequence": 2,
+    "redelivered": false
+  }
+]

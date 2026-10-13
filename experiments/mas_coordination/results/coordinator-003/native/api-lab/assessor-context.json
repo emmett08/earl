@@ -1,0 +1,79 @@
+{
+  "schema": "EAL/coordination-worker-context/1",
+  "role": "assessor",
+  "call_id": "coord-08c1d2bb8010438aa70d98c7dcd31fed:assessor",
+  "task": {
+    "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+    "pinned_at": "2026-10-12T21:38:41.740185Z",
+    "registered_context": {
+      "build_id": "demo-build-42",
+      "dataset": "synthetic",
+      "service": "orders-api"
+    },
+    "schema": "EAL/MAS-coordination-task/3",
+    "source_digest": "2689b28acda29435c3b63cb5c7b7aaf81e5b416802a5e1d1dfcb47f5da1cbdc4",
+    "task": {
+      "claims": [
+        "performance_criteria_met",
+        "performance_criteria_failed"
+      ],
+      "entry_id": "api_sample",
+      "profile": "api_load/1",
+      "question": "Which declared criteria are supported or failed by the identified synthetic API sample? Keep the report's scope and avoid production conclusions.",
+      "requirements": {
+        "claim_outputs": {
+          "performance_criteria_failed": "fails",
+          "performance_criteria_met": "passes"
+        },
+        "context": {
+          "build_id": "demo-build-42",
+          "dataset": "synthetic",
+          "service": "orders-api"
+        },
+        "criteria": {
+          "evidence_max_age_seconds": 86400,
+          "maximum_error_rate_percent": 1,
+          "maximum_sample_p95_ms": 200,
+          "minimum_requests": 100
+        },
+        "workload": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "coordinator-synthetic-load-001",
+          "service": "orders-api"
+        }
+      },
+      "task_id": "synthetic_api_sample"
+    },
+    "task_digest": "394318c6b41609ee940c61f65eff0e9a3979b4cff052486ba6d91edc95b1d717"
+  },
+  "received_messages": [
+    {
+      "attempt": 0,
+      "kind": "request",
+      "message_id": "request",
+      "recipient": "assessor",
+      "reply_to": null,
+      "schema": "EAL/MAS-coordination/3",
+      "sender": "reviewer",
+      "task_digest": "394318c6b41609ee940c61f65eff0e9a3979b4cff052486ba6d91edc95b1d717",
+      "task_id": "synthetic_api_sample"
+    }
+  ],
+  "gateway": {
+    "argv": [
+      "/workspace/earl/.venv/bin/python",
+      "-m",
+      "eal.coordination.cli",
+      "query",
+      "--run",
+      "/workspace/earl/.cache/mas-coordination/coordinator-native-001/api-lab/run",
+      "--call-id",
+      "coord-08c1d2bb8010438aa70d98c7dcd31fed:assessor"
+    ]
+  },
+  "response_schema": "/workspace/earl/src/eal/coordination/response-schema.json",
+  "instructions": "Inspect your addressed messages. Request a finding using the gateway argv and author an outcome or disposition with its exact trusted references. Return message and consumed_message_ids.",
+  "qualifications": "EAL status is conditional on the registered argument. Unsupported is not proof of the opposite. Authored prose and measurements are not independently certified by registration."
+}

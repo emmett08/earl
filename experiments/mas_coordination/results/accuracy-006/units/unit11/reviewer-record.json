@@ -1,0 +1,47 @@
+{
+  "execution_id": "/root/accuracy006_u11_reviewer/turn1",
+  "execution_mode": "actual_host_agent",
+  "raw_base64": "eyJhbnN3ZXIiOnsidGFza19kaWdlc3QiOiIxMDU3ZjgzMTE1M2U1NTY3YjhlMzhlZDc4NjdiMTQzZTZmMDg4MjBiMDkyMDQ2NTZkNWNiMGQ2ZTYyZThlZGI2IiwiZmluZGluZ19pZCI6ImZpbmRpbmdfNjE4ZWUyNWM5Y2NjMjFiZDRmZDJiNDg4MzczZDlkODExOWFlMzgwZTBiNWVhNzg5NjRkNjlmYjQ2M2QzM2I3NiIsImNsYWltcyI6eyJzYW1wbGVfcXVvcnVtX3ByZXNlbnQiOnsiYXNzZXNzbWVudF9pZCI6bnVsbCwic3RhdHVzIjpudWxsLCJhc3Nlc3NlZF9hdCI6bnVsbH0sInNhbXBsZV9lbmRwb2ludF9hdmFpbGFibGUiOnsiYXNzZXNzbWVudF9pZCI6bnVsbCwic3RhdHVzIjpudWxsLCJhc3Nlc3NlZF9hdCI6bnVsbH19LCJzY29wZSI6eyJjb250ZXh0Ijp7ImRhdGFzZXQiOiJzeW50aGV0aWMiLCJkZXBsb3ltZW50IjoiY29vcmRpbmF0b3ItZGVtbyIsInNlcnZpY2UiOiJjYXRhbG9ndWUtYXBpIn0sInJlcXVpcmVtZW50cyI6eyJjb250ZXh0Ijp7ImRhdGFzZXQiOiJzeW50aGV0aWMiLCJkZXBsb3ltZW50IjoiY29vcmRpbmF0b3ItZGVtbyIsInNlcnZpY2UiOiJjYXRhbG9ndWUtYXBpIn19fSwiY29uY2x1c2lvbiI6InVucmVzb2x2ZWQiLCJxdWFsaWZpY2F0aW9uIjoiY29uZGl0aW9uYWxfb25fcmVnaXN0ZXJlZF9hcmd1bWVudCJ9LCJjb25zdW1lZF9tZXNzYWdlX2lkcyI6WyJhc3Nlc3Nvci1kaXNwb3NpdGlvbiJdfQo=",
+  "raw_digest": "b3f4ceeedb8d17bbd434ba937a591dae26d86618ef9eeb6ae2dbdb2f06c8674f",
+  "evidence": {},
+  "accepted": true,
+  "outcome": "accepted",
+  "diagnostics": [],
+  "response": {
+    "answer": {
+      "task_digest": "1057f831153e5567b8e38ed7867b143e6f08820b09204656d5cb0d6e62e8edb6",
+      "finding_id": "finding_618ee25c9ccc21bd4fd2b488373d9d8119ae380e0b5ea78964d69fb463d33b76",
+      "claims": {
+        "sample_quorum_present": {
+          "assessment_id": null,
+          "status": null,
+          "assessed_at": null
+        },
+        "sample_endpoint_available": {
+          "assessment_id": null,
+          "status": null,
+          "assessed_at": null
+        }
+      },
+      "scope": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        },
+        "requirements": {
+          "context": {
+            "dataset": "synthetic",
+            "deployment": "coordinator-demo",
+            "service": "catalogue-api"
+          }
+        }
+      },
+      "conclusion": "unresolved",
+      "qualification": "conditional_on_registered_argument"
+    },
+    "consumed_message_ids": [
+      "assessor-disposition"
+    ]
+  }
+}

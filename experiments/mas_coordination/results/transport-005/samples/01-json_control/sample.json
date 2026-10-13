@@ -1,0 +1,249 @@
+{
+  "arm": "json_control",
+  "canonical_envelopes_sha256": "b1e876a48f207e6bdf359e89d6f185106ade9de7d15a62e6c4a5eb2ce4fa6e93",
+  "cold_first_codec_operation_ns": null,
+  "cold_first_operation_ns": 1502859,
+  "constructor_ns": 6104299,
+  "invariant_checks": "passed",
+  "load_average_before": [
+    0.8486328125,
+    0.849609375,
+    0.5107421875
+  ],
+  "operations": [
+    {
+      "codec_phase": "not_used",
+      "operation": "create",
+      "padding_bytes": null,
+      "session_phase": "cold_first_use",
+      "subprocesses": 0,
+      "wall_ns": 1502859
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "reserve",
+      "padding_bytes": null,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1567623
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "finish",
+      "padding_bytes": null,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1330956
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "send",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1488061
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "premature_ack_rejection",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 190063
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "duplicate_send",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 138764
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "changed_content_rejection",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 111146
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "receive",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1172505
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "redelivery",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 224200
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "wrong_recipient_ack_rejection",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 116966
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "ack",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1224998
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "send",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1441035
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "duplicate_send",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 207039
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "changed_content_rejection",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 127871
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "receive",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1438955
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "redelivery",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 182660
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "ack",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1365837
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "send",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1912039
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "duplicate_send",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 307114
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "changed_content_rejection",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 289112
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "receive",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1340089
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "redelivery",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 301445
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "ack",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 1563859
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "empty_receive",
+      "padding_bytes": null,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 164312
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "status",
+      "padding_bytes": null,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 146093
+    }
+  ],
+  "parent_and_reaped_children_cpu_seconds": 0.010751000000000843,
+  "post_create_operations_ns": 18352742,
+  "repetition": 1,
+  "runtime_metrics": null,
+  "shutdown_ns": 647,
+  "subprocess_counts": {},
+  "useful_cycle_ns": 20433051,
+  "useful_state": {
+    "all_acknowledged": true,
+    "all_received": true,
+    "calls": [
+      {
+        "actor": "assessor",
+        "evidence": {
+          "execution_id": "deterministic-software-fixture",
+          "outcome": "completed",
+          "synthetic": true
+        },
+        "id": "call-001",
+        "state": "recorded"
+      }
+    ],
+    "message_ids": [
+      "msg-001",
+      "msg-002",
+      "msg-003"
+    ],
+    "pending": 0,
+    "usage": {
+      "bytes": 67013,
+      "calls": 1,
+      "messages": 3
+    }
+  }
+}

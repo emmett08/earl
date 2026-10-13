@@ -1,0 +1,106 @@
+[
+  {
+    "arm": "durable_lab",
+    "input_digest": "263bfb1ea8650b6d76ce2c125f669dc7a42dde40c77084c6665f902fa60857ae",
+    "operation": "episode_started",
+    "sequence": 1
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": false,
+    "sequence": 2
+  },
+  {
+    "attempt": 0,
+    "operation": "handler_delivery",
+    "sequence": 3
+  },
+  {
+    "diagnosis": null,
+    "operation": "effect_reservation",
+    "sequence": 4,
+    "status": "new"
+  },
+  {
+    "effect_mode": "synthetic_counted_effect",
+    "operation": "effect_started",
+    "sequence": 5
+  },
+  {
+    "effect_result_file": "effect-001.json",
+    "operation": "effect_returned",
+    "sequence": 6
+  },
+  {
+    "operation": "effect_committed",
+    "sequence": 7
+  },
+  {
+    "fault_mode": "Python interruption",
+    "operation": "fault_injected",
+    "point": "after_commit",
+    "sequence": 8
+  },
+  {
+    "operation": "interruption_retained",
+    "point": "after_commit",
+    "sequence": 9
+  },
+  {
+    "method": "New transport and ledger objects",
+    "operation": "recovery_started",
+    "sequence": 10
+  },
+  {
+    "operation": "recovery_inbox_polled",
+    "pending_count": 1,
+    "sequence": 11
+  },
+  {
+    "attempt": 1,
+    "operation": "handler_delivery",
+    "sequence": 12
+  },
+  {
+    "diagnosis": null,
+    "operation": "effect_reservation",
+    "sequence": 13,
+    "status": "committed"
+  },
+  {
+    "external_effect_reexecuted": false,
+    "operation": "committed_effect_replayed",
+    "sequence": 14
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_attempted",
+    "sequence": 15
+  },
+  {
+    "duplicate": false,
+    "message_id": "reply",
+    "operation": "remote_send_returned",
+    "sequence": 16
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_confirmed",
+    "sequence": 17
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_attempted",
+    "sequence": 18
+  },
+  {
+    "message_id": "request",
+    "operation": "remote_ack_returned",
+    "sequence": 19
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_confirmed",
+    "sequence": 20
+  }
+]

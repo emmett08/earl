@@ -1,0 +1,80 @@
+{
+  "arms": [
+    "plain_retry",
+    "durable_json",
+    "durable_lab"
+  ],
+  "budgets_per_episode_arm": {
+    "maximum_ack_attempts": 8,
+    "maximum_effect_invocations": 3,
+    "maximum_handler_deliveries": 3,
+    "maximum_message_bytes": 65536,
+    "maximum_send_attempts": 8,
+    "maximum_unique_messages": 8,
+    "wall_seconds": 3600
+  },
+  "contrast": "plain_retry and durable_json share a JSON mailbox; only durable policies use EffectLedger. durable_lab uses the same ledger over the actual Lab mailbox.",
+  "correspondence_cases": [
+    "nominal",
+    "changed_run",
+    "changed_clients",
+    "changed_build"
+  ],
+  "duplicate_effect": "One selected actual EAL kb.assess invocation per effect start. Every persisted assessment is retained; stable replies carry qualified semantic status, not varying assessment IDs or final worker answers.",
+  "execution_mode": "software_fault_injection",
+  "fault_schedules": [
+    {
+      "effect_mode": "synthetic_counted_effect",
+      "fault": null,
+      "fault_on_handler_attempt": null,
+      "handler_schedule": "One initial delivery; after an injected interruption poll the actual pending inbox once and resume committed outbox if present",
+      "id": "no_fault"
+    },
+    {
+      "effect_mode": "actual_eal_python_host",
+      "fault": null,
+      "fault_on_handler_attempt": null,
+      "handler_schedule": "Three identical deliveries received before ACK",
+      "id": "duplicate_request"
+    },
+    {
+      "effect_mode": "synthetic_counted_effect",
+      "fault": "after_commit",
+      "fault_on_handler_attempt": 0,
+      "handler_schedule": "One initial delivery; after an injected interruption poll the actual pending inbox once and resume committed outbox if present",
+      "id": "commit_before_publish"
+    },
+    {
+      "effect_mode": "synthetic_counted_effect",
+      "fault": "after_send",
+      "fault_on_handler_attempt": 0,
+      "handler_schedule": "One initial delivery; after an injected interruption poll the actual pending inbox once and resume committed outbox if present",
+      "id": "send_receipt_lost"
+    },
+    {
+      "effect_mode": "synthetic_counted_effect",
+      "fault": "after_ack",
+      "fault_on_handler_attempt": 0,
+      "handler_schedule": "One initial delivery; after an injected interruption poll the actual pending inbox once and resume committed outbox if present",
+      "id": "ack_confirmation_lost"
+    },
+    {
+      "effect_mode": "synthetic_counted_effect",
+      "fault": "after_effect_before_commit",
+      "fault_on_handler_attempt": 0,
+      "handler_schedule": "One initial delivery; after an injected interruption poll the actual pending inbox once and resume committed outbox if present",
+      "id": "interrupted_effect"
+    }
+  ],
+  "native_model_calls": 0,
+  "resource_policy": "Retain incomplete EAL results and exceptions. Do not raise the method's unchanged five-second startup limit, replace the effect, or silently rerun a failed episode.",
+  "same_in_all_arms": [
+    "Logical input and stable reply identity",
+    "Logical effect and fixed ceilings",
+    "Transport identity/content collision checks",
+    "Reply content omits invocation counters",
+    "Independent evidence journal; it is unavailable to recovery policy"
+  ],
+  "schema": "EAL/mas-coordination-operational-plan/1",
+  "scope": "Internal synthetic software fixtures; no native reasoning, MCP invocation, total-cost or wire-syntax improvement claim."
+}

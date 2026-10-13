@@ -1,0 +1,85 @@
+[
+  {
+    "arm": "plain_retry",
+    "input_digest": "263bfb1ea8650b6d76ce2c125f669dc7a42dde40c77084c6665f902fa60857ae",
+    "operation": "episode_started",
+    "sequence": 1
+  },
+  {
+    "operation": "inbound_received",
+    "redelivered": false,
+    "sequence": 2
+  },
+  {
+    "attempt": 0,
+    "operation": "handler_delivery",
+    "sequence": 3
+  },
+  {
+    "effect_mode": "synthetic_counted_effect",
+    "operation": "effect_started",
+    "sequence": 4
+  },
+  {
+    "effect_result_file": "effect-001.json",
+    "operation": "effect_returned",
+    "sequence": 5
+  },
+  {
+    "operation": "result_checkpointed_without_outbox",
+    "result_is_recoverable": false,
+    "sequence": 6
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_attempted",
+    "sequence": 7
+  },
+  {
+    "duplicate": false,
+    "message_id": "reply",
+    "operation": "remote_send_returned",
+    "sequence": 8
+  },
+  {
+    "message_id": "reply",
+    "operation": "send_confirmed",
+    "sequence": 9
+  },
+  {
+    "message_id": "request",
+    "operation": "ack_attempted",
+    "sequence": 10
+  },
+  {
+    "message_id": "request",
+    "operation": "remote_ack_returned",
+    "sequence": 11
+  },
+  {
+    "fault_mode": "Python interruption",
+    "operation": "fault_injected",
+    "point": "after_ack",
+    "sequence": 12
+  },
+  {
+    "operation": "interruption_retained",
+    "point": "after_ack",
+    "sequence": 13
+  },
+  {
+    "method": "New transport and ledger objects",
+    "operation": "recovery_started",
+    "sequence": 14
+  },
+  {
+    "operation": "recovery_inbox_polled",
+    "pending_count": 0,
+    "sequence": 15
+  },
+  {
+    "automatic_reexecution": false,
+    "operation": "no_pending_inbound",
+    "sequence": 16
+  }
+]

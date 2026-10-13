@@ -1,0 +1,21 @@
+{
+  "message": {
+    "schema": "EAL/MAS-coordination/3",
+    "kind": "outcome",
+    "message_id": "assessor-outcome",
+    "task_id": "held_out_case04",
+    "task_digest": "a6dea49fc978c9fc4c7f053104e9669feeca5a2c8269d6ad24475a499d3c26a0",
+    "sender": "assessor",
+    "recipient": "reviewer",
+    "reply_to": "request",
+    "attempt": 0,
+    "finding_id": "finding_7342e2a8d39c077fc5e5c503a33a21ffe69f0f13a55d62124b8501329145c7fa",
+    "assessment_refs": {
+      "sample_endpoint_available": "b261a232-62e4-4875-8303-533ad7589d3a",
+      "sample_quorum_present": "e30b6a06-2d92-4b26-8c91-089bcac8dc8c"
+    }
+  },
+  "consumed_message_ids": [
+    "request"
+  ]
+}

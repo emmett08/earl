@@ -1,0 +1,38 @@
+{
+  "schema": "EAL/coordination-accuracy-reference/1",
+  "case_id": "case05",
+  "execution_mode": "software_reference",
+  "statuses": {
+    "performance_criteria_met": null,
+    "performance_criteria_failed": null
+  },
+  "check": "workload_mismatch",
+  "conclusion": "out_of_scope",
+  "finding": {
+    "schema": "EAL/MAS-coordination-finding/3",
+    "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765",
+    "check": {
+      "ok": false,
+      "code": "workload_mismatch",
+      "detail": "Evidence input differs from the complete requested workload"
+    },
+    "assessments": {},
+    "packets": {},
+    "explanations": {},
+    "mcp": {
+      "transport": "actual_mcp_stdio",
+      "calls": []
+    },
+    "collected_count": 0,
+    "reused_count": 0,
+    "finding_id": "finding_6db329905fc0091eadccda2efbffc3466a37a64a16b2fe83da2bd13627181963"
+  },
+  "fixture_truth": {
+    "request_count": 100,
+    "error_count": 1,
+    "nearest_rank_sample_p95_ms": 200,
+    "error_rate_percent": 1.0,
+    "inclusive_limits_pass": true,
+    "scope_corresponds": false
+  }
+}

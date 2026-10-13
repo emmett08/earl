@@ -1,0 +1,27 @@
+{
+  "server": {
+    "workspace": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/reference-inputs/case02",
+    "registry": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/reference-inputs/case02/tools.toml",
+    "database": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/reference-inputs/case02/knowledge.sqlite",
+    "methods": "eal.api_load_methods:registry",
+    "limits": null
+  },
+  "task": {
+    "task_id": "held_out_case02",
+    "question": "Assess every selected claim for this identified synthetic input. Preserve all registered scope and qualifications, distinguish scope mismatch from unavailable results, and make no conclusions about a deployed service.",
+    "entry_id": "availability_sample",
+    "claims": [
+      "sample_quorum_present",
+      "sample_endpoint_available",
+      "sample_unobserved_route"
+    ],
+    "profile": "registered_claims/1",
+    "requirements": {
+      "context": {
+        "dataset": "synthetic",
+        "deployment": "coordinator-demo",
+        "service": "catalogue-api"
+      }
+    }
+  }
+}

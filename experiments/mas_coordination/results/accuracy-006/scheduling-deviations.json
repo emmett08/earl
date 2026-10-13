@@ -1,0 +1,20 @@
+{
+  "schema": "EAL/accuracy-execution-deviations/1",
+  "deviations": [
+    {
+      "case_id": "case02",
+      "planned_assessor_launch_order": [
+        "lab",
+        "json"
+      ],
+      "actual_assessor_launch_order": [
+        "json",
+        "lab"
+      ],
+      "cause": "Operator launched the ready JSON context while the Lab reservation process was closing, then launched the Lab context.",
+      "action": "Retained both first attempts; no relaunch, resampling, prompt change or score change.",
+      "limit": "Actual model launch order is not perfectly counterbalanced."
+    }
+  ],
+  "reported_timing_scope": "Reservation-to-record elapsed includes operator scheduling and is not inference latency. Native model token usage, model identity and billing are unavailable."
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "message": {
+      "kind": "proposal",
+      "message_id": "reply",
+      "payload": {
+        "kind": "proposal",
+        "message_id": "reply",
+        "recipient": "reviewer",
+        "reply_to": "request",
+        "schema": "EAL/MAS-operational-receipt/1",
+        "sender": "assessor",
+        "summary": {
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "claim": "performance_criteria_met",
+          "production_supported": false,
+          "scope": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 10,
+            "dataset": "synthetic",
+            "run_id": "demo-load-001",
+            "service": "orders-api"
+          },
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "status": "supported"
+        }
+      },
+      "recipient": "reviewer",
+      "run_id": "episode",
+      "sender": "assessor",
+      "version": "1"
+    },
+    "redelivered": false,
+    "sequence": 2
+  }
+]

@@ -1,0 +1,475 @@
+{
+  "schema": "EAL/coordination-accuracy-report/1",
+  "study_id": "eal3-accuracy-006",
+  "plan_sha256": "b101ef83d1aef188aca1cbdd56ac6d7c16565aef48e2a46a33af15c6dea6ad11",
+  "execution_mode": "actual_host_agent",
+  "model": null,
+  "token_usage": null,
+  "billing": null,
+  "summary": {
+    "json": {
+      "task_correct": 5,
+      "tasks": 6,
+      "semantic_answer_correct": 5,
+      "task_accuracy": 0.8333333333333334,
+      "task_accuracy_wilson_95": [
+        0.43649717781352987,
+        0.9699466302516935
+      ],
+      "claim_status_correct": 11,
+      "selected_claims": 13,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 4,
+      "missing_worker_responses": 1,
+      "rejected_worker_responses": 1,
+      "repairs": 0
+    },
+    "lab": {
+      "task_correct": 6,
+      "tasks": 6,
+      "semantic_answer_correct": 6,
+      "task_accuracy": 1.0,
+      "task_accuracy_wilson_95": [
+        0.6096657120978346,
+        1
+      ],
+      "claim_status_correct": 13,
+      "selected_claims": 13,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 4,
+      "missing_worker_responses": 0,
+      "rejected_worker_responses": 0,
+      "repairs": 0
+    }
+  },
+  "pairs": [
+    {
+      "case_id": "case01",
+      "json": true,
+      "lab": true
+    },
+    {
+      "case_id": "case02",
+      "lab": true,
+      "json": true
+    },
+    {
+      "case_id": "case03",
+      "json": true,
+      "lab": true
+    },
+    {
+      "case_id": "case04",
+      "lab": true,
+      "json": false
+    },
+    {
+      "case_id": "case05",
+      "json": true,
+      "lab": true
+    },
+    {
+      "case_id": "case06",
+      "lab": true,
+      "json": true
+    }
+  ],
+  "paired_disagreements": {
+    "lab_only_correct": 1,
+    "json_only_correct": 0,
+    "exact_sign_test_two_sided_p": 1
+  },
+  "units": [
+    {
+      "unit_id": "case01-json",
+      "case_id": "case01",
+      "arm": "json",
+      "export_sha256": "80fc15d3e40f71a6526285d70a3353ee6455f7e32e96abc1c185d1baf461ff3c",
+      "first_finding_sha256": "f4ad3a7dfb31e82fac4840c04c6bdb98beffcead20ab7f5bb2b04b6eee2356c2",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 0,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u01_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u01_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case01-lab",
+      "case_id": "case01",
+      "arm": "lab",
+      "export_sha256": "390611bb05cd37a1208e0e671777cbc175ff7a846e6deda8bb9e056cc23c9e0a",
+      "first_finding_sha256": "bff9dd5bd45a16fa8cba82fc730c71edc00818a4e421ce0905c12ef7df76f2ac",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 0,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u02_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u02_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case02-lab",
+      "case_id": "case02",
+      "arm": "lab",
+      "export_sha256": "7634b040da513cde91ae4e88f70d529870e65ca88fbe4cd7303e824f16c64618",
+      "first_finding_sha256": "d3127ae8083907071cf9869898a7a8c632a7bb105a1264c6945800fa5f02a38b",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 3,
+      "selected_claims": 3,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 0,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u03_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u03_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case02-json",
+      "case_id": "case02",
+      "arm": "json",
+      "export_sha256": "14e4dada11609e63fe9158c1b63ddeb8a7dbdba0ba30352b5db8c2f63059ad0b",
+      "first_finding_sha256": "5678b39edd983c300dbba3a712a59e4b6b4f325a352e96442b236f8d9a050691",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 3,
+      "selected_claims": 3,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 0,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u04_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u04_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case03-json",
+      "case_id": "case03",
+      "arm": "json",
+      "export_sha256": "ee793851c2a157a943a4da4e49dcf515e4dd6400f5dfef05c41f0776fde1a3a7",
+      "first_finding_sha256": "54a789aa22b91344287fd48cfc94cf6e795518374a261a2719f4727b0f6d1437",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 0,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u05_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u05_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case03-lab",
+      "case_id": "case03",
+      "arm": "lab",
+      "export_sha256": "c05d4a3670a1c02cfb22bfe24b797381a09b543ae7cab9e55d04f725f24d1aad",
+      "first_finding_sha256": "78ae4ad63a8118e38672be121e9e10b8b1276d13d866685dcb00a5f85c127061",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 0,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u06_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u06_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case04-lab",
+      "case_id": "case04",
+      "arm": "lab",
+      "export_sha256": "8d819a398ee8734f70c5a70aeb0b5b88ee252eabbf3a2bdffc41cf734ab43529",
+      "first_finding_sha256": "0b3957ec7e6a18faf209b3f651f1399adb62da2135085d0bfdf2bd61c9d1078a",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 0,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u07_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u07_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case04-json",
+      "case_id": "case04",
+      "arm": "json",
+      "export_sha256": "b45d8712c778058a5aad335bb94306365f717956e3a89d2ed860bd0abf751294",
+      "first_finding_sha256": "e96bb8c8f6bdc7508b910c8768491f17393470c7e6892aff465dddf587157d15",
+      "correct": false,
+      "failures": [
+        "answer_fields",
+        "finding_identity",
+        "scope",
+        "qualification",
+        "conclusion",
+        "claim_selection",
+        "claim_fields:sample_endpoint_available",
+        "claim_identity_status_time:sample_endpoint_available",
+        "invalid_assessment_time:sample_endpoint_available",
+        "claim_fields:sample_quorum_present",
+        "claim_identity_status_time:sample_quorum_present",
+        "invalid_assessment_time:sample_quorum_present",
+        "assessor_message_fields",
+        "assessor_kind",
+        "assessor_assessment_refs",
+        "assessor_first_attempt",
+        "reviewer_first_attempt"
+      ],
+      "claim_status_correct": 0,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 0,
+      "semantic_answer_correct": false,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": false,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u08_assessor/turn1"
+        },
+        "reviewer": {
+          "present": false,
+          "accepted": false,
+          "raw_problem": "missing",
+          "execution_mode": null,
+          "execution_id": null
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case05-json",
+      "case_id": "case05",
+      "arm": "json",
+      "export_sha256": "7c4497cf96e7a26dce606c330f275ca25b1fd6666febb5d4653c6a59dd64b99f",
+      "first_finding_sha256": "c78d57ece9ddf8264b785dceb443503e450261a4f74fe10ce42d3a5a0b1ddcd3",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 2,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u09_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u09_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case05-lab",
+      "case_id": "case05",
+      "arm": "lab",
+      "export_sha256": "5f4f1557ff33c23e6eca5f2c17d2fee80b9bf4332aacaef6b3847fe412309bc7",
+      "first_finding_sha256": "958568fa1209725479dc0949106d881c60f17e900293abf46233e64f98163370",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 2,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u10_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u10_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case06-lab",
+      "case_id": "case06",
+      "arm": "lab",
+      "export_sha256": "8279c210125b15d0f68b5866207456e62172942b7cfafe3c0ea9029589f9d26f",
+      "first_finding_sha256": "12ea7db25aaa8a50c92ae6239fc1031e25c6fe888f95e37ddc8bdbc6116ce5b5",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 2,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u11_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u11_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    },
+    {
+      "unit_id": "case06-json",
+      "case_id": "case06",
+      "arm": "json",
+      "export_sha256": "08cad81a274f5e49568019d24473567e24352802dc1458abe63b9b056b4695e8",
+      "first_finding_sha256": "e7a080df9d4e61ff847d45239b9501433f25ecb409423b9eeba93bbdfe87c302",
+      "correct": true,
+      "failures": [],
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "unassessed_reference_claims": 2,
+      "semantic_answer_correct": true,
+      "workers": {
+        "assessor": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u12_assessor/turn1"
+        },
+        "reviewer": {
+          "present": true,
+          "accepted": true,
+          "raw_problem": null,
+          "execution_mode": "actual_host_agent",
+          "execution_id": "/root/accuracy006_u12_reviewer/turn1"
+        }
+      },
+      "repairs": 0
+    }
+  ],
+  "limitations": "Report raw counts and paired disagreements with descriptive rates. Six pairs are too small and too narrow to establish representative accuracy or a transport advantage. Equal results do not establish equivalence; a ceiling result is reported as such. Exact finite-sample paired sign-test p-values and Wilson intervals are descriptive only."
+}

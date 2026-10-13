@@ -1,0 +1,52 @@
+{
+  "answer": {
+    "task_digest": "394318c6b41609ee940c61f65eff0e9a3979b4cff052486ba6d91edc95b1d717",
+    "finding_id": "finding_e3658cb244a4c60588ab4d4dc0218366f37151c334624123a9ed18b332821fea",
+    "claims": {
+      "performance_criteria_met": {
+        "assessment_id": "0ffe3db4-8ae6-4225-988d-faf488f3e63b",
+        "status": "supported",
+        "assessed_at": "2026-10-12T21:43:44.800383Z"
+      },
+      "performance_criteria_failed": {
+        "assessment_id": "c601286c-42b9-4e10-8a66-0675719c54f7",
+        "status": "unsupported",
+        "assessed_at": "2026-10-12T21:43:47.148683Z"
+      }
+    },
+    "scope": {
+      "context": {
+        "build_id": "demo-build-42",
+        "dataset": "synthetic",
+        "service": "orders-api"
+      },
+      "requirements": {
+        "claim_outputs": {
+          "performance_criteria_failed": "fails",
+          "performance_criteria_met": "passes"
+        },
+        "context": {
+          "build_id": "demo-build-42",
+          "dataset": "synthetic",
+          "service": "orders-api"
+        },
+        "criteria": {
+          "evidence_max_age_seconds": 86400,
+          "maximum_error_rate_percent": 1,
+          "maximum_sample_p95_ms": 200,
+          "minimum_requests": 100
+        },
+        "workload": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "coordinator-synthetic-load-001",
+          "service": "orders-api"
+        }
+      }
+    },
+    "conclusion": "assessed",
+    "qualification": "conditional_on_registered_argument"
+  },
+  "consumed_message_ids": ["api-assessor-outcome-0"]
+}

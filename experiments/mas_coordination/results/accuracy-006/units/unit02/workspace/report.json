@@ -1,0 +1,491 @@
+{
+  "schema": "eal-api-load-test-report/1",
+  "service": "orders-api",
+  "build_id": "demo-build-42",
+  "run_id": "held-out-load-case01",
+  "concurrent_clients": 37,
+  "dataset": "synthetic",
+  "observed_at": "2026-10-12T23:32:49Z",
+  "requests": [
+    {
+      "elapsed_ms": 310,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 313,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 314,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 315,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 316,
+      "status_code": 503
+    },
+    {
+      "elapsed_ms": 317,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 318,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 319,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 320,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 321,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 322,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 310,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 311,
+      "status_code": 200
+    },
+    {
+      "elapsed_ms": 312,
+      "status_code": 200
+    }
+  ]
+}

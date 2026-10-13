@@ -1,0 +1,64 @@
+{
+  "execution_id": "/root/accuracy006_u01_reviewer/turn1",
+  "execution_mode": "actual_host_agent",
+  "raw_base64": "ewogICJhbnN3ZXIiOiB7CiAgICAidGFza19kaWdlc3QiOiAiMjhjYmI3NWVhYjc3OTRmZDBlNzAyNzQwYmY2OGJjYTM0MDYwYWI4N2I3ZDYzMDJhNGM4MzFmZDIyODRmYjkxNSIsCiAgICAiZmluZGluZ19pZCI6ICJmaW5kaW5nXzAwYTBjMGJlOWY0MDcyMWMzOTY2ODNhZGNmMTQ2YWJkZDI5MTEwMWRkZjU4YWMyNWFhYzcxMzRhNDU1NmJmYTMiLAogICAgImNsYWltcyI6IHsKICAgICAgInBlcmZvcm1hbmNlX2NyaXRlcmlhX2ZhaWxlZCI6IHsKICAgICAgICAiYXNzZXNzbWVudF9pZCI6ICJmNzVmMTYwMy03NmY0LTQ3ZmEtYjIyNS1mYmI4MjcyM2YzNzAiLAogICAgICAgICJzdGF0dXMiOiAic3VwcG9ydGVkIiwKICAgICAgICAiYXNzZXNzZWRfYXQiOiAiMjAyNi0xMC0xMlQyMzozNTo1NC40ODE1NjZaIgogICAgICB9LAogICAgICAicGVyZm9ybWFuY2VfY3JpdGVyaWFfbWV0IjogewogICAgICAgICJhc3Nlc3NtZW50X2lkIjogIjgyNTE2NjIxLTgzNjUtNDFmMi1iZjQzLTczMmUwNGI4Y2NhOSIsCiAgICAgICAgInN0YXR1cyI6ICJ1bnN1cHBvcnRlZCIsCiAgICAgICAgImFzc2Vzc2VkX2F0IjogIjIwMjYtMTAtMTJUMjM6MzU6NTYuMjczMzQ1WiIKICAgICAgfQogICAgfSwKICAgICJzY29wZSI6IHsKICAgICAgImNvbnRleHQiOiB7CiAgICAgICAgImJ1aWxkX2lkIjogImRlbW8tYnVpbGQtNDIiLAogICAgICAgICJkYXRhc2V0IjogInN5bnRoZXRpYyIsCiAgICAgICAgInNlcnZpY2UiOiAib3JkZXJzLWFwaSIKICAgICAgfSwKICAgICAgInJlcXVpcmVtZW50cyI6IHsKICAgICAgICAiY2xhaW1fb3V0cHV0cyI6IHsKICAgICAgICAgICJwZXJmb3JtYW5jZV9jcml0ZXJpYV9mYWlsZWQiOiAiZmFpbHMiLAogICAgICAgICAgInBlcmZvcm1hbmNlX2NyaXRlcmlhX21ldCI6ICJwYXNzZXMiCiAgICAgICAgfSwKICAgICAgICAiY29udGV4dCI6IHsKICAgICAgICAgICJidWlsZF9pZCI6ICJkZW1vLWJ1aWxkLTQyIiwKICAgICAgICAgICJkYXRhc2V0IjogInN5bnRoZXRpYyIsCiAgICAgICAgICAic2VydmljZSI6ICJvcmRlcnMtYXBpIgogICAgICAgIH0sCiAgICAgICAgImNyaXRlcmlhIjogewogICAgICAgICAgImV2aWRlbmNlX21heF9hZ2Vfc2Vjb25kcyI6IDg2NDAwLAogICAgICAgICAgIm1heGltdW1fZXJyb3JfcmF0ZV9wZXJjZW50IjogMSwKICAgICAgICAgICJtYXhpbXVtX3NhbXBsZV9wOTVfbXMiOiAyMDAsCiAgICAgICAgICAibWluaW11bV9yZXF1ZXN0cyI6IDEwMAogICAgICAgIH0sCiAgICAgICAgIndvcmtsb2FkIjogewogICAgICAgICAgImJ1aWxkX2lkIjogImRlbW8tYnVpbGQtNDIiLAogICAgICAgICAgImNvbmN1cnJlbnRfY2xpZW50cyI6IDM3LAogICAgICAgICAgImRhdGFzZXQiOiAic3ludGhldGljIiwKICAgICAgICAgICJydW5faWQiOiAiaGVsZC1vdXQtbG9hZC1jYXNlMDEiLAogICAgICAgICAgInNlcnZpY2UiOiAib3JkZXJzLWFwaSIKICAgICAgICB9CiAgICAgIH0KICAgIH0sCiAgICAiY29uY2x1c2lvbiI6ICJhc3Nlc3NlZCIsCiAgICAicXVhbGlmaWNhdGlvbiI6ICJjb25kaXRpb25hbF9vbl9yZWdpc3RlcmVkX2FyZ3VtZW50IgogIH0sCiAgImNvbnN1bWVkX21lc3NhZ2VfaWRzIjogWyJvdXRjb21lLXVuaXQwMSJdCn0K",
+  "raw_digest": "d8bd0b82fa37903732355876076869019142b616763f36688200bd50ae2c6c5b",
+  "evidence": {},
+  "accepted": true,
+  "outcome": "accepted",
+  "diagnostics": [],
+  "response": {
+    "answer": {
+      "task_digest": "28cbb75eab7794fd0e702740bf68bca34060ab87b7d6302a4c831fd2284fb915",
+      "finding_id": "finding_00a0c0be9f40721c396683adcf146abdd291101ddf58ac25aac7134a4556bfa3",
+      "claims": {
+        "performance_criteria_failed": {
+          "assessment_id": "f75f1603-76f4-47fa-b225-fbb82723f370",
+          "status": "supported",
+          "assessed_at": "2026-10-12T23:35:54.481566Z"
+        },
+        "performance_criteria_met": {
+          "assessment_id": "82516621-8365-41f2-bf43-732e04b8cca9",
+          "status": "unsupported",
+          "assessed_at": "2026-10-12T23:35:56.273345Z"
+        }
+      },
+      "scope": {
+        "context": {
+          "build_id": "demo-build-42",
+          "dataset": "synthetic",
+          "service": "orders-api"
+        },
+        "requirements": {
+          "claim_outputs": {
+            "performance_criteria_failed": "fails",
+            "performance_criteria_met": "passes"
+          },
+          "context": {
+            "build_id": "demo-build-42",
+            "dataset": "synthetic",
+            "service": "orders-api"
+          },
+          "criteria": {
+            "evidence_max_age_seconds": 86400,
+            "maximum_error_rate_percent": 1,
+            "maximum_sample_p95_ms": 200,
+            "minimum_requests": 100
+          },
+          "workload": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 37,
+            "dataset": "synthetic",
+            "run_id": "held-out-load-case01",
+            "service": "orders-api"
+          }
+        }
+      },
+      "conclusion": "assessed",
+      "qualification": "conditional_on_registered_argument"
+    },
+    "consumed_message_ids": [
+      "outcome-unit01"
+    ]
+  }
+}

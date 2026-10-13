@@ -1,0 +1,32 @@
+{
+  "execution_id": "/root/accuracy006_u04_assessor/turn1",
+  "execution_mode": "actual_host_agent",
+  "raw_base64": "ewogICJtZXNzYWdlIjogewogICAgInNjaGVtYSI6ICJFQUwvTUFTLWNvb3JkaW5hdGlvbi8zIiwKICAgICJraW5kIjogIm91dGNvbWUiLAogICAgIm1lc3NhZ2VfaWQiOiAib3V0Y29tZS11bml0MDQiLAogICAgInRhc2tfaWQiOiAiaGVsZF9vdXRfY2FzZTAyIiwKICAgICJ0YXNrX2RpZ2VzdCI6ICIyNGEyZGI4MGU4NDliMjRmMzQ5NWRiNjBkYzZlZmY1NjM2YjY5MDEyMThlNTk5OTY3YTUxNDYzYjVhZWIwOGJjIiwKICAgICJzZW5kZXIiOiAiYXNzZXNzb3IiLAogICAgInJlY2lwaWVudCI6ICJyZXZpZXdlciIsCiAgICAicmVwbHlfdG8iOiAicmVxdWVzdCIsCiAgICAiYXR0ZW1wdCI6IDAsCiAgICAiZmluZGluZ19pZCI6ICJmaW5kaW5nXzZmYzBiYzQ1NzhlZTY5OTg3ZDMyZDZjYmZlNjRmOTMwMGY2MjY2MzQ4NjUyMjI4ZDg4MjIzYzAzMDlkM2FlODYiLAogICAgImFzc2Vzc21lbnRfcmVmcyI6IHsKICAgICAgInNhbXBsZV9xdW9ydW1fcHJlc2VudCI6ICIzZTljNWZjMy03NGZlLTQxMzItODEwZC0zMDRhYTNkNDg4ZmIiLAogICAgICAic2FtcGxlX2VuZHBvaW50X2F2YWlsYWJsZSI6ICIyNWFhZmQ0OC01ZTZiLTQyZDEtODIyOC05NWJhNDJhYTdkMGEiLAogICAgICAic2FtcGxlX3Vub2JzZXJ2ZWRfcm91dGUiOiAiMGVmYTUwNDAtOGRiMC00Nzc1LWEyYzUtY2ZjYTM0MmIwNThmIgogICAgfQogIH0sCiAgImNvbnN1bWVkX21lc3NhZ2VfaWRzIjogWwogICAgInJlcXVlc3QiCiAgXQp9Cg==",
+  "raw_digest": "79be6638ae8a24979883c3343552aac0dcbc3abc6f5033629aa1d0f1a2ea0490",
+  "evidence": {},
+  "accepted": true,
+  "outcome": "accepted",
+  "diagnostics": [],
+  "response": {
+    "message": {
+      "schema": "EAL/MAS-coordination/3",
+      "kind": "outcome",
+      "message_id": "outcome-unit04",
+      "task_id": "held_out_case02",
+      "task_digest": "24a2db80e849b24f3495db60dc6eff5636b6901218e599967a51463b5aeb08bc",
+      "sender": "assessor",
+      "recipient": "reviewer",
+      "reply_to": "request",
+      "attempt": 0,
+      "finding_id": "finding_6fc0bc4578ee69987d32d6cbfe64f9300f6266348652228d88223c0309d3ae86",
+      "assessment_refs": {
+        "sample_quorum_present": "3e9c5fc3-74fe-4132-810d-304aa3d488fb",
+        "sample_endpoint_available": "25aafd48-5e6b-42d1-8228-95ba42aa7d0a",
+        "sample_unobserved_route": "0efa5040-8db0-4775-a2c5-cfca342b058f"
+      }
+    },
+    "consumed_message_ids": [
+      "request"
+    ]
+  }
+}

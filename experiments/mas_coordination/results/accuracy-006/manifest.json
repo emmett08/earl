@@ -1,0 +1,242 @@
+{
+  "schema": "EAL/coordination-accuracy-manifest/1",
+  "study_id": "eal3-accuracy-006",
+  "prepared_at": "2026-10-12T23:32:50.052529+00:00",
+  "plan_sha256": "b101ef83d1aef188aca1cbdd56ac6d7c16565aef48e2a46a33af15c6dea6ad11",
+  "source_plan_sha256": "07d81029cfd886516176e51badc1f8d88e379b6960592452bdf25fce2a3d44a3",
+  "harness_sha256": "372338710779ffb6d52440977b6f1a4b169eedaafe2bfda89354cfaf32b22b1d",
+  "execution_mode": "actual_host_agent",
+  "native_model": null,
+  "native_token_usage": null,
+  "native_billing": null,
+  "units": [
+    {
+      "unit_id": "case01-json",
+      "storage_id": "unit01",
+      "case_id": "case01",
+      "arm": "json",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit01/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit01/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit01/export.json",
+      "task_digest": "772b2c6c0b7a273e806ae543249233017f4d6b8d31a228255da8d196612b9730",
+      "spec_sha256": "039f1c3508cae2b9bd27347fa9a240ed060554468a4a7af259cb16e14e0793c4",
+      "input_sha256": {
+        "availability.json": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc",
+        "api-load.eal": "39649555c168e20ce2220b6f5f0c11edafd0b99ff60187ee71c05395f59615c2",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "6b2a3045f92b820ca5660048220c666b03c61bfa13eea117fbc61a14d2d5cf76",
+        "report.json": "1cc7aa3cb04ed5285b6656ae66feab95b10460b35c8e109931ea14d75f2bb6a8"
+      }
+    },
+    {
+      "unit_id": "case01-lab",
+      "storage_id": "unit02",
+      "case_id": "case01",
+      "arm": "lab",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit02/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit02/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit02/export.json",
+      "task_digest": "772b2c6c0b7a273e806ae543249233017f4d6b8d31a228255da8d196612b9730",
+      "spec_sha256": "fbc40fd25f5bb0d69fe3ec9312ff67f59b8e79a2ea43bf09ab298261cf288048",
+      "input_sha256": {
+        "availability.json": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc",
+        "api-load.eal": "39649555c168e20ce2220b6f5f0c11edafd0b99ff60187ee71c05395f59615c2",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "6b2a3045f92b820ca5660048220c666b03c61bfa13eea117fbc61a14d2d5cf76",
+        "report.json": "1cc7aa3cb04ed5285b6656ae66feab95b10460b35c8e109931ea14d75f2bb6a8"
+      }
+    },
+    {
+      "unit_id": "case02-lab",
+      "storage_id": "unit03",
+      "case_id": "case02",
+      "arm": "lab",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit03/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit03/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit03/export.json",
+      "task_digest": "835cec48795de1a80275c8df78c41756596c66a575663f296e3af6a380a8594a",
+      "spec_sha256": "28b72e05c41a6fbe0714b9d97a715820a71ffd23d80773cd711f2c56627a244b",
+      "input_sha256": {
+        "availability.json": "a202003d3799c620b13c391971fa66e247708a941713d9d461d206e1445e3c6b",
+        "api-load.eal": "8b8656e83a7f56c2a914bb97b8bd9c90d99afed3df7c8f50ab555df30026e317",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+        "report.json": "24d78d37afc73e85f74eb10b704d582a4592e54fde471bbdaa0e35f69bf3a6a9"
+      }
+    },
+    {
+      "unit_id": "case02-json",
+      "storage_id": "unit04",
+      "case_id": "case02",
+      "arm": "json",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit04/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit04/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit04/export.json",
+      "task_digest": "835cec48795de1a80275c8df78c41756596c66a575663f296e3af6a380a8594a",
+      "spec_sha256": "c825783aaa0eb38519f588a6b87e11146346dab882b584ad5087b2a33f5e410a",
+      "input_sha256": {
+        "availability.json": "a202003d3799c620b13c391971fa66e247708a941713d9d461d206e1445e3c6b",
+        "api-load.eal": "8b8656e83a7f56c2a914bb97b8bd9c90d99afed3df7c8f50ab555df30026e317",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "56d524510d46dbd99b812542f520aa87fa946302817f15f6a86a4071ca989fdd",
+        "report.json": "24d78d37afc73e85f74eb10b704d582a4592e54fde471bbdaa0e35f69bf3a6a9"
+      }
+    },
+    {
+      "unit_id": "case03-json",
+      "storage_id": "unit05",
+      "case_id": "case03",
+      "arm": "json",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit05/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit05/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit05/export.json",
+      "task_digest": "aebd97284b57284f09d12199ba5094124219d16b554f3b7f8243fab174c0f297",
+      "spec_sha256": "06dd02237fa284226bdf1ff7a1569eb9997e63595dcf911cc144951d2bd16af6",
+      "input_sha256": {
+        "availability.json": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc",
+        "api-load.eal": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "6b2a3045f92b820ca5660048220c666b03c61bfa13eea117fbc61a14d2d5cf76",
+        "report.json": "5b73ebd9fbe293c8898694a42ca77f84c09955e52311251affd24427de6fbc8c"
+      }
+    },
+    {
+      "unit_id": "case03-lab",
+      "storage_id": "unit06",
+      "case_id": "case03",
+      "arm": "lab",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit06/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit06/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit06/export.json",
+      "task_digest": "aebd97284b57284f09d12199ba5094124219d16b554f3b7f8243fab174c0f297",
+      "spec_sha256": "6af64a7f1b6bdc702d83bda23bbfe89c7f3c3b43c545ec0f3da67cfead3c74a3",
+      "input_sha256": {
+        "availability.json": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc",
+        "api-load.eal": "17d20bb48f86dc3d223a9663c5cafb8b46e3f30d4aa6c77f6ad48895d5b19b39",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "6b2a3045f92b820ca5660048220c666b03c61bfa13eea117fbc61a14d2d5cf76",
+        "report.json": "5b73ebd9fbe293c8898694a42ca77f84c09955e52311251affd24427de6fbc8c"
+      }
+    },
+    {
+      "unit_id": "case04-lab",
+      "storage_id": "unit07",
+      "case_id": "case04",
+      "arm": "lab",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit07/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit07/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit07/export.json",
+      "task_digest": "692e4d2c9406482f04521cb3bfd0ea2395fc6ab7a5d035034f0ff5ade3053301",
+      "spec_sha256": "12d4fbc8d172e2c74ef2d62889bdea1161f1dbb24ce51fe1a099fbb811dd5a98",
+      "input_sha256": {
+        "availability.json": "c931c82586562e572484be1a8a4769100ec3cea657625be6c08ab1848aa3aa00",
+        "api-load.eal": "8b8656e83a7f56c2a914bb97b8bd9c90d99afed3df7c8f50ab555df30026e317",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "390ae52b5807b59d38402d8d86f0789a05b397f23a5c34ace1b0f65ece8f56ce",
+        "report.json": "24d78d37afc73e85f74eb10b704d582a4592e54fde471bbdaa0e35f69bf3a6a9"
+      }
+    },
+    {
+      "unit_id": "case04-json",
+      "storage_id": "unit08",
+      "case_id": "case04",
+      "arm": "json",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit08/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit08/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit08/export.json",
+      "task_digest": "692e4d2c9406482f04521cb3bfd0ea2395fc6ab7a5d035034f0ff5ade3053301",
+      "spec_sha256": "83c9404991070de42ee538363291cafcf3180339c4e7abf21cba1e4243bae04d",
+      "input_sha256": {
+        "availability.json": "c931c82586562e572484be1a8a4769100ec3cea657625be6c08ab1848aa3aa00",
+        "api-load.eal": "8b8656e83a7f56c2a914bb97b8bd9c90d99afed3df7c8f50ab555df30026e317",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "390ae52b5807b59d38402d8d86f0789a05b397f23a5c34ace1b0f65ece8f56ce",
+        "report.json": "24d78d37afc73e85f74eb10b704d582a4592e54fde471bbdaa0e35f69bf3a6a9"
+      }
+    },
+    {
+      "unit_id": "case05-json",
+      "storage_id": "unit09",
+      "case_id": "case05",
+      "arm": "json",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit09/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit09/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit09/export.json",
+      "task_digest": "5029aaae946b5cb5285d4cc1d42cfad8993d6d9128e4b438e5b8030670ff9a90",
+      "spec_sha256": "855c206466d9bb49a25b11bd288536e0240cd0211b82764ee72935c282d5cd6c",
+      "input_sha256": {
+        "availability.json": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc",
+        "api-load.eal": "92443350506d159e9c7923b228e088b14fb8a79356e2e3599255835b5ead7476",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "6b2a3045f92b820ca5660048220c666b03c61bfa13eea117fbc61a14d2d5cf76",
+        "report.json": "f4f6ae1cc1e98bdec0ea73315410b97606cc008c1ae57d94b6f8d45fe5f1fed5"
+      }
+    },
+    {
+      "unit_id": "case05-lab",
+      "storage_id": "unit10",
+      "case_id": "case05",
+      "arm": "lab",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit10/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit10/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit10/export.json",
+      "task_digest": "5029aaae946b5cb5285d4cc1d42cfad8993d6d9128e4b438e5b8030670ff9a90",
+      "spec_sha256": "881350f4e3e750f13f17329977b7640f855903abd98ac6c1093ed145cb44c36e",
+      "input_sha256": {
+        "availability.json": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc",
+        "api-load.eal": "92443350506d159e9c7923b228e088b14fb8a79356e2e3599255835b5ead7476",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "6b2a3045f92b820ca5660048220c666b03c61bfa13eea117fbc61a14d2d5cf76",
+        "report.json": "f4f6ae1cc1e98bdec0ea73315410b97606cc008c1ae57d94b6f8d45fe5f1fed5"
+      }
+    },
+    {
+      "unit_id": "case06-lab",
+      "storage_id": "unit11",
+      "case_id": "case06",
+      "arm": "lab",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit11/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit11/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit11/export.json",
+      "task_digest": "dc6ab5b5c2a2fd7f040b9fc9b55a4b20b2f896edd3d0dfd4c4478b106a5e5adb",
+      "spec_sha256": "210a57eed092ae9b6ac2ea855958d6eb9647601521d06adcb58662fc9ddf257f",
+      "input_sha256": {
+        "availability.json": "a202003d3799c620b13c391971fa66e247708a941713d9d461d206e1445e3c6b",
+        "api-load.eal": "8b8656e83a7f56c2a914bb97b8bd9c90d99afed3df7c8f50ab555df30026e317",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "e9e9d1c4141fe374d0fcd5858e14fd5ee6e4bcc1667cb511b6b75024692fcaa1",
+        "report.json": "24d78d37afc73e85f74eb10b704d582a4592e54fde471bbdaa0e35f69bf3a6a9"
+      }
+    },
+    {
+      "unit_id": "case06-json",
+      "storage_id": "unit12",
+      "case_id": "case06",
+      "arm": "json",
+      "spec": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit12/spec.json",
+      "run": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit12/run",
+      "export": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit12/export.json",
+      "task_digest": "dc6ab5b5c2a2fd7f040b9fc9b55a4b20b2f896edd3d0dfd4c4478b106a5e5adb",
+      "spec_sha256": "be9339df33d16ef391a29529d2c5d688a413ae8ab5f6c2c4e5a2eabccf8faf25",
+      "input_sha256": {
+        "availability.json": "a202003d3799c620b13c391971fa66e247708a941713d9d461d206e1445e3c6b",
+        "api-load.eal": "8b8656e83a7f56c2a914bb97b8bd9c90d99afed3df7c8f50ab555df30026e317",
+        "collect_results.py": "d7978f0c4dbd6577b24e33035a7ec021aa4886cf7a8c390a970084f0179876e2",
+        "collect_availability.py": "7237aa3a3e870b13c0a87eedd01f5ccea5bef1d7f262a98d057bf7ed23d0dade",
+        "availability.eal": "e9e9d1c4141fe374d0fcd5858e14fd5ee6e4bcc1667cb511b6b75024692fcaa1",
+        "report.json": "24d78d37afc73e85f74eb10b704d582a4592e54fde471bbdaa0e35f69bf3a6a9"
+      }
+    }
+  ]
+}

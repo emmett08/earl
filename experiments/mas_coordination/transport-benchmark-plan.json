@@ -1,0 +1,41 @@
+{
+  "schema": "EAL/MAS-transport-benchmark/1",
+  "purpose": "Measure equivalent deterministic durable delivery; no inference, accuracy, token or billing claim.",
+  "baseline_commit": "984e30726279177ce106c932fb0209d90428a6cd",
+  "arms": ["legacy_one_shot", "persistent_mcp", "persistent_mcp_codec", "persistent_rust_admission", "json_control"],
+  "arm_definitions": {
+    "legacy_one_shot": "Frozen commit 984e307; per-operation MCP server/session and per-call codec processes; CLI reservations.",
+    "persistent_mcp": "One persistent MCP server/session; one-shot Rust codec; unchanged round-trip admission.",
+    "persistent_mcp_codec": "Persistent MCP and codec; unchanged round-trip admission and separate MCP encoding call.",
+    "persistent_rust_admission": "Persistent MCP and codec; single envelope admission validated and canonicalised in Rust.",
+    "json_control": "Equivalent durable semantic contract in Python/SQLite without Rust wire parsing."
+  },
+  "default_repetitions": 5,
+  "schedule": "Rotate the five arms by repetition (counterbalanced Latin-square). Same payloads and identifiers; fresh database per arm/repetition.",
+  "run_id": "transport-benchmark",
+  "participants": ["assessor", "reviewer"],
+  "message_padding_bytes": [256, 4096, 61440],
+  "limits": {"max_messages": 3, "max_bytes": 100000, "max_calls": 1},
+  "worker_evidence": {"execution_id": "deterministic-software-fixture", "outcome": "completed", "synthetic": true},
+  "operations": ["create", "reserve", "finish", "send", "premature_ack_rejection", "duplicate_send", "changed_content_rejection", "receive", "redelivery", "wrong_recipient_ack_rejection", "ack", "empty_receive", "status"],
+  "frozen_invariants": [
+    "Identical canonical envelope and payload for every accepted message in every arm.",
+    "New send accepted once; identical duplicate returns same sequence without spending message or byte budget.",
+    "Changed content under the same identity rejected without spending message or byte budget.",
+    "First receive has redelivered=false; next receive has redelivered=true; both contain exact accepted envelope.",
+    "ACK requires received addressed content; after ACK no pending delivery remains.",
+    "Final useful state: three received+ACKed messages, one completed worker reservation, same immutable evidence.",
+    "Final byte usage equals sum of canonical compact JSON envelope UTF-8 sizes, across all arms."
+  ],
+  "measurements": [
+    "perf_counter_ns for each operation; constructor, cold first operation and shutdown reported separately.",
+    "Total useful-cycle wall time includes create, reservation/completion and all delivery checks, excludes shutdown.",
+    "First persistent codec use is labelled independently from first MCP/session use; excluding-first-use operation summaries omit both startup samples. Post-create totals explicitly include lazy first codec use.",
+    "Actual subprocess launches recorded in parent and isolated Python descendants via explicit sitecustomize instrumentation.",
+    "Parent plus reaped-child CPU sampled via resource.getrusage; persistent child CPU is accounted after shutdown.",
+    "Codec-only encode and parse cold/warm timings and representation round trips measured separately.",
+    "cProfile parent and isolated-server main-thread diagnostic runs kept separate from headline timings; startup and waiting are not labelled parser CPU."
+  ],
+  "acceptance": "No speed claim unless all frozen correctness invariants pass. Report raw samples, paired ratios and all failures. JSON is a semantic control and does not use the nom wire parser.",
+  "scope_limits": ["One local host and deterministic software workload.", "No live agents or model output accuracy measured.", "Rust admission arm fuses MCP encoding/admission and codec work; its difference is pipeline batching, not an isolated language comparison.", "Small finite paired sample; descriptive ratios are not population inference."]
+}

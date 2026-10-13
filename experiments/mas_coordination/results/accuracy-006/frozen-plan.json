@@ -1,0 +1,142 @@
+{
+  "schema": "EAL/coordination-accuracy-plan/1",
+  "study_id": "eal3-accuracy-006",
+  "status": "declared_before_native_outcomes",
+  "target": "First-attempt fidelity to scoped, operator-registered EAL/3 assessments; synthetic held-out fixtures, not general model accuracy",
+  "arms": [
+    "json",
+    "lab"
+  ],
+  "cases": [
+    {
+      "case_id": "case01",
+      "profile": "api_load/1",
+      "variation": "failed_sample_limits",
+      "arm_order": [
+        "json",
+        "lab"
+      ],
+      "expected_conclusion": "assessed",
+      "expected_check": null,
+      "expected_statuses": {
+        "performance_criteria_failed": "supported",
+        "performance_criteria_met": "unsupported"
+      }
+    },
+    {
+      "case_id": "case02",
+      "profile": "registered_claims/1",
+      "variation": "contested_route_negative_quorum_unobserved_claim",
+      "arm_order": [
+        "lab",
+        "json"
+      ],
+      "expected_conclusion": "assessed",
+      "expected_check": null,
+      "expected_statuses": {
+        "sample_quorum_present": "unsupported",
+        "sample_endpoint_available": "contested",
+        "sample_unobserved_route": "unsupported"
+      }
+    },
+    {
+      "case_id": "case03",
+      "profile": "api_load/1",
+      "variation": "inclusive_limit_boundary",
+      "arm_order": [
+        "json",
+        "lab"
+      ],
+      "expected_conclusion": "assessed",
+      "expected_check": null,
+      "expected_statuses": {
+        "performance_criteria_failed": "unsupported",
+        "performance_criteria_met": "supported"
+      }
+    },
+    {
+      "case_id": "case04",
+      "profile": "registered_claims/1",
+      "variation": "stale_positive_snapshot",
+      "arm_order": [
+        "lab",
+        "json"
+      ],
+      "expected_conclusion": "assessed",
+      "expected_check": null,
+      "expected_statuses": {
+        "sample_endpoint_available": "unsupported",
+        "sample_quorum_present": "unsupported"
+      }
+    },
+    {
+      "case_id": "case05",
+      "profile": "api_load/1",
+      "variation": "requested_workload_scope_mismatch",
+      "arm_order": [
+        "json",
+        "lab"
+      ],
+      "expected_conclusion": "out_of_scope",
+      "expected_check": "workload_mismatch",
+      "expected_statuses": {
+        "performance_criteria_met": null,
+        "performance_criteria_failed": null
+      }
+    },
+    {
+      "case_id": "case06",
+      "profile": "registered_claims/1",
+      "variation": "registered_entry_unavailable_after_pin",
+      "arm_order": [
+        "lab",
+        "json"
+      ],
+      "expected_conclusion": "unresolved",
+      "expected_check": "evidence_unavailable",
+      "expected_statuses": {
+        "sample_quorum_present": null,
+        "sample_endpoint_available": null
+      }
+    }
+  ],
+  "execution": {
+    "units": 12,
+    "maximum_fresh_worker_contexts": 24,
+    "roles": [
+      "assessor",
+      "reviewer"
+    ],
+    "fresh_context_per_role_unit": true,
+    "maximum_repairs": 0,
+    "worker_seconds": 180,
+    "requested_tokens_per_role": 4000,
+    "budgets": {
+      "max_worker_calls": 2,
+      "max_gateway_calls_per_role": 4,
+      "max_mcp_calls_per_role": 64,
+      "wall_seconds": 900,
+      "worker_seconds": 180
+    }
+  },
+  "worker_prompt_template": "You are one fresh independent worker in a bounded EAL coordination run. Read only the reserved context at {context_path} and the response schema named by that context. Execute only that context's gateway argv, adding --finding-id from your addressed handoff if you are the reviewer. You may inspect the gateway's returned finding/packets/explanations; do not read fixtures, registered EAL source, study plans, answer keys, scorer/helpers, implementation or other workers' files. Author your own first response with no repair or retry of rejected output. Assessor: return exactly message and consumed_message_ids; use an outcome for a complete assessment finding, or a disposition with rejected for source_changed/context_mismatch/workload_mismatch/criteria_mismatch and incomplete for evidence_unavailable/effect_outcome_unknown. Reviewer: return exactly answer and consumed_message_ids; retain every selected claim's exact assessment_id/status/assessed_at, or all null if no assessment exists. Preserve full requested context and requirements. Use assessed for a complete valid finding, out_of_scope for source_changed/context_mismatch/workload_mismatch/criteria_mismatch, and unresolved for unavailable or unknown results. Qualification remains conditional_on_registered_argument. Do not convert unsupported into proof of the opposite or contested into supported. Save only your exact authored JSON response to {response_path} and return that same JSON without fences. Maximum four gateway calls, 64 EAL MCP calls, 180 requested seconds and 4000 requested output tokens. No other agents or delegation.",
+  "controls": [
+    "Identical registered source bytes, synthetic record timestamps, task claim order, full requirements, instructions and tool budgets across each arm pair",
+    "Independent empty assessment databases, mailbox state and worker contexts for every unit",
+    "Counterbalanced arm order, one run per case per arm; no retries or replacement of first responses",
+    "Preflight deterministic fixtures in separate software/reference workspaces, then freeze before native worker execution",
+    "No fixture, reference output, answer key, study plan or scorer in worker instructions; workers may read only their context/schema and execute its gateway",
+    "Trusted post-trial reference executes actual registered EAL MCP on separate empty workspaces and compares each unit's own IDs and times to its retained packets",
+    "Case06 removes only the named synthetic catalogue entry/revision after pinning, before any worker query. Correspondence returns evidence_unavailable; no fabricated unknown effect or assessment is introduced"
+  ],
+  "metrics": [
+    "Exact scoped first-attempt task accuracy including both worker roles",
+    "Per-selected-claim status fidelity with null counted as unassessed",
+    "Unsupported positive claims: supported when reference is contested, unsupported or null",
+    "Rejected, invalid, missing, unassessed and incomplete first attempts retained without repair",
+    "Model identity, provider token usage and billing recorded unknown unless supported by actual execution evidence"
+  ],
+  "blinding": "Opaque sequential unit directories conceal transport names in worker gateway/context/response paths. Only the operator manifest maps units to conditions; workers never read it. Both transports expose the same canonical role JSON contract.",
+  "analysis": "Report raw counts and paired disagreements with descriptive rates. Six pairs are too small and too narrow to establish representative accuracy or a transport advantage. Equal results do not establish equivalence; a ceiling result is reported as such. Exact finite-sample paired sign-test p-values and Wilson intervals are descriptive only.",
+  "separation": "Native outcomes are model-output measurements. Fixture preflights, reference executions and scorer tests are software checks and excluded from native denominators. This is a comparison of transport under identical semantics, not an uncoordinated-MCP baseline."
+}

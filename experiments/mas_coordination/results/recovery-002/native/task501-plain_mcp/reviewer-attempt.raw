@@ -1,0 +1,3 @@
+{
+  "raw_utf8": "{\n  \"answer\": {\n    \"statuses\": {\n      \"performance_criteria_met\": \"unsupported\",\n      \"performance_criteria_failed\": \"supported\"\n    },\n    \"scope\": {\n      \"service\": \"orders-api\",\n      \"build_id\": \"demo-build-42\",\n      \"run_id\": \"demo-load-001\",\n      \"concurrent_clients\": 10,\n      \"dataset\": \"synthetic\"\n    },\n    \"assessed_at\": \"2026-09-25T10:00:00Z\",\n    \"conclusion\": \"sample_fail\",\n    \"production_supported\": false\n  },\n  \"consumed_message_ids\": [\"assessor-outcome\"]\n}\n"
+}

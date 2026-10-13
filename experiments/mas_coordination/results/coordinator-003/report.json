@@ -1,0 +1,354 @@
+{
+  "schema": "EAL/coordination-evaluation-report/1",
+  "study_id": "eal3-coordinator-003",
+  "created_at": "2026-10-12T21:48:10.744583Z",
+  "execution_mode": "actual_separate_host_agents",
+  "actual_contexts": 8,
+  "units": [
+    {
+      "name": "api-json",
+      "profile": "api_load/1",
+      "arm": "json",
+      "task_id": "synthetic_api_sample",
+      "run_id": "coord-0190b1285b654adfa503a4678910a9c3",
+      "status": "completed",
+      "answer": {
+        "claims": {
+          "performance_criteria_failed": {
+            "assessed_at": "2026-10-12T21:40:09.814928Z",
+            "assessment_id": "7ce173c5-b0db-4731-bdff-55b286227175",
+            "status": "unsupported"
+          },
+          "performance_criteria_met": {
+            "assessed_at": "2026-10-12T21:40:07.540109Z",
+            "assessment_id": "c0e4e9ff-20e4-4c3e-af1d-c8bfb5114606",
+            "status": "supported"
+          }
+        },
+        "conclusion": "assessed",
+        "finding_id": "finding_0d26fe65bb506a7b2a1a4f255361705e0cd892fe42ec3ae084bae16fa23af080",
+        "qualification": "conditional_on_registered_argument",
+        "scope": {
+          "context": {
+            "build_id": "demo-build-42",
+            "dataset": "synthetic",
+            "service": "orders-api"
+          },
+          "requirements": {
+            "claim_outputs": {
+              "performance_criteria_failed": "fails",
+              "performance_criteria_met": "passes"
+            },
+            "context": {
+              "build_id": "demo-build-42",
+              "dataset": "synthetic",
+              "service": "orders-api"
+            },
+            "criteria": {
+              "evidence_max_age_seconds": 86400,
+              "maximum_error_rate_percent": 1,
+              "maximum_sample_p95_ms": 200,
+              "minimum_requests": 100
+            },
+            "workload": {
+              "build_id": "demo-build-42",
+              "concurrent_clients": 10,
+              "dataset": "synthetic",
+              "run_id": "coordinator-synthetic-load-001",
+              "service": "orders-api"
+            }
+          }
+        },
+        "task_digest": "2cdcb1ed981098e204f6b86d290786dc5705a7cb34427b330a45575adf0630e8"
+      },
+      "actual_contexts": 2,
+      "execution_mode": "actual_host_agent",
+      "execution_ids": [
+        "/root/coord003_assessor_api_json/turn1",
+        "/root/coord003_reviewer_api_json/turn1"
+      ],
+      "worker_admissions": [
+        true,
+        true
+      ],
+      "expected_claim_statuses": {
+        "performance_criteria_met": "supported",
+        "performance_criteria_failed": "unsupported"
+      },
+      "expected_claims_match": true,
+      "correct": true,
+      "actual_mcp_calls": 11,
+      "mcp_call_reservations": 11,
+      "actual_registered_assessments": 2,
+      "collected_count": 1,
+      "reused_count": 1,
+      "native_model": null,
+      "native_tokens": null,
+      "native_cost_usd": null,
+      "mailbox_usage": {
+        "messages": 2,
+        "bytes": 1116,
+        "calls": 2
+      }
+    },
+    {
+      "name": "api-lab",
+      "profile": "api_load/1",
+      "arm": "lab",
+      "task_id": "synthetic_api_sample",
+      "run_id": "coord-08c1d2bb8010438aa70d98c7dcd31fed",
+      "status": "completed",
+      "answer": {
+        "claims": {
+          "performance_criteria_failed": {
+            "assessed_at": "2026-10-12T21:43:47.148683Z",
+            "assessment_id": "c601286c-42b9-4e10-8a66-0675719c54f7",
+            "status": "unsupported"
+          },
+          "performance_criteria_met": {
+            "assessed_at": "2026-10-12T21:43:44.800383Z",
+            "assessment_id": "0ffe3db4-8ae6-4225-988d-faf488f3e63b",
+            "status": "supported"
+          }
+        },
+        "conclusion": "assessed",
+        "finding_id": "finding_e3658cb244a4c60588ab4d4dc0218366f37151c334624123a9ed18b332821fea",
+        "qualification": "conditional_on_registered_argument",
+        "scope": {
+          "context": {
+            "build_id": "demo-build-42",
+            "dataset": "synthetic",
+            "service": "orders-api"
+          },
+          "requirements": {
+            "claim_outputs": {
+              "performance_criteria_failed": "fails",
+              "performance_criteria_met": "passes"
+            },
+            "context": {
+              "build_id": "demo-build-42",
+              "dataset": "synthetic",
+              "service": "orders-api"
+            },
+            "criteria": {
+              "evidence_max_age_seconds": 86400,
+              "maximum_error_rate_percent": 1,
+              "maximum_sample_p95_ms": 200,
+              "minimum_requests": 100
+            },
+            "workload": {
+              "build_id": "demo-build-42",
+              "concurrent_clients": 10,
+              "dataset": "synthetic",
+              "run_id": "coordinator-synthetic-load-001",
+              "service": "orders-api"
+            }
+          }
+        },
+        "task_digest": "394318c6b41609ee940c61f65eff0e9a3979b4cff052486ba6d91edc95b1d717"
+      },
+      "actual_contexts": 2,
+      "execution_mode": "actual_host_agent",
+      "execution_ids": [
+        "/root/coord003_assessor_api_lab/turn1",
+        "/root/coord003_reviewer_api_lab/turn1"
+      ],
+      "worker_admissions": [
+        true,
+        true
+      ],
+      "expected_claim_statuses": {
+        "performance_criteria_met": "supported",
+        "performance_criteria_failed": "unsupported"
+      },
+      "expected_claims_match": true,
+      "correct": true,
+      "actual_mcp_calls": 11,
+      "mcp_call_reservations": 11,
+      "actual_registered_assessments": 2,
+      "collected_count": 1,
+      "reused_count": 1,
+      "native_model": null,
+      "native_tokens": null,
+      "native_cost_usd": null,
+      "mailbox_usage": {
+        "messages": 2,
+        "bytes": 1116,
+        "calls": 2
+      }
+    },
+    {
+      "name": "generic-lab",
+      "profile": "registered_claims/1",
+      "arm": "lab",
+      "task_id": "synthetic_availability_sample",
+      "run_id": "coord-4dd5731fd9784397923b4290196f9bfe",
+      "status": "completed",
+      "answer": {
+        "claims": {
+          "sample_endpoint_available": {
+            "assessed_at": "2026-10-12T21:40:17.577107Z",
+            "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+            "status": "contested"
+          },
+          "sample_quorum_present": {
+            "assessed_at": "2026-10-12T21:40:17.873449Z",
+            "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+            "status": "supported"
+          }
+        },
+        "conclusion": "assessed",
+        "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+        "qualification": "conditional_on_registered_argument",
+        "scope": {
+          "context": {
+            "dataset": "synthetic",
+            "deployment": "coordinator-demo",
+            "service": "catalogue-api"
+          },
+          "requirements": {
+            "context": {
+              "dataset": "synthetic",
+              "deployment": "coordinator-demo",
+              "service": "catalogue-api"
+            }
+          }
+        },
+        "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f"
+      },
+      "actual_contexts": 2,
+      "execution_mode": "actual_host_agent",
+      "execution_ids": [
+        "/root/coord003_assessor_generic_lab/turn1",
+        "/root/coord003_reviewer_generic_lab/turn1"
+      ],
+      "worker_admissions": [
+        true,
+        true
+      ],
+      "expected_claim_statuses": {
+        "sample_endpoint_available": "contested",
+        "sample_quorum_present": "supported"
+      },
+      "expected_claims_match": true,
+      "correct": true,
+      "actual_mcp_calls": 11,
+      "mcp_call_reservations": 11,
+      "actual_registered_assessments": 2,
+      "collected_count": 3,
+      "reused_count": 0,
+      "native_model": null,
+      "native_tokens": null,
+      "native_cost_usd": null,
+      "mailbox_usage": {
+        "messages": 2,
+        "bytes": 1149,
+        "calls": 2
+      }
+    },
+    {
+      "name": "generic-json",
+      "profile": "registered_claims/1",
+      "arm": "json",
+      "task_id": "synthetic_availability_sample",
+      "run_id": "coord-77eedfe222f94f45b948ddabc5e83c05",
+      "status": "completed",
+      "answer": {
+        "claims": {
+          "sample_endpoint_available": {
+            "assessed_at": "2026-10-12T21:43:46.746203Z",
+            "assessment_id": "b47431ec-1649-42a5-b8e1-bed9933ba0bc",
+            "status": "contested"
+          },
+          "sample_quorum_present": {
+            "assessed_at": "2026-10-12T21:43:47.036086Z",
+            "assessment_id": "2437e17f-0c0b-46b1-9f12-aee9d4b23eaf",
+            "status": "supported"
+          }
+        },
+        "conclusion": "assessed",
+        "finding_id": "finding_c1cf8b70c7f69b7f8be104238034ada0d2d6e3b375e693c203ee76225c8bc2a2",
+        "qualification": "conditional_on_registered_argument",
+        "scope": {
+          "context": {
+            "dataset": "synthetic",
+            "deployment": "coordinator-demo",
+            "service": "catalogue-api"
+          },
+          "requirements": {
+            "context": {
+              "dataset": "synthetic",
+              "deployment": "coordinator-demo",
+              "service": "catalogue-api"
+            }
+          }
+        },
+        "task_digest": "2ea882a57c237e06b0418164c19990abcb95e3490c7325b34d0379ec42a4ba68"
+      },
+      "actual_contexts": 2,
+      "execution_mode": "actual_host_agent",
+      "execution_ids": [
+        "/root/coord003_assessor_generic_json/turn1",
+        "/root/coord003_reviewer_generic_json/turn1"
+      ],
+      "worker_admissions": [
+        true,
+        true
+      ],
+      "expected_claim_statuses": {
+        "sample_endpoint_available": "contested",
+        "sample_quorum_present": "supported"
+      },
+      "expected_claims_match": true,
+      "correct": true,
+      "actual_mcp_calls": 11,
+      "mcp_call_reservations": 11,
+      "actual_registered_assessments": 2,
+      "collected_count": 3,
+      "reused_count": 0,
+      "native_model": null,
+      "native_tokens": null,
+      "native_cost_usd": null,
+      "mailbox_usage": {
+        "messages": 2,
+        "bytes": 1151,
+        "calls": 2
+      }
+    }
+  ],
+  "correct_units": 4,
+  "total_units": 4,
+  "repairs": 0,
+  "per_arm": {
+    "json": {
+      "units": 2,
+      "correct": 2
+    },
+    "lab": {
+      "units": 2,
+      "correct": 2
+    }
+  },
+  "totals": {
+    "actual_mcp_calls": 44,
+    "mcp_call_reservations": 44,
+    "actual_registered_assessments": 8,
+    "collected_count": 8,
+    "reused_count": 2
+  },
+  "interpretation": [
+    "Reusable current-time MCP assessment works for both supplied profiles and both transports.",
+    "Contested evidence retains its actual EAL status and individual assessment identity/time.",
+    "Equal clean outcomes establish workflow feasibility, not superiority of the wire representation.",
+    "Scripted worker/process tests are software verification, not additional model execution."
+  ],
+  "limits": [
+    "Internal synthetic tasks; one paired unit per profile, zero model repairs.",
+    "All four case/arm workspaces are independent; native contexts share OS filesystem permissions.",
+    "Operator asserts question-to-source fidelity; registration does not certify claim prose or physical measurements.",
+    "Native model/time/token/billing receipts unavailable. External host budgets are soft; command runner enforces local time/output limits.",
+    "Lab uses actual MCP for supported delivery operations and supplied CLI for call reservation/completion.",
+    "No live standalone provider command was executed; supervised software commands and actual native host agents are tested separately.",
+    "No representative accuracy, production-performance or total-cost improvement claim."
+  ]
+}

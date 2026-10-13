@@ -1,0 +1,27 @@
+{
+  "runs": [
+    "task501-plain_mcp",
+    "task501-checked_protocol",
+    "task502-checked_protocol",
+    "task502-plain_mcp"
+  ],
+  "plan_digest": "824db836d0152ea4565f843e70284d18ab286986fd4532fb6718f50fb021a377",
+  "mode": "host_assisted",
+  "implementation_digest": {
+    "__init__.py": "ea6457c55ebf814a275095b864517657b61ebc547af814f5e5d6e0c5df197321",
+    "cases.py": "926b9825d10b6b6bc4dfdec332eb18a82e44389a28daf6e948839c686138f336",
+    "mcp_snapshots.py": "d4e8b7dddece8ba2ab55d7246658f816ceeadb501a0d91d0c614b6a496cb22d8",
+    "pilot.py": "2b62b85c56eb82b43341fdf6fcc4f4d261c1f1dfc6431dc508764a1f1a6cd498",
+    "plan.json": "8b42f3f2550f8759235b17c11cc6131f8797b85f3ec4da3d35d7d1d274554686",
+    "protocol.py": "7f415a0b56cce8b23c3b567f439058b0f87a4289b9a666847179918e9e18554d",
+    "schema.json": "ae45406df8498fd07405a1c45281d2875139d00426f3f87f58d2d0dfc6071686",
+    "transport.py": "c5707a1900870b706d41c6e4ec35c5a6051ea07ec6a7bf04fcb7440d08f53f98",
+    "effect_ledger.py": "ce128fe6feb4a296c7764161c5ef8e9ab5e65b492cc1010e934404fbc473eb14",
+    "recovery-schema.json": "d8013dfb45cf3b18d79c4f2ad490f29214c3ae096f4165bdcbdc87c95db0909b",
+    "recovery-plan.json": "263bee3f184bd560f0e55f09b83a33edd438d14a4651276fa7c7ea7c6450c91c",
+    "operational.py": "255dede4deb72ea34a5df23e08b59ef8552ca2680a345c453dcb5437fef6268f",
+    "task_contract.py": "5cc2d45b4c30ec7939e2cc56af6858cbd42a7c8b4a4cabcfbee9c99143f5e536",
+    "recovery.py": "d8b6e59c06a6bf1d17be8d313831b5542094b7d2a3d845d7d5b8b43cecf05549"
+  },
+  "semantic_definitions_digest": "33287e7943cf384f3e7f470490f1c3d3f71b5e0e61c7e39568fb27a616ab4923"
+}

@@ -1,0 +1,40 @@
+{
+  "ack_attempts": 0,
+  "arm": "durable_json",
+  "automatic_reexecution_after_unknown": false,
+  "budgets": {
+    "maximum_ack_attempts": 8,
+    "maximum_effect_invocations": 3,
+    "maximum_handler_deliveries": 3,
+    "maximum_message_bytes": 65536,
+    "maximum_send_attempts": 8,
+    "maximum_unique_messages": 8,
+    "wall_seconds": 3600
+  },
+  "collected_count": 0,
+  "collection_receipts_complete": true,
+  "eal_assessment_calls": 0,
+  "effect_mode": "synthetic_counted_effect",
+  "episode_id": "interrupted_effect",
+  "errors": [],
+  "event_trace": "events.json",
+  "execution_mode": "software_fault_injection",
+  "final_worker_answers": null,
+  "handler_deliveries": 2,
+  "input_acknowledged": false,
+  "local_completion_confirmed": false,
+  "logical_effect_invocations": 1,
+  "mailbox_usage": {
+    "bytes": 566,
+    "messages": 1
+  },
+  "outcome": "effect_outcome_unknown",
+  "qualified_reply_summaries": [],
+  "recorded_collected_count": 0,
+  "recorded_reused_count": 0,
+  "recovered_delivery": false,
+  "reused_count": 0,
+  "safe_unknown": true,
+  "send_attempts": 0,
+  "unique_replies": 0
+}

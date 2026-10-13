@@ -1,0 +1,402 @@
+{
+  "schema": "EAL/mas-coordination-pilot-report/1",
+  "manifest": {
+    "schema": "EAL/mas-coordination-run/1",
+    "plan_sha256": "8b42f3f2550f8759235b17c11cc6131f8797b85f3ec4da3d35d7d1d274554686",
+    "prepared_runs": [
+      "task001-mcp_json",
+      "task002-mcp_json",
+      "task003-mcp_json",
+      "task004-mcp_json"
+    ],
+    "unrun_arms": [
+      "eal_protocol"
+    ],
+    "no_improvement_claim": true
+  },
+  "runs": [
+    {
+      "run_id": "task001-mcp_json",
+      "case_id": "nominal",
+      "arm": "mcp_json",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "nominal",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": true,
+        "justified_unresolved": false,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task001/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 74.481639,
+          "response_sha256": "3c00227ec623e67ed3c5c1cbba006ccd52abeb38c419ab4eaacefd401938f2ef",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/baseline_reviewer_task001/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 82.141909,
+          "response_sha256": "0307e261cfd589f74bd4e4fbcca0b010ebc48e59c4e129f068d13bb4dc96555a",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_files": {
+        "assessor-context.json": "8753f55fec83ad6c7be04c3380315d3051044b96480a74d0823b04d2197ee31a",
+        "reviewer-context.json": "33a49909197427923f6bfa3be7f0201bb3c179c039837bcafd1751fddedc4ad8",
+        "native-assessor.json": "3c00227ec623e67ed3c5c1cbba006ccd52abeb38c419ab4eaacefd401938f2ef",
+        "native-reviewer.json": "0307e261cfd589f74bd4e4fbcca0b010ebc48e59c4e129f068d13bb4dc96555a"
+      },
+      "context_utf8_bytes": 21135,
+      "native_output_utf8_bytes": 4022
+    },
+    {
+      "run_id": "task002-mcp_json",
+      "case_id": "stale",
+      "arm": "mcp_json",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "stale",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": false,
+        "justified_unresolved": true,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task002/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 74.796839,
+          "response_sha256": "76798188edc8d00b36143f6cba6a6dcec032475048fba97f7d459be12f88664f",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/baseline_reviewer_task002/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 112.946186,
+          "response_sha256": "b76aeeb4916911c6f565b3b08f93669045f64770c8c866b628f4c7ca46ba2c79",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 2,
+      "reused_count": 0,
+      "evidence_files": {
+        "assessor-context.json": "a7e7f11fdd2672ff054d4cf4d37bcf6ba52f8df3bea97eec6ff96040c02459f5",
+        "reviewer-context.json": "9284422f687caf8dc02cbe788815f03ba51fe02a1fc7808568790a2f6799d356",
+        "native-assessor.json": "76798188edc8d00b36143f6cba6a6dcec032475048fba97f7d459be12f88664f",
+        "native-reviewer.json": "b76aeeb4916911c6f565b3b08f93669045f64770c8c866b628f4c7ca46ba2c79"
+      },
+      "context_utf8_bytes": 19851,
+      "native_output_utf8_bytes": 4025
+    },
+    {
+      "run_id": "task003-mcp_json",
+      "case_id": "scope_mismatch",
+      "arm": "mcp_json",
+      "admission": "rejected",
+      "delivery": "rejected",
+      "score": {
+        "case_id": "scope_mismatch",
+        "delivery": "rejected",
+        "answer_present": true,
+        "answer_correct": false,
+        "resolved": false,
+        "justified_unresolved": false,
+        "errors": [
+          "wrong_scoped_conclusion"
+        ],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task003/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 84.505627,
+          "response_sha256": "df165a14ff779bf5d37d281e4992de200e360121755c9c85145552a974e54e97",
+          "first_attempt_outcome": "rejected",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [
+            "Task target context differs from the registered assessment context; cross-build handoff rejected"
+          ],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/baseline_reviewer_task003/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 82.670156,
+          "response_sha256": "9ff911c4311a8ea6f78cc462180aafa23033a00c8b466b9c81d042c2e79fc00b",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task003/turn1",
+          "diagnosis": "Task target context differs from the registered assessment context; cross-build handoff rejected",
+          "outcome": "rejected"
+        }
+      ],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_files": {
+        "assessor-context.json": "51d510ae500949642c7a1ef6810ac0938983d2a11b196f8274b4f50ebeba6157",
+        "reviewer-context.json": "625b19c6c6777da9457be96f122e4e839d7f76670ee020e040e0d46ef84fde3b",
+        "native-assessor.json": "df165a14ff779bf5d37d281e4992de200e360121755c9c85145552a974e54e97",
+        "native-reviewer.json": "9ff911c4311a8ea6f78cc462180aafa23033a00c8b466b9c81d042c2e79fc00b"
+      },
+      "context_utf8_bytes": 12663,
+      "native_output_utf8_bytes": 2422
+    },
+    {
+      "run_id": "task004-mcp_json",
+      "case_id": "measured_failure",
+      "arm": "mcp_json",
+      "admission": "accepted",
+      "delivery": "accepted",
+      "score": {
+        "case_id": "measured_failure",
+        "delivery": "accepted",
+        "answer_present": true,
+        "answer_correct": true,
+        "resolved": true,
+        "justified_unresolved": false,
+        "errors": [],
+        "response_admitted": true
+      },
+      "executions": [
+        {
+          "actor": "assessor",
+          "execution_id": "/root/baseline_assessor_task004/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 75.06716,
+          "response_sha256": "186cb36b27ccbd4469b8862fe202ccbe35103771a21a6e8291ac022f44502f8e",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "request-0",
+            "request-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        },
+        {
+          "actor": "reviewer",
+          "execution_id": "/root/baseline_reviewer_task004/turn1",
+          "execution_mode": "actual_host_agent",
+          "elapsed_seconds": 113.510765,
+          "response_sha256": "09ba61f9e8278754fa1f4d610ef316451dd49a270d07357b528611b974031f86",
+          "first_attempt_outcome": "accepted",
+          "consumed_message_ids": [
+            "proposal-0",
+            "proposal-1"
+          ],
+          "admission_errors": [],
+          "model_tokens": null,
+          "model_cost_usd": null,
+          "execution_identity_provenance": "Trusted host assertion; the recorder does not verify external execution",
+          "durable_transport": {
+            "status": "not_applicable",
+            "sent_message_ids": [],
+            "acknowledged_message_ids": [],
+            "errors": []
+          }
+        }
+      ],
+      "rejections": [],
+      "collected_count": 1,
+      "reused_count": 1,
+      "evidence_files": {
+        "assessor-context.json": "f4653ab802a2a904e98563bbaf250946312f546980f73df938f4c1a44bb5ab3c",
+        "reviewer-context.json": "5c0bc8c6d874c6a8068757e18fd1ba2187860d77cd154eb89059d1fd94da93f8",
+        "native-assessor.json": "186cb36b27ccbd4469b8862fe202ccbe35103771a21a6e8291ac022f44502f8e",
+        "native-reviewer.json": "09ba61f9e8278754fa1f4d610ef316451dd49a270d07357b528611b974031f86"
+      },
+      "context_utf8_bytes": 21135,
+      "native_output_utf8_bytes": 4022
+    }
+  ],
+  "conclusion": "Descriptive feasibility pilot only; no demonstrated output or cost improvement.",
+  "limitations": [
+    "Internally synthetic tasks",
+    "One trial per case/arm",
+    "Native model tokens and cost unavailable",
+    "Model/time/output ceilings requested but not enforceable by this recording CLI",
+    "Execution modes and external IDs are host assertions, not inferred from role labels",
+    "Domain admission is atomic per response; runtime sends and acknowledgements are separate durable operations",
+    "Shared-file isolation and answer-key blinding are instructions, not filesystem access controls",
+    "Protocol arm and its four paired outcomes remain blocked, not failed or passing",
+    "Only three case-arm units delivered accepted model-produced proposals to subsequent reviewer contexts; the scope-mismatch unit delivered a trusted rejection diagnosis",
+    "One scope-mismatch response retained null host statuses and correct scope but failed the frozen conclusion-label contract",
+    "No single-agent baseline; no claim that MAS outperforms a single agent",
+    "Payload validation tests are separate from the unbuilt Lab Rust wire codec"
+  ],
+  "unrun_units": [
+    {
+      "case_id": "nominal",
+      "arm": "eal_protocol",
+      "status": "blocked",
+      "reason": "Plugin bundle hostname denied by runtime egress proxy (CONNECT 403); saved allowlist addition not applied to runtime. Lab codec, mailbox integration and paired live protocol trials not run."
+    },
+    {
+      "case_id": "stale",
+      "arm": "eal_protocol",
+      "status": "blocked",
+      "reason": "Plugin bundle hostname denied by runtime egress proxy (CONNECT 403); saved allowlist addition not applied to runtime. Lab codec, mailbox integration and paired live protocol trials not run."
+    },
+    {
+      "case_id": "scope_mismatch",
+      "arm": "eal_protocol",
+      "status": "blocked",
+      "reason": "Plugin bundle hostname denied by runtime egress proxy (CONNECT 403); saved allowlist addition not applied to runtime. Lab codec, mailbox integration and paired live protocol trials not run."
+    },
+    {
+      "case_id": "measured_failure",
+      "arm": "eal_protocol",
+      "status": "blocked",
+      "reason": "Plugin bundle hostname denied by runtime egress proxy (CONNECT 403); saved allowlist addition not applied to runtime. Lab codec, mailbox integration and paired live protocol trials not run."
+    }
+  ],
+  "validation": {
+    "protocol_and_case_tests": {
+      "passed": 42
+    },
+    "pilot_software_tests": {
+      "passed": 14
+    },
+    "actual_mcp_discovery_and_packet_retrieval": "passed for four baseline fixtures",
+    "lab_rust_build": "unrun",
+    "lab_python_tests": "unrun",
+    "rust_toolchain_installed": "1.85.1"
+  },
+  "accounting": {
+    "exact_model_identifier": null,
+    "model_tokens": null,
+    "model_usd_cost": null,
+    "native_inference_settings": "Inherited consistently from the parent; exact identifier/settings unavailable",
+    "elapsed_seconds_definition": "Batch role reservation through host recording; includes coordination and queueing, not isolated inference latency",
+    "development_and_onboarding_cost": "Unmeasured; cannot claim total cost savings",
+    "role_context_isolation": "Actual fork_turns=none native contexts with instruction-restricted shared filesystem; not OS isolation",
+    "coordinator_packet_disclosure": "Same trusted host-resolved packets available to both declared arms; protocol arm unrun"
+  },
+  "provenance": {
+    "created_at": "2026-10-12T19:34:07.067745+00:00",
+    "source_head": "a5df749f042ca0489831b2b51b214586fd2e2fcd",
+    "protocol_origin": "Supplied by implementers under MAS Protocol Lab guidance; no agent-generated grammar",
+    "frozen_plan_sha256": "304ea53b22b0685076a1cbd28d5e589f5af661c4832d53f60e80cdd342dddd04",
+    "actual_execution_identities": [
+      "/root/baseline_assessor_task001/turn1",
+      "/root/baseline_reviewer_task001/turn1",
+      "/root/baseline_assessor_task002/turn1",
+      "/root/baseline_reviewer_task002/turn1",
+      "/root/baseline_assessor_task003/turn1",
+      "/root/baseline_reviewer_task003/turn1",
+      "/root/baseline_assessor_task004/turn1",
+      "/root/baseline_reviewer_task004/turn1"
+    ]
+  }
+}

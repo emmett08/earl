@@ -1,0 +1,261 @@
+{
+  "arm": "persistent_mcp_codec",
+  "canonical_envelopes_sha256": "b1e876a48f207e6bdf359e89d6f185106ade9de7d15a62e6c4a5eb2ce4fa6e93",
+  "cold_first_codec_operation_ns": 8335695,
+  "cold_first_operation_ns": 393543098,
+  "constructor_ns": 221111,
+  "invariant_checks": "passed",
+  "load_average_before": [
+    0.83544921875,
+    0.8466796875,
+    0.5078125
+  ],
+  "operations": [
+    {
+      "codec_phase": "not_used",
+      "operation": "create",
+      "padding_bytes": null,
+      "session_phase": "cold_first_use",
+      "subprocesses": 1,
+      "wall_ns": 393543098
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "reserve",
+      "padding_bytes": null,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 3872764
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "finish",
+      "padding_bytes": null,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 3679754
+    },
+    {
+      "codec_phase": "cold_first_use",
+      "operation": "send",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 1,
+      "wall_ns": 8335695
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "premature_ack_rejection",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 3134068
+    },
+    {
+      "codec_phase": "reused_process",
+      "operation": "duplicate_send",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 5057701
+    },
+    {
+      "codec_phase": "reused_process",
+      "operation": "changed_content_rejection",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 4992526
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "receive",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 4482925
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "redelivery",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 2877426
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "wrong_recipient_ack_rejection",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 2695050
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "ack",
+      "padding_bytes": 256,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 3731630
+    },
+    {
+      "codec_phase": "reused_process",
+      "operation": "send",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 8656654
+    },
+    {
+      "codec_phase": "reused_process",
+      "operation": "duplicate_send",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 5049199
+    },
+    {
+      "codec_phase": "reused_process",
+      "operation": "changed_content_rejection",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 5007905
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "receive",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 4551786
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "redelivery",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 2782415
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "ack",
+      "padding_bytes": 4096,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 4076915
+    },
+    {
+      "codec_phase": "reused_process",
+      "operation": "send",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 10292856
+    },
+    {
+      "codec_phase": "reused_process",
+      "operation": "duplicate_send",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 8268214
+    },
+    {
+      "codec_phase": "reused_process",
+      "operation": "changed_content_rejection",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 8868190
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "receive",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 4658533
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "redelivery",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 3491032
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "ack",
+      "padding_bytes": 61440,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 4296067
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "empty_receive",
+      "padding_bytes": null,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 2547658
+    },
+    {
+      "codec_phase": "not_used",
+      "operation": "status",
+      "padding_bytes": null,
+      "session_phase": "post_create",
+      "subprocesses": 0,
+      "wall_ns": 3117057
+    }
+  ],
+  "parent_and_reaped_children_cpu_seconds": 0.570525,
+  "post_create_operations_ns": 118524020,
+  "repetition": 0,
+  "runtime_metrics": {
+    "admit_calls": 0,
+    "codec_mode": "persistent",
+    "codec_ns": 14087249,
+    "codec_pid": 15346,
+    "codec_starts": 1,
+    "encode_calls": 18,
+    "parse_calls": 18,
+    "server_pid": 15343
+  },
+  "shutdown_ns": 72322550,
+  "subprocess_counts": {
+    "mcp_server": 1,
+    "rust_codec": 1
+  },
+  "useful_cycle_ns": 515086469,
+  "useful_state": {
+    "all_acknowledged": true,
+    "all_received": true,
+    "calls": [
+      {
+        "actor": "assessor",
+        "evidence": {
+          "execution_id": "deterministic-software-fixture",
+          "outcome": "completed",
+          "synthetic": true
+        },
+        "id": "call-001",
+        "state": "recorded"
+      }
+    ],
+    "message_ids": [
+      "msg-001",
+      "msg-002",
+      "msg-003"
+    ],
+    "pending": 0,
+    "usage": {
+      "bytes": 67013,
+      "calls": 1,
+      "messages": 3
+    }
+  }
+}

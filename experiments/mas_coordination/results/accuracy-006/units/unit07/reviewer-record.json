@@ -1,0 +1,47 @@
+{
+  "execution_id": "/root/accuracy006_u07_reviewer/turn1",
+  "execution_mode": "actual_host_agent",
+  "raw_base64": "ewogICJhbnN3ZXIiOiB7CiAgICAidGFza19kaWdlc3QiOiAiYTZkZWE0OWZjOTc4YzlmYzRjN2YwNTMxMDRlOTY2OWZlZWNhNWEyYzgyNjlkNmFkMjQ0NzVhNDk5ZDNjMjZhMCIsCiAgICAiZmluZGluZ19pZCI6ICJmaW5kaW5nXzczNDJlMmE4ZDM5YzA3N2ZjNWU1YzUwM2EzM2EyMWZmZTY5ZjBmMTNhNTVkNjIxMjRiODUwMTMyOTE0NWM3ZmEiLAogICAgImNsYWltcyI6IHsKICAgICAgInNhbXBsZV9lbmRwb2ludF9hdmFpbGFibGUiOiB7CiAgICAgICAgImFzc2Vzc21lbnRfaWQiOiAiYjI2MWEyMzItNjJlNC00ODc1LTgzMDMtNTMzYWQ3NTg5ZDNhIiwKICAgICAgICAic3RhdHVzIjogInVuc3VwcG9ydGVkIiwKICAgICAgICAiYXNzZXNzZWRfYXQiOiAiMjAyNi0xMC0xMlQyMzo0MjoxOC40MTE3MTlaIgogICAgICB9LAogICAgICAic2FtcGxlX3F1b3J1bV9wcmVzZW50IjogewogICAgICAgICJhc3Nlc3NtZW50X2lkIjogImUzMGI2YTA2LTJkOTItNGIyNi04YzkxLTA4OWJjYWM4ZGM4YyIsCiAgICAgICAgInN0YXR1cyI6ICJ1bnN1cHBvcnRlZCIsCiAgICAgICAgImFzc2Vzc2VkX2F0IjogIjIwMjYtMTAtMTJUMjM6NDI6MTguNjIyOTY5WiIKICAgICAgfQogICAgfSwKICAgICJzY29wZSI6IHsKICAgICAgImNvbnRleHQiOiB7CiAgICAgICAgImRhdGFzZXQiOiAic3ludGhldGljIiwKICAgICAgICAiZGVwbG95bWVudCI6ICJjb29yZGluYXRvci1kZW1vIiwKICAgICAgICAic2VydmljZSI6ICJjYXRhbG9ndWUtYXBpIgogICAgICB9LAogICAgICAicmVxdWlyZW1lbnRzIjogewogICAgICAgICJjb250ZXh0IjogewogICAgICAgICAgImRhdGFzZXQiOiAic3ludGhldGljIiwKICAgICAgICAgICJkZXBsb3ltZW50IjogImNvb3JkaW5hdG9yLWRlbW8iLAogICAgICAgICAgInNlcnZpY2UiOiAiY2F0YWxvZ3VlLWFwaSIKICAgICAgICB9CiAgICAgIH0KICAgIH0sCiAgICAiY29uY2x1c2lvbiI6ICJhc3Nlc3NlZCIsCiAgICAicXVhbGlmaWNhdGlvbiI6ICJjb25kaXRpb25hbF9vbl9yZWdpc3RlcmVkX2FyZ3VtZW50IgogIH0sCiAgImNvbnN1bWVkX21lc3NhZ2VfaWRzIjogWyJhc3Nlc3Nvci1vdXRjb21lIl0KfQo=",
+  "raw_digest": "bcb4de539c40fae872cca33f0ef8e7fcf9a051942f70859163973934ce9dc228",
+  "evidence": {},
+  "accepted": true,
+  "outcome": "accepted",
+  "diagnostics": [],
+  "response": {
+    "answer": {
+      "task_digest": "a6dea49fc978c9fc4c7f053104e9669feeca5a2c8269d6ad24475a499d3c26a0",
+      "finding_id": "finding_7342e2a8d39c077fc5e5c503a33a21ffe69f0f13a55d62124b8501329145c7fa",
+      "claims": {
+        "sample_endpoint_available": {
+          "assessment_id": "b261a232-62e4-4875-8303-533ad7589d3a",
+          "status": "unsupported",
+          "assessed_at": "2026-10-12T23:42:18.411719Z"
+        },
+        "sample_quorum_present": {
+          "assessment_id": "e30b6a06-2d92-4b26-8c91-089bcac8dc8c",
+          "status": "unsupported",
+          "assessed_at": "2026-10-12T23:42:18.622969Z"
+        }
+      },
+      "scope": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        },
+        "requirements": {
+          "context": {
+            "dataset": "synthetic",
+            "deployment": "coordinator-demo",
+            "service": "catalogue-api"
+          }
+        }
+      },
+      "conclusion": "assessed",
+      "qualification": "conditional_on_registered_argument"
+    },
+    "consumed_message_ids": [
+      "assessor-outcome"
+    ]
+  }
+}

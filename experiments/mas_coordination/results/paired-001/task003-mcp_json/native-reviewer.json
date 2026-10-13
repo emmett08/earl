@@ -1,0 +1,20 @@
+{
+  "answer": {
+    "statuses": {
+      "performance_criteria_met": null,
+      "performance_criteria_failed": null
+    },
+    "scope": {
+      "service": "orders-api",
+      "build_id": "demo-build-43",
+      "run_id": "demo-load-001",
+      "concurrent_clients": 10,
+      "dataset": "synthetic"
+    },
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "conclusion": "unresolved",
+    "production_supported": false
+  },
+  "reviews": [],
+  "consumed_message_ids": []
+}

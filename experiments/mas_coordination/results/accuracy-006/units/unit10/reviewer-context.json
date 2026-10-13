@@ -1,0 +1,82 @@
+{
+  "schema": "EAL/coordination-worker-context/1",
+  "role": "reviewer",
+  "call_id": "coord-1ee047ccaa1348f9b637f522029aca38:reviewer",
+  "task": {
+    "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+    "pinned_at": "2026-10-12T23:46:05.190205Z",
+    "registered_context": {
+      "build_id": "demo-build-42",
+      "dataset": "synthetic",
+      "service": "orders-api"
+    },
+    "schema": "EAL/MAS-coordination-task/3",
+    "source_digest": "92443350506d159e9c7923b228e088b14fb8a79356e2e3599255835b5ead7476",
+    "task": {
+      "claims": [
+        "performance_criteria_met",
+        "performance_criteria_failed"
+      ],
+      "entry_id": "api_sample",
+      "profile": "api_load/1",
+      "question": "Assess every selected claim for this identified synthetic input. Preserve all registered scope and qualifications, distinguish scope mismatch from unavailable results, and make no conclusions about a deployed service.",
+      "requirements": {
+        "claim_outputs": {
+          "performance_criteria_failed": "fails",
+          "performance_criteria_met": "passes"
+        },
+        "context": {
+          "build_id": "demo-build-42",
+          "dataset": "synthetic",
+          "service": "orders-api"
+        },
+        "criteria": {
+          "evidence_max_age_seconds": 86400,
+          "maximum_error_rate_percent": 1,
+          "maximum_sample_p95_ms": 200,
+          "minimum_requests": 100
+        },
+        "workload": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 37,
+          "dataset": "synthetic",
+          "run_id": "requested-other-held-out-load",
+          "service": "orders-api"
+        }
+      },
+      "task_id": "held_out_case05"
+    },
+    "task_digest": "9b6afcc57bbccdf83c371e53e80971c2f78a92cdf779742c35a353e0d68f0052"
+  },
+  "received_messages": [
+    {
+      "attempt": 0,
+      "code": "workload_mismatch",
+      "finding_id": "finding_1c8c090f9b4d7c3ec7b40acc4e5743c85f945b7b9bce8ba67d2e276d8401c670",
+      "kind": "disposition",
+      "message_id": "assessor-disposition",
+      "outcome": "rejected",
+      "recipient": "reviewer",
+      "reply_to": "request",
+      "schema": "EAL/MAS-coordination/3",
+      "sender": "assessor",
+      "task_digest": "9b6afcc57bbccdf83c371e53e80971c2f78a92cdf779742c35a353e0d68f0052",
+      "task_id": "held_out_case05"
+    }
+  ],
+  "gateway": {
+    "argv": [
+      "/workspace/earl/.venv/bin/python",
+      "-m",
+      "eal.coordination.cli",
+      "lookup",
+      "--run",
+      "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit10/run",
+      "--call-id",
+      "coord-1ee047ccaa1348f9b637f522029aca38:reviewer"
+    ]
+  },
+  "response_schema": "/workspace/earl/src/eal/coordination/response-schema.json",
+  "instructions": "Inspect your addressed handoff. Retrieve its finding by adding --finding-id to the gateway argv. Independently author the scoped answer, preserving every claim status, assessment ID and assessment time. Return answer and consumed_message_ids.",
+  "qualifications": "EAL status is conditional on the registered argument. Unsupported is not proof of the opposite. Authored prose and measurements are not independently certified by registration."
+}

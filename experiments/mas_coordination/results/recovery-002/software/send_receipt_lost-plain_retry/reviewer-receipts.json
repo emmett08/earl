@@ -1,0 +1,27 @@
+[
+  {
+    "message": {
+      "kind": "proposal",
+      "message_id": "reply",
+      "payload": {
+        "kind": "proposal",
+        "message_id": "reply",
+        "recipient": "reviewer",
+        "reply_to": "request",
+        "schema": "EAL/MAS-operational-receipt/1",
+        "sender": "assessor",
+        "summary": {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      },
+      "recipient": "reviewer",
+      "run_id": "episode",
+      "sender": "assessor",
+      "version": "1"
+    },
+    "redelivered": false,
+    "sequence": 2
+  }
+]

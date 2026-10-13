@@ -1,0 +1,19 @@
+{
+  "upstream": "MAS Protocol Lab plugin toolkit",
+  "upstream_package": "mas-protocol-lab:create-mas-protocol",
+  "upstream_workspace": "/workspace/mas-protocol-lab",
+  "license": "MIT",
+  "copyright": "Copyright (c) 2026 Emmett Miller",
+  "protocol_envelope_version": "1",
+  "files": {
+    "rust-protocol/src/lib.rs": "68e93d5dbc4d58730abb4f7a3ae67b2458fa8127bd18ddc25c4483633967b877",
+    "rust-protocol/Cargo.toml": "6972c68822f81ea1e28074febdc881ec55e21573c0a9ccb86f9d946ca57ea65e",
+    "rust-protocol/Cargo.lock": "29d29aef497bdca55f0881e218afc79efba22dcf9104e88780b43c8abf0b7b03",
+    "rust-toolchain.toml": "4ae7dd89b38747ef65001accc5ec7886c041151b697277baff1fa49a041050d7",
+    "LICENSE": "25b5469128fc67afdeac3142433e7fa081c8226104ae2c02283b0a3b851654b9",
+    "rust-protocol/src/main.rs": "8e09c0ddd8a930d21a118ccf901cf74d66ae77b988ad0fe4fc3f777a169c101d",
+    "runtime/mas_protocol/store.py": "f2510cbad31646c372d0006cb50be3f9d3f027a540c9142a0a4a09c1ea84b638"
+  },
+  "derivation": "src/lib.rs retains the supplied nom grammar, validator and formatter. Its encoder validation path is factored to return both canonical text and the already-parsed canonical Message; admit_message exposes that result without an additional encode/parse round trip. main.rs retains upstream parse/encode behavior and adds bounded persistent NDJSON serve, Linux parent-death cleanup and admit operations. Cargo manifest adds direct serde dependency for strict control request deserialization; dependency versions remain pinned.",
+  "transaction_derivation": "../lab_admission.py derives the mailbox send transaction from the supplied runtime/mas_protocol/store.py under the retained MIT license. It consumes the canonical typed result returned by Rust admission without repeating protocol encode/parse; mailbox SQL and run/actor/budget/deduplication checks retain their supplied meaning."
+}

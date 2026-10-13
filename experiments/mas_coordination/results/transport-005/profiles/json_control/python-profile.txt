@@ -1,0 +1,56 @@
+         9780 function calls (8258 primitive calls) in 0.029 seconds
+
+   Ordered by: cumulative time
+   List reduced from 155 to 50 due to restriction <50>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.029    0.029 transport_benchmark.py:127(run_cycle)
+       25    0.000    0.000    0.020    0.001 transport_benchmark.py:139(operation)
+       52    0.000    0.000    0.014    0.000 {built-in method builtins.next}
+       52    0.000    0.000    0.014    0.000 bus.py:30(connect)
+       28    0.000    0.000    0.013    0.000 contextlib.py:141(__exit__)
+       21    0.012    0.001    0.012    0.001 {method 'commit' of 'sqlite3.Connection' objects}
+       88    0.008    0.000    0.008    0.000 {method 'execute' of 'sqlite3.Connection' objects}
+        9    0.000    0.000    0.006    0.001 bus.py:57(send)
+        1    0.000    0.000    0.005    0.005 transport_benchmark.py:97(make_bus)
+        1    0.000    0.000    0.005    0.005 bus.py:23(__init__)
+        7    0.000    0.000    0.005    0.001 bus.py:75(receive)
+        5    0.000    0.000    0.004    0.001 bus.py:88(acknowledge)
+        3    0.000    0.000    0.004    0.001 transport_benchmark.py:173(<lambda>)
+        3    0.000    0.000    0.004    0.001 transport_benchmark.py:188(<lambda>)
+        3    0.000    0.000    0.004    0.001 transport_benchmark.py:182(<lambda>)
+       18    0.000    0.000    0.002    0.000 __init__.py:183(dumps)
+       18    0.000    0.000    0.002    0.000 encoder.py:183(encode)
+        3    0.000    0.000    0.002    0.001 transport_benchmark.py:44(write_json)
+       28    0.000    0.000    0.002    0.000 contextlib.py:132(__enter__)
+        1    0.000    0.000    0.002    0.002 transport_benchmark.py:168(<lambda>)
+        1    0.000    0.000    0.002    0.002 bus.py:106(finish)
+       26    0.001    0.000    0.002    0.000 {built-in method _sqlite3.connect}
+       24    0.000    0.000    0.002    0.000 bus.py:51(_config)
+        1    0.000    0.000    0.002    0.002 transport_benchmark.py:165(<lambda>)
+        1    0.000    0.000    0.001    0.001 bus.py:43(create)
+     1260    0.000    0.000    0.001    0.000 encoder.py:414(_iterencode)
+        1    0.000    0.000    0.001    0.001 transport_benchmark.py:166(<lambda>)
+        1    0.000    0.000    0.001    0.001 bus.py:97(reserve)
+       15    0.000    0.000    0.001    0.000 ledger.py:36(canonical_json)
+2469/1257    0.001    0.000    0.001    0.000 encoder.py:334(_iterencode_dict)
+       36    0.000    0.000    0.001    0.000 __init__.py:299(loads)
+1118/1106    0.000    0.000    0.001    0.000 encoder.py:278(_iterencode_list)
+        3    0.000    0.000    0.001    0.000 transport_benchmark.py:177(<lambda>)
+       18    0.001    0.000    0.001    0.000 encoder.py:205(iterencode)
+       36    0.000    0.000    0.001    0.000 decoder.py:333(decode)
+        3    0.000    0.000    0.001    0.000 transport_benchmark.py:184(<lambda>)
+        3    0.000    0.000    0.001    0.000 transport_benchmark.py:180(<lambda>)
+       26    0.001    0.000    0.001    0.000 {method 'close' of 'sqlite3.Connection' objects}
+       51    0.000    0.000    0.001    0.000 transport_benchmark.py:59(launches)
+       51    0.000    0.000    0.000    0.000 pathlib.py:852(exists)
+        3    0.000    0.000    0.000    0.000 pathlib.py:1039(write_text)
+       36    0.000    0.000    0.000    0.000 decoder.py:344(raw_decode)
+       54    0.000    0.000    0.000    0.000 pathlib.py:835(stat)
+        3    0.000    0.000    0.000    0.000 pathlib.py:1005(open)
+        3    0.000    0.000    0.000    0.000 {built-in method _io.open}
+        4    0.000    0.000    0.000    0.000 pathlib.py:1306(mkdir)
+       54    0.000    0.000    0.000    0.000 {built-in method posix.stat}
+   313/15    0.000    0.000    0.000    0.000 ledger.py:38(check)
+        4    0.000    0.000    0.000    0.000 {built-in method posix.mkdir}
+        1    0.000    0.000    0.000    0.000 transport_benchmark.py:176(<lambda>)

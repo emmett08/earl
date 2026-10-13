@@ -1,0 +1,46 @@
+// Synthetic API load-test fixture.
+language "EAL/3"
+
+environment test_run {
+  require service == "orders-api"
+  require build_id == "demo-build-42"
+  require dataset == "synthetic"
+}
+
+tool load_test_report {
+  version "1"
+}
+
+context environment test_run {
+  evidence load_test {
+    tool load_test_report
+    kind api_report
+    max_age 86400.0
+    input {"build_id": "demo-build-42", "concurrent_clients": 37, "dataset": "synthetic", "report_sha256": "f4f6ae1cc1e98bdec0ea73315410b97606cc008c1ae57d94b6f8d45fe5f1fed5", "run_id": "held-out-load-case05", "service": "orders-api"}
+    require request_count >= 0
+  }
+
+  reasoning passing_limits {
+    method "engineering/api-load-criteria/1"
+    rationale "The collector checks this report's identity and calculates nearest-rank p95 over every attempt. The installed method checks the inclusive sample size, latency and error-rate limits for these synthetic records only."
+    require passes == true
+  }
+
+  reasoning failing_limits {
+    method "engineering/api-load-criteria/1"
+    rationale "An identified, usable report with a failed sample-size, latency or error-rate result supports a measured failure of these criteria; collection failure supplies no such conclusion."
+    require fails == true
+  }
+
+  claim performance_criteria_met {
+    statement "The synthetic report held-out-load-case05 for orders-api build demo-build-42, labelled with 37 concurrent clients, records at least 100 requests with sample p95 latency at most 200 ms and an error rate at most 1 percent."
+  }
+
+  claim performance_criteria_failed {
+    statement "The identified synthetic report held-out-load-case05 fails at least one of the sample-size, latency or error-rate criteria."
+  }
+
+  argument passing_performance = [evidence load_test] via passing_limits => performance_criteria_met
+
+  argument failing_performance = [evidence load_test] via failing_limits => performance_criteria_failed
+}

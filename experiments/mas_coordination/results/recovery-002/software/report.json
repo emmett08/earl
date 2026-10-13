@@ -1,0 +1,1199 @@
+{
+  "actual_mcp_calls": 0,
+  "correspondence": {
+    "actual_mcp_calls": 0,
+    "assessment_artifact": "source-assessments.json",
+    "cases": [
+      {
+        "candidate_source_scope": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "demo-load-001",
+          "service": "orders-api"
+        },
+        "case_id": "nominal",
+        "final_worker_answers": null,
+        "legacy_context_only_admitted": true,
+        "legacy_false_admission": false,
+        "requested_scope": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "demo-load-001",
+          "service": "orders-api"
+        },
+        "task_contract": {
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "claims": [
+            "performance_criteria_met",
+            "performance_criteria_failed"
+          ],
+          "criteria": {
+            "evidence_max_age_seconds": 86400,
+            "maximum_error_rate_percent": 1,
+            "maximum_sample_p95_ms": 200,
+            "minimum_requests": 100
+          },
+          "entry_id": "load_test",
+          "method": "engineering/api-load-criteria/1",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "requested_scope": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 10,
+            "dataset": "synthetic",
+            "run_id": "demo-load-001",
+            "service": "orders-api"
+          },
+          "schema": "EAL/MAS-coordination-task/2",
+          "semantic_definitions": {
+            "host_authority": "Only trusted Python EAL findings and stored assessments establish references and claim statuses. Formal support does not verify authored claim prose. A handoff disposition does not change an EAL assessment.",
+            "out_of_scope": "The available registered candidate does not correspond to the requested context, workload, criterion contract or pinned source revision. Report the requested scope and null unassessed statuses; do not relabel the candidate's result.",
+            "sample_fail": "A corresponding checked assessment gives the failing claim status supported and the passing claim status unsupported. An identified usable measurement fails at least one pinned criterion; missing or stale evidence is not a measured failure.",
+            "sample_pass": "A corresponding checked assessment gives the passing claim status supported and the failing claim status unsupported. The identified synthetic sample meets the pinned criteria; no production guarantee follows.",
+            "unresolved": "The requested task has no decisive checked result, including missing, stale, contested, unavailable or uncertain-execution evidence. Preserve actual checked statuses; use null when the requested claim was not assessed."
+          },
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "task_digest": "b60f3b2b1156a70e7ef9de716caa1ab6b2b3b54909df3888a49be87dae9f9d16",
+          "task_id": "operational-nominal"
+        },
+        "v2_candidate_check": {
+          "code": null,
+          "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+          "detail": "Registered source, workload, freshness and method correspond to the pinned task",
+          "entry_id": "load_test",
+          "finding_id": "finding_d495e23ad12e9d11be2700ba09f216e772d356cfd095a006c7b265378a77d9e8",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "ok": true,
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "task_digest": "b60f3b2b1156a70e7ef9de716caa1ab6b2b3b54909df3888a49be87dae9f9d16"
+        },
+        "v2_false_admission": false
+      },
+      {
+        "candidate_source_scope": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "demo-load-001",
+          "service": "orders-api"
+        },
+        "case_id": "changed_run",
+        "final_worker_answers": null,
+        "legacy_context_only_admitted": true,
+        "legacy_false_admission": true,
+        "requested_scope": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "demo-load-002",
+          "service": "orders-api"
+        },
+        "task_contract": {
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "claims": [
+            "performance_criteria_met",
+            "performance_criteria_failed"
+          ],
+          "criteria": {
+            "evidence_max_age_seconds": 86400,
+            "maximum_error_rate_percent": 1,
+            "maximum_sample_p95_ms": 200,
+            "minimum_requests": 100
+          },
+          "entry_id": "load_test",
+          "method": "engineering/api-load-criteria/1",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "requested_scope": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 10,
+            "dataset": "synthetic",
+            "run_id": "demo-load-002",
+            "service": "orders-api"
+          },
+          "schema": "EAL/MAS-coordination-task/2",
+          "semantic_definitions": {
+            "host_authority": "Only trusted Python EAL findings and stored assessments establish references and claim statuses. Formal support does not verify authored claim prose. A handoff disposition does not change an EAL assessment.",
+            "out_of_scope": "The available registered candidate does not correspond to the requested context, workload, criterion contract or pinned source revision. Report the requested scope and null unassessed statuses; do not relabel the candidate's result.",
+            "sample_fail": "A corresponding checked assessment gives the failing claim status supported and the passing claim status unsupported. An identified usable measurement fails at least one pinned criterion; missing or stale evidence is not a measured failure.",
+            "sample_pass": "A corresponding checked assessment gives the passing claim status supported and the failing claim status unsupported. The identified synthetic sample meets the pinned criteria; no production guarantee follows.",
+            "unresolved": "The requested task has no decisive checked result, including missing, stale, contested, unavailable or uncertain-execution evidence. Preserve actual checked statuses; use null when the requested claim was not assessed."
+          },
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "task_digest": "b64b2520a3b681074561d9d4b1cd63cc9e955017e66921f327c84cbc9468ee55",
+          "task_id": "operational-changed_run"
+        },
+        "v2_candidate_check": {
+          "code": "workload_mismatch",
+          "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+          "detail": "Source evidence input differs from the complete requested workload",
+          "entry_id": "load_test",
+          "finding_id": "finding_a8e6c11658b5ca79b831dd68ea17ad5744dbe99c18981d293769fb1f735371f9",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "ok": false,
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "task_digest": "b64b2520a3b681074561d9d4b1cd63cc9e955017e66921f327c84cbc9468ee55"
+        },
+        "v2_false_admission": false
+      },
+      {
+        "candidate_source_scope": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "demo-load-001",
+          "service": "orders-api"
+        },
+        "case_id": "changed_clients",
+        "final_worker_answers": null,
+        "legacy_context_only_admitted": true,
+        "legacy_false_admission": true,
+        "requested_scope": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 20,
+          "dataset": "synthetic",
+          "run_id": "demo-load-001",
+          "service": "orders-api"
+        },
+        "task_contract": {
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "claims": [
+            "performance_criteria_met",
+            "performance_criteria_failed"
+          ],
+          "criteria": {
+            "evidence_max_age_seconds": 86400,
+            "maximum_error_rate_percent": 1,
+            "maximum_sample_p95_ms": 200,
+            "minimum_requests": 100
+          },
+          "entry_id": "load_test",
+          "method": "engineering/api-load-criteria/1",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "requested_scope": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 20,
+            "dataset": "synthetic",
+            "run_id": "demo-load-001",
+            "service": "orders-api"
+          },
+          "schema": "EAL/MAS-coordination-task/2",
+          "semantic_definitions": {
+            "host_authority": "Only trusted Python EAL findings and stored assessments establish references and claim statuses. Formal support does not verify authored claim prose. A handoff disposition does not change an EAL assessment.",
+            "out_of_scope": "The available registered candidate does not correspond to the requested context, workload, criterion contract or pinned source revision. Report the requested scope and null unassessed statuses; do not relabel the candidate's result.",
+            "sample_fail": "A corresponding checked assessment gives the failing claim status supported and the passing claim status unsupported. An identified usable measurement fails at least one pinned criterion; missing or stale evidence is not a measured failure.",
+            "sample_pass": "A corresponding checked assessment gives the passing claim status supported and the failing claim status unsupported. The identified synthetic sample meets the pinned criteria; no production guarantee follows.",
+            "unresolved": "The requested task has no decisive checked result, including missing, stale, contested, unavailable or uncertain-execution evidence. Preserve actual checked statuses; use null when the requested claim was not assessed."
+          },
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "task_digest": "26d622502bd398d9bca87addfc9435ca037eb0a5d50d882f367c925ade9ec88c",
+          "task_id": "operational-changed_clients"
+        },
+        "v2_candidate_check": {
+          "code": "workload_mismatch",
+          "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+          "detail": "Source evidence input differs from the complete requested workload",
+          "entry_id": "load_test",
+          "finding_id": "finding_02677bd229421a41ebdd3e9e3323d28eb9df8d5bf7d0fad651e565dfa94d471e",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "ok": false,
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "task_digest": "26d622502bd398d9bca87addfc9435ca037eb0a5d50d882f367c925ade9ec88c"
+        },
+        "v2_false_admission": false
+      },
+      {
+        "candidate_source_scope": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "demo-load-001",
+          "service": "orders-api"
+        },
+        "case_id": "changed_build",
+        "final_worker_answers": null,
+        "legacy_context_only_admitted": false,
+        "legacy_false_admission": false,
+        "requested_scope": {
+          "build_id": "demo-build-43",
+          "concurrent_clients": 10,
+          "dataset": "synthetic",
+          "run_id": "demo-load-001",
+          "service": "orders-api"
+        },
+        "task_contract": {
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "claims": [
+            "performance_criteria_met",
+            "performance_criteria_failed"
+          ],
+          "criteria": {
+            "evidence_max_age_seconds": 86400,
+            "maximum_error_rate_percent": 1,
+            "maximum_sample_p95_ms": 200,
+            "minimum_requests": 100
+          },
+          "entry_id": "load_test",
+          "method": "engineering/api-load-criteria/1",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "requested_scope": {
+            "build_id": "demo-build-43",
+            "concurrent_clients": 10,
+            "dataset": "synthetic",
+            "run_id": "demo-load-001",
+            "service": "orders-api"
+          },
+          "schema": "EAL/MAS-coordination-task/2",
+          "semantic_definitions": {
+            "host_authority": "Only trusted Python EAL findings and stored assessments establish references and claim statuses. Formal support does not verify authored claim prose. A handoff disposition does not change an EAL assessment.",
+            "out_of_scope": "The available registered candidate does not correspond to the requested context, workload, criterion contract or pinned source revision. Report the requested scope and null unassessed statuses; do not relabel the candidate's result.",
+            "sample_fail": "A corresponding checked assessment gives the failing claim status supported and the passing claim status unsupported. An identified usable measurement fails at least one pinned criterion; missing or stale evidence is not a measured failure.",
+            "sample_pass": "A corresponding checked assessment gives the passing claim status supported and the failing claim status unsupported. The identified synthetic sample meets the pinned criteria; no production guarantee follows.",
+            "unresolved": "The requested task has no decisive checked result, including missing, stale, contested, unavailable or uncertain-execution evidence. Preserve actual checked statuses; use null when the requested claim was not assessed."
+          },
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "task_digest": "52c3c91c91b5715f225e4333478870716ca446c09693c20677c93162f87340d4",
+          "task_id": "operational-changed_build"
+        },
+        "v2_candidate_check": {
+          "code": "context_mismatch",
+          "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+          "detail": "Registered default context differs from the requested service, build or dataset",
+          "entry_id": "load_test",
+          "finding_id": "finding_e86445fcd5e6666821b43c34cce7ec2f3698e7b11079386f35d74f1cecd79002",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "ok": false,
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "task_digest": "52c3c91c91b5715f225e4333478870716ca446c09693c20677c93162f87340d4"
+        },
+        "v2_false_admission": false
+      }
+    ],
+    "eal_assessment_calls": 2,
+    "errors": [],
+    "execution_mode": "actual_eal_python_host_and_software_admission_checks",
+    "outcome": "complete"
+  },
+  "created_at": "2026-10-12T20:41:31.109992+00:00",
+  "episodes": [
+    {
+      "ack_attempts": 1,
+      "arm": "plain_retry",
+      "artifact_directory": "no_fault-plain_retry",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "no_fault",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 1,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": null,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "durable_json",
+      "artifact_directory": "no_fault-durable_json",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "no_fault",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 1,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": null,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "durable_lab",
+      "artifact_directory": "no_fault-durable_lab",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "no_fault",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 1,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "calls": 0,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": null,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 3,
+      "arm": "plain_retry",
+      "artifact_directory": "duplicate_request-plain_retry",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 1,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 3,
+      "effect_mode": "actual_eal_python_host",
+      "episode_id": "duplicate_request",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 3,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 3,
+      "mailbox_usage": {
+        "bytes": 1184,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "claim": "performance_criteria_met",
+          "production_supported": false,
+          "scope": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 10,
+            "dataset": "synthetic",
+            "run_id": "demo-load-001",
+            "service": "orders-api"
+          },
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "status": "supported"
+        }
+      ],
+      "recorded_collected_count": 1,
+      "recorded_reused_count": 2,
+      "recovered_delivery": null,
+      "reused_count": 2,
+      "safe_unknown": false,
+      "send_attempts": 3,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "durable_json",
+      "artifact_directory": "duplicate_request-durable_json",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 1,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 1,
+      "effect_mode": "actual_eal_python_host",
+      "episode_id": "duplicate_request",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 3,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1184,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "claim": "performance_criteria_met",
+          "production_supported": false,
+          "scope": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 10,
+            "dataset": "synthetic",
+            "run_id": "demo-load-001",
+            "service": "orders-api"
+          },
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "status": "supported"
+        }
+      ],
+      "recorded_collected_count": 1,
+      "recorded_reused_count": 0,
+      "recovered_delivery": null,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "durable_lab",
+      "artifact_directory": "duplicate_request-durable_lab",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 1,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 1,
+      "effect_mode": "actual_eal_python_host",
+      "episode_id": "duplicate_request",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 3,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1184,
+        "calls": 0,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "claim": "performance_criteria_met",
+          "production_supported": false,
+          "scope": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 10,
+            "dataset": "synthetic",
+            "run_id": "demo-load-001",
+            "service": "orders-api"
+          },
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e",
+          "status": "supported"
+        }
+      ],
+      "recorded_collected_count": 1,
+      "recorded_reused_count": 0,
+      "recovered_delivery": null,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "plain_retry",
+      "artifact_directory": "commit_before_publish-plain_retry",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "commit_before_publish",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 2,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "durable_json",
+      "artifact_directory": "commit_before_publish-durable_json",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "commit_before_publish",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "durable_lab",
+      "artifact_directory": "commit_before_publish-durable_lab",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "commit_before_publish",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "calls": 0,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "plain_retry",
+      "artifact_directory": "send_receipt_lost-plain_retry",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "send_receipt_lost",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 2,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 2,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "durable_json",
+      "artifact_directory": "send_receipt_lost-durable_json",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "send_receipt_lost",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 2,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "durable_lab",
+      "artifact_directory": "send_receipt_lost-durable_lab",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "send_receipt_lost",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "calls": 0,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 2,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "plain_retry",
+      "artifact_directory": "ack_confirmation_lost-plain_retry",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "ack_confirmation_lost",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 1,
+      "input_acknowledged": true,
+      "local_completion_confirmed": false,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 2,
+      "arm": "durable_json",
+      "artifact_directory": "ack_confirmation_lost-durable_json",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "ack_confirmation_lost",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 1,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 2,
+      "arm": "durable_lab",
+      "artifact_directory": "ack_confirmation_lost-durable_lab",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "ack_confirmation_lost",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 1,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "calls": 0,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 1,
+      "arm": "plain_retry",
+      "artifact_directory": "interrupted_effect-plain_retry",
+      "automatic_reexecution_after_unknown": true,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "interrupted_effect",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": true,
+      "local_completion_confirmed": true,
+      "logical_effect_invocations": 2,
+      "mailbox_usage": {
+        "bytes": 1001,
+        "messages": 2
+      },
+      "outcome": "delivered",
+      "qualified_reply_summaries": [
+        {
+          "operation_digest": "cbd7ad1d0d6bb4701612ae05acf0bd8aa028fdf8c77a523fc110af9fedd74c14",
+          "synthetic": true,
+          "value": "counted deterministic software effect"
+        }
+      ],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": true,
+      "reused_count": 0,
+      "safe_unknown": false,
+      "send_attempts": 1,
+      "unique_replies": 1
+    },
+    {
+      "ack_attempts": 0,
+      "arm": "durable_json",
+      "artifact_directory": "interrupted_effect-durable_json",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "interrupted_effect",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": false,
+      "local_completion_confirmed": false,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 566,
+        "messages": 1
+      },
+      "outcome": "effect_outcome_unknown",
+      "qualified_reply_summaries": [],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": false,
+      "reused_count": 0,
+      "safe_unknown": true,
+      "send_attempts": 0,
+      "unique_replies": 0
+    },
+    {
+      "ack_attempts": 0,
+      "arm": "durable_lab",
+      "artifact_directory": "interrupted_effect-durable_lab",
+      "automatic_reexecution_after_unknown": false,
+      "budgets": {
+        "maximum_ack_attempts": 8,
+        "maximum_effect_invocations": 3,
+        "maximum_handler_deliveries": 3,
+        "maximum_message_bytes": 65536,
+        "maximum_send_attempts": 8,
+        "maximum_unique_messages": 8,
+        "wall_seconds": 3600
+      },
+      "collected_count": 0,
+      "collection_receipts_complete": true,
+      "eal_assessment_calls": 0,
+      "effect_mode": "synthetic_counted_effect",
+      "episode_id": "interrupted_effect",
+      "errors": [],
+      "event_trace": "events.json",
+      "execution_mode": "software_fault_injection",
+      "final_worker_answers": null,
+      "handler_deliveries": 2,
+      "input_acknowledged": false,
+      "local_completion_confirmed": false,
+      "logical_effect_invocations": 1,
+      "mailbox_usage": {
+        "bytes": 566,
+        "calls": 0,
+        "messages": 1
+      },
+      "outcome": "effect_outcome_unknown",
+      "qualified_reply_summaries": [],
+      "recorded_collected_count": 0,
+      "recorded_reused_count": 0,
+      "recovered_delivery": false,
+      "reused_count": 0,
+      "safe_unknown": true,
+      "send_attempts": 0,
+      "unique_replies": 0
+    }
+  ],
+  "execution_mode": "software_fault_injection",
+  "implementation_sha256": {
+    "experiments/mas_coordination/effect_ledger.py": "ce128fe6feb4a296c7764161c5ef8e9ab5e65b492cc1010e934404fbc473eb14",
+    "experiments/mas_coordination/operational.py": "255dede4deb72ea34a5df23e08b59ef8552ca2680a345c453dcb5437fef6268f",
+    "experiments/mas_coordination/task_contract.py": "5cc2d45b4c30ec7939e2cc56af6858cbd42a7c8b4a4cabcfbee9c99143f5e536"
+  },
+  "limitations": [
+    "Internal synthetic fixtures and explicit fault schedules",
+    "No native model outputs or fabricated final answers",
+    "Actual Python EAL calls are not MCP calls",
+    "Interrupted external effects are unresolved, not successfully completed",
+    "Observation reuse and logical effect-call reduction are separate measurements",
+    "Stable semantic receipts omit per-assessment UUIDs; complete actual assessments are retained separately",
+    "Wall budget checked at operation boundaries; existing EAL method limits unchanged",
+    "Wire syntax is not credited for effects also achieved by the durable JSON control",
+    "No token, USD, development-cost or general capability improvement measured"
+  ],
+  "model_cost_usd": null,
+  "model_tokens": null,
+  "native_model_calls": 0,
+  "outcome": "complete",
+  "plan_digest": "e0be688429062bc7e48662845d9994a2a122b1905c6303ec49aec7101433dbb1",
+  "schema": "EAL/mas-coordination-operational-report/1",
+  "summary": {
+    "durable_json": {
+      "delivered": 5,
+      "eal_assessment_calls": 1,
+      "incomplete": 0,
+      "logical_effect_invocations": 6,
+      "retained_episodes": 6,
+      "safe_unknown": 1,
+      "scheduled_episodes": 6
+    },
+    "durable_lab": {
+      "delivered": 5,
+      "eal_assessment_calls": 1,
+      "incomplete": 0,
+      "logical_effect_invocations": 6,
+      "retained_episodes": 6,
+      "safe_unknown": 1,
+      "scheduled_episodes": 6
+    },
+    "plain_retry": {
+      "delivered": 6,
+      "eal_assessment_calls": 3,
+      "incomplete": 0,
+      "logical_effect_invocations": 11,
+      "retained_episodes": 6,
+      "safe_unknown": 0,
+      "scheduled_episodes": 6
+    }
+  }
+}

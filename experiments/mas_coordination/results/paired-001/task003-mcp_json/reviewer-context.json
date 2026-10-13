@@ -1,0 +1,45 @@
+{
+  "role": "reviewer",
+  "task": {
+    "question": "Does the requested build's identified synthetic sample meet the declared load-test criteria?",
+    "requested_scope": {
+      "service": "orders-api",
+      "build_id": "demo-build-43",
+      "run_id": "demo-load-001",
+      "concurrent_clients": 10,
+      "dataset": "synthetic"
+    },
+    "assessed_at": "2026-09-25T10:00:00Z",
+    "criteria": {
+      "minimum_requests": 100,
+      "maximum_sample_p95_ms": 200,
+      "maximum_error_rate_percent": 1,
+      "evidence_max_age_seconds": 86400
+    },
+    "entry_id": "load_test",
+    "claims": [
+      "performance_criteria_met",
+      "performance_criteria_failed"
+    ],
+    "instructions": "Use only an accepted checked handoff for the requested scope and decision time. A supported claim describes this identified synthetic sample, with no production guarantee. Keep measured criterion failure separate from missing, stale, or unavailable evidence. When no accepted assessment of the requested scope exists, both statuses are null (unassessed), not an invented host status. Original measurement time is preserved.",
+    "answer_contract": {
+      "statuses": {
+        "performance_criteria_met": "supported | contested | unsupported | out_of_scope | null",
+        "performance_criteria_failed": "supported | contested | unsupported | out_of_scope | null"
+      },
+      "scope": "the exact requested_scope object",
+      "assessed_at": "the requested decision time",
+      "conclusion": "sample_pass | sample_fail | unresolved | out_of_scope",
+      "production_supported": false
+    },
+    "task_id": "task003"
+  },
+  "delivery": "rejected",
+  "diagnoses": [
+    "Task target context differs from the registered assessment context; cross-build handoff rejected"
+  ],
+  "received_messages": [],
+  "trusted_packets": {},
+  "review_templates": [],
+  "instructions": "Inspect addressed messages and host-checked packets. Produce the canonical scoped answer in task.answer_contract. Return one JSON object with answer, reviews (use exact templates; empty after rejected handoff), and consumed_message_ids. Preserve stale/unassessed versus measured failure and the synthetic qualification. Read no other run files."
+}

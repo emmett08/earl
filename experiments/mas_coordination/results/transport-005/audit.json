@@ -1,0 +1,27 @@
+{
+  "schema": "EAL/MAS-transport-audit/1",
+  "auditor": "/root/transport_benchmark/benchmark_audit",
+  "execution_mode": "independent_host_agent_read_only_artifact_review",
+  "result": "passed",
+  "scope": "Recompute and inspect frozen software benchmark evidence; no model-output accuracy or general performance claim.",
+  "checks": {
+    "samples": 25,
+    "operations_per_sample": 25,
+    "canonical_content_hashes": 1,
+    "normalized_useful_states": 1,
+    "premature_ack_before_receive": true,
+    "wrong_recipient_ack_after_redelivery": true,
+    "launch_counts_and_pid_parentage_reconcile": true,
+    "five_arms_each_occupy_all_five_positions": true,
+    "report_medians_and_paired_ratios_recompute_exactly": true,
+    "source_hashes_matching_disk": 24,
+    "baseline_byte_identical_to_commit": "984e30726279177ce106c932fb0209d90428a6cd",
+    "source_stability": true,
+    "failure_file_present": false,
+    "codec_microbench_samples_using_same_manifested_binary": 6,
+    "roundtrip_codec_calls_per_workload": {"encode": 18, "parse": 18, "admit": 0},
+    "rust_admission_codec_calls_per_workload": {"encode": 0, "parse": 0, "admit": 9},
+    "post_create_roundtrip_over_admission_median_ratio": 1.3540275618658908
+  },
+  "interpretation": "Matched performance ratios use complete cycles or post-create operations; per-arm first-use-excluded send summaries contain different payload-size subsets."
+}

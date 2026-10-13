@@ -1,0 +1,36 @@
+{
+  "server": {
+    "workspace": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit08/workspace",
+    "registry": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit08/workspace/tools.toml",
+    "database": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/units/unit08/workspace/knowledge.sqlite",
+    "methods": "eal.api_load_methods:registry",
+    "limits": null
+  },
+  "task": {
+    "task_id": "held_out_case04",
+    "question": "Assess every selected claim for this identified synthetic input. Preserve all registered scope and qualifications, distinguish scope mismatch from unavailable results, and make no conclusions about a deployed service.",
+    "entry_id": "availability_sample",
+    "claims": [
+      "sample_endpoint_available",
+      "sample_quorum_present"
+    ],
+    "profile": "registered_claims/1",
+    "requirements": {
+      "context": {
+        "dataset": "synthetic",
+        "deployment": "coordinator-demo",
+        "service": "catalogue-api"
+      }
+    }
+  },
+  "budgets": {
+    "max_worker_calls": 2,
+    "max_gateway_calls_per_role": 4,
+    "max_mcp_calls_per_role": 64,
+    "wall_seconds": 900,
+    "worker_seconds": 180
+  },
+  "transport": {
+    "kind": "json"
+  }
+}

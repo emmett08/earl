@@ -1,0 +1,41 @@
+{
+  "command_arguments": {
+    "arms": "legacy_one_shot,persistent_mcp,persistent_mcp_codec,json_control",
+    "codec_microbench": true,
+    "output": "experiments/mas_coordination/results/transport-004",
+    "profile": true,
+    "repetitions": 4,
+    "runtime": "/workspace/mas-protocol-lab"
+  },
+  "cpu_accounting": "RUSAGE_SELF plus RUSAGE_CHILDREN after persistent server shutdown; excludes still-live unrelated children.",
+  "launch_instrumentation": "Parent Popen constructor and explicitly injected sitecustomize in isolated Python servers/CLI; one record per successful process construction.",
+  "logical_cpus": 5,
+  "packages": {
+    "fastmcp": "4.0.10",
+    "mcp": "2.2.0"
+  },
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "processor": "",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "schema": "EAL/MAS-transport-benchmark/1",
+  "source_hashes": {
+    "/workspace/mas-protocol-lab/runtime/mas_protocol/mcp_server.py": "442da05e9514668905411d0ade1d1a548ea29ffebeae60d55bae7dfd611fe78c",
+    "/workspace/mas-protocol-lab/runtime/mas_protocol/protocol.py": "9bb8eea4dcdbab5b2f3c8b8513281cb5ebeb6ebcfc66a25b1dd630365d586731",
+    "/workspace/mas-protocol-lab/runtime/mas_protocol/store.py": "f2510cbad31646c372d0006cb50be3f9d3f027a540c9142a0a4a09c1ea84b638",
+    "/workspace/mas-protocol-lab/rust-protocol/target/release/mas-protocol-codec": "876b577cb029f491c613026e026d80f2c7c2037a4951aa5a9cab57297b4cf165",
+    "experiments/mas_coordination/benchmark_instrumentation/sitecustomize.py": "53b3ceb2de2af43b8b6c031a88fe03477e5d2f32ab0cf5d904bbc87fb96a7664",
+    "experiments/mas_coordination/benchmark_legacy/lab.py": "c5707a1900870b706d41c6e4ec35c5a6051ea07ec6a7bf04fcb7440d08f53f98",
+    "experiments/mas_coordination/benchmark_legacy/lab_mcp.py": "84fb30943d35c7d2f2f4d33f8e95f8a694c42c1ef2d3b03362f6696b01c3cf2f",
+    "experiments/mas_coordination/transport-benchmark-plan.json": "2981501cd0cc8fbc614fde4078552a364c45abdee30d2deef40b53161076e595",
+    "experiments/mas_coordination/transport_benchmark.py": "73a05306f83c7e38c5e74b82a4bc9cf6b56954b59606ab088412fc80d00cd645",
+    "src/eal/coordination/bus.py": "9224d4eba56d71cc664f9c4cb5b4cc483abedace08ad5dae76790534c21c828d",
+    "src/eal/coordination/codec_process.py": "38420d3657e94e872f836fc7ceb2cbff6e159fc4a3de3a25d88bb30ac407b297",
+    "src/eal/coordination/lab.py": "c5707a1900870b706d41c6e4ec35c5a6051ea07ec6a7bf04fcb7440d08f53f98",
+    "src/eal/coordination/lab_mcp.py": "51f83340f0f15a2625db96154d3bf671cd249011633bb54883fef66081e0e5ad",
+    "src/eal/coordination/lab_server.py": "05dfa6bbde5485e4100c1b75009544f70c01e1ff00a7b30db748e45bccc9ff11",
+    "src/eal/coordination/rust_codec/src/lib.rs": "68e93d5dbc4d58730abb4f7a3ae67b2458fa8127bd18ddc25c4483633967b877",
+    "src/eal/coordination/rust_codec/src/main.rs": "0c9eec0b39defc1737871228cfd15043f980a088d6ff732644036531725a5678",
+    "src/eal/coordination/rust_codec/target/release/mas-protocol-codec": "c0e027475947e721f3cfe6c28c32aafe442334cb31669a623a21d340a2570677"
+  },
+  "started_utc": "2026-10-12T22:40:52Z"
+}

@@ -1,0 +1,268 @@
+{
+  "schema": "EAL/accuracy-native-launch-order/1",
+  "source": "Observed collaboration.spawn_agent calls in this host session, accompanied by returned completions and exact saved responses; operator attestation, not a provider receipt.",
+  "launches": [
+    {
+      "launch_order": 1,
+      "storage_id": "unit01",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u01_assessor",
+      "external_execution_id": "/root/accuracy006_u01_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "5d9a4add0fd5e9c8c642dab4642c9c66577deed37e9300bbf885f40aa3016222"
+    },
+    {
+      "launch_order": 2,
+      "storage_id": "unit02",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u02_assessor",
+      "external_execution_id": "/root/accuracy006_u02_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "de083fb276a3f3a4188c6fd6eda6096139e270fc5475cab50c5c5766f9093f89"
+    },
+    {
+      "launch_order": 3,
+      "storage_id": "unit01",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u01_reviewer",
+      "external_execution_id": "/root/accuracy006_u01_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "d8bd0b82fa37903732355876076869019142b616763f36688200bd50ae2c6c5b"
+    },
+    {
+      "launch_order": 4,
+      "storage_id": "unit04",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u04_assessor",
+      "external_execution_id": "/root/accuracy006_u04_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "79be6638ae8a24979883c3343552aac0dcbc3abc6f5033629aa1d0f1a2ea0490"
+    },
+    {
+      "launch_order": 5,
+      "storage_id": "unit03",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u03_assessor",
+      "external_execution_id": "/root/accuracy006_u03_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "1a3098f718563de92321418bc4a22b264eaac93caeeca785cc1bf97f2994b47c"
+    },
+    {
+      "launch_order": 6,
+      "storage_id": "unit02",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u02_reviewer",
+      "external_execution_id": "/root/accuracy006_u02_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "40cc5276ac4058e1745ca56ebd5e181c2a2ce479f2c4901995556e13e9071006"
+    },
+    {
+      "launch_order": 7,
+      "storage_id": "unit03",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u03_reviewer",
+      "external_execution_id": "/root/accuracy006_u03_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "66c85209feaee0f57a2588df277890d0a9376603158d01449b8bf4800fe3eae5"
+    },
+    {
+      "launch_order": 8,
+      "storage_id": "unit04",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u04_reviewer",
+      "external_execution_id": "/root/accuracy006_u04_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "6d68777ca59e629d31bff3f10494244bf7f3b5bec3819477b36c52d0fe4bb270"
+    },
+    {
+      "launch_order": 9,
+      "storage_id": "unit05",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u05_assessor",
+      "external_execution_id": "/root/accuracy006_u05_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "a90239020870d847c6dad4036861da27c9cc244176721d218da5f05c67d84f31"
+    },
+    {
+      "launch_order": 10,
+      "storage_id": "unit06",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u06_assessor",
+      "external_execution_id": "/root/accuracy006_u06_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "6873bc819762742b7cbc4eee59395a248209ce837aabbad28fa4a181e2e68929"
+    },
+    {
+      "launch_order": 11,
+      "storage_id": "unit05",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u05_reviewer",
+      "external_execution_id": "/root/accuracy006_u05_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "1cedb7f2960ff9bc9cefc99a4f09abc519143d26c2b4de04ed4c9925262395f8"
+    },
+    {
+      "launch_order": 12,
+      "storage_id": "unit07",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u07_assessor",
+      "external_execution_id": "/root/accuracy006_u07_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "cf99b9155950389cb8b9bf057e7892b4c69db0086de7e94c03e88666527215ec"
+    },
+    {
+      "launch_order": 13,
+      "storage_id": "unit08",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u08_assessor",
+      "external_execution_id": "/root/accuracy006_u08_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "3bd785392e4ff24e9f3f67c8288f58e376095c5dc542234d65732bf31504fba1"
+    },
+    {
+      "launch_order": 14,
+      "storage_id": "unit06",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u06_reviewer",
+      "external_execution_id": "/root/accuracy006_u06_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "2b87875bb9e20533af6842bfeddefdad1e8fe7bcba3fdeff3f0c22b9e9c6f341"
+    },
+    {
+      "launch_order": 15,
+      "storage_id": "unit07",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u07_reviewer",
+      "external_execution_id": "/root/accuracy006_u07_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "bcb4de539c40fae872cca33f0ef8e7fcf9a051942f70859163973934ce9dc228"
+    },
+    {
+      "launch_order": 16,
+      "storage_id": "unit09",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u09_assessor",
+      "external_execution_id": "/root/accuracy006_u09_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "648c1d4f870a7a2ba5e297ad3eb0eeb30cfbb400e90ed536d5fdb95c1416d653"
+    },
+    {
+      "launch_order": 17,
+      "storage_id": "unit10",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u10_assessor",
+      "external_execution_id": "/root/accuracy006_u10_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "30046b430c6b61ad11a35e13a52a46f169b4597b4fbe4ae8f0eb66b006eee78f"
+    },
+    {
+      "launch_order": 18,
+      "storage_id": "unit09",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u09_reviewer",
+      "external_execution_id": "/root/accuracy006_u09_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "3258baa4ac23cfe0901d402ff7f192a346a1427d331af87b93a1b52c0c0af192"
+    },
+    {
+      "launch_order": 19,
+      "storage_id": "unit11",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u11_assessor",
+      "external_execution_id": "/root/accuracy006_u11_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "8bafe5a218ce35479721a907d647e257d44654a61c4fe46ec030c39ed6f4b05b"
+    },
+    {
+      "launch_order": 20,
+      "storage_id": "unit12",
+      "role": "assessor",
+      "agent_name": "/root/accuracy006_u12_assessor",
+      "external_execution_id": "/root/accuracy006_u12_assessor/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "63ff42958cbd6d3b61b3cfad2de9ce66ca231620ff4ac82d99e679329712b7e0"
+    },
+    {
+      "launch_order": 21,
+      "storage_id": "unit10",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u10_reviewer",
+      "external_execution_id": "/root/accuracy006_u10_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "ddbe51a154f5f589dcd019751ca267867d3e78d01982fc4b18d4dad9ce0a8c25"
+    },
+    {
+      "launch_order": 22,
+      "storage_id": "unit11",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u11_reviewer",
+      "external_execution_id": "/root/accuracy006_u11_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "b3f4ceeedb8d17bbd434ba937a591dae26d86618ef9eeb6ae2dbdb2f06c8674f"
+    },
+    {
+      "launch_order": 23,
+      "storage_id": "unit12",
+      "role": "reviewer",
+      "agent_name": "/root/accuracy006_u12_reviewer",
+      "external_execution_id": "/root/accuracy006_u12_reviewer/turn1",
+      "fork_turns": "none",
+      "model_override": null,
+      "repair_turns": 0,
+      "response_sha256": "51f5aecbf590df191df12e0c9255d532bcf3646d8d964b5b31028d112065038b"
+    }
+  ],
+  "actual_fresh_contexts": 23,
+  "blocked_downstream": [
+    {
+      "storage_id": "unit08",
+      "role": "reviewer",
+      "reason": "First assessor response rejected; no accepted handoff; reviewer was not launched."
+    }
+  ],
+  "timestamp_limit": "Host spawn wall timestamps were not exposed; reservation/record times remain in dispatch and execution files."
+}

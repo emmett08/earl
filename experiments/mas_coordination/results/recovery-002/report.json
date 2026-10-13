@@ -1,0 +1,311 @@
+{
+  "schema": "EAL/mas-coordination-recovery-report/2",
+  "study_id": "eal3-coordination-recovery-002",
+  "created_at": "2026-10-12T20:50:44.252382+00:00",
+  "native": {
+    "mode": "actual_separate_host_agents",
+    "maximum_repairs": 0,
+    "actual_contexts": 8,
+    "scored_units": 4,
+    "correct_units": 4,
+    "per_arm": {
+      "plain_mcp": {
+        "units": 2,
+        "correct": 2
+      },
+      "checked_protocol": {
+        "units": 2,
+        "correct": 2
+      }
+    },
+    "units": [
+      {
+        "run_id": "task501-plain_mcp",
+        "case_id": "new_sample_failure",
+        "arm": "plain_mcp",
+        "score": {
+          "correct": true,
+          "diagnostics": []
+        },
+        "answer": {
+          "statuses": {
+            "performance_criteria_met": "unsupported",
+            "performance_criteria_failed": "supported"
+          },
+          "scope": {
+            "service": "orders-api",
+            "build_id": "demo-build-42",
+            "run_id": "demo-load-001",
+            "concurrent_clients": 10,
+            "dataset": "synthetic"
+          },
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "conclusion": "sample_fail",
+          "production_supported": false
+        },
+        "execution_ids": [
+          "/root/recovery_assessor_501_plain/turn1",
+          "/root/recovery_reviewer_501_plain/turn1"
+        ],
+        "execution_mode": "actual_host_agent",
+        "attempt_outcomes": {
+          "assessor": "recorded",
+          "reviewer": "recorded"
+        },
+        "gateway_calls": [
+          {
+            "id": 1,
+            "actor": "assessor",
+            "operation": "query",
+            "outcome": "succeeded",
+            "finding_id": "finding_dbac88aef8b073dcd0b51fb5ee12371df55cc0cece810f8b9764be548818ee1f"
+          },
+          {
+            "id": 2,
+            "actor": "reviewer",
+            "operation": "lookup",
+            "outcome": "succeeded",
+            "finding_id": "finding_dbac88aef8b073dcd0b51fb5ee12371df55cc0cece810f8b9764be548818ee1f"
+          }
+        ],
+        "actual_eal_assessment_calls": 2,
+        "actual_mcp_calls": 4,
+        "collected_count": 1,
+        "reused_count": 1,
+        "transport_status_artifact": null,
+        "native_tokens": null,
+        "native_cost_usd": null
+      },
+      {
+        "run_id": "task501-checked_protocol",
+        "case_id": "new_sample_failure",
+        "arm": "checked_protocol",
+        "score": {
+          "correct": true,
+          "diagnostics": []
+        },
+        "answer": {
+          "statuses": {
+            "performance_criteria_met": "unsupported",
+            "performance_criteria_failed": "supported"
+          },
+          "scope": {
+            "service": "orders-api",
+            "build_id": "demo-build-42",
+            "run_id": "demo-load-001",
+            "concurrent_clients": 10,
+            "dataset": "synthetic"
+          },
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "conclusion": "sample_fail",
+          "production_supported": false
+        },
+        "execution_ids": [
+          "/root/recovery_assessor_501_checked/turn1",
+          "/root/recovery_reviewer_501_checked/turn1"
+        ],
+        "execution_mode": "actual_host_agent",
+        "attempt_outcomes": {
+          "assessor": "recorded",
+          "reviewer": "recorded"
+        },
+        "gateway_calls": [
+          {
+            "id": 1,
+            "actor": "assessor",
+            "operation": "query",
+            "outcome": "succeeded",
+            "finding_id": "finding_5b4001aca36bd0f7431149aa0ac57b42b361aa257e01a34712a94ed04d21581c"
+          },
+          {
+            "id": 2,
+            "actor": "reviewer",
+            "operation": "lookup",
+            "outcome": "succeeded",
+            "finding_id": "finding_5b4001aca36bd0f7431149aa0ac57b42b361aa257e01a34712a94ed04d21581c"
+          }
+        ],
+        "actual_eal_assessment_calls": 2,
+        "actual_mcp_calls": 4,
+        "collected_count": 1,
+        "reused_count": 1,
+        "transport_status_artifact": "task501-checked_protocol/bus-status.json",
+        "native_tokens": null,
+        "native_cost_usd": null
+      },
+      {
+        "run_id": "task502-checked_protocol",
+        "case_id": "new_workload_scope",
+        "arm": "checked_protocol",
+        "score": {
+          "correct": true,
+          "diagnostics": []
+        },
+        "answer": {
+          "statuses": {
+            "performance_criteria_met": null,
+            "performance_criteria_failed": null
+          },
+          "scope": {
+            "service": "orders-api",
+            "build_id": "demo-build-42",
+            "run_id": "demo-load-002",
+            "concurrent_clients": 20,
+            "dataset": "synthetic"
+          },
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "conclusion": "out_of_scope",
+          "production_supported": false
+        },
+        "execution_ids": [
+          "/root/recovery_assessor_502_checked/turn1",
+          "/root/recovery_reviewer_502_checked/turn1"
+        ],
+        "execution_mode": "actual_host_agent",
+        "attempt_outcomes": {
+          "assessor": "recorded",
+          "reviewer": "recorded"
+        },
+        "gateway_calls": [
+          {
+            "id": 1,
+            "actor": "assessor",
+            "operation": "query",
+            "outcome": "succeeded",
+            "finding_id": "finding_8b16fdf992b104d5b3c3a87876198b0f3217fd4299b53780b02b9f836f86993a"
+          },
+          {
+            "id": 2,
+            "actor": "reviewer",
+            "operation": "lookup",
+            "outcome": "succeeded",
+            "finding_id": "finding_8b16fdf992b104d5b3c3a87876198b0f3217fd4299b53780b02b9f836f86993a"
+          }
+        ],
+        "actual_eal_assessment_calls": 0,
+        "actual_mcp_calls": 0,
+        "collected_count": 0,
+        "reused_count": 0,
+        "transport_status_artifact": "task502-checked_protocol/bus-status.json",
+        "native_tokens": null,
+        "native_cost_usd": null
+      },
+      {
+        "run_id": "task502-plain_mcp",
+        "case_id": "new_workload_scope",
+        "arm": "plain_mcp",
+        "score": {
+          "correct": true,
+          "diagnostics": []
+        },
+        "answer": {
+          "statuses": {
+            "performance_criteria_met": null,
+            "performance_criteria_failed": null
+          },
+          "scope": {
+            "service": "orders-api",
+            "build_id": "demo-build-42",
+            "run_id": "demo-load-002",
+            "concurrent_clients": 20,
+            "dataset": "synthetic"
+          },
+          "assessed_at": "2026-09-25T10:00:00Z",
+          "conclusion": "out_of_scope",
+          "production_supported": false
+        },
+        "execution_ids": [
+          "/root/recovery_assessor_502_plain/turn1",
+          "/root/recovery_reviewer_502_plain/turn1"
+        ],
+        "execution_mode": "actual_host_agent",
+        "attempt_outcomes": {
+          "assessor": "recorded",
+          "reviewer": "recorded"
+        },
+        "gateway_calls": [
+          {
+            "id": 1,
+            "actor": "assessor",
+            "operation": "query",
+            "outcome": "succeeded",
+            "finding_id": "finding_8b16fdf992b104d5b3c3a87876198b0f3217fd4299b53780b02b9f836f86993a"
+          },
+          {
+            "id": 2,
+            "actor": "reviewer",
+            "operation": "lookup",
+            "outcome": "succeeded",
+            "finding_id": "finding_8b16fdf992b104d5b3c3a87876198b0f3217fd4299b53780b02b9f836f86993a"
+          }
+        ],
+        "actual_eal_assessment_calls": 0,
+        "actual_mcp_calls": 0,
+        "collected_count": 0,
+        "reused_count": 0,
+        "transport_status_artifact": null,
+        "native_tokens": null,
+        "native_cost_usd": null
+      }
+    ],
+    "first_arm_order": [
+      "task501-plain_mcp",
+      "task502-checked_protocol"
+    ],
+    "model_identity": null,
+    "tokens": null,
+    "cost_usd": null
+  },
+  "software": {
+    "mode": "software_fault_injection",
+    "retained_episodes": 18,
+    "summary": {
+      "durable_json": {
+        "delivered": 5,
+        "eal_assessment_calls": 1,
+        "incomplete": 0,
+        "logical_effect_invocations": 6,
+        "retained_episodes": 6,
+        "safe_unknown": 1,
+        "scheduled_episodes": 6
+      },
+      "durable_lab": {
+        "delivered": 5,
+        "eal_assessment_calls": 1,
+        "incomplete": 0,
+        "logical_effect_invocations": 6,
+        "retained_episodes": 6,
+        "safe_unknown": 1,
+        "scheduled_episodes": 6
+      },
+      "plain_retry": {
+        "delivered": 6,
+        "eal_assessment_calls": 3,
+        "incomplete": 0,
+        "logical_effect_invocations": 11,
+        "retained_episodes": 6,
+        "safe_unknown": 0,
+        "scheduled_episodes": 6
+      }
+    },
+    "report": "software/report.json"
+  },
+  "interpretation": [
+    "Full task validation fixes false admission of different runs and client counts.",
+    "Durable results/outboxes reduce repeated logical effects under the declared faults.",
+    "Durable JSON matches Lab: the mechanisms explain the measured benefit.",
+    "Both native arms use corrected checks and semantics; their clean outcomes establish feasibility, not superiority of wire syntax.",
+    "One collector acquisition per duplicate episode in every software arm: no acquisition savings demonstrated.",
+    "Safe unknown is intentionally unresolved; it is not completed task success.",
+    "No representative benchmark, total-cost, model-reasoning or exactly-once external-execution claim."
+  ],
+  "limits": [
+    "Synthetic historical teaching fixtures with one paired native run per new case.",
+    "Python host acquisition precedes actual MCP packet lookup; MCP itself does not acquire here.",
+    "Separate contexts share filesystem permissions; role restrictions are host instructions.",
+    "Raw native bytes and ledger are separate writes, not an atomic raw-response/outbox transaction.",
+    "Faults are Python interruptions, not process-kill or power-loss tests.",
+    "Native token/time requests are soft; gateway and Lab call/message/byte budgets are enforced.",
+    "Original /1 scores retained unchanged; new tasks/semantics prevent before-after causal scoring."
+  ]
+}

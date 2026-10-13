@@ -1,0 +1,34 @@
+{
+  "schema": "EAL/coordination-evaluation-plan/1",
+  "study_id": "eal3-coordinator-003",
+  "status": "declared_before_new_native_outcomes",
+  "scope": "Reusable single-host service, current-time MCP assessment, two task profiles, two independent worker roles",
+  "tasks": [
+    {"profile": "api_load/1", "arms": ["json", "lab"]},
+    {"profile": "registered_claims/1", "arms": ["lab", "json"]}
+  ],
+  "native": {
+    "maximum_contexts": 8,
+    "roles": ["assessor", "reviewer"],
+    "fresh_context_per_role_unit": true,
+    "execution_mode": "actual_host_agent",
+    "maximum_repairs": 0,
+    "requested_seconds_per_role": 180,
+    "requested_tokens_per_role": 4000,
+    "hard_run_budgets": {"wall_seconds": 900, "max_worker_calls": 2, "max_gateway_calls_per_role": 4, "max_mcp_calls_per_role": 64},
+    "information": "Only the role's reserved context, response schema and its permitted gateway. No answer keys, fixtures, implementation, other roles or model environment. Workers author first outputs and record exact consumed IDs."
+  },
+  "acceptance": [
+    "Actual registered MCP discovery and acquisition; packet/explanation identities remain pinned",
+    "All selected claim statuses, IDs and individual assessment times preserved",
+    "Generic contested result retained instead of changing it to support",
+    "Correspondence mismatch stops assessment before acquisition",
+    "Separate real worker executions consume addressed canonical handoffs",
+    "All first attempts, missing or invalid outcomes retained with zero repairs",
+    "Unknown effects are not automatically repeated after restart"
+  ],
+  "software_mode": "Scripted command-client and process-interruption checks are separate from native execution",
+  "attribution": "JSON and Lab share semantics and validation. This tests reusable workflow feasibility, not superior wire syntax or representative accuracy.",
+  "cost": "Count actual contexts, registered assessments, MCP calls, observation acquisition/reuse and mailbox work. Native model identity/tokens/billing unavailable; no total-cost improvement claim.",
+  "publication": "Current workspace implementation and saved setup draft are separate from environment publication"
+}

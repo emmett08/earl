@@ -1,0 +1,630 @@
+{
+  "schema": "EAL/coordination-accuracy-independent-review/1",
+  "study_id": "eal3-accuracy-006",
+  "reviewer": "/root/accuracy_acceptance_review",
+  "reviewed_at": "2026-10-12T23:57:54.639158+00:00",
+  "verdict": "first_attempt_counts_reproduced_with_material_limits",
+  "method": "Standalone standard-library audit; no imports of the implementation scorer and no additional MCP or model calls. Independent keys analytically checked before execution and verified against separate post-trial actual EAL MCP references, each native finding, packet/explanation identity and exact first response bytes.",
+  "frozen_plan_sha256": "b101ef83d1aef188aca1cbdd56ac6d7c16565aef48e2a46a33af15c6dea6ad11",
+  "reported_results_sha256": "aa34e5231ab6705f773d53a908aea1b3e81ff7f1b5dc2f28a6e3169b83728b3e",
+  "recomputed_summary": {
+    "json": {
+      "tasks": 6,
+      "task_correct": 5,
+      "semantic_answer_correct": 5,
+      "claim_status_correct": 11,
+      "selected_claims": 13,
+      "unsupported_positive_claims": 0,
+      "native_contexts": 11,
+      "unassessed_reference_claims": 4,
+      "actual_mcp_calls": 45,
+      "actual_registered_assessments": 9,
+      "collected_count": 8,
+      "reused_count": 2,
+      "rejected_worker_responses": 1,
+      "missing_worker_responses": 1,
+      "task_accuracy": 0.8333333333333334,
+      "task_accuracy_wilson_95": [
+        0.43649717781352987,
+        0.9699466302516935
+      ]
+    },
+    "lab": {
+      "tasks": 6,
+      "task_correct": 6,
+      "semantic_answer_correct": 6,
+      "claim_status_correct": 13,
+      "selected_claims": 13,
+      "unsupported_positive_claims": 0,
+      "native_contexts": 12,
+      "unassessed_reference_claims": 4,
+      "actual_mcp_calls": 55,
+      "actual_registered_assessments": 9,
+      "collected_count": 8,
+      "reused_count": 2,
+      "task_accuracy": 1.0,
+      "task_accuracy_wilson_95": [
+        0.6096657120978346,
+        1
+      ]
+    }
+  },
+  "paired": {
+    "pairs": 6,
+    "lab_only_correct": 1,
+    "json_only_correct": 0,
+    "exact_two_sided_sign_test_p": 1,
+    "observed_accuracy_difference_percentage_points": 16.666666666666664
+  },
+  "evidence_checks": {
+    "frozen_EAL_Python_Rust_codec_schema_plan_harness_hashes_unchanged": 93,
+    "isolated_Lab_files_match_prior_transport005_hashes": 4,
+    "paired_source_input_digest_checks": 144,
+    "unit_first_finding_and_ground_truth_checks": 12,
+    "assessment_packet_explanation_identity_checks": 18,
+    "first_byte_context_prompt_identity_checks": 23,
+    "unique_retained_context_ids": 23,
+    "first_attempt_repairs": 0,
+    "requested_context_fork_mode": "none",
+    "all_native_assessment_acquisition_MCP_calls_successful": true
+  },
+  "independent_fixture_facts": {
+    "case01": {
+      "requests": 120,
+      "failures": 12,
+      "nearest_rank_p95_ms": 322,
+      "error_rate_percent": 10.0,
+      "inclusive_limits_pass": false,
+      "requested_workload_matches": true
+    },
+    "case02": {
+      "value": {
+        "heartbeats": 7,
+        "responsive_nodes": 1,
+        "outage_count": 2
+      },
+      "stale_at_preparation": false,
+      "quorum_predicate": false,
+      "outage_predicate": true,
+      "catalogue_fault": false
+    },
+    "case03": {
+      "requests": 100,
+      "failures": 1,
+      "nearest_rank_p95_ms": 200,
+      "error_rate_percent": 1.0,
+      "inclusive_limits_pass": true,
+      "requested_workload_matches": true
+    },
+    "case04": {
+      "value": {
+        "heartbeats": 8,
+        "responsive_nodes": 5,
+        "outage_count": 0
+      },
+      "stale_at_preparation": true,
+      "quorum_predicate": true,
+      "outage_predicate": false,
+      "catalogue_fault": false
+    },
+    "case05": {
+      "requests": 100,
+      "failures": 1,
+      "nearest_rank_p95_ms": 200,
+      "error_rate_percent": 1.0,
+      "inclusive_limits_pass": true,
+      "requested_workload_matches": false
+    },
+    "case06": {
+      "value": {
+        "heartbeats": 7,
+        "responsive_nodes": 1,
+        "outage_count": 2
+      },
+      "stale_at_preparation": false,
+      "quorum_predicate": false,
+      "outage_predicate": true,
+      "catalogue_fault": true
+    }
+  },
+  "reference_sha256": {
+    "case01": "9032209a1a4aade35db185442e7f0b4fe08ebd8d791527309211eb60e812b39b",
+    "case02": "a30dc40b607c533feee016220202a3b9d140e75e91b286f12e41d40cd2f0d050",
+    "case03": "640cb4132b1af5cdf373c0d1502604c23ec6e153b930fa9855b04a5919b67bfe",
+    "case04": "06047a379e833c3c506970c7021f4e36a424b402a1b4c29176e0f950b0e813ad",
+    "case05": "e1ed0ad381050666db48ef0264286f9b8dfdbc26ce736263f7dbaf1e30044970",
+    "case06": "388bb3cebc3a99c7765905ea1b85b2caed37f3a42dd97837fd95545aa1632b86"
+  },
+  "first_attempt_units": [
+    {
+      "unit_id": "case01-json",
+      "storage_id": "unit01",
+      "arm": "json",
+      "case_id": "case01",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "5d9a4add0fd5e9c8c642dab4642c9c66577deed37e9300bbf885f40aa3016222",
+        "reviewer": "d8bd0b82fa37903732355876076869019142b616763f36688200bd50ae2c6c5b"
+      }
+    },
+    {
+      "unit_id": "case01-lab",
+      "storage_id": "unit02",
+      "arm": "lab",
+      "case_id": "case01",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "de083fb276a3f3a4188c6fd6eda6096139e270fc5475cab50c5c5766f9093f89",
+        "reviewer": "40cc5276ac4058e1745ca56ebd5e181c2a2ce479f2c4901995556e13e9071006"
+      }
+    },
+    {
+      "unit_id": "case02-lab",
+      "storage_id": "unit03",
+      "arm": "lab",
+      "case_id": "case02",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 3,
+      "selected_claims": 3,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "1a3098f718563de92321418bc4a22b264eaac93caeeca785cc1bf97f2994b47c",
+        "reviewer": "66c85209feaee0f57a2588df277890d0a9376603158d01449b8bf4800fe3eae5"
+      }
+    },
+    {
+      "unit_id": "case02-json",
+      "storage_id": "unit04",
+      "arm": "json",
+      "case_id": "case02",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 3,
+      "selected_claims": 3,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "79be6638ae8a24979883c3343552aac0dcbc3abc6f5033629aa1d0f1a2ea0490",
+        "reviewer": "6d68777ca59e629d31bff3f10494244bf7f3b5bec3819477b36c52d0fe4bb270"
+      }
+    },
+    {
+      "unit_id": "case03-json",
+      "storage_id": "unit05",
+      "arm": "json",
+      "case_id": "case03",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "a90239020870d847c6dad4036861da27c9cc244176721d218da5f05c67d84f31",
+        "reviewer": "1cedb7f2960ff9bc9cefc99a4f09abc519143d26c2b4de04ed4c9925262395f8"
+      }
+    },
+    {
+      "unit_id": "case03-lab",
+      "storage_id": "unit06",
+      "arm": "lab",
+      "case_id": "case03",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "6873bc819762742b7cbc4eee59395a248209ce837aabbad28fa4a181e2e68929",
+        "reviewer": "2b87875bb9e20533af6842bfeddefdad1e8fe7bcba3fdeff3f0c22b9e9c6f341"
+      }
+    },
+    {
+      "unit_id": "case04-lab",
+      "storage_id": "unit07",
+      "arm": "lab",
+      "case_id": "case04",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "cf99b9155950389cb8b9bf057e7892b4c69db0086de7e94c03e88666527215ec",
+        "reviewer": "bcb4de539c40fae872cca33f0ef8e7fcf9a051942f70859163973934ce9dc228"
+      }
+    },
+    {
+      "unit_id": "case04-json",
+      "storage_id": "unit08",
+      "arm": "json",
+      "case_id": "case04",
+      "task_correct": false,
+      "semantic_answer_correct": false,
+      "claim_status_correct": 0,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [
+        "assessor_frame_fields",
+        "assessor_kind",
+        "assessor_assessment_refs"
+      ],
+      "reviewer_errors": [
+        "missing_reviewer_answer",
+        "reviewer_claim:sample_endpoint_available",
+        "reviewer_claim:sample_quorum_present"
+      ],
+      "role_errors": [
+        "assessor_rejected",
+        "reviewer_not_executed_after_rejected_assessor"
+      ],
+      "admissions": {
+        "assessor": false,
+        "reviewer": false
+      },
+      "response_sha256": {
+        "assessor": "3bd785392e4ff24e9f3f67c8288f58e376095c5dc542234d65732bf31504fba1"
+      }
+    },
+    {
+      "unit_id": "case05-json",
+      "storage_id": "unit09",
+      "arm": "json",
+      "case_id": "case05",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "648c1d4f870a7a2ba5e297ad3eb0eeb30cfbb400e90ed536d5fdb95c1416d653",
+        "reviewer": "3258baa4ac23cfe0901d402ff7f192a346a1427d331af87b93a1b52c0c0af192"
+      }
+    },
+    {
+      "unit_id": "case05-lab",
+      "storage_id": "unit10",
+      "arm": "lab",
+      "case_id": "case05",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "30046b430c6b61ad11a35e13a52a46f169b4597b4fbe4ae8f0eb66b006eee78f",
+        "reviewer": "ddbe51a154f5f589dcd019751ca267867d3e78d01982fc4b18d4dad9ce0a8c25"
+      }
+    },
+    {
+      "unit_id": "case06-lab",
+      "storage_id": "unit11",
+      "arm": "lab",
+      "case_id": "case06",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "8bafe5a218ce35479721a907d647e257d44654a61c4fe46ec030c39ed6f4b05b",
+        "reviewer": "b3f4ceeedb8d17bbd434ba937a591dae26d86618ef9eeb6ae2dbdb2f06c8674f"
+      }
+    },
+    {
+      "unit_id": "case06-json",
+      "storage_id": "unit12",
+      "arm": "json",
+      "case_id": "case06",
+      "task_correct": true,
+      "semantic_answer_correct": true,
+      "claim_status_correct": 2,
+      "selected_claims": 2,
+      "unsupported_positive_claims": 0,
+      "assessor_errors": [],
+      "reviewer_errors": [],
+      "role_errors": [],
+      "admissions": {
+        "assessor": true,
+        "reviewer": true
+      },
+      "response_sha256": {
+        "assessor": "63ff42958cbd6d3b61b3cfad2de9ce66ca231620ff4ac82d99e679329712b7e0",
+        "reviewer": "51f5aecbf590df191df12e0c9255d532bcf3646d8d964b5b31028d112065038b"
+      }
+    }
+  ],
+  "prompt_context_sha256": [
+    {
+      "storage_id": "unit01",
+      "role": "assessor",
+      "prompt_sha256": "7f5b8ab70279b92a4cdba981cfb3a426e1bb715130844fd93e3f0279e1810d5b",
+      "context_sha256": "ed25f1f962abb599acf20095835ad9763147ef21b3e423f0f706900bda0544ed"
+    },
+    {
+      "storage_id": "unit01",
+      "role": "reviewer",
+      "prompt_sha256": "a50af63b2d90b0133b2cae7885183706fa7fc64be8b6adebb4e66ca3bbdc53d9",
+      "context_sha256": "02c782d4ccc09c1049c049bc9a4982014a0e9edb694413a301a726f1089aba84"
+    },
+    {
+      "storage_id": "unit02",
+      "role": "assessor",
+      "prompt_sha256": "971afcdfd53e6174d07f1f859597a54e464aa3b99428e2417e009bff71045dfd",
+      "context_sha256": "e3a21bec315ddc38b68eae1971ed64b9b9a75a4bdbfb02102d546c1c23fbb89e"
+    },
+    {
+      "storage_id": "unit02",
+      "role": "reviewer",
+      "prompt_sha256": "f0d8ef3774ef9326ed076b82783d301e6c1718f0b764ef63b40bd278938e3459",
+      "context_sha256": "edbaab2b462ebf3903726efbcd86ed6108b08e3a274d1dec2d132e75f5a64aa4"
+    },
+    {
+      "storage_id": "unit03",
+      "role": "assessor",
+      "prompt_sha256": "a0c35efd196668c5e71cbe171cfc2fa39d94795d67e37e140dc0a7ab75e11619",
+      "context_sha256": "b0d6593d8452880baa2569eb739c9bd4452bbd02d3897d14c75c43f12d585df6"
+    },
+    {
+      "storage_id": "unit03",
+      "role": "reviewer",
+      "prompt_sha256": "fcdbd3b6268ddb92599108a90dd4b0ccb5fd125a81218c329949a074050e6f04",
+      "context_sha256": "6b208847d739492bce0701b5aa6878576abc991b8106bccb7033bc55c2e81639"
+    },
+    {
+      "storage_id": "unit04",
+      "role": "assessor",
+      "prompt_sha256": "f406d1f802d69769e03fbb6de215d235f7a5787f1bb4b456a46c8526e5c0f9ac",
+      "context_sha256": "257d6bb8685c1c54e9afd8287f16ab8f95a947ab5c19dbb527344c4a1d0a03a9"
+    },
+    {
+      "storage_id": "unit04",
+      "role": "reviewer",
+      "prompt_sha256": "1a914717a330f0027eb48b9618bdeef8f6274557b94cdda492edd0390fb63120",
+      "context_sha256": "72cb1fbfc8c08d346c81a3999887029af7a060353649ce23aca3fc4016237329"
+    },
+    {
+      "storage_id": "unit05",
+      "role": "assessor",
+      "prompt_sha256": "55d2abc91ed1b6d9d6b072b10de7e293ac1178c57df53324750539c28f683b88",
+      "context_sha256": "db83f9ba34221b265f1d2129e11b5111e440981eec62b2a154837d21ed2cbc5d"
+    },
+    {
+      "storage_id": "unit05",
+      "role": "reviewer",
+      "prompt_sha256": "d9ffe48b77fc0a5d6821cc3ea117f05f0eb1e67f508ea8f9f81e083c9249a65f",
+      "context_sha256": "87c6f31d51ccf3854f553b0d866b02855b3335fc7055534621b95c8ae103b427"
+    },
+    {
+      "storage_id": "unit06",
+      "role": "assessor",
+      "prompt_sha256": "4ed988cfd9685aaa0d588c756d557832eb4beeb7d5f9c3aa9e58145749d81181",
+      "context_sha256": "1d415728dee313d51917124e43214434ada6c3e677a262ef8b5c9f4a661cf053"
+    },
+    {
+      "storage_id": "unit06",
+      "role": "reviewer",
+      "prompt_sha256": "2e671e73b61981d2e625a017dfdc5047c8260d126d5a19236a35f6894f2ddb8d",
+      "context_sha256": "79bebe64ddbf79712630968e7193841079789d30a1e23c893d77886c917699b6"
+    },
+    {
+      "storage_id": "unit07",
+      "role": "assessor",
+      "prompt_sha256": "358736b93b98a98b2e09c987e855970f27802e34f4f865dd7c546e0a52fe512a",
+      "context_sha256": "d6607407e825b205d9531eeb3639dfafb3c7376164e925fc6e51acd17253bd48"
+    },
+    {
+      "storage_id": "unit07",
+      "role": "reviewer",
+      "prompt_sha256": "e18882652f5248c2f3400750487d18e2ada0cdac1ef0b2019ea5be58422ffc7d",
+      "context_sha256": "0eeef60ca1d934794be19de269e9d81a606db287d410747cee5f58d7f91f92f9"
+    },
+    {
+      "storage_id": "unit08",
+      "role": "assessor",
+      "prompt_sha256": "b1ea0bacfcfd99b74124d254d29eb20028b9b60aeac324fcd56f8e7786012f2f",
+      "context_sha256": "eb63bc1e958382ab0768da3a7662eea4491e61d4f58cdf2720f0c39f7dbb5e35"
+    },
+    {
+      "storage_id": "unit09",
+      "role": "assessor",
+      "prompt_sha256": "4aa8dd8d31c9ef997fe8724350dea3c15ed91a923d8d64efa23c967b7ca20a66",
+      "context_sha256": "737d3d52cd936560e09f5d39bc3b8a4bfec2da5c3dc542e10320004e14769759"
+    },
+    {
+      "storage_id": "unit09",
+      "role": "reviewer",
+      "prompt_sha256": "4de7272758c0014438a7d13f9ba7996a28c1c3525bb80199916a217a04de504c",
+      "context_sha256": "0897cdf83bd9f0647cdaa799de6b38c8754484248958d03187d797b06656e988"
+    },
+    {
+      "storage_id": "unit10",
+      "role": "assessor",
+      "prompt_sha256": "b9788df1c953fe03218ecb5535d3a3400bb052c7d1fd36b02c2d949974b52969",
+      "context_sha256": "575c0ac1f68eefd98eb8c2811d021b30894c13a7ada0607243b5829ef574e84c"
+    },
+    {
+      "storage_id": "unit10",
+      "role": "reviewer",
+      "prompt_sha256": "8713e8db16f873ac49c6a5bda22ed678efa78b9ead051cb5d85bd9cb020f5352",
+      "context_sha256": "5e48f5a970c760eaf3a8a3e88a257bd8266986f6743f660593c25502a208288c"
+    },
+    {
+      "storage_id": "unit11",
+      "role": "assessor",
+      "prompt_sha256": "caedfd59c27c551a8701cb285f97484a7e6a72331133606782ec0ecaac191e21",
+      "context_sha256": "71db58cb53897a23ce0f9ea979532895e74813916887671c816e7a171c3f5790"
+    },
+    {
+      "storage_id": "unit11",
+      "role": "reviewer",
+      "prompt_sha256": "894be237dfe57289690004d94fd776c622c1b7cccc8ad0b2dd19dff62ae4c3e3",
+      "context_sha256": "7454673ad6f72d1ba67d4c0a609cf272d2160fcdd12971a1a247dd6f8394137c"
+    },
+    {
+      "storage_id": "unit12",
+      "role": "assessor",
+      "prompt_sha256": "543ffd9e10a7d5e7d97913f79a3e0e4222fd82f6b474ab0ff1c226f66e36ad74",
+      "context_sha256": "c82d07e1d9d135133118aeed787188473e6ce336fb95ea7432929d5704a0c606"
+    },
+    {
+      "storage_id": "unit12",
+      "role": "reviewer",
+      "prompt_sha256": "27473298d6b8eaa39f323986da9f213340a5f84fb0bfcd6620afe603a5dd25d4",
+      "context_sha256": "b3e3d6c439b4319efcc31b93953b255a56a6eed35b7fb4408908261149d16c7f"
+    }
+  ],
+  "actual_assessor_arm_order": {
+    "case01": [
+      "json",
+      "lab"
+    ],
+    "case02": [
+      "json",
+      "lab"
+    ],
+    "case03": [
+      "json",
+      "lab"
+    ],
+    "case04": [
+      "lab",
+      "json"
+    ],
+    "case05": [
+      "json",
+      "lab"
+    ],
+    "case06": [
+      "lab",
+      "json"
+    ]
+  },
+  "scheduling_deviation": [
+    {
+      "case_id": "case02",
+      "planned_assessor_launch_order": [
+        "lab",
+        "json"
+      ],
+      "actual_assessor_launch_order": [
+        "json",
+        "lab"
+      ],
+      "cause": "Operator launched the ready JSON context while the Lab reservation process was closing, then launched the Lab context.",
+      "action": "Retained both first attempts; no relaunch, resampling, prompt change or score change.",
+      "limit": "Actual model launch order is not perfectly counterbalanced."
+    }
+  ],
+  "failure_classification": {
+    "storage_id": "unit08",
+    "case_id": "case04",
+    "arm": "json",
+    "role": "assessor",
+    "failure": "Model authored evidence_unavailable/incomplete despite actual finding check.ok=true/code=null and two persisted unsupported assessments for stale observations; omitted assessment references required by the outcome contract.",
+    "response_sha256": "3bd785392e4ff24e9f3f67c8288f58e376095c5dc542234d65732bf31504fba1",
+    "independent_model_failures": 1,
+    "downstream_reviewer_executed": false,
+    "downstream_missing_claim_labels": 2,
+    "infrastructure_failure": false,
+    "first_attempt_retained": true,
+    "repairs": 0
+  },
+  "native_metadata": {
+    "model_identity": null,
+    "provider_tokens": null,
+    "billing": null,
+    "maximum_host_reservation_to_record_seconds": 313.98188972473145,
+    "host_elapsed_above_requested180_seconds": 5,
+    "timing_scope": "Includes operator scheduling and recording; not inference latency."
+  },
+  "readme_review": "Reviewed README.md against retained evidence. Count, failure, uncertainty, scope, timestamp and metadata statements agree. No model identity or latency inferred.",
+  "limitations": [
+    "Six synthetic task pairs measure first-attempt tool-assisted scoped outputs and coordination fidelity, not unaided general model reasoning or representative task accuracy.",
+    "One paired disagreement and exact two-sided p=1.0 do not establish a causal Rust transport accuracy advantage. Wilson intervals are descriptive; fixed selected tasks and dependent claim labels do not constitute random population sampling.",
+    "The claim denominator counts the two unreturned reviewer labels after one rejected assessor. All emitted reviewer status/null labels matched the reference; downstream absence is not a second independently executed model failure.",
+    "The actual assessor launch order reversed the planned case02 order; JSON launched first there. No relaunch or resampling occurred; model order was not perfectly counterbalanced.",
+    "Twenty-three distinct native context IDs match operator launch, dispatch, raw response and coordinator records. Host records are attestations, not provider receipts; actual model identity, token usage and billing remain unknown.",
+    "Four isolated external Lab runtime files match the earlier transport005 freeze. They were not independently re-recorded in the accuracy prelaunch freeze; all93 declared current-study files, including Rust sources and executable, match their prelaunch hashes.",
+    "Matched generic prompts and opaque paths with fork_turns=none keep keys out of supplied context. Shared operating-system filesystem permissions do not enforce isolation from other files.",
+    "Requested native time and token ceilings are soft. Reservation-to-record elapsed contains scheduling and does not support inference-latency or model-cost claims.",
+    "JSON uses the same coordinator semantics. There is no uncoordinated MCP baseline."
+  ]
+}

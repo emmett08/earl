@@ -1,0 +1,60 @@
+[
+  {
+    "message": {
+      "kind": "assessment_request",
+      "message_id": "request-0",
+      "payload": {
+        "kind": "assessment_request",
+        "message_id": "request-0",
+        "recipient": "assessor",
+        "reply_to": null,
+        "schema": "EAL/MAS-coordination/1",
+        "scope": {
+          "assessed_at": "2026-09-26T10:00:01Z",
+          "claim": "performance_criteria_met",
+          "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+          "entry_id": "load_test",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e"
+        },
+        "sender": "reviewer",
+        "task_id": "task002"
+      },
+      "recipient": "assessor",
+      "run_id": "task002-eal_protocol",
+      "sender": "reviewer",
+      "version": "1"
+    },
+    "sequence": 1,
+    "redelivered": false
+  },
+  {
+    "message": {
+      "kind": "assessment_request",
+      "message_id": "request-1",
+      "payload": {
+        "kind": "assessment_request",
+        "message_id": "request-1",
+        "recipient": "assessor",
+        "reply_to": null,
+        "schema": "EAL/MAS-coordination/1",
+        "scope": {
+          "assessed_at": "2026-09-26T10:00:01Z",
+          "claim": "performance_criteria_failed",
+          "context_fingerprint": "c7c53f33d64ed5e1dadb4b75aff760078a484fedf49299797d6844de2f4b169c",
+          "entry_id": "load_test",
+          "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+          "source_digest": "4a79d5d07893829f287f89ad9ed82409ee9f53e4502bb0f8215f2cc901a1224e"
+        },
+        "sender": "reviewer",
+        "task_id": "task002"
+      },
+      "recipient": "assessor",
+      "run_id": "task002-eal_protocol",
+      "sender": "reviewer",
+      "version": "1"
+    },
+    "sequence": 2,
+    "redelivered": false
+  }
+]

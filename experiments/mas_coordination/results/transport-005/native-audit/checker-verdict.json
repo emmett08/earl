@@ -1,0 +1,33 @@
+{
+  "schema": "EAL/transport-audit-checker-verdict/1",
+  "accepted": true,
+  "mode": "actual_host_agent",
+  "execution_id": "/root/native_transport_checker/turn1",
+  "run_id": "transport005-audit",
+  "message_id_consumed": "measurement-report",
+  "receive_sequence": 1,
+  "receive_redelivered": false,
+  "checks_passed": 57,
+  "checks_total": 57,
+  "failed_checks": [],
+  "reasons": [
+    "Recomputed all claimed cold-create, post-create and useful-cycle medians from 25 raw records; all report values and five paired ratio medians agree.",
+    "Recomputed warm send medians excluding session and codec cold first use; ten samples per persistent codec arm retain the explicit half-nanosecond median.",
+    "Create is the first operation, including persistent session startup; post-create is exactly the sum of subsequent operation timings and includes lazy first codec use. The frozen plan defines useful-cycle wall time through final status, excluding separately measured constructor, diagnostic and shutdown; this bounded audit checks retained records rather than rerunning measurement code.",
+    "Every retained sample has the reported process counts, one matching canonical-envelope hash and identical final useful state; all recorded invariant checks passed. The contract claims are limited to those frozen deterministic fixture results.",
+    "Frozen plan and phase labels support the one-host, five counterbalanced repetitions, fixed padding and synthetic workload limits. Pipeline batching confounds an isolated parser or wire-language comparison; JSON is a semantic control without nom parsing.",
+    "The actual reporter message was consumed through the Rust-backed Lab transport before shared report/raw inspection. Shared artifacts are a declared channel and workspace permissions do not establish OS isolation.",
+    "No live inference speed, model accuracy, population, token or cost claim is accepted; host tokens and billing remain unknown."
+  ],
+  "evidence": [
+    "checker-receive.json",
+    "../report.json",
+    "../raw-samples.json",
+    "../plan.json",
+    "../source-stability.json",
+    "plan.json"
+  ],
+  "tokens": null,
+  "billing": null,
+  "acknowledgment_rule": "Verdict persisted before addressed acknowledgment."
+}

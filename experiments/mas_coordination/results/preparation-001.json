@@ -1,0 +1,14 @@
+{
+  "schema": "EAL/mas-preparation-attempt/1",
+  "outcome": "incomplete_before_live_workers",
+  "failed_run": "pilot-004/task003-eal_protocol",
+  "valid": true,
+  "complete": false,
+  "reason": [
+    "Method engineering/api-load-criteria/1: Method worker startup exceeded its timeout"
+  ],
+  "retained_workspace": ".cache/mas-coordination/pilot-004",
+  "diagnosis": "Custom method subprocess exceeded its five-second startup limit while setup/integration work ran concurrently. All Rust/Python/integration checks are now finished; retry preparation serially under the unchanged method limits.",
+  "live_workers_executed": 0,
+  "timeout_or_assertion_changes": false
+}

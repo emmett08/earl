@@ -1,0 +1,61 @@
+{
+  "execution_mode": "host_assisted",
+  "planned_arms": [
+    "mcp_json"
+  ],
+  "maximum_actual_turns": 8,
+  "maximum_repairs": 0,
+  "inference": "Native subagents inherit the same parent model/settings; exact model identifier, tokens and billing unavailable",
+  "isolation": "Separate fork_turns=none contexts; shared filesystem access constrained by role instructions, not an OS sandbox",
+  "planned_turns": [
+    {
+      "call_id": "baseline_assessor_task001",
+      "actor": "assessor",
+      "run": "task001-mcp_json",
+      "status": "reserved"
+    },
+    {
+      "call_id": "baseline_reviewer_task001",
+      "actor": "reviewer",
+      "run": "task001-mcp_json",
+      "status": "reserved"
+    },
+    {
+      "call_id": "baseline_assessor_task002",
+      "actor": "assessor",
+      "run": "task002-mcp_json",
+      "status": "reserved"
+    },
+    {
+      "call_id": "baseline_reviewer_task002",
+      "actor": "reviewer",
+      "run": "task002-mcp_json",
+      "status": "reserved"
+    },
+    {
+      "call_id": "baseline_assessor_task003",
+      "actor": "assessor",
+      "run": "task003-mcp_json",
+      "status": "reserved"
+    },
+    {
+      "call_id": "baseline_reviewer_task003",
+      "actor": "reviewer",
+      "run": "task003-mcp_json",
+      "status": "reserved"
+    },
+    {
+      "call_id": "baseline_assessor_task004",
+      "actor": "assessor",
+      "run": "task004-mcp_json",
+      "status": "reserved"
+    },
+    {
+      "call_id": "baseline_reviewer_task004",
+      "actor": "reviewer",
+      "run": "task004-mcp_json",
+      "status": "reserved"
+    }
+  ],
+  "registered_at": "2026-10-12T19:29:21.731988+00:00"
+}

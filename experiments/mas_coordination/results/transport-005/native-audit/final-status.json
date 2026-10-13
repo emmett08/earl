@@ -1,0 +1,60 @@
+{
+  "run_id": "transport005-audit",
+  "config": {
+    "agents": [
+      "reporter",
+      "checker"
+    ],
+    "max_bytes": 8192,
+    "max_calls": 2,
+    "max_messages": 1,
+    "wall_seconds": 3600
+  },
+  "active_protocol": "1",
+  "deadline": 1791849292.4069793,
+  "usage": {
+    "messages": 1,
+    "bytes": 4979,
+    "calls": 2
+  },
+  "messages": [
+    {
+      "id": "measurement-report",
+      "sender": "reporter",
+      "recipient": "checker",
+      "received": 1,
+      "acked": 1,
+      "hash": "74c6f95a27e3c449673e7a1a10334f574f76f439fb9e1543de43f1d3e182e4e3"
+    }
+  ],
+  "protocols": [],
+  "calls": [
+    {
+      "id": "audit-checker",
+      "actor": "checker",
+      "state": "recorded",
+      "evidence": {
+        "actual_agent_execution": true,
+        "cost_usd": null,
+        "execution_id": "/root/native_transport_checker/turn1",
+        "execution_mode": "actual_host_agent",
+        "outcome": "consumed, independently checked and acknowledged measurement-report",
+        "tokens": null
+      }
+    },
+    {
+      "id": "audit-reporter",
+      "actor": "reporter",
+      "state": "recorded",
+      "evidence": {
+        "actual_agent_execution": true,
+        "cost_usd": null,
+        "execution_id": "/root/native_transport_reporter/turn1",
+        "execution_mode": "actual_host_agent",
+        "outcome": "authored and admitted measurement-report",
+        "tokens": null
+      }
+    }
+  ],
+  "execution_claim": "Host execution must be substantiated by external agent records; receive and ack alone do not prove cognition."
+}

@@ -1,0 +1,378 @@
+{
+  "schema": "EAL/coordination-export/1",
+  "config": {
+    "anchor": {
+      "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+      "pinned_at": "2026-10-12T23:52:55.842589Z",
+      "registered_context": {
+        "build_id": "demo-build-42",
+        "dataset": "synthetic",
+        "service": "orders-api"
+      },
+      "schema": "EAL/MAS-coordination-task/3",
+      "source_digest": "92443350506d159e9c7923b228e088b14fb8a79356e2e3599255835b5ead7476",
+      "task": {
+        "claims": [
+          "performance_criteria_met",
+          "performance_criteria_failed"
+        ],
+        "entry_id": "api_sample",
+        "profile": "api_load/1",
+        "question": "Assess every selected claim for this identified synthetic input. Preserve all registered scope and qualifications, distinguish scope mismatch from unavailable results, and make no conclusions about a deployed service.",
+        "requirements": {
+          "claim_outputs": {
+            "performance_criteria_failed": "fails",
+            "performance_criteria_met": "passes"
+          },
+          "context": {
+            "build_id": "demo-build-42",
+            "dataset": "synthetic",
+            "service": "orders-api"
+          },
+          "criteria": {
+            "evidence_max_age_seconds": 86400,
+            "maximum_error_rate_percent": 1,
+            "maximum_sample_p95_ms": 200,
+            "minimum_requests": 100
+          },
+          "workload": {
+            "build_id": "demo-build-42",
+            "concurrent_clients": 37,
+            "dataset": "synthetic",
+            "run_id": "requested-other-held-out-load",
+            "service": "orders-api"
+          }
+        },
+        "task_id": "held_out_case05"
+      },
+      "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765"
+    },
+    "budgets": {
+      "max_bytes": 65536,
+      "max_gateway_calls_per_role": 4,
+      "max_mcp_calls_per_role": 64,
+      "max_messages": 8,
+      "max_worker_calls": 2,
+      "max_worker_output_bytes": 65536,
+      "wall_seconds": 900,
+      "worker_seconds": 180
+    },
+    "created_at": "2026-10-12T23:52:55.846807Z",
+    "deadline": 1791850075,
+    "run_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609",
+    "schema": "EAL/coordination-run/1",
+    "server": {
+      "database": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/references/case05/workspace/knowledge.sqlite",
+      "limits": null,
+      "methods": "eal.api_load_methods:registry",
+      "registry": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/references/case05/workspace/tools.toml",
+      "workspace": "/workspace/earl/experiments/mas_coordination/results/accuracy-006/references/case05/workspace"
+    },
+    "transport": {
+      "kind": "json"
+    }
+  },
+  "status": {
+    "schema": "EAL/coordination-status/1",
+    "run_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609",
+    "status": "awaiting_worker_result",
+    "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765",
+    "deadline": 1791850075,
+    "workers": {
+      "assessor": {
+        "state": "unknown",
+        "call_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609:assessor",
+        "execution_mode": "software_test",
+        "execution_id": null,
+        "outcome": null
+      },
+      "reviewer": null
+    },
+    "answer": null,
+    "calls": [
+      {
+        "seq": 1,
+        "actor": "assessor",
+        "category": "gateway",
+        "operation": "query",
+        "at": "2026-10-12T23:52:55.880192Z"
+      }
+    ]
+  },
+  "effects": [
+    {
+      "status": "committed",
+      "key": "initial",
+      "payload_digest": "c4d4c728869a4e98f23ac3c1c1901d3ebe13e5bdb14b4a7e56027cca45a24296",
+      "result": {
+        "message": {
+          "attempt": 0,
+          "kind": "request",
+          "message_id": "request",
+          "recipient": "assessor",
+          "reply_to": null,
+          "schema": "EAL/MAS-coordination/3",
+          "sender": "reviewer",
+          "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765",
+          "task_id": "held_out_case05"
+        }
+      },
+      "outbox": [
+        {
+          "attempt": 0,
+          "kind": "request",
+          "message_id": "request",
+          "recipient": "assessor",
+          "reply_to": null,
+          "schema": "EAL/MAS-coordination/3",
+          "sender": "reviewer",
+          "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765",
+          "task_id": "held_out_case05"
+        }
+      ],
+      "acknowledged": true,
+      "diagnosis": null,
+      "payload": {
+        "attempt": 0,
+        "kind": "request",
+        "message_id": "request",
+        "recipient": "assessor",
+        "reply_to": null,
+        "schema": "EAL/MAS-coordination/3",
+        "sender": "reviewer",
+        "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765",
+        "task_id": "held_out_case05"
+      }
+    },
+    {
+      "status": "unknown",
+      "key": "worker:assessor",
+      "payload_digest": "22b045500e0ebc740a80079218bba532d5b039284f3ef39a6f6ca1a1e9f590be",
+      "result": null,
+      "outbox": [],
+      "acknowledged": false,
+      "diagnosis": "effect_outcome_unknown",
+      "payload": {
+        "call_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609:assessor",
+        "context": {
+          "call_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609:assessor",
+          "gateway": {
+            "argv": [
+              "/workspace/earl/.venv/bin/python",
+              "-m",
+              "eal.coordination.cli",
+              "query",
+              "--run",
+              "/workspace/earl/experiments/mas_coordination/results/accuracy-006/references/case05/run",
+              "--call-id",
+              "coord-dd55cdf8e0c64af3b0c227b29dc38609:assessor"
+            ]
+          },
+          "instructions": "Inspect your addressed messages. Request a finding using the gateway argv and author an outcome or disposition with its exact trusted references. Return message and consumed_message_ids.",
+          "qualifications": "EAL status is conditional on the registered argument. Unsupported is not proof of the opposite. Authored prose and measurements are not independently certified by registration.",
+          "received_messages": [
+            {
+              "attempt": 0,
+              "kind": "request",
+              "message_id": "request",
+              "recipient": "assessor",
+              "reply_to": null,
+              "schema": "EAL/MAS-coordination/3",
+              "sender": "reviewer",
+              "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765",
+              "task_id": "held_out_case05"
+            }
+          ],
+          "response_schema": "/workspace/earl/src/eal/coordination/response-schema.json",
+          "role": "assessor",
+          "schema": "EAL/coordination-worker-context/1",
+          "task": {
+            "method_registry_fingerprint": "052c3834c4da0a4559ee351a3ebdddf048566cbc65ed6b05b0a662c3e094537a",
+            "pinned_at": "2026-10-12T23:52:55.842589Z",
+            "registered_context": {
+              "build_id": "demo-build-42",
+              "dataset": "synthetic",
+              "service": "orders-api"
+            },
+            "schema": "EAL/MAS-coordination-task/3",
+            "source_digest": "92443350506d159e9c7923b228e088b14fb8a79356e2e3599255835b5ead7476",
+            "task": {
+              "claims": [
+                "performance_criteria_met",
+                "performance_criteria_failed"
+              ],
+              "entry_id": "api_sample",
+              "profile": "api_load/1",
+              "question": "Assess every selected claim for this identified synthetic input. Preserve all registered scope and qualifications, distinguish scope mismatch from unavailable results, and make no conclusions about a deployed service.",
+              "requirements": {
+                "claim_outputs": {
+                  "performance_criteria_failed": "fails",
+                  "performance_criteria_met": "passes"
+                },
+                "context": {
+                  "build_id": "demo-build-42",
+                  "dataset": "synthetic",
+                  "service": "orders-api"
+                },
+                "criteria": {
+                  "evidence_max_age_seconds": 86400,
+                  "maximum_error_rate_percent": 1,
+                  "maximum_sample_p95_ms": 200,
+                  "minimum_requests": 100
+                },
+                "workload": {
+                  "build_id": "demo-build-42",
+                  "concurrent_clients": 37,
+                  "dataset": "synthetic",
+                  "run_id": "requested-other-held-out-load",
+                  "service": "orders-api"
+                }
+              },
+              "task_id": "held_out_case05"
+            },
+            "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765"
+          }
+        },
+        "execution_mode": "software_test",
+        "role": "assessor"
+      }
+    },
+    {
+      "status": "committed",
+      "key": "assessment",
+      "payload_digest": "0a84681cbf93fb50bd31e33eb9dc22f18aad04a355999f2d73a19e0f00ed3752",
+      "result": {
+        "assessments": {},
+        "check": {
+          "code": "workload_mismatch",
+          "detail": "Evidence input differs from the complete requested workload",
+          "ok": false
+        },
+        "collected_count": 0,
+        "explanations": {},
+        "finding_id": "finding_6db329905fc0091eadccda2efbffc3466a37a64a16b2fe83da2bd13627181963",
+        "mcp": {
+          "calls": [],
+          "transport": "actual_mcp_stdio"
+        },
+        "packets": {},
+        "reused_count": 0,
+        "schema": "EAL/MAS-coordination-finding/3",
+        "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765"
+      },
+      "outbox": [],
+      "acknowledged": false,
+      "diagnosis": null,
+      "payload": {
+        "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765"
+      }
+    }
+  ],
+  "events": [
+    {
+      "sequence": 1,
+      "at": "2026-10-12T23:52:55.855260Z",
+      "kind": "started",
+      "data": {
+        "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765"
+      }
+    },
+    {
+      "sequence": 2,
+      "at": "2026-10-12T23:52:55.858741Z",
+      "kind": "bus_initialized",
+      "data": {}
+    },
+    {
+      "sequence": 3,
+      "at": "2026-10-12T23:52:55.873213Z",
+      "kind": "received",
+      "data": {
+        "receipts": [
+          {
+            "message": {
+              "kind": "request",
+              "message_id": "request",
+              "payload": {
+                "attempt": 0,
+                "kind": "request",
+                "message_id": "request",
+                "recipient": "assessor",
+                "reply_to": null,
+                "schema": "EAL/MAS-coordination/3",
+                "sender": "reviewer",
+                "task_digest": "d6d7810fef7f049d7884e1169e0e763efccec5e2af0b9cddff20a99beddfd765",
+                "task_id": "held_out_case05"
+              },
+              "recipient": "assessor",
+              "run_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609",
+              "sender": "reviewer",
+              "version": "1"
+            },
+            "redelivered": false,
+            "sequence": 1
+          }
+        ],
+        "role": "assessor"
+      }
+    },
+    {
+      "sequence": 4,
+      "at": "2026-10-12T23:52:55.878338Z",
+      "kind": "worker_reserved",
+      "data": {
+        "call_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609:assessor",
+        "execution_mode": "software_test",
+        "role": "assessor"
+      }
+    },
+    {
+      "sequence": 5,
+      "at": "2026-10-12T23:52:55.924813Z",
+      "kind": "query",
+      "data": {
+        "call_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609:assessor",
+        "finding_id": "finding_6db329905fc0091eadccda2efbffc3466a37a64a16b2fe83da2bd13627181963"
+      }
+    }
+  ],
+  "transport": {
+    "run_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609",
+    "config": {
+      "max_bytes": 65536,
+      "max_calls": 2,
+      "max_messages": 8,
+      "participants": [
+        "assessor",
+        "reviewer"
+      ],
+      "run_id": "coord-dd55cdf8e0c64af3b0c227b29dc38609"
+    },
+    "usage": {
+      "messages": 1,
+      "bytes": 414,
+      "calls": 1
+    },
+    "messages": [
+      {
+        "sequence": 1,
+        "message_id": "request",
+        "received": true,
+        "acked": false
+      }
+    ],
+    "calls": [
+      {
+        "id": "coord-dd55cdf8e0c64af3b0c227b29dc38609:assessor",
+        "actor": "assessor",
+        "state": "reserved",
+        "evidence": null
+      }
+    ]
+  },
+  "limits": [
+    "Trusted local host; shared filesystem permissions are not role isolation",
+    "Worker external execution receipts are host assertions, not authenticated provider receipts",
+    "Assessment times belong to individual MCP results; replay does not establish a current decision"
+  ]
+}

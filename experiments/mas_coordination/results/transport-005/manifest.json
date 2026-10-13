@@ -1,0 +1,56 @@
+{
+  "build_tools": {
+    "cargo": "unavailable",
+    "rustc": "unavailable"
+  },
+  "command_arguments": {
+    "arms": "legacy_one_shot,persistent_mcp,persistent_mcp_codec,persistent_rust_admission,json_control",
+    "codec_microbench": true,
+    "output": "experiments/mas_coordination/results/transport-005",
+    "profile": true,
+    "repetitions": 5,
+    "runtime": "/workspace/mas-protocol-lab"
+  },
+  "cpu_accounting": "RUSAGE_SELF plus RUSAGE_CHILDREN after persistent server shutdown; excludes still-live unrelated children.",
+  "isolated_lab": {
+    "mcp": "1.26.0",
+    "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]"
+  },
+  "launch_instrumentation": "Parent Popen constructor and explicitly injected sitecustomize in isolated Python servers/CLI; one record per successful process construction.",
+  "logical_cpus": 5,
+  "packages": {
+    "fastmcp": "4.0.10",
+    "mcp": "2.2.0"
+  },
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "processor": "",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "schema": "EAL/MAS-transport-benchmark/1",
+  "source_hashes": {
+    "/workspace/mas-protocol-lab/runtime/mas_protocol/cli.py": "04b8c202550efccdade0ac51512a6528e988fd1d263a16887356af08f6a1ae29",
+    "/workspace/mas-protocol-lab/runtime/mas_protocol/mcp_server.py": "442da05e9514668905411d0ade1d1a548ea29ffebeae60d55bae7dfd611fe78c",
+    "/workspace/mas-protocol-lab/runtime/mas_protocol/protocol.py": "9bb8eea4dcdbab5b2f3c8b8513281cb5ebeb6ebcfc66a25b1dd630365d586731",
+    "/workspace/mas-protocol-lab/runtime/mas_protocol/store.py": "f2510cbad31646c372d0006cb50be3f9d3f027a540c9142a0a4a09c1ea84b638",
+    "/workspace/mas-protocol-lab/rust-protocol/target/release/mas-protocol-codec": "876b577cb029f491c613026e026d80f2c7c2037a4951aa5a9cab57297b4cf165",
+    "experiments/mas_coordination/benchmark_instrumentation/sitecustomize.py": "aa36b24549b9849b94d00f28a2198449da1dde4383345b49601c7c56e090089f",
+    "experiments/mas_coordination/benchmark_legacy/lab.py": "c5707a1900870b706d41c6e4ec35c5a6051ea07ec6a7bf04fcb7440d08f53f98",
+    "experiments/mas_coordination/benchmark_legacy/lab_mcp.py": "84fb30943d35c7d2f2f4d33f8e95f8a694c42c1ef2d3b03362f6696b01c3cf2f",
+    "experiments/mas_coordination/transport-benchmark-plan.json": "9d69583ee1d49d1a714a7211bbd61e0565bb8ab0f24a83eef2eeb05dd097fbaa",
+    "experiments/mas_coordination/transport_benchmark.py": "a27b0ee95a9f7a617c86138edd8717d14ed57ed2ca8c659927ac75e9068040ea",
+    "src/eal/coordination/bus.py": "9224d4eba56d71cc664f9c4cb5b4cc483abedace08ad5dae76790534c21c828d",
+    "src/eal/coordination/codec_process.py": "9a2131b8858e98cd701a2152218f0676769b7c4077f1a6780a7c764f1cb83a2f",
+    "src/eal/coordination/lab.py": "9dc2393a7773f4e74bd8af7c2ba8c6b0e58fc9f4394dcae155c7923317e49444",
+    "src/eal/coordination/lab_admission.py": "385b4eb0ff084b59fc40651f297abc8c29cde7b00e2f37673e2b7e69941f2ed6",
+    "src/eal/coordination/lab_mcp.py": "73e07afaffbe3cd6ee1ba27d66f3ee7c6ef72050fbc03ed336beb8a8db2b5050",
+    "src/eal/coordination/lab_server.py": "b908e9cece4264f0c8452d2857ac2c257d7839be57b6027a73e55cf6a41235ef",
+    "src/eal/coordination/ledger.py": "ce128fe6feb4a296c7764161c5ef8e9ab5e65b492cc1010e934404fbc473eb14",
+    "src/eal/coordination/persistent_mcp.py": "3e407e0f33ada1e4c09dcc79538675b8fb0095b613cebd6fb1a07b57a019a65e",
+    "src/eal/coordination/rust_codec/Cargo.lock": "165a1d9165398be5dbf30123a0fe70efbe602abb18950c4e79871132bbe83677",
+    "src/eal/coordination/rust_codec/Cargo.toml": "9c78dbd59fd4d8375e97a56400c5dd1aba550587bf5ff4c3c87e9de66ca9b1d2",
+    "src/eal/coordination/rust_codec/rust-toolchain.toml": "4ae7dd89b38747ef65001accc5ec7886c041151b697277baff1fa49a041050d7",
+    "src/eal/coordination/rust_codec/src/lib.rs": "63e333989d5845b0c4e2fbc8081771712db0b963b7006215279e273000f3e217",
+    "src/eal/coordination/rust_codec/src/main.rs": "e2328d42cda4d17cad75e607fe6831734ffbec1023c4857ca68525bba79e8827",
+    "src/eal/coordination/rust_codec/target/release/mas-protocol-codec": "98f576011f146101047b7137c8c86b309383961c308134843b120befe037ee1d"
+  },
+  "started_utc": "2026-10-12T22:51:24Z"
+}

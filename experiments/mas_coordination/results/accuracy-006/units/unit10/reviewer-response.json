@@ -1,0 +1,52 @@
+{
+  "answer": {
+    "task_digest": "9b6afcc57bbccdf83c371e53e80971c2f78a92cdf779742c35a353e0d68f0052",
+    "finding_id": "finding_1c8c090f9b4d7c3ec7b40acc4e5743c85f945b7b9bce8ba67d2e276d8401c670",
+    "claims": {
+      "performance_criteria_met": {
+        "assessment_id": null,
+        "status": null,
+        "assessed_at": null
+      },
+      "performance_criteria_failed": {
+        "assessment_id": null,
+        "status": null,
+        "assessed_at": null
+      }
+    },
+    "scope": {
+      "context": {
+        "build_id": "demo-build-42",
+        "dataset": "synthetic",
+        "service": "orders-api"
+      },
+      "requirements": {
+        "claim_outputs": {
+          "performance_criteria_failed": "fails",
+          "performance_criteria_met": "passes"
+        },
+        "context": {
+          "build_id": "demo-build-42",
+          "dataset": "synthetic",
+          "service": "orders-api"
+        },
+        "criteria": {
+          "evidence_max_age_seconds": 86400,
+          "maximum_error_rate_percent": 1,
+          "maximum_sample_p95_ms": 200,
+          "minimum_requests": 100
+        },
+        "workload": {
+          "build_id": "demo-build-42",
+          "concurrent_clients": 37,
+          "dataset": "synthetic",
+          "run_id": "requested-other-held-out-load",
+          "service": "orders-api"
+        }
+      }
+    },
+    "conclusion": "out_of_scope",
+    "qualification": "conditional_on_registered_argument"
+  },
+  "consumed_message_ids": ["assessor-disposition"]
+}

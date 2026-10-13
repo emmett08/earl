@@ -1,0 +1,37 @@
+// Synthetic snapshot with a supported route and an explicit challenge.
+language "EAL/3"
+environment demo {
+  require dataset == "synthetic"
+  require deployment == "coordinator-demo"
+  require service == "catalogue-api"
+}
+tool synthetic_availability {
+  version "1"
+}
+context environment demo, tool synthetic_availability, kind snapshot, max_age 86400 {
+  evidence heartbeats {
+    input {"snapshot": "EAL/synthetic-availability-snapshot/1", "snapshot_sha256": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc"}
+    require heartbeats >= 3
+  }
+  evidence quorum {
+    input {"snapshot": "EAL/synthetic-availability-snapshot/1", "snapshot_sha256": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc"}
+    require responsive_nodes >= 2
+  }
+  evidence outage {
+    input {"snapshot": "EAL/synthetic-availability-snapshot/1", "snapshot_sha256": "8f4f8325644531b75683587612a5a7316319e04139dd2971a242140c8d7e97fc"}
+    require outage_count >= 1
+  }
+  claim sample_endpoint_available {
+    statement "The identified synthetic snapshot supports endpoint availability; recorded outages challenge that heartbeat-based route."
+  }
+  claim sample_quorum_present {
+    statement "The identified synthetic snapshot records at least two responsive nodes; no claim about a deployed system is made."
+  }
+}
+reasoning snapshot_relation {
+  method "structured/1"
+  rationale "The authored acceptance predicates supply these bounded snapshot claims. This is an explicit argument relation, not a universal availability proof."
+}
+argument heartbeat_route = [evidence heartbeats] via snapshot_relation => sample_endpoint_available
+argument quorum_route = [evidence quorum] via snapshot_relation => sample_quorum_present
+objection recorded_outage = [evidence outage] -x> argument heartbeat_route

@@ -1,0 +1,37 @@
+{
+  "answer": {
+    "task_digest": "7ad89069f0eb4f6c43e6cf5c7705aa8d7555f97eae2449f405115ce0ff004d4f",
+    "finding_id": "finding_c319a442d2d18d2cf343feb88525f91e907240e9326ccdbcd9d118bcd1b5b10a",
+    "claims": {
+      "sample_endpoint_available": {
+        "assessment_id": "8c0b2ca9-a80c-47a5-bcc8-f7982f97c535",
+        "status": "contested",
+        "assessed_at": "2026-10-12T21:40:17.577107Z"
+      },
+      "sample_quorum_present": {
+        "assessment_id": "50987908-bbe6-4167-a966-56f8b27233db",
+        "status": "supported",
+        "assessed_at": "2026-10-12T21:40:17.873449Z"
+      }
+    },
+    "scope": {
+      "context": {
+        "dataset": "synthetic",
+        "deployment": "coordinator-demo",
+        "service": "catalogue-api"
+      },
+      "requirements": {
+        "context": {
+          "dataset": "synthetic",
+          "deployment": "coordinator-demo",
+          "service": "catalogue-api"
+        }
+      }
+    },
+    "conclusion": "assessed",
+    "qualification": "conditional_on_registered_argument"
+  },
+  "consumed_message_ids": [
+    "assessor-outcome-generic-lab-001"
+  ]
+}
